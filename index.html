@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Audit Ava Manager — Boond interactif</title>
-  <meta name="description" content="Audit interactif Ava Manager : schéma métier, simulateur Boond, 59 écrans avec captures et explications.">
+    <title>Audit Ava Manager — Boond interactif</title>
+  <meta name="description" content="Audit interactif Ava Manager : schéma métier, simulateur, spécification, 59 écrans.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ahmedbentaleb.github.io/ava-boond-hub/">
   <meta property="og:title" content="Audit Ava Manager — Boond interactif">
-  <meta property="og:description" content="Schéma métier, simulateur, 59 écrans avec captures et explications.">
+  <meta property="og:description" content="Schéma métier, simulateur, spécification, 59 écrans.">
   <meta property="og:image" content="https://ahmedbentaleb.github.io/ava-boond-hub/og.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Audit Ava Manager — Boond interactif">
-  <meta name="twitter:description" content="Schéma métier, simulateur, 59 écrans avec captures et explications.">
+  <meta name="twitter:description" content="Schéma métier, simulateur, spécification, 59 écrans.">
   <meta name="twitter:image" content="https://ahmedbentaleb.github.io/ava-boond-hub/og.jpg">
-  <style>
+<style>
     :root {
       --bg: #141414;
       --panel: #1c1c1c;
@@ -175,15 +175,32 @@
     .note { font-size: 13px; }
     .callout { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; margin-top: 12px; font-size: 13px; }
     .filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+
+    .tag.warn { display: inline-block; font-size: 11px; letter-spacing: .04em; color: #d17a3a; border: 1px solid #d17a3a; padding: 1px 6px; border-radius: 4px; }
+    .spec-toc { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 24px; position: sticky; top: 56px; z-index: 7; background: var(--bg); padding: 8px 0; }
+    .spec-toc button { color: var(--muted); font: inherit; font-size: 12px; border: 1px solid var(--line); background: transparent; padding: 4px 8px; border-radius: 999px; cursor: pointer; }
+    .spec-toc button:hover { color: var(--text); }
+    .spec-sec { margin: 28px 0 40px; }
+    .spec-sec h2 { margin-top: 0; }
+    .spec-sec table { font-size: 12px; }
+    .spec-sec td { color: var(--text); }
+    .sm { font-family: ui-monospace, monospace; color: var(--c3); }
+    .qlist li { margin: 8px 0; }
+    .verdict { margin: 12px 0; padding: 12px 14px; border-radius: 6px; border: 1px solid var(--line); }
+    .verdict.ok { border-color: var(--c3); }
+    .verdict.ko { border-color: #c45c5c; }
+    .verdict strong { display: block; margin-bottom: 4px; }
+    .scen { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px; }
 </style>
 </head>
 <body>
 <main>
   <h1>Ava Manager — Boond</h1>
-  <p class="lead">Schéma métier · simulateur · audit des 59 écrans avec captures. Produit, pas un tenant.</p>
+  <p class="lead">Schéma métier · simulateur · spécification · audit 59 écrans. Produit, pas un tenant.</p>
   <nav class="hub" id="hub">
     <button type="button" data-view="metier" aria-pressed="true">Métier</button>
     <button type="button" data-view="simulateur" aria-pressed="false">Simulateur</button>
+    <button type="button" data-view="spec" aria-pressed="false">Spécification</button>
     <button type="button" data-view="audit" aria-pressed="false">Audit complet</button>
   </nav>
 
@@ -270,12 +287,521 @@
 
   <section class="view" id="view-simulateur" hidden>
     <p class="lead">Sans données réelles. Les boutons + suivent les règles d’audit — un candidat ne crée pas de contact, un positionnement n’a pas de +, un projet exclut les positionnements candidats.</p>
+
+    <h2>Scénarios — tests fonctionnels visuels</h2>
+    <p class="note">Valide = enchaînement autorisé. Invalide = le métier refuse. C’est le contrat du futur backend.</p>
+    <p class="lead">Valides</p>
+    <div class="scen" id="scen-ok"></div>
+    <p class="lead">Invalides</p>
+    <div class="scen" id="scen-ko"></div>
+    <div id="sim-verdict" hidden></div>
+
     <div class="pills" id="sim-pills"></div>
     <p id="sim-caption"></p>
     <div class="sim">
       <aside class="sim-nav" id="sim-nav"></aside>
       <div id="sim-panel"></div>
     </div>
+  </section>
+
+  <section class="view" id="view-spec" hidden>
+<p class="lead">Spécification métier Ava Manager. Dérivée des 59 écrans cliqués, pas d’un manuel Boond. Pas de SQL. Pas d’écrans à recoder. <span class="tag warn">À VALIDER MÉTIER</span> = règle non démontrée, à trancher avant la base.</p>
+<p class="note">Preuve de méthode : le bouton <strong>Créer</strong> d’une fiche est le vrai menu. Un objet qui n’apparaît dans aucun Créer n’est pas un objet du noyau.</p>
+
+<nav class="spec-toc" id="spec-toc"></nav>
+
+<article class="spec-sec" id="s1">
+  <h2>1. Vue générale du domaine</h2>
+  <p class="lead">Ava Manager n’est pas 13 listes. C’est un graphe d’objets traversé par cinq métiers. Le miniature utile, c’est C3 Staffing + C4 Production. Sans Positionnement, le staffing n’existe pas. Sans Prestation, le Projet est un titre.</p>
+  <table>
+    <thead><tr><th>Couche</th><th>Ce que c’est</th><th>Ce que ce n’est pas</th></tr></thead>
+    <tbody>
+      <tr><td>Noyau persistant</td><td>Société, Contact, Candidat, Ressource, Besoin, Positionnement, Projet, Prestation, Action</td><td>Des écrans</td></tr>
+      <tr><td>Secondaire persistant</td><td>Achat, Paiement, Facture fournisseur, Temps, Absence, Référentiels, Compte (ressource + rôle + périmètre)</td><td>Des modules marketplace</td></tr>
+      <tr><td>Vue calculée</td><td>Planning, dashboard, reporting, pipeline, occupation, CA / coût / marge</td><td>Une table à écrire</td></tr>
+    </tbody>
+  </table>
+  <p>Deux identités humaines distinctes, démontrées par les onglets : <strong>Candidat ≠ Ressource</strong>. Un candidat n’a jamais Prestation / Temps / Formulaires. Une ressource n’est pas un vivier.</p>
+</article>
+
+<article class="spec-sec" id="s2">
+  <h2>2. Objets métier</h2>
+  <p class="note">Propriétaire = rôle qui en répond. Créer / modifier / supprimer = portes vues en audit, simplifiées pour Ava.</p>
+
+  <h3>Noyau</h3>
+  <table>
+    <thead><tr><th>Objet</th><th>Définition</th><th>Rôle</th><th>Relations</th><th>Cardinalités</th><th>Propriétaire</th><th>Créé par</th><th>Modifié par</th><th>Supprimé / archivé</th><th>Bloque la suppression</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Société</td>
+        <td>Personne morale : client, prospect ou fournisseur. Un seul objet, plusieurs rôles.</td>
+        <td>Ancre C1, C3, C5. Sans société, pas de besoin ni de fournisseur.</td>
+        <td>1→N Contact, Besoin, Projet, Achat (comme fournisseur)</td>
+        <td>1 société : N contacts. Besoin et Projet : société obligatoire.</td>
+        <td>Commercial / direction</td>
+        <td>Liste Sociétés ; + depuis rien d’autre au cœur</td>
+        <td>Fiche société</td>
+        <td>Archivage si historique. Pas de delete physique s’il existe besoin / projet / achat.</td>
+        <td>Contact, Besoin, Projet, Achat liés</td>
+      </tr>
+      <tr>
+        <td>Contact</td>
+        <td>Personne chez une société.</td>
+        <td>Porte l’action CRM. Point d’entrée standalone d’un Besoin (vu : + liste Besoins part du Contact).</td>
+        <td>N→1 Société. 1→N Action. Peut déclencher Besoin, Achat. Pas de Positionnement.</td>
+        <td>Contact sans société : interdit.</td>
+        <td>Commercial</td>
+        <td>+ liste Contacts ; + fiche Société</td>
+        <td>Fiche contact</td>
+        <td>Archivable. Delete seulement sans action / besoin rattaché — <span class="tag warn">À VALIDER MÉTIER</span></td>
+        <td>Actions, besoins créés depuis lui</td>
+      </tr>
+      <tr>
+        <td>Candidat</td>
+        <td>Humain hors staff (vivier). Pas de temps, pas de prestation.</td>
+        <td>C2. Se positionne sur un besoin déjà là. Ne crée pas de Contact.</td>
+        <td>1→N Action, Positionnement. Peut créer Besoin, Projet, Contrat (hors V1).</td>
+        <td>0..N positionnements. 0 prestation.</td>
+        <td>Recruteur</td>
+        <td>+ liste Candidats</td>
+        <td>Fiche (infos, DT, étape)</td>
+        <td>Étape « Clos / Archivé ». Pas de delete si positionnements.</td>
+        <td>Positionnements, actions</td>
+      </tr>
+      <tr>
+        <td>Ressource</td>
+        <td>Humain staffé (interne ou externe). Porte la production.</td>
+        <td>C3 matching + C4 exécution. Le compte utilisateur est une ressource + un rôle.</td>
+        <td>1→N Positionnement, Prestation, Action, Temps, Absence. Option : N→1 Société fournisseur si externe.</td>
+        <td>1 ressource : N prestations. Candidat converti devient ressource, il ne reste pas les deux actifs — <span class="tag warn">À VALIDER MÉTIER</span> (identité Personne).</td>
+        <td>Staffing / RH / production</td>
+        <td>+ liste Ressources ; ConvertCandidateToResource</td>
+        <td>Fiche ressource</td>
+        <td>Archivage seulement si prestations / temps historiques.</td>
+        <td>Prestation, Temps, Compte</td>
+      </tr>
+      <tr>
+        <td>Besoin</td>
+        <td>Demande client à pourvoir (Régie / Forfait) + état + CA pondéré.</td>
+        <td>Pivot C3. Attire des positionnements. Peut naître un Projet.</td>
+        <td>N→1 Société (obligatoire, déduite du Contact en standalone). 1→N Positionnement, Action, Projet.</td>
+        <td>1 besoin : N positionnements. 0..N projets — <span class="tag warn">À VALIDER MÉTIER</span></td>
+        <td>Commercial staffing</td>
+        <td>+ liste (via Contact) ; + fiche Société / Candidat / Ressource / Contact</td>
+        <td>Fiche besoin (dont état, pondération)</td>
+        <td>Clos / perdu. Delete interdit dès 1 positionnement.</td>
+        <td>Positionnement, Projet</td>
+      </tr>
+      <tr>
+        <td>Positionnement</td>
+        <td>Matching : 1 besoin × (1 candidat XOR 1 ressource) + état.</td>
+        <td>Seul objet qui relie un humain à une demande. Pas de bouton + propre.</td>
+        <td>N→1 Besoin. Exactement un de {Candidat, Ressource}.</td>
+        <td>1–1 humain. N positionnements par besoin / par humain.</td>
+        <td>Commercial staffing</td>
+        <td>+ fiche Besoin, Candidat ou Ressource. Jamais depuis la liste.</td>
+        <td>État, commentaire, charge, tarif ligne</td>
+        <td>Pas de delete si « Gagné » / lié à une Prestation. Archiver / abandonner.</td>
+        <td>Prestation née d’une conversion — <span class="tag warn">À VALIDER MÉTIER</span></td>
+      </tr>
+      <tr>
+        <td>Projet</td>
+        <td>Mission contractualisée. Relie le client à qui travaille et à ce que ça coûte.</td>
+        <td>Pivot C4 et C5. Peut naître d’un Besoin (positionnements ressource seulement).</td>
+        <td>N→1 Société. 0..1 Besoin. 1→N Prestation, Action, Achat.</td>
+        <td>CA peut être 0 à la création (vu en audit).</td>
+        <td>Directeur de projet / commercial</td>
+        <td>+ liste ; + fiche Besoin (exclut candidats) ; + fiche Société / Candidat / Ressource</td>
+        <td>Fiche projet</td>
+        <td>Clos. Delete interdit dès 1 prestation ou achat.</td>
+        <td>Prestation, Achat, Temps via prestation</td>
+      </tr>
+      <tr>
+        <td>Prestation</td>
+        <td>Une ressource sur un projet, dates, charge, CA, coût, marge. Ligne, pas une fiche autonome (clic ressource → fiche ressource).</td>
+        <td>Vérité de production. Porte le temps.</td>
+        <td>N→1 Projet. N→1 Ressource. 1→N Temps.</td>
+        <td>Jamais un Candidat.</td>
+        <td>Production</td>
+        <td>+ fiche Projet ; + fiche Ressource. Jamais depuis la liste Prestations.</td>
+        <td>Dates, tarif, charge</td>
+        <td>Clôturer. Delete interdit dès 1 temps saisi.</td>
+        <td>Temps</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Secondaires persistants</h3>
+  <table>
+    <thead><tr><th>Objet</th><th>Définition</th><th>Pourquoi persistant</th><th>V1 ?</th></tr></thead>
+    <tbody>
+      <tr><td>Action</td><td>Fait CRM daté, un porteur obligatoire (candidat XOR ressource XOR contact XOR besoin XOR projet).</td><td>Journal. Types = référentiel par porteur, pas un enum figé.</td><td>Oui, types réduits (Note, To do, Entretien)</td></tr>
+      <tr><td>Achat</td><td>Dépense externe sur un projet. Fournisseur = Société, pas une table Fournisseur.</td><td>Coût hors staff. Delta HT = total − paiements (vue).</td><td>V1.5</td></tr>
+      <tr><td>Paiement</td><td>Enfant de l’Achat (prévu / effectué, HT / TTC).</td><td>TVA vue sur le paiement, pas sur l’achat (preuve écran 43).</td><td>V1.5</td></tr>
+      <tr><td>Facture fournisseur</td><td>Pièce sur achat ; colonne Ressource possible (freelance).</td><td>Module présent, vide sur le tenant audité.</td><td>V2</td></tr>
+      <tr><td>Temps</td><td>Saisie d’activité rattachée à une Prestation.</td><td>Base du CA réel et de l’occupation. 403 sur le compte audité : le droit existe, l’écran pas ouvert ici.</td><td>V1.5 (structure V1 pour ne pas casser C4)</td></tr>
+      <tr><td>Absence</td><td>Indisponibilité d’une Ressource. Pas une prestation à 0.</td><td>Le planning la superpose. Bouton distinct « Créer de l’inactivité ».</td><td>V1.5</td></tr>
+      <tr><td>Référentiel</td><td>Étape candidat, état besoin, état positionnement, type d’action, agence, pôle, flag, rôle.</td><td>Les listes n’inventent pas le cycle : elles l’affichent (admin).</td><td>V1 : un jeu minimal figé + table extensible plus tard</td></tr>
+      <tr><td>Compte</td><td>Ressource + rôle + périmètre. « Créer un manager depuis une ressource ».</td><td>Cloisonne les listes. Pas un objet métier commercial.</td><td>V1 minimal (un rôle)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Non-objets (ne pas persister)</h3>
+  <p>Planning, Kanban, Dashboard, Reporting, Pipeline, Occupation, Marge, Ctrl+K, Filtres. Ce sont des lectures. Profils types et Produits : catalogues Boond, hors métier quotidien Avaliance — hors V1.</p>
+</article>
+
+<article class="spec-sec" id="s3">
+  <h2>3. Relations et cardinalités</h2>
+  <table>
+    <thead><tr><th>Relation</th><th>Cardinalité</th><th>Obligatoire</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>Société → Contact</td><td>1 → N</td><td>Contact : oui</td><td></td></tr>
+      <tr><td>Société → Besoin</td><td>1 → N</td><td>Besoin : oui</td><td>Standalone : société déduite du Contact</td></tr>
+      <tr><td>Société → Projet</td><td>1 → N</td><td>Projet : oui</td><td></td></tr>
+      <tr><td>Société → Achat (fournisseur)</td><td>1 → N</td><td>Achat : oui</td><td>Même table Société, rôle fournisseur</td></tr>
+      <tr><td>Contact → Action</td><td>1 → N</td><td>Action : un porteur</td><td></td></tr>
+      <tr><td>Besoin → Positionnement</td><td>1 → N</td><td>Positionnement : oui</td><td></td></tr>
+      <tr><td>Candidat → Positionnement</td><td>1 → N</td><td>XOR avec Ressource</td><td></td></tr>
+      <tr><td>Ressource → Positionnement</td><td>1 → N</td><td>XOR avec Candidat</td><td></td></tr>
+      <tr><td>Besoin → Projet</td><td>1 → 0..N</td><td>Projet : facultatif</td><td>Vu : besoin avec 1 pos. et 0 projet. Plusieurs projets : <span class="tag warn">À VALIDER MÉTIER</span></td></tr>
+      <tr><td>Projet → Prestation</td><td>1 → N</td><td>Prestation : oui</td><td>Projet sans prestation = titre, autorisé au début</td></tr>
+      <tr><td>Ressource → Prestation</td><td>1 → N</td><td>Prestation : oui</td><td>Simultanées : <span class="tag warn">À VALIDER MÉTIER</span></td></tr>
+      <tr><td>Prestation → Temps</td><td>1 → N</td><td>Temps : oui</td><td>Jamais Projet → Temps direct</td></tr>
+      <tr><td>Projet → Achat</td><td>1 → N</td><td>Achat : oui</td><td></td></tr>
+      <tr><td>Achat → Paiement</td><td>1 → N</td><td>Paiement : oui</td><td></td></tr>
+      <tr><td>Action → Porteur</td><td>N → 1</td><td>Oui, exactement un</td><td>Polymorphe</td></tr>
+      <tr><td>Compte → Ressource</td><td>N → 1</td><td>Oui</td><td></td></tr>
+    </tbody>
+  </table>
+</article>
+
+<article class="spec-sec" id="s4">
+  <h2>4. Règles qui ne doivent jamais être violées</h2>
+  <table>
+    <thead><tr><th>#</th><th>Invariant</th><th>Pourquoi</th><th>DB</th><th>Service</th><th>API</th><th>UI</th><th>Si violé</th></tr></thead>
+    <tbody>
+      <tr><td>I1</td><td>Positionnement.besoin_id NOT NULL</td><td>Un matching sans demande n’est pas un matching.</td><td>FK NOT NULL</td><td>CreatePositioning refuse sans besoin</td><td>400 POSITIONING_NEEDS_NEED</td><td>Pas de + sur la liste Positionnements</td><td>Rejet, rien n’est écrit</td></tr>
+      <tr><td>I2</td><td>Positionnement : exactement un humain (candidat_id XOR ressource_id)</td><td>Preuve : un profil par ligne. Les deux = double vérité. Aucun = orphelin.</td><td>CHECK (candidat XOR ressource)</td><td>PositionCandidate / PositionResource distincts</td><td>400 POSITIONING_HUMAN_XOR</td><td>Assistant : choisir un profil d’un seul type</td><td>Rejet</td></tr>
+      <tr><td>I3</td><td>Prestation.projet_id NOT NULL et Prestation.ressource_id NOT NULL</td><td>Qui travaille, sur quelle mission.</td><td>2 FK NOT NULL</td><td>CreateService refuse candidat</td><td>400 SERVICE_NEEDS_RESOURCE_AND_PROJECT</td><td>Pas de + Prestation sur fiche candidat</td><td>Rejet</td></tr>
+      <tr><td>I4</td><td>Un Candidat n’a aucune Prestation</td><td>Onglets : pas Prestations / Temps. Boond exclut les pos. candidats à la création de projet.</td><td>Pas de FK candidat sur prestation</td><td>Convertir d’abord</td><td>409 CANDIDATE_CANNOT_SERVE</td><td>Menu + candidat sans Prestation</td><td>Rejet + message « convertir en ressource »</td></tr>
+      <tr><td>I5</td><td>Temps.prestation_id NOT NULL. Pas de temps sur Projet ni Candidat.</td><td>Le temps est l’exécution d’une affectation.</td><td>FK NOT NULL, pas de projet_id sur temps</td><td>RecordTimesheet</td><td>400 TIME_NEEDS_SERVICE</td><td>Saisie temps = liste des prestations de la ressource</td><td>Rejet</td></tr>
+      <tr><td>I6</td><td>Contact.societe_id NOT NULL</td><td>Vu : contact hérite de la société.</td><td>FK NOT NULL</td><td>CreateContact</td><td>400 CONTACT_NEEDS_COMPANY</td><td>+ Contact depuis société, ou société obligatoire</td><td>Rejet</td></tr>
+      <tr><td>I7</td><td>Besoin.societe_id NOT NULL, Projet.societe_id NOT NULL</td><td>Pas de mission dans le vide.</td><td>FK NOT NULL</td><td>Standalone besoin : société ← contact</td><td>400 NEED_NEEDS_COMPANY</td><td>Créer besoin grisé sans contact</td><td>Rejet</td></tr>
+      <tr><td>I8</td><td>Fournisseur = Société. Pas de table Fournisseur métier.</td><td>Un objet, deux rôles (client / fournisseur).</td><td>achat.fournisseur_societe_id → societe</td><td>—</td><td>—</td><td>Picker Société</td><td>Rejet de toute entité « fournisseur » parallèle</td></tr>
+      <tr><td>I9</td><td>Action a exactement un porteur</td><td>Journal unique, types par objet.</td><td>porteur_type + porteur_id NOT NULL</td><td>CreateAction depuis fiche</td><td>400 ACTION_NEEDS_OWNER</td><td>Pas de + sur liste Actions</td><td>Rejet</td></tr>
+      <tr><td>I10</td><td>CreateProjectFromNeed ignore les positionnements candidats et non actifs</td><td>Texte Boond lu. C2 ≠ C4.</td><td>—</td><td>Filtrer avant insert prestation</td><td>409 CANDIDATE_POSITIONING_EXCLUDED</td><td>Texte d’aide sur le modal</td><td>Projet possible, sans ces lignes ; pas de prestation candidat</td></tr>
+      <tr><td>I11</td><td>Ressource avec prestation ou temps : pas de DELETE physique</td><td>Historique de production et de paie.</td><td>Pas de CASCADE delete</td><td>ArchiveResource</td><td>409 RESOURCE_HAS_HISTORY</td><td>Archiver, pas Supprimer</td><td>409, proposer archivage</td></tr>
+      <tr><td>I12</td><td>Objets historiques (projet clos, besoin gagné, prestation clôturée) : archive, pas delete</td><td>CA et marge doivent rester recalculables.</td><td>deleted_at / archived_at</td><td>Archive*</td><td>405 sur DELETE</td><td>États Clos / Archivé</td><td>409</td></tr>
+      <tr><td>I13</td><td>Un Positionnement ne crée pas un Besoin (inverse interdit)</td><td>Le Créer n’offre jamais cette porte.</td><td>—</td><td>Pas d’opération</td><td>404 / 405</td><td>Pas de bouton</td><td>Inexistant</td></tr>
+      <tr><td>I14</td><td>Contact ne crée pas Positionnement ni Projet direct</td><td>Menu + contact = Action, Besoin, Achat seulement.</td><td>—</td><td>Pas d’opération</td><td>403</td><td>Menu court</td><td>Rejet</td></tr>
+      <tr><td>I15</td><td>Candidat ne crée pas Contact</td><td>Menu + sans Contact.</td><td>—</td><td>—</td><td>403</td><td>Menu</td><td>Rejet</td></tr>
+      <tr><td>I16</td><td>Compte = ressource + rôle + périmètre. Les listes filtrent le périmètre.</td><td>Compter 0 n’est pas « module vide ».</td><td>FK compte.ressource_id</td><td>Scope sur chaque liste</td><td>403 hors périmètre</td><td>Filtres Périmètre</td><td>403, pas un 404 métier</td></tr>
+    </tbody>
+  </table>
+</article>
+
+<article class="spec-sec" id="s5">
+  <h2>5. Machines d’état</h2>
+  <p>Simplifiées vs Boond (14 étapes candidat, 9 états positionnement). Les libellés admin Boond restent un référentiel possible plus tard ; V1 fige un cycle court.</p>
+
+  <h3>Candidat — état initial : <code>a_qualifier</code></h3>
+  <p class="sm">a_qualifier → en_cours → vivier | clos | converti</p>
+  <table>
+    <thead><tr><th>De</th><th>Vers</th><th>Condition</th><th>Interdit</th><th>Effet</th></tr></thead>
+    <tbody>
+      <tr><td>a_qualifier</td><td>en_cours</td><td>Au moins une action ou un positionnement</td><td>—</td><td>—</td></tr>
+      <tr><td>en_cours</td><td>vivier</td><td>Décision recruteur</td><td>Depuis converti</td><td>—</td></tr>
+      <tr><td>en_cours / vivier</td><td>converti</td><td>ConvertCandidateToResource</td><td>S’il a déjà une ressource active liée — <span class="tag warn">À VALIDER MÉTIER</span></td><td>Crée Ressource, archive le candidat au vivier staff</td></tr>
+      <tr><td>*</td><td>clos</td><td>Décision</td><td>Depuis converti sans archivage ressource</td><td>Plus de nouveau positionnement</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Besoin — initial : <code>ouvert</code> — priorité P1/P2/P3 = champ, pas un état <span class="tag warn">À VALIDER MÉTIER</span></h3>
+  <p class="sm">ouvert → en_staffing → gagne | perdu | reporte | clos</p>
+  <table>
+    <thead><tr><th>De</th><th>Vers</th><th>Condition</th><th>Interdit</th><th>Effet</th></tr></thead>
+    <tbody>
+      <tr><td>ouvert</td><td>en_staffing</td><td>≥ 1 positionnement</td><td>—</td><td>—</td></tr>
+      <tr><td>en_staffing</td><td>gagne</td><td>CreateProjectFromNeed ou décision</td><td>Si aucun positionnement ressource actif — <span class="tag warn">À VALIDER MÉTIER</span></td><td>Peut créer Projet</td></tr>
+      <tr><td>ouvert / en_staffing</td><td>perdu / reporte / clos</td><td>Décision</td><td>gagne → ouvert (pas de retour)</td><td>Nouveaux positionnements refusés si clos/perdu</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Positionnement — initial : <code>propose</code></h3>
+  <p class="sm">propose → en_cours → retenu | refuse | abandonne</p>
+  <p class="note">en_cours couvre CV envoyé / entretien / présenté client. V1 n’a pas besoin de 9 colonnes Kanban.</p>
+  <table>
+    <thead><tr><th>De</th><th>Vers</th><th>Condition</th><th>Interdit</th><th>Effet</th></tr></thead>
+    <tbody>
+      <tr><td>propose</td><td>en_cours</td><td>Acte commercial (CV, entretien)</td><td>Besoin clos / perdu → refus I17</td><td>—</td></tr>
+      <tr><td>en_cours</td><td>retenu</td><td>Besoin encore ouvert ou en_staffing</td><td>Besoin fermé ; humain = candidat si on veut une prestation tout de suite (I10)</td><td>N’auto-crée pas le Projet — <span class="tag warn">À VALIDER MÉTIER</span></td></tr>
+      <tr><td>propose / en_cours</td><td>refuse / abandonne</td><td>NO GO interne, désistement, refus client</td><td>Depuis retenu sans décision projet</td><td>—</td></tr>
+      <tr><td>retenu</td><td>*</td><td>—</td><td>Retour propose</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p class="lead"><span class="tag warn">Invariant I17</span> Passer un positionnement à retenu alors que le besoin est fermé : refus. Protégé service + UI (état désactivé).</p>
+
+  <h3>Ressource — initial : <code>active</code></h3>
+  <p class="sm">active → archivee. Le « en mission / intercontrat » est une vue (a une prestation en cours ou non), pas un état à saisir — <span class="tag warn">À VALIDER MÉTIER</span> si RH veut un état manuel.</p>
+
+  <h3>Projet — initial : <code>en_cours</code></h3>
+  <p class="sm">en_cours → clos | annule. Clos interdit si prestations ouvertes — <span class="tag warn">À VALIDER MÉTIER</span> (forcer clôture prestations d’abord ?).</p>
+
+  <h3>Prestation — initial : <code>planifiee</code></h3>
+  <p class="sm">planifiee → en_cours → cloturee. Changement de ressource : <span class="tag warn">À VALIDER MÉTIER</span> (interdit V1 recommandé : clôturer + nouvelle ligne).</p>
+
+  <h3>Achat — initial : <code>brouillon</code></h3>
+  <p class="sm">brouillon → valide → solde | annule. Solde quand paiements couvrent le total (vue Delta).</p>
+</article>
+
+<article class="spec-sec" id="s6">
+  <h2>6. Opérations métier</h2>
+  <p>Pas de PATCH status magique. Chaque commande a un nom.</p>
+  <table>
+    <thead><tr><th>Opération</th><th>Acteur</th><th>Source</th><th>Préconditions</th><th>Données</th><th>Effet</th><th>Erreurs</th><th>Journal</th></tr></thead>
+    <tbody>
+      <tr><td>CreateCompany</td><td>Commercial</td><td>Liste sociétés</td><td>—</td><td>Nom, état prospect/client</td><td>Société</td><td>Nom vide</td><td>Action système optionnelle</td></tr>
+      <tr><td>CreateContact</td><td>Commercial</td><td>Société</td><td>Société existe</td><td>Nom, fonction</td><td>Contact</td><td>I6</td><td>—</td></tr>
+      <tr><td>CreateAction</td><td>Porteur du périmètre</td><td>Fiche porteur</td><td>Porteur existe</td><td>Type référentiel, date, corps</td><td>Action</td><td>I9</td><td>L’action EST le journal</td></tr>
+      <tr><td>CreateNeed</td><td>Commercial</td><td>Contact (standalone) ou Société</td><td>Contact ou société</td><td>Titre, type régie/forfait, budget, pondération</td><td>Besoin (société déduite)</td><td>I7 ; contact obligatoire en standalone</td><td>Action optionnelle</td></tr>
+      <tr><td>PositionCandidateOnNeed</td><td>Recruteur / staffing</td><td>Candidat ou Besoin</td><td>Besoin ouvert ; candidat non clos</td><td>besoin_id, candidat_id</td><td>Positionnement propose</td><td>I1 I2 ; besoin fermé</td><td>Action sur les deux porteurs optionnelle</td></tr>
+      <tr><td>PositionResourceOnNeed</td><td>Staffing</td><td>Ressource ou Besoin</td><td>Besoin ouvert ; ressource active</td><td>besoin_id, ressource_id</td><td>Positionnement propose</td><td>I1 I2</td><td>—</td></tr>
+      <tr><td>AdvancePositioning</td><td>Staffing</td><td>Positionnement</td><td>Transition autorisée ; besoin pas fermé pour retenu</td><td>nouvel état</td><td>État</td><td>I17</td><td>Action</td></tr>
+      <tr><td>ConvertCandidateToResource</td><td>RH / staffing</td><td>Candidat</td><td>Candidat non clos</td><td>type interne/externe, TJM coût — <span class="tag warn">À VALIDER MÉTIER</span></td><td>Ressource + candidat.converti ; copie identité / DT</td><td>Déjà converti</td><td>Action sur les deux</td></tr>
+      <tr><td>CreateProjectFromNeed</td><td>Staffing</td><td>Besoin</td><td>Besoin pas perdu</td><td>Positionnements ressource actifs à convertir</td><td>Projet + Prestations (I10)</td><td>Que des candidats → 409</td><td>Action besoin + projet</td></tr>
+      <tr><td>CreateProject</td><td>DP</td><td>Liste / Société</td><td>Société</td><td>Réf, dates, type</td><td>Projet (besoin facultatif)</td><td>I7</td><td>—</td></tr>
+      <tr><td>CreateServiceFromPositioning</td><td>Production</td><td>Positionnement retenu ressource</td><td>Humain = ressource ; projet existe ou créé</td><td>dates, tarif</td><td>Prestation</td><td>I3 I4 I10</td><td>—</td></tr>
+      <tr><td>AssignResourceToProject</td><td>Production</td><td>Projet ou Ressource</td><td>Les deux actifs</td><td>dates, CA, coût</td><td>Prestation</td><td>I3</td><td>—</td></tr>
+      <tr><td>CloseNeed</td><td>Commercial</td><td>Besoin</td><td>—</td><td>motif</td><td>état clos ; plus de pos. nouveaux</td><td>—</td><td>Action</td></tr>
+      <tr><td>CloseProject</td><td>DP</td><td>Projet</td><td>Prestations clôturées ? <span class="tag warn">À VALIDER MÉTIER</span></td><td>—</td><td>clos</td><td>prestations ouvertes</td><td>Action</td></tr>
+      <tr><td>RecordTimesheet</td><td>Ressource (self) / manager</td><td>Prestation</td><td>Prestation planifiee/en_cours ; droit rôle</td><td>date, quantité</td><td>Temps</td><td>I5 ; 403 rôle</td><td>—</td></tr>
+      <tr><td>RecordAbsence</td><td>Ressource / RH</td><td>Ressource</td><td>Active</td><td>dates, type</td><td>Absence (pas une prestation)</td><td>—</td><td>—</td></tr>
+      <tr><td>CreatePurchase</td><td>DP / achat</td><td>Projet</td><td>Projet en_cours</td><td>fournisseur Société, montant</td><td>Achat</td><td>I8</td><td>—</td></tr>
+      <tr><td>ArchiveResource</td><td>RH</td><td>Ressource</td><td>—</td><td>motif</td><td>archivee ; jamais DELETE si I11</td><td>—</td><td>Action</td></tr>
+    </tbody>
+  </table>
+</article>
+
+<article class="spec-sec" id="s7">
+  <h2>7. C1 CRM</h2>
+  <table>
+    <thead><tr><th></th><th></th></tr></thead>
+    <tbody>
+      <tr><td>Entrée</td><td>Liste Sociétés ou Contacts</td></tr>
+      <tr><td>Étapes</td><td>CreateCompany → CreateContact → CreateAction → (option) CreateNeed depuis Contact</td></tr>
+      <tr><td>Objets créés</td><td>Société, Contact, Action, éventuellement Besoin</td></tr>
+      <tr><td>Avancer</td><td>Société existante pour le contact. Contact ou société pour le besoin.</td></tr>
+      <tr><td>Branches</td><td>Prospect vs Client (champ). Achat depuis contact = C5, pas du staffing.</td></tr>
+      <tr><td>Sorties</td><td>Historique vivant ; passage C3 via CreateNeed</td></tr>
+      <tr><td>Annulation</td><td>Archiver contact / société sans historique</td></tr>
+      <tr><td>Erreurs</td><td>I6 I7 I14 I15</td></tr>
+    </tbody>
+  </table>
+</article>
+
+<article class="spec-sec" id="s8">
+  <h2>8. C2 Recrutement</h2>
+  <table>
+    <tbody>
+      <tr><td>Entrée</td><td>Liste Candidats</td></tr>
+      <tr><td>Étapes</td><td>Créer candidat → qualifier (Action + DT) → PositionCandidateOnNeed</td></tr>
+      <tr><td>Objets créés</td><td>Candidat, Action, Positionnement (vers un Besoin C3 déjà là)</td></tr>
+      <tr><td>Avancer</td><td>Le besoin n’est pas créé par le candidat pour matcher : il est choisi. CreateNeed depuis candidat existe (porte C3) mais n’est pas le matching.</td></tr>
+      <tr><td>Branches</td><td>Vivier sans positionnement (normal). Conversion vers Ressource pour C4.</td></tr>
+      <tr><td>Sorties</td><td>clos ; converti → C3/C4</td></tr>
+      <tr><td>Annulation</td><td>clos. Positionnement abandonne.</td></tr>
+      <tr><td>Erreurs</td><td>I4 I15 ; positionner sur besoin fermé</td></tr>
+    </tbody>
+  </table>
+</article>
+
+<article class="spec-sec" id="s9">
+  <h2>9. C3 Staffing</h2>
+  <table>
+    <tbody>
+      <tr><td>Entrée</td><td>Besoins (après C1) ou PositionResource depuis le staff</td></tr>
+      <tr><td>Étapes</td><td>CreateNeed → Positionner (candidat ou ressource) → AdvancePositioning → CreateProjectFromNeed</td></tr>
+      <tr><td>Objets créés</td><td>Besoin, Positionnement, Projet, Prestations (si ressources retenues)</td></tr>
+      <tr><td>Avancer</td><td>Société sur le besoin. Pour le projet « qui travaille » : ressource, pas candidat (I10).</td></tr>
+      <tr><td>Branches</td><td>Que des candidats → convertir d’abord. Reporté ≠ clos (CA envisagé encore là, vu Kanban).</td></tr>
+      <tr><td>Sorties</td><td>gagne + projet ; perdu ; reporte</td></tr>
+      <tr><td>Annulation</td><td>CloseNeed. N’efface pas les positionnements.</td></tr>
+      <tr><td>Erreurs</td><td>I1 I2 I10 I17</td></tr>
+    </tbody>
+  </table>
+</article>
+
+<article class="spec-sec" id="s10">
+  <h2>10. C4 Production</h2>
+  <table>
+    <tbody>
+      <tr><td>Entrée</td><td>Projet ou Ressource</td></tr>
+      <tr><td>Étapes</td><td>AssignResourceToProject / CreateServiceFromPositioning → RecordTimesheet → (vue) marge</td></tr>
+      <tr><td>Objets créés</td><td>Prestation, Temps. Absence à côté, pas sur le projet.</td></tr>
+      <tr><td>Avancer</td><td>Prestation existe avant le CA (vu : CA à 0). Temps seulement ensuite.</td></tr>
+      <tr><td>Branches</td><td>Inactivité ≠ prestation. Self-service temps selon rôle (403 vu).</td></tr>
+      <tr><td>Sorties</td><td>Prestation cloturee ; CloseProject</td></tr>
+      <tr><td>Annulation</td><td>Clôturer sans delete si temps</td></tr>
+      <tr><td>Erreurs</td><td>I3 I4 I5 I11</td></tr>
+    </tbody>
+  </table>
+</article>
+
+<article class="spec-sec" id="s11">
+  <h2>11. C5 Achat</h2>
+  <table>
+    <tbody>
+      <tr><td>Entrée</td><td>Fiche Projet (+ Achat) ou Contact (+ Achat)</td></tr>
+      <tr><td>Étapes</td><td>CreatePurchase (fournisseur = Société) → Paiement → (V2) Facture fournisseur</td></tr>
+      <tr><td>Objets créés</td><td>Achat, Paiement</td></tr>
+      <tr><td>Avancer</td><td>Projet existant. Société fournisseur existante (ou créée comme Société).</td></tr>
+      <tr><td>Branches</td><td>Freelance : facture liée à une Ressource (colonne vue, écran 42) — <span class="tag warn">À VALIDER MÉTIER</span></td></tr>
+      <tr><td>Sorties</td><td>solde ; annule</td></tr>
+      <tr><td>Annulation</td><td>annule si aucun paiement effectué</td></tr>
+      <tr><td>Erreurs</td><td>I8 ; projet clos</td></tr>
+    </tbody>
+  </table>
+  <p>Facture client (PostProduction, 403 /invoices) : hors domaine V1. Ne pas la glisser dans C4.</p>
+</article>
+
+<article class="spec-sec" id="s12">
+  <h2>12. Passages entre les chemins</h2>
+  <table>
+    <thead><tr><th>De</th><th>Vers</th><th>Opération</th><th>Condition</th></tr></thead>
+    <tbody>
+      <tr><td>C1</td><td>C3</td><td>CreateNeed depuis Contact / Société</td><td>Société connue</td></tr>
+      <tr><td>C2</td><td>C3</td><td>PositionCandidateOnNeed</td><td>Besoin déjà en C3</td></tr>
+      <tr><td>C2</td><td>C4</td><td>ConvertCandidateToResource puis CreateService*</td><td>Jamais C2 → Prestation direct</td></tr>
+      <tr><td>C3</td><td>C4</td><td>CreateProjectFromNeed / AssignResourceToProject</td><td>Positionnement ressource (I10)</td></tr>
+      <tr><td>C3 / C4</td><td>C5</td><td>CreatePurchase</td><td>Projet</td></tr>
+      <tr><td>C4</td><td>C3</td><td>PositionResourceOnNeed</td><td>Staff déjà ressource, nouveau besoin</td></tr>
+    </tbody>
+  </table>
+  <p class="lead">Chaîne nominale Avaliance : C1 nourrit le client → C3 pourvoit → (C2 alimente le vivier testé sur C3) → conversion → C4 exécute → C5 si externe.</p>
+</article>
+
+<article class="spec-sec" id="s13">
+  <h2>13. Scénarios valides du simulateur</h2>
+  <p>Le volet Simulateur rejoue ces scénarios. Le chemin heureux complet :</p>
+  <ol>
+    <li>CreateCompany (Société Alpha)</li>
+    <li>CreateContact</li>
+    <li>CreateNeed</li>
+    <li>Créer Candidat</li>
+    <li>PositionCandidateOnNeed</li>
+    <li>AdvancePositioning → retenu (sur le besoin encore ouvert)</li>
+    <li>ConvertCandidateToResource</li>
+    <li>CreateProjectFromNeed (maintenant ressource)</li>
+    <li>Prestation créée</li>
+    <li>RecordTimesheet</li>
+    <li>Vues : CA = Σ temps × tarif prestation ; coût = Σ temps × coût ressource ; marge = CA − coût − achats</li>
+  </ol>
+  <p>Variante staff déjà ressource : sauter 4, 5 (candidat), 7 — PositionResourceOnNeed puis projet.</p>
+</article>
+
+<article class="spec-sec" id="s14">
+  <h2>14. Scénarios invalides</h2>
+  <table>
+    <thead><tr><th>Tentative</th><th>Invariant</th><th>Résultat</th></tr></thead>
+    <tbody>
+      <tr><td>CreateService avec un Candidat</td><td>I4</td><td>Refus 409 CANDIDATE_CANNOT_SERVE</td></tr>
+      <tr><td>Positionnement sans Besoin</td><td>I1</td><td>Refus 400</td></tr>
+      <tr><td>Prestation sans Ressource</td><td>I3</td><td>Refus 400</td></tr>
+      <tr><td>Temps sur le Projet</td><td>I5</td><td>Refus 400 TIME_NEEDS_SERVICE</td></tr>
+      <tr><td>DELETE Ressource avec prestations</td><td>I11</td><td>409, proposer ArchiveResource</td></tr>
+      <tr><td>Positionnement → retenu, besoin clos</td><td>I17</td><td>Refus</td></tr>
+      <tr><td>CreateProjectFromNeed avec seulement des pos. candidats</td><td>I10</td><td>409, demander conversion</td></tr>
+      <tr><td>Contact → CreatePositioning</td><td>I14</td><td>Opération absente</td></tr>
+      <tr><td>Candidat → CreateContact</td><td>I15</td><td>Opération absente</td></tr>
+    </tbody>
+  </table>
+</article>
+
+<article class="spec-sec" id="s15">
+  <h2>15. Vues calculées</h2>
+  <table>
+    <thead><tr><th>Vue</th><th>Sources</th><th>Formule (V1)</th><th>Quand</th></tr></thead>
+    <tbody>
+      <tr><td>Planning / charge</td><td>Prestation, Absence, Positionnement (dates)</td><td>Superposition ressource × jour. Pas une table.</td><td>Temps réel à la lecture</td></tr>
+      <tr><td>Occupation / TACI</td><td>Temps, capacité ressource, absences</td><td>temps facturable / temps disponible — libellé Boond à retraduire</td><td>Temps réel ; cache quotidien OK</td></tr>
+      <tr><td>CA besoin pondéré</td><td>Besoin.budget, Besoin.ponderation</td><td>budget × pondération (déjà calculé en fiche)</td><td>À l’écriture du besoin, champ dérivé stockable SI on fige la formule — sinon calcul. <span class="tag warn">À VALIDER MÉTIER</span> : stocker le résultat pour l’historique si la pondération change.</td></tr>
+      <tr><td>CA projet</td><td>Prestations (tarif × charge ou Σ temps × tarif)</td><td><span class="tag warn">À VALIDER MÉTIER</span> : CA signé (prestation) vs CA réel (temps)</td><td>Lecture</td></tr>
+      <tr><td>Coût projet</td><td>Prestations (coût ressource × temps) + Achats</td><td>somme</td><td>Lecture</td></tr>
+      <tr><td>Marge / renta</td><td>CA − coût</td><td>(CA − coût) / CA si CA &gt; 0</td><td>Lecture. Figée à la clôture projet ? <span class="tag warn">À VALIDER MÉTIER</span></td></tr>
+      <tr><td>Dashboard / pipeline / reporting</td><td>Comptes d’objets + vues ci-dessus</td><td>Agrégats. Ne crée rien.</td><td>Temps réel ou cache court</td></tr>
+      <tr><td>Delta achat</td><td>Achat.total − Σ paiements engagés</td><td>Preuve écran 41 : pas un champ saisi</td><td>Lecture</td></tr>
+    </tbody>
+  </table>
+  <p class="lead">Interdit : table Marge, table Planning, table Occupation comme source de vérité.</p>
+</article>
+
+<article class="spec-sec" id="s16">
+  <h2>16. Questions métier restantes</h2>
+  <ol class="qlist">
+    <li>Un Besoin peut-il créer plusieurs Projets ? (Boond : onglet Projets au pluriel. Ava : 1–1 plus simple ?)</li>
+    <li>Un Positionnement retenu doit-il générer automatiquement un Projet ? (Boond : non, bouton Créer un projet.)</li>
+    <li>Une Ressource peut-elle avoir plusieurs Prestations simultanées ? (Liste 232 lignes : oui côté Boond. Plafond Ava ?)</li>
+    <li>Une Prestation peut-elle changer de Ressource ? (Recommandation V1 : non, nouvelle ligne.)</li>
+    <li>Ressource interne vs externe : champ type, ou deux sous-types ? L’externe est-elle liée à une Société fournisseur ?</li>
+    <li>Conversion Candidat → Ressource : que copie-t-on (identité, DT, salaire souhaité) ? Le candidat reste-t-il lisible ?</li>
+    <li>Candidat et Ressource partagent-ils une identité Personne ? (Propre pour l’historique, coûteux en V1. Boond = deux objets.)</li>
+    <li>Qui porte le TJM vendu : Positionnement, Prestation, Profil type ? (Vu : tarif sur ligne de matching ET sur prestation, souvent 0 au début.)</li>
+    <li>Qui porte le coût ressource : fiche Ressource (TJM coût) vs ligne Prestation ?</li>
+    <li>Quand la marge se fige : à la clôture prestation, clôture projet, jamais (toujours recalculée) ?</li>
+    <li>P1/P2/P3 sont-ils des états ou une priorité ? (Boond : colonnes Kanban = états.)</li>
+    <li>CreateNeed standalone part du Contact : le Contact est-il obligatoire pour tout besoin, y compris créé depuis Société ?</li>
+    <li>Le Projet créé depuis un Candidat (menu + existe) est-il un trou Boond à fermer pour Ava ?</li>
+  </ol>
+</article>
+
+<article class="spec-sec" id="s17">
+  <h2>17. Périmètre V1</h2>
+  <div class="grid">
+    <div>
+      <h3>Noyau V1</h3>
+      <ul>
+        <li>Société, Contact, Action (3 types)</li>
+        <li>Candidat, Ressource (sans fusionner les tables)</li>
+        <li>Besoin, Positionnement</li>
+        <li>Projet, Prestation</li>
+        <li>Opérations de la section 6 hors temps / achat</li>
+        <li>ConvertCandidateToResource</li>
+        <li>Un rôle + un périmètre</li>
+        <li>Référentiels figés (états courts ci-dessus)</li>
+      </ul>
+    </div>
+    <div>
+      <h3>V1.5 / V2 — seulement si le métier Ava le demande</h3>
+      <ul>
+        <li>Temps, absences, planning</li>
+        <li>Achats, paiements, facture fournisseur</li>
+        <li>Facture client, dashboards riches</li>
+        <li>Portail collaborateur, Kanban, Ctrl+K</li>
+        <li>Apps, paie, HRFlow, notifications, automatisations</li>
+        <li>Profils types, produits, lots/jalons, formulaires, flags</li>
+      </ul>
+    </div>
+  </div>
+  <p>Règle : pas parce que Boond l’a. Parce qu’Avaliance staffe et produit.</p>
+</article>
+
+<article class="spec-sec" id="s18">
+  <h2>18. Risques de modélisation</h2>
+  <table>
+    <thead><tr><th>Risque</th><th>Si on le commet</th><th>Parade</th></tr></thead>
+    <tbody>
+      <tr><td>Une table Personne trop tôt, ou fusion Candidat/Ressource</td><td>Les temps n’ont plus de sens ; I4 meurt</td><td>Deux tables V1 ; conversion explicite</td></tr>
+      <tr><td>Table Fournisseur</td><td>Double vérité C1/C5</td><td>I8</td></tr>
+      <tr><td>Table Planning / Marge</td><td>Écart avec les prestations</td><td>Vues</td></tr>
+      <tr><td>CRUD status à la place des opérations</td><td>On peut mettre retenu sur besoin clos</td><td>Commandes nomméés + I17</td></tr>
+      <tr><td>Listes avant les Créer</td><td>Clone visuel qui n’enchaîne pas</td><td>Chaque lot V1 livre une opération</td></tr>
+      <tr><td>14 étapes candidat recopées</td><td>Admin avant le métier</td><td>Cycle court, référentiel plus tard</td></tr>
+      <tr><td>Prestation comme fiche autonome</td><td>Boond n’en a pas ; le clic va à la ressource</td><td>Ligne de projet / ressource</td></tr>
+      <tr><td>Temps.projet_id « pour simplifier »</td><td>On facture sans savoir qui</td><td>I5</td></tr>
+    </tbody>
+  </table>
+</article>
+
   </section>
 
   <section class="view" id="view-audit" hidden>
@@ -1470,8 +1996,81 @@ function renderSim(){
   document.getElementById("sim-panel").innerHTML = panelHTML(simScreen);
 }
 
+
+const VALID_SCEN = [
+  { id: "happy", label: "Chemin complet C1→C4", chemin: "C4", screen: "prestations-liste",
+    log: "Société → Contact → Besoin → Candidat → Positionnement → Conversion ressource → Projet → Prestation → Temps. CA / coût / marge = vues." },
+  { id: "staff", label: "Staff déjà ressource", chemin: "C3", screen: "besoin-fiche",
+    log: "Besoin → PositionResourceOnNeed → Projet. Pas de conversion." },
+  { id: "crm", label: "CRM seul", chemin: "C1", screen: "contact-fiche",
+    log: "Société → Contact → Action. Sans besoin, c’est un carnet — autorisé, incomplet pour le staffing." }
+];
+const INVALID_SCEN = [
+  { id: "svc-cand", label: "Prestation + candidat", chemin: "C2", screen: "candidat-fiche",
+    err: "409 CANDIDATE_CANNOT_SERVE (I4). ConvertCandidateToResource d’abord." },
+  { id: "pos-need", label: "Positionnement sans besoin", chemin: "C3", screen: "positionnements-liste",
+    err: "400 POSITIONING_NEEDS_NEED (I1). Pas de + sur cette liste." },
+  { id: "svc-res", label: "Prestation sans ressource", chemin: "C4", screen: "projet-fiche",
+    err: "400 SERVICE_NEEDS_RESOURCE_AND_PROJECT (I3)." },
+  { id: "time-prj", label: "Temps sur le projet", chemin: "C4", screen: "projet-fiche",
+    err: "400 TIME_NEEDS_SERVICE (I5). Le temps s’accroche à la Prestation." },
+  { id: "del-res", label: "Delete ressource historique", chemin: "C4", screen: "ressource-fiche",
+    err: "409 RESOURCE_HAS_HISTORY (I11). ArchiveResource seulement." },
+  { id: "ret-closed", label: "Retenu / besoin fermé", chemin: "C3", screen: "positionnement-fiche",
+    err: "Refus I17. AdvancePositioning → retenu interdit si besoin clos/perdu." },
+  { id: "prj-cand", label: "Projet depuis pos. candidat", chemin: "C3", screen: "besoin-fiche",
+    err: "409 CANDIDATE_POSITIONING_EXCLUDED (I10). Texte Boond lu sur le modal." },
+  { id: "ctc-pos", label: "Contact crée un positionnement", chemin: "C1", screen: "contact-fiche",
+    err: "Opération absente (I14). Menu + = Action, Besoin, Achat." }
+];
+
+function showVerdict(ok, title, body){
+  const el = document.getElementById("sim-verdict");
+  el.hidden = false;
+  el.className = "verdict " + (ok ? "ok" : "ko");
+  el.innerHTML = "<strong>" + (ok ? "Autorisé — " : "Refus métier — ") + title + "</strong>" + body;
+}
+
+function renderScenarios(){
+  const ok = document.getElementById("scen-ok");
+  const ko = document.getElementById("scen-ko");
+  if (!ok) return;
+  ok.innerHTML = VALID_SCEN.map(s => `<button type="button" data-scen-ok="${s.id}">${s.label}</button>`).join("");
+  ko.innerHTML = INVALID_SCEN.map(s => `<button type="button" data-scen-ko="${s.id}">${s.label}</button>`).join("");
+}
+
+function bindSpecToc(){
+  const toc = document.getElementById("spec-toc");
+  if (!toc) return;
+  toc.innerHTML = [...document.querySelectorAll("#view-spec .spec-sec")].map(s => {
+    const h = s.querySelector("h2");
+    const label = h ? h.textContent.replace(/^\d+\.\s*/, "") : s.id;
+    return `<button type="button" data-spec-jump="${s.id}">${label}</button>`;
+  }).join("");
+  toc.onclick = (e) => {
+    const b = e.target.closest("[data-spec-jump]");
+    if (!b) return;
+    const el = document.getElementById(b.dataset.specJump);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+}
+
 function bindSim(){
   document.getElementById("view-simulateur").addEventListener("click", e => {
+    const okb = e.target.closest("[data-scen-ok]");
+    if (okb) {
+      const s = VALID_SCEN.find(x => x.id === okb.dataset.scenOk);
+      simChemin = s.chemin; simScreen = s.screen; renderSim();
+      showVerdict(true, s.label, s.log);
+      return;
+    }
+    const kob = e.target.closest("[data-scen-ko]");
+    if (kob) {
+      const s = INVALID_SCEN.find(x => x.id === kob.dataset.scenKo);
+      simChemin = s.chemin; simScreen = s.screen; renderSim();
+      showVerdict(false, s.label, s.err);
+      return;
+    }
     const c = e.target.closest("[data-c]");
     if (c) { simChemin = c.dataset.c; simScreen = CHEMIN_META[simChemin].first; renderSim(); return; }
     const go = e.target.closest("[data-go]");
@@ -1480,12 +2079,13 @@ function bindSim(){
 }
 
 function showView(name){
-  ["metier","simulateur","audit"].forEach(v => {
+  ["metier","simulateur","spec","audit"].forEach(v => {
     document.getElementById("view-"+v).hidden = v !== name;
     document.querySelector('#hub [data-view="'+v+'"]').setAttribute("aria-pressed", v===name ? "true" : "false");
   });
   if (name === "metier" && typeof draw === "function") draw();
-  if (name === "simulateur") renderSim();
+  if (name === "simulateur") { renderScenarios(); renderSim(); }
+  if (name === "spec") bindSpecToc();
   location.hash = name;
 }
 document.getElementById("hub").addEventListener("click", e => {
@@ -1494,7 +2094,7 @@ document.getElementById("hub").addEventListener("click", e => {
 });
 bindSim();
 const start = (location.hash || "#metier").slice(1);
-showView(["metier","simulateur","audit"].includes(start) ? start : "metier");
+showView(["metier","simulateur","spec","audit"].includes(start) ? start : "metier");
 </script>
 </body>
 </html>
