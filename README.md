@@ -2,7 +2,7 @@
 
 Page unique Ava / Boond : Métier, Simulateur, Contrats, 15 parcours, Qui décide, Décisions.
 
-Ouvrir (cache-buster cohérence auditeur) :
+Ouvrir (cache-buster parcours pédagogique) :
 
-https://ahmedbentaleb.github.io/ava-boond-hub/?v=coh#ava-decisions
+https://ahmedbentaleb.github.io/ava-boond-hub/?v=fil#ava-guide
 
