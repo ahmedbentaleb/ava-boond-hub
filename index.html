@@ -4,18 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Audit Ava Manager — Boond interactif</title>
-  <meta name="description" content="Audit interactif Ava Manager : schéma métier, simulateur, spécification, questions, 59 écrans.">
+  <meta name="description" content="Cadrage Ava Manager et reverse Boond : architecture, décisions, règles, simulateurs, 59 écrans.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ahmedbentaleb.github.io/ava-boond-hub/">
   <meta property="og:title" content="Audit Ava Manager — Boond interactif">
-  <meta property="og:description" content="Schéma métier, simulateur, spécification, questions à trancher, 59 écrans.">
+  <meta property="og:description" content="Ava Manager (cadrage, règles, simulateurs) et Boond Manager (métier, spec, audit).">
   <meta property="og:image" content="https://ahmedbentaleb.github.io/ava-boond-hub/og.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Audit Ava Manager — Boond interactif">
-  <meta name="twitter:description" content="Schéma métier, simulateur, spécification, questions.">
+  <meta name="twitter:description" content="Cadrage Ava + reverse Boond.">
   <meta name="twitter:image" content="https://ahmedbentaleb.github.io/ava-boond-hub/og.jpg">
   <style>
     :root {
@@ -205,21 +205,104 @@
     .verdict.ko { border-color: #c45c5c; }
     .verdict strong { display: block; margin-bottom: 4px; }
     .scen { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px; }
+
+    .hub-wrap {
+      position: sticky; top: 0; z-index: 8;
+      background: var(--bg); border-bottom: 1px solid var(--line);
+      margin: 0 0 12px; padding: 10px 0 12px;
+    }
+    .hub-product { display: flex; gap: 8px; margin-bottom: 8px; }
+    .hub-product button {
+      border: 1px solid var(--line); background: transparent; color: var(--text);
+      padding: 8px 16px; border-radius: 6px; cursor: pointer; font: inherit; font-weight: 600;
+    }
+    .hub-product button[aria-pressed="true"] { background: #2a2a2a; border-color: #666; }
+    .hub-sub { display: flex; flex-wrap: wrap; gap: 6px; }
+    .hub-sub button {
+      border: 1px solid var(--line); background: transparent; color: var(--muted);
+      padding: 5px 12px; border-radius: 999px; cursor: pointer; font: inherit; font-size: 13px;
+    }
+    .hub-sub button[aria-pressed="true"] { background: #2a2a2a; color: var(--text); border-color: #666; }
+    .arch-stack { display: grid; gap: 8px; margin: 16px 0 24px; }
+    .arch-box {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+      padding: 12px 14px; text-align: center;
+    }
+    .arch-box strong { display: block; color: var(--text); }
+    .arch-box span { color: var(--muted); font-size: 13px; }
+    .arch-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .arch-mods { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    @media (max-width: 800px) {
+      .arch-row, .arch-mods { grid-template-columns: 1fr 1fr; }
+    }
+    .mod { background: #141414; border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; font-size: 13px; }
+    .mod.core { border-color: var(--c3); }
+    .mod.future { color: var(--muted); }
+    .fusion {
+      display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 10px; align-items: stretch;
+      margin: 16px 0;
+    }
+    @media (max-width: 800px) { .fusion { grid-template-columns: 1fr; } }
+    .fusion .plus { display: flex; align-items: center; justify-content: center; color: var(--muted); }
+    .open-box { border-color: var(--c4); }
+    .tl { list-style: none; padding: 0; margin: 0 0 20px; }
+    .tl li {
+      display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: start;
+      padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px;
+    }
+    .tl b { color: var(--muted); }
+    .code-cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 720px) { .code-cmp { grid-template-columns: 1fr; } }
+    pre.ava-code {
+      background: #141414; border: 1px solid var(--line); border-radius: 8px;
+      padding: 12px 14px; overflow: auto; font: 12px/1.5 ui-monospace, Consolas, monospace;
+      color: var(--text); white-space: pre-wrap;
+    }
+    pre.ava-code.bad { border-color: #c45c5c; }
+    pre.ava-code.good { border-color: var(--c3); }
+    .dec-card, .rule-card {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+      padding: 16px; margin: 0 0 12px;
+    }
+    .dec-card.warn, .rule-card.warn { border-color: var(--c4); }
+    .layers { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .layers span {
+      font-size: 11px; border: 1px solid var(--line); border-radius: 4px;
+      padding: 1px 6px; color: var(--muted);
+    }
+    .sim-form label { display: block; font-size: 13px; color: var(--muted); margin: 10px 0 4px; }
+    .sim-form select, .sim-form input {
+      width: 100%; background: #141414; color: var(--text); border: 1px solid var(--line);
+      border-radius: 6px; padding: 8px 10px; font: inherit;
+    }
+    .flow-steps { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
+    .flow-step {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+      padding: 10px 12px; font-size: 14px;
+    }
+    .flow-step.ok { border-color: var(--c3); }
+    .flow-step.ko { border-color: #c45c5c; }
+    .flow-step.warn { border-color: var(--c4); }
+    .acc { width: 100%; text-align: left; }
 </style>
 </head>
 <body>
 <main>
-  <h1>Ava Manager — Boond</h1>
-  <p class="lead">Schéma métier · simulateur · spécification · questions · audit 59 écrans.</p>
-  <nav class="hub" id="hub">
-    <button type="button" data-view="metier" aria-pressed="true">Métier</button>
-    <button type="button" data-view="simulateur" aria-pressed="false">Simulateur</button>
-    <button type="button" data-view="spec" aria-pressed="false">Spécification</button>
-    <button type="button" data-view="questions" aria-pressed="false">Questions</button>
-    <button type="button" data-view="audit" aria-pressed="false">Audit complet</button>
-  </nav>
+  <h1>Ava Manager</h1>
+  <p class="lead">Deux lectures du même métier : le cadrage du futur Ava, et le reverse de Boond. Ni clone d’écrans, ni cahier 2022 recopié.</p>
+  <div class="hub-wrap" id="hub">
+    <div class="hub-product" id="hub-product"></div>
+    <div class="hub-sub" id="hub-sub"></div>
+  </div>
 
-  <section class="view" id="view-metier">
+  <section class="view" id="view-ava-cadrage" hidden></section>
+  <section class="view" id="view-ava-decisions" hidden></section>
+  <section class="view" id="view-ava-rules" hidden></section>
+  <section class="view" id="view-ava-sim-rules" hidden></section>
+  <section class="view" id="view-ava-sim-global" hidden></section>
+  <section class="view" id="view-ava-commands" hidden></section>
+
+  <section class="view" id="view-metier" hidden>
     <h2>Les cinq chemins</h2>
   <div class="pills" id="pills"></div>
   <p id="caption"></p>
@@ -2302,23 +2385,829 @@ function bindSim(){
 }
 
 function showView(name){
-  ["metier","simulateur","spec","questions","audit"].forEach(v => {
-    document.getElementById("view-"+v).hidden = v !== name;
-    document.querySelector('#hub [data-view="'+v+'"]').setAttribute("aria-pressed", v===name ? "true" : "false");
-  });
-  if (name === "metier" && typeof draw === "function") draw();
-  if (name === "simulateur") { renderScenarios(); renderSim(); }
-  if (name === "spec") bindSpecToc();
-  if (name === "questions") { bindQuestions(); renderQuestions(); }
-  location.hash = name;
+  if (window.showHubView) window.showHubView(name);
 }
-document.getElementById("hub").addEventListener("click", e => {
-  const b = e.target.closest("[data-view]");
-  if (b) showView(b.dataset.view);
-});
-bindSim();
-const start = (location.hash || "#metier").slice(1);
-showView(["metier","simulateur","spec","questions","audit"].includes(start) ? start : "metier");
+</script>
+<script>
+(function () {
+  const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+  const tag = (status) =>
+    status === "valide"
+      ? '<span class="tag ok">VALIDÉ</span>'
+      : '<span class="tag warn">À VALIDER</span>';
+
+  const PRODUCTS = {
+    ava: {
+      label: "Ava Manager",
+      views: [
+        { id: "ava-cadrage", label: "Cadrage" },
+        { id: "ava-decisions", label: "Décisions" },
+        { id: "ava-rules", label: "Règles" },
+        { id: "ava-sim-rules", label: "Sim. règles" },
+        { id: "ava-sim-global", label: "Sim. global" },
+        { id: "ava-commands", label: "Commandes" }
+      ]
+    },
+    boond: {
+      label: "Boond Manager",
+      views: [
+        { id: "metier", label: "Métier" },
+        { id: "simulateur", label: "Simulateur" },
+        { id: "spec", label: "Spécification" },
+        { id: "questions", label: "Questions" },
+        { id: "audit", label: "Audit complet" }
+      ]
+    }
+  };
+
+  const ALL_VIEWS = PRODUCTS.ava.views.concat(PRODUCTS.boond.views).map((v) => v.id);
+
+  const DECISIONS = [
+    {
+      id: "D1", status: "valide", sujet: "Personne / Candidat / Ressource",
+      decision: "Une Personne centrale, puis CandidatProfile et RessourceProfile. ConvertCandidateToResource() active le profil ressource sans copier l’identité.",
+      raison: "Le CdC copie des champs à la conversion (US2 2024). Ça duplique nom, email, DT. Boond sépare déjà les fiches.",
+      impact: "Pas de table Candidate copiée vers Resource. Historique recrutement conservé. I4 intact."
+    },
+    {
+      id: "D2", status: "valide", sujet: "Candidat ≠ Ressource",
+      decision: "Un candidat ne porte jamais une Prestation. Chemin : Candidat → conversion → Ressource → Prestation.",
+      raison: "Démontré par les onglets Boond. CdC : ressource = personne sous contrat, affectable aux projets.",
+      impact: "Pas de FK candidat sur Prestation. 409 CANDIDATE_CANNOT_SERVE."
+    },
+    {
+      id: "D3", status: "valide", sujet: "Positionnement",
+      decision: "Objet métier, pas une jointure. 1 Besoin + exactement 1 humain (Candidat XOR Ressource).",
+      raison: "CdC : onglet positionnements, événements (CV, entretien, qualification). Boond : seul pont humain × demande.",
+      impact: "CHECK XOR. Pas de CreatePositioning depuis la liste."
+    },
+    {
+      id: "D4", status: "ouvert", sujet: "Besoin → Contact",
+      decision: "Provisoire CdC 2022 : Société + Contact + nœud d’organisation obligatoires. Ahmed 2026 : Société obligatoire, Contact facultatif (reco UX).",
+      raison: "Le CdC dit qu’un besoin ne se sauvegarde pas sans contact rattaché à un nœud. Le métier 2026 connaît des besoins sans interlocuteur formel.",
+      impact: "Ne pas figer NOT NULL contact_id avant reconfirmation 2026. Société NOT NULL dès V1. RULE-013 = warning, pas erreur."
+    },
+    {
+      id: "D5", status: "ouvert", sujet: "Structure client",
+      decision: "Proposition : OrganizationUnit (company_id, parent_id, type POLE | BUSINESS_UNIT | SERVICE | AUTRE) plutôt que 3 tables figées.",
+      raison: "CdC : Société → Pôle → BU → Service, profondeur variable (service attachable à BU, pôle ou client).",
+      impact: "Un Contact peut pointer unit_id. Pas de migration à chaque nouveau niveau."
+    },
+    {
+      id: "D6", status: "valide", sujet: "Projet",
+      decision: "Pas de resource_id structurel sur Projet. Les ressources se dérivent des Prestations.",
+      raison: "Un projet a N personnes. Une FK unique mentirait.",
+      impact: "Vue project.resources = SELECT DISTINCT prestation.resource_id."
+    },
+    {
+      id: "D7", status: "ouvert", sujet: "Besoin gagné → Projet",
+      decision: "UX possible : à « gagné / pourvu », proposer le projet. Technique : WinNeed() puis CreateProjectFromNeed(). Pas de trigger SQL magique. Ahmed : pas d’insert automatique silencieux. CdC US6 2024 : projet créé automatiquement.",
+      raison: "Commande testable, journalisable, permissionnée. Trigger status = dette.",
+      impact: "Statut ≠ commande. Confirmation utilisateur encore à trancher."
+    },
+    {
+      id: "D8", status: "valide", sujet: "Prestation",
+      decision: "Réalité opérationnelle et économique : Projet + Ressource, dates, occupation, TJM vendu, coût, jours, devise, conditions.",
+      raison: "Sans Prestation le Projet est un titre (preuve Boond). CdC finance sur le projet = en pratique ces lignes.",
+      impact: "2 FK NOT NULL. resource_id immuable."
+    },
+    {
+      id: "D9", status: "valide", sujet: "TJM / coût",
+      decision: "Ressource = coût de référence. Positionnement = TJM proposé. Prestation = TJM vendu + coût retenu pour la marge réelle.",
+      raison: "Une même ressource a des tarifs différents selon les clients.",
+      impact: "Ne jamais lire le coût actuel de la ressource pour un historique clos."
+    },
+    {
+      id: "D10", status: "valide", sujet: "Plusieurs Prestations",
+      decision: "N simultanées. Contrainte = charge cumulée. >100 % = alerte, pas refus DB en V1.",
+      raison: "CdC : ressource affectée à un ou plusieurs projets. Exemple 60/40.",
+      impact: "Pas d’UNIQUE ressource active. Warning OccupancyOver100."
+    },
+    {
+      id: "D11", status: "valide", sujet: "Changement de Ressource",
+      decision: "Interdit d’UPDATE resource_id. Clôturer + créer.",
+      raison: "Protège temps, TJM, coûts, marge, reporting.",
+      impact: "409 SERVICE_RESOURCE_FROZEN."
+    },
+    {
+      id: "D12", status: "valide", sujet: "Interne / externe",
+      decision: "Un RessourceProfile. resource_type INTERNAL | EXTERNAL. Externe : supplier_company_id vers Société fournisseur.",
+      raison: "Un seul moteur de staffing. CdC ne sépare pas deux entités.",
+      impact: "Pas de tables InternalResource / ExternalResource."
+    },
+    {
+      id: "D13", status: "valide", sujet: "Marge",
+      decision: "marge_courante calculée tant que actif. marge_cloture snapshot à ClosePrestation / CloseProject.",
+      raison: "Un changement ultérieur du coût de référence ne réécrit pas l’histoire.",
+      impact: "Interdit UPDATE marge_cloture. Pas de table Marge source."
+    },
+    {
+      id: "D14", status: "valide", sujet: "Priorité ≠ statut",
+      decision: "priority = P1|P2|P3. status = cycle (ouvert / staffing / pourvu / suspendu / fermé). CdC parlait d’étape « Gagnée » : c’est un status, pas une priorité.",
+      raison: "Boond mélange P1–P3 dans le Kanban d’états. Ava sépare urgence et cycle.",
+      impact: "Kanban par status, badge de priorité."
+    },
+    {
+      id: "D15", status: "valide", sujet: "Action",
+      decision: "Un objet transversal. Un porteur : Société | Contact | Candidat | Ressource | Besoin | Projet.",
+      raison: "Boond : + Action depuis les fiches, jamais depuis la liste. Évite CandidateAction / ProjectAction.",
+      impact: "porteur_type + porteur_id. Types par référentiel."
+    },
+    {
+      id: "D16", status: "valide", sujet: "Planning",
+      decision: "Vue calculée : Prestations + Absences + Positionnements + Temps. Pas une table Planning vérité.",
+      raison: "Deuxième vérité = écart immédiat avec la production.",
+      impact: "Module Planning lit le Core, n’écrit pas une copie des ressources."
+    },
+    {
+      id: "D17", status: "valide", sujet: "Droits et rôles",
+      decision: "USER ↔ GROUP ↔ PERMISSION (module, action, périmètre, lecture / contribution / admin). Union des groupes. Pas if user.role == admin.",
+      raison: "CdC : groupes, rôles, processus par périmètre. Boond : compte = ressource + rôle + périmètre.",
+      impact: "Permissions backend même si l’UI cache le bouton (RULE-018)."
+    },
+    {
+      id: "D18", status: "valide", sujet: "Historique métier",
+      decision: "Journal d’événements métier distinct des logs techniques : statuts, TJM, dates, positionnement, conversion, projet, prestation, coût.",
+      raison: "CdC : onglet Historique sur chaque fiche. Auditabilité 6 mois plus tard.",
+      impact: "Chaque commande nommée écrit un event. Soft delete / archive sur l’historique."
+    }
+  ];
+
+  const RULES = [
+    { id: "RULE-001", entity: "Positioning", title: "Un Positionnement appartient à un Besoin",
+      explain: "Un matching sans demande n’est pas un matching.",
+      example: "CreatePositioning sans needId → refus.",
+      status: "valide", severity: "error", layers: ["database", "service", "api", "ui"],
+      ops: ["PositionCandidateOnNeed", "PositionResourceOnNeed"],
+      validate: (ctx) => ctx.needId ? null : "needId manquant." },
+    { id: "RULE-002", entity: "Positioning", title: "Soit un Candidat, soit une Ressource",
+      explain: "Exactement un humain.",
+      example: "Positionnement orphelin → refus.",
+      status: "valide", severity: "error", layers: ["database", "service", "api"],
+      ops: ["PositionCandidateOnNeed", "PositionResourceOnNeed"],
+      validate: (ctx) => (ctx.candidateId || ctx.resourceId) ? null : "Aucun humain." },
+    { id: "RULE-003", entity: "Positioning", title: "Jamais les deux simultanément",
+      explain: "candidate_id XOR resource_id.",
+      example: "Les deux IDs remplis → refus.",
+      status: "valide", severity: "error", layers: ["database", "service", "api"],
+      ops: ["PositionCandidateOnNeed", "PositionResourceOnNeed"],
+      validate: (ctx) => (ctx.candidateId && ctx.resourceId) ? "Candidat et Ressource ensemble." : null },
+    { id: "RULE-004", entity: "Prestation", title: "Prestation → Projet obligatoire",
+      explain: "Qui facture, quelle mission.",
+      example: "CreatePrestation sans projet → refus.",
+      status: "valide", severity: "error", layers: ["database", "service", "api", "ui"],
+      ops: ["CreatePrestation", "CreateProjectFromNeed"],
+      validate: (ctx) => ctx.projectId ? null : "projectId manquant." },
+    { id: "RULE-005", entity: "Prestation", title: "Prestation → Ressource obligatoire",
+      explain: "Qui travaille.",
+      example: "Prestation sans ressource → refus.",
+      status: "valide", severity: "error", layers: ["database", "service", "api", "ui"],
+      ops: ["CreatePrestation"],
+      validate: (ctx) => {
+        if (ctx.profile === "candidate") return null;
+        return (ctx.resourceId || ctx.profile === "resource") ? null : "resourceId manquant.";
+      } },
+    { id: "RULE-006", entity: "Prestation", title: "Un Candidat ne porte pas de Prestation",
+      explain: "Convertir d’abord.",
+      example: "CreatePrestation(Candidat Dupont) → refus. ConvertCandidateToResource() puis CreatePrestation().",
+      status: "valide", severity: "error", layers: ["service", "api", "ui"],
+      ops: ["CreatePrestation"],
+      validate: (ctx) => ctx.profile === "candidate" ? "Candidat sélectionné." : null },
+    { id: "RULE-007", entity: "Ressource", title: "N Prestations simultanées, alerte si charge > 100 %",
+      explain: "La contrainte est la charge, pas le nombre.",
+      example: "60+40+30 = 130 % → autorisé avec alerte.",
+      status: "valide", severity: "warning", layers: ["service", "api", "ui"],
+      ops: ["CreatePrestation"],
+      validate: (ctx) => {
+        if (ctx.profile === "candidate") return null;
+        const total = (ctx.currentLoad || 0) + (Number(ctx.load) || 0);
+        return total > 100 ? "Charge cumulée " + total + " %." : null;
+      } },
+    { id: "RULE-008", entity: "Prestation", title: "Changer de Ressource = clôturer + créer",
+      explain: "resource_id immuable.",
+      example: "PATCH resource_id A→B → refus.",
+      status: "valide", severity: "error", layers: ["database", "service", "api", "ui"],
+      ops: ["ChangePrestationResource"],
+      validate: (ctx) => ctx.mutateResourceId ? "UPDATE resource_id interdit." : null },
+    { id: "RULE-009", entity: "Projet", title: "Un Projet peut avoir N Prestations",
+      explain: "Pas de limite à 1 ressource.",
+      example: "Projet A : 3 prestations → autorisé.",
+      status: "valide", severity: "info", layers: ["service"],
+      ops: ["CreatePrestation"],
+      validate: () => null },
+    { id: "RULE-010", entity: "Projet", title: "Ressources du Projet dérivées des Prestations",
+      explain: "Pas de resource_id sur Projet.",
+      example: "Lire project.resources depuis les lignes.",
+      status: "valide", severity: "info", layers: ["service"],
+      ops: ["CreatePrestation"],
+      validate: () => null },
+    { id: "RULE-011", entity: "Contact", title: "Un Contact appartient à une Société",
+      explain: "Pas de contact orphelin.",
+      example: "CreateContact sans société → refus.",
+      status: "valide", severity: "error", layers: ["database", "service", "api", "ui"],
+      ops: ["CreateContact"],
+      validate: (ctx) => ctx.companyId ? null : "companyId manquant." },
+    { id: "RULE-012", entity: "Besoin", title: "Un Besoin appartient à une Société",
+      explain: "Pas de mission dans le vide.",
+      example: "CreateNeed sans société → refus.",
+      status: "valide", severity: "error", layers: ["database", "service", "api", "ui"],
+      ops: ["CreateNeed"],
+      validate: (ctx) => ctx.companyId ? null : "companyId manquant." },
+    { id: "RULE-013", entity: "Besoin", title: "Contact sur le Besoin — CdC 2022 vs métier 2026",
+      explain: "CdC : pas de sauvegarde sans contact rattaché à un nœud. Ahmed : Contact facultatif, recommandé en UX.",
+      example: "CreateNeed(Société seule) → warning, pas 400, tant que D4 n’est pas recalé.",
+      status: "ouvert", severity: "warning", layers: ["service", "ui"],
+      ops: ["CreateNeed"],
+      validate: (ctx) => ctx.contactId ? null : "Pas de contact. CdC 2022 l’exigeait. Décision 2026 à reconfirmer." },
+    { id: "RULE-014", entity: "Prestation", title: "L’économie historique ne suit pas la Ressource actuelle",
+      explain: "TJM vendu et coût retenus sur la Prestation. Snapshot à la clôture.",
+      example: "Changer le coût de référence d’Ahmed ne recalcule pas le projet clos 2025.",
+      status: "valide", severity: "error", layers: ["service"],
+      ops: ["ClosePrestation", "CloseProject"],
+      validate: (ctx) => ctx.rewriteClosedMargin ? "Réécriture de marge_cloture interdite." : null },
+    { id: "RULE-015", entity: "Archive", title: "Pas de delete physique des objets historiques",
+      explain: "Archive / soft delete.",
+      example: "DELETE ressource avec temps → 409.",
+      status: "valide", severity: "error", layers: ["service", "api", "ui"],
+      ops: ["ArchiveResource", "CloseProject"],
+      validate: (ctx) => ctx.hardDelete ? "Delete physique interdit." : null },
+    { id: "RULE-016", entity: "Audit", title: "Les faits importants sont historisés",
+      explain: "Journal métier ≠ logs techniques.",
+      example: "ConvertCandidateToResource sans event → dette.",
+      status: "valide", severity: "info", layers: ["service"],
+      ops: ["ConvertCandidateToResource", "WinNeed", "CreateProjectFromNeed", "CreatePrestation", "ClosePrestation"],
+      validate: () => null },
+    { id: "RULE-017", entity: "Besoin", title: "Priorité et statut sont distincts",
+      explain: "P1 n’est pas un état Kanban.",
+      example: "status=P1 → refus de modèle.",
+      status: "valide", severity: "error", layers: ["database", "service", "api"],
+      ops: ["CreateNeed"],
+      validate: (ctx) => (ctx.status === "P1" || ctx.status === "P2" || ctx.status === "P3") ? "P1–P3 utilisés comme status." : null },
+    { id: "RULE-018", entity: "Auth", title: "Permissions backend obligatoires",
+      explain: "Cacher un bouton ne protège rien.",
+      example: "API CreatePrestation sans permission → 403 même si l’UI l’offre.",
+      status: "valide", severity: "error", layers: ["api", "service"],
+      ops: ["CreateNeed", "CreatePrestation", "ConvertCandidateToResource", "WinNeed", "CreateProjectFromNeed"],
+      validate: (ctx) => ctx.forbidden ? "Permission absente." : null },
+    { id: "RULE-019", entity: "Temps", title: "Le temps s’accroche à une Prestation",
+      explain: "Pas de temps sur Projet ni Candidat.",
+      example: "RecordTimesheet(projet) → refus.",
+      status: "valide", severity: "error", layers: ["database", "service", "api"],
+      ops: ["RecordTimesheet"],
+      validate: (ctx) => ctx.prestationId ? null : "prestationId manquant." },
+    { id: "RULE-020", entity: "Candidat", title: "Pas de Projet créé depuis un Candidat",
+      explain: "Chemin : Positionnement → Ressource → Projet → Prestation.",
+      example: "CreateProject(Candidat) → refus. Wizard possible, zéro insert.",
+      status: "valide", severity: "error", layers: ["service", "api", "ui"],
+      ops: ["CreateProject"],
+      validate: (ctx) => ctx.fromCandidate ? "Projet lié directement au candidat." : null },
+    { id: "RULE-021", entity: "Projet", title: "Clôturer un Projet exige des Prestations closes",
+      explain: "Snapshot de marge par ligne d’abord.",
+      example: "CloseProject avec prestations ouvertes → refus.",
+      status: "valide", severity: "error", layers: ["service", "api"],
+      ops: ["CloseProject"],
+      validate: (ctx) => ctx.openServices ? "Prestations encore ouvertes." : null }
+  ];
+
+  const COMMANDS = [
+    ["CreateCompany", "Société", "Nom, rôles client/fournisseur"],
+    ["CreateOrganizationUnit", "Société", "type, parent, nom — D5 à valider"],
+    ["CreateContact", "Société", "I6, unit_id optionnel"],
+    ["CreateNeed", "Société", "contact optionnel (D4 ouvert)"],
+    ["PositionCandidateOnNeed", "Besoin ou Candidat", "RULE-001 à 003"],
+    ["PositionResourceOnNeed", "Besoin ou Ressource", "RULE-001 à 003"],
+    ["ConvertCandidateToResource", "CandidatProfile", "Active RessourceProfile, journal"],
+    ["WinNeed", "Besoin", "Passe status ; n’insert pas le projet toute seule"],
+    ["CreateProjectFromNeed", "Besoin", "Ignore les positionnements candidats"],
+    ["CreateProject", "Société", "besoin facultatif, jamais depuis Candidat"],
+    ["CreatePrestation", "Projet + Ressource", "I3 I18 I19, snapshot économique"],
+    ["ClosePrestation", "Prestation", "marge_cloture"],
+    ["RecordTimesheet", "Prestation", "RULE-019"],
+    ["RecordAbsence", "Ressource", "Pas une prestation à 0"],
+    ["CloseProject", "Projet", "Prestations déjà closes"],
+    ["ArchiveResource", "Ressource", "Jamais DELETE si historique"]
+  ];
+
+  function validateOperation(operation, context) {
+    const triggered = [];
+    const errors = [];
+    const warnings = [];
+    RULES.forEach((rule) => {
+      if (rule.ops && rule.ops.length && !rule.ops.includes(operation)) return;
+      const msg = rule.validate(context || {});
+      if (!msg) return;
+      const hit = { id: rule.id, title: rule.title, severity: rule.severity, message: msg, example: rule.example };
+      triggered.push(hit);
+      if (rule.severity === "error") errors.push(hit);
+      else warnings.push(hit);
+    });
+    return { allowed: errors.length === 0, warnings, errors, triggeredRules: triggered };
+  }
+
+  const OPS = [
+    { id: "CreateNeed", label: "Créer Besoin",
+      fields: [
+        { name: "companyId", label: "Société", type: "select", options: [["", "—"], ["alpha", "Société Alpha"], ["none", "Aucune"]] },
+        { name: "contactId", label: "Contact", type: "select", options: [["", "Aucun (facultatif 2026)"], ["c1", "Contact Démo A"]] },
+        { name: "status", label: "Statut saisi", type: "select", options: [["ouvert", "ouvert"], ["P1", "P1 (interdit comme statut)"]] }
+      ],
+      ctx: (f) => ({ companyId: f.companyId === "alpha" ? "alpha" : "", contactId: f.contactId, status: f.status }) },
+    { id: "PositionCandidateOnNeed", label: "Positionner Candidat",
+      fields: [
+        { name: "needId", label: "Besoin", type: "select", options: [["need1", "Besoin Backend"], ["", "Aucun"]] },
+        { name: "candidateId", label: "Candidat", type: "select", options: [["dupont", "Candidat Dupont"], ["", "Aucun"]] },
+        { name: "resourceId", label: "Aussi une ressource ?", type: "select", options: [["", "Non"], ["jean", "Ressource Jean"]] }
+      ],
+      ctx: (f) => ({ needId: f.needId, candidateId: f.candidateId, resourceId: f.resourceId }) },
+    { id: "PositionResourceOnNeed", label: "Positionner Ressource",
+      fields: [
+        { name: "needId", label: "Besoin", type: "select", options: [["need1", "Besoin Backend"], ["", "Aucun"]] },
+        { name: "resourceId", label: "Ressource", type: "select", options: [["jean", "Jean"], ["", "Aucune"]] }
+      ],
+      ctx: (f) => ({ needId: f.needId, resourceId: f.resourceId }) },
+    { id: "ConvertCandidateToResource", label: "Transformer Candidat → Ressource",
+      fields: [{ name: "candidateId", label: "Candidat", type: "select", options: [["dupont", "Dupont"]] }],
+      ctx: (f) => ({ candidateId: f.candidateId }) },
+    { id: "WinNeed", label: "Gagner un Besoin",
+      fields: [{ name: "needId", label: "Besoin", type: "select", options: [["need1", "Besoin Backend"]] }],
+      ctx: (f) => ({ needId: f.needId }) },
+    { id: "CreateProjectFromNeed", label: "Créer Projet depuis Besoin",
+      fields: [
+        { name: "needId", label: "Besoin", type: "select", options: [["need1", "Besoin Backend"]] },
+        { name: "fromCandidate", label: "Partir du candidat ?", type: "select", options: [["no", "Non"], ["yes", "Oui"]] }
+      ],
+      ctx: (f) => ({ needId: f.needId, projectId: "p-new", fromCandidate: f.fromCandidate === "yes" }) },
+    { id: "CreateProject", label: "Créer Projet",
+      fields: [
+        { name: "companyId", label: "Société", type: "select", options: [["alpha", "Alpha"]] },
+        { name: "fromCandidate", label: "Depuis un Candidat ?", type: "select", options: [["no", "Non"], ["yes", "Oui"]] }
+      ],
+      ctx: (f) => ({ companyId: f.companyId, fromCandidate: f.fromCandidate === "yes" }) },
+    { id: "CreatePrestation", label: "Créer Prestation",
+      fields: [
+        { name: "projectId", label: "Projet", type: "select", options: [["pa", "Projet A"], ["", "Aucun"]] },
+        { name: "profile", label: "Profil", type: "select", options: [["resource", "Ressource Jean"], ["candidate", "Candidat Dupont"]] },
+        { name: "load", label: "Charge %", type: "select", options: [["40", "40"], ["30", "30"], ["80", "80"]] }
+      ],
+      ctx: (f) => ({
+        projectId: f.projectId, profile: f.profile,
+        resourceId: f.profile === "resource" ? "jean" : "",
+        load: Number(f.load), currentLoad: 100
+      }) },
+    { id: "ChangePrestationResource", label: "Changer Ressource",
+      fields: [{ name: "mutateResourceId", label: "UPDATE resource_id A → B", type: "select", options: [["yes", "Oui, modifier la ligne"], ["no", "Non, clôturer + créer"]] }],
+      ctx: (f) => ({ mutateResourceId: f.mutateResourceId === "yes" }) },
+    { id: "RecordTimesheet", label: "Déclarer Temps",
+      fields: [{ name: "target", label: "Sur", type: "select", options: [["presta", "Prestation Jean / Projet A"], ["projet", "Le Projet (interdit)"]] }],
+      ctx: (f) => ({ prestationId: f.target === "presta" ? "s1" : "" }) },
+    { id: "ClosePrestation", label: "Clôturer Prestation",
+      fields: [{ name: "rewriteClosedMargin", label: "Recalculer la marge close plus tard ?", type: "select", options: [["no", "Non, snapshot"], ["yes", "Oui, réécrire"]] }],
+      ctx: (f) => ({ rewriteClosedMargin: f.rewriteClosedMargin === "yes" }) },
+    { id: "CloseProject", label: "Clôturer Projet",
+      fields: [{ name: "openServices", label: "Prestations encore ouvertes ?", type: "select", options: [["no", "Non, toutes closes"], ["yes", "Oui"]] }],
+      ctx: (f) => ({ hardDelete: false, rewriteClosedMargin: false, openServices: f.openServices === "yes" }) }
+  ];
+
+  const GLOBAL_SCEN = [
+    { id: "s1", title: "SCÉNARIO 1 — Commercial",
+      steps: [
+        { op: "CreateCompany", ctx: { companyId: "alpha" }, note: "Créer Société Alpha" },
+        { op: "CreateContact", ctx: { companyId: "alpha" }, note: "Créer structure puis Contact" },
+        { op: "CreateNeed", ctx: { companyId: "alpha", contactId: "c1", status: "ouvert" }, note: "Créer et qualifier le Besoin" },
+        { op: "PositionResourceOnNeed", ctx: { needId: "need1", resourceId: "jean" }, note: "Positionnements" },
+        { op: "WinNeed", ctx: { needId: "need1" }, note: "Besoin gagné" },
+        { op: "CreateProjectFromNeed", ctx: { needId: "need1", projectId: "pa" }, note: "Projet via commande, pas un trigger" }
+      ] },
+    { id: "s2", title: "SCÉNARIO 2 — Recrutement",
+      steps: [
+        { op: "PositionCandidateOnNeed", ctx: { needId: "need1", candidateId: "dupont" }, note: "Personne + Candidat + qualification + Positionnement" },
+        { op: "ConvertCandidateToResource", ctx: { candidateId: "dupont" }, note: "Retenu → conversion Ressource. Identité reste sur Personne." }
+      ] },
+    { id: "s3", title: "SCÉNARIO 3 — Staffing",
+      steps: [
+        { op: "CreateNeed", ctx: { companyId: "alpha", contactId: "c1", status: "ouvert" }, note: "Besoin" },
+        { op: "PositionCandidateOnNeed", ctx: { needId: "need1", candidateId: "dupont" }, note: "Recherche + événements / entretien" },
+        { op: "ConvertCandidateToResource", ctx: { candidateId: "dupont" }, note: "Retenu" },
+        { op: "CreateProjectFromNeed", ctx: { needId: "need1", projectId: "pa" }, note: "Projet" },
+        { op: "CreatePrestation", ctx: { projectId: "pa", profile: "resource", resourceId: "jean", load: 60, currentLoad: 0 }, note: "Prestation" }
+      ] },
+    { id: "s4", title: "SCÉNARIO 4 — Production",
+      steps: [
+        { op: "CreatePrestation", ctx: { projectId: "pa", profile: "resource", resourceId: "jean", load: 100, currentLoad: 0 }, note: "Dates, occupation, TJM, CJM" },
+        { op: "RecordTimesheet", ctx: { prestationId: "s1" }, note: "Activité" },
+        { op: "ClosePrestation", ctx: {}, note: "Snapshot marge_cloture" }
+      ] },
+    { id: "s5", title: "SCÉNARIO 5 — Ressource externe",
+      steps: [
+        { op: "CreateCompany", ctx: { companyId: "alpha" }, note: "Société fournisseur" },
+        { op: "PositionResourceOnNeed", ctx: { needId: "need1", resourceId: "ext1" }, note: "Ressource EXTERNAL + supplier_company_id" },
+        { op: "CreatePrestation", ctx: { projectId: "pa", profile: "resource", resourceId: "ext1", load: 100, currentLoad: 0 }, note: "Coût externe sur la Prestation" }
+      ] },
+    { id: "s6", title: "SCÉNARIO 6 — Cas interdit",
+      steps: [
+        { op: "CreatePrestation", ctx: { projectId: "pa", profile: "candidate", load: 100, currentLoad: 0 }, note: "Candidat → Prestation directe" }
+      ] },
+    { id: "s7", title: "SCÉNARIO 7 — Changement de Ressource",
+      steps: [
+        { op: "ChangePrestationResource", ctx: { mutateResourceId: true }, note: "UPDATE resource_id A → B" },
+        { op: "ClosePrestation", ctx: {}, note: "Voie correcte : clôturer A" },
+        { op: "CreatePrestation", ctx: { projectId: "pa", profile: "resource", resourceId: "jean", load: 100, currentLoad: 0 }, note: "Puis créer B" }
+      ] }
+  ];
+
+  function counts() {
+    const v = DECISIONS.filter((d) => d.status === "valide").length;
+    const o = DECISIONS.filter((d) => d.status !== "valide").length + 2;
+    return { v, o, r: RULES.length, s: GLOBAL_SCEN.length };
+  }
+
+  function statsBar() {
+    const c = counts();
+    return `<div class="stats">
+      <div class="stat"><b>${c.v}</b><span>Décisions validées</span></div>
+      <div class="stat"><b>${c.o}</b><span>À valider</span></div>
+      <div class="stat"><b>${c.r}</b><span>Règles métier</span></div>
+      <div class="stat"><b>${c.s}</b><span>Scénarios</span></div>
+    </div>`;
+  }
+
+  function renderCadrage() {
+    const el = document.getElementById("view-ava-cadrage");
+    el.innerHTML = `
+      <h2>Cadrage Ava Manager</h2>
+      <p class="lead">Document de référence avant PostgreSQL. Domain model + architecture + règles. Pas du SQL définitif.</p>
+      ${statsBar()}
+      <nav class="spec-toc" id="ava-toc"></nav>
+
+      <article class="spec-sec" id="ava-a">
+        <h2>A. Architecture / modèle de code</h2>
+        <p class="lead">La difficulté n’est pas de coder vite une V1. C’est un noyau assez propre pour ajouter des modules pendant des années sans reconstruire la base.</p>
+        <p>Nous ne voulons pas construire une chambre puis casser les murs à chaque pièce. Nous voulons les fondations, la structure porteuse et les gaines techniques, puis une première pièce.</p>
+        <div class="arch-stack">
+          <div class="arch-box" style="border-color:var(--c3)"><strong>NOYAU AVA</strong><span>indépendant de l’interface</span></div>
+          <div class="arch-row">
+            <div class="arch-box"><strong>DONNÉES MÉTIER</strong><span>objets, contraintes, historique</span></div>
+            <div class="arch-box"><strong>SERVICES MÉTIER</strong><span>commandes nommées, pas du CRUD status</span></div>
+          </div>
+          <div class="arch-box"><strong>API</strong><span>HTTP / agents / portails : même contrat</span></div>
+          <div class="arch-box"><strong>UI</strong><span>React/Next ne contient pas les règles essentielles</span></div>
+          <div class="arch-mods">
+            <div class="mod core">CRM</div>
+            <div class="mod core">Staffing</div>
+            <div class="mod core">Production</div>
+            <div class="mod future">Modules futurs</div>
+          </div>
+        </div>
+        <p>Une règle reste vraie si on remplace le frontend, ajoute le mobile, une API externe, un agent IA, un portail candidat ou collaborateur.</p>
+        <h3>Principes de code</h3>
+        <ol>
+          <li>Base relationnelle solide.</li>
+          <li>Contraintes importantes protégées en DB quand c’est possible.</li>
+          <li>Services métier séparés de l’API.</li>
+          <li>API séparée de l’interface.</li>
+          <li>Aucune logique essentielle uniquement dans React.</li>
+          <li>Migrations versionnées.</li>
+          <li>Historisation des modifications importantes.</li>
+          <li>Journal d’événements métier.</li>
+          <li>Soft delete / archivage pour l’historique.</li>
+          <li>Tests automatiques des invariants.</li>
+          <li>Modules futurs branchés sur le Core, pas de duplication.</li>
+          <li>Les données calculées ne deviennent pas une deuxième vérité en base.</li>
+        </ol>
+        <div class="grid">
+          <div>
+            <h3>CORE AVA</h3>
+            <div class="arch-mods">
+              ${["Personne","Société","OrganizationUnit","Contact","CandidatProfile","RessourceProfile","Besoin","Positionnement","Projet","Prestation","Action"].map((n) => `<div class="mod core">${n}</div>`).join("")}
+            </div>
+          </div>
+          <div>
+            <h3>MODULES FUTURS</h3>
+            <div class="arch-mods">
+              ${["Recrutement avancé","Qualifications","Compétences","Planning","Temps","Congés","Achats","Facturation","Finance","Reporting","Portail collab.","Portail candidat","Emailing","Notifications","IA / matching","Automatisations"].map((n) => `<div class="mod future">${n}</div>`).join("")}
+            </div>
+          </div>
+        </div>
+        <p class="lead">Facturation ne recrée pas Client : Société → Projet → Prestation → données financières. Planning ne recrée pas les ressources : Ressource → Prestation → Absence → Temps.</p>
+      </article>
+
+      <article class="spec-sec" id="ava-c">
+        <h2>C. Ce que nous conservons du cahier des charges</h2>
+        <p class="note">Sources : COCKPIT2 CdC v0.1 (10/10/2022) et AVA MANAGER-SPEC 1 (oct. 2024). Conservé = besoin métier, pas l’écran.</p>
+        <ol>
+          <li>Un portail ATS + CRM + gestion de projets, pour remplacer Boond.</li>
+          <li>Candidat et Ressource sont deux rôles distincts.</li>
+          <li>Une Ressource peut être sur plusieurs projets.</li>
+          <li>Un Besoin reçoit N Positionnements (candidat ou ressource).</li>
+          <li>Le Projet peut naître d’un Besoin (US6) ou être créé manuellement (US5).</li>
+          <li>La Prestation / finance de mission porte la ressource et l’économie.</li>
+          <li>Traçabilité (onglet Historique) et droits (groupes, périmètre) sont centraux.</li>
+          <li>Le process de recrutement reste configurable, sauf la conversion en ressource.</li>
+          <li>La structure client (pôle / BU / service) doit être représentable.</li>
+          <li>Les KPI (TJM, CJM, TACE, marge, time-to-hire) se calculent sur les données métier.</li>
+          <li>Conversion candidat → ressource = opération confirmée (US2), pas un PATCH status.</li>
+        </ol>
+      </article>
+
+      <article class="spec-sec" id="ava-d">
+        <h2>D. Ce que Boond nous apporte</h2>
+        <p class="lead">La mécanique des objets, pas les 59 écrans. On ne clone pas Boond.</p>
+        <pre class="mcd">Société → Contact → Besoin → Positionnement → Projet → Prestation
+Candidat → Positionnement → Ressource → Prestation</pre>
+        <p>Boond montre où un objet commence et finit, comment Staffing rejoint Production, et pourquoi Positionnement ≠ Prestation. Le détail cliqué reste dans <strong>Boond Manager</strong> (Métier, Simulateur, Spec, Questions, Audit).</p>
+      </article>
+
+      <article class="spec-sec" id="ava-e">
+        <h2>E. Fusion AVA + Boond</h2>
+        <div class="fusion">
+          <div class="arch-box"><strong>CAHIER AVA</strong><span>Ce dont Avaliance a besoin</span></div>
+          <div class="plus">+</div>
+          <div class="arch-box"><strong>BOOND</strong><span>Comment les objets s’enchaînent</span></div>
+          <div class="plus">→</div>
+          <div class="arch-box" style="border-color:var(--c3)"><strong>NOUVEAU AVA MANAGER</strong><span>Simplifié, cohérent, extensible</span></div>
+        </div>
+        <p class="lead">Ni le cahier 2022 à l’identique, ni un clone de Boond. Le métier réel Avaliance, structuré avec les enseignements Boond.</p>
+      </article>
+
+      <article class="spec-sec" id="ava-k">
+        <h2>K. Exemple technique</h2>
+        <div class="code-cmp">
+          <div>
+            <p>Mauvais modèle</p>
+            <pre class="ava-code bad">PATCH /candidate/42
+{ "status": "employee" }</pre>
+          </div>
+          <div>
+            <p>Bon modèle</p>
+            <pre class="ava-code good">POST /candidates/42/convert-to-resource</pre>
+          </div>
+        </div>
+        <ol>
+          <li>Vérifie les permissions.</li>
+          <li>Vérifie le candidat.</li>
+          <li>Vérifie les préconditions.</li>
+          <li>Crée le RessourceProfile.</li>
+          <li>Conserve le CandidatProfile.</li>
+          <li>Journalise l’opération.</li>
+          <li>Retourne la Ressource.</li>
+        </ol>
+      </article>
+
+      <article class="spec-sec" id="ava-l">
+        <h2>L. Ordre de construction</h2>
+        <p class="lead">Ne pas commencer par reproduire tous les écrans. Une tranche verticale bout en bout.</p>
+        <ol class="tl">
+          <li><b>1</b><span>Cadrage métier</span><span class="tag ok">✓</span></li>
+          <li><b>2</b><span>Décisions métier</span><span class="tag ok">✓</span></li>
+          <li><b>3</b><span>Invariants</span><span class="tag warn">EN COURS</span></li>
+          <li><b>4</b><span>Domain model / ERD</span><span class="tag edit">ensuite</span></li>
+          <li><b>5</b><span>Rôles + permissions</span><span class="tag edit">ensuite</span></li>
+          <li><b>6</b><span>PostgreSQL</span><span class="tag edit">ensuite</span></li>
+          <li><b>7</b><span>Migrations</span><span class="tag edit">ensuite</span></li>
+          <li><b>8</b><span>Services métier</span><span class="tag edit">ensuite</span></li>
+          <li><b>9</b><span>Tests métier</span><span class="tag edit">ensuite</span></li>
+          <li><b>10</b><span>API</span><span class="tag edit">ensuite</span></li>
+          <li><b>11</b><span>Première tranche UI</span><span class="tag edit">ensuite</span></li>
+          <li><b>12</b><span>Modules additionnels</span><span class="tag edit">ensuite</span></li>
+        </ol>
+        <pre class="mcd">Tranche V1 bout en bout :
+Société → Contact → Besoin → Positionnement → Projet → Prestation
+DB + services + permissions + API + tests + UI</pre>
+      </article>
+
+      <article class="spec-sec open-box panel" id="ava-m">
+        <h2>M. Décisions encore à valider</h2>
+        <ol>
+          <li><strong>Contact obligatoire sur le Besoin en 2026 ?</strong> CdC 2022 : oui (« ne pourra pas être sauvegardé s’il n’est pas attaché à un contact »). Ahmed : non, reco UX. RULE-013 en warning.</li>
+          <li><strong>Pôle / BU / Service</strong> : niveaux figés, ou OrganizationUnit générique (proposé) ?</li>
+          <li><strong>Besoin gagné</strong> : insert projet immédiat (US6) ou confirmation ? Proposition : UX automatique possible, commande WinNeed() → CreateProjectFromNeed() explicite.</li>
+          <li><strong>Flexibilité réelle</strong> des workflows de recrutement (CdC : toutes les étapes modulables sauf conversion) ?</li>
+          <li><strong>V1 vs V2</strong> : temps, absences, achats, facture, emailing LinkedIn, portails ?</li>
+        </ol>
+      </article>
+    `;
+    const toc = document.getElementById("ava-toc");
+    toc.innerHTML = [...el.querySelectorAll(".spec-sec")].map((s) => {
+      const t = s.querySelector("h2").textContent.replace(/^[A-Z]\.\s/, "");
+      return `<button type="button" data-ava-jump="${s.id}">${esc(t)}</button>`;
+    }).join("");
+    toc.onclick = (e) => {
+      const b = e.target.closest("[data-ava-jump]");
+      if (b) document.getElementById(b.dataset.avaJump).scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+  }
+
+  function renderDecisions() {
+    const el = document.getElementById("view-ava-decisions");
+    el.innerHTML = `<h2>B. Décisions validées</h2>
+      <p class="lead">Pourquoi la décision existe, ce qu’elle protège, d’où elle vient (CdC, Boond, Ava).</p>
+      ${statsBar()}
+      <div class="filters" id="dec-filters">
+        <button type="button" class="pill" data-dec-f="all" aria-pressed="true">Toutes</button>
+        <button type="button" class="pill" data-dec-f="valide">VALIDÉ</button>
+        <button type="button" class="pill" data-dec-f="ouvert">À VALIDER</button>
+      </div>
+      <div id="dec-list"></div>`;
+    const list = document.getElementById("dec-list");
+    const paint = (f) => {
+      list.innerHTML = DECISIONS.filter((d) => f === "all" || d.status === f).map((d) => `
+        <article class="dec-card${d.status === "ouvert" ? " warn" : ""}">
+          <h3>${d.id} — ${esc(d.sujet)} ${tag(d.status)}</h3>
+          <p class="lead">${esc(d.decision)}</p>
+          <p><strong>Raison.</strong> ${esc(d.raison)}</p>
+          <p><strong>Impact technique.</strong> ${esc(d.impact)}</p>
+        </article>`).join("");
+    };
+    paint("all");
+    el.querySelector("#dec-filters").onclick = (e) => {
+      const b = e.target.closest("[data-dec-f]");
+      if (!b) return;
+      el.querySelectorAll("[data-dec-f]").forEach((x) => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+      paint(b.dataset.decF);
+    };
+  }
+
+  function renderRules() {
+    const el = document.getElementById("view-ava-rules");
+    el.innerHTML = `<h2>F. Règles métier / invariants</h2>
+      <p class="lead">Impossibles à violer. Protection en couches. Pas du SQL définitif : c’est le contrat du futur moteur.</p>
+      ${statsBar()}
+      <div class="filters" id="rule-filters">
+        <button type="button" class="pill" data-rf="all" aria-pressed="true">Toutes</button>
+        <button type="button" class="pill" data-rf="error">Erreurs</button>
+        <button type="button" class="pill" data-rf="warning">Warnings</button>
+        <button type="button" class="pill" data-rf="ouvert">À valider</button>
+      </div>
+      <div id="rule-list"></div>`;
+    const list = document.getElementById("rule-list");
+    const paint = (f) => {
+      list.innerHTML = RULES.filter((r) => {
+        if (f === "all") return true;
+        if (f === "ouvert") return r.status === "ouvert";
+        return r.severity === f;
+      }).map((r) => `
+        <article class="rule-card${r.status === "ouvert" ? " warn" : ""}">
+          <h3>${r.id} — ${esc(r.title)} ${tag(r.status)}</h3>
+          <p>${esc(r.explain)}</p>
+          <p><strong>Exemple.</strong> ${esc(r.example)}</p>
+          <div class="layers">${r.layers.map((l) => `<span>${l.toUpperCase()}</span>`).join("")}
+            <span>${r.severity}</span><span>${r.entity}</span></div>
+        </article>`).join("");
+    };
+    paint("all");
+    el.querySelector("#rule-filters").onclick = (e) => {
+      const b = e.target.closest("[data-rf]");
+      if (!b) return;
+      el.querySelectorAll("[data-rf]").forEach((x) => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+      paint(b.dataset.rf);
+    };
+  }
+
+  function readForm(root) {
+    const out = {};
+    root.querySelectorAll("[data-field]").forEach((n) => { out[n.dataset.field] = n.value; });
+    return out;
+  }
+
+  function verdictHTML(op, result, note) {
+    const cls = result.allowed ? (result.warnings.length ? "warn" : "ok") : "ko";
+    const title = result.allowed ? (result.warnings.length ? "AUTORISÉ AVEC ALERTE" : "AUTORISÉ") : "REFUSÉ";
+    const rows = result.triggeredRules.map((t) => `<li><strong>${t.id}</strong> — ${esc(t.title)} : ${esc(t.message)}</li>`).join("")
+      || "<li>Aucune règle bloquante. Journal métier à écrire (RULE-016).</li>";
+    let next = "";
+    if (!result.allowed && op === "CreatePrestation") next = "<p class=\"lead\">Action recommandée : ConvertCandidateToResource() puis CreatePrestation().</p>";
+    if (!result.allowed && op === "ChangePrestationResource") next = "<p class=\"lead\">Action recommandée : ClosePrestation() + CreatePrestation().</p>";
+    return `<div class="verdict ${cls}"><strong>${title}${note ? " — " + esc(note) : ""}</strong>
+      <ul>${rows}</ul>${next}</div>`;
+  }
+
+  function renderSimRules() {
+    const el = document.getElementById("view-ava-sim-rules");
+    el.innerHTML = `<h2>G. Simulateur des règles</h2>
+      <p class="lead">Moteur data-driven : validateOperation(operation, context). Ajouter une règle dans businessRules, pas dans le HTML.</p>
+      ${statsBar()}
+      <div class="sim-form panel">
+        <label>Opération</label>
+        <select id="sr-op">${OPS.map((o) => `<option value="${o.id}">${esc(o.label)}</option>`).join("")}</select>
+        <div id="sr-fields"></div>
+        <div class="rowbtns"><button type="button" class="create-btn primary" id="sr-run">Valider</button></div>
+        <div id="sr-out"></div>
+      </div>
+      <h3>I. Architecture du simulateur</h3>
+      <pre class="ava-code good">validateOperation(operation, context) →
+  { allowed, warnings, errors, triggeredRules }</pre>`;
+    const fields = el.querySelector("#sr-fields");
+    const opSel = el.querySelector("#sr-op");
+    const paintFields = () => {
+      const op = OPS.find((o) => o.id === opSel.value);
+      fields.innerHTML = op.fields.map((f) => `<label>${esc(f.label)}</label>
+        <select data-field="${f.name}">${f.options.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join("")}</select>`).join("");
+    };
+    paintFields();
+    opSel.onchange = paintFields;
+    el.querySelector("#sr-run").onclick = () => {
+      const op = OPS.find((o) => o.id === opSel.value);
+      const result = validateOperation(op.id, op.ctx(readForm(el)));
+      el.querySelector("#sr-out").innerHTML = verdictHTML(op.id, result, op.label);
+    };
+  }
+
+  function renderSimGlobal() {
+    const el = document.getElementById("view-ava-sim-global");
+    el.innerHTML = `<h2>H. Simulateur global Ava Manager</h2>
+      <p class="lead">Parcours AVA entiers, distincts du simulateur Boond (écrans). Même moteur de règles.</p>
+      ${statsBar()}
+      <div class="scen" id="sg-btns">${GLOBAL_SCEN.map((s) => `<button type="button" data-sg="${s.id}">${esc(s.title)}</button>`).join("")}</div>
+      <div id="sg-out"></div>`;
+    el.querySelector("#sg-btns").onclick = (e) => {
+      const b = e.target.closest("[data-sg]");
+      if (!b) return;
+      const scen = GLOBAL_SCEN.find((s) => s.id === b.dataset.sg);
+      const steps = scen.steps.map((st) => {
+        const r = validateOperation(st.op, st.ctx);
+        const cls = r.allowed ? (r.warnings.length ? "warn" : "ok") : "ko";
+        const rules = r.triggeredRules.map((t) => `${t.id}: ${t.message}`).join(" · ") || "ok";
+        return `<div class="flow-step ${cls}"><strong>${esc(st.op)}</strong> — ${esc(st.note)}<br><span class="note">${esc(rules)}</span></div>`;
+      }).join("");
+      const blocked = scen.steps.some((st) => !validateOperation(st.op, st.ctx).allowed);
+      el.querySelector("#sg-out").innerHTML = `<h3>${esc(scen.title)}</h3>
+        <div class="flow-steps">${steps}</div>
+        <p class="lead">${blocked ? "Le parcours contient au moins un REFUS métier." : "Parcours autorisé (warnings possibles)."}</p>`;
+    };
+  }
+
+  function renderCommands() {
+    const el = document.getElementById("view-ava-commands");
+    el.innerHTML = `<h2>J. Commandes métier</h2>
+      <p class="lead">Pas du CRUD status. Chaque commande : permissions, préconditions, invariants, transaction, audit, erreurs, tests.</p>
+      ${statsBar()}
+      <table>
+        <thead><tr><th>Commande</th><th>Source</th><th>Contrat</th></tr></thead>
+        <tbody>${COMMANDS.map((c) => `<tr><td><code>${esc(c[0])}()</code></td><td>${esc(c[1])}</td><td>${esc(c[2])}</td></tr>`).join("")}</tbody>
+      </table>
+      <p class="note">WinNeed() ne crée pas le Projet. CreateProjectFromNeed() le fait. ConvertCandidateToResource() n’est pas PATCH status.</p>`;
+  }
+
+  const RENDER = {
+    "ava-cadrage": renderCadrage,
+    "ava-decisions": renderDecisions,
+    "ava-rules": renderRules,
+    "ava-sim-rules": renderSimRules,
+    "ava-sim-global": renderSimGlobal,
+    "ava-commands": renderCommands
+  };
+
+  function productOf(view) {
+    return PRODUCTS.ava.views.some((v) => v.id === view) ? "ava" : "boond";
+  }
+
+  function paintNav(product, view) {
+    document.getElementById("hub-product").innerHTML = Object.keys(PRODUCTS).map((id) =>
+      `<button type="button" data-product="${id}" aria-pressed="${id === product}">${PRODUCTS[id].label}</button>`
+    ).join("");
+    document.getElementById("hub-sub").innerHTML = PRODUCTS[product].views.map((v) =>
+      `<button type="button" data-view="${v.id}" aria-pressed="${v.id === view}">${v.label}</button>`
+    ).join("");
+  }
+
+  function showHubView(name) {
+    const aliases = { ava: "ava-cadrage", boond: "metier", cadrage: "ava-cadrage" };
+    if (aliases[name]) name = aliases[name];
+    if (!ALL_VIEWS.includes(name)) name = "ava-cadrage";
+    const product = productOf(name);
+    ALL_VIEWS.forEach((id) => {
+      const node = document.getElementById("view-" + id);
+      if (node) node.hidden = id !== name;
+    });
+    paintNav(product, name);
+    if (RENDER[name]) RENDER[name]();
+    if (name === "metier" && typeof draw === "function") draw();
+    if (name === "simulateur") { renderScenarios(); renderSim(); }
+    if (name === "spec") bindSpecToc();
+    if (name === "questions") { bindQuestions(); renderQuestions(); }
+    location.hash = name;
+  }
+
+  window.showHubView = showHubView;
+  window.validateOperation = validateOperation;
+  window.businessRules = RULES;
+
+  document.getElementById("hub").addEventListener("click", (e) => {
+    const p = e.target.closest("[data-product]");
+    if (p) { showHubView(PRODUCTS[p.dataset.product].views[0].id); return; }
+    const v = e.target.closest("[data-view]");
+    if (v) showHubView(v.dataset.view);
+  });
+
+  bindSim();
+  window.addEventListener("hashchange", () => {
+    const h = (location.hash || "#ava-cadrage").slice(1);
+    showHubView(h);
+  });
+  const start = (location.hash || "#ava-cadrage").slice(1);
+  showHubView(start);
+})();
+
 </script>
 </body>
 </html>
