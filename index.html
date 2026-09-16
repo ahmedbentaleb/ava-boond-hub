@@ -435,7 +435,7 @@
   </section>
 
   <section class="view" id="view-spec" hidden>
-<p class="lead">Spécification métier Ava Manager. Dérivée des 59 écrans cliqués, pas d’un manuel Boond. Pas de SQL. Pas d’écrans à recoder. Les <strong>DEC-Q01 à DEC-Q12</strong> ci-dessous sont des réponses d’Ahmed déjà prises (DEC-01 à DEC-18). La feuille <strong>F1–F34</strong> est close (vue Ava → 15 parcours). Seul ouvert : atelier chiffres <strong>F35–F36</strong>. <span class="tag warn">À VALIDER MÉTIER</span> sur cette page Boond = point hors DEC, à relire contre F.</p>
+<p class="lead">Spécification métier Ava Manager. Dérivée des 59 écrans cliqués, pas d’un manuel Boond. Pas de SQL. Pas d’écrans à recoder. Les <strong>DEC-Q01 à DEC-Q12</strong> ci-dessous sont des réponses d’Ahmed déjà prises (DEC-01 à DEC-18). La feuille <strong>F1–F36</strong> est close. Formules = convention <strong>ATL</strong> (vue Ava → 15 parcours). <span class="tag warn">À VALIDER MÉTIER</span> sur cette page Boond = point hors DEC, à relire contre F/ATL.</p>
 <p class="note">Preuve de méthode : le bouton <strong>Créer</strong> d’une fiche est le vrai menu. Un objet qui n’apparaît dans aucun Créer n’est pas un objet du noyau.</p>
 
 <nav class="spec-toc" id="spec-toc"></nav>
@@ -3325,13 +3325,13 @@ function showView(name){
           v: "Congé entre deux missions.",
           l: "Demi-journée.",
           i: "Exiger une prestation pour poser le congé." },
-        { id: "BM-38", st: "question", titre: "Les chiffres ont des noms, pas encore de formule",
-          qui: "Atelier finance — F35–F36",
+        { id: "BM-38", st: "acquise", titre: "Les chiffres ont une formule ATL, pas un tarif Avaliance",
+          qui: "Convention ATL — F35–F36",
           quand: "On parle de CA signé, produit, facturé, marge, occupation.",
-          dit: "On sépare les notions. On ne mélange pas l’euro et le MAD. Aucun montant de clôture n’est certifié avant l’atelier.",
+          dit: "CA produit régie = temps saisis × TJM vendu. Forfait = prorata calendrier. Marge = CA produit − CJM contrat × temps − frais. Snapshot à la clôture. Facturé hors V1. Pas de change auto. Aucun euro d’exemple sans TJM saisi.",
           refus: "Ces montants ne sont pas comparables sans convention de calcul ou de change.",
           v: "Agrégat dans une seule devise.",
-          l: "Zéro CA.",
+          l: "Zéro CA : taux de marge affiché « — ».",
           i: "Marge en euros depuis un coût en dirhams, sans change." },
         { id: "BM-39", st: "acquise", titre: "Le planning se lit, il ne s’écrit pas",
           qui: "Lecteur du pôle — DEC-16",
@@ -3617,7 +3617,7 @@ function showView(name){
         "Le système garde T5 et signale 110 % sur ces dates (alerte, pas refus : DEC-10)."
       ],
       monde: "Trois missions Sara. 100 % hors fenêtre, 110 % dedans.",
-      note: "Alerte : DEC. Fenêtre au jour + calendrier d’agence : F29/F30. Euros : atelier." },
+      note: "Alerte : DEC. Fenêtre : F29/F30 / ATL-02. Pas un euro." },
     { n: 6, titre: "Paul à 60 % puis 50 %, sans se marcher dessus",
       st: "f",
       etapes: [
@@ -3631,7 +3631,7 @@ function showView(name){
       st: "dec",
       etapes: [
         "Karim tente de mettre Paul à la place de Jean sur T1 : refus. Le 0,6 jour du 4 janvier ne bouge pas.",
-        "Karim clôture T1 au 15 janvier. Photo de marge : montant non certifié (F35–F36). Un ajustement de temps resterait distinct (F34).",
+        "Karim clôture T1 au 15 janvier. Photo M1 = ATL-14/15 — formule, pas un montant (TJM de T1 absent du monde).",
         "Il ouvre T1B pour Paul, 60 %, 16–31 janvier."
       ],
       monde: "T1 = Jean, close. T1B = Paul. Le 4 janvier reste à Jean.",
@@ -3641,12 +3641,12 @@ function showView(name){
       etapes: [
         "Karim tente de clôturer P1 : refus (F7), T1B est ouverte.",
         "Paul saisit 0,6 jour le 18 janvier sur T1B.",
-        "Karim clôture T1B au 31 janvier, nouvelle photo (montant non certifié).",
+        "Karim clôture T1B au 31 janvier, photo M1B = ATL-15. CA produit = 0,6 × TJM(T1B).",
         "Karim clôture P1.",
         "Sophie change plus tard le CJM de Jean : les photos de janvier ne bougent pas (DEC-09)."
       ],
       monde: "P1 clos, deux missions closes, deux lignes de temps.",
-      note: "Ordre projet : F7. Snapshot : DEC. Montants : atelier." },
+      note: "Ordre projet : F7. Snapshot : DEC-09 + ATL-15. CA = 0,6 × TJM(T1B)." },
     { n: 9, titre: "Mehdi candidat n’entre pas en mission",
       st: "dec",
       etapes: [
@@ -3731,9 +3731,9 @@ function showView(name){
     { id: "F29–F34", titre: "Jours et temps",
       reco: "Grain jour, calendrier d’agence, prévisionnelles distinguées. Temps sur la prestation de la ressource. Interne sans mission : hors V1. Correction post-clôture = ajustement tracé, snapshot DEC-09 intact.",
       reste: "Clos." },
-    { id: "F35–F36", titre: "Formules (seul reste ouvert)",
-      reco: "CA produit, forfait, frais, change, marge, facturé : atelier. Cette feuille ne certifie aucun euro.",
-      reste: "Atelier métier finance. Pas clos." }
+    { id: "F35–F36", titre: "Formules ATL",
+      reco: "CA produit régie = temps saisis × TJM. Forfait = prorata calendrier. Marge = CA − CJM contrat × temps − frais. Snapshot DEC-09 intact. Facturé hors V1. Pas de change auto.",
+      reste: "Clos — convention ATL. Aucun tarif Avaliance saisi, donc pas d’euro d’exemple." }
   ];
 
   function storyNav(ids) {
@@ -3768,7 +3768,7 @@ function showView(name){
         <div class="stat"><b>${nQ}</b><span>Questions</span></div>
         <div class="stat"><b>15</b><span>Jours de parcours</span></div>
       </div>
-      <p class="note">DEC-01 à DEC-18 + F1–F34. Formules F35–F36 encore atelier. Le simulateur HTML n’est pas la preuve. Suite : <button type="button" class="pill" data-go-view="ava-parcours">les 15 parcours</button></p>
+      <p class="note">DEC-01 à DEC-18 + F1–F36 + ATL. Le simulateur HTML n’est pas la preuve. Suite : <button type="button" class="pill" data-go-view="ava-parcours">les 15 parcours</button></p>
       ${storyNav(toc)}
       ${CHAPTERS.map((ch) => `
         <article class="spec-sec" id="${ch.id}">
@@ -3797,7 +3797,7 @@ function showView(name){
     el.innerHTML = `
       <h2>Quinze jours dans le même bureau</h2>
       <p class="lead">Le soir du jour 1 est le matin du jour 2. Ce sont des simulations de spécification, pas quinze tests passés. Aucun euro de marge.</p>
-      <p class="note">Suite des <button type="button" class="pill" data-go-view="ava-cadrage">contrats</button>. Vert = DEC/CdC ou F1–F34. Bleu = atelier F35–F36. DEC-Q01 à DEC-Q12 ne se rouvrent pas.</p>
+      <p class="note">Suite des <button type="button" class="pill" data-go-view="ava-cadrage">contrats</button>. Vert = DEC/CdC, F1–F34 ou ATL. DEC-Q01 à DEC-Q12 ne se rouvrent pas.</p>
       ${storyNav(DAYS.map((d) => ["day-" + d.n, "J" + d.n]))}
       ${DAYS.map((d) => `
         <article class="day spec-sec" id="day-${d.n}">
@@ -3808,7 +3808,7 @@ function showView(name){
         </article>`).join("")}
       <article class="spec-sec" id="day-q">
         <h2>Feuille F1–F36 (16 sept 2026)</h2>
-        <p class="lead">Nouveaux arbitrages d’Ahmed. Pas les DEC. F1–F34 clos. F35–F36 = atelier, aucun euro certifié. F3B : pourvu = tous les postes. F17B : commentaires hors V1. F19 : conversion ≠ statut.</p>
+        <p class="lead">Nouveaux arbitrages d’Ahmed. Pas les DEC. F1–F36 clos. F35–F36 = convention ATL (saisis × TJM, forfait prorata, facturé hors V1). Aucun euro d’exemple sans tarif saisi. F3B : pourvu = tous les postes. F17B : commentaires hors V1. F19 : conversion ≠ statut.</p>
         ${QUESTIONS.map((q) => `
           <article class="contract">
             <h3>${q.id} — ${esc(q.titre)}</h3>
@@ -3840,7 +3840,7 @@ function showView(name){
   function renderDecisions() {
     const el = document.getElementById("view-ava-decisions");
     el.innerHTML = `<h2>Les 18 décisions</h2>
-      <p class="lead">Elles ne se rouvrent pas. DEC-Q01 à DEC-Q12 du hub Boond = ces DEC. Feuille F1–F34 close. Seul ouvert : atelier chiffres F35–F36.</p>
+      <p class="lead">Elles ne se rouvrent pas. DEC-Q01 à DEC-Q12 du hub Boond = ces DEC. Feuille F1–F36 close. Formules = ATL.</p>
       ${statsBar()}
       <div class="filters" id="dec-filters">
         <button type="button" class="pill" data-dec-f="all" aria-pressed="true">Toutes</button>
@@ -4222,7 +4222,7 @@ function showView(name){
     const el = document.getElementById("view-ava-metier");
     el.innerHTML = `
       <h2>Métier Ava Manager</h2>
-      <p class="lead">Même geste que Boond : colorer un chemin. Ici c’est le graphe <strong>cible Ava</strong>. Feuille F1–F34 close. Atelier chiffres F35–F36 encore ouvert.</p>
+      <p class="lead">Même geste que Boond : colorer un chemin. Ici c’est le graphe <strong>cible Ava</strong>. F1–F36 close. Formules = ATL (saisis × TJM ; facturé hors V1).</p>
       <div class="pills" id="ava-pills"></div>
       <p id="ava-caption"></p>
       <div class="graph-wrap">
