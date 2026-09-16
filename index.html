@@ -364,6 +364,35 @@
       border-radius: 8px; padding: 12px; cursor: pointer; color: var(--text); font: inherit;
     }
     .fil-mot span { display: block; color: var(--muted); font-size: 13px; margin-top: 4px; }
+    .fil-who { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 0 0 16px; }
+    @media (max-width: 800px) { .fil-who { grid-template-columns: 1fr 1fr; } }
+    .fil-pawn {
+      text-align: left; background: var(--panel); border: 1px solid var(--line);
+      border-radius: 8px; padding: 12px; cursor: pointer; color: var(--text); font: inherit;
+    }
+    .fil-pawn span { display: block; font-size: 13px; margin: 2px 0 6px; }
+    .fil-pawn small { display: block; color: var(--muted); font-size: 12px; }
+    .fil-pawn[aria-pressed="true"] { background: #2a2a2a; }
+    .fil-who .fil-pawn { width: 100%; }
+    .fil-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 0 12px; }
+    @media (max-width: 720px) { .fil-board { grid-template-columns: 1fr 1fr; } }
+    .fil-node {
+      min-height: 78px; text-align: left; background: var(--panel);
+      border: 2px solid var(--line); border-radius: 8px; padding: 10px 12px;
+      cursor: pointer; color: var(--text); font: inherit;
+    }
+    .fil-node small { display: block; color: var(--muted); font-size: 12px; margin-top: 4px; }
+    .fil-node.here { background: #AEBF38; color: #430A4B; }
+    .fil-node.here small { color: #430A4B; }
+    .fil-node.open { border-color: #1E5B3A; }
+    .fil-node.locked { border-color: #A93226; animation: fil-shake .28s ease; }
+    .fil-verdict.ok { border-left: 4px solid #1E5B3A; }
+    .fil-verdict.ko { border-left: 4px solid #A93226; }
+    @keyframes fil-shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
 </style>
 </head>
 <body>
@@ -3009,225 +3038,331 @@ function showView(name){
     </div>`;
   }
 
-  let filStep = 0;
-  let filRole = "all";
+  let filWho = null;
+  let filHere = null;
+  let filOk = 0;
+  let filKo = 0;
+  let filShake = null;
+  let filMsg = { kind: "idle", titre: "Choisis qui tu es", texte: "Puis clique une case du schéma. Chaque porte répond : autorisé, ou interdit." };
 
-  const FIL_ROLES = [
-    { id: "com", label: "Commercial", color: "c1", fait: "Il connaît le client. Il écrit ce qu’Alpha demande. Il note si Alpha dit oui ou non." },
-    { id: "rh", label: "Recrutement", color: "c2", fait: "Il cherche des personnes. Si c’est un candidat, c’est lui qui l’active ensuite en ressource." },
-    { id: "staf", label: "Staffing", color: "c3", fait: "Il propose une personne précise sur le besoin, puis l’affecte au projet." },
-    { id: "dp", label: "Directeur de projet", color: "c4", fait: "Il confirme le projet, suit la mission, clôture quand c’est fini." },
-    { id: "res", label: "Ressource", color: "c5", fait: "C’est la personne qui travaille chez Alpha. Elle saisit son temps." }
+  const FIL_WHO = [
+    { id: "societe", label: "Une société", name: "Alpha", color: "c1", start: ["societe"],
+      entra: "Tu es Alpha, l’entreprise cliente. Porte d’entrée : Société." },
+    { id: "freelance", label: "Un freelance", name: "Paul", color: "c5", start: ["candidat", "ressource"],
+      entra: "Tu es Paul, freelance. Tu entres par Candidat, ou par Ressource si tu es déjà connu." },
+    { id: "salarie", label: "Un salarié", name: "Jean", color: "c4", start: ["ressource"],
+      entra: "Tu es Jean, salarié. Porte d’entrée : Ressource interne. Pas le vivier candidat." },
+    { id: "rh", label: "Un RH", name: "Sophie", color: "c2", start: ["candidat"],
+      entra: "Tu es Sophie, RH. Porte d’entrée : Candidat. C’est toi qui actives le profil ressource." }
   ];
 
-  const FIL_MAP = [
-    { id: "societe", mot: "Société", simple: "qui demande", step: 0, color: "c1" },
-    { id: "besoin", mot: "Besoin", simple: "ce qu’on demande", step: 1, color: "c1" },
-    { id: "pos", mot: "Positionnement", simple: "on propose quelqu’un", step: 3, color: "c3" },
-    { id: "projet", mot: "Projet", simple: "on se met d’accord", step: 5, color: "c4" },
-    { id: "presta", mot: "Prestation", simple: "cette personne y travaille", step: 6, color: "c4" },
-    { id: "temps", mot: "Temps", simple: "les jours faits", step: 7, color: "c5" }
+  const FIL_NODES = [
+    { id: "societe", label: "Société", simple: "l’entreprise qui demande", color: "c1" },
+    { id: "contact", label: "Contact", simple: "Alice, chez Alpha", color: "c1" },
+    { id: "action", label: "Action", simple: "un rappel, pas une mission", color: "c2" },
+    { id: "besoin", label: "Besoin", simple: "ce qu’Alpha cherche", color: "c1" },
+    { id: "pos", label: "Positionnement", simple: "on propose quelqu’un", color: "c3" },
+    { id: "candidat", label: "Candidat", simple: "pas encore en mission", color: "c2" },
+    { id: "ressource", label: "Ressource", simple: "peut travailler", color: "c4" },
+    { id: "projet", label: "Projet", simple: "le dossier d’exécution", color: "c4" },
+    { id: "presta", label: "Prestation", simple: "cette personne y travaille", color: "c4" },
+    { id: "temps", label: "Temps", simple: "les jours saisis", color: "c5" }
   ];
 
   const FIL_MOTS = [
-    { mot: "Société", simple: "L’entreprise cliente. Ici : Alpha.", step: 0 },
-    { mot: "Contact", simple: "Une personne chez Alpha, comme Alice. Utile, pas obligatoire pour ouvrir le besoin. Obligatoire au moment de créer le projet depuis ce besoin.", step: 0 },
-    { mot: "Besoin", simple: "Ce qu’Alpha demande. Ça peut viser plusieurs postes. Ce n’est pas encore un projet.", step: 1 },
-    { mot: "Vivier", simple: "Les personnes déjà connues : candidats, salariés, freelances. On peut aussi chercher chez un partenaire.", step: 2 },
-    { mot: "Positionnement", simple: "La trace « cette personne est proposée pour ce besoin ». Ni le projet, ni la mission.", step: 3 },
-    { mot: "Projet", simple: "Le dossier d’exécution avec le client. Il naît seulement si quelqu’un le crée, après confirmation.", step: 5 },
-    { mot: "Prestation", simple: "La mission d’une ressource sur un projet : dates, charge, conditions. Un projet peut en avoir plusieurs.", step: 6 },
-    { mot: "Candidat / Ressource", simple: "Un candidat peut être proposé. Avant de travailler ou de saisir du temps, RH active le profil ressource. Même personne, même historique.", step: 6 },
-    { mot: "Action", simple: "Un travail à suivre (« appeler Alice »). Attachée à une fiche. Elle ne crée ni projet ni prestation.", step: 3 }
+    { mot: "Société", simple: "L’entreprise cliente. Ici : Alpha." },
+    { mot: "Contact", simple: "Une personne chez Alpha, comme Alice. Pas obligatoire pour le besoin." },
+    { mot: "Besoin", simple: "Ce qu’Alpha demande. Ce n’est pas un projet." },
+    { mot: "Candidat", simple: "On peut le proposer. Il ne porte jamais une prestation." },
+    { mot: "Ressource", simple: "Salarié interne ou freelance externe. Seule elle travaille." },
+    { mot: "Positionnement", simple: "« Cette personne, pour ce besoin ». Ni projet, ni mission." },
+    { mot: "Projet", simple: "Créé exprès, après confirmation. Jamais tout seul." },
+    { mot: "Prestation", simple: "La mission d’une ressource sur un projet." },
+    { mot: "Action", simple: "Un travail à suivre. Elle ne crée ni projet ni prestation." }
   ];
 
-  const FIL_STEPS = [
-    {
-      n: 1, phase: "start", titre: "On ouvre le client", mot: "Société et contact",
-      roles: ["com"], qui: "Commercial", color: "c1", map: "societe",
-      simple: "On commence par savoir qui demande. Alpha est l’entreprise. Alice, si on la connaît, est la personne à qui on parle.",
-      action: "Ouvrir la fiche Alpha. Attacher Alice seulement si elle est connue.",
-      apres: "Une société existe. Un contact peut exister — ce n’est pas obligatoire pour écrire le besoin."
+  function filYes(texte) { return { ok: true, texte }; }
+  function filNo(texte) { return { ok: false, texte }; }
+
+  const FIL_EDGES = {
+    societe: {
+      societe: {
+        contact: filYes("Alice, si tu la connais, s’attache à Alpha. Le besoin peut attendre."),
+        besoin: filYes("Tu décris ce que tu cherches. La société suffit. Alice n’est pas obligatoire."),
+        action: filYes("« Relancer Alpha vendredi » : collé à ta fiche. Ça ne crée pas de projet.")
+      },
+      contact: {
+        societe: filYes("Retour à Alpha."),
+        besoin: filYes("Le besoin peut porter Alice. S’il n’en a pas, on la demandera au projet."),
+        action: filYes("« Appeler Alice » : une action, pas une mission.")
+      },
+      besoin: {
+        societe: filYes("Le besoin reste accroché à Alpha."),
+        contact: filYes("On peut ajouter Alice plus tard."),
+        pos: filYes("On te présente quelqu’un. Tu regardes. Ce n’est pas encore une mission."),
+        action: filYes("Une action sur le besoin. Le projet n’apparaît pas.")
+      },
+      pos: {
+        besoin: filYes("Tu dis non : on cherche encore. Le besoin reste vivant."),
+        action: filYes("Noter le retour d’Alpha.")
+      },
+      action: {
+        societe: filYes("L’action reste collée à Alpha."),
+        contact: filYes("L’action peut coller à Alice."),
+        besoin: filYes("L’action peut coller au besoin.")
+      }
     },
-    {
-      n: 2, phase: "start", titre: "On écrit la demande", mot: "Besoin",
-      roles: ["com"], qui: "Commercial", color: "c1", map: "besoin",
-      simple: "On décrit ce qu’Alpha cherche : compétences, période, nombre de personnes, infos commerciales déjà connues.",
-      action: "Créer un besoin ouvert. La société est obligatoire. Le contact est facultatif.",
-      apres: "Un besoin existe. Ce n’est toujours pas un projet. Rien n’est encore signé."
+    freelance: {
+      candidat: {
+        pos: filYes("On te propose à Alpha. Tu es positionné. Tu n’es pas encore en mission."),
+        action: filYes("« Envoyer le CV de Paul »."),
+        ressource: filNo("Ce n’est pas toi qui t’actives. Sophie RH convertit le candidat en ressource.")
+      },
+      ressource: {
+        pos: filYes("Déjà connu : on te positionne comme freelance externe."),
+        presta: filYes("Une prestation t’affecte au projet. Dates, charge, conditions : c’est ta mission."),
+        action: filYes("Un rappel sur ta fiche.")
+      },
+      pos: {
+        candidat: filYes("Retour au vivier. Alpha n’a pas encore dit oui."),
+        ressource: filYes("Si tu es déjà ressource, le positionnement te suit."),
+        besoin: filYes("Le positionnement reste sur le besoin d’Alpha.")
+      },
+      presta: {
+        temps: filYes("Tu saisis tes jours. C’est le suivi de ta mission."),
+        ressource: filYes("La prestation t’appartient. On ne te remplace pas en silence."),
+        projet: filYes("Tu vois le projet de ta mission. Tu ne le crées pas.")
+      },
+      temps: {
+        presta: filYes("Le temps reste sur la prestation, jamais en l’air.")
+      },
+      action: {
+        candidat: filYes("Retour à ta fiche."),
+        ressource: filYes("Retour à ta fiche ressource.")
+      }
     },
-    {
-      n: 3, phase: "mid", titre: "On cherche une personne", mot: "Recherche / vivier",
-      roles: ["rh", "staf"], qui: "Recrutement et staffing", color: "c2", map: "besoin",
-      simple: "L’équipe regarde d’abord les personnes déjà connues. Si personne ne convient, elle cherche aussi chez un partenaire.",
-      action: "Consulter candidats et ressources. Au besoin, ouvrir une recherche externe.",
-      apres: "Des profils envisageables. Le besoin n’est toujours pas un projet.",
-      fork: ["Dans le vivier : salarié, candidat ou freelance déjà connu.", "Hors vivier : ressource externe chez un partenaire. Les achats et factures fournisseurs ne sont pas dans le premier lot."]
+    salarie: {
+      ressource: {
+        pos: filYes("Jean, salarié interne, est proposé sur le besoin d’Alpha."),
+        presta: filYes("Une prestation t’affecte. Tu travailles. Occupation : alerte si ça dépasse 100 %, pas un mur."),
+        action: filYes("Un rappel RH ou mission.")
+      },
+      pos: {
+        ressource: filYes("Retour à ta fiche salarié."),
+        besoin: filYes("Le positionnement reste sur le besoin.")
+      },
+      presta: {
+        temps: filYes("Tu saisis tes jours."),
+        ressource: filYes("La ligne de mission reste à Jean."),
+        projet: filYes("Tu vois le projet. Tu ne le crées pas.")
+      },
+      temps: {
+        presta: filYes("Le temps reste sur la prestation.")
+      },
+      action: {
+        ressource: filYes("Retour à ta fiche.")
+      }
     },
-    {
-      n: 4, phase: "mid", titre: "On propose quelqu’un", mot: "Positionnement",
-      roles: ["staf", "rh", "com"], qui: "Équipe habilitée", color: "c3", map: "pos",
-      simple: "On rattache une personne précise au besoin. On suit CV, entretien, qualification, tarif proposé, selon le cas.",
-      action: "Créer un positionnement : une personne, un besoin. Plusieurs personnes = plusieurs positionnements.",
-      apres: "La trace « cette personne est proposée pour ce besoin ». Pas de projet automatique."
-    },
-    {
-      n: 5, phase: "mid", titre: "Alpha dit oui ou non", mot: "Décision du client",
-      roles: ["com"], qui: "Commercial", color: "c1", map: "pos",
-      simple: "Le commercial enregistre le retour d’Alpha. Un non ne casse rien : on peut chercher quelqu’un d’autre.",
-      action: "Saisir retenu ou refusé sur le positionnement.",
-      apres: "Une décision traçable. Aucun projet n’apparaît tout seul.",
-      fork: ["Non : retour à la recherche. Le besoin reste vivant.", "Oui : on peut passer à la création explicite du projet."]
-    },
-    {
-      n: 6, phase: "mid", titre: "On crée le projet, exprès", mot: "Projet",
-      roles: ["dp", "com"], qui: "Responsable habilité", color: "c4", map: "projet",
-      simple: "Quand l’affaire se concrétise, quelqu’un confirme les infos et crée le projet. Ça ne se fait jamais en silence.",
-      action: "CreateProjectFromNeed, avec confirmation. Si le besoin n’a pas de contact, on en demande un ici.",
-      apres: "Un projet lié au besoin. Un même besoin peut donner plusieurs projets."
-    },
-    {
-      n: 7, phase: "mid", titre: "On affecte qui travaille", mot: "Prestation",
-      roles: ["staf", "dp"], qui: "Staffing ou directeur de projet", color: "c4", map: "presta",
-      simple: "On choisit le projet et la ressource, puis les dates, la charge et les conditions de sa mission.",
-      action: "Créer une prestation. Si la personne était candidate, RH a d’abord activé le profil ressource.",
-      apres: "Une prestation : l’affectation concrète. Un projet encore sans prestation reste autorisé, mais ici on l’a créée."
-    },
-    {
-      n: 8, phase: "end", titre: "On suit, puis on clôture", mot: "Temps et clôture",
-      roles: ["res", "dp"], qui: "Ressource et responsable de projet", color: "c5", map: "temps",
-      simple: "La personne saisit ses jours. L’équipe suit charge, absences et résultats. Puis on clôture la prestation, ensuite le projet.",
-      action: "Saisir le temps. Clôturer la prestation, puis le projet. L’historique reste.",
-      apres: "Une mission terminée, conservée. Rien n’est effacé."
+    rh: {
+      candidat: {
+        pos: filYes("Tu proposes Amina (ou Paul) sur le besoin. Un positionnement naît."),
+        ressource: filYes("Conversion : tu actives le profil ressource. Même personne, historique candidat conservé."),
+        besoin: filYes("Tu lis le besoin pour chercher la bonne personne."),
+        action: filYes("« Envoyer le CV », « convocation entretien ».")
+      },
+      ressource: {
+        pos: filYes("La ressource, une fois activée, peut être repositionnée."),
+        candidat: filYes("L’historique candidat est toujours là."),
+        action: filYes("Un rappel sur la fiche.")
+      },
+      pos: {
+        candidat: filYes("Retour au dossier de recrutement."),
+        ressource: filYes("Si déjà converti, le positionnement suit la ressource."),
+        besoin: filYes("Le matching reste accroché au besoin.")
+      },
+      besoin: {
+        candidat: filYes("Retour au vivier."),
+        pos: filYes("Voir qui est déjà proposé."),
+        action: filYes("Relancer le besoin.")
+      },
+      action: {
+        candidat: filYes("Retour au candidat."),
+        besoin: filYes("Retour au besoin.")
+      }
     }
-  ];
+  };
+
+  const FIL_BLOCK = {
+    societe: {
+      candidat: "Alpha n’est pas une personne du vivier.",
+      ressource: "Une société ne travaille pas. C’est une ressource qui entre en mission.",
+      presta: "Pas de mission sur le dos d’une société.",
+      temps: "Alpha ne saisit pas de jours. C’est la personne en mission.",
+      projet: "Le projet ne tombe pas tout seul. Le cabinet le crée, exprès, si tu as dit oui.",
+      pos: "Tu ne te positionnes pas toi-même. On te présente quelqu’un."
+    },
+    freelance: {
+      societe: "Tu n’ouvres pas la fiche client. C’est le commercial.",
+      contact: "Alice n’est pas ta fiche. C’est chez Alpha.",
+      besoin: "Tu ne crées pas le besoin d’Alpha.",
+      projet: "Tu ne crées pas le projet. On t’y affecte par une prestation.",
+      temps: "Pas de temps sans prestation. D’abord la mission.",
+      candidat: "Si tu es déjà ressource, tu n’es plus « que » candidat."
+    },
+    salarie: {
+      societe: "Jean n’ouvre pas Alpha. C’est le commercial.",
+      contact: "Pas ta porte.",
+      besoin: "Tu ne crées pas le besoin.",
+      candidat: "Tu es déjà salarié. Pas la case Candidat.",
+      projet: "Tu ne crées pas le projet.",
+      temps: "Pas de temps sans prestation."
+    },
+    rh: {
+      societe: "Sophie n’ouvre pas la société cliente.",
+      contact: "Ce n’est pas ta porte d’entrée.",
+      projet: "Ce n’est pas RH qui crée le projet. Staffing / DP, après confirmation.",
+      presta: "Ce n’est pas RH qui affecte la mission. D’abord conversion, puis staffing.",
+      temps: "Sophie ne saisit pas les jours de mission."
+    }
+  };
 
   function filColor(id) {
     return ({ c1: "var(--c1)", c2: "var(--c2)", c3: "var(--c3)", c4: "var(--c4)", c5: "var(--c5)" })[id] || "var(--c1)";
   }
 
-  function paintFil() {
-    const step = FIL_STEPS[filStep];
-    const rail = document.getElementById("fil-rail");
-    const detail = document.getElementById("fil-detail");
-    const mapper = document.getElementById("fil-mapper");
-    if (!rail || !detail || !mapper) return;
+  function filNode(id) { return FIL_NODES.find((n) => n.id === id); }
+  function filPawn() { return FIL_WHO.find((w) => w.id === filWho); }
 
-    rail.innerHTML = FIL_STEPS.map((s, i) => {
-      const dim = filRole !== "all" && !s.roles.includes(filRole);
-      return `<button type="button" class="fil-step${i === filStep ? " on" : ""}${dim ? " dim" : ""}" data-fil-step="${i}" style="border-left-color:${filColor(s.color)}" aria-pressed="${i === filStep}">
-        <b>${s.n}</b>
-        <span><strong>${esc(s.titre)}</strong><small>${esc(s.mot)}</small></span>
+  function filOpenFrom(here) {
+    const who = filPawn();
+    if (!who) return [];
+    if (!here) return who.start;
+    const bag = (FIL_EDGES[who.id] || {})[here] || {};
+    return Object.keys(bag).filter((k) => bag[k].ok);
+  }
+
+  function filLook(to) {
+    const who = filPawn();
+    const node = filNode(to);
+    if (!who) {
+      return { ok: false, titre: "Pas encore", texte: "Choisis d’abord : société, freelance, salarié ou RH." };
+    }
+    if (to === filHere) {
+      return { ok: true, titre: "Tu es ici", texte: node.label + " — " + node.simple + "." };
+    }
+    if (!filHere) {
+      if (who.start.includes(to)) {
+        return { ok: true, titre: "Autorisé — tu entres", texte: who.entra };
+      }
+      const portes = who.start.map((id) => filNode(id).label).join(", ");
+      return { ok: false, titre: "Interdit — mauvaise porte", texte: "Toi, " + who.name + ", tu n’entres pas par " + node.label + ". Tes portes : " + portes + "." };
+    }
+    const edge = ((FIL_EDGES[who.id] || {})[filHere] || {})[to];
+    if (edge) return { ok: edge.ok, titre: edge.ok ? "Autorisé" : "Interdit", texte: edge.texte };
+    const stock = (FIL_BLOCK[who.id] || {})[to];
+    if (stock) return { ok: false, titre: "Interdit", texte: stock };
+    return { ok: false, titre: "Interdit", texte: "Depuis " + filNode(filHere).label + ", " + node.label + " n’est pas un chemin pour " + who.name + "." };
+  }
+
+  function filGo(to) {
+    const r = filLook(to);
+    filMsg = r;
+    filShake = r.ok ? null : to;
+    if (r.ok && to !== filHere) {
+      filHere = to;
+      filOk += 1;
+    } else if (!r.ok) {
+      filKo += 1;
+    }
+    paintFil();
+  }
+
+  function paintFil() {
+    const who = filPawn();
+    const open = new Set(filOpenFrom(filHere));
+    const board = document.getElementById("fil-board");
+    const verdict = document.getElementById("fil-verdict");
+    if (!board || !verdict) return;
+
+    document.querySelectorAll("[data-fil-who]").forEach((b) => {
+      b.setAttribute("aria-pressed", b.dataset.filWho === filWho ? "true" : "false");
+    });
+
+    board.innerHTML = FIL_NODES.map((n) => {
+      const here = n.id === filHere;
+      const can = open.has(n.id);
+      const shake = n.id === filShake;
+      const cls = "fil-node" + (here ? " here" : "") + (can && !here ? " open" : "") + (shake ? " locked" : "");
+      return `<button type="button" class="${cls}" data-fil-n="${n.id}" style="border-color:${filColor(n.color)}">
+        <strong>${esc(n.label)}</strong><small>${esc(n.simple)}</small>
       </button>`;
     }).join("");
 
-    mapper.innerHTML = FIL_MAP.map((m, i) =>
-      `${i ? '<span class="fil-arrow" aria-hidden="true">→</span>' : ""}<button type="button" class="fil-obj${m.step === filStep || m.id === step.map ? " on" : ""}" data-fil-step="${m.step}" style="border-color:${filColor(m.color)}">
-        <strong>${esc(m.mot)}</strong><small>${esc(m.simple)}</small>
-      </button>`
+    const portes = filOpenFrom(filHere).map((id) =>
+      `<button type="button" class="pill" data-fil-n="${id}">${esc(filNode(id).label)}</button>`
     ).join("");
-
-    const fork = (step.fork || []).map((t) => `<li>${esc(t)}</li>`).join("");
-    const phaseLabel = step.phase === "start" ? "Ça commence ici" : step.phase === "end" ? "Ça se termine ici" : "Au milieu";
-    detail.innerHTML = `
-      <p class="fil-phase ${step.phase}">${phaseLabel} · étape ${step.n} / 8</p>
-      <h3>${esc(step.titre)}</h3>
-      <p class="lead">${esc(step.simple)}</p>
+    const hereLabel = filHere ? filNode(filHere).label : "nulle part";
+    const tone = filMsg.ok === true ? "ok" : filMsg.ok === false ? "ko" : "";
+    verdict.className = "fil-verdict " + tone;
+    verdict.innerHTML = `
+      <p class="fil-phase ${filMsg.ok === true ? "start" : filMsg.ok === false ? "end" : ""}">${esc(filMsg.titre)}</p>
+      <p class="lead">${esc(filMsg.texte)}</p>
       <div class="fil-kv">
-        <div><span>Mot métier</span><b>${esc(step.mot)}</b></div>
-        <div><span>Qui agit</span><b>${esc(step.qui)}</b></div>
-        <div><span>Dans Ava Manager</span><b>${esc(step.action)}</b></div>
-        <div><span>Après cette étape</span><b>${esc(step.apres)}</b></div>
+        <div><span>Tu es</span><b>${who ? esc(who.label + " · " + who.name) : "personne encore"}</b></div>
+        <div><span>Tu es ici</span><b>${esc(hereLabel)}</b></div>
+        <div><span>Portes ouvertes depuis ici</span></div>
       </div>
-      ${fork ? `<div class="fil-fork"><p>Deux issues possibles</p><ul>${fork}</ul></div>` : ""}
-      <div class="rowbtns">
-        <button type="button" data-fil-nav="-1"${filStep === 0 ? " disabled" : ""}>Étape précédente</button>
-        <button type="button" data-fil-nav="1"${filStep === FIL_STEPS.length - 1 ? " disabled" : ""}>Étape suivante</button>
-      </div>`;
-
-    document.querySelectorAll("[data-fil-role]").forEach((b) => {
-      b.setAttribute("aria-pressed", b.dataset.filRole === filRole ? "true" : "false");
-    });
+      <div class="rowbtns">${portes || "<span class='note'>Clique une case du schéma.</span>"}</div>
+      <p class="note">Autorisés ${filOk} · Interdits ${filKo}. Aplat vert = tu es là. Cadre sapin = tu peux y aller. Cadre brique = porte fermée.</p>
+      <div class="rowbtns"><button type="button" data-fil-reset="1">Recommencer</button></div>`;
   }
 
   function renderGuide() {
     const el = document.getElementById("view-ava-guide");
     if (!el) return;
     el.innerHTML = `
-      <h2>Le parcours Ava Manager, simplement</h2>
-      <p class="lead">On part d’une demande du client, on trouve et propose une personne, puis on organise et suit sa mission si le client l’accepte. Exemple : la société <strong>Alpha</strong> cherche quelqu’un pour une mission informatique.</p>
-
+      <h2>Parcours — le jeu du schéma</h2>
+      <p class="lead">Choisis qui tu es. Clique où tu veux dans le schéma. Une connexion s’ouvre, ou elle refuse. C’est le métier, en portes. Histoire d’Alpha : on part d’une demande, on propose une personne, on suit la mission si le client dit oui.</p>
       <div class="fil-start">
-        <strong>Ça commence ici</strong>
-        <p>Alpha exprime un besoin. Le commercial l’enregistre. Rien n’est encore une mission.</p>
+        <strong>Quatre entrées, un seul schéma</strong>
+        <p>Société, freelance, salarié, RH. Chacun rentre par sa porte, puis teste les cases. L’onglet Métier est le même plan, vu d’en haut.</p>
       </div>
-
-      <h3>Les rôles</h3>
-      <p>Cliquez un rôle pour voir seulement ses étapes. Cliquez « Tous » pour tout le fil.</p>
-      <div class="filters" id="fil-roles">
-        <button type="button" class="pill" data-fil-role="all" aria-pressed="true">Tous</button>
-        ${FIL_ROLES.map((r) =>
-          `<button type="button" class="pill" data-fil-role="${r.id}"><span class="swatch" style="background:${filColor(r.color)}"></span>${esc(r.label)}</button>`
-        ).join("")}
-      </div>
-      <div class="fil-roles">${FIL_ROLES.map((r) =>
-        `<div class="panel" style="border-left:3px solid ${filColor(r.color)}"><b>${esc(r.label)}</b><span>${esc(r.fait)}</span></div>`
+      <div class="fil-who">${FIL_WHO.map((w) =>
+        `<button type="button" class="fil-pawn" data-fil-who="${w.id}" style="border-left:4px solid ${filColor(w.color)}">
+          <strong>${esc(w.label)}</strong><span>${esc(w.name)}</span><small>${esc(w.entra)}</small>
+        </button>`
       ).join("")}</div>
-
-      <h3>Le mapper du métier</h3>
-      <p>Chaque boîte est un mot réel du métier. La flèche est l’ordre de l’histoire. Cliquez une boîte pour ouvrir ce moment. L’onglet <button type="button" class="pill" data-go-view="ava-metier">Métier</button> montre les <strong>mêmes objets</strong>, vus d’en haut comme un plan.</p>
-      <div class="fil-map" id="fil-mapper"></div>
-      <p class="note">On peut aussi créer un projet <strong>sans</strong> besoin (création directe). Ce n’est pas le chemin d’Alpha ci-dessous. Un projet peut aussi exister un moment <strong>sans</strong> prestation.</p>
-
-      <div class="fil-layout">
-        <div>
-          <h3>Les 8 étapes</h3>
-          <div id="fil-rail"></div>
-        </div>
-        <div class="panel" id="fil-detail"></div>
-      </div>
-
-      <div class="fil-end">
-        <strong>Ça se termine ici</strong>
-        <p>La prestation est close, puis le projet. L’historique de la mission reste. On n’efface pas.</p>
-      </div>
-
-      <h3>Les mots à ne pas confondre</h3>
-      <p>Cliquez un mot : l’étape correspondante s’ouvre à droite.</p>
-      <div class="fil-mots">${FIL_MOTS.map((w, i) =>
-        `<button type="button" class="fil-mot" data-fil-step="${w.step}"><strong>${esc(w.mot)}</strong><span>${esc(w.simple)}</span></button>`
+      <div class="fil-board" id="fil-board"></div>
+      <div class="panel" id="fil-verdict"></div>
+      <h3>Les mots, simplement</h3>
+      <div class="fil-mots">${FIL_MOTS.map((w) =>
+        `<div class="fil-mot"><strong>${esc(w.mot)}</strong><span>${esc(w.simple)}</span></div>`
       ).join("")}</div>
-
-      <article class="spec-sec">
-        <h3>Et les « Actions » ?</h3>
-        <p class="lead">Une Action est un travail à faire ou à suivre, par exemple appeler Alice, envoyer le CV, relancer Alpha vendredi. Elle est collée à <strong>une fiche</strong> : société, contact, candidat, ressource, besoin ou projet.</p>
-        <p>Elle aide à ne pas perdre le fil. <strong>Elle ne crée pas</strong>, à elle seule, un projet ou une prestation. L’historique métier, lui, garde qui a créé le besoin, qui a été proposé, ce qu’Alpha a répondu, qui a confirmé le projet.</p>
-      </article>
-      <p class="note">Présenter une personne et des conditions fait partie du parcours. Un module complet de devis ou de facture client n’est pas dans le premier lot. Source : le document pédagogique du 16 septembre 2026. Les règles détaillées restent dans <button type="button" class="pill" data-go-view="ava-cadrage">Contrats</button>.</p>`;
-
+      <p class="note">Une Action n’ouvre jamais Projet ni Prestation. Un candidat n’entre pas en mission sans conversion RH. Le projet ne se crée pas tout seul. Suite : <button type="button" class="pill" data-go-view="ava-metier">Métier</button> · <button type="button" class="pill" data-go-view="ava-cadrage">Contrats</button></p>`;
     paintFil();
     el.onclick = (e) => {
       const go = e.target.closest("[data-go-view]");
-      if (go && window.showHubView) window.showHubView(go.dataset.goView);
-      const role = e.target.closest("[data-fil-role]");
-      if (role) {
-        filRole = role.dataset.filRole;
-        const hit = FIL_STEPS.findIndex((s) => filRole === "all" || s.roles.includes(filRole));
-        if (hit >= 0) filStep = hit;
+      if (go && window.showHubView) { window.showHubView(go.dataset.goView); return; }
+      if (e.target.closest("[data-fil-reset]")) {
+        filHere = null; filOk = 0; filKo = 0; filShake = null;
+        const who = filPawn();
+        filMsg = who
+          ? { kind: "idle", ok: true, titre: "On reprend", texte: who.entra }
+          : { kind: "idle", titre: "Choisis qui tu es", texte: "Puis clique une case." };
         paintFil();
         return;
       }
-      const nav = e.target.closest("[data-fil-nav]");
-      if (nav) {
-        filStep = Math.max(0, Math.min(FIL_STEPS.length - 1, filStep + Number(nav.dataset.filNav)));
+      const pawn = e.target.closest("[data-fil-who]");
+      if (pawn) {
+        filWho = pawn.dataset.filWho;
+        filHere = null; filOk = 0; filKo = 0; filShake = null;
+        const who = filPawn();
+        filMsg = { kind: "idle", ok: true, titre: "Autorisé — à toi", texte: who.entra + " Clique une de tes portes." };
         paintFil();
         return;
       }
-      const st = e.target.closest("[data-fil-step]");
-      if (st) {
-        filStep = Number(st.dataset.filStep);
-        paintFil();
-      }
+      const n = e.target.closest("[data-fil-n]");
+      if (n) filGo(n.dataset.filN);
     };
   }
 
