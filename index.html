@@ -279,6 +279,13 @@
       width: 100%; background: #141414; color: var(--text); border: 1px solid var(--line);
       border-radius: 6px; padding: 8px 10px; font: inherit;
     }
+    .world-layout { display: grid; grid-template-columns: 1.05fr .95fr; gap: 16px; align-items: start; }
+    @media (max-width: 900px) { .world-layout { grid-template-columns: 1fr; } }
+    .world-col h3 { font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
+    .world-item { font-size: 13px; padding: 7px 0; border-bottom: 1px solid var(--line); color: var(--text); }
+    .world-item b { display: block; }
+    .world-item span { color: var(--muted); font-size: 12px; }
+    .account-bar { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
     .flow-steps { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
     .flow-step {
       background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
@@ -2409,11 +2416,10 @@ function showView(name){
       views: [
         { id: "ava-metier", label: "Métier" },
         { id: "ava-simulateur", label: "Simulateur" },
+        { id: "ava-sim-rules", label: "Simulateur de règles" },
         { id: "ava-cadrage", label: "Cadrage" },
         { id: "ava-decisions", label: "Décisions" },
         { id: "ava-rules", label: "Règles" },
-        { id: "ava-sim-rules", label: "Sim. règles" },
-        { id: "ava-sim-global", label: "Sim. global" },
         { id: "ava-commands", label: "Commandes" }
       ]
     },
@@ -2712,6 +2718,74 @@ function showView(name){
       else warnings.push(hit);
     });
     return { allowed: errors.length === 0, warnings, errors, triggeredRules: triggered };
+  }
+
+  function seedWorld() {
+    return {
+      seq: 40,
+      accountId: "martin",
+      companies: [
+        { id: "alpha", name: "Société Alpha", role: "client" },
+        { id: "beta", name: "Société Beta", role: "prospect" },
+        { id: "gamma", name: "Gamma Staffing", role: "fournisseur" },
+        { id: "ava", name: "Avaliance", role: "agence" }
+      ],
+      accounts: [
+        { id: "martin", name: "Martin Dupuis", role: "Commercial", perms: ["CreateCompany","CreateContact","CreateNeed","WinNeed"] },
+        { id: "sophie", name: "Sophie Leroy", role: "RH / Recrutement", perms: ["PositionCandidateOnNeed","ConvertCandidateToResource","CreateNeed"] },
+        { id: "karim", name: "Karim Haddad", role: "Staffing / DP", perms: ["PositionResourceOnNeed","CreateProjectFromNeed","CreateProject","CreatePrestation","ClosePrestation","CloseProject","RecordTimesheet","ChangePrestationResource","WinNeed"] }
+      ],
+      contacts: [
+        { id: "c1", name: "Nadia Benali", companyId: "alpha", title: "DSI" },
+        { id: "c2", name: "Paul Meyer", companyId: "beta", title: "DRH" },
+        { id: "c3", name: "Inès Khelifi", companyId: "gamma", title: "Account" }
+      ],
+      candidates: [
+        { id: "dupont", name: "Lucas Dupont", title: "Consultant Cloud", step: "en_cours" },
+        { id: "leila", name: "Leïla Mansouri", title: "Data Engineer", step: "vivier" },
+        { id: "yanis", name: "Yanis Cohen", title: "Chef de projet", step: "en_cours" }
+      ],
+      resources: [
+        { id: "jean", name: "Jean Rivière", type: "INTERNAL" },
+        { id: "sara", name: "Sara External", type: "EXTERNAL", supplierId: "gamma" },
+        { id: "ahmed", name: "Ahmed B.", type: "INTERNAL" }
+      ],
+      needs: [
+        { id: "n1", title: "Développeur Backend", companyId: "alpha", contactId: "c1", status: "ouvert", priority: "P1" },
+        { id: "n2", title: "Data Engineer", companyId: "beta", contactId: "c2", status: "staffing", priority: "P2" },
+        { id: "n3", title: "Chef de projet SI", companyId: "alpha", contactId: "c1", status: "pourvu", priority: "P3" },
+        { id: "n4", title: "Mobile Flutter", companyId: "alpha", contactId: "", status: "ouvert", priority: "P1" },
+        { id: "n5", title: "Architecte Cloud", companyId: "beta", contactId: "", status: "ouvert", priority: "P2" }
+      ],
+      positionings: [
+        { id: "pos1", needId: "n1", resourceId: "jean", candidateId: "", state: "propose" },
+        { id: "pos2", needId: "n2", resourceId: "", candidateId: "dupont", state: "propose" },
+        { id: "pos3", needId: "n2", resourceId: "ahmed", candidateId: "", state: "en_cours" }
+      ],
+      projects: [
+        { id: "p1", name: "AVA-PRJ-1 Backend Alpha", companyId: "alpha", needId: "n3", status: "en_cours" }
+      ],
+      prestations: [
+        { id: "s1", projectId: "p1", resourceId: "jean", load: 60, status: "en_cours" },
+        { id: "s2", projectId: "p1", resourceId: "sara", load: 40, status: "en_cours" }
+      ],
+      log: []
+    };
+  }
+  let WORLD = seedWorld();
+  function nextId(prefix) {
+    WORLD.seq += 1;
+    return prefix + WORLD.seq;
+  }
+  function companyName(id) {
+    const c = WORLD.companies.find((x) => x.id === id);
+    return c ? c.name : "—";
+  }
+  function loadOf(resourceId) {
+    return WORLD.prestations.filter((p) => p.resourceId === resourceId && p.status !== "cloturee").reduce((s, p) => s + Number(p.load || 0), 0);
+  }
+  function account() {
+    return WORLD.accounts.find((a) => a.id === WORLD.accountId) || WORLD.accounts[0];
   }
 
   const OPS = [
@@ -3091,59 +3165,237 @@ DB + services + permissions + API + tests + UI</pre>
       <ul>${rows}</ul>${next}</div>`;
   }
 
+  function liveOps() {
+    const co = [["", "— aucune"]].concat(WORLD.companies.map((c) => [c.id, c.name + " · " + c.role]));
+    const ct = [["", "Aucun (facultatif)"]].concat(WORLD.contacts.map((c) => [c.id, c.name + " · " + companyName(c.companyId)]));
+    const nd = [["", "—"]].concat(WORLD.needs.map((n) => [n.id, n.title + " · " + n.status]));
+    const cand = [["", "—"]].concat(WORLD.candidates.map((c) => [c.id, c.name + " · " + c.step]));
+    const res = [["", "—"]].concat(WORLD.resources.map((r) => [r.id, r.name + " · " + r.type + " · " + loadOf(r.id) + " %"]));
+    const humans = WORLD.resources.map((r) => ["res:" + r.id, "Ressource · " + r.name]).concat(WORLD.candidates.map((c) => ["cand:" + c.id, "Candidat · " + c.name]));
+    const prj = [["", "—"]].concat(WORLD.projects.map((p) => [p.id, p.name]));
+    const presta = [["", "—"]].concat(WORLD.prestations.map((s) => {
+      const r = WORLD.resources.find((x) => x.id === s.resourceId);
+      return [s.id, (r ? r.name : s.resourceId) + " · " + s.load + "% · " + s.status];
+    }));
+    return [
+      { id: "CreateCompany", label: "Créer Société",
+        fields: [
+          { name: "name", label: "Nom", type: "text", value: "Société Delta" },
+          { name: "role", label: "Rôle", options: [["client","client"],["prospect","prospect"],["fournisseur","fournisseur"]] }
+        ],
+        ctx: (f) => ({ forbidden: !account().perms.includes("CreateCompany") }),
+        apply: (f) => { WORLD.companies.push({ id: nextId("co"), name: f.name || "Société", role: f.role }); } },
+      { id: "CreateContact", label: "Créer Contact",
+        fields: [
+          { name: "name", label: "Nom", type: "text", value: "Nouveau contact" },
+          { name: "companyId", label: "Société", options: co }
+        ],
+        ctx: (f) => ({ companyId: f.companyId, forbidden: !account().perms.includes("CreateContact") }),
+        apply: (f) => { WORLD.contacts.push({ id: nextId("c"), name: f.name || "Contact", companyId: f.companyId, title: "Contact" }); } },
+      { id: "CreateNeed", label: "Créer Besoin",
+        fields: [
+          { name: "title", label: "Titre", type: "text", value: "Nouveau besoin" },
+          { name: "companyId", label: "Société", options: co },
+          { name: "contactId", label: "Contact", options: ct },
+          { name: "priority", label: "Priorité", options: [["P1","P1"],["P2","P2"],["P3","P3"]] },
+          { name: "status", label: "Statut", options: [["ouvert","ouvert"],["P1","P1 comme statut (interdit)"]] }
+        ],
+        ctx: (f) => ({ companyId: f.companyId, contactId: f.contactId, status: f.status, forbidden: !account().perms.includes("CreateNeed") }),
+        apply: (f) => { WORLD.needs.push({ id: nextId("n"), title: f.title || "Besoin", companyId: f.companyId, contactId: f.contactId, status: "ouvert", priority: f.priority || "P2" }); } },
+      { id: "PositionCandidateOnNeed", label: "Positionner Candidat",
+        fields: [
+          { name: "needId", label: "Besoin", options: nd },
+          { name: "candidateId", label: "Candidat", options: cand },
+          { name: "alsoRes", label: "Aussi une ressource ?", options: [["","Non"]].concat(res.filter((x) => x[0])) }
+        ],
+        ctx: (f) => ({ needId: f.needId, candidateId: f.candidateId, resourceId: f.alsoRes, forbidden: !account().perms.includes("PositionCandidateOnNeed") }),
+        apply: (f) => { WORLD.positionings.push({ id: nextId("pos"), needId: f.needId, candidateId: f.candidateId, resourceId: "", state: "propose" }); } },
+      { id: "PositionResourceOnNeed", label: "Positionner Ressource",
+        fields: [
+          { name: "needId", label: "Besoin", options: nd },
+          { name: "resourceId", label: "Ressource", options: res }
+        ],
+        ctx: (f) => ({ needId: f.needId, resourceId: f.resourceId, forbidden: !account().perms.includes("PositionResourceOnNeed") }),
+        apply: (f) => { WORLD.positionings.push({ id: nextId("pos"), needId: f.needId, resourceId: f.resourceId, candidateId: "", state: "propose" }); } },
+      { id: "ConvertCandidateToResource", label: "Candidat → Ressource",
+        fields: [{ name: "candidateId", label: "Candidat", options: cand }],
+        ctx: (f) => ({ candidateId: f.candidateId, forbidden: !account().perms.includes("ConvertCandidateToResource") }),
+        apply: (f) => {
+          const c = WORLD.candidates.find((x) => x.id === f.candidateId);
+          if (!c) return;
+          c.step = "converti";
+          if (!WORLD.resources.some((r) => r.id === c.id)) WORLD.resources.push({ id: c.id, name: c.name, type: "INTERNAL" });
+        } },
+      { id: "WinNeed", label: "Gagner un Besoin",
+        fields: [{ name: "needId", label: "Besoin", options: nd }],
+        ctx: (f) => ({ needId: f.needId, forbidden: !account().perms.includes("WinNeed") }),
+        apply: (f) => { const n = WORLD.needs.find((x) => x.id === f.needId); if (n) n.status = "pourvu"; } },
+      { id: "CreateProjectFromNeed", label: "Projet depuis Besoin",
+        fields: [
+          { name: "needId", label: "Besoin", options: nd },
+          { name: "fromCandidate", label: "Lier au candidat ?", options: [["no","Non"],["yes","Oui (interdit)"]] }
+        ],
+        ctx: (f) => ({ needId: f.needId, projectId: "tmp", fromCandidate: f.fromCandidate === "yes", forbidden: !account().perms.includes("CreateProjectFromNeed") }),
+        apply: (f) => {
+          const n = WORLD.needs.find((x) => x.id === f.needId);
+          WORLD.projects.push({ id: nextId("p"), name: "PRJ · " + (n ? n.title : "Besoin"), companyId: n ? n.companyId : "", needId: f.needId, status: "en_cours" });
+        } },
+      { id: "CreateProject", label: "Créer Projet",
+        fields: [
+          { name: "companyId", label: "Société", options: co },
+          { name: "fromCandidate", label: "Depuis un Candidat ?", options: [["no","Non"],["yes","Oui (interdit)"]] }
+        ],
+        ctx: (f) => ({ companyId: f.companyId, fromCandidate: f.fromCandidate === "yes", forbidden: !account().perms.includes("CreateProject") }),
+        apply: (f) => { WORLD.projects.push({ id: nextId("p"), name: "PRJ · " + companyName(f.companyId), companyId: f.companyId, needId: "", status: "en_cours" }); } },
+      { id: "CreatePrestation", label: "Créer Prestation",
+        fields: [
+          { name: "projectId", label: "Projet", options: prj },
+          { name: "human", label: "Profil", options: humans },
+          { name: "load", label: "Charge %", options: [["30","30"],["40","40"],["60","60"],["80","80"],["100","100"]] }
+        ],
+        ctx: (f) => {
+          const isCand = (f.human || "").startsWith("cand:");
+          const hid = (f.human || "").split(":")[1] || "";
+          return {
+            projectId: f.projectId, profile: isCand ? "candidate" : "resource",
+            resourceId: isCand ? "" : hid, candidateId: isCand ? hid : "",
+            load: Number(f.load), currentLoad: isCand ? 0 : loadOf(hid),
+            forbidden: !account().perms.includes("CreatePrestation")
+          };
+        },
+        apply: (f) => {
+          const hid = (f.human || "").split(":")[1];
+          if ((f.human || "").startsWith("cand:")) return;
+          WORLD.prestations.push({ id: nextId("s"), projectId: f.projectId, resourceId: hid, load: Number(f.load), status: "en_cours" });
+        } },
+      { id: "ChangePrestationResource", label: "Changer Ressource",
+        fields: [
+          { name: "prestationId", label: "Prestation", options: presta },
+          { name: "mutateResourceId", label: "Méthode", options: [["yes","UPDATE resource_id (interdit)"],["no","Clôturer + créer"]] }
+        ],
+        ctx: (f) => ({ mutateResourceId: f.mutateResourceId === "yes", forbidden: !account().perms.includes("ChangePrestationResource") }),
+        apply: (f) => {
+          if (f.mutateResourceId === "yes") return;
+          const s = WORLD.prestations.find((x) => x.id === f.prestationId);
+          if (s) s.status = "cloturee";
+        } },
+      { id: "RecordTimesheet", label: "Déclarer Temps",
+        fields: [{ name: "target", label: "Sur", options: [["presta","Une prestation"],["projet","Le projet (interdit)"]] }],
+        ctx: (f) => ({ prestationId: f.target === "presta" ? (WORLD.prestations[0] && WORLD.prestations[0].id) : "", forbidden: !account().perms.includes("RecordTimesheet") }),
+        apply: () => {} },
+      { id: "ClosePrestation", label: "Clôturer Prestation",
+        fields: [
+          { name: "prestationId", label: "Prestation", options: presta },
+          { name: "rewriteClosedMargin", label: "Réécrire la marge plus tard ?", options: [["no","Non, snapshot"],["yes","Oui (interdit)"]] }
+        ],
+        ctx: (f) => ({ rewriteClosedMargin: f.rewriteClosedMargin === "yes", forbidden: !account().perms.includes("ClosePrestation") }),
+        apply: (f) => { const s = WORLD.prestations.find((x) => x.id === f.prestationId); if (s) s.status = "cloturee"; } },
+      { id: "CloseProject", label: "Clôturer Projet",
+        fields: [{ name: "projectId", label: "Projet", options: prj }],
+        ctx: (f) => ({
+          openServices: WORLD.prestations.some((s) => s.projectId === f.projectId && s.status !== "cloturee"),
+          forbidden: !account().perms.includes("CloseProject")
+        }),
+        apply: (f) => { const p = WORLD.projects.find((x) => x.id === f.projectId); if (p) p.status = "clos"; } }
+    ];
+  }
+
+  function worldPanel() {
+    const items = (rows) => rows.map((r) => `<div class="world-item"><b>${esc(r[0])}</b><span>${esc(r[1])}</span></div>`).join("");
+    return `<div class="panel">
+      <h3>Sociétés (${WORLD.companies.length})</h3>
+      ${items(WORLD.companies.map((c) => [c.name, c.role]))}
+      <h3>Comptes démo</h3>
+      ${items(WORLD.accounts.map((a) => [a.name, a.role + " · " + a.perms.length + " commandes"]))}
+      <h3>Besoins (${WORLD.needs.length})</h3>
+      ${items(WORLD.needs.map((n) => [n.title, companyName(n.companyId) + " · " + n.status + " · " + n.priority + (n.contactId ? "" : " · sans contact")]))}
+      <h3>Candidats</h3>
+      ${items(WORLD.candidates.map((c) => [c.name, c.title + " · " + c.step]))}
+      <h3>Ressources</h3>
+      ${items(WORLD.resources.map((r) => [r.name, r.type + " · charge " + loadOf(r.id) + " %"]))}
+      <h3>Projets / Prestations</h3>
+      ${items(WORLD.projects.map((p) => [p.name, p.status + " · " + WORLD.prestations.filter((s) => s.projectId === p.id).length + " prestation(s)"]))}
+    </div>`;
+  }
+
   function renderSimRules() {
     const el = document.getElementById("view-ava-sim-rules");
-    el.innerHTML = `<h2>G. Simulateur des règles</h2>
-      <p class="lead">Moteur data-driven : validateOperation(operation, context). Ajouter une règle dans businessRules, pas dans le HTML.</p>
+    const acc = account();
+    el.innerHTML = `<h2>Simulateur de règles</h2>
+      <p class="lead">Monde démo vivant : 4 sociétés, 3 comptes, 5 besoins. Une commande autorisée <strong>écrit</strong> dans le monde. Un refus ne change rien.</p>
       ${statsBar()}
-      <div class="sim-form panel">
-        <label>Opération</label>
-        <select id="sr-op">${OPS.map((o) => `<option value="${o.id}">${esc(o.label)}</option>`).join("")}</select>
-        <div id="sr-fields"></div>
-        <div class="rowbtns"><button type="button" class="create-btn primary" id="sr-run">Valider</button></div>
-        <div id="sr-out"></div>
+      <div class="account-bar">
+        ${WORLD.accounts.map((a) => `<button type="button" class="pill" data-acc="${a.id}" aria-pressed="${a.id===WORLD.accountId}">${esc(a.name)} · ${esc(a.role)}</button>`).join("")}
+        <button type="button" id="sr-reset">Réinitialiser le monde</button>
       </div>
-      <h3>I. Architecture du simulateur</h3>
-      <pre class="ava-code good">validateOperation(operation, context) →
-  { allowed, warnings, errors, triggeredRules }</pre>`;
+      <p class="note">Compte actif : <strong>${esc(acc.name)}</strong> (${esc(acc.role)}). Les permissions backend s’appliquent même si le bouton est visible (RULE-018).</p>
+      <div class="scen" id="sg-btns">${GLOBAL_SCEN.map((s) => `<button type="button" data-sg="${s.id}">${esc(s.title)}</button>`).join("")}</div>
+      <div class="world-layout">
+        <div>${worldPanel()}</div>
+        <div class="sim-form panel">
+          <label>Opération</label>
+          <select id="sr-op">${liveOps().map((o) => `<option value="${o.id}">${esc(o.label)}</option>`).join("")}</select>
+          <div id="sr-fields"></div>
+          <div class="rowbtns"><button type="button" class="create-btn primary" id="sr-run">Exécuter</button></div>
+          <div id="sr-out"></div>
+          <h3>Journal</h3>
+          ${WORLD.log.slice().reverse().slice(0, 8).map((l) => `<div class="world-item"><b>${esc(l.op)}</b><span>${esc(l.by)} · ${esc(l.result)}</span></div>`).join("") || "<p class=\"note\">Encore vide.</p>"}
+        </div>
+      </div>`;
     const fields = el.querySelector("#sr-fields");
     const opSel = el.querySelector("#sr-op");
     const paintFields = () => {
-      const op = OPS.find((o) => o.id === opSel.value);
-      fields.innerHTML = op.fields.map((f) => `<label>${esc(f.label)}</label>
-        <select data-field="${f.name}">${f.options.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join("")}</select>`).join("");
+      const op = liveOps().find((o) => o.id === opSel.value);
+      fields.innerHTML = op.fields.map((f) => {
+        if (f.type === "text") return `<label>${esc(f.label)}</label><input data-field="${f.name}" value="${esc(f.value || "")}">`;
+        return `<label>${esc(f.label)}</label><select data-field="${f.name}">${(f.options || []).map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join("")}</select>`;
+      }).join("");
     };
     paintFields();
     opSel.onchange = paintFields;
-    el.querySelector("#sr-run").onclick = () => {
-      const op = OPS.find((o) => o.id === opSel.value);
-      const result = validateOperation(op.id, op.ctx(readForm(el)));
-      el.querySelector("#sr-out").innerHTML = verdictHTML(op.id, result, op.label);
+    const run = (op, f) => {
+      const ctx = op.ctx(f);
+      const result = validateOperation(op.id, ctx);
+      if (result.allowed && op.apply) op.apply(f);
+      WORLD.log.push({ op: op.label, by: account().name, result: result.allowed ? (result.warnings.length ? "autorisé + alerte" : "autorisé") : "refusé" });
+      renderSimRules();
+      document.getElementById("sr-out").innerHTML = verdictHTML(op.id, result, op.label);
+      const sel = document.getElementById("sr-op");
+      if (sel) { sel.value = op.id; sel.dispatchEvent(new Event("change")); }
     };
-  }
-
-  function renderSimGlobal() {
-    const el = document.getElementById("view-ava-sim-global");
-    el.innerHTML = `<h2>H. Simulateur global Ava Manager</h2>
-      <p class="lead">Parcours AVA entiers, distincts du simulateur Boond (écrans). Même moteur de règles.</p>
-      ${statsBar()}
-      <div class="scen" id="sg-btns">${GLOBAL_SCEN.map((s) => `<button type="button" data-sg="${s.id}">${esc(s.title)}</button>`).join("")}</div>
-      <div id="sg-out"></div>`;
+    el.querySelector("#sr-run").onclick = () => {
+      const op = liveOps().find((o) => o.id === opSel.value);
+      run(op, readForm(el));
+    };
+    el.querySelector("#sr-reset").onclick = () => { WORLD = seedWorld(); renderSimRules(); };
+    el.querySelector(".account-bar").onclick = (e) => {
+      const b = e.target.closest("[data-acc]");
+      if (!b) return;
+      WORLD.accountId = b.dataset.acc;
+      renderSimRules();
+    };
     el.querySelector("#sg-btns").onclick = (e) => {
       const b = e.target.closest("[data-sg]");
       if (!b) return;
       const scen = GLOBAL_SCEN.find((s) => s.id === b.dataset.sg);
-      const steps = scen.steps.map((st) => {
+      const lines = [];
+      scen.steps.forEach((st) => {
         const r = validateOperation(st.op, st.ctx);
-        const cls = r.allowed ? (r.warnings.length ? "warn" : "ok") : "ko";
-        const rules = r.triggeredRules.map((t) => `${t.id}: ${t.message}`).join(" · ") || "ok";
-        return `<div class="flow-step ${cls}"><strong>${esc(st.op)}</strong> — ${esc(st.note)}<br><span class="note">${esc(rules)}</span></div>`;
+        lines.push({ op: st.op, note: st.note, r });
+      });
+      const html = lines.map((x) => {
+        const cls = x.r.allowed ? (x.r.warnings.length ? "warn" : "ok") : "ko";
+        const rules = x.r.triggeredRules.map((t) => t.id + ": " + t.message).join(" · ") || "ok";
+        return `<div class="flow-step ${cls}"><strong>${esc(x.op)}</strong> — ${esc(x.note)}<br><span class="note">${esc(rules)}</span></div>`;
       }).join("");
-      const blocked = scen.steps.some((st) => !validateOperation(st.op, st.ctx).allowed);
-      el.querySelector("#sg-out").innerHTML = `<h3>${esc(scen.title)}</h3>
-        <div class="flow-steps">${steps}</div>
-        <p class="lead">${blocked ? "Le parcours contient au moins un REFUS métier." : "Parcours autorisé (warnings possibles)."}</p>`;
+      const blocked = lines.some((x) => !x.r.allowed);
+      document.getElementById("sr-out").innerHTML = `<h3>${esc(scen.title)}</h3><div class="flow-steps">${html}</div>
+        <p class="lead">${blocked ? "Au moins un REFUS." : "Parcours autorisé (warnings possibles)."} Pour écrire dans le monde, utilise Exécuter à droite.</p>`;
     };
+  }
+
+  function renderSimGlobal() {
+    renderSimRules();
   }
 
   function renderCommands() {
@@ -3528,7 +3780,7 @@ DB + services + permissions + API + tests + UI</pre>
   }
 
   function showHubView(name) {
-    const aliases = { ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage" };
+    const aliases = { ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", "ava-sim-global": "ava-sim-rules" };
     if (aliases[name]) name = aliases[name];
     if (!ALL_VIEWS.includes(name)) name = "ava-metier";
     const product = productOf(name);
