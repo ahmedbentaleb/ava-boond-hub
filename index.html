@@ -4,18 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Audit Ava Manager — Boond interactif</title>
-  <meta name="description" content="Cadrage Ava Manager et reverse Boond : architecture, décisions, règles, simulateurs, 59 écrans.">
+  <meta name="description" content="Ava Manager (builder) et Boond Manager (reverse engineering). Un seul hub.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ahmedbentaleb.github.io/ava-boond-hub/">
   <meta property="og:title" content="Audit Ava Manager — Boond interactif">
-  <meta property="og:description" content="Ava Manager (cadrage, règles, simulateurs) et Boond Manager (métier, spec, audit).">
+  <meta property="og:description" content="Ava Manager builder + Boond Manager reverse engineering.">
   <meta property="og:image" content="https://ahmedbentaleb.github.io/ava-boond-hub/og.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Audit Ava Manager — Boond interactif">
-  <meta name="twitter:description" content="Cadrage Ava + reverse Boond.">
+  <meta name="twitter:description" content="Ava builder + Boond reverse.">
   <meta name="twitter:image" content="https://ahmedbentaleb.github.io/ava-boond-hub/og.jpg">
   <style>
     :root {
@@ -214,9 +214,13 @@
     .hub-product { display: flex; gap: 8px; margin-bottom: 8px; }
     .hub-product button {
       border: 1px solid var(--line); background: transparent; color: var(--text);
-      padding: 8px 16px; border-radius: 6px; cursor: pointer; font: inherit; font-weight: 600;
+      padding: 8px 14px; border-radius: 6px; cursor: pointer; font: inherit;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 2px; line-height: 1.2;
     }
+    .hub-product button strong { font-size: 14px; font-weight: 600; }
+    .hub-product button span { font-size: 11px; font-weight: 400; color: var(--muted); }
     .hub-product button[aria-pressed="true"] { background: #2a2a2a; border-color: #666; }
+    .hub-product button[aria-pressed="true"] span { color: var(--text); }
     .hub-sub { display: flex; flex-wrap: wrap; gap: 6px; }
     .hub-sub button {
       border: 1px solid var(--line); background: transparent; color: var(--muted);
@@ -289,12 +293,14 @@
 <body>
 <main>
   <h1>Ava Manager</h1>
-  <p class="lead">Deux lectures du même métier : le cadrage du futur Ava, et le reverse de Boond. Ni clone d’écrans, ni cahier 2022 recopié.</p>
+  <p class="lead">Un lien, deux produits. Ava Manager = builder du métier cible. Boond Manager = reverse engineering de l’existant.</p>
   <div class="hub-wrap" id="hub">
     <div class="hub-product" id="hub-product"></div>
     <div class="hub-sub" id="hub-sub"></div>
   </div>
 
+  <section class="view" id="view-ava-metier" hidden></section>
+  <section class="view" id="view-ava-simulateur" hidden></section>
   <section class="view" id="view-ava-cadrage" hidden></section>
   <section class="view" id="view-ava-decisions" hidden></section>
   <section class="view" id="view-ava-rules" hidden></section>
@@ -2399,7 +2405,10 @@ function showView(name){
   const PRODUCTS = {
     ava: {
       label: "Ava Manager",
+      hint: "Builder",
       views: [
+        { id: "ava-metier", label: "Métier" },
+        { id: "ava-simulateur", label: "Simulateur" },
         { id: "ava-cadrage", label: "Cadrage" },
         { id: "ava-decisions", label: "Décisions" },
         { id: "ava-rules", label: "Règles" },
@@ -2410,6 +2419,7 @@ function showView(name){
     },
     boond: {
       label: "Boond Manager",
+      hint: "Reverse engineering",
       views: [
         { id: "metier", label: "Métier" },
         { id: "simulateur", label: "Simulateur" },
@@ -2420,7 +2430,7 @@ function showView(name){
     }
   };
 
-  const ALL_VIEWS = PRODUCTS.ava.views.concat(PRODUCTS.boond.views).map((v) => v.id);
+  const ALL_VIEWS = Object.values(PRODUCTS).flatMap((p) => p.views).map((v) => v.id);
 
   const DECISIONS = [
     {
@@ -3148,7 +3158,351 @@ DB + services + permissions + API + tests + UI</pre>
       <p class="note">WinNeed() ne crée pas le Projet. CreateProjectFromNeed() le fait. ConvertCandidateToResource() n’est pas PATCH status.</p>`;
   }
 
+  const AVA_COLORS = { 1: "#4a90c8", 2: "#8b73c7", 3: "#2f9d6a", 4: "#d17a3a", 5: "#d45a8a" };
+  const AVA_CHEMINS = [
+    { id: 1, nom: "CRM", verbe: "Nourrir le client",
+      caption: "Société → Contact → Action · Besoin sans Contact possible",
+      hint: "C1 Ava : Société obligatoire. Contact recommandé, pas bloquant (D4 ouvert).",
+      edges: [["societe","contact"],["contact","action"],["societe","besoin"]],
+      steps: ["Société","Contact","Besoin"] },
+    { id: 2, nom: "Recrutement", verbe: "Faire le vivier",
+      caption: "Personne → Candidat → Positionnement. Conversion vers Ressource.",
+      hint: "C2 Ava : l’identité reste sur Personne. Pas de Projet ni Prestation depuis le Candidat.",
+      edges: [["personne","candidat"],["candidat","action"],["candidat","positionnement"],["candidat","ressource"]],
+      steps: ["Personne","Candidat","Positionnement","Ressource"] },
+    { id: 3, nom: "Staffing", verbe: "Pourvoir le besoin",
+      caption: "Société → Besoin → Positionnement → Projet",
+      hint: "C3 Ava : XOR candidat/ressource. WinNeed() puis CreateProjectFromNeed(). Pas de trigger magique.",
+      edges: [["societe","besoin"],["besoin","positionnement"],["candidat","positionnement"],["ressource","positionnement"],["besoin","projet"]],
+      steps: ["Société","Besoin","Positionnement","Projet"] },
+    { id: 4, nom: "Production", verbe: "Exécuter la mission",
+      caption: "Projet → Prestation ← Ressource ← Personne",
+      hint: "C4 Ava : N prestations simultanées. resource_id immuable. marge_courante puis snapshot.",
+      edges: [["personne","ressource"],["projet","prestation"],["ressource","prestation"]],
+      steps: ["Personne","Ressource","Projet","Prestation"] },
+    { id: 5, nom: "Externe", verbe: "Staffer un fournisseur",
+      caption: "Société fournisseur → Ressource EXTERNAL → Prestation",
+      hint: "C5 Ava : un seul objet Ressource, resource_type = EXTERNAL + supplier_company_id.",
+      edges: [["societe","ressource"],["ressource","positionnement"],["ressource","prestation"]],
+      steps: ["Société","Ressource","Prestation"] }
+  ];
+  const AVA_NODES = {
+    societe: { x: 24, y: 24, label: "Société" },
+    contact: { x: 200, y: 24, label: "Contact" },
+    besoin: { x: 200, y: 140, label: "Besoin" },
+    personne: { x: 24, y: 200, label: "Personne" },
+    candidat: { x: 200, y: 260, label: "Candidat" },
+    ressource: { x: 24, y: 320, label: "Ressource" },
+    positionnement: { x: 420, y: 140, label: "Positionnement" },
+    projet: { x: 620, y: 80, label: "Projet" },
+    prestation: { x: 620, y: 220, label: "Prestation" },
+    action: { x: 420, y: 280, label: "Action" }
+  };
+  const AVA_EDGES = [
+    ["societe","contact"],["contact","action"],["societe","besoin"],
+    ["personne","candidat"],["personne","ressource"],["candidat","action"],
+    ["candidat","positionnement"],["candidat","ressource"],
+    ["besoin","positionnement"],["ressource","positionnement"],["besoin","projet"],
+    ["projet","prestation"],["ressource","prestation"],["societe","ressource"]
+  ];
+  let avaActive = 3;
+  const AVA_W = 128, AVA_H = 36;
+  function avaKey(a, b) { return a + ">" + b; }
+  function avaCenter(id) {
+    const n = AVA_NODES[id];
+    return { x: n.x + AVA_W / 2, y: n.y + AVA_H / 2 };
+  }
+
+  function renderAvaMetier() {
+    const el = document.getElementById("view-ava-metier");
+    el.innerHTML = `
+      <h2>Métier Ava Manager</h2>
+      <p class="lead">Même geste que Boond : colorer un chemin. Ici c’est le graphe <strong>cible Ava</strong>, pas le clone des écrans Boond. v0 — évoluera avec les décisions.</p>
+      <div class="pills" id="ava-pills"></div>
+      <p id="ava-caption"></p>
+      <div class="graph-wrap">
+        <svg id="ava-graph" viewBox="0 0 780 380" role="img" aria-label="Graphe d’objets Ava Manager"></svg>
+      </div>
+      <p class="note" id="ava-hint"></p>
+      <h2>Bandes</h2>
+      <div id="ava-strips"></div>
+      <h2>Règle</h2>
+      <p class="lead">Personne porte l’identité. Candidat et Ressource sont des profils. Positionnement = 1 besoin × 1 humain. Prestation = 1 projet × 1 ressource, jamais un candidat.</p>
+      <div class="grid">
+        <div>
+          <h3>Ce qui change vs Boond</h3>
+          <p>Personne au centre. Pas de + Projet depuis un candidat. Contact facultatif sur le Besoin (D4). P1–P3 = priorité, pas un état. N prestations + alerte de charge.</p>
+        </div>
+        <div>
+          <h3>Ce qui reste</h3>
+          <p>Les cinq métiers. Positionnement XOR. Prestation comme vérité de production. Action transversale. Société = client et fournisseur.</p>
+        </div>
+      </div>`;
+    document.getElementById("ava-strips").innerHTML = AVA_CHEMINS.map((c) => {
+      const boxes = c.steps.map((s) => `<span class="box" style="border-color:${AVA_COLORS[c.id]}">${s}</span>`).join('<span class="arrow">→</span>');
+      return `<div class="path-row"><span class="swatch" style="background:${AVA_COLORS[c.id]}"></span><strong>C${c.id} ${c.nom}</strong>${boxes}</div>`;
+    }).join("");
+    drawAva();
+  }
+
+  function drawAva() {
+    const c = AVA_CHEMINS.find((x) => x.id === avaActive);
+    const cap = document.getElementById("ava-caption");
+    const hint = document.getElementById("ava-hint");
+    const pills = document.getElementById("ava-pills");
+    const graph = document.getElementById("ava-graph");
+    if (!cap || !graph) return;
+    cap.innerHTML = `<strong>Chemin ${c.id} — ${c.nom}</strong> · ${c.verbe}<br>${c.caption}`;
+    hint.textContent = c.hint;
+    pills.innerHTML = AVA_CHEMINS.map((x) =>
+      `<button class="pill" type="button" aria-pressed="${x.id===avaActive}" data-ava-c="${x.id}">
+        <span class="swatch" style="background:${AVA_COLORS[x.id]}"></span>C${x.id} ${x.nom}
+      </button>`).join("");
+    pills.onclick = (e) => {
+      const b = e.target.closest("[data-ava-c]");
+      if (!b) return;
+      avaActive = +b.dataset.avaC;
+      drawAva();
+    };
+    const live = new Set(c.edges.map(([a, b]) => avaKey(a, b)));
+    const liveN = new Set();
+    c.edges.forEach(([a, b]) => { liveN.add(a); liveN.add(b); });
+    const lines = AVA_EDGES.map(([a, b]) => {
+      const p = avaCenter(a), q = avaCenter(b);
+      const on = live.has(avaKey(a, b));
+      return `<line x1="${p.x}" y1="${p.y}" x2="${q.x}" y2="${q.y}" stroke="${on ? AVA_COLORS[c.id] : "#3a3a3a"}" stroke-width="${on ? 3 : 1}"/>`;
+    }).join("");
+    const boxes = Object.entries(AVA_NODES).map(([id, n]) => {
+      const on = liveN.has(id);
+      return `<g>
+        <rect x="${n.x}" y="${n.y}" width="${AVA_W}" height="${AVA_H}" rx="4"
+          fill="${on ? "#2a2a2a" : "#141414"}" stroke="${on ? AVA_COLORS[c.id] : "#3a3a3a"}" stroke-width="${on ? 2 : 1}"/>
+        <text x="${n.x+AVA_W/2}" y="${n.y+23}" text-anchor="middle" fill="${on ? "#f0f0f0" : "#7a7a7a"}">${n.label}</text>
+      </g>`;
+    }).join("");
+    graph.innerHTML = lines + boxes;
+  }
+
+  const AVA_SIM_COLORS = { C1: "#4a90c8", C2: "#8b73c7", C3: "#2f9d6a", C4: "#d17a3a", C5: "#d45a8a" };
+  const AVA_SIM_META = {
+    C1: { label: "CRM", verbe: "Nourrir le client", path: "Société → Contact? → Besoin", first: "ava-societes" },
+    C2: { label: "Recrutement", verbe: "Faire le vivier", path: "Personne → Candidat → Positionnement", first: "ava-candidats" },
+    C3: { label: "Staffing", verbe: "Pourvoir le besoin", path: "Besoin → Positionnement → Projet", first: "ava-besoins" },
+    C4: { label: "Production", verbe: "Exécuter", path: "Projet → Prestation ← Ressource", first: "ava-projets" },
+    C5: { label: "Externe", verbe: "Fournisseur", path: "Société fournisseur → Ressource EXTERNAL", first: "ava-ressources" }
+  };
+  const AVA_SCREENS = {
+    "ava-dash": { label: "Tableau de bord", chemins: [] },
+    "ava-personnes": { label: "Personnes", chemins: ["C2","C4"] },
+    "ava-personne": { label: "Fiche personne", chemins: ["C2","C4"] },
+    "ava-candidats": { label: "Candidats", chemins: ["C2"] },
+    "ava-candidat": { label: "Fiche candidat", chemins: ["C2"] },
+    "ava-ressources": { label: "Ressources", chemins: ["C3","C4","C5"] },
+    "ava-ressource": { label: "Fiche ressource", chemins: ["C3","C4","C5"] },
+    "ava-societes": { label: "Sociétés", chemins: ["C1","C3","C5"] },
+    "ava-societe": { label: "Fiche société", chemins: ["C1","C3","C5"] },
+    "ava-contacts": { label: "Contacts", chemins: ["C1"] },
+    "ava-contact": { label: "Fiche contact", chemins: ["C1"] },
+    "ava-besoins": { label: "Besoins", chemins: ["C3"] },
+    "ava-besoin": { label: "Fiche besoin", chemins: ["C3"] },
+    "ava-pos": { label: "Positionnements", chemins: ["C2","C3"] },
+    "ava-pos-fiche": { label: "Fiche positionnement", chemins: ["C2","C3"] },
+    "ava-projets": { label: "Projets", chemins: ["C3","C4"] },
+    "ava-projet": { label: "Fiche projet", chemins: ["C3","C4"] },
+    "ava-prestas": { label: "Prestations", chemins: ["C4"] },
+    "ava-presta": { label: "Ligne prestation", chemins: ["C4"] }
+  };
+  const AVA_NAV = [
+    { title: "Pilotage", items: ["ava-dash"] },
+    { title: "Humains", items: ["ava-personnes","ava-candidats","ava-ressources"] },
+    { title: "CRM", items: ["ava-societes","ava-contacts"] },
+    { title: "Staffing", items: ["ava-besoins","ava-pos"] },
+    { title: "Production", items: ["ava-projets","ava-prestas"] }
+  ];
+  const AVA_CREATE = {
+    "ava-personne": [["Ouvrir Candidat","ava-candidat"],["Ouvrir Ressource","ava-ressource"]],
+    "ava-societe": [["+ Contact","ava-contact"],["+ Besoin","ava-besoin"],["+ Projet","ava-projet"]],
+    "ava-contact": [["+ Action","ava-dash"],["+ Besoin","ava-besoin"]],
+    "ava-candidat": [["+ Action","ava-dash"],["+ Positionnement","ava-pos-fiche"],["Convertir → Ressource","ava-ressource"]],
+    "ava-ressource": [["+ Positionnement","ava-pos-fiche"],["+ Prestation","ava-presta"]],
+    "ava-besoin": [["+ Positionnement","ava-pos-fiche"],["Créer Projet","ava-projet"]],
+    "ava-projet": [["+ Prestation","ava-presta"]],
+    "ava-presta": []
+  };
+  const AVA_LIST_PLUS = {
+    "ava-personnes": "ava-personne",
+    "ava-candidats": "ava-candidat",
+    "ava-ressources": "ava-ressource",
+    "ava-societes": "ava-societe",
+    "ava-contacts": "ava-contact",
+    "ava-besoins": "ava-besoin",
+    "ava-projets": "ava-projet"
+  };
+  let avaSimChemin = "C3";
+  let avaSimScreen = "ava-besoins";
+
+  function avaBar(id) {
+    const cs = AVA_SCREENS[id].chemins;
+    const c = cs.includes(avaSimChemin) ? avaSimChemin : cs[0];
+    return c ? AVA_SIM_COLORS[c] : "transparent";
+  }
+  function avaOuvrir(to) { return `<button type="button" data-ava-go="${to}">Ouvrir →</button>`; }
+  function avaCreates(id) {
+    const list = AVA_CREATE[id];
+    if (!list) return `<div class="callout"><strong>Pas de bouton +</strong><br>Créé depuis une autre fiche. Ce simulateur Ava évoluera.</div>`;
+    if (!list.length) return `<div class="callout">Ligne de production. Pas de changement de ressource ici — clôturer + créer.</div>`;
+    return `<p class="lead">Créer depuis cette fiche</p><div class="rowbtns">${list.map(([l,t]) => `<button type="button" data-ava-go="${t}">${esc(l)}</button>`).join("")}</div>`;
+  }
+  function avaFiche(title, etat, fields, stats, id, rule) {
+    return `<div class="bar" style="background:${avaBar(id)}"></div>
+      <div class="panel">
+        <h2>${esc(title)} ${etat ? `<span style="font-size:12px;color:var(--muted)"> · ${esc(etat)}</span>` : ""}</h2>
+        <div class="stats">${stats.map(([v,l]) => `<div class="stat"><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("")}</div>
+        ${fields.map(([k,v]) => `<div class="kv"><span>${esc(k)}</span><span>${esc(v)}</span></div>`).join("")}
+        ${avaCreates(id)}
+        ${rule ? `<div class="callout">${esc(rule)}</div>` : ""}
+      </div>`;
+  }
+  function avaListe(title, count, headers, rows, id, note) {
+    const plus = AVA_LIST_PLUS[id];
+    return `<div class="bar" style="background:${avaBar(id)}"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+        <h2>${esc(title)} (${count})</h2>
+        ${plus ? `<button class="create-btn primary" type="button" data-ava-go="${plus}">+ Créer</button>` : ""}
+      </div>
+      <div class="panel">${table(headers, rows)}${note ? `<p class="note">${esc(note)}</p>` : ""}</div>`;
+  }
+  function avaPanel(id) {
+    switch (id) {
+      case "ava-dash": return `<h2>Tableau de bord Ava</h2>
+        <div class="stats">
+          <div class="stat"><b>12</b><span>Besoins ouverts</span></div>
+          <div class="stat"><b>2</b><span>Surcharges &gt;100 %</span></div>
+          <div class="stat"><b>v0</b><span>Simulateur évolutif</span></div>
+        </div>
+        <div class="callout">Lecture. Les règles vivent dans les services, pas dans cet écran.</div>`;
+      case "ava-personnes": return avaListe("Personnes", 3, ["Personne","Profils",""], [
+        ["Ahmed B.","Candidat + Ressource",avaOuvrir("ava-personne")],
+        ["Dupont","Candidat",avaOuvrir("ava-personne")],
+        ["Jean R.","Ressource",avaOuvrir("ava-personne")]
+      ], id, "Identité unique. Les profils s’activent, on ne copie pas.");
+      case "ava-personne": return avaFiche("Ahmed B.","Personne",
+        [["Email","ahmed@avaliance.demo"],["Téléphone","06 ···"],["CV / DT","1 document"]],
+        [["1","CandidatProfile"],["1","RessourceProfile"]], id,
+        "ConvertCandidateToResource() active le profil. L’historique candidat reste.");
+      case "ava-candidats": return avaListe("Candidats", 2, ["Candidat","Étape",""], [
+        ["Dupont — Cloud","en_cours",avaOuvrir("ava-candidat")],
+        ["Ahmed B.","converti",avaOuvrir("ava-candidat")]
+      ], id);
+      case "ava-candidat": return avaFiche("Dupont — Consultant Cloud","en_cours",
+        [["Personne","Dupont"],["Étape","en_cours"]],
+        [["0","Positionnement"],["0","Prestation"]], id,
+        "Pas de + Projet. Pas de Prestation. Convertir crée le RessourceProfile.");
+      case "ava-ressources": return avaListe("Ressources", 3, ["Ressource","Type","Charge",""], [
+        ["Jean R.","INTERNAL","60+40",avaOuvrir("ava-ressource")],
+        ["Ahmed B.","INTERNAL","0 %",avaOuvrir("ava-ressource")],
+        ["Sara Ext.","EXTERNAL","100 %",avaOuvrir("ava-ressource")]
+      ], id);
+      case "ava-ressource": return avaFiche("Jean R.","active · INTERNAL",
+        [["Personne","Jean R."],["Coût réf.","420 €"],["Occupation","60 % A + 40 % B"]],
+        [["2","Prestations"],["0","Positionnements"]], id,
+        "N simultanées. >100 % = alerte. Pas de swap resource_id.");
+      case "ava-societes": return avaListe("Sociétés", 3, ["Société","Rôle",""], [
+        ["Alpha","Client",avaOuvrir("ava-societe")],
+        ["Beta","Prospect",avaOuvrir("ava-societe")],
+        ["Gamma Staffing","Fournisseur",avaOuvrir("ava-societe")]
+      ], id);
+      case "ava-societe": return avaFiche("Société Alpha","Client",
+        [["Org. unit","Pôle SI (D5 à valider)"],["Pays","France"]],
+        [["2","Contacts"],["1","Besoin"]], id,
+        "Même objet pour client et fournisseur.");
+      case "ava-contacts": return avaListe("Contacts", 2, ["Contact","Société",""], [
+        ["Contact A","Alpha",avaOuvrir("ava-contact")],
+        ["Contact B","Beta",avaOuvrir("ava-contact")]
+      ], id);
+      case "ava-contact": return avaFiche("Contact A — Alpha","Décisionnaire",
+        [["Société","Alpha"],["Unité","Service Cloud"]],
+        [["0","Besoins"]], id,
+        "Contact sans société : interdit. Besoin sans ce contact : autorisé (warning D4).");
+      case "ava-besoins": return avaListe("Besoins", 3, ["Titre","Statut","Priorité",""], [
+        ["Backend","ouvert","P1",avaOuvrir("ava-besoin")],
+        ["Data","staffing","P2",avaOuvrir("ava-besoin")],
+        ["Chef de projet","pourvu","P3",avaOuvrir("ava-besoin")]
+      ], id);
+      case "ava-besoin": return avaFiche("Backend — Alpha","ouvert · P1",
+        [["Société","Alpha"],["Contact","(facultatif)"],["Type","Régie"]],
+        [["2","Positionnements"],["0","Projet"]], id,
+        "priority ≠ status. Créer Projet = commande, n’auto-crée pas depuis « retenu ».");
+      case "ava-pos": return avaListe("Positionnements", 2, ["Humain","Besoin","État",""], [
+        ["Jean R. (ressource)","Backend","retenu",avaOuvrir("ava-pos-fiche")],
+        ["Dupont (candidat)","Data","propose",avaOuvrir("ava-pos-fiche")]
+      ], id, "Pas de + sur la liste. XOR candidat / ressource.");
+      case "ava-pos-fiche": return avaFiche("Jean R. → Backend","retenu",
+        [["Humain","Ressource Jean"],["TJM proposé","550 €"]],
+        [["1","Besoin"],["1","Humain"]], id,
+        "Retenu ≠ Projet. Ensuite CreateProjectFromNeed() ou CreatePrestation().");
+      case "ava-projets": return avaListe("Projets", 2, ["Réf","Client",""], [
+        ["AVA-PRJ-1","Alpha",avaOuvrir("ava-projet")],
+        ["AVA-PRJ-2","Gamma",avaOuvrir("ava-projet")]
+      ], id);
+      case "ava-projet": return avaFiche("AVA-PRJ-1","en_cours",
+        [["Société","Alpha"],["Besoin","Backend"],["Ressources","dérivées des prestations"]],
+        [["2","Prestations"]], id,
+        "Pas de resource_id sur le Projet.");
+      case "ava-prestas": return avaListe("Prestations", 2, ["Ressource","Projet","Charge","Marge"], [
+        ["Jean R.","AVA-PRJ-1","60 %","courante"],
+        ["Jean R.","AVA-PRJ-2","40 %","courante"]
+      ], id, "Pas de + ici. Depuis Projet ou Ressource.");
+      case "ava-presta": return avaFiche("Jean R. × AVA-PRJ-1","en_cours",
+        [["TJM vendu","550 €"],["Coût retenu","420 €"],["Charge","60 %"],["marge_courante","calculée"]],
+        [["1","Ressource figée"],["n","Temps"]], id,
+        "Changer de personne = ClosePrestation + CreatePrestation.");
+      default: return "";
+    }
+  }
+  function renderAvaSimScreens() {
+    const meta = AVA_SIM_META[avaSimChemin];
+    const host = document.getElementById("ava-sim-body");
+    if (!host) return;
+    host.innerHTML = `
+      <p class="note">v0 du simulateur Ava — mock d’écrans, pas un clone Boond. On l’enrichira (temps, absences, org units, Kanban).</p>
+      <div class="pills" id="ava-sim-pills">${Object.keys(AVA_SIM_META).map((id) =>
+        `<button class="pill" type="button" aria-pressed="${id===avaSimChemin}" data-ava-sc="${id}">
+          <span class="swatch" style="background:${AVA_SIM_COLORS[id]}"></span>${id} ${AVA_SIM_META[id].label}
+        </button>`).join("")}</div>
+      <p><strong>${meta.label} — ${meta.verbe}</strong> · ${meta.path}</p>
+      <div class="sim">
+        <aside class="sim-nav" id="ava-sim-nav">${AVA_NAV.map((g) =>
+          `<div class="sim-group">${g.title.toUpperCase()}</div>` + g.items.map((id) => {
+            const m = AVA_SCREENS[id];
+            const dim = m.chemins.length && !m.chemins.includes(avaSimChemin);
+            const on = id === avaSimScreen;
+            const col = m.chemins[0] ? AVA_SIM_COLORS[m.chemins[0]] : "transparent";
+            return `<div class="sim-item${on?" on":""}${dim?" dim":""}" data-ava-go="${id}"><span class="sim-dot" style="background:${col}"></span>${esc(m.label)}</div>`;
+          }).join("")
+        ).join("")}</aside>
+        <div id="ava-sim-panel">${avaPanel(avaSimScreen)}</div>
+      </div>`;
+  }
+
+  function renderAvaSimulateur() {
+    const el = document.getElementById("view-ava-simulateur");
+    el.innerHTML = `
+      <h2>Simulateur Ava Manager</h2>
+      <p class="lead">Écrans cibles. Ça évoluera. Le simulateur Boond reste la photo de l’existant.</p>
+      <div id="ava-sim-body"></div>`;
+    renderAvaSimScreens();
+    el.onclick = (e) => {
+      const sc = e.target.closest("[data-ava-sc]");
+      if (sc) { avaSimChemin = sc.dataset.avaSc; avaSimScreen = AVA_SIM_META[avaSimChemin].first; renderAvaSimScreens(); return; }
+      const go = e.target.closest("[data-ava-go]");
+      if (go) { avaSimScreen = go.dataset.avaGo; renderAvaSimScreens(); }
+    };
+  }
+
   const RENDER = {
+    "ava-metier": renderAvaMetier,
+    "ava-simulateur": renderAvaSimulateur,
     "ava-cadrage": renderCadrage,
     "ava-decisions": renderDecisions,
     "ava-rules": renderRules,
@@ -3163,7 +3517,10 @@ DB + services + permissions + API + tests + UI</pre>
 
   function paintNav(product, view) {
     document.getElementById("hub-product").innerHTML = Object.keys(PRODUCTS).map((id) =>
-      `<button type="button" data-product="${id}" aria-pressed="${id === product}">${PRODUCTS[id].label}</button>`
+      `<button type="button" data-product="${id}" aria-pressed="${id === product}">
+        <strong>${PRODUCTS[id].label}</strong>
+        <span>${PRODUCTS[id].hint}</span>
+      </button>`
     ).join("");
     document.getElementById("hub-sub").innerHTML = PRODUCTS[product].views.map((v) =>
       `<button type="button" data-view="${v.id}" aria-pressed="${v.id === view}">${v.label}</button>`
@@ -3171,9 +3528,9 @@ DB + services + permissions + API + tests + UI</pre>
   }
 
   function showHubView(name) {
-    const aliases = { ava: "ava-cadrage", boond: "metier", cadrage: "ava-cadrage" };
+    const aliases = { ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage" };
     if (aliases[name]) name = aliases[name];
-    if (!ALL_VIEWS.includes(name)) name = "ava-cadrage";
+    if (!ALL_VIEWS.includes(name)) name = "ava-metier";
     const product = productOf(name);
     ALL_VIEWS.forEach((id) => {
       const node = document.getElementById("view-" + id);
@@ -3201,10 +3558,10 @@ DB + services + permissions + API + tests + UI</pre>
 
   bindSim();
   window.addEventListener("hashchange", () => {
-    const h = (location.hash || "#ava-cadrage").slice(1);
+    const h = (location.hash || "#ava-metier").slice(1);
     showHubView(h);
   });
-  const start = (location.hash || "#ava-cadrage").slice(1);
+  const start = (location.hash || "#ava-metier").slice(1);
   showHubView(start);
 })();
 
