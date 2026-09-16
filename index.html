@@ -514,8 +514,8 @@
         <td>Besoin</td>
         <td>Demande client à pourvoir (Régie / Forfait) + status + priority (P1–P3) + CA pondéré.</td>
         <td>Pivot C3. Attire des positionnements. Peut naître un Projet. Kanban par status, badge de priorité.</td>
-        <td>N→1 Société (obligatoire). N→0..1 Contact. 1→N Positionnement, Action, Projet.</td>
-        <td>1 besoin : N positionnements. <strong>Besoin 1 → N Projets</strong> (souvent 1, jamais 1–1 figé). Décidé (Ahmed).</td>
+        <td>N→1 Société (obligatoire). N→0..1 Contact. 1→N Positionnement ; 1→0..N Projet.</td>
+        <td>1 besoin : N positionnements. Un besoin peut n’avoir <strong>aucun</strong> projet. Un projet peut n’avoir <strong>aucun</strong> besoin (CreateProject US5).</td>
         <td>Commercial staffing</td>
         <td>+ liste (via Contact) ; + fiche Société / Candidat / Ressource / Contact</td>
         <td>Fiche besoin (dont état, pondération)</td>
@@ -537,8 +537,8 @@
       <tr>
         <td>Projet</td>
         <td>Mission contractualisée. Relie le client à qui travaille et à ce que ça coûte.</td>
-        <td>Pivot C4 et C5. Peut naître d’un Besoin (positionnements ressource seulement).</td>
-        <td>N→1 Société. 0..1 Besoin. 1→N Prestation, Action, Achat.</td>
+        <td>Pivot C4 et C5. Naît d’un Besoin <strong>ou</strong> d’une création directe US5, sans besoin.</td>
+        <td>N→1 Société. 0..1 Besoin. 0..N Prestation, Action, Achat.</td>
         <td>CA peut être 0 à la création (vu en audit).</td>
         <td>Directeur de projet / commercial</td>
         <td>+ liste ; + fiche Besoin (exclut candidats, I10) ; + fiche Société / Ressource. Jamais + fiche Candidat (I21).</td>
@@ -593,14 +593,14 @@
       <tr><td>Besoin → Positionnement</td><td>1 → N</td><td>Positionnement : oui</td><td></td></tr>
       <tr><td>Candidat → Positionnement</td><td>1 → N</td><td>XOR avec Ressource</td><td></td></tr>
       <tr><td>Ressource → Positionnement</td><td>1 → N</td><td>XOR avec Candidat</td><td></td></tr>
-      <tr><td>Besoin → Projet</td><td>1 → 0..N</td><td>Projet : facultatif</td><td>Décidé : Besoin 1 → N Projets. 0 projet tant que CreateProjectFromNeed n’a pas été lancé.</td></tr>
-      <tr><td>Projet → Prestation</td><td>1 → N</td><td>Prestation : oui</td><td>Projet sans prestation = titre, autorisé au début</td></tr>
+      <tr><td>Besoin → Projet</td><td>1 → 0..N</td><td>Projet : facultatif</td><td>Un besoin peut rester sans projet. Un projet US5 n’a pas de besoin.</td></tr>
+      <tr><td>Projet → Prestation</td><td>1 → 0..N</td><td>Prestation : facultatif</td><td>Projet encore sans prestation = autorisé (S3 / P3B).</td></tr>
       <tr><td>Ressource → Prestation</td><td>1 → N simultanées</td><td>Prestation : oui</td><td>Décidé. Charge cumulée, pas le nombre. &gt;100 % = alerte, pas un refus.</td></tr>
       <tr><td>Ressource → Société fournisseur</td><td>N → 0..1</td><td>Si resource_type = external</td><td>supplier_company_id. Même objet Ressource, pas deux tables.</td></tr>
       <tr><td>Besoin → Contact</td><td>N → 0..1</td><td>Facultatif</td><td>Société obligatoire. Contact recommandé en UX seulement.</td></tr>
       <tr><td>Personne → CandidatProfile</td><td>1 → 0..1</td><td>Profil recrutement</td><td>Identité / DT / compétences restent sur Personne.</td></tr>
       <tr><td>Personne → RessourceProfile</td><td>1 → 0..1</td><td>Profil exploitation</td><td>Conversion = activer ce profil, sans recopier l’identité.</td></tr>
-      <tr><td>Prestation → Temps</td><td>1 → N</td><td>Temps : oui</td><td>Jamais Projet → Temps direct</td></tr>
+      <tr><td>Prestation → Temps</td><td>1 → 0..N</td><td>Temps : facultatif</td><td>Jamais Projet → Temps direct</td></tr>
       <tr><td>Projet → Achat</td><td>1 → N</td><td>Achat : oui</td><td></td></tr>
       <tr><td>Achat → Paiement</td><td>1 → N</td><td>Paiement : oui</td><td></td></tr>
       <tr><td>Action → Porteur</td><td>N → 1</td><td>Oui, exactement un</td><td>Polymorphe</td></tr>
@@ -611,32 +611,34 @@
 
 <article class="spec-sec" id="s3mcd">
   <h2>3 bis. Modèle conceptuel</h2>
-  <p class="lead">Pas de SQL. Entités, attributs métier et cardinalités figés par Q1–Q12. Avaliance n’a pas signalé d’exception : ces règles tiennent.</p>
+  <p class="lead">Pas de SQL. Un projet peut naître sans besoin (CreateProject US5). Un projet peut exister sans prestation. « Gagnée » n’est pas un statut du besoin.</p>
   <pre class="mcd">Personne
  ├─ 0..1 CandidatProfile     (recrutement : étape, vivier)
  └─ 0..1 RessourceProfile    (exploitation : statut, coût, contrat, manager, dispo)
       ├─ resource_type = internal | external
       ├─ 0..1 Société fournisseur   si external
-      └─ 1 → N Prestation simultanées   charge cumulée ; alerte si &gt;100 %
+      └─ 0..N Prestation simultanées   charge cumulée ; alerte si &gt;100 %
 
 Société (rôles client / prospect / fournisseur)
  ├─ 1 → N Contact
  ├─ 1 → N Besoin            société obligatoire, contact facultatif
- └─ 1 → N Projet
+ └─ 1 → N Projet            CreateProject US5 : sans besoin
 
 Besoin
  ├─ priority = P1 | P2 | P3           champ, pas un état
  ├─ status = ouvert | staffing | pourvu | suspendu | fermé
+ ├─ « Gagnée » n’entre pas dans le cycle
  ├─ 0..1 Contact
- └─ 1 → N Positionnement
-        └─ exactement 1 humain : CandidatProfile XOR RessourceProfile
+ ├─ 1 → N Positionnement
+ │      └─ exactement 1 humain : CandidatProfile XOR RessourceProfile
+ └─ 0..N Projet
 
 CandidatProfile
  └─ jamais → Projet, jamais → Prestation
-     chemin : Positionnement → conversion → RessourceProfile → Projet → Prestation
+     chemin : Positionnement → conversion → RessourceProfile → CreateProjectFromNeed → Prestation
 
-Projet  (0..1 Besoin ; Besoin 1 → N Projets)
- └─ 1 → N Prestation
+Projet  (0..1 Besoin ; CreateProject US5 sans besoin)
+ └─ 0..N Prestation
         ├─ appartient à 1 Projet et 1 RessourceProfile
         ├─ resource_id immuable
         ├─ porte TJM vendu, coût, dates, charge
@@ -2536,7 +2538,7 @@ function showView(name){
     },
     {
       id: "D14", status: "valide", sujet: "Priorité ≠ statut",
-      decision: "priority = P1|P2|P3. status = cycle (ouvert / staffing / pourvu / suspendu / fermé). CdC parlait d’étape « Gagnée » : c’est un status, pas une priorité.",
+      decision: "priority = P1|P2|P3. status = ouvert / staffing / pourvu / suspendu / fermé. Le mot « Gagnée » du CdC n’est pas un statut Ava : ce n’est pas un sixième état (BM-20). Pourvu = tous les postes visés signés (F3).",
       raison: "Boond mélange P1–P3 dans le Kanban d’états. Ava sépare urgence et cycle.",
       impact: "Kanban par status, badge de priorité."
     },
@@ -2894,7 +2896,7 @@ function showView(name){
         { op: "CreateContact", ctx: { companyId: "alpha" }, note: "Créer structure puis Contact" },
         { op: "CreateNeed", ctx: { companyId: "alpha", contactId: "c1", status: "ouvert" }, note: "Créer et qualifier le Besoin" },
         { op: "PositionResourceOnNeed", ctx: { needId: "need1", resourceId: "jean" }, note: "Positionnements" },
-        { op: "WinNeed", ctx: { needId: "need1" }, note: "Besoin gagné" },
+        { op: "WinNeed", ctx: { needId: "need1" }, note: "Besoin en staffing — pas un statut Gagnée" },
         { op: "CreateProjectFromNeed", ctx: { needId: "need1", projectId: "pa" }, note: "Projet via commande, pas un trigger" }
       ] },
     { id: "s2", title: "SCÉNARIO 2 — Recrutement",
@@ -2937,16 +2939,20 @@ function showView(name){
   function counts() {
     const v = DECISIONS.filter((d) => d.status === "valide").length;
     const o = DECISIONS.filter((d) => d.status !== "valide").length;
-    return { v, o, r: RULES.length, s: GLOBAL_SCEN.length };
+    const r = (typeof CHAPTERS !== "undefined")
+      ? CHAPTERS.flatMap((c) => c.cards).length
+      : RULES.length;
+    const s = (typeof DAYS !== "undefined") ? DAYS.length : GLOBAL_SCEN.length;
+    return { v, o, r, s };
   }
 
   function statsBar() {
     const c = counts();
     return `<div class="stats">
-      <div class="stat"><b>${c.v}</b><span>Décisions validées</span></div>
-      <div class="stat"><b>${c.o}</b><span>À valider</span></div>
-      <div class="stat"><b>${c.r}</b><span>Règles métier</span></div>
-      <div class="stat"><b>${c.s}</b><span>Scénarios</span></div>
+      <div class="stat"><b>${c.v}</b><span>Décisions DEC</span></div>
+      <div class="stat"><b>${c.o}</b><span>DEC encore ouvertes</span></div>
+      <div class="stat"><b>${c.r}</b><span>Contrats BM</span></div>
+      <div class="stat"><b>${c.s}</b><span>Parcours</span></div>
     </div>`;
   }
 
@@ -3808,7 +3814,7 @@ function showView(name){
         </article>`).join("")}
       <article class="spec-sec" id="day-q">
         <h2>Feuille F1–F36 (16 sept 2026)</h2>
-        <p class="lead">Nouveaux arbitrages d’Ahmed. Pas les DEC. F1–F36 clos. F35–F36 = convention ATL (saisis × TJM, forfait prorata, facturé hors V1). Aucun euro d’exemple sans tarif saisi. F3B : pourvu = tous les postes. F17B : commentaires hors V1. F19 : conversion ≠ statut.</p>
+        <p class="lead">Nouveaux arbitrages d’Ahmed. Pas les DEC. F1–F36 clos. Réponses originales : 1A 2A 3B 4A 5–16A 17B 18–33A 34B 35C 36A. F35–F36 = convention ATL. Aucun euro d’exemple sans tarif saisi. F3B : pourvu = tous les postes. F17B : commentaires hors V1. F19 : conversion ≠ statut. « Gagnée » n’est pas un statut.</p>
         ${QUESTIONS.map((q) => `
           <article class="contract">
             <h3>${q.id} — ${esc(q.titre)}</h3>
@@ -3840,7 +3846,7 @@ function showView(name){
   function renderDecisions() {
     const el = document.getElementById("view-ava-decisions");
     el.innerHTML = `<h2>Les 18 décisions</h2>
-      <p class="lead">Elles ne se rouvrent pas. DEC-Q01 à DEC-Q12 du hub Boond = ces DEC. Feuille F1–F36 close. Formules = ATL.</p>
+      <p class="lead">Elles ne se rouvrent pas. DEC-Q01 à DEC-Q12 du hub Boond = ces DEC. Feuille F1–F36 close. Formules = ATL. Compteurs : 18 DEC, 61 contrats BM, 15 parcours.</p>
       ${statsBar()}
       <div class="filters" id="dec-filters">
         <button type="button" class="pill" data-dec-f="all" aria-pressed="true">Toutes</button>
