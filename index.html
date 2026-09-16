@@ -435,7 +435,7 @@
   </section>
 
   <section class="view" id="view-spec" hidden>
-<p class="lead">Spécification métier Ava Manager. Dérivée des 59 écrans cliqués, pas d’un manuel Boond. Pas de SQL. Pas d’écrans à recoder. Les 12 questions (Q1–Q12) sont <strong>Décidé</strong>. <span class="tag warn">À VALIDER MÉTIER</span> = point hors de ces 12, encore ouvert.</p>
+<p class="lead">Spécification métier Ava Manager. Dérivée des 59 écrans cliqués, pas d’un manuel Boond. Pas de SQL. Pas d’écrans à recoder. Les <strong>DEC-Q01 à DEC-Q12</strong> ci-dessous sont des réponses d’Ahmed déjà prises (DEC-01 à DEC-18). Elles ne sont <strong>pas</strong> les arbitrages ouverts <strong>ARB-1 à ARB-6</strong> (vue Ava → 15 parcours). <span class="tag warn">À VALIDER MÉTIER</span> = point hors de ces 12, encore ouvert.</p>
 <p class="note">Preuve de méthode : le bouton <strong>Créer</strong> d’une fiche est le vrai menu. Un objet qui n’apparaît dans aucun Créer n’est pas un objet du noyau.</p>
 
 <nav class="spec-toc" id="spec-toc"></nav>
@@ -2346,8 +2346,8 @@ function renderQuestions(){
       : `<p class="q-answer${q.answer ? "" : " empty"}">${q.answer ? q.answer.replace(/</g,"&lt;").replace(/\n/g,"<br>") : "Pas encore de réponse. Modifier pour écrire."}</p>
          <div class="rowbtns"><button type="button" data-q-edit="${q.id}">Modifier</button></div>`;
     return `<article class="q-card">
-      <h3>${i+1}. ${q.title} ${qBadge(q)}</h3>
-      <p class="q-meta">${q.question}${q.by ? " · Auteur : " + q.by : ""}</p>
+      <h3>${"DEC-Q" + String(i+1).padStart(2,"0")} (= ${["DEC-01/02","DEC-05","DEC-06","DEC-08","DEC-09","DEC-10","DEC-11","DEC-12","DEC-01/02","DEC-13","DEC-04","DEC-14"][i]}) — ${q.title} ${qBadge(q)}</h3>
+      <p class="q-meta">${q.question}${q.by ? " · Auteur : " + q.by : ""} · Ce n’est pas ARB-1…ARB-6.</p>
       ${body}
     </article>`;
   }).join("");
@@ -2479,8 +2479,8 @@ function showView(name){
     {
       id: "D4", status: "valide", sujet: "Besoin → Contact",
       decision: "Pour ouvrir un besoin, la société suffit. Le contact est bienvenu, pas bloquant. DEC-04 l’emporte sur le CdC 2022.",
-      raison: "Martin doit pouvoir ouvrir Beta avant d’avoir un interlocuteur. Le projet, plus tard, exigera un contact (US5).",
-      impact: "Jour 11 : N11 existe sans contact. On n’invente pas Alice."
+      raison: "Martin doit pouvoir ouvrir Beta avant d’avoir un interlocuteur.",
+      impact: "Jour 11 : N11 existe sans contact. CreateProjectFromNeed dans ce cas = ARB-1, pas US5 généralisé."
     },
     {
       id: "D5", status: "valide", sujet: "Structure client",
@@ -2708,7 +2708,7 @@ function showView(name){
     ["CreateCompany", "Société", "Nom, rôles client/fournisseur"],
     ["CreateOrganizationUnit", "Société", "type, parent, nom — D5 à valider"],
     ["CreateContact", "Société", "I6, unit_id optionnel"],
-    ["CreateNeed", "Société", "contact optionnel (D4 ouvert)"],
+    ["CreateNeed", "Société", "contact optionnel (DEC-04)"],
     ["PositionCandidateOnNeed", "Besoin ou Candidat", "RULE-001 à 003"],
     ["PositionResourceOnNeed", "Besoin ou Ressource", "RULE-001 à 003"],
     ["ConvertCandidateToResource", "CandidatProfile", "Active RessourceProfile, journal"],
@@ -2937,7 +2937,10 @@ function showView(name){
   const ST = {
     acquise: '<span class="tag ok">ACQUIS</span>',
     proposee: '<span class="tag warn">PROPOSÉ</span>',
-    question: '<span class="tag edit">QUESTION</span>'
+    question: '<span class="tag edit">QUESTION</span>',
+    dec: '<span class="tag ok">DEC/CdC</span>',
+    hypo: '<span class="tag warn">sous hypothèse proposée</span>',
+    undef: '<span class="tag edit">non défini</span>'
   };
 
   function vli(v, l, i) {
@@ -3205,7 +3208,7 @@ function showView(name){
     {
       id: "ch-mission",
       titre: "5. La mission porte l’argent et la charge",
-      lead: "Le projet a un contact. Les gens et les tarifs vivent sur la prestation. On alerte à plus de 100 %, on ne bloque pas.",
+      lead: "Les gens et les tarifs vivent sur la prestation. US5 impose un contact sur le projet manuel. Un projet depuis un besoin sans contact n’est pas tranché (ARB-1).",
       cards: [
         { id: "BM-26", st: "acquise", titre: "Le projet se confirme, il ne surgit pas",
           qui: "Karim (DP) ; staffing si délégué — DEC-05/06",
@@ -3215,13 +3218,13 @@ function showView(name){
           v: "Deuxième projet du même besoin.",
           l: "Projet encore sans prestation.",
           i: "Projet silencieux parce que le besoin est pourvu." },
-        { id: "BM-27", st: "acquise", titre: "Contact obligatoire sur le projet, pas de ressource unique",
-          qui: "Karim — US5 + DEC-07",
+        { id: "BM-27", st: "proposee", titre: "Contact du projet : US5 manuel, pas tous les parcours",
+          qui: "Karim — US5 pour le manuel ; DEC-07 pour la ressource ; ARB-1 pour le besoin sans contact",
           quand: "N11 Beta n’a pas de contact.",
-          dit: "Pour créer le projet, Karim choisit un contact. La ressource n’est pas un champ du projet : elle viendra des prestations.",
-          refus: "Choisissez le contact du projet.",
-          v: "Choisir Alice à cette étape.",
-          l: "Besoin sans contact, projet plus tard avec contact.",
+          dit: "Création manuelle (US5) : Karim choisit un contact. Ressource jamais collée au projet. CreateProjectFromNeed sans contact : on ne généralise pas US5. Le besoin existe déjà (DEC-04).",
+          refus: "Choisissez le contact du projet — seulement sur le formulaire manuel US5.",
+          v: "Projet manuel avec Alice.",
+          l: "Besoin Beta sans contact : le besoin tient ; le projet depuis besoin attend ARB-1.",
           i: "Une seule ressource collée au projet." },
         { id: "BM-28", st: "proposee", titre: "Depuis un besoin : une ressource retenue",
           qui: "Karim — pas déduit de DEC-06 seule",
@@ -3541,19 +3544,19 @@ function showView(name){
 
   const DAYS = [
     { n: 1, titre: "Jean, déjà ressource, part en mission",
-      st: "acquise",
+      st: "hypo",
       etapes: [
         "Martin crée N1 pour Alpha / Service1, contact Alice.",
         "Karim positionne Jean (ressource) : X1.",
-        "Martin enregistre : le client retient Jean. N1 passe en staffing.",
-        "Karim confirme le projet P1 depuis N1.",
+        "Martin enregistre : le client retient Jean. N1 passe en staffing (BM-60 proposé).",
+        "Karim confirme P1 depuis N1 (garde ressource retenue : proposée, pas une DEC).",
         "Karim crée T1 : Jean, janvier, signée, 60 %.",
         "Jean saisit 0,6 jour le 4 janvier sur T1."
       ],
-      monde: "1 besoin, 1 matching, 1 projet, 1 mission, 1 ligne de temps. Personne de nouvelle. Rien n’a été créé en silence.",
-      note: "C’est le bureau qui marche. DEC tenues." },
+      monde: "1 besoin, 1 matching, 1 projet, 1 mission, 1 ligne de temps. Personne de nouvelle.",
+      note: "Invariants DEC tenus sur les objets. Transitions et garde CreateProjectFromNeed = hypothèse." },
     { n: 2, titre: "Amina candidate, puis consultante",
-      st: "proposee",
+      st: "hypo",
       etapes: [
         "Sophie crée Amina, profil candidat Draft.",
         "Martin ouvre N2 Alpha / Service2, Benoît.",
@@ -3562,158 +3565,156 @@ function showView(name){
         "Martin enregistre le retour client : retenu.",
         "Sophie annule une première conversion : rien ne bouge.",
         "Sophie confirme : le profil ressource s’ajoute à la même Amina.",
-        "Karim crée ensuite un matching ressource, puis P2 et T2 à 100 % en février."
+        "Karim crée ensuite un matching ressource, puis P2 et T2 — étape 8 = ARB-1, pas une DEC."
       ],
-      monde: "Une seule Amina, deux profils. Le matching candidat X2 est toujours là. Aucune mission n’est portée par le profil Candidat.",
-      note: "Garder les deux matchings est une hypothèse de Q1, pas une DEC." },
+      monde: "Une seule Amina, deux profils. X2 candidat toujours là. Aucune mission sur le profil Candidat.",
+      note: "Conversion : DEC/CdC. Deux matchings pour continuer : hypothèse ARB-1." },
     { n: 3, titre: "Un besoin, deux projets",
-      st: "acquise",
+      st: "hypo",
       etapes: [
         "Martin crée N3, Benoît.",
         "Karim positionne Sara ; Martin note retenu.",
         "Karim confirme P3A, puis P3B, depuis le même N3.",
-        "On vérifie : zéro mission créée toute seule.",
-        "Karim choisit P3A et crée T3A, Sara 60 %, mars."
+        "Zéro mission créée toute seule : DEC/CdC.",
+        "Karim choisit P3A et crée T3A, Sara 60 %, mars (BM-25 proposé)."
       ],
       monde: "N3 a deux projets. X3 reste sur N3. P3B n’a encore personne.",
-      note: "On a le droit de créer les deux projets même si Q1 n’est pas close." },
+      note: "N projets et pas d’automatisme : DEC. Choix du projet à la prestation : proposé." },
     { n: 4, titre: "Sara à 60 / 40",
-      st: "acquise",
+      st: "hypo",
       etapes: [
         "Karim choisit P3B.",
         "Il crée T3B, Sara, signée, 40 %, tout mars.",
-        "Chaque jour de mars : 60 + 40 = 100 %."
+        "Convention d’exercice au jour : 60 + 40 = 100 %."
       ],
       monde: "Deux missions Sara, deux projets. X3 n’est pas photocopié. Pas d’alerte.",
-      note: "DEC-10, convention d’exercice au jour." },
+      note: "N prestations : DEC-10. Grain jour : proposé (ARB-2)." },
     { n: 5, titre: "Cinq jours à 110 %",
-      st: "acquise",
+      st: "hypo",
       etapes: [
         "Martin ouvre N5 ; Karim positionne Sara ; Martin note retenu.",
         "Karim confirme P5.",
         "Il crée T5, Sara 10 %, du 15 au 19 mars.",
-        "Le système garde T5 et signale 110 % sur ces cinq dates seulement."
+        "Le système garde T5 et signale 110 % sur ces dates (alerte, pas refus : DEC-10)."
       ],
-      monde: "Trois missions Sara. 100 % avant et après la fenêtre, 110 % dedans.",
-      note: "Alerte, pas refus. Les jours fériés ne sont pas tranchés ici." },
+      monde: "Trois missions Sara. 100 % hors fenêtre, 110 % dedans.",
+      note: "Alerte : DEC. Jours fériés : non défini (ARB-2)." },
     { n: 6, titre: "Paul à 60 % puis 50 %, sans se marcher dessus",
-      st: "acquise",
+      st: "hypo",
       etapes: [
         "N6, matching Paul, retenu, P6A et P6B.",
         "T6A : 60 %, 1er au 9 avril.",
-        "T6B : 50 %, 12 au 30 avril.",
-        "1–9 : 60 %. 10–11 : rien. 12–30 : 50 %."
+        "T6B : 50 %, 12 au 30 avril."
       ],
-      monde: "Deux missions Paul, zéro surcharge.",
-      note: "On n’invente pas 110 % en additionnant des semaines différentes." },
+      monde: "Deux missions Paul, zéro surcharge si on ne mélange pas les semaines.",
+      note: "DEC-10 interdit d’additionner des périodes disjointes. Calendrier : proposé." },
     { n: 7, titre: "Paul remplace Jean, les heures de Jean restent à Jean",
-      st: "acquise",
+      st: "dec",
       etapes: [
         "Karim tente de mettre Paul à la place de Jean sur T1 : refus. Le 0,6 jour du 4 janvier ne bouge pas.",
-        "Karim clôture T1 au 15 janvier. Une photo de marge est prise — montant encore inconnu.",
-        "Il ouvre T1B pour Paul, 60 %, 16–31 janvier.",
-        "Les missions d’avril de Paul ne se croisent pas avec T1B."
+        "Karim clôture T1 au 15 janvier. Photo de marge : montant non défini (ARB-2).",
+        "Il ouvre T1B pour Paul, 60 %, 16–31 janvier."
       ],
       monde: "T1 = Jean, close. T1B = Paul. Le 4 janvier reste à Jean.",
-      note: "DEC-11. On n’affiche pas un euro inventé." },
+      note: "Remplacement : DEC-11. Aucun euro inventé." },
     { n: 8, titre: "On clôture la mission, puis le projet",
-      st: "proposee",
+      st: "hypo",
       etapes: [
-        "Karim tente de clôturer P1 : refus, T1B est ouverte.",
+        "Karim tente de clôturer P1 : refus proposé (BM-35), T1B est ouverte.",
         "Paul saisit 0,6 jour le 18 janvier sur T1B.",
-        "Karim clôture T1B au 31 janvier, nouvelle photo.",
+        "Karim clôture T1B au 31 janvier, nouvelle photo (montant non défini).",
         "Karim clôture P1.",
-        "Sophie change plus tard le CJM de Jean : les photos de janvier ne bougent pas."
+        "Sophie change plus tard le CJM de Jean : les photos de janvier ne bougent pas (DEC-09)."
       ],
-      monde: "P1 clos, deux missions closes, deux lignes de temps. Les autres projets inchangés.",
-      note: "L’ordre de clôture du projet est proposé (BM-35). La photo, elle, est une DEC." },
+      monde: "P1 clos, deux missions closes, deux lignes de temps.",
+      note: "Ordre projet : proposé. Snapshot : DEC." },
     { n: 9, titre: "Mehdi candidat n’entre pas en mission",
-      st: "acquise",
+      st: "dec",
       etapes: [
         "Karim a le droit de créer une prestation.",
         "Il présente Mehdi candidat comme exécutant de P2.",
-        "Refus métier. Pas un refus de droit."
+        "Refus métier, pas un refus de droit."
       ],
       monde: "Identique au jour 8. Mehdi n’a toujours pas de profil ressource.",
       note: "DEC-02, même pour un DP." },
     { n: 10, titre: "Sophie RH ne crée pas de société",
-      st: "acquise",
+      st: "hypo",
       etapes: [
+        "Config de démo : Sophie RH sans contribution CRM.",
         "Sophie tente Créer Delta : refus, zéro Delta.",
-        "Martin, IA agence A, crée Delta. Delta est suivie par A."
+        "Martin, IA agence A, crée Delta."
       ],
       monde: "Exactement une Delta, événement au nom de Martin.",
-      note: "Le simulateur HTML qui laissait Sophie faire ça a tort. Ce n’est pas une DEC." },
+      note: "DEC-17 sous configuration de démonstration, pas une matrice CdC complète." },
     { n: 11, titre: "Un besoin Beta sans interlocuteur",
-      st: "acquise",
+      st: "undef",
       etapes: [
         "Martin crée N11 pour Beta, sans contact.",
-        "N11 est ouvert. On n’invente ni contact ni service.",
-        "On ne finalise pas de projet : US5 exige un contact de projet, et les autres préconditions ne sont pas là."
+        "N11 est ouvert. On n’invente ni contact ni service. DEC-04.",
+        "On ne crée pas de projet : CreateProjectFromNeed sans contact n’est pas tranché (ARB-1). US5 ne parle que du formulaire manuel."
       ],
       monde: "Un besoin Beta sans contact, zéro projet Beta.",
-      note: "DEC-04 pour le besoin. Contact du projet = autre moment." },
+      note: "Besoin : DEC/CdC. Projet depuis ce besoin : non défini. Pas « US5 a déjà tranché »." },
     { n: 12, titre: "On n’archive pas Service1 tant que N1 vit",
-      st: "acquise",
+      st: "dec",
       etapes: [
-        "Martin tente d’archiver Service1 : refus, N1 est encore ouvert (P1 est déjà clos).",
+        "Martin tente d’archiver Service1 : refus, N1 encore ouvert.",
         "Il ferme N1, sans toucher P1.",
         "Il archive Service1.",
-        "Depuis Alpha on voit encore Alice, N1, P1, T1, T1B et leurs histoires."
+        "Depuis Alpha on voit encore Alice, N1, P1, T1, T1B."
       ],
       monde: "Service1 hors arbre actif. Service2 actif. Rien n’est effacé.",
-      note: "CdC + DEC-18. Pas de DELETE en cascade." },
+      note: "CdC IV.C.4 + DEC-18." },
     { n: 13, titre: "Martin n’écrit pas chez Zeta",
-      st: "acquise",
+      st: "hypo",
       etapes: [
-        "Créer un besoin sur Alpha, agence A : N13 existe.",
-        "La même commande sur Zeta, agence B : refus."
+        "Config de démo : Martin écrit dans A, pas dans B.",
+        "Besoin sur Alpha : N13 existe.",
+        "Même commande sur Zeta : refus."
       ],
       monde: "Un seul besoin ajouté, chez Alpha.",
-      note: "Même bouton, autre périmètre." },
+      note: "DEC-17 sous config de démo." },
     { n: 14, titre: "Lire B n’écrit pas B",
-      st: "acquise",
+      st: "dec",
       etapes: [
-        "Admin ajoute à Martin le groupe Lecture CRM-B. IA-A reste.",
+        "Admin ajoute à Martin Lecture CRM-B. IA-A reste.",
         "Martin lit Zeta : oui.",
-        "Il crée N14 sur Alpha : oui, la lecture B n’annule pas l’écriture A.",
-        "Il tente un besoin sur Zeta : toujours non."
+        "Il crée N14 sur Alpha : oui.",
+        "Il tente un besoin sur Zeta : non."
       ],
-      monde: "N14 dans A. Toujours zéro besoin B créé par Martin.",
+      monde: "N14 dans A. Zéro besoin B créé par Martin.",
       note: "DEC-17 : on additionne, on ne croise pas." },
-    { n: 15, titre: "Léa mesure, elle n’embauche pas",
-      st: "question",
+    { n: 15, titre: "Léa mesure, elle n’embauche pas — stop après le refus",
+      st: "dec",
       etapes: [
         "Martin ouvre N15, Benoît.",
         "Sophie crée Nora, Draft, complète, positionne sur N15. Pas de profil ressource.",
-        "Léa, habilitée sur ce dossier, qualifie. Rien d’autre ne naît.",
-        "Léa tente Convertir : refus.",
-        "Nadia peut examiner. Une commande Approuver le recrutement est proposée, pas écrite dans les cahiers.",
-        "Si Ahmed la veut : Nadia approuve, Sophie convertit, Karim match ressource, P15, T15 en mai."
+        "Léa qualifie. Rien d’autre ne naît.",
+        "Léa tente Convertir : refus (config de démo). La simulation s’arrête."
       ],
-      monde: "Certain : Nora candidate, matching, qualification. Léa n’a converti personne. Conditionnel : les deux profils, le projet, la mission.",
-      note: "Q6. On n’appelle pas ça un succès tant qu’Ahmed n’a pas dit qui approuve." }
+      monde: "Nora candidate, matching, qualification. Léa n’a converti personne. Pas de projet, pas de Nadia.",
+      note: "Pas d’ApproveRecruitment dans le parcours de base. Variante Nadia = hors base, non définie tant qu’ARB-6 n’est pas demandé par Ahmed." }
   ];
 
   const QUESTIONS = [
-    { id: "Q1", titre: "Qui choisit le projet, à la conversion et à l’affectation ?",
-      reco: "Karim choisit le projet à chaque mission. On ne photocopie pas le matching. Le matching candidat reste après conversion. CreateProjectFromNeed demande une ressource retenue. Le projet direct (US5) reste une autre porte.",
-      reste: "Les automatismes au moment d’embaucher, les exceptions, et ce que « pourvu » veut dire si N3 couvre deux postes." },
-    { id: "Q2", titre: "Comment on compte les jours, l’argent, les temps ?",
-      reco: "Compter au jour, afficher à la semaine ou au mois. Séparer l’engagé, le réalisé, le prévisionnel.",
-      reste: "Calendrier, jours vendus, régie/forfait, frais, change, validation des temps, effet d’une clôture. Sans ça, aucune photo de marge n’est un vrai chiffre." },
-    { id: "Q3", titre: "Quand deux fiches sont-elles la même personne ?",
-      reco: "Avertir, laisser choisir la fiche. Pas de fusion automatique sur l’email.",
-      reste: "Les clés par objet, qui a le droit de fusionner, le lien Contact–Personne." },
-    { id: "Q4", titre: "Alpha reste-t-elle cliente quand le contrat est fini ?",
-      reco: "Oui, jusqu’à une requalification manuelle écrite. Le contact du projet n’est plus dans cette question : US5 l’a déjà tranché, obligatoire.",
+    { id: "ARB-1", titre: "Besoin, matching, projets, contact depuis besoin",
+      reco: "CreateProjectFromNeed sans ressource retenue : refuser sauf exception nommée. Après conversion, CreatePrestation suffit. Pourvu multi-postes : au moins une prestation signée, le besoin peut rester ouvert. Besoin sans contact : demander un contact au moment du projet, sans bloquer le besoin. US5 = formulaire manuel seulement.",
+      reste: "Ahmed peut autoriser le projet sans ressource retenue, exiger un matching ressource après conversion, définir pourvu autrement, ou autoriser un projet depuis besoin sans contact." },
+    { id: "ARB-2", titre: "Comment on compte les jours et l’argent ?",
+      reco: "Compter au jour, afficher à la semaine ou au mois. Séparer engagé, réalisé, prévisionnel. Aucun euro certifié avant l’atelier.",
+      reste: "Calendrier, régie/forfait, frais, change, validation des temps. Atelier CdC." },
+    { id: "ARB-3", titre: "Quand deux fiches sont-elles la même personne ?",
+      reco: "Avertir, laisser choisir. Pas de fusion automatique sur l’email.",
+      reste: "Clés par objet, qui fusionne, lien Contact–Personne." },
+    { id: "ARB-4", titre: "Alpha reste-t-elle cliente quand le contrat est fini ?",
+      reco: "Oui, jusqu’à requalification manuelle écrite. Six mois du CdC = question, pas règle.",
       reste: "Immédiat, délai, ou manuel. Qui corrige." },
-    { id: "Q5", titre: "Quel est le premier bureau qu’on livre ?",
-      reco: "CRM + recrutement simple + staffing + production élémentaire, avec droits et historique. Process avancé, LinkedIn, mails, portail, facture : ensuite.",
-      reste: "C’est un arbitrage de version. Les 18 DEC ne l’ont pas déjà fait." },
-    { id: "Q6", titre: "Qui approuve, qui valide les temps, qui est « Commercial » ?",
-      reco: "Groupes distincts, cumul dit (Karim = Staffing + DP). Conversion Sophie, approbation Nadia seulement si on veut cette étape. Admin sans pouvoir contractuel caché. Support en lecture.",
-      reste: "Équivalence Commercial/IA, validation des temps, surcharges restrictives, assistance active. Le jour 15 s’arrête à Léa refusée tant que ce n’est pas dit." }
+    { id: "ARB-5", titre: "Quel est le premier bureau livré ?",
+      reco: "CRM → candidat/ressource → matching → projet → prestation → temps, droits et historique. Différer éditeur, LinkedIn, mails, portail, facture. Backlog conservé.",
+      reste: "Arbitrage de version. Les 18 DEC ne l’ont pas fait." },
+    { id: "ARB-6", titre: "Qui convertit, qui cumule Staffing et DP ?",
+      reco: "Config de démo : Martin=IA, Sophie=RH, Nadia=RR, Karim=Staffing+DP si le cumul est accepté. Conversion = Sophie. Léa ne convertit pas. Pas d’ApproveRecruitment tant qu’Ahmed ne la demande pas. Support lecture.",
+      reste: "Séparer Staffing/DP, ajouter une étape Nadia, restreindre la conversion." }
   ];
 
   function storyNav(ids) {
@@ -3776,8 +3777,8 @@ function showView(name){
     const el = document.getElementById("view-ava-parcours");
     el.innerHTML = `
       <h2>Quinze jours dans le même bureau</h2>
-      <p class="lead">Le soir du jour 1 est le matin du jour 2. Rien n’est remis à zéro. On ne calcule aucun euro de marge.</p>
-      <p class="note">Suite des <button type="button" class="pill" data-go-view="ava-cadrage">contrats</button>. Vert = tenu par une DEC ou un cahier. Ambre = proposé. Bleu = encore à dire.</p>
+      <p class="lead">Le soir du jour 1 est le matin du jour 2. Ce sont des simulations de spécification, pas quinze tests passés. Aucun euro de marge.</p>
+      <p class="note">Suite des <button type="button" class="pill" data-go-view="ava-cadrage">contrats</button>. Vert = DEC/CdC. Ambre = sous hypothèse proposée. Bleu = non défini. Les ARB-1 à ARB-6 ne sont pas les anciennes questions Ahmed (DEC-Q01 à DEC-Q12).</p>
       ${storyNav(DAYS.map((d) => ["day-" + d.n, "J" + d.n]))}
       ${DAYS.map((d) => `
         <article class="day spec-sec" id="day-${d.n}">
@@ -3787,8 +3788,8 @@ function showView(name){
           <p class="note">${esc(d.note)}</p>
         </article>`).join("")}
       <article class="spec-sec" id="day-q">
-        <h2>Ce qu’Ahmed dit encore</h2>
-        <p class="lead">Le reste est déjà dans les contrats. On ne redemande pas le contact facultatif du besoin, ni l’obligation de contact sur le projet, ni les 18 DEC.</p>
+        <h2>Arbitrages encore ouverts (ARB-1 à ARB-6)</h2>
+        <p class="lead">Ce ne sont pas des décisions d’Ahmed. On ne redemande pas les 18 DEC, ni le contact facultatif du besoin. US5 impose le contact seulement sur le projet manuel.</p>
         ${QUESTIONS.map((q) => `
           <article class="contract">
             <h3>${q.id} — ${esc(q.titre)}</h3>
@@ -3803,8 +3804,8 @@ function showView(name){
     const el = document.getElementById("view-ava-commands");
     el.innerHTML = `
       <h2>Qui décide, sur ce plateau</h2>
-      <p class="lead">Les cahiers donnent les rôles, pas une matrice exhaustive. Ceci est la configuration du bureau de démonstration. Une permission sans périmètre ne suffit pas.</p>
-      <p class="note">Karim cumule Staffing et DP. Sophie n’est pas Nadia. Aucun de ces comptes n’écrit dans l’agence B avant qu’on le dise.</p>
+      <p class="lead">Les cahiers donnent les rôles, pas une matrice exhaustive. Configuration de démonstration, pas une DEC. Pas d’ApproveRecruitment dans le parcours de base.</p>
+      <p class="note">Karim cumule Staffing et DP pour l’exercice. Sophie n’est pas Nadia. Léa ne convertit pas. Aucun compte n’écrit dans l’agence B avant qu’on le dise.</p>
       <table>
         <thead><tr><th>Personne</th><th>Elle fait</th><th>Elle ne fait pas par défaut</th></tr></thead>
         <tbody>${MATRIX_ROLES.map((r) => `<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("")}</tbody>
@@ -3820,7 +3821,7 @@ function showView(name){
   function renderDecisions() {
     const el = document.getElementById("view-ava-decisions");
     el.innerHTML = `<h2>Les 18 décisions</h2>
-      <p class="lead">Elles ne se rouvrent pas. Le contact facultatif du besoin, l’arbre souple du client et le projet confirmé ne sont plus des questions : le cadrage réconcilié les clôt.</p>
+      <p class="lead">Elles ne se rouvrent pas. DEC-Q01 à DEC-Q12 du hub Boond = ces DEC. ARB-1 à ARB-6 restent ouverts : ce n’est pas la même liste.</p>
       ${statsBar()}
       <div class="filters" id="dec-filters">
         <button type="button" class="pill" data-dec-f="all" aria-pressed="true">Toutes</button>
@@ -4129,7 +4130,7 @@ function showView(name){
   const AVA_CHEMINS = [
     { id: 1, nom: "CRM", verbe: "Nourrir le client",
       caption: "Société → Contact → Action · Besoin sans Contact possible",
-      hint: "C1 Ava : Société obligatoire. Contact recommandé, pas bloquant (D4 ouvert).",
+      hint: "C1 Ava : Société obligatoire. Contact facultatif sur le besoin (DEC-04). Pas D4 ouvert.",
       edges: [["societe","contact"],["contact","action"],["societe","besoin"]],
       steps: ["Société","Contact","Besoin"] },
     { id: 2, nom: "Recrutement", verbe: "Faire le vivier",
@@ -4138,8 +4139,8 @@ function showView(name){
       edges: [["personne","candidat"],["candidat","action"],["candidat","positionnement"],["candidat","ressource"]],
       steps: ["Personne","Candidat","Positionnement","Ressource"] },
     { id: 3, nom: "Staffing", verbe: "Pourvoir le besoin",
-      caption: "Société → Besoin → Positionnement → Projet",
-      hint: "C3 Ava : XOR candidat/ressource. WinNeed() puis CreateProjectFromNeed(). Pas de trigger magique.",
+      caption: "Société → Besoin (contact facultatif) → Positionnement → Projet",
+      hint: "C3 Ava : XOR candidat/ressource. Projet explicite (DEC-06), y compris création directe US5. WinNeed() ne crée pas le projet. CreateProjectFromNeed sans contact = ARB-1.",
       edges: [["societe","besoin"],["besoin","positionnement"],["candidat","positionnement"],["ressource","positionnement"],["besoin","projet"]],
       steps: ["Société","Besoin","Positionnement","Projet"] },
     { id: 4, nom: "Production", verbe: "Exécuter la mission",
@@ -4198,7 +4199,7 @@ function showView(name){
       <div class="grid">
         <div>
           <h3>Ce qui change vs Boond</h3>
-          <p>Personne au centre. Pas de + Projet depuis un candidat. Contact facultatif sur le Besoin (D4). P1–P3 = priorité, pas un état. N prestations + alerte de charge.</p>
+          <p>Personne au centre. Pas de + Projet depuis un candidat. Contact facultatif sur le Besoin (DEC-04). Projet manuel US5 avec contact ; projet depuis besoin sans contact = ARB-1. P1–P3 = priorité. N prestations + alerte de charge.</p>
         </div>
         <div>
           <h3>Ce qui reste</h3>
