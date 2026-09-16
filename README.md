@@ -1,5 +1,8 @@
-# Ava Manager — hub Boond
+# Ava Manager — hub
 
-Page unique : **Métier**, **Simulateur**, **Audit complet** (59 écrans, captures + explications).
+Page unique Ava / Boond : Métier, Simulateur, Contrats, 15 parcours, Qui décide, Décisions.
 
-Ouvrir : GitHub Pages du dépôt.
+Ouvrir (cache-buster F1–F36) :
+
+https://ahmedbentaleb.github.io/ava-boond-hub/?v=f36#ava-parcours
+

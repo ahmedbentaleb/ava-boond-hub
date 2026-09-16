@@ -435,7 +435,7 @@
   </section>
 
   <section class="view" id="view-spec" hidden>
-<p class="lead">Spécification métier Ava Manager. Dérivée des 59 écrans cliqués, pas d’un manuel Boond. Pas de SQL. Pas d’écrans à recoder. Les <strong>DEC-Q01 à DEC-Q12</strong> ci-dessous sont des réponses d’Ahmed déjà prises (DEC-01 à DEC-18). Elles ne sont <strong>pas</strong> les arbitrages ouverts <strong>ARB-1 à ARB-6</strong> (vue Ava → 15 parcours). <span class="tag warn">À VALIDER MÉTIER</span> = point hors de ces 12, encore ouvert.</p>
+<p class="lead">Spécification métier Ava Manager. Dérivée des 59 écrans cliqués, pas d’un manuel Boond. Pas de SQL. Pas d’écrans à recoder. Les <strong>DEC-Q01 à DEC-Q12</strong> ci-dessous sont des réponses d’Ahmed déjà prises (DEC-01 à DEC-18). La feuille <strong>F1–F34</strong> est close (vue Ava → 15 parcours). Seul ouvert : atelier chiffres <strong>F35–F36</strong>. <span class="tag warn">À VALIDER MÉTIER</span> sur cette page Boond = point hors DEC, à relire contre F.</p>
 <p class="note">Preuve de méthode : le bouton <strong>Créer</strong> d’une fiche est le vrai menu. Un objet qui n’apparaît dans aucun Créer n’est pas un objet du noyau.</p>
 
 <nav class="spec-toc" id="spec-toc"></nav>
@@ -691,17 +691,15 @@ Projet  (0..1 Besoin ; Besoin 1 → N Projets)
 
 <article class="spec-sec" id="s5">
   <h2>5. Machines d’état</h2>
-  <p>Simplifiées vs Boond (14 étapes candidat, 9 états positionnement). Les libellés admin Boond restent un référentiel possible plus tard ; V1 fige un cycle court.</p>
+  <p>V1 : Draft et Complété (CdC). La conversion est une commande (BM-06), pas un troisième statut candidat (F19). L’éditeur de process est hors V1 (F16).</p>
 
-  <h3>Candidat — état initial : <code>a_qualifier</code></h3>
-  <p class="sm">a_qualifier → en_cours → vivier | clos | converti</p>
+  <h3>Candidat — états V1 : <code>draft</code>, <code>complete</code></h3>
+  <p class="sm">draft → complete. ConvertCandidateToResource n’ajoute pas un statut « converti ».</p>
   <table>
     <thead><tr><th>De</th><th>Vers</th><th>Condition</th><th>Interdit</th><th>Effet</th></tr></thead>
     <tbody>
-      <tr><td>a_qualifier</td><td>en_cours</td><td>Au moins une action ou un positionnement</td><td>—</td><td>—</td></tr>
-      <tr><td>en_cours</td><td>vivier</td><td>Décision recruteur</td><td>Depuis converti</td><td>—</td></tr>
-      <tr><td>en_cours / vivier</td><td>converti</td><td>ConvertCandidateToResource</td><td>RessourceProfile déjà actif</td><td>Active le profil Ressource sur la même Personne. Historique Candidat intact.</td></tr>
-      <tr><td>*</td><td>clos</td><td>Décision</td><td>Depuis converti sans archivage ressource</td><td>Plus de nouveau positionnement</td></tr>
+      <tr><td>draft</td><td>complete</td><td>Champs requis de l’étape</td><td>—</td><td>Motif de complétion possible, y compris autre que conversion</td></tr>
+      <tr><td>draft / complete</td><td>(commande) ressource</td><td>ConvertCandidateToResource confirmée</td><td>Profil ressource déjà présent ; Léa (F11)</td><td>Profil Ressource sur la même Personne. Le statut candidat reste Draft ou Complété.</td></tr>
     </tbody>
   </table>
 
@@ -712,7 +710,7 @@ Projet  (0..1 Besoin ; Besoin 1 → N Projets)
     <thead><tr><th>De</th><th>Vers</th><th>Condition</th><th>Interdit</th><th>Effet</th></tr></thead>
     <tbody>
       <tr><td>ouvert</td><td>staffing</td><td>≥ 1 positionnement</td><td>—</td><td>—</td></tr>
-      <tr><td>staffing</td><td>pourvu</td><td>Au moins un projet créé (commande explicite)</td><td>Auto depuis « retenu » : interdit</td><td>CreateProjectFromNeed</td></tr>
+      <tr><td>staffing</td><td>pourvu</td><td>Tous les postes visés ont une prestation signée (F3). Pas « dès un projet ».</td><td>Auto depuis « retenu » : interdit. Une première prestation sur un besoin multi-postes : reste staffing.</td><td>Commande d’état, pas CreateProjectFromNeed</td></tr>
       <tr><td>ouvert / staffing</td><td>suspendu / fermé</td><td>Décision</td><td>pourvu → ouvert (pas de retour)</td><td>Nouveaux positionnements refusés si fermé</td></tr>
     </tbody>
   </table>
@@ -2347,7 +2345,7 @@ function renderQuestions(){
          <div class="rowbtns"><button type="button" data-q-edit="${q.id}">Modifier</button></div>`;
     return `<article class="q-card">
       <h3>${"DEC-Q" + String(i+1).padStart(2,"0")} (= ${["DEC-01/02","DEC-05","DEC-06","DEC-08","DEC-09","DEC-10","DEC-11","DEC-12","DEC-01/02","DEC-13","DEC-04","DEC-14"][i]}) — ${q.title} ${qBadge(q)}</h3>
-      <p class="q-meta">${q.question}${q.by ? " · Auteur : " + q.by : ""} · Ce n’est pas ARB-1…ARB-6.</p>
+      <p class="q-meta">${q.question}${q.by ? " · Auteur : " + q.by : ""} · Ce n’est pas F1–F36.</p>
       ${body}
     </article>`;
   }).join("");
@@ -2480,7 +2478,7 @@ function showView(name){
       id: "D4", status: "valide", sujet: "Besoin → Contact",
       decision: "Pour ouvrir un besoin, la société suffit. Le contact est bienvenu, pas bloquant. DEC-04 l’emporte sur le CdC 2022.",
       raison: "Martin doit pouvoir ouvrir Beta avant d’avoir un interlocuteur.",
-      impact: "Jour 11 : N11 existe sans contact. CreateProjectFromNeed dans ce cas = ARB-1, pas US5 généralisé."
+      impact: "Jour 11 : N11 existe sans contact (DEC-04). Le projet depuis ce besoin demande un contact à la commande (F4)."
     },
     {
       id: "D5", status: "valide", sujet: "Structure client",
@@ -2701,7 +2699,25 @@ function showView(name){
       example: "CloseProject avec prestations ouvertes → refus.",
       status: "valide", severity: "error", layers: ["service", "api"],
       ops: ["CloseProject"],
-      validate: (ctx) => ctx.openServices ? "Prestations encore ouvertes." : null }
+      validate: (ctx) => ctx.openServices ? "Prestations encore ouvertes." : null },
+    { id: "RULE-022", entity: "Projet", title: "Projet depuis besoin : ressource retenue (F1)",
+      explain: "CreateProjectFromNeed refuse s’il n’y a pas de matching ressource retenu.",
+      example: "Besoin ouvert sans ressource retenue → refus.",
+      status: "valide", severity: "error", layers: ["service", "api"],
+      ops: ["CreateProjectFromNeed"],
+      validate: (ctx) => ctx.missingResource ? "Aucun positionnement ressource retenu." : null },
+    { id: "RULE-023", entity: "Projet", title: "Contact du projet obligatoire à la commande (F4 / US5)",
+      explain: "Manuel US5 : contact obligatoire. Depuis besoin sans contact : le fournir au projet.",
+      example: "N11 Beta sans contact et sans contact saisi → refus.",
+      status: "valide", severity: "error", layers: ["service", "api", "ui"],
+      ops: ["CreateProjectFromNeed", "CreateProject"],
+      validate: (ctx) => ctx.missingContact ? "Choisissez le contact du projet." : null },
+    { id: "RULE-024", entity: "Positionnement", title: "Matching seulement sur besoin ouvert ou staffing (F5)",
+      explain: "Pourvu, suspendu ou fermé : réactiver d’abord.",
+      example: "Nouveau matching sur fermé → refus.",
+      status: "valide", severity: "error", layers: ["service", "api"],
+      ops: ["PositionCandidateOnNeed", "PositionResourceOnNeed"],
+      validate: (ctx) => ctx.needInactive ? "Réactivez le besoin avant un nouveau positionnement." : null }
   ];
 
   const COMMANDS = [
@@ -2938,9 +2954,12 @@ function showView(name){
     acquise: '<span class="tag ok">ACQUIS</span>',
     proposee: '<span class="tag warn">PROPOSÉ</span>',
     question: '<span class="tag edit">QUESTION</span>',
+    differe: '<span class="tag warn">hors V1</span>',
     dec: '<span class="tag ok">DEC/CdC</span>',
     hypo: '<span class="tag warn">sous hypothèse proposée</span>',
-    undef: '<span class="tag edit">non défini</span>'
+    undef: '<span class="tag edit">non défini</span>',
+    f: '<span class="tag ok">F1–F34</span>',
+    atelier: '<span class="tag edit">atelier F35–F36</span>'
   };
 
   function vli(v, l, i) {
@@ -3026,13 +3045,13 @@ function showView(name){
           quand: "Sophie fait avancer Amina.",
           dit: "Chaque étape demande ses champs. Draft et Complété existent. Convertir n’est pas un libellé d’étape : c’est BM-06.",
           refus: "Complétez les champs requis pour cette transition.",
-          v: "Draft vers la première étape autorisée.",
+          v: "Draft vers Complété (CdC). La conversion n’est pas un 3e statut (F19).",
           l: "Complété pour un motif autre que l’embauche.",
-          i: "Convertir en changeant seulement le libellé." },
+          i: "Inventer un statut Converti à la place de BM-06." },
         { id: "BM-06", st: "acquise", titre: "Conversion confirmée",
-          qui: "Sophie, éventuellement Nadia — DEC-01/02, US2",
+          qui: "Sophie RH — DEC-01/02, US2, F9. Pas Nadia (F10).",
           quand: "Amina est retenue et Avaliance l’embauche.",
-          dit: "Sophie confirme. Le profil ressource s’allume sur la même personne. L’historique candidat reste. Aucun projet n’apparaît tout seul.",
+          dit: "Sophie confirme. Le profil ressource s’allume sur la même personne. L’historique candidat reste. Aucun projet n’apparaît tout seul. Pas d’ApproveRecruitment.",
           refus: "Conversion annulée / Profil ressource déjà présent.",
           v: "Sophie confirme.",
           l: "Elle annule, puis confirme plus tard.",
@@ -3116,14 +3135,14 @@ function showView(name){
           v: "Service1 client, Alice cliente sans contrat personnel.",
           l: "Le pôle voisin reste prospect.",
           i: "Tous les services d’Alpha deviennent clients parce que la société l’est." },
-        { id: "BM-16", st: "question", titre: "Le retour Prospect n’est pas tranché",
-          qui: "Responsable CRM — Q4",
+        { id: "BM-16", st: "acquise", titre: "Alpha reste cliente jusqu’à une main",
+          qui: "CRM habilité — F23–F24",
           quand: "Le dernier contrat d’Alpha se termine.",
-          dit: "Proposition V1 : Alpha reste Client jusqu’à une requalification manuelle tracée. Pas de descente automatique à six mois.",
-          refus: "Aucune règle validée ne permet cette requalification automatique.",
-          v: "Correction motivée, plus tard.",
+          dit: "Alpha reste Client jusqu’à une requalification manuelle écrite. Pas de descente automatique, ni tout de suite ni à six mois.",
+          refus: "Aucun déclassement automatique.",
+          v: "Contrat clos, Alpha toujours cliente.",
           l: "Contrat terminé hier.",
-          i: "Appliquer six mois parce que le CdC cite cet exemple." },
+          i: "Repasser Prospect tout seul au bout de six mois." },
         { id: "BM-17", st: "acquise", titre: "Archiver un service sans effacer l’histoire",
           qui: "Martin s’il a le droit d’archiver — DEC-18",
           quand: "Service1 n’a plus d’activité ouverte.",
@@ -3171,7 +3190,7 @@ function showView(name){
           v: "Jean ressource sur N1.",
           l: "Jean sur N1 et N2.",
           i: "Candidat et ressource sur la même ligne." },
-        { id: "BM-22", st: "proposee", titre: "Pas de nouveau matching sur un besoin fermé",
+        { id: "BM-22", st: "acquise", titre: "Pas de nouveau matching sur un besoin fermé",
           qui: "Celui qui positionne",
           quand: "N1 est fermé.",
           dit: "On réactive d’abord. Staffing : oui. Suspendu : seulement si on le dit.",
@@ -3208,7 +3227,7 @@ function showView(name){
     {
       id: "ch-mission",
       titre: "5. La mission porte l’argent et la charge",
-      lead: "Les gens et les tarifs vivent sur la prestation. US5 impose un contact sur le projet manuel. Un projet depuis un besoin sans contact n’est pas tranché (ARB-1).",
+      lead: "Les gens et les tarifs vivent sur la prestation. US5 = contact sur le projet manuel. Besoin sans contact : on demande le contact au moment du projet (F4).",
       cards: [
         { id: "BM-26", st: "acquise", titre: "Le projet se confirme, il ne surgit pas",
           qui: "Karim (DP) ; staffing si délégué — DEC-05/06",
@@ -3218,18 +3237,18 @@ function showView(name){
           v: "Deuxième projet du même besoin.",
           l: "Projet encore sans prestation.",
           i: "Projet silencieux parce que le besoin est pourvu." },
-        { id: "BM-27", st: "proposee", titre: "Contact du projet : US5 manuel, pas tous les parcours",
-          qui: "Karim — US5 pour le manuel ; DEC-07 pour la ressource ; ARB-1 pour le besoin sans contact",
+        { id: "BM-27", st: "acquise", titre: "Contact du projet : manuel US5, ou demandé à la commande depuis besoin",
+          qui: "Karim — US5 manuel ; F4 depuis besoin ; DEC-07 ressource",
           quand: "N11 Beta n’a pas de contact.",
-          dit: "Création manuelle (US5) : Karim choisit un contact. Ressource jamais collée au projet. CreateProjectFromNeed sans contact : on ne généralise pas US5. Le besoin existe déjà (DEC-04).",
-          refus: "Choisissez le contact du projet — seulement sur le formulaire manuel US5.",
+          dit: "Le besoin existe (DEC-04). Pour créer le projet depuis ce besoin, Karim fournit un contact maintenant (F4). Le besoin n’est pas bloqué. Ressource jamais collée au projet.",
+          refus: "Choisissez le contact du projet.",
           v: "Projet manuel avec Alice.",
-          l: "Besoin Beta sans contact : le besoin tient ; le projet depuis besoin attend ARB-1.",
+          l: "Besoin Beta sans contact ; le projet naît dès qu’un contact est donné à la commande.",
           i: "Une seule ressource collée au projet." },
-        { id: "BM-28", st: "proposee", titre: "Depuis un besoin : une ressource retenue",
-          qui: "Karim — pas déduit de DEC-06 seule",
+        { id: "BM-28", st: "acquise", titre: "Depuis un besoin : une ressource retenue",
+          qui: "Karim — F1",
           quand: "Il lance Créer le projet depuis N1.",
-          dit: "Parcours recommandé : un matching ressource retenu, besoin non fermé. La création directe (US5) reste une autre commande.",
+          dit: "Il faut un matching ressource retenu, besoin non fermé. Sinon refus. La création directe (US5) reste une autre commande.",
           refus: "Aucun positionnement ressource retenu ne permet ce parcours.",
           v: "Jean retenu sur N1.",
           l: "Projet direct, commande à part.",
@@ -3258,14 +3277,14 @@ function showView(name){
           v: "60 % + 40 %.",
           l: "Exactement 100 %.",
           i: "Annoncer 110 % en additionnant des mois disjoints." },
-        { id: "BM-32", st: "proposee", titre: "On compte les jours qui se recouvrent",
-          qui: "Le système — complément de DEC-10",
+        { id: "BM-32", st: "acquise", titre: "On compte les jours qui se recouvrent",
+          qui: "Le système — F29–F31",
           quand: "T5 couvre seulement du 15 au 19 mars.",
-          dit: "Proposition : grain journalier, vues semaine/mois ensuite. Sans recouvrement, pas de surcharge. Calendrier, absences, jours fériés : atelier Q2.",
+          dit: "Grain jour, affichage semaine/mois. Calendrier d’agence (week-end, fériés). Les prévisionnelles comptent, distinguées. Sans recouvrement, pas de surcharge. Les euros restent l’atelier (F35–F36).",
           refus: "Convention de calendrier ou de capacité manquante pour cet indicateur.",
           v: "Dépassement uniquement du 15 au 19.",
           l: "Le jour de frontière commun.",
-          i: "Dire que les cahiers ont déjà fixé le grain jour." },
+          i: "Compter 7 jours / 7 sans calendrier d’agence." },
         { id: "BM-33", st: "acquise", titre: "On ne swap pas Jean contre Paul",
           qui: "Karim — DEC-11",
           quand: "Jean part à la mi-janvier.",
@@ -3282,7 +3301,7 @@ function showView(name){
           v: "Clôturer, puis hausser le CJM sans effet passé.",
           l: "Marge nulle.",
           i: "Réécrire la photo." },
-        { id: "BM-35", st: "proposee", titre: "On ne clôture pas le projet tant qu’une mission tourne",
+        { id: "BM-35", st: "acquise", titre: "On ne clôture pas le projet tant qu’une mission tourne",
           qui: "Karim DP",
           quand: "P1 a encore T1B ouverte.",
           dit: "D’abord les prestations. Clôturer n’est pas archiver. Les photos déjà prises ne se recalculent pas.",
@@ -3293,12 +3312,12 @@ function showView(name){
         { id: "BM-36", st: "acquise", titre: "Les temps sont ceux de la ressource, sur sa mission",
           qui: "Jean pour lui ; Karim sur son pôle — DEC-02",
           quand: "Jean saisit 0,6 jour le 4 janvier.",
-          dit: "C’est T1, c’est Jean. Sara externe peut saisir les siens. Mehdi candidat : non. Validation et corrections après clôture : Q2.",
+          dit: "C’est T1, c’est Jean (F32). Sara externe peut saisir les siens. Mehdi : non. Temps interne sans mission : hors V1 (F33). Correction après clôture = ajustement tracé, snapshot intact (F34, DEC-09). CA produit : atelier (F35).",
           refus: "Cette prestation ne correspond pas à la ressource ou à la période autorisée.",
           v: "Temps sur sa mission.",
           l: "Sara externe saisit.",
           i: "Temps sur un candidat." },
-        { id: "BM-37", st: "proposee", titre: "Un congé n’a pas besoin d’une mission",
+        { id: "BM-37", st: "acquise", titre: "Un congé n’a pas besoin d’une mission",
           qui: "La ressource, ou un gestionnaire — DEC-16",
           quand: "Paul est en intercontrat.",
           dit: "L’absence est à Paul, pas à une prestation. Demander, saisir et valider sont trois gestes si on valide.",
@@ -3307,7 +3326,7 @@ function showView(name){
           l: "Demi-journée.",
           i: "Exiger une prestation pour poser le congé." },
         { id: "BM-38", st: "question", titre: "Les chiffres ont des noms, pas encore de formule",
-          qui: "Atelier finance — Q2",
+          qui: "Atelier finance — F35–F36",
           quand: "On parle de CA signé, produit, facturé, marge, occupation.",
           dit: "On sépare les notions. On ne mélange pas l’euro et le MAD. Aucun montant de clôture n’est certifié avant l’atelier.",
           refus: "Ces montants ne sont pas comparables sans convention de calcul ou de change.",
@@ -3393,10 +3412,10 @@ function showView(name){
           v: "Dossier clos archivé.",
           l: "Ancien contact encore référencé.",
           i: "Tout supprimer autour." },
-        { id: "BM-48", st: "acquise", titre: "On ne notifie pas qui n’a pas la fiche",
-          qui: "Contributeur / système — CdC, V1 proposée",
-          quand: "Martin mentionne Léa.",
-          dit: "Léa est déjà sur le dossier. Pas de fuite vers quelqu’un hors périmètre.",
+        { id: "BM-48", st: "differe", titre: "Commentaires et mentions : hors V1",
+          qui: "Backlog — F17. Actions et historique restent en V1.",
+          quand: "Martin voudrait mentionner Léa.",
+          dit: "Pas dans le premier lot. Les Actions (BM-40) et l’historique (BM-46) restent. L’exigence CdC n’est pas abandonnée.",
           refus: "Ce destinataire n’a pas accès à cette fiche.",
           v: "Mention du responsable.",
           l: "Fiche sans autre intervenant.",
@@ -3456,26 +3475,26 @@ function showView(name){
           v: "Coût externe identifié.",
           l: "Fournisseur aussi client.",
           i: "Sara EXTERNAL = facture soldée." },
-        { id: "BM-55", st: "question", titre: "Support lit ; le candidat portail n’agit pas encore",
-          qui: "Support / futur portail — Q6",
+        { id: "BM-55", st: "acquise", titre: "Support lit ; le candidat portail n’agit pas encore",
+          qui: "Support lecture F13 ; portail hors V1 F16",
           quand: "Un agent ouvre le dossier d’Amina.",
           dit: "Lecture globale prévue. Agir à la place de Sophie n’est pas acquis. Avoir une fiche candidat n’enlève aucun rôle RH.",
           refus: "Aucune habilitation active n’est définie pour cette action.",
           v: "Support lit selon l’accès prévu.",
           l: "Sophie a aussi une fiche candidate.",
           i: "Lui retirer RH parce qu’elle est elle-même candidate." },
-        { id: "BM-56", st: "acquise", titre: "Trois alertes, pas quatre",
-          qui: "Utilisateur — CdC, différable",
+        { id: "BM-56", st: "differe", titre: "Trois alertes, pas quatre",
+          qui: "Hors V1 — F18",
           quand: "Martin sauvegarde une recherche.",
           dit: "Les nouveaux résultats visibles le signalent. Ça ne mute rien. Le CdC dit lui-même : second temps.",
           refus: "Vous avez atteint les trois alertes prévues.",
           v: "Deuxième alerte.",
           l: "Troisième.",
           i: "Quatrième." },
-        { id: "BM-57", st: "question", titre: "Un même mail n’est pas une preuve d’identité",
-          qui: "Créateur, puis un responsable — Q3",
+        { id: "BM-57", st: "acquise", titre: "Un même mail n’est pas une preuve d’identité",
+          qui: "Créateur, puis habilité par objet — F20–F22",
           quand: "Sophie saisit un mail déjà vu.",
-          dit: "On avertit, on propose la fiche. On ne fusionne pas tout seul. BM-02 (un profil par type) reste.",
+          dit: "On avertit, l’utilisateur choisit. Pas de fusion automatique. Contact et Personne restent deux objets en V1.",
           refus: "À définir selon les clés fiables.",
           v: "Rapprochement confirmé à la main.",
           l: "Adresse partagée dans une équipe.",
@@ -3488,26 +3507,26 @@ function showView(name){
           v: "Numéro international.",
           l: "Code postal avec zéro initial.",
           i: "Rejeter tous les codes alphanumériques." },
-        { id: "BM-59", st: "proposee", titre: "Le premier bureau, pas tout le CdC",
-          qui: "Ahmed, produit — Q5",
+        { id: "BM-59", st: "acquise", titre: "Le premier bureau, pas tout le CdC",
+          qui: "Ahmed — F15–F19",
           quand: "On tranche V1.",
-          dit: "Proposition : CRM, candidat/ressource, matching, projet/prestation, temps simples, droits, historique, planning lu. Process avancé, LinkedIn, emailing, portail, facture : plus tard, pas oubliés.",
+          dit: "V1 : CRM, candidat/ressource, matching, projet, prestation, temps, droits, historique, planning lu, Actions. Commentaires hors V1. Process, LinkedIn, emailing, portail, facture, achats, alertes : plus tard, pas oubliés. Cycle candidat = Draft / Complété.",
           refus: "Cette fonctionnalité n’appartient pas à la version retenue.",
           v: "Un noyau qui tient tout seul.",
           l: "Un rapport minimal opérationnel.",
           i: "Annoncer l’emailing en V1 sans l’avoir tranché." },
-        { id: "BM-60", st: "proposee", titre: "Le cycle du besoin, sans « gagné »",
-          qui: "Martin demande ; Karim prend en charge",
+        { id: "BM-60", st: "acquise", titre: "Le cycle du besoin, sans « gagné »",
+          qui: "Martin demande ; Karim prend en charge — F6, F3",
           quand: "N1 avance.",
-          dit: "Ouvert → staffing → pourvu. On peut suspendre ou fermer. Reprendre un suspendu se dit. Rouvrir un fermé est une commande. Pourvu sur un besoin multi-postes : Q1.",
+          dit: "Ouvert → staffing → pourvu. On peut suspendre ou fermer. Reprendre un suspendu se dit. Rouvrir un fermé est une commande. Pourvu = tous les postes visés ont une prestation signée. Une première signature laisse le besoin en staffing (F3, pas une DEC).",
           refus: "Cette transition nécessite une réactivation ou une décision explicite.",
-          v: "Staffing vers pourvu.",
-          l: "Suspension puis reprise écrite.",
+          v: "Dernier poste signé → pourvu.",
+          l: "Une prestation sur deux : encore staffing.",
           i: "Ajouter gagné comme sixième état." },
-        { id: "BM-61", st: "question", titre: "Les dossiers en cours ne changent pas de process tout seuls",
-          qui: "Nadia — si l’éditeur est en V1",
+        { id: "BM-61", st: "differe", titre: "Les dossiers en cours ne changent pas de process tout seuls",
+          qui: "Éditeur hors V1 — F16",
           quand: "Deux process aussi précis s’appliquent.",
-          dit: "Les nouveaux dossiers prennent le nouveau. Les anciens restent, sauf migration dite. À différer si Q5 recule l’éditeur.",
+          dit: "Hors V1. Si l’éditeur revient : nouveaux dossiers sur la nouvelle version ; anciens inchangés sauf migration écrite.",
           refus: "Plusieurs processus aussi spécifiques sont applicables ; choisissez ou corrigez leur priorité.",
           v: "Migration volontaire.",
           l: "Deux process à égalité.",
@@ -3544,19 +3563,19 @@ function showView(name){
 
   const DAYS = [
     { n: 1, titre: "Jean, déjà ressource, part en mission",
-      st: "hypo",
+      st: "f",
       etapes: [
         "Martin crée N1 pour Alpha / Service1, contact Alice.",
         "Karim positionne Jean (ressource) : X1.",
-        "Martin enregistre : le client retient Jean. N1 passe en staffing (BM-60 proposé).",
-        "Karim confirme P1 depuis N1 (garde ressource retenue : proposée, pas une DEC).",
+        "Martin enregistre : le client retient Jean. N1 passe en staffing (F6).",
+        "Karim confirme P1 depuis N1 (garde ressource retenue : F1).",
         "Karim crée T1 : Jean, janvier, signée, 60 %.",
         "Jean saisit 0,6 jour le 4 janvier sur T1."
       ],
       monde: "1 besoin, 1 matching, 1 projet, 1 mission, 1 ligne de temps. Personne de nouvelle.",
-      note: "Invariants DEC tenus sur les objets. Transitions et garde CreateProjectFromNeed = hypothèse." },
+      note: "DEC + F1/F6. Pourvu seulement si tous les postes visés sont signés (F3)." },
     { n: 2, titre: "Amina candidate, puis consultante",
-      st: "hypo",
+      st: "f",
       etapes: [
         "Sophie crée Amina, profil candidat Draft.",
         "Martin ouvre N2 Alpha / Service2, Benoît.",
@@ -3564,33 +3583,33 @@ function showView(name){
         "Léa, habilitée sur ce dossier, qualifie pour N2.",
         "Martin enregistre le retour client : retenu.",
         "Sophie annule une première conversion : rien ne bouge.",
-        "Sophie confirme : le profil ressource s’ajoute à la même Amina.",
-        "Karim crée ensuite un matching ressource, puis P2 et T2 — étape 8 = ARB-1, pas une DEC."
+        "Sophie confirme : le profil ressource s’ajoute à la même Amina. Pas de statut Converti (F19).",
+        "Karim crée P2 puis T2 : CreatePrestation suffit, pas de second matching obligatoire (F2)."
       ],
       monde: "Une seule Amina, deux profils. X2 candidat toujours là. Aucune mission sur le profil Candidat.",
-      note: "Conversion : DEC/CdC. Deux matchings pour continuer : hypothèse ARB-1." },
+      note: "Conversion : DEC. Prestation directe après conversion : F2." },
     { n: 3, titre: "Un besoin, deux projets",
-      st: "hypo",
+      st: "f",
       etapes: [
-        "Martin crée N3, Benoît.",
+        "Martin crée N3, Benoît — deux postes visés.",
         "Karim positionne Sara ; Martin note retenu.",
         "Karim confirme P3A, puis P3B, depuis le même N3.",
-        "Zéro mission créée toute seule : DEC/CdC.",
-        "Karim choisit P3A et crée T3A, Sara 60 %, mars (BM-25 proposé)."
+        "Zéro mission créée toute seule : DEC.",
+        "Karim choisit P3A et crée T3A, Sara 60 %, mars."
       ],
-      monde: "N3 a deux projets. X3 reste sur N3. P3B n’a encore personne.",
-      note: "N projets et pas d’automatisme : DEC. Choix du projet à la prestation : proposé." },
+      monde: "N3 a deux projets. X3 reste sur N3. P3B n’a encore personne. N3 reste staffing (F3).",
+      note: "N projets : DEC. Une prestation ne pourvoit pas tout le besoin : F3." },
     { n: 4, titre: "Sara à 60 / 40",
-      st: "hypo",
+      st: "f",
       etapes: [
         "Karim choisit P3B.",
         "Il crée T3B, Sara, signée, 40 %, tout mars.",
-        "Convention d’exercice au jour : 60 + 40 = 100 %."
+        "Grain jour, calendrier d’agence : 60 + 40 = 100 % (F29–F30)."
       ],
-      monde: "Deux missions Sara, deux projets. X3 n’est pas photocopié. Pas d’alerte.",
-      note: "N prestations : DEC-10. Grain jour : proposé (ARB-2)." },
+      monde: "Deux missions Sara, deux projets. X3 n’est pas photocopié. Pas d’alerte. N3 peut passer à pourvu si les deux postes sont ainsi signés.",
+      note: "DEC-10 + F29/F30." },
     { n: 5, titre: "Cinq jours à 110 %",
-      st: "hypo",
+      st: "f",
       etapes: [
         "Martin ouvre N5 ; Karim positionne Sara ; Martin note retenu.",
         "Karim confirme P5.",
@@ -3598,36 +3617,36 @@ function showView(name){
         "Le système garde T5 et signale 110 % sur ces dates (alerte, pas refus : DEC-10)."
       ],
       monde: "Trois missions Sara. 100 % hors fenêtre, 110 % dedans.",
-      note: "Alerte : DEC. Jours fériés : non défini (ARB-2)." },
+      note: "Alerte : DEC. Fenêtre au jour + calendrier d’agence : F29/F30. Euros : atelier." },
     { n: 6, titre: "Paul à 60 % puis 50 %, sans se marcher dessus",
-      st: "hypo",
+      st: "f",
       etapes: [
         "N6, matching Paul, retenu, P6A et P6B.",
         "T6A : 60 %, 1er au 9 avril.",
         "T6B : 50 %, 12 au 30 avril."
       ],
       monde: "Deux missions Paul, zéro surcharge si on ne mélange pas les semaines.",
-      note: "DEC-10 interdit d’additionner des périodes disjointes. Calendrier : proposé." },
+      note: "DEC-10 + F29/F30." },
     { n: 7, titre: "Paul remplace Jean, les heures de Jean restent à Jean",
       st: "dec",
       etapes: [
         "Karim tente de mettre Paul à la place de Jean sur T1 : refus. Le 0,6 jour du 4 janvier ne bouge pas.",
-        "Karim clôture T1 au 15 janvier. Photo de marge : montant non défini (ARB-2).",
+        "Karim clôture T1 au 15 janvier. Photo de marge : montant non certifié (F35–F36). Un ajustement de temps resterait distinct (F34).",
         "Il ouvre T1B pour Paul, 60 %, 16–31 janvier."
       ],
       monde: "T1 = Jean, close. T1B = Paul. Le 4 janvier reste à Jean.",
-      note: "Remplacement : DEC-11. Aucun euro inventé." },
+      note: "Remplacement : DEC-11. Snapshot : DEC-09. Aucun euro inventé." },
     { n: 8, titre: "On clôture la mission, puis le projet",
-      st: "hypo",
+      st: "f",
       etapes: [
-        "Karim tente de clôturer P1 : refus proposé (BM-35), T1B est ouverte.",
+        "Karim tente de clôturer P1 : refus (F7), T1B est ouverte.",
         "Paul saisit 0,6 jour le 18 janvier sur T1B.",
-        "Karim clôture T1B au 31 janvier, nouvelle photo (montant non défini).",
+        "Karim clôture T1B au 31 janvier, nouvelle photo (montant non certifié).",
         "Karim clôture P1.",
         "Sophie change plus tard le CJM de Jean : les photos de janvier ne bougent pas (DEC-09)."
       ],
       monde: "P1 clos, deux missions closes, deux lignes de temps.",
-      note: "Ordre projet : proposé. Snapshot : DEC." },
+      note: "Ordre projet : F7. Snapshot : DEC. Montants : atelier." },
     { n: 9, titre: "Mehdi candidat n’entre pas en mission",
       st: "dec",
       etapes: [
@@ -3638,23 +3657,23 @@ function showView(name){
       monde: "Identique au jour 8. Mehdi n’a toujours pas de profil ressource.",
       note: "DEC-02, même pour un DP." },
     { n: 10, titre: "Sophie RH ne crée pas de société",
-      st: "hypo",
+      st: "f",
       etapes: [
-        "Config de démo : Sophie RH sans contribution CRM.",
+        "Config retenue F8–F14 : Sophie RH sans contribution CRM.",
         "Sophie tente Créer Delta : refus, zéro Delta.",
         "Martin, IA agence A, crée Delta."
       ],
       monde: "Exactement une Delta, événement au nom de Martin.",
-      note: "DEC-17 sous configuration de démonstration, pas une matrice CdC complète." },
+      note: "DEC-17 + F12/F14." },
     { n: 11, titre: "Un besoin Beta sans interlocuteur",
-      st: "undef",
+      st: "f",
       etapes: [
         "Martin crée N11 pour Beta, sans contact.",
         "N11 est ouvert. On n’invente ni contact ni service. DEC-04.",
-        "On ne crée pas de projet : CreateProjectFromNeed sans contact n’est pas tranché (ARB-1). US5 ne parle que du formulaire manuel."
+        "Si Karim lance le projet depuis N11 : le système demande un contact maintenant (F4). Dans ce jour on ne crée pas le projet, pour ne pas changer le jour 12."
       ],
       monde: "Un besoin Beta sans contact, zéro projet Beta.",
-      note: "Besoin : DEC/CdC. Projet depuis ce besoin : non défini. Pas « US5 a déjà tranché »." },
+      note: "Besoin : DEC-04. Contact du projet : F4." },
     { n: 12, titre: "On n’archive pas Service1 tant que N1 vit",
       st: "dec",
       etapes: [
@@ -3666,18 +3685,18 @@ function showView(name){
       monde: "Service1 hors arbre actif. Service2 actif. Rien n’est effacé.",
       note: "CdC IV.C.4 + DEC-18." },
     { n: 13, titre: "Martin n’écrit pas chez Zeta",
-      st: "hypo",
+      st: "f",
       etapes: [
-        "Config de démo : Martin écrit dans A, pas dans B.",
+        "Martin écrit dans A, pas dans B (F8–F14).",
         "Besoin sur Alpha : N13 existe.",
         "Même commande sur Zeta : refus."
       ],
       monde: "Un seul besoin ajouté, chez Alpha.",
-      note: "DEC-17 sous config de démo." },
+      note: "DEC-17." },
     { n: 14, titre: "Lire B n’écrit pas B",
       st: "dec",
       etapes: [
-        "Admin ajoute à Martin Lecture CRM-B. IA-A reste.",
+        "Admin ajoute à Martin Lecture CRM-B. IA-A reste. Une restriction Admin gagne (F28).",
         "Martin lit Zeta : oui.",
         "Il crée N14 sur Alpha : oui.",
         "Il tente un besoin sur Zeta : non."
@@ -3685,36 +3704,36 @@ function showView(name){
       monde: "N14 dans A. Zéro besoin B créé par Martin.",
       note: "DEC-17 : on additionne, on ne croise pas." },
     { n: 15, titre: "Léa mesure, elle n’embauche pas — stop après le refus",
-      st: "dec",
+      st: "f",
       etapes: [
         "Martin ouvre N15, Benoît.",
         "Sophie crée Nora, Draft, complète, positionne sur N15. Pas de profil ressource.",
         "Léa qualifie. Rien d’autre ne naît.",
-        "Léa tente Convertir : refus (config de démo). La simulation s’arrête."
+        "Léa tente Convertir : refus (F11). La simulation s’arrête. C’est le parcours de base (F10)."
       ],
       monde: "Nora candidate, matching, qualification. Léa n’a converti personne. Pas de projet, pas de Nadia.",
-      note: "Pas d’ApproveRecruitment dans le parcours de base. Variante Nadia = hors base, non définie tant qu’ARB-6 n’est pas demandé par Ahmed." }
+      note: "Pas d’ApproveRecruitment. Config retenue F8–F14." }
   ];
 
   const QUESTIONS = [
-    { id: "ARB-1", titre: "Besoin, matching, projets, contact depuis besoin",
-      reco: "CreateProjectFromNeed sans ressource retenue : refuser sauf exception nommée. Après conversion, CreatePrestation suffit. Pourvu multi-postes : au moins une prestation signée, le besoin peut rester ouvert. Besoin sans contact : demander un contact au moment du projet, sans bloquer le besoin. US5 = formulaire manuel seulement.",
-      reste: "Ahmed peut autoriser le projet sans ressource retenue, exiger un matching ressource après conversion, définir pourvu autrement, ou autoriser un projet depuis besoin sans contact." },
-    { id: "ARB-2", titre: "Comment on compte les jours et l’argent ?",
-      reco: "Compter au jour, afficher à la semaine ou au mois. Séparer engagé, réalisé, prévisionnel. Aucun euro certifié avant l’atelier.",
-      reste: "Calendrier, régie/forfait, frais, change, validation des temps. Atelier CdC." },
-    { id: "ARB-3", titre: "Quand deux fiches sont-elles la même personne ?",
-      reco: "Avertir, laisser choisir. Pas de fusion automatique sur l’email.",
-      reste: "Clés par objet, qui fusionne, lien Contact–Personne." },
-    { id: "ARB-4", titre: "Alpha reste-t-elle cliente quand le contrat est fini ?",
-      reco: "Oui, jusqu’à requalification manuelle écrite. Six mois du CdC = question, pas règle.",
-      reste: "Immédiat, délai, ou manuel. Qui corrige." },
-    { id: "ARB-5", titre: "Quel est le premier bureau livré ?",
-      reco: "CRM → candidat/ressource → matching → projet → prestation → temps, droits et historique. Différer éditeur, LinkedIn, mails, portail, facture. Backlog conservé.",
-      reste: "Arbitrage de version. Les 18 DEC ne l’ont pas fait." },
-    { id: "ARB-6", titre: "Qui convertit, qui cumule Staffing et DP ?",
-      reco: "Config de démo : Martin=IA, Sophie=RH, Nadia=RR, Karim=Staffing+DP si le cumul est accepté. Conversion = Sophie. Léa ne convertit pas. Pas d’ApproveRecruitment tant qu’Ahmed ne la demande pas. Support lecture.",
-      reste: "Séparer Staffing/DP, ajouter une étape Nadia, restreindre la conversion." }
+    { id: "F1–F7", titre: "Parcours besoin → projet",
+      reco: "Sans ressource retenue : refuser. Après conversion, CreatePrestation suffit. Pourvu = tous les postes visés (F3B, pas une DEC). Contact demandé au projet si le besoin n’en a pas. Matching seulement ouvert/staffing. Cycle F6. Clôture projet si toutes les prestations closes.",
+      reste: "Clos." },
+    { id: "F8–F14", titre: "Qui a le droit",
+      reco: "Karim = Staffing+DP. Sophie convertit. Pas d’ApproveRecruitment. Léa évalue seulement. Commercial = nom IA. Support lecture. Admin sans pouvoir métier implicite.",
+      reste: "Clos." },
+    { id: "F15–F19", titre: "Premier lot",
+      reco: "CRM → matching → projet → prestation → temps + droits + historique + Actions. Commentaires hors V1 (F17B). Cycle candidat = Draft / Complété, conversion = commande.",
+      reste: "Clos." },
+    { id: "F20–F28", titre: "Doublons, Client, gardes",
+      reco: "Avertir, pas de fusion auto. Client jusqu’à main CRM. Absence sans mission. État ressource saisi. Restauration hors V1. Restriction Admin gagne.",
+      reste: "Clos." },
+    { id: "F29–F34", titre: "Jours et temps",
+      reco: "Grain jour, calendrier d’agence, prévisionnelles distinguées. Temps sur la prestation de la ressource. Interne sans mission : hors V1. Correction post-clôture = ajustement tracé, snapshot DEC-09 intact.",
+      reste: "Clos." },
+    { id: "F35–F36", titre: "Formules (seul reste ouvert)",
+      reco: "CA produit, forfait, frais, change, marge, facturé : atelier. Cette feuille ne certifie aucun euro.",
+      reste: "Atelier métier finance. Pas clos." }
   ];
 
   function storyNav(ids) {
@@ -3749,7 +3768,7 @@ function showView(name){
         <div class="stat"><b>${nQ}</b><span>Questions</span></div>
         <div class="stat"><b>15</b><span>Jours de parcours</span></div>
       </div>
-      <p class="note">DEC-01 à DEC-18 restent. Un refus ne change rien au bureau. Le simulateur HTML n’est pas la preuve. Suite : <button type="button" class="pill" data-go-view="ava-parcours">les 15 parcours</button></p>
+      <p class="note">DEC-01 à DEC-18 + F1–F34. Formules F35–F36 encore atelier. Le simulateur HTML n’est pas la preuve. Suite : <button type="button" class="pill" data-go-view="ava-parcours">les 15 parcours</button></p>
       ${storyNav(toc)}
       ${CHAPTERS.map((ch) => `
         <article class="spec-sec" id="${ch.id}">
@@ -3778,7 +3797,7 @@ function showView(name){
     el.innerHTML = `
       <h2>Quinze jours dans le même bureau</h2>
       <p class="lead">Le soir du jour 1 est le matin du jour 2. Ce sont des simulations de spécification, pas quinze tests passés. Aucun euro de marge.</p>
-      <p class="note">Suite des <button type="button" class="pill" data-go-view="ava-cadrage">contrats</button>. Vert = DEC/CdC. Ambre = sous hypothèse proposée. Bleu = non défini. Les ARB-1 à ARB-6 ne sont pas les anciennes questions Ahmed (DEC-Q01 à DEC-Q12).</p>
+      <p class="note">Suite des <button type="button" class="pill" data-go-view="ava-cadrage">contrats</button>. Vert = DEC/CdC ou F1–F34. Bleu = atelier F35–F36. DEC-Q01 à DEC-Q12 ne se rouvrent pas.</p>
       ${storyNav(DAYS.map((d) => ["day-" + d.n, "J" + d.n]))}
       ${DAYS.map((d) => `
         <article class="day spec-sec" id="day-${d.n}">
@@ -3788,13 +3807,13 @@ function showView(name){
           <p class="note">${esc(d.note)}</p>
         </article>`).join("")}
       <article class="spec-sec" id="day-q">
-        <h2>Arbitrages encore ouverts (ARB-1 à ARB-6)</h2>
-        <p class="lead">Ce ne sont pas des décisions d’Ahmed. On ne redemande pas les 18 DEC, ni le contact facultatif du besoin. US5 impose le contact seulement sur le projet manuel.</p>
+        <h2>Feuille F1–F36 (16 sept 2026)</h2>
+        <p class="lead">Nouveaux arbitrages d’Ahmed. Pas les DEC. F1–F34 clos. F35–F36 = atelier, aucun euro certifié. F3B : pourvu = tous les postes. F17B : commentaires hors V1. F19 : conversion ≠ statut.</p>
         ${QUESTIONS.map((q) => `
           <article class="contract">
             <h3>${q.id} — ${esc(q.titre)}</h3>
-            <p><strong>Proposition.</strong> ${esc(q.reco)}</p>
-            <p class="note">Encore ouvert : ${esc(q.reste)}</p>
+            <p><strong>Tranché.</strong> ${esc(q.reco)}</p>
+            <p class="note">${esc(q.reste)}</p>
           </article>`).join("")}
       </article>`;
     bindJump(el);
@@ -3804,8 +3823,8 @@ function showView(name){
     const el = document.getElementById("view-ava-commands");
     el.innerHTML = `
       <h2>Qui décide, sur ce plateau</h2>
-      <p class="lead">Les cahiers donnent les rôles, pas une matrice exhaustive. Configuration de démonstration, pas une DEC. Pas d’ApproveRecruitment dans le parcours de base.</p>
-      <p class="note">Karim cumule Staffing et DP pour l’exercice. Sophie n’est pas Nadia. Léa ne convertit pas. Aucun compte n’écrit dans l’agence B avant qu’on le dise.</p>
+      <p class="lead">Configuration retenue F8–F14, pas une DEC. Pas d’ApproveRecruitment (F10).</p>
+      <p class="note">Karim cumule Staffing et DP (F8). Sophie convertit (F9). Léa ne convertit pas (F11). Support lit (F13). Admin sans pouvoir métier implicite (F14).</p>
       <table>
         <thead><tr><th>Personne</th><th>Elle fait</th><th>Elle ne fait pas par défaut</th></tr></thead>
         <tbody>${MATRIX_ROLES.map((r) => `<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("")}</tbody>
@@ -3821,7 +3840,7 @@ function showView(name){
   function renderDecisions() {
     const el = document.getElementById("view-ava-decisions");
     el.innerHTML = `<h2>Les 18 décisions</h2>
-      <p class="lead">Elles ne se rouvrent pas. DEC-Q01 à DEC-Q12 du hub Boond = ces DEC. ARB-1 à ARB-6 restent ouverts : ce n’est pas la même liste.</p>
+      <p class="lead">Elles ne se rouvrent pas. DEC-Q01 à DEC-Q12 du hub Boond = ces DEC. Feuille F1–F34 close. Seul ouvert : atelier chiffres F35–F36.</p>
       ${statsBar()}
       <div class="filters" id="dec-filters">
         <button type="button" class="pill" data-dec-f="all" aria-pressed="true">Toutes</button>
@@ -3858,6 +3877,7 @@ function showView(name){
         <button type="button" class="pill" data-bm="all" aria-pressed="true">Tous</button>
         <button type="button" class="pill" data-bm="acquise">Acquis</button>
         <button type="button" class="pill" data-bm="proposee">Proposés</button>
+        <button type="button" class="pill" data-bm="differe">Hors V1</button>
         <button type="button" class="pill" data-bm="question">Questions</button>
       </div>
       <div id="bm-list"></div>`;
@@ -3936,14 +3956,20 @@ function showView(name){
           { name: "candidateId", label: "Candidat", options: cand },
           { name: "alsoRes", label: "Aussi une ressource ?", options: [["","Non"]].concat(res.filter((x) => x[0])) }
         ],
-        ctx: (f) => ({ needId: f.needId, candidateId: f.candidateId, resourceId: f.alsoRes, forbidden: !account().perms.includes("PositionCandidateOnNeed") }),
+        ctx: (f) => {
+          const n = WORLD.needs.find((x) => x.id === f.needId);
+          return { needId: f.needId, candidateId: f.candidateId, resourceId: f.alsoRes, needInactive: n && n.status !== "ouvert" && n.status !== "staffing", forbidden: !account().perms.includes("PositionCandidateOnNeed") };
+        },
         apply: (f) => { WORLD.positionings.push({ id: nextId("pos"), needId: f.needId, candidateId: f.candidateId, resourceId: "", state: "propose" }); } },
       { id: "PositionResourceOnNeed", label: "Positionner Ressource",
         fields: [
           { name: "needId", label: "Besoin", options: nd },
           { name: "resourceId", label: "Ressource", options: res }
         ],
-        ctx: (f) => ({ needId: f.needId, resourceId: f.resourceId, forbidden: !account().perms.includes("PositionResourceOnNeed") }),
+        ctx: (f) => {
+          const n = WORLD.needs.find((x) => x.id === f.needId);
+          return { needId: f.needId, resourceId: f.resourceId, needInactive: n && n.status !== "ouvert" && n.status !== "staffing", forbidden: !account().perms.includes("PositionResourceOnNeed") };
+        },
         apply: (f) => { WORLD.positionings.push({ id: nextId("pos"), needId: f.needId, resourceId: f.resourceId, candidateId: "", state: "propose" }); } },
       { id: "ConvertCandidateToResource", label: "Candidat → Ressource",
         fields: [{ name: "candidateId", label: "Candidat", options: cand }],
@@ -3951,19 +3977,29 @@ function showView(name){
         apply: (f) => {
           const c = WORLD.candidates.find((x) => x.id === f.candidateId);
           if (!c) return;
-          c.step = "converti";
+          if (c.step === "draft") c.step = "complete";
           if (!WORLD.resources.some((r) => r.id === c.id)) WORLD.resources.push({ id: c.id, name: c.name, type: "INTERNAL" });
         } },
-      { id: "WinNeed", label: "Gagner un Besoin",
+      { id: "WinNeed", label: "Passer le besoin en staffing",
         fields: [{ name: "needId", label: "Besoin", options: nd }],
         ctx: (f) => ({ needId: f.needId, forbidden: !account().perms.includes("WinNeed") }),
-        apply: (f) => { const n = WORLD.needs.find((x) => x.id === f.needId); if (n) n.status = "pourvu"; } },
+        apply: (f) => { const n = WORLD.needs.find((x) => x.id === f.needId); if (n && n.status === "ouvert") n.status = "staffing"; } },
       { id: "CreateProjectFromNeed", label: "Projet depuis Besoin",
         fields: [
           { name: "needId", label: "Besoin", options: nd },
+          { name: "contactId", label: "Contact du projet (si le besoin n’en a pas)", options: ct },
           { name: "fromCandidate", label: "Lier au candidat ?", options: [["no","Non"],["yes","Oui (interdit)"]] }
         ],
-        ctx: (f) => ({ needId: f.needId, projectId: "tmp", fromCandidate: f.fromCandidate === "yes", forbidden: !account().perms.includes("CreateProjectFromNeed") }),
+        ctx: (f) => {
+          const n = WORLD.needs.find((x) => x.id === f.needId);
+          const retained = WORLD.positionings.some((p) => p.needId === f.needId && p.resourceId && p.state !== "refuse");
+          const contactOk = (n && n.contactId) || f.contactId;
+          return {
+            needId: f.needId, projectId: "tmp", fromCandidate: f.fromCandidate === "yes",
+            missingResource: !retained, missingContact: !contactOk,
+            forbidden: !account().perms.includes("CreateProjectFromNeed")
+          };
+        },
         apply: (f) => {
           const n = WORLD.needs.find((x) => x.id === f.needId);
           WORLD.projects.push({ id: nextId("p"), name: "PRJ · " + (n ? n.title : "Besoin"), companyId: n ? n.companyId : "", needId: f.needId, status: "en_cours" });
@@ -3971,9 +4007,10 @@ function showView(name){
       { id: "CreateProject", label: "Créer Projet",
         fields: [
           { name: "companyId", label: "Société", options: co },
+          { name: "contactId", label: "Contact (obligatoire US5)", options: ct },
           { name: "fromCandidate", label: "Depuis un Candidat ?", options: [["no","Non"],["yes","Oui (interdit)"]] }
         ],
-        ctx: (f) => ({ companyId: f.companyId, fromCandidate: f.fromCandidate === "yes", forbidden: !account().perms.includes("CreateProject") }),
+        ctx: (f) => ({ companyId: f.companyId, contactId: f.contactId, fromCandidate: f.fromCandidate === "yes", missingContact: !f.contactId, forbidden: !account().perms.includes("CreateProject") }),
         apply: (f) => { WORLD.projects.push({ id: nextId("p"), name: "PRJ · " + companyName(f.companyId), companyId: f.companyId, needId: "", status: "en_cours" }); } },
       { id: "CreatePrestation", label: "Créer Prestation",
         fields: [
@@ -4140,7 +4177,7 @@ function showView(name){
       steps: ["Personne","Candidat","Positionnement","Ressource"] },
     { id: 3, nom: "Staffing", verbe: "Pourvoir le besoin",
       caption: "Société → Besoin (contact facultatif) → Positionnement → Projet",
-      hint: "C3 Ava : XOR candidat/ressource. Projet explicite (DEC-06), y compris création directe US5. WinNeed() ne crée pas le projet. CreateProjectFromNeed sans contact = ARB-1.",
+      hint: "C3 Ava : XOR candidat/ressource. Projet explicite (DEC-06), y compris création directe US5. WinNeed() ne crée pas le projet et ne passe pas à pourvu. Pourvu = tous les postes (F3). Contact demandé au projet si le besoin n’en a pas (F4).",
       edges: [["societe","besoin"],["besoin","positionnement"],["candidat","positionnement"],["ressource","positionnement"],["besoin","projet"]],
       steps: ["Société","Besoin","Positionnement","Projet"] },
     { id: 4, nom: "Production", verbe: "Exécuter la mission",
@@ -4185,7 +4222,7 @@ function showView(name){
     const el = document.getElementById("view-ava-metier");
     el.innerHTML = `
       <h2>Métier Ava Manager</h2>
-      <p class="lead">Même geste que Boond : colorer un chemin. Ici c’est le graphe <strong>cible Ava</strong>, pas le clone des écrans Boond. v0 — évoluera avec les décisions.</p>
+      <p class="lead">Même geste que Boond : colorer un chemin. Ici c’est le graphe <strong>cible Ava</strong>. Feuille F1–F34 close. Atelier chiffres F35–F36 encore ouvert.</p>
       <div class="pills" id="ava-pills"></div>
       <p id="ava-caption"></p>
       <div class="graph-wrap">
@@ -4199,7 +4236,7 @@ function showView(name){
       <div class="grid">
         <div>
           <h3>Ce qui change vs Boond</h3>
-          <p>Personne au centre. Pas de + Projet depuis un candidat. Contact facultatif sur le Besoin (DEC-04). Projet manuel US5 avec contact ; projet depuis besoin sans contact = ARB-1. P1–P3 = priorité. N prestations + alerte de charge.</p>
+          <p>Personne au centre. Pas de + Projet depuis un candidat. Contact facultatif sur le Besoin (DEC-04). Projet manuel US5 avec contact ; depuis un besoin sans contact : contact demandé au projet (F4). Pourvu = tous les postes (F3). P1–P3 = priorité. N prestations + alerte de charge.</p>
         </div>
         <div>
           <h3>Ce qui reste</h3>
