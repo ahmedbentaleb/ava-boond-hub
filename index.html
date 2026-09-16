@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Cache-Control" content="no-store">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ava Manager — Métier · Simulateur · Audit</title>
+  <style>
+    :root {
+      --bg: #141414;
+      --panel: #1c1c1c;
+      --text: #f0f0f0;
+      --muted: #9a9a9a;
+      --line: #3a3a3a;
+      --c1: #4a90c8;
+      --c2: #8b73c7;
+      --c3: #2f9d6a;
+      --c4: #d17a3a;
+      --c5: #d45a8a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 15px/1.5 system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    main { max-width: 1080px; margin: 0 auto; padding: 32px 20px 80px; }
+    h1 { font-size: 24px; font-weight: 600; margin: 0 0 8px; }
+    h2 { font-size: 18px; font-weight: 600; margin: 36px 0 12px; }
+    h3 { font-size: 16px; font-weight: 600; margin: 0 0 8px; }
+    p { color: var(--muted); margin: 0 0 12px; }
+    .lead { color: var(--text); }
+    ul, ol { color: var(--muted); margin: 0 0 16px; padding-left: 20px; }
+    li { margin: 4px 0; }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+    button.pill {
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font: inherit;
+    }
+    button.pill[aria-pressed="true"] { background: #2a2a2a; }
+    .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+    .graph-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; overflow-x: auto; }
+    svg text { font: 12px system-ui, sans-serif; }
+    .note { font-size: 13px; margin-top: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-weight: 500; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+    article.screen {
+      display: flex;
+      flex-direction: column;
+      margin: 40px 0;
+      padding: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    article.screen h3 { font-size: 18px; margin-bottom: 4px; order: 1; }
+    article.screen .kicker { font-size: 14px; color: var(--text); margin-bottom: 12px; order: 2; }
+    article.screen .cols { order: 3; }
+    article.screen .reads { order: 4; }
+    article.screen img {
+      order: 5;
+      width: 100%;
+      max-height: 280px;
+      object-fit: cover;
+      object-position: top left;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      display: block;
+      margin: 16px 0 0;
+      cursor: zoom-in;
+    }
+    .cols { display: grid; grid-template-columns: 150px 1fr; gap: 8px 14px; font-size: 15px; margin: 0 0 16px; }
+    .cols dt { color: var(--muted); }
+    .cols dd { margin: 0; color: var(--text); }
+    .reads { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 720px) { .reads { grid-template-columns: 1fr; } }
+    .reads .box-read {
+      background: #141414;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+    .reads .box-read strong { display: block; margin-bottom: 6px; font-size: 13px; }
+    .reads .box-read p { color: var(--text); margin: 0; font-size: 14px; }
+    .cp strong { color: var(--c3); }
+    .aud strong { color: var(--c4); }
+    .path-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
+    .box {
+      border: 2px solid;
+      padding: 6px 12px;
+      border-radius: 4px;
+      min-width: 110px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .arrow { color: var(--muted); }
+    footer { margin-top: 48px; font-size: 12px; color: var(--muted); }
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.92);
+      z-index: 9;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      cursor: zoom-out;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img { max-width: 100%; max-height: 100%; }
+  
+    article.screen img { max-height: none; object-fit: contain; cursor: zoom-in; }
+    .hub {
+      position: sticky; top: 0; z-index: 8;
+      display: flex; gap: 8px; flex-wrap: wrap;
+      padding: 12px 0 16px; margin-bottom: 8px;
+      background: var(--bg); border-bottom: 1px solid var(--line);
+    }
+    .hub button {
+      border: 1px solid var(--line); background: transparent; color: var(--text);
+      padding: 8px 16px; border-radius: 6px; cursor: pointer; font: inherit;
+    }
+    .hub button[aria-pressed="true"] { background: #2a2a2a; border-color: #666; }
+    .view[hidden] { display: none !important; }
+    .sim { display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: start; }
+    @media (max-width: 800px) { .sim { grid-template-columns: 1fr; } }
+    .sim-nav { font-size: 13px; }
+    .sim-group { color: var(--muted); font-size: 11px; letter-spacing: .06em; margin: 14px 0 6px; }
+    .sim-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 8px; border-radius: 6px; cursor: pointer; color: var(--muted);
+    }
+    .sim-item.on { background: #2a2a2a; color: var(--text); font-weight: 600; }
+    .sim-item.dim { opacity: .45; }
+    .sim-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .panel h2 { margin: 0 0 12px; }
+    .bar { height: 3px; width: 48px; border-radius: 2px; margin-bottom: 12px; }
+    .kv { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; padding: 4px 0; }
+    .kv span:first-child { color: var(--muted); }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin: 12px 0; }
+    .stat { background: #141414; border: 1px solid var(--line); border-radius: 6px; padding: 10px; }
+    .stat b { display: block; font-size: 18px; }
+    .stat span { color: var(--muted); font-size: 12px; }
+    .rowbtns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .rowbtns button, .create-btn {
+      border: 1px solid var(--line); background: #2a2a2a; color: var(--text);
+      padding: 6px 12px; border-radius: 6px; cursor: pointer; font: inherit;
+    }
+    .create-btn.primary { background: var(--c3); border-color: var(--c3); color: #fff; }
+    .note { font-size: 13px; }
+    .callout { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; margin-top: 12px; font-size: 13px; }
+    .filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Ava Manager — Boond</h1>
+  <p class="lead">Schéma métier · simulateur · audit des 59 écrans avec captures. Produit, pas un tenant.</p>
+  <nav class="hub" id="hub">
+    <button type="button" data-view="metier" aria-pressed="true">Métier</button>
+    <button type="button" data-view="simulateur" aria-pressed="false">Simulateur</button>
+    <button type="button" data-view="audit" aria-pressed="false">Audit complet</button>
+  </nav>
+
+  <section class="view" id="view-metier">
+    <h2>Les cinq chemins</h2>
+  <div class="pills" id="pills"></div>
+  <p id="caption"></p>
+  <div class="graph-wrap">
+    <svg id="graph" viewBox="0 0 760 320" role="img" aria-label="Graphe d’objets Boond Manager"></svg>
+  </div>
+  <p class="note" id="hint"></p>
+
+  <h2>Bandes</h2>
+  <div id="strips"></div>
+
+  <h2>Règle</h2>
+  <p class="lead">Le bouton Créer d’une fiche est le vrai menu. Un besoin crée un positionnement. Un projet crée une prestation. L’inverse n’existe pas.</p>
+
+  <h2>Deux lectures</h2>
+  <div class="grid">
+    <div>
+      <h3>Chef de projet</h3>
+      <p>Le miniature n’est pas 13 listes. C’est C3 + C4. Sans positionnement, le staffing n’existe pas. Sans prestation, le projet est un titre.</p>
+      <p>Ordre : Société/Besoin → humain → Positionnement → Projet → Prestation → Action. Dashboard et reporting en dernier.</p>
+      <p>Hors v1 : Apps, facture client, paie, intranet, profils types, produits.</p>
+    </div>
+    <div>
+      <h3>Auditeur senior</h3>
+      <p>Candidat ≠ ressource (onglets différents). Positionnement = 1 besoin × (1 candidat XOR 1 ressource). Facture client : 403, hors cœur.</p>
+      <p>Compte = ressource + rôle + périmètre. Plan de charge = une vue, pas un objet.</p>
+      <p>59 captures. Les 16 listes du menu ne suffisent pas : le métier est dans les onglets, les +, les Kanban et les modales.</p>
+    </div>
+  </div>
+
+  <h2>Écran par écran</h2>
+  <table>
+    <thead><tr><th>Écran</th><th>Chemin</th><th>Il fait</th><th>Il crée</th><th>Il ne fait pas</th></tr></thead>
+    <tbody>
+      <tr><td>Tableau de bord</td><td>lecture</td><td>Agrège</td><td>rien</td><td>Traiter un besoin</td></tr>
+      <tr><td>Actions</td><td>C1–C3</td><td>File des faits CRM</td><td>depuis une fiche</td><td>Porter un matching</td></tr>
+      <tr><td>Candidats</td><td>C2</td><td>Vivier hors staff</td><td>Action, Positionnement, Besoin, Projet, Contrat</td><td>Temps, prestation</td></tr>
+      <tr><td>Ressources</td><td>C3 C4</td><td>Staff</td><td>+ Prestation, Formulaire</td><td>Recruter un inconnu</td></tr>
+      <tr><td>Sociétés</td><td>C1 C3 C5</td><td>Client / fournisseur</td><td>Contact, Besoin, Projet</td><td>Staffer</td></tr>
+      <tr><td>Contacts</td><td>C1</td><td>Personne chez la société</td><td>Action</td><td>Être un candidat</td></tr>
+      <tr><td>Besoins</td><td>C3</td><td>Demande à pourvoir</td><td>Positionnement, Action, Projet</td><td>Affecter le temps</td></tr>
+      <tr><td>Positionnements</td><td>C2 C3</td><td>Matching humain × besoin</td><td>rien (c’est le lien)</td><td>Facturer</td></tr>
+      <tr><td>Projets</td><td>C3 C4 C5</td><td>Mission signée</td><td>Prestation, Action</td><td>Recruter</td></tr>
+      <tr><td>Prestations</td><td>C4</td><td>Ressource × projet</td><td>—</td><td>CRM</td></tr>
+      <tr><td>Achats</td><td>C5</td><td>Coût externe</td><td>Paiement</td><td>Staffing</td></tr>
+      <tr><td>Apps</td><td>hors cœur</td><td>Greffons</td><td>selon l’app</td><td>Remplacer C1–C5</td></tr>
+      <tr><td>Administration</td><td>tous</td><td>Rôles, états, types</td><td>référentiels</td><td>Produire du CA</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Chrome commun (toutes les listes)</h2>
+  <p class="lead">Vu sur Candidats, Ressources, Sociétés, Contacts, Besoins, Positionnements, Projets. Ce n’est pas du décor : c’est le gabarit à reproduire une fois, pas seize fois.</p>
+  <ol>
+    <li>Fil d’Ariane</li>
+    <li>Titre + compteur</li>
+    <li>Mots-clefs + pastille Filtres</li>
+    <li>Recherche libre + sélecteur de colonnes (roue)</li>
+    <li>Table triable, cases à cocher</li>
+    <li>Pagination implicite / scroll</li>
+    <li><strong>+</strong> bleu en haut à droite = Créer — sauf Actions et Positionnements : création depuis une fiche</li>
+    <li>Liste / Kanban sur Candidats, Ressources, CRM, Besoins, Positionnements — pas sur Projets</li>
+  </ol>
+
+  <h2>Carte des onglets (cliqué, pas déduit)</h2>
+  <p class="lead">Un objet n’est pas sa liste. C’est sa fiche + ce que le <strong>+</strong> sait créer.</p>
+  <table>
+    <thead><tr><th>Objet</th><th>Onglets de la fiche</th><th>+ Créer depuis la fiche</th></tr></thead>
+    <tbody>
+      <tr><td>Candidat</td><td>Synthèse · Informations · Administratif · DTs · Actions · Positionnements</td><td>Action, Positionnement, Besoin, Projet, Contrat</td></tr>
+      <tr><td>Ressource</td><td>les 6 du candidat <strong>+ Prestations + Projets + Formulaires</strong></td><td>les 5 du candidat <strong>+ Prestation, Avantage, Formulaire</strong></td></tr>
+      <tr><td>Société</td><td>Synthèse · Informations · Contacts · Actions · Besoins · Projets · Achats · Facturation</td><td>Action, Besoin, Projet, Achat</td></tr>
+      <tr><td>Besoin</td><td>Informations · Positionnements · Actions · Projets</td><td>Action, Positionnement, Projet</td></tr>
+      <tr><td>Projet</td><td>Informations · Actions · Prestations (Lots/Jalons = interrupteur)</td><td>Action, Prestation, Groupement</td></tr>
+    </tbody>
+  </table>
+  <p>Règle vue en cliquant « Créer un projet » depuis un besoin : les positionnements liés à un <strong>candidat</strong> sont exclus. Il faut d’abord convertir le candidat en ressource. C’est la preuve C2 ≠ C4.</p>
+
+  
+  </section>
+
+  <section class="view" id="view-simulateur" hidden>
+    <p class="lead">Sans données réelles. Les boutons + suivent les règles d’audit — un candidat ne crée pas de contact, un positionnement n’a pas de +, un projet exclut les positionnements candidats.</p>
+    <div class="pills" id="sim-pills"></div>
+    <p id="sim-caption"></p>
+    <div class="sim">
+      <aside class="sim-nav" id="sim-nav"></aside>
+      <div id="sim-panel"></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-audit" hidden>
+    <h2>Captures — 59 écrans (listes + fiches + Kanban + modales + self-service)</h2>
+  <p>Clic sur une image pour l’agrandir. 01–16 = hall (menu). 17–33 = onglets/+ des fiches C2-C3-C4. 34–59 = contact complet, Kanban, C4/C5, reporting, self-service, admin.</p>
+  <p>Hors preuve (voir « Limites » en bas) : les 9 apps internes et les sous-pages Administration, sans URL directe.</p>
+
+  <article class="screen" id="e01">
+    <h3>01 — Tableau de bord / Synthèse</h3>
+    <p class="kicker">Chemin : lecture de C1–C4 · Il agrège. Il ne crée rien.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Agrège. Ne crée rien. Hors du flux métier : on le branche quand les objets existent.</dd>
+      <dt>Il ne fait pas</dt><dd>Traiter un besoin, poser un matching, facturer.</dd>
+      <dt>Zones</dt><dd>Menu gauche · recherche Ctrl+K · Synthèse / Mes alertes · 6 widgets · roue de config</dd>
+      <dt>Widgets</dt><dd>Répartition besoins (A traiter, P1–P3) · CA facturé/signé · Synthèse d’indicateurs (projets, positionnements, contacts, sociétés, ressources, candidats) · CA période/production/signé · Marge signée · Répartition candidats</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Hors v1. On le branche quand les objets existent. Un dashboard livré trop tôt est un écran vide qui fait semblant.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Les widgets lisent le graphe. Un dashboard sans positionnement ni besoin est décoratif.</p></div>
+    </div>
+  
+    <img src="ecrans/01-dashboard-synthese.png" alt="Tableau de bord synthèse">
+  </article>
+
+  <article class="screen" id="e02">
+    <h3>02 — Tableau de bord / Mes alertes</h3>
+    <p class="kicker">File d’alertes configurées en admin. Vide = « Vous n'avez aucune alerte ».</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Affiche une file d’alertes dont les règles vivent en administration. N’est pas un objet métier.</dd>
+      <dt>Il ne fait pas</dt><dd>Créer un besoin, un candidat, une action. C’est un réglage, pas un flux.</dd>
+      <dt>État vu</dt><dd>Écran vide : « Vous n'avez aucune alerte ».</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Hors v1. Ne pas coder une « inbox d’alertes » avant d’avoir les objets qui les déclenchent.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Les alertes sont un réglage admin, pas un objet métier. Compter 0 n’est pas « le module n’existe pas ».</p></div>
+    </div>
+  
+    <img src="ecrans/02-dashboard-alertes.png" alt="Mes alertes">
+  </article>
+
+  <article class="screen" id="e03">
+    <h3>03 — Actions (liste)</h3>
+    <p class="kicker">C1 C2 C3 — le journal unique. Pas de bouton +.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Une file de tous les faits CRM. Journal unique, filtrable, pas un matching.</dd>
+      <dt>Il ne fait pas</dt><dd>Créer. Pas de +. La création est sur la fiche porteuse (candidat, contact, besoin, projet, ressource).</dd>
+      <dt>Colonnes</dt><dd>Date, Catégorie, Type, Référence, Contact, Action, Manager, Doc.</dd>
+      <dt>Filtres vus</dt><dd>Périmètre manager, 5 Types (par objet porteur).</dd>
+      <dt>Vide</dt><dd>« Aucune action trouvée » + Réinitialiser + texte créer votre première action.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Lot journal, pas lot 1. L’action est polymorphe : un seul type d’objet « Action », plusieurs porteurs. Recopier cette liste sans le Créer-from-fiche = un mur de notes orphelines.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Liste filtrée par défaut sur un manager. Compter 0 n’est pas « le module est vide ». Preuve du cloisonnement : le compte = ressource + rôle + périmètre.</p></div>
+    </div>
+  
+    <img src="ecrans/03-actions.png" alt="Liste Actions">
+  </article>
+
+  <article class="screen" id="e04">
+    <h3>04 — Candidats (liste)</h3>
+    <p class="kicker">C2 — vivier hors staff. + crée une fiche.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Vivier hors staff. Pas de temps, pas de prestation : ça c’est la ressource.</dd>
+      <dt>Il crée</dt><dd>+ → fiche nouvelle (<code>/candidates/0/information</code>). Depuis la fiche : Action, Positionnement, Besoin, Projet, Contrat.</dd>
+      <dt>Il ne fait pas</dt><dd>Saisie de temps, prestation, absences. Un candidat n’est pas un contact (C1).</dd>
+      <dt>Colonnes</dt><dd>Candidat, Titre, Étape (pastille couleur), Pos., Dispo., Coordonnées (tel, mail, LinkedIn), MAJ, Manager, CV</dd>
+      <dt>Vues</dt><dd>Liste / Kanban</dd>
+      <dt>Étapes vues</dt><dd>A relancer, En cours, A traiter, A supprimer, Collaborateur, Vivier</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Objet n°2 du miniature après Société/Besoin. Même gabarit de liste que Ressources, autre objet. Ne pas fusionner les tables si on veut les temps plus tard.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>L’étape est un référentiel admin (14 étapes), pas un enum figé. La liste n’invente pas le cycle : elle l’affiche.</p></div>
+    </div>
+  
+    <img src="ecrans/04-candidats.png" alt="Liste Candidats">
+  </article>
+
+  <article class="screen" id="e05">
+    <h3>05 — Fiche candidat / Synthèse</h3>
+    <p class="kicker">C2 — l’écran qui enchaîne vers C3. Le + est le métier. Ne passe pas par Contact.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Vue d’ensemble du vivier : identité à gauche, actions / positionnements / DT à droite. C’est ici qu’on pose un humain sur un besoin.</dd>
+      <dt>Onglets</dt><dd>Synthèse, Informations, Administratif, DTs, Actions, Positionnements</dd>
+      <dt>Toolbar</dt><dd>Demander à l’IA · partager / mail / CV / DT · + (Action, Positionnement, Besoin, Projet, Contrat)</dd>
+      <dt>Colonne gauche</dt><dd>Identité, coordonnées, provenance, managers, agence/pôle, administratif (nationalité, salaires, contrat)</dd>
+      <dt>Colonne droite</dt><dd>Action (n) · Positionnement (n) · Dossier technique (compétences, expérience, formation, langues, domaines, secteurs, XP)</dd>
+      <dt>Il ne fait pas</dt><dd>Pas d’onglet Prestation / Temps. Preuve : candidat ≠ ressource.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>C’est l’écran qui enchaîne C2 → C3. Le + est le métier, pas un raccourci. Si le miniature n’a pas ce menu Créer, le graphe est mort.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Pas d’onglet Prestation / Temps. Preuve visuelle : candidat ≠ ressource. Un candidat va en Action ou Positionnement, pas par Contact ni Besoin.</p></div>
+    </div>
+  
+    <img src="ecrans/05-fiche-candidat-synthese.png" alt="Fiche candidat synthèse">
+  </article>
+
+  <article class="screen" id="e06">
+    <h3>06 — Fiche candidat / Informations</h3>
+    <p class="kicker">Formulaire d’identité. Pas le matching.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Formulaire d’identité, CV, RH. Ce n’est pas l’écran de matching (ça c’est Positionnement, depuis le +).</dd>
+      <dt>Blocs</dt><dd>Informations personnelles (civilité, nom, prénom, titre, type, naissance, emails, tél, adresse, LinkedIn, réseaux) · CV (fichier + dropzone) · Commentaires · Informations RH (étape, provenance, dispo, mobilité, managers, agence, pôle, visible uniquement de vous) · Évaluation</dd>
+      <dt>Champs v1</dt><dd>Nom, titre, étape, manager, CV. Le reste est confort.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Champs v1 : nom, titre, étape, manager, CV. Ne pas recoder les 40 champs RH avant d’avoir le + Positionnement.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>« Visible uniquement de vous » = cloisonnement. À prévoir dans les droits, pas comme un simple checkbox UI.</p></div>
+    </div>
+  
+    <img src="ecrans/06-fiche-candidat-informations.png" alt="Fiche candidat informations">
+  </article>
+
+  <article class="screen" id="e07">
+    <h3>07 — Ressources (liste)</h3>
+    <p class="kicker">C3 C4 — le staff. Autre objet que Candidat.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Staff (salarié, interne, freelance interne). Porte prestations, temps, frais, absences — ce que le candidat n’a pas.</dd>
+      <dt>Différence vs candidats</dt><dd>Colonnes État + Tarif HT. Pas « Étape ».</dd>
+      <dt>Il crée</dt><dd>+ sur la liste. Depuis la fiche : Prestation, Formulaire, Avantage, Positionnement, Projet…</dd>
+      <dt>Il ne fait pas</dt><dd>Recruter un inconnu. Ça c’est Candidat (C2).</dd>
+      <dt>Vues</dt><dd>Liste / Kanban · bouton Apps</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Même gabarit de liste que Candidats, autre objet. Ne pas fusionner les tables si on veut les temps. C4 s’appuie ici.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Filtre « 2 États » par défaut : la liste n’est pas exhaustive sans reset. Même piège que Actions filtrées sur un manager.</p></div>
+    </div>
+  
+    <img src="ecrans/07-ressources.png" alt="Liste Ressources">
+  </article>
+
+  <article class="screen" id="e08">
+    <h3>08 — Profils types</h3>
+    <p class="kicker">Gabarit tarifaire. Catalogue, pas un flux quotidien. Hors v1.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Gabarit tarifaire (titre, TJ vente, coût, marge, renta, agence). Sert à pré-remplir, pas à staffer.</dd>
+      <dt>État</dt><dd>Vide + « Créer un profil type »</dd>
+      <dt>Il ne fait pas</dt><dd>Porter un besoin, un positionnement, un temps.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Hors v1. On tarife sur la ressource / la prestation. Ne pas ouvrir un catalogue avant le graphe.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Module catalogue, pas un flux quotidien. Présent dans le menu donc activé sur ce contrat — ne pas conclure « inutilisé » sans usage réel, mais ne pas le mettre dans le miniature.</p></div>
+    </div>
+  
+    <img src="ecrans/08-profils-types.png" alt="Profils types">
+  </article>
+
+  <article class="screen" id="e09">
+    <h3>09 — Produits</h3>
+    <p class="kicker">Catalogue vendable. Hors staffing v1.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Catalogue vendable (référence, nom, tarif HT, responsable).</dd>
+      <dt>Il ne fait pas</dt><dd>Staffing, matching, saisie de temps.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Hors staffing v1. C’est de l’abonnement, pas du métier quotidien Avaliance.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Présent dans le menu donc activé sur ce contrat. Ne pas conclure « inutilisé » sans usage réel. Fiche produit non ouverte : on n’écrit pas ses champs.</p></div>
+    </div>
+  
+    <img src="ecrans/09-produits.png" alt="Produits">
+  </article>
+
+  <article class="screen" id="e10">
+    <h3>10 — Sociétés</h3>
+    <p class="kicker">C1 C3 C5 — objet n°1. Sans société, pas de besoin.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Client / prospect, et fournisseur d’achat. Un seul objet, deux rôles.</dd>
+      <dt>Il crée</dt><dd>+ sur la liste. Depuis la fiche : Contact, Besoin, Projet.</dd>
+      <dt>Il ne fait pas</dt><dd>Staffer. Le staffing part du Besoin, pas de la société toute seule.</dd>
+      <dt>Colonnes</dt><dd>Société, Secteur, Informations, État (Prospect / Client), Coordonnées, Lieu, Manager</dd>
+      <dt>Nav</dt><dd>CRM ouvert → Sociétés / Contacts</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Objet n°1. Sans société, pas de besoin. Lot 1 du miniature avec Besoin.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Une société est client et peut être fournisseur d’achat (C5). Un seul objet, deux rôles — ne pas créer une table Fournisseur séparée sans preuve.</p></div>
+    </div>
+  
+    <img src="ecrans/10-societes.png" alt="Sociétés">
+  </article>
+
+  <article class="screen" id="e11">
+    <h3>11 — Contacts</h3>
+    <p class="kicker">C1 — personne chez la société. Un candidat n’est pas un contact.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Personne chez la société. Porte les actions CRM (appels, RDV, mails).</dd>
+      <dt>Il crée</dt><dd>+ · aussi Exporter. L’action se crée depuis la fiche, pas depuis cette liste.</dd>
+      <dt>Il ne fait pas</dt><dd>Être un candidat. C2 ne passe pas ici.</dd>
+      <dt>Colonnes</dt><dd>Contact, Fonction, Type (ex. Décisionnaire), Société, État (Prospect / Contact / Archivé), Coordonnées, Lieu, Manager</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Un contact n’existe pas sans société. CRM = Société → Contact → Action. Sans action, c’est un carnet d’adresses.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Type ≠ État. Deux référentiels. Ne pas fusionner « Décisionnaire » et « Prospect » dans un seul enum.</p></div>
+    </div>
+  
+    <img src="ecrans/11-contacts.png" alt="Contacts">
+  </article>
+
+  <article class="screen" id="e12">
+    <h3>12 — Besoins</h3>
+    <p class="kicker">C3 — pivot commercial. Chaque ligne attend des positionnements.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Demande à pourvoir (Régie / Forfait) + état + CA pondéré. Pivot du staffing.</dd>
+      <dt>Il crée</dt><dd>+ sur la liste. Depuis la fiche : Positionnement, Action, Projet.</dd>
+      <dt>Il ne fait pas</dt><dd>Affecter le temps (ça c’est Prestation, C4). Recruter (ça c’est Candidat).</dd>
+      <dt>Ligne</dt><dd>Titre + type (Régie/Forfait) + réf AO · Client + contact · État (A traiter, P1…) · Pos. Actif · Date de démarrage · CA Pond. HT · Manager</dd>
+      <dt>Vues</dt><dd>Liste / Kanban</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Objet n°1 du métier staffing. Chaque ligne attend des positionnements. Si on ne code que ça + profil + positionnement, on a le staffing.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>CA pondéré = CA × pondération (vu sur la fiche). La liste affiche le résultat, pas les deux champs. Ne pas exiger les deux en colonne.</p></div>
+    </div>
+  
+    <img src="ecrans/12-besoins.png" alt="Besoins">
+  </article>
+
+  <article class="screen" id="e13">
+    <h3>13 — Positionnements</h3>
+    <p class="kicker">C2 ∩ C3 — le lien. Pas de +. Créé depuis Besoin / Candidat / Ressource.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Matching : un profil (candidat ou ressource) × un besoin + un état. C’est l’objet pivot du staffing.</dd>
+      <dt>Il crée</dt><dd>Pas de +. Créé depuis Besoin / Candidat / Ressource.</dd>
+      <dt>Il ne fait pas</dt><dd>Facturer. Créer un besoin. Porter un temps.</dd>
+      <dt>Colonnes</dt><dd>MAJ, Profil positionné, Besoin (titre + AO), État, Commentaire, Client, Responsable</dd>
+      <dt>États vus</dt><dd>Proposé, CV envoyé, Validé, Gagné, NO GO interne, Désistement</dd>
+      <dt>Vues</dt><dd>Liste / Kanban</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Si on ne code que ça + besoin + profil, on a le staffing. Sans cet objet, les listes Candidats et Besoins ne se parlent pas.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Un profil (candidat XOR ressource) × un besoin. L’état est un référentiel (9 états admin). C2 pointe ici sans passer par Contact ni Besoin — le besoin est déjà là (C3).</p></div>
+    </div>
+  
+    <img src="ecrans/13-positionnements.png" alt="Positionnements">
+  </article>
+
+  <article class="screen" id="e14">
+    <h3>14 — Projets</h3>
+    <p class="kicker">C3 → C4 C5 — mission signée. Sans prestation = un titre. Pas de Kanban.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Mission contractualisée. Relie le client à des prestations (qui travaille) et des achats (ce que ça coûte).</dd>
+      <dt>Il crée</dt><dd>+ sur la liste. Depuis la fiche : Prestation, Action. Option Lots/Jalons. Peut naître du Besoin.</dd>
+      <dt>Il ne fait pas</dt><dd>Recruter. Porter le matching (c’est le Positionnement, en amont).</dd>
+      <dt>Colonnes</dt><dd>Début, Fin, Référence PRJ, Client, CA HT, Renta. %, Manager</dd>
+      <dt>Ligne</dt><dd>Type Régie/Forfait sous la référence</dd>
+      <dt>Vues</dt><dd>Liste seulement (pas de Kanban) · sous-menu Prestations</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Un projet sans prestation = un titre. Lot suivant = Prestations. C’est le pivot de la production, pas du vivier.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>CA à 0 sur beaucoup de lignes : le projet peut exister avant le chiffrage. Ne pas exiger le CA à la création.</p></div>
+    </div>
+  
+    <img src="ecrans/14-projets.png" alt="Projets">
+  </article>
+
+  <article class="screen" id="e15">
+    <h3>15 — Administration</h3>
+    <p class="kicker">Tous les chemins — régler le graphe, pas le parcourir.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Régler le graphe : rôles, agences, états, types. Les listes n’affichent que ce référentiel.</dd>
+      <dt>Il ne fait pas</dt><dd>Produire du CA. Staffer. Recruter.</dd>
+      <dt>Cartes</dt><dd>Managers/Rôles · Agences juridiques · Paramètres globaux · Modèles · Apps/Marketplace · Mon offre</dd>
+      <dt>Avancé</dt><dd>Alertes, Business units, Pôles, Traductions</dd>
+      <dt>Pied</dt><dd>Import, Espace développeur, Webhooks</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>V1 : un rôle + un périmètre. Pas toute la marketplace. Compte = ressource + rôle + périmètre.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>C’est ici que vivent les étapes candidat et les états positionnement. Les listes ne font que les afficher. Managers : « créer depuis une ressource ».</p></div>
+    </div>
+  
+    <img src="ecrans/15-administration.png" alt="Administration">
+  </article>
+
+  <article class="screen" id="e16">
+    <h3>16 — Apps</h3>
+    <p class="kicker">Hors cœur — greffons autour du graphe. L’abonnement se joue là.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Greffons autour du graphe. Pas un métier C1–C5.</dd>
+      <dt>Installées</dt><dd>Célébrations, DocTemplates, Emailing, ExtractPayroll, HRFlow, Microsoft, PlanProduction, PostProduction, Viewer</dd>
+      <dt>Lecture des 9</dt><dd>PostProduction = facture client (d’où le 403 sur <code>/invoices</code>). HRFlow = entrée C2. ExtractPayroll = sortie C4. Le reste = templates, mail, viewer, célébrations, Microsoft, plan de prod.</dd>
+      <dt>Il ne fait pas</dt><dd>Remplacer C1–C5. Le miniature tient sans ces 9 écrans.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Hors miniature. C’est l’abonnement à 2 500 €, pas le métier quotidien. 9 apps = 9 écrans non audités.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>9 apps = 9 écrans non audités. L’abonnement se joue là. Tant qu’ils n’ont pas de PNG interne, on n’écrit pas leurs champs.</p></div>
+    </div>
+  
+    <img src="ecrans/16-apps.png" alt="Apps">
+  </article>
+
+  <h2>Fiches et boutons — ce que le menu ne montre pas</h2>
+
+  <article class="screen" id="e17">
+    <h3>17 — Fiche candidat / Administratif</h3>
+    <p class="kicker">C2 — contrat souhaité, pas le matching. + Ajouter un contrat depuis ici.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Données contractuelles + identité civile. Ce n’est pas l’écran qui pose un humain sur un besoin.</dd>
+      <dt>Blocs</dt><dd>Données contractuelles (contrat souhaité, devise, salaires, + fournisseur, + contrat) · Commentaires · Informations personnelles (naissance, nationalité, situation, sécu, adresse) · Pièces jointes</dd>
+      <dt>Il crée</dt><dd>+ Ajouter un contrat · + Ajouter un fournisseur</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Hors du lot staffing. Le contrat candidat n’est pas une prestation.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Le + Contrat vit ici et dans le menu Créer de la fiche. Deux portes, même objet.</p></div>
+    </div>
+    <img src="ecrans/17-fiche-candidat-administratif.png" alt="Fiche candidat Administratif">
+  </article>
+
+  <article class="screen" id="e18">
+    <h3>18 — Fiche candidat / DTs</h3>
+    <p class="kicker">C2 — le dossier technique. Compétences, diplômes, langues, expériences. Pas un matching.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Édite le DT : titre, compétences, outils, domaines, secteurs, diplômes, langues, expériences professionnelles (+).</dd>
+      <dt>IA</dt><dd>Résumer le profil / Demander à l’IA — greffon, pas le métier.</dd>
+      <dt>Il ne fait pas</dt><dd>Créer un positionnement. Ça reste le + de la fiche.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>V1 : un CV fichier + un bloc compétences. Pas 13 expériences à recoder.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Le DT est un objet éditable, pas un PDF mort. L’expérience a un + propre.</p></div>
+    </div>
+    <img src="ecrans/18-fiche-candidat-dts.png" alt="Fiche candidat DTs">
+  </article>
+
+  <article class="screen" id="e19">
+    <h3>19 — Fiche candidat / Actions</h3>
+    <p class="kicker">C2 — le journal de CE candidat. + crée une action déjà accrochée à lui.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Timeline des faits sur ce porteur. Pas la liste globale /actions.</dd>
+      <dt>Il crée</dt><dd>+ à côté de « Action (n) » → modal d’action pré-liée au candidat.</dd>
+      <dt>Chrome</dt><dd>Action (n) · + · Filtres · cartes datées</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>La liste Actions du menu est un filtre. La création vraie est ici.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Même gabarit vide/plein que sur le besoin. Un type d’écran, plusieurs porteurs.</p></div>
+    </div>
+    <img src="ecrans/19-fiche-candidat-actions.png" alt="Fiche candidat Actions">
+  </article>
+
+  <article class="screen" id="e20">
+    <h3>20 — Créer une Action (depuis le candidat)</h3>
+    <p class="kicker">C2 — modal. Le porteur est déjà choisi. On ne crée pas une action orpheline.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Formulaire : Type · Date · Manager (prérempli) · corps riche · Utiliser un modèle · Créer un événement · Annuler / Enregistrer</dd>
+      <dt>Il ne fait pas</dt><dd>Choisir le candidat : il est dans le bandeau. Preuve : l’action a un porteur obligatoire.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Lot journal = ce modal, pas une page /actions/new.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Le manager est le compte courant. Le cloisonnement commence à la création.</p></div>
+    </div>
+    <img src="ecrans/20-fiche-candidat-creer-action.png" alt="Créer une action depuis un candidat">
+  </article>
+
+  <article class="screen" id="e21">
+    <h3>21 — Types d’action (liste ouverte sur candidat)</h3>
+    <p class="kicker">Référentiel admin, vu sur C2. Ne pas inventer les types.</p>
+    <dl class="cols">
+      <dt>Types vus</dt><dd>Note · Rappel / To do · Rendez-vous · Entretien Téléphonique · Entretien physique · Qualification Téléphonique · Mail · Entretien Visioconférence · Autre</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>V1 : Note + To do + Entretien. Le reste est le référentiel à brancher plus tard.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Ces types sont ceux du porteur candidat. Contact / besoin / projet auront d’autres listes. À comparer, pas à fusionner.</p></div>
+    </div>
+    <img src="ecrans/21-fiche-candidat-action-types.png" alt="Types d’action candidat">
+  </article>
+
+  <article class="screen" id="e22">
+    <h3>22 — Menu + de la fiche candidat</h3>
+    <p class="kicker">C2 — le vrai menu. Cinq sorties, zéro Contact.</p>
+    <dl class="cols">
+      <dt>Il crée</dt><dd>Action · Positionnement · Besoin · Projet · Contrat</dd>
+      <dt>Il ne crée pas</dt><dd>Contact. Un candidat n’entre pas dans C1 par ici.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Si le miniature n’a pas ces cinq lignes, C2 est un carnet.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Preuve visuelle du graphe : Positionnement est une sortie, pas un passage par Besoin.</p></div>
+    </div>
+    <img src="ecrans/22-fiche-candidat-menu-creer.png" alt="Menu Créer fiche candidat">
+  </article>
+
+  <article class="screen" id="e23">
+    <h3>23 — Créer un Positionnement (depuis le candidat)</h3>
+    <p class="kicker">C2 → C3. On ne crée pas un besoin : on en choisit un déjà là.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Assistant : (1) Sélection des besoins — la liste Besoins s’ouvre sous le bandeau (2) Confirmation — notifier responsable candidat / besoin (3) Positionner</dd>
+      <dt>Positionner</dt><dd>Désactivé tant qu’aucun besoin n’est coché.</dd>
+      <dt>Il ne fait pas</dt><dd>Créer un besoin. Le candidat pointe vers C3, il n’y entre pas.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>C’est l’écran de matching. Sans cette sélection, les listes Candidats et Besoins ne se parlent pas.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Preuve : 1 922 besoins sous l’assistant. Le positionnement n’invente pas la demande.</p></div>
+    </div>
+    <img src="ecrans/23-fiche-candidat-creer-positionnement.png" alt="Créer un positionnement depuis un candidat">
+  </article>
+
+  <article class="screen" id="e24">
+    <h3>24 — Fiche besoin / Informations</h3>
+    <p class="kicker">C3 — la demande. Onglets : Informations, Positionnements, Actions, Projets.</p>
+    <dl class="cols">
+      <dt>Gauche</dt><dd>Titre · Type (Régie/Forfait) · Référence AO · Description · Critères · Outils · Domaines · Secteur · Lieu</dd>
+      <dt>Droite</dt><dd>État · Client + contact · Provenance · Manager / RH · Agence · Devise · Budget HT · Pondération · CA envisagé · CA pondéré · Durée · dates · Visible uniquement de vous · Documents</dd>
+      <dt>+ Créer</dt><dd>Action, Positionnement, Projet — pas Candidat.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Lot 1 staffing. CA pondéré = budget × pondération, déjà calculé.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Le besoin crée le positionnement, pas l’inverse. Le + n’offre pas « Candidat ».</p></div>
+    </div>
+    <img src="ecrans/24-fiche-besoin-informations.png" alt="Fiche besoin Informations">
+  </article>
+
+  <article class="screen" id="e25">
+    <h3>25 — Fiche besoin / Positionnements</h3>
+    <p class="kicker">C3 — le cockpit de matching sur CETTE demande.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Liste des profils posés + totaux CA / coût / marge / renta. + pour ajouter. État éditable en ligne (ex. CV envoyé).</dd>
+      <dt>Colonnes</dt><dd>MAJ · Profil positionné · État · Charge · Tarif · Renta · Commentaire</dd>
+      <dt>Extra</dt><dd>Remplacer le CA envisagé par le CA total · + CA/investissements additionnels · hint « push CV »</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>C’est l’écran quotidien du commercial staffing. La liste /positionings n’est que la vue globale.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>L’état se change ici, pas seulement en admin. Charge et tarif sont sur la ligne de matching.</p></div>
+    </div>
+    <img src="ecrans/25-fiche-besoin-positionnements.png" alt="Fiche besoin Positionnements">
+  </article>
+
+  <article class="screen" id="e26">
+    <h3>26 — Fiche besoin / Actions</h3>
+    <p class="kicker">C3 — même gabarit que 19, autre porteur.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Journal du besoin. Vide = « Aucune action trouvée pour ce besoin » + Créer une action.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Un composant Action-sur-porteur, pas trois modules.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Le vide le dit : le besoin peut exister sans aucun fait CRM.</p></div>
+    </div>
+    <img src="ecrans/26-fiche-besoin-actions.png" alt="Fiche besoin Actions">
+  </article>
+
+  <article class="screen" id="e27">
+    <h3>27 — Fiche besoin / Projets</h3>
+    <p class="kicker">C3 → C4. Vide tant que rien n’est signé. + Créer un projet.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Liste des projets nés de ce besoin. Empty state + bouton Créer un projet.</dd>
+      <dt>Il ne fait pas</dt><dd>Staffer. Recruter. Le projet naît après le matching.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Porte C3 → C4. Un besoin sans projet est normal (pas encore gagné).</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>On a ouvert un besoin avec 1 positionnement et 0 projet. Le matching précède la mission.</p></div>
+    </div>
+    <img src="ecrans/27-fiche-besoin-projets.png" alt="Fiche besoin Projets">
+  </article>
+
+  <article class="screen" id="e28">
+    <h3>28 — Créer un Projet (depuis le besoin)</h3>
+    <p class="kicker">C3 → C4. On convertit des positionnements en prestations. Les candidats sont exclus.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Modal : choisir le collaborateur (positionnements à convertir en prestations) · Créer un nouveau positionnement · Annuler / Créer</dd>
+      <dt>Texte vu</dt><dd>« Les positionnements non actifs et ceux liés à des candidats sont exclus. Pour les inclure, modifier leur état ou convertir les candidats en ressources. »</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>V1 : on ne facture pas un candidat. Passage candidat → ressource avant C4.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>C’est la preuve la plus dure : Boond refuse le pont C2 → Prestation. Ne pas fusionner les tables.</p></div>
+    </div>
+    <img src="ecrans/28-fiche-besoin-creer-projet.png" alt="Créer un projet depuis un besoin">
+  </article>
+
+  <article class="screen" id="e29">
+    <h3>29 — Fiche candidat / Positionnements</h3>
+    <p class="kicker">C2 — vue inverse de 25. Ici : les besoins sur lesquels CE candidat est posé.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Vide + Créer un positionnement. Mène au même assistant que 23.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Deux portes vers le même objet : depuis le candidat ou depuis le besoin.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>0 positionnement sur un candidat vivant. Le vivier n’est pas le matching.</p></div>
+    </div>
+    <img src="ecrans/29-fiche-candidat-positionnements.png" alt="Fiche candidat Positionnements">
+  </article>
+
+  <article class="screen" id="e30">
+    <h3>30 — Fiche ressource / Synthèse</h3>
+    <p class="kicker">C3 C4 — même chrome que le candidat, trois onglets en plus.</p>
+    <dl class="cols">
+      <dt>Onglets</dt><dd>Synthèse · Informations · Administratif · DTs · Actions · Positionnements · <strong>Prestations</strong> · <strong>Projets</strong> · <strong>Formulaires</strong></dd>
+      <dt>+ Créer</dt><dd>Action, Positionnement, Besoin, Projet, Contrat, <strong>Prestation, Avantage, Formulaire</strong></dd>
+      <dt>Différence</dt><dd>État (pas Étape) · TJM HT · type interne. Pas d’onglet Prestation chez le candidat.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Ne pas fusionner candidat et ressource. C4 s’accroche ici.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Preuve onglets : Prestations / Projets / Formulaires n’existent pas sur C2.</p></div>
+    </div>
+    <img src="ecrans/30-fiche-ressource-synthese.png" alt="Fiche ressource Synthèse">
+  </article>
+
+  <article class="screen" id="e31">
+    <h3>31 — Fiche ressource / Prestations</h3>
+    <p class="kicker">C4 — l’onglet que le candidat n’a pas. Prestation / Inactivité.</p>
+    <dl class="cols">
+      <dt>Il crée</dt><dd>Créer une prestation · Créer de l’inactivité</dd>
+      <dt>Il ne fait pas</dt><dd>Recruter. Un inconnu n’a pas cet écran.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Lot production : ressource × projet. L’inactivité est un cousin, pas un besoin.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Deux boutons Créer. L’inactivité n’est pas une prestation à 0.</p></div>
+    </div>
+    <img src="ecrans/31-fiche-ressource-prestations.png" alt="Fiche ressource Prestations">
+  </article>
+
+  <article class="screen" id="e32">
+    <h3>32 — Fiche société / Synthèse</h3>
+    <p class="kicker">C1 C3 C5 — hub client. Huit onglets.</p>
+    <dl class="cols">
+      <dt>Onglets</dt><dd>Synthèse · Informations · Contacts · Actions · Besoins · Projets · Achats · Facturation</dd>
+      <dt>+ Créer</dt><dd>Action, Besoin, Projet, Achat</dd>
+      <dt>Zones</dt><dd>Gauche : état Prospect/Client, effectif, pays, manager, contacts. Droite : Actions, Besoins, Projets, Achats (compteurs).</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Objet n°1. Sans société, pas de besoin. Facturation = onglet, pas forcément le module 403.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Une société porte C1 (contacts/actions), C3 (besoins/projets) et C5 (achats). Un objet, trois rôles.</p></div>
+    </div>
+    <img src="ecrans/32-fiche-societe-synthese.png" alt="Fiche société Synthèse">
+  </article>
+
+  <article class="screen" id="e33">
+    <h3>33 — Fiche projet / Informations</h3>
+    <p class="kicker">C4 — mission signée. Trois onglets. Le besoin est un lien, pas un parent d’écran.</p>
+    <dl class="cols">
+      <dt>Onglets</dt><dd>Informations · Actions · Prestations. Lots/Jalons = interrupteur, pas un onglet par défaut.</dd>
+      <dt>+ Créer</dt><dd>Action, Prestation, Groupement</dd>
+      <dt>Champs</dt><dd>Référence PRJ · Type Régie/Forfait · Début/Fin · Manager · Agence · Lieu · État · Client · Besoin (lien AO) · Devise · Contacts technique / intermédiaire de facturation · Pièces</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Un projet sans prestation = un titre. Le + Prestation est le lot suivant.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Le projet pointe vers un besoin déjà là. Il ne recrute pas. Pas d’onglet Candidat.</p></div>
+    </div>
+    <img src="ecrans/33-fiche-projet-informations.png" alt="Fiche projet Informations">
+  </article>
+
+  <h2>Contact, Kanban, C4/C5, self-service, admin (34–59)</h2>
+  <p class="lead">Deuxième vague : la fiche Contact complète, les 3 Kanban qui comptent, la production (prestation, projet), les achats/factures/paiements, le planning, les 4 reporting, les modales globales (Ctrl+K, Filtres, Créer besoin), l’accueil Administration, et les onglets encore jamais vus (Facturation société, Formulaires ressource).</p>
+
+  <article class="screen" id="e34">
+    <h3>34 — Fiche contact / Synthèse</h3>
+    <p class="kicker">C1 — même chrome que candidat/ressource, objet différent : personne chez une société.</p>
+    <dl class="cols">
+      <dt>Onglets</dt><dd>Synthèse · Informations · Actions · Besoins · Projets · Achats</dd>
+      <dt>Zones</dt><dd>Gauche : état Prospect, coordonnées, manager ; Informations Société (nom, état, effectif, tél, adresse). Droite : Action / Besoin / Projet / Achat (compteurs)</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Le contact voit les besoins/projets/achats de SA société — vue miroir de la fiche société.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Onglets identiques à Société moins Contacts/Facturation. Le contact hérite, il ne porte pas en propre.</p></div>
+    </div>
+    <img src="ecrans/34-fiche-contact-synthese.png" alt="Fiche contact Synthèse">
+  </article>
+
+  <article class="screen" id="e35">
+    <h3>35 — Fiche contact / Informations</h3>
+    <p class="kicker">Formulaire d’identité + périmètre technique/fonctionnel (nuage de mots).</p>
+    <dl class="cols">
+      <dt>Blocs</dt><dd>Informations générales (civilité, nom, prénom, fonction, état, service, type, provenance, manager, influenceurs, agence, pôle) · Coordonnées Contact · Périmètre technique (mots-clés) · Périmètre fonctionnel (domaines, outils) · Informations Société (lecture)</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>V1 : nom, fonction, société, email/tél. Le périmètre techn./fonctionnel est du confort commercial.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>« Influenceurs » = référentiel propre au contact, distinct du manager. Ne pas fusionner.</p></div>
+    </div>
+    <img src="ecrans/35-fiche-contact-informations.png" alt="Fiche contact Informations">
+  </article>
+
+  <article class="screen" id="e36">
+    <h3>36 — Menu + de la fiche contact</h3>
+    <p class="kicker">C1 — trois sorties seulement : Action, Besoin, Achat. Pas de Projet direct, pas de Positionnement.</p>
+    <dl class="cols">
+      <dt>Il crée</dt><dd>Action · Besoin (lien) · Achat (lien)</dd>
+      <dt>Il ne crée pas</dt><dd>Positionnement, Projet direct, Contrat — ça reste le monde C2/C3/C4.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Le contact nourrit le CRM (action) et déclenche la demande (besoin). Il ne staffe jamais.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Menu + le plus court des 5 fiches vues. Preuve que Contact reste C1 pur.</p></div>
+    </div>
+    <img src="ecrans/36-fiche-contact-menu-creer.png" alt="Menu Créer fiche contact">
+  </article>
+
+  <article class="screen" id="e37">
+    <h3>37 — Kanban Candidats (par étape)</h3>
+    <p class="kicker">C2 — 20 727 candidats répartis en colonnes = les 14 étapes admin, pas un enum figé.</p>
+    <dl class="cols">
+      <dt>Colonnes vues</dt><dd>A traiter (9711) · En cours (4376) · Vivier++ (80) · Clos (952) · A relancer (4688) · En attente (149) · Ex Collaborateur (99) · Non validé (84) · Validé (103)…</dd>
+      <dt>Carte</dt><dd>Nom, titre, 2 pastilles (positionnement / DT)</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Le Kanban est une vue, pas un objet : glisser une carte change l’étape, rien de plus.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>9 711 « A traiter » sur 20 727 : le vivier est majoritairement non qualifié. Chiffre à vérifier avant tout dimensionnement.</p></div>
+    </div>
+    <img src="ecrans/37-kanban-candidats.png" alt="Kanban Candidats">
+  </article>
+
+  <article class="screen" id="e38">
+    <h3>38 — Kanban Besoins (par état)</h3>
+    <p class="kicker">C3 — 1 922 besoins. Colonnes = états admin (A traiter, P1, P2, P3, En cours, Vivier, Reporté, Gagné…).</p>
+    <dl class="cols">
+      <dt>Carte</dt><dd>Titre, client, manager, montant, nb positionnements actifs</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Vue commerciale du pipeline. Le même besoin change de colonne quand son état change en fiche.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Colonne « Reporté » à 193 lignes / 6,89M€ : un besoin reporté n’est pas clos, il pèse encore dans le CA envisagé.</p></div>
+    </div>
+    <img src="ecrans/38-kanban-besoins.png" alt="Kanban Besoins">
+  </article>
+
+  <article class="screen" id="e39">
+    <h3>39 — Kanban Positionnements (par état)</h3>
+    <p class="kicker">C2 ∩ C3 — 4 468 positionnements. Colonnes = les 9 états admin (Proposé, NO GO interne, GO interne, CV envoyé, Présenté Client, Désistement, Validé…).</p>
+    <dl class="cols">
+      <dt>Carte</dt><dd>Nom du profil, société cible</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>C’est le tableau de pilotage du staffing au jour le jour, plus lisible que la liste.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>« Proposé » (1 558) + « NO GO interne » (718) = plus de la moitié du flux. Le filtre interne consomme plus que le rejet client.</p></div>
+    </div>
+    <img src="ecrans/39-kanban-positionnements.png" alt="Kanban Positionnements">
+  </article>
+
+  <article class="screen" id="e40">
+    <h3>40 — Prestations (liste globale)</h3>
+    <p class="kicker">C4 — 232 lignes. Toutes les prestations de tous les projets, une seule table.</p>
+    <dl class="cols">
+      <dt>Colonnes</dt><dd>Début, Fin, Référence, Projet (+ ressource en sous-ligne), Client, CA HT, Renta., Manager</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>C’est la table de vérité de la production : qui facture, sur quel projet, à quelle renta.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Beaucoup de CA à 0,00 : prestation créée avant tarification, comme pour les projets.</p></div>
+    </div>
+    <img src="ecrans/40-prestations.png" alt="Liste Prestations">
+  </article>
+
+  <article class="screen" id="e41">
+    <h3>41 — Achats (liste)</h3>
+    <p class="kicker">C5 — 1 ligne. Coût externe sur projet, fournisseur = société.</p>
+    <dl class="cols">
+      <dt>Colonnes</dt><dd>Date, Titre, Projet, Fournisseur, État, Total Achat HT, Paiements engagés HT, Delta HT, Manager</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Module quasi vide sur ce tenant : Avaliance n’achète presque pas en externe. Hors v1 sans regret.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Delta HT = Total − Paiements engagés : preuve visuelle du calcul, pas un champ saisi.</p></div>
+    </div>
+    <img src="ecrans/41-achats.png" alt="Liste Achats">
+  </article>
+
+  <article class="screen" id="e42">
+    <h3>42 — Factures fournisseurs (liste)</h3>
+    <p class="kicker">C5 — vide (0). Colonnes prêtes : Ressource, Source, HT/TTC, Règlement.</p>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>« Ressource » en colonne = une facture fournisseur peut être liée à un freelance, pas qu’à une société tierce.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Vide ≠ absent du menu : le module est actif, juste inutilisé sur ce tenant.</p></div>
+    </div>
+    <img src="ecrans/42-factures-fournisseurs.png" alt="Liste Factures fournisseurs">
+  </article>
+
+  <article class="screen" id="e43">
+    <h3>43 — Paiements (liste)</h3>
+    <p class="kicker">C5 — 1 ligne liée au même achat LinkedIn. Prévu vs effectué.</p>
+    <dl class="cols">
+      <dt>Colonnes</dt><dd>Date, Achat, Projet, Fournisseur, État, Paiement prévu, Paiement effectué, Montant HT, Montant TTC</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Paiement est l’enfant de l’Achat, pas un objet autonome saisi à la main.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>TTC (12 420€) ≠ HT achat (10 350€) : la TVA se calcule ici, pas sur l’achat.</p></div>
+    </div>
+    <img src="ecrans/43-paiements.png" alt="Liste Paiements">
+  </article>
+
+  <article class="screen" id="e44">
+    <h3>44 — Planning / Plans de charge</h3>
+    <p class="kicker">C4 — vue seule : 229 ressources × mois. Toggle Semaine/Mois, tri par ordre croissant.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Superpose prestations, absences, positionnements sur une grille ressource × période.</dd>
+      <dt>Il ne fait pas</dt><dd>Créer une mission. Aucun +.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Vue de lecture pure. Confirme DIAGNOSTIC_METIER : le plan de charge n’est pas un objet.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>229 ressources listées même sans prestation visible sur la période : la grille n’est pas filtrée par activité.</p></div>
+    </div>
+    <img src="ecrans/44-plans-de-charge.png" alt="Plans de charge">
+  </article>
+
+  <article class="screen" id="e45">
+    <h3>45 — Reporting / Synthèse</h3>
+    <p class="kicker">Lecture agrégée, tous chemins. Grille mensuelle glissante (M9 2026 → M3 2027).</p>
+    <dl class="cols">
+      <dt>Indicateurs vus</dt><dd>CA total besoins pond. · Nb besoins/positionnements créés (par état) · Contacts par type d’action</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>C’est le dashboard qu’on branche en dernier, une fois les objets réels.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Toutes les colonnes futures à 0 : le reporting ne prédit rien, il compte le passé/présent.</p></div>
+    </div>
+    <img src="ecrans/45-reporting-synthese.png" alt="Reporting Synthèse">
+  </article>
+
+  <article class="screen" id="e46">
+    <h3>46 — Reporting / Projets</h3>
+    <p class="kicker">25 projets en colonnes, indicateurs en lignes (CA, coût, marge, temps, avancement).</p>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Vue transposée pratique pour comparer les projets côte à côte sur un même indicateur.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>« Total des temps commandés/consommés » en jours : preuve que le temps est rattaché au projet via la prestation, pas saisi ici.</p></div>
+    </div>
+    <img src="ecrans/46-reporting-projets.png" alt="Reporting Projets">
+  </article>
+
+  <article class="screen" id="e47">
+    <h3>47 — Reporting / Ressources</h3>
+    <p class="kicker">6 ressources filtrées, 6 indicateurs (CA signé, renta., TACI, CA production, renta. réelle, TACI consommé).</p>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>TACI (Taux d’Activité Commercialisée Interne) apparaît seulement ici — vocabulaire Boond à traduire pour le miniature.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Filtre « 6 Indicateurs » par défaut : liste réduite, pas exhaustive sans reset (même piège que les listes).</p></div>
+    </div>
+    <img src="ecrans/47-reporting-ressources.png" alt="Reporting Ressources">
+  </article>
+
+  <article class="screen" id="e48">
+    <h3>48 — Reporting / Sociétés</h3>
+    <p class="kicker">2 579 sociétés en colonnes. Nb projets (par type), nb recrutements réalisés, nb ressources en prestation (interne/externe).</p>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>« Recrutements réalisés » ≠ candidats créés : c’est un compteur sur le passage candidat → ressource.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Ressources internes vs externes en prestation : la société peut consommer du staff Avaliance ET du staff tiers.</p></div>
+    </div>
+    <img src="ecrans/48-reporting-societes.png" alt="Reporting Sociétés">
+  </article>
+
+  <article class="screen" id="e49">
+    <h3>49 — Menu compte (Ahmed ▾)</h3>
+    <p class="kicker">Le vrai menu self-service, distinct du menu métier de gauche.</p>
+    <dl class="cols">
+      <dt>Items</dt><dd>Mon compte · Ma fiche · Mes temps · Mes frais · Mes absences · Configuration · Mes flags · Mon offre · Centre de téléchargement · Journal d’activité · Extensions et applications · Administration · Déconnexion</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>« Ma fiche » = raccourci vers sa propre fiche ressource. Le compte EST une ressource, pas un objet séparé.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Confirme FONCTIONNEMENT_BOOND : Manager = Ressource + rôle. Ce menu est la preuve visuelle.</p></div>
+    </div>
+    <img src="ecrans/49-menu-compte.png" alt="Menu compte Ahmed">
+  </article>
+
+  <article class="screen" id="e50">
+    <h3>50 — Mes temps → 403</h3>
+    <p class="kicker">« Vous ne passerez pas » (Gandalf). Le lien existe dans le menu ; le rôle actuel n’a pas le droit.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Bloque l’accès à la saisie de temps pour ce compte/rôle.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Preuve concrète de droits par rôle : même menu visible, accès refusé selon le périmètre.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Mes frais → même 403. Self-service temps/frais/absences non ouvert sur ce compte : à confirmer avec un compte consultant réel.</p></div>
+    </div>
+    <img src="ecrans/50-mes-temps-403.png" alt="Mes temps 403">
+  </article>
+
+  <article class="screen" id="e51">
+    <h3>51 — Extensions et applications</h3>
+    <p class="kicker">Greffons client : extension navigateur + appli mobile. Différent des 9 « Apps » internes (écran 16).</p>
+    <dl class="cols">
+      <dt>Cartes</dt><dd>Boond Data Assistant (Chrome/Firefox) · Application mobile Boond (App Store/Google Play)</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Hors miniature. C’est du tooling de capture (LinkedIn → candidat), pas un écran métier.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Ne pas confondre avec l’écran 16 « Apps » (marketplace serveur) : celui-ci est côté client (navigateur/mobile).</p></div>
+    </div>
+    <img src="ecrans/51-extensions.png" alt="Extensions et applications">
+  </article>
+
+  <article class="screen" id="e52">
+    <h3>52 — Mes flags</h3>
+    <p class="kicker">Référentiel court : 2 flags (Blacklisté, Top performer), un responsable par flag.</p>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Flag = tag libre posable sur un profil. 2 exemples suffisent à couvrir le besoin v1.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Encore un référentiel admin séparé (le 4e après étape candidat, état positionnement, état besoin).</p></div>
+    </div>
+    <img src="ecrans/52-flags.png" alt="Flags">
+  </article>
+
+  <article class="screen" id="e53">
+    <h3>53 — Fiche projet / Prestations (détail)</h3>
+    <p class="kicker">C4 — la ligne complète : Charge, Tx, Tarif projet, CA HT, Coût HT, Marge HT, Renta.</p>
+    <dl class="cols">
+      <dt>Actions ligne</dt><dd>Créer Suivi de mission · Télécharger/Envoyer un ordre de mission</dd>
+      <dt>Clic sur la ressource</dt><dd>Renvoie vers sa fiche Ressource (pas une fiche « prestation » séparée) — la prestation vit comme ligne, pas comme fiche autonome.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>« Ordre de mission » est un document généré depuis la prestation — pièce contractuelle du staffing externe.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Charge à 0j / Tarif à 0 sur une prestation datée : encore la preuve que l’objet existe avant le chiffrage.</p></div>
+    </div>
+    <img src="ecrans/53-fiche-projet-prestations.png" alt="Fiche projet Prestations détail">
+  </article>
+
+  <article class="screen" id="e54">
+    <h3>54 — Ctrl+K (recherche globale)</h3>
+    <p class="kicker">Le raccourci qui traverse tout le graphe en une frappe. 5 catégories, historique cross-objets.</p>
+    <dl class="cols">
+      <dt>Onglets recherche</dt><dd>Personnes et sociétés · Besoins · Projets · Factures · Achats</dd>
+      <dt>Récemment consultés</dt><dd>Liste unique mêlant Ressource, Contact, Société, Candidat — avec le type affiché à côté du nom.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Si le miniature veut « une recherche », c’est ce composant : 5 index, pas un champ texte sur une seule table.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>« Personnes et sociétés » regroupe candidat + ressource + contact + société dans UN seul onglet de recherche, malgré 4 objets distincts.</p></div>
+    </div>
+    <img src="ecrans/54-ctrlk-recherche.png" alt="Ctrl+K recherche globale">
+  </article>
+
+  <article class="screen" id="e55">
+    <h3>55 — Filtres (panneau, exemple Besoins)</h3>
+    <p class="kicker">13 catégories de filtre, dont un « Périmètre » dynamique (mes agences/pôles/managers N-1/données).</p>
+    <dl class="cols">
+      <dt>Catégories</dt><dd>Périmètre · Type · État (besoins) · État (positionnements) · Société · Provenance · Outil · Domaine · Secteur · Durée · Lieu · Flag · Période</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Même composant Filtres sur toutes les listes, catégories qui changent selon l’objet — un seul composant à coder, pas 13.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>« État (positionnements) » filtrable depuis la liste Besoins : preuve supplémentaire que Besoin et Positionnement sont couplés dès la recherche.</p></div>
+    </div>
+    <img src="ecrans/55-filtres-besoins.png" alt="Filtres besoins">
+  </article>
+
+  <article class="screen" id="e56">
+    <h3>56 — Créer un besoin (standalone, sans fiche société)</h3>
+    <p class="kicker">Le + de la liste Besoins démarre par choisir un Contact, pas une société ni un titre.</p>
+    <dl class="cols">
+      <dt>Il fait</dt><dd>Étape 1/1 visible : champ Contact obligatoire (+ Créer un nouveau contact si absent). Créer reste grisé sans contact.</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>On ne crée jamais un besoin dans le vide : il est ancré à un contact, donc à une société, dès la première étape.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Corrige une hypothèse : le besoin ne part pas de la société en standalone, il part du contact. La société est déduite après.</p></div>
+    </div>
+    <img src="ecrans/56-creer-besoin-standalone.png" alt="Créer un besoin standalone">
+  </article>
+
+  <article class="screen" id="e57">
+    <h3>57 — Administration (accueil)</h3>
+    <p class="kicker">6 cartes + configuration avancée + pied. Régler le graphe, pas le parcourir.</p>
+    <dl class="cols">
+      <dt>Cartes</dt><dd>Managers / Rôles · Agences juridiques · Paramètres globaux · Modèles · Apps / Marketplace · Mon offre (badge Nouveau)</dd>
+      <dt>Avancé</dt><dd>Alertes · Business units · Pôles · Traductions</dd>
+      <dt>Pied</dt><dd>Importer vos données · Espace développeur · Webhooks</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>V1 : Managers/Rôles + Paramètres globaux (référentiels étape/état). Le reste attend.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Sous-écrans non cliquables depuis cette session (droit ou route SPA non exposée en URL directe) : à ouvrir avec un compte admin confirmé.</p></div>
+    </div>
+    <img src="ecrans/57-administration-home.png" alt="Administration accueil">
+  </article>
+
+  <article class="screen" id="e58">
+    <h3>58 — Fiche société / Facturation</h3>
+    <p class="kicker">C1/C5 — coordonnées de facturation, distinctes de l’adresse société.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Vide + « Créer coordonnées de facturation »</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Hors v1 : la facturation client complète est un module (PostProduction), cet onglet n’en est que les coordonnées.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Onglet présent mais vide sur ce tenant : ne pas conclure qu’il est inutile, juste non rempli ici.</p></div>
+    </div>
+    <img src="ecrans/58-fiche-societe-facturation.png" alt="Fiche société Facturation">
+  </article>
+
+  <article class="screen" id="e59">
+    <h3>59 — Fiche ressource / Formulaires</h3>
+    <p class="kicker">C4 — dernier onglet ressource, jamais vu côté candidat.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Vide + « Créer un formulaire »</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Formulaire = document RH généré (attestation, avenant…), pas un objet du staffing quotidien.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Ferme la carte des onglets ressource : Synthèse, Informations, Administratif, DTs, Actions, Positionnements, Prestations, Projets, Formulaires — 9 au total contre 6 pour le candidat.</p></div>
+    </div>
+    <img src="ecrans/59-fiche-ressource-formulaires.png" alt="Fiche ressource Formulaires">
+  </article>
+
+  
+    <h2>Limites de cette passe</h2>
+  <p class="lead">Les 9 apps internes (écran 16 : Célébrations, DocTemplates, Emailing, ExtractPayroll, HRFlow, Microsoft, PlanProduction, PostProduction, Viewer) et les sous-pages Administration (Managers/Rôles, Agences, Paramètres globaux, Modèles, Apps/Marketplace) n’ont pas d’URL directe et leurs cartes ne répondent pas au clic simulé dans cette session — probablement une route Ember interne ou un droit non exposé. Elles restent hors preuve visuelle ; ne pas leur inventer de champs.</p>
+
+  <h2>Intégrité (ce qui doit rester vrai)</h2>
+  <ul>
+    <li>Besoin et projet ont une <strong>société</strong></li>
+    <li>Positionnement a un <strong>besoin</strong> et <strong>un seul</strong> humain (candidat XOR ressource)</li>
+    <li>Prestation a un <strong>projet</strong> et une <strong>ressource</strong></li>
+    <li>Action a <strong>un</strong> porteur</li>
+    <li>Manager a une <strong>ressource</strong> et un <strong>rôle</strong></li>
+    <li>Temps s’appuient sur une <strong>prestation</strong>, pas sur un candidat</li>
+    <li>Un positionnement <strong>candidat</strong> ne se convertit pas en prestation : il faut d’abord la ressource</li>
+  </ul>
+
+  <footer>Diagnostic Ava Manager · 15/09/2026 · 59 captures (listes, fiches, onglets, +, Kanban, self-service, admin, modales). Envoyer le dossier (html + ecrans/).</footer>
+
+  </section>
+</main>
+<div id="lightbox" aria-hidden="true"><img alt=""></div>
+<script>
+
+const COLORS = { 1: "#4a90c8", 2: "#8b73c7", 3: "#2f9d6a", 4: "#d17a3a", 5: "#d45a8a" };
+const CHEMINS = [
+  { id: 1, nom: "CRM", verbe: "Nourrir le client",
+    caption: "Société → Contact → Action",
+    hint: "C1 : le contact appartient à la société. L’action est l’historique.",
+    edges: [["societe","contact"],["contact","action"]],
+    steps: ["Société","Contact","Action"] },
+  { id: 2, nom: "Recrutement", verbe: "Faire le vivier",
+    caption: "Candidat → Action  et  Candidat → Positionnement",
+    hint: "C2 : le candidat ne passe pas par Contact ni Besoin. Le positionnement pointe vers un besoin déjà là (C3), sans que le candidat y entre.",
+    edges: [["candidat","action"],["candidat","positionnement"]],
+    steps: ["Candidat","Action","Positionnement"] },
+  { id: 3, nom: "Staffing", verbe: "Pourvoir le besoin",
+    caption: "Société → Besoin → Positionnement → Projet",
+    hint: "C3 : un humain (candidat ou ressource) est posé sur le besoin. Gagné → projet.",
+    edges: [["societe","besoin"],["besoin","positionnement"],["candidat","positionnement"],["ressource","positionnement"],["besoin","projet"]],
+    steps: ["Société","Besoin","Positionnement","Projet"] },
+  { id: 4, nom: "Production", verbe: "Exécuter la mission",
+    caption: "Projet → Prestation ← Ressource",
+    hint: "C4 : qui travaille, quand, quel CA. Les temps s’appuient sur la prestation.",
+    edges: [["projet","prestation"],["ressource","prestation"]],
+    steps: ["Projet","Prestation","Ressource"] },
+  { id: 5, nom: "Achat", verbe: "Coûter l’externe",
+    caption: "Projet → Achat",
+    hint: "C5 : le fournisseur est une société. Hors du staffing quotidien.",
+    edges: [["projet","achat"]],
+    steps: ["Projet","Achat"] }
+];
+const NODES = {
+  societe: { x: 24, y: 36, label: "Société" },
+  candidat: { x: 24, y: 140, label: "Candidat" },
+  ressource: { x: 24, y: 244, label: "Ressource" },
+  contact: { x: 220, y: 88, label: "Contact" },
+  besoin: { x: 220, y: 196, label: "Besoin" },
+  positionnement: { x: 420, y: 36, label: "Positionnement" },
+  projet: { x: 420, y: 140, label: "Projet" },
+  action: { x: 420, y: 244, label: "Action" },
+  prestation: { x: 616, y: 88, label: "Prestation" },
+  achat: { x: 616, y: 196, label: "Achat" }
+};
+const ALL_EDGES = [
+  ["societe","contact"],["contact","action"],["candidat","action"],["candidat","positionnement"],
+  ["societe","besoin"],["besoin","positionnement"],["ressource","positionnement"],["besoin","projet"],
+  ["projet","prestation"],["ressource","prestation"],["projet","achat"]
+];
+const W = 128, H = 36;
+function key(a,b){ return a+">"+b; }
+function center(id){
+  const n = NODES[id];
+  return { x: n.x + W/2, y: n.y + H/2 };
+}
+
+let active = 1;
+
+function renderPills(){
+  const el = document.getElementById("pills");
+  el.innerHTML = CHEMINS.map(c =>
+    `<button class="pill" type="button" aria-pressed="${c.id===active}" data-id="${c.id}">
+      <span class="swatch" style="background:${COLORS[c.id]}"></span>C${c.id} ${c.nom}
+    </button>`
+  ).join("");
+  el.querySelectorAll("button").forEach(b => b.onclick = () => { active = +b.dataset.id; draw(); });
+}
+
+function renderStrips(){
+  document.getElementById("strips").innerHTML = CHEMINS.map(c => {
+    const boxes = c.steps.map(s => `<span class="box" style="border-color:${COLORS[c.id]}">${s}</span>`).join('<span class="arrow">→</span>');
+    return `<div class="path-row"><span class="swatch" style="background:${COLORS[c.id]}"></span><strong>C${c.id} ${c.nom}</strong>${boxes}</div>`;
+  }).join("");
+}
+
+function draw(){
+  const c = CHEMINS.find(x => x.id === active);
+  document.getElementById("caption").innerHTML = `<strong>Chemin ${c.id} — ${c.nom}</strong> · ${c.verbe}<br>${c.caption}`;
+  document.getElementById("hint").textContent = c.hint;
+  renderPills();
+  const live = new Set(c.edges.map(([a,b]) => key(a,b)));
+  const liveN = new Set();
+  c.edges.forEach(([a,b]) => { liveN.add(a); liveN.add(b); });
+  const lines = ALL_EDGES.map(([a,b]) => {
+    const p = center(a), q = center(b);
+    const on = live.has(key(a,b));
+    return `<line x1="${p.x}" y1="${p.y}" x2="${q.x}" y2="${q.y}" stroke="${on ? COLORS[c.id] : "#3a3a3a"}" stroke-width="${on ? 3 : 1}"/>`;
+  }).join("");
+  const boxes = Object.entries(NODES).map(([id,n]) => {
+    const on = liveN.has(id);
+    return `<g>
+      <rect x="${n.x}" y="${n.y}" width="${W}" height="${H}" rx="4"
+        fill="${on ? "#2a2a2a" : "#141414"}" stroke="${on ? COLORS[c.id] : "#3a3a3a"}" stroke-width="${on ? 2 : 1}"/>
+      <text x="${n.x+W/2}" y="${n.y+23}" text-anchor="middle" fill="${on ? "#f0f0f0" : "#7a7a7a"}">${n.label}</text>
+    </g>`;
+  }).join("");
+  document.getElementById("graph").innerHTML = lines + boxes;
+}
+
+renderStrips();
+draw();
+
+const lb = document.getElementById("lightbox");
+const lbImg = lb.querySelector("img");
+document.querySelectorAll("article.screen img").forEach(img => {
+  img.addEventListener("click", () => {
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+    lb.classList.add("open");
+  });
+});
+lb.addEventListener("click", () => lb.classList.remove("open"));
+
+
+const SIM_COLORS = { C1: "#4a90c8", C2: "#8b73c7", C3: "#2f9d6a", C4: "#d17a3a", C5: "#d45a8a" };
+const CHEMIN_META = {
+  C1: { label: "CRM", verbe: "Nourrir le client", path: "Société → Contact → Action", color: "C1", first: "societes-liste" },
+  C2: { label: "Recrutement", verbe: "Faire le vivier", path: "Candidat → Action / Positionnement", color: "C2", first: "candidats-liste" },
+  C3: { label: "Staffing", verbe: "Pourvoir le besoin", path: "Société → Besoin → Positionnement → Projet", color: "C3", first: "besoins-liste" },
+  C4: { label: "Production", verbe: "Exécuter la mission", path: "Projet → Prestation ← Ressource", color: "C4", first: "projet-fiche" },
+  C5: { label: "Achat", verbe: "Coûter l'externe", path: "Projet → Achat", color: "C5", first: "achats-liste" }
+};
+const SCREEN_META = {
+  dashboard: { label: "Tableau de bord", chemins: [] },
+  "actions-liste": { label: "Actions", chemins: ["C1","C2","C3"] },
+  "candidats-liste": { label: "Candidats", chemins: ["C2"] },
+  "candidat-fiche": { label: "Fiche candidat", chemins: ["C2"] },
+  "ressources-liste": { label: "Ressources", chemins: ["C3","C4"] },
+  "ressource-fiche": { label: "Fiche ressource", chemins: ["C3","C4"] },
+  "societes-liste": { label: "Sociétés", chemins: ["C1","C3","C5"] },
+  "societe-fiche": { label: "Fiche société", chemins: ["C1","C3","C5"] },
+  "contacts-liste": { label: "Contacts", chemins: ["C1"] },
+  "contact-fiche": { label: "Fiche contact", chemins: ["C1"] },
+  "besoins-liste": { label: "Besoins", chemins: ["C3"] },
+  "besoin-fiche": { label: "Fiche besoin", chemins: ["C3"] },
+  "positionnements-liste": { label: "Positionnements", chemins: ["C2","C3"] },
+  "positionnement-fiche": { label: "Fiche positionnement", chemins: ["C2","C3"] },
+  "projets-liste": { label: "Projets", chemins: ["C3","C4","C5"] },
+  "projet-fiche": { label: "Fiche projet", chemins: ["C3","C4","C5"] },
+  "prestations-liste": { label: "Prestations", chemins: ["C4"] },
+  "achats-liste": { label: "Achats", chemins: ["C5"] }
+};
+const NAV_GROUPS = [
+  { title: "Pilotage", items: ["dashboard","actions-liste"] },
+  { title: "Vivier", items: ["candidats-liste","ressources-liste"] },
+  { title: "CRM", items: ["societes-liste","contacts-liste"] },
+  { title: "Staffing", items: ["besoins-liste","positionnements-liste"] },
+  { title: "Production", items: ["projets-liste","prestations-liste"] },
+  { title: "Achat", items: ["achats-liste"] }
+];
+const CREATE_MAP = {
+  "societe-fiche": [["+ Contact","contact-fiche"],["+ Besoin","besoin-fiche"],["+ Projet","projet-fiche"],["+ Achat","achats-liste"]],
+  "contact-fiche": [["+ Action","actions-liste"],["+ Besoin","besoin-fiche"],["+ Achat","achats-liste"]],
+  "candidat-fiche": [["+ Action","actions-liste"],["+ Positionnement","positionnement-fiche"],["+ Besoin","besoin-fiche"],["+ Projet","projet-fiche"]],
+  "ressource-fiche": [["+ Action","actions-liste"],["+ Positionnement","positionnement-fiche"],["+ Prestation","prestations-liste"],["+ Projet","projet-fiche"],["+ Besoin","besoin-fiche"]],
+  "besoin-fiche": [["+ Positionnement","positionnement-fiche"],["+ Projet","projet-fiche"],["+ Action","actions-liste"]],
+  "projet-fiche": [["+ Prestation","prestations-liste"],["+ Achat","achats-liste"],["+ Action","actions-liste"]]
+};
+const LISTE_CREATE = {
+  "candidats-liste":"candidat-fiche","ressources-liste":"ressource-fiche","societes-liste":"societe-fiche",
+  "contacts-liste":"contact-fiche","besoins-liste":"besoin-fiche","projets-liste":"projet-fiche"
+};
+let simChemin = "C3";
+let simScreen = "besoins-liste";
+
+function esc(s){ return String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function bar(id){
+  const cs = SCREEN_META[id].chemins;
+  const c = cs.includes(simChemin) ? simChemin : cs[0];
+  return c ? SIM_COLORS[c] : "transparent";
+}
+function table(headers, rows){
+  return `<table><thead><tr>${headers.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${
+    rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")
+  }</tbody></table>`;
+}
+function ouvrir(to){ return `<button type="button" data-go="${to}">Ouvrir →</button>`; }
+function creates(id){
+  const list = CREATE_MAP[id];
+  if (!list) return `<div class="callout"><strong>Pas de bouton +</strong><br>Cet objet se crée uniquement depuis une autre fiche.</div>`;
+  return `<p class="lead">Créer depuis cette fiche</p><div class="rowbtns">${list.map(([l,t])=>`<button type="button" data-go="${t}">${esc(l)}</button>`).join("")}</div>`;
+}
+function fiche(title, etat, fields, stats, id, rule){
+  return `<div class="bar" style="background:${bar(id)}"></div>
+    <div class="panel">
+      <h2>${esc(title)} ${etat?`<span style="font-size:12px;color:var(--muted)"> · ${esc(etat)}</span>`:""}</h2>
+      <div class="stats">${stats.map(([v,l])=>`<div class="stat"><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("")}</div>
+      ${fields.map(([k,v])=>`<div class="kv"><span>${esc(k)}</span><span>${esc(v)}</span></div>`).join("")}
+      ${creates(id)}
+      ${rule?`<div class="callout">${esc(rule)}</div>`:""}
+    </div>`;
+}
+function liste(title, count, headers, rows, id, note){
+  const plus = LISTE_CREATE[id];
+  return `<div class="bar" style="background:${bar(id)}"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+      <h2>${esc(title)} (${count})</h2>
+      ${plus?`<button class="create-btn primary" type="button" data-go="${plus}">+ Créer</button>`:""}
+    </div>
+    <div class="panel">${table(headers, rows)}${note?`<p class="note">${esc(note)}</p>`:""}</div>`;
+}
+
+function panelHTML(id){
+  switch(id){
+    case "dashboard": return `<h2>Tableau de bord</h2><div class="stats">
+      <div class="stat"><b>18</b><span>Besoins actifs</span></div>
+      <div class="stat"><b>42</b><span>Positionnements</span></div>
+      <div class="stat"><b>156 k€</b><span>CA signé</span></div>
+      <div class="stat"><b>612</b><span>Candidats</span></div></div>
+      <div class="callout">Lecture seule. Agrège C1–C4. Aucun +.</div>`;
+    case "actions-liste": return liste("Actions", 4, ["Date","Type","Porteur","Manager"], [
+      ["15/09","Qualification","Candidat Démo A","M. Martin"],
+      ["14/09","Rendez-vous","Contact Démo A","M. Martin"],
+      ["12/09","Rappel / To do","Besoin Démo 1","M. Martin"],
+      ["10/09","Mail","Société Alpha","M. Martin"]
+    ], id, "Pas de +. Créé depuis une fiche porteuse.");
+    case "candidats-liste": return liste("Candidats", 3, ["Candidat","Titre","Étape",""], [
+      ["Candidat Démo A","Consultant Cloud","En cours",ouvrir("candidat-fiche")],
+      ["Candidat Démo B","Data Analyst","A relancer",ouvrir("candidat-fiche")],
+      ["Candidat Démo C","Chef de projet","Vivier",ouvrir("candidat-fiche")]
+    ], id);
+    case "candidat-fiche": return fiche("Candidat Démo A — Consultant Cloud","En cours",
+      [["Titre","Consultant Cloud"],["Étape","En cours"],["Manager","M. Martin"]],
+      [["1","Action(s)"],["0","Positionnement(s)"]], id,
+      "Le candidat ne passe pas par Contact ni Besoin. Le + ne propose jamais Contact.");
+    case "ressources-liste": return liste("Ressources", 3, ["Ressource","État","TJM",""], [
+      ["Ressource Démo A","En mission","550 €",ouvrir("ressource-fiche")],
+      ["Ressource Démo B","Inter-contrat","480 €",ouvrir("ressource-fiche")],
+      ["Ressource Démo C","En mission","620 €",ouvrir("ressource-fiche")]
+    ], id);
+    case "ressource-fiche": return fiche("Ressource Démo A","En mission",
+      [["État","En mission"],["TJM","550 €"],["Type","Consultant interne"]],
+      [["1","Prestation(s)"],["0","Positionnement(s)"]], id,
+      "Seule la ressource porte Prestations, Projets et Formulaires.");
+    case "societes-liste": return liste("Sociétés", 3, ["Société","Secteur","État",""], [
+      ["Société Alpha","Services","Client",ouvrir("societe-fiche")],
+      ["Société Beta","Industrie","Prospect",ouvrir("societe-fiche")],
+      ["Société Gamma","Banque","Client",ouvrir("societe-fiche")]
+    ], id);
+    case "societe-fiche": return fiche("Société Alpha","Client",
+      [["Secteur","Services"],["Effectif","250"],["Pays","France"]],
+      [["3","Contact(s)"],["2","Besoin(s)"],["1","Projet(s)"]], id,
+      "Un objet, trois rôles : C1 contacts, C3 besoins/projets, C5 achats.");
+    case "contacts-liste": return liste("Contacts", 3, ["Contact","Fonction","Société",""], [
+      ["Contact Démo A","Directeur Technique","Société Alpha",ouvrir("contact-fiche")],
+      ["Contact Démo B","DRH","Société Beta",ouvrir("contact-fiche")],
+      ["Contact Démo C","CTO","Société Gamma",ouvrir("contact-fiche")]
+    ], id);
+    case "contact-fiche": return fiche("Contact Démo A — Société Alpha","Décisionnaire",
+      [["Fonction","Directeur Technique"],["Société","Société Alpha"]],
+      [["1","Action(s)"],["0","Besoin(s)"]], id,
+      "Un contact n'existe pas sans société. Jamais de Positionnement ni de Projet direct.");
+    case "besoins-liste": return liste("Besoins", 3, ["Titre","Client","État","CA pond.",""], [
+      ["Développeur Backend","Société Alpha","P1","56 000 €",ouvrir("besoin-fiche")],
+      ["Chef de projet SI","Société Beta","A traiter","0 €",ouvrir("besoin-fiche")],
+      ["Data Engineer","Société Gamma","En cours","42 000 €",ouvrir("besoin-fiche")]
+    ], id);
+    case "besoin-fiche": return fiche("Développeur Backend — Société Alpha","P1",
+      [["Type","Régie"],["Client","Société Alpha"],["CA pondéré","56 000 €"]],
+      [["2","Positionnement(s)"],["0","Projet(s)"]], id,
+      "Le + ne propose jamais Candidat. Créer un projet exclut les positionnements candidats.");
+    case "positionnements-liste": return liste("Positionnements", 3, ["Profil","Besoin","État",""], [
+      ["Ressource Démo A","Développeur Backend","CV envoyé",ouvrir("positionnement-fiche")],
+      ["Candidat Démo B","Data Engineer","Proposé",ouvrir("positionnement-fiche")],
+      ["Ressource Démo C","Chef de projet SI","Validé",ouvrir("positionnement-fiche")]
+    ], id, "Pas de +. Créé depuis Besoin, Candidat ou Ressource.");
+    case "positionnement-fiche": return fiche("Ressource Démo A → Développeur Backend","CV envoyé",
+      [["Profil","Ressource Démo A"],["Besoin","Développeur Backend"]],
+      [["1","Besoin lié"],["1","Profil lié"]], id,
+      "Pas de +. 1 besoin × (1 candidat XOR 1 ressource).");
+    case "projets-liste": return liste("Projets", 2, ["Référence","Client","CA HT",""], [
+      ["PRJ-DEMO-1","Société Alpha","80 000 €",ouvrir("projet-fiche")],
+      ["PRJ-DEMO-2","Société Gamma","0 €",ouvrir("projet-fiche")]
+    ], id);
+    case "projet-fiche": return fiche("PRJ-DEMO-1 — Société Alpha","En cours",
+      [["Type","Régie"],["Client","Société Alpha"],["Besoin","Développeur Backend"]],
+      [["1","Prestation(s)"],["1","Achat(s)"]], id,
+      "Un projet sans prestation = un titre. Le + Prestation est le lot suivant.");
+    case "prestations-liste": return liste("Prestations", 2, ["Ressource","Projet","CA HT"], [
+      ["Ressource Démo A","PRJ-DEMO-1","80 000 €"],
+      ["Ressource Démo C","PRJ-DEMO-3","45 000 €"]
+    ], id, "Pas de +. Créé depuis Projet ou Ressource.");
+    case "achats-liste": return liste("Achats", 1, ["Titre","Projet","Fournisseur","État"], [
+      ["Abonnement sourcing","PRJ-DEMO-1","Fournisseur Démo","Validé"]
+    ], id, "Créé depuis la fiche Projet. Le fournisseur est une Société.");
+    default: return "";
+  }
+}
+
+function renderSim(){
+  const meta = CHEMIN_META[simChemin];
+  document.getElementById("sim-pills").innerHTML = Object.keys(CHEMIN_META).map(id =>
+    `<button class="pill" type="button" aria-pressed="${id===simChemin}" data-c="${id}">
+      <span class="swatch" style="background:${SIM_COLORS[id]}"></span>${id} ${CHEMIN_META[id].label}
+    </button>`).join("");
+  document.getElementById("sim-caption").innerHTML =
+    `<strong>${meta.label} — ${meta.verbe}</strong> · ${meta.path}. Les écrans hors chemin restent accessibles, grisés.`;
+  document.getElementById("sim-nav").innerHTML = NAV_GROUPS.map(g =>
+    `<div class="sim-group">${g.title.toUpperCase()}</div>` + g.items.map(id => {
+      const m = SCREEN_META[id];
+      const dim = m.chemins.length && !m.chemins.includes(simChemin);
+      const on = id === simScreen;
+      const col = m.chemins[0] ? SIM_COLORS[m.chemins[0]] : "transparent";
+      return `<div class="sim-item${on?' on':''}${dim?' dim':''}" data-go="${id}"><span class="sim-dot" style="background:${col}"></span>${esc(m.label)}</div>`;
+    }).join("")
+  ).join("");
+  document.getElementById("sim-panel").innerHTML = panelHTML(simScreen);
+}
+
+function bindSim(){
+  document.getElementById("view-simulateur").addEventListener("click", e => {
+    const c = e.target.closest("[data-c]");
+    if (c) { simChemin = c.dataset.c; simScreen = CHEMIN_META[simChemin].first; renderSim(); return; }
+    const go = e.target.closest("[data-go]");
+    if (go) { simScreen = go.dataset.go; renderSim(); }
+  });
+}
+
+function showView(name){
+  ["metier","simulateur","audit"].forEach(v => {
+    document.getElementById("view-"+v).hidden = v !== name;
+    document.querySelector('#hub [data-view="'+v+'"]').setAttribute("aria-pressed", v===name ? "true" : "false");
+  });
+  if (name === "metier" && typeof draw === "function") draw();
+  if (name === "simulateur") renderSim();
+  location.hash = name;
+}
+document.getElementById("hub").addEventListener("click", e => {
+  const b = e.target.closest("[data-view]");
+  if (b) showView(b.dataset.view);
+});
+bindSim();
+const start = (location.hash || "#metier").slice(1);
+showView(["metier","simulateur","audit"].includes(start) ? start : "metier");
+</script>
+</body>
+</html>
