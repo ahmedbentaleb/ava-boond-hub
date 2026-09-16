@@ -4,18 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Audit Ava Manager — Boond interactif</title>
-  <meta name="description" content="Audit interactif Ava Manager : schéma métier, simulateur, spécification, 59 écrans.">
+  <meta name="description" content="Audit interactif Ava Manager : schéma métier, simulateur, spécification, questions, 59 écrans.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ahmedbentaleb.github.io/ava-boond-hub/">
   <meta property="og:title" content="Audit Ava Manager — Boond interactif">
-  <meta property="og:description" content="Schéma métier, simulateur, spécification, 59 écrans.">
+  <meta property="og:description" content="Schéma métier, simulateur, spécification, questions à trancher, 59 écrans.">
   <meta property="og:image" content="https://ahmedbentaleb.github.io/ava-boond-hub/og.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Audit Ava Manager — Boond interactif">
-  <meta name="twitter:description" content="Schéma métier, simulateur, spécification, 59 écrans.">
+  <meta name="twitter:description" content="Schéma métier, simulateur, spécification, questions.">
   <meta name="twitter:image" content="https://ahmedbentaleb.github.io/ava-boond-hub/og.jpg">
 <style>
     :root {
@@ -176,6 +176,15 @@
     .callout { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; margin-top: 12px; font-size: 13px; }
     .filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
 
+    .q-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin: 0 0 16px; }
+    .q-card h3 { margin: 0 0 8px; font-size: 16px; }
+    .q-meta { font-size: 12px; color: var(--muted); margin: 0 0 10px; }
+    .q-answer { white-space: pre-wrap; color: var(--text); margin: 0 0 12px; }
+    .q-answer.empty { color: var(--muted); font-style: italic; }
+    .q-card textarea { width: 100%; min-height: 120px; background: #141414; color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 10px; font: inherit; }
+    .tag.ok { display: inline-block; font-size: 11px; color: var(--c3); border: 1px solid var(--c3); padding: 1px 6px; border-radius: 4px; }
+    .tag.edit { display: inline-block; font-size: 11px; color: var(--c1); border: 1px solid var(--c1); padding: 1px 6px; border-radius: 4px; }
+
     .tag.warn { display: inline-block; font-size: 11px; letter-spacing: .04em; color: #d17a3a; border: 1px solid #d17a3a; padding: 1px 6px; border-radius: 4px; }
     .spec-toc { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 24px; position: sticky; top: 56px; z-index: 7; background: var(--bg); padding: 8px 0; }
     .spec-toc button { color: var(--muted); font: inherit; font-size: 12px; border: 1px solid var(--line); background: transparent; padding: 4px 8px; border-radius: 999px; cursor: pointer; }
@@ -196,11 +205,12 @@
 <body>
 <main>
   <h1>Ava Manager — Boond</h1>
-  <p class="lead">Schéma métier · simulateur · spécification · audit 59 écrans. Produit, pas un tenant.</p>
+  <p class="lead">Schéma métier · simulateur · spécification · questions · audit 59 écrans.</p>
   <nav class="hub" id="hub">
     <button type="button" data-view="metier" aria-pressed="true">Métier</button>
     <button type="button" data-view="simulateur" aria-pressed="false">Simulateur</button>
     <button type="button" data-view="spec" aria-pressed="false">Spécification</button>
+    <button type="button" data-view="questions" aria-pressed="false">Questions</button>
     <button type="button" data-view="audit" aria-pressed="false">Audit complet</button>
   </nav>
 
@@ -373,7 +383,7 @@
         <td>Humain staffé (interne ou externe). Porte la production.</td>
         <td>C3 matching + C4 exécution. Le compte utilisateur est une ressource + un rôle.</td>
         <td>1→N Positionnement, Prestation, Action, Temps, Absence. Option : N→1 Société fournisseur si externe.</td>
-        <td>1 ressource : N prestations. Candidat converti devient ressource, il ne reste pas les deux actifs — <span class="tag warn">À VALIDER MÉTIER</span> (identité Personne).</td>
+        <td>1 ressource : N prestations. Une <strong>Personne</strong> porte l’identité. <strong>CandidatProfile</strong> et <strong>RessourceProfile</strong> sont deux profils. La conversion active le profil Ressource sans effacer l’historique Candidat. Décidé (Ahmed).</td>
         <td>Staffing / RH / production</td>
         <td>+ liste Ressources ; ConvertCandidateToResource</td>
         <td>Fiche ressource</td>
@@ -385,7 +395,7 @@
         <td>Demande client à pourvoir (Régie / Forfait) + état + CA pondéré.</td>
         <td>Pivot C3. Attire des positionnements. Peut naître un Projet.</td>
         <td>N→1 Société (obligatoire, déduite du Contact en standalone). 1→N Positionnement, Action, Projet.</td>
-        <td>1 besoin : N positionnements. 0..N projets — <span class="tag warn">À VALIDER MÉTIER</span></td>
+        <td>1 besoin : N positionnements. <strong>Besoin 1 → N Projets</strong> (souvent 1, jamais 1–1 figé). Décidé (Ahmed).</td>
         <td>Commercial staffing</td>
         <td>+ liste (via Contact) ; + fiche Société / Candidat / Ressource / Contact</td>
         <td>Fiche besoin (dont état, pondération)</td>
@@ -463,7 +473,7 @@
       <tr><td>Besoin → Positionnement</td><td>1 → N</td><td>Positionnement : oui</td><td></td></tr>
       <tr><td>Candidat → Positionnement</td><td>1 → N</td><td>XOR avec Ressource</td><td></td></tr>
       <tr><td>Ressource → Positionnement</td><td>1 → N</td><td>XOR avec Candidat</td><td></td></tr>
-      <tr><td>Besoin → Projet</td><td>1 → 0..N</td><td>Projet : facultatif</td><td>Vu : besoin avec 1 pos. et 0 projet. Plusieurs projets : <span class="tag warn">À VALIDER MÉTIER</span></td></tr>
+      <tr><td>Besoin → Projet</td><td>1 → 0..N</td><td>Projet : facultatif</td><td>Décidé : Besoin 1 → N Projets. 0 projet tant que CreateProjectFromNeed n’a pas été lancé.</td></tr>
       <tr><td>Projet → Prestation</td><td>1 → N</td><td>Prestation : oui</td><td>Projet sans prestation = titre, autorisé au début</td></tr>
       <tr><td>Ressource → Prestation</td><td>1 → N</td><td>Prestation : oui</td><td>Simultanées : <span class="tag warn">À VALIDER MÉTIER</span></td></tr>
       <tr><td>Prestation → Temps</td><td>1 → N</td><td>Temps : oui</td><td>Jamais Projet → Temps direct</td></tr>
@@ -534,7 +544,7 @@
     <thead><tr><th>De</th><th>Vers</th><th>Condition</th><th>Interdit</th><th>Effet</th></tr></thead>
     <tbody>
       <tr><td>propose</td><td>en_cours</td><td>Acte commercial (CV, entretien)</td><td>Besoin clos / perdu → refus I17</td><td>—</td></tr>
-      <tr><td>en_cours</td><td>retenu</td><td>Besoin encore ouvert ou en_staffing</td><td>Besoin fermé ; humain = candidat si on veut une prestation tout de suite (I10)</td><td>N’auto-crée pas le Projet — <span class="tag warn">À VALIDER MÉTIER</span></td></tr>
+      <tr><td>en_cours</td><td>retenu</td><td>Besoin encore ouvert ou en_staffing</td><td>Besoin fermé ; humain = candidat si on veut une prestation tout de suite (I10)</td><td>N’auto-crée <strong>pas</strong> le Projet. « Retenu » = staffing validé. CreateProjectFromNeed reste une commande explicite. Décidé (Ahmed).</td></tr>
       <tr><td>propose / en_cours</td><td>refuse / abandonne</td><td>NO GO interne, désistement, refus client</td><td>Depuis retenu sans décision projet</td><td>—</td></tr>
       <tr><td>retenu</td><td>*</td><td>—</td><td>Retour propose</td><td>—</td></tr>
     </tbody>
@@ -736,22 +746,9 @@
 </article>
 
 <article class="spec-sec" id="s16">
-  <h2>16. Questions métier restantes</h2>
-  <ol class="qlist">
-    <li>Un Besoin peut-il créer plusieurs Projets ? (Boond : onglet Projets au pluriel. Ava : 1–1 plus simple ?)</li>
-    <li>Un Positionnement retenu doit-il générer automatiquement un Projet ? (Boond : non, bouton Créer un projet.)</li>
-    <li>Une Ressource peut-elle avoir plusieurs Prestations simultanées ? (Liste 232 lignes : oui côté Boond. Plafond Ava ?)</li>
-    <li>Une Prestation peut-elle changer de Ressource ? (Recommandation V1 : non, nouvelle ligne.)</li>
-    <li>Ressource interne vs externe : champ type, ou deux sous-types ? L’externe est-elle liée à une Société fournisseur ?</li>
-    <li>Conversion Candidat → Ressource : que copie-t-on (identité, DT, salaire souhaité) ? Le candidat reste-t-il lisible ?</li>
-    <li>Candidat et Ressource partagent-ils une identité Personne ? (Propre pour l’historique, coûteux en V1. Boond = deux objets.)</li>
-    <li>Qui porte le TJM vendu : Positionnement, Prestation, Profil type ? (Vu : tarif sur ligne de matching ET sur prestation, souvent 0 au début.)</li>
-    <li>Qui porte le coût ressource : fiche Ressource (TJM coût) vs ligne Prestation ?</li>
-    <li>Quand la marge se fige : à la clôture prestation, clôture projet, jamais (toujours recalculée) ?</li>
-    <li>P1/P2/P3 sont-ils des états ou une priorité ? (Boond : colonnes Kanban = états.)</li>
-    <li>CreateNeed standalone part du Contact : le Contact est-il obligatoire pour tout besoin, y compris créé depuis Société ?</li>
-    <li>Le Projet créé depuis un Candidat (menu + existe) est-il un trou Boond à fermer pour Ava ?</li>
-  </ol>
+  <h2>16. Questions métier</h2>
+  <p class="lead">Le détail vivant est dans l’onglet <strong>Questions</strong> (réponses Ahmed, bouton Modifier pour la direction).</p>
+  <p>Déjà tranché : Personne + deux profils · Besoin 1→N Projets · pas de projet auto depuis « retenu » · TJM/coût contractuels figés sur la Prestation.</p>
 </article>
 
 <article class="spec-sec" id="s17">
@@ -761,7 +758,7 @@
       <h3>Noyau V1</h3>
       <ul>
         <li>Société, Contact, Action (3 types)</li>
-        <li>Candidat, Ressource (sans fusionner les tables)</li>
+        <li>Personne + CandidatProfile + RessourceProfile (pas de fusion des profils)</li>
         <li>Besoin, Positionnement</li>
         <li>Projet, Prestation</li>
         <li>Opérations de la section 6 hors temps / achat</li>
@@ -790,7 +787,7 @@
   <table>
     <thead><tr><th>Risque</th><th>Si on le commet</th><th>Parade</th></tr></thead>
     <tbody>
-      <tr><td>Une table Personne trop tôt, ou fusion Candidat/Ressource</td><td>Les temps n’ont plus de sens ; I4 meurt</td><td>Deux tables V1 ; conversion explicite</td></tr>
+      <tr><td>Fusionner Candidat et Ressource en une seule table</td><td>I4 meurt ; les temps n’ont plus de sens</td><td>Personne commune + deux profils. Seul RessourceProfile a des Prestations.</td></tr>
       <tr><td>Table Fournisseur</td><td>Double vérité C1/C5</td><td>I8</td></tr>
       <tr><td>Table Planning / Marge</td><td>Écart avec les prestations</td><td>Vues</td></tr>
       <tr><td>CRUD status à la place des opérations</td><td>On peut mettre retenu sur besoin clos</td><td>Commandes nomméés + I17</td></tr>
@@ -802,6 +799,18 @@
   </table>
 </article>
 
+  </section>
+
+
+  <section class="view" id="view-questions" hidden>
+    <h2>Questions métier</h2>
+    <p class="lead">Réponses d’Ahmed, à faire relire par la direction. Chaque carte a un bouton <strong>Modifier</strong>. Les changements restent dans ce navigateur ; pour les figer dans le hub public, renvoyer le JSON.</p>
+    <div class="rowbtns" style="margin-bottom:16px">
+      <button type="button" id="q-copy">Copier les réponses</button>
+      <button type="button" id="q-dl">Télécharger JSON</button>
+    </div>
+    <p class="note" id="q-flash" hidden></p>
+    <div id="q-list"></div>
   </section>
 
   <section class="view" id="view-audit" hidden>
@@ -2055,6 +2064,136 @@ function bindSpecToc(){
   };
 }
 
+
+const Q_STORE = "ava-spec-answers-v1";
+const QUESTIONS_DEFAULT = [
+  { id: "q1", title: "Candidat et Ressource : une Personne commune ?",
+    question: "Candidat et Ressource partagent-ils une identité Personne, ou deux tables séparées + copie à la conversion ?",
+    answer: "Personne comme identité centrale, puis CandidatProfile et RessourceProfile. Ça évite de dupliquer nom, email, téléphone, compétences, expériences, documents. La conversion devient l’activation / création du profil Ressource en conservant l’historique Candidat.",
+    by: "Ahmed", status: "decide" },
+  { id: "q2", title: "Un Besoin peut-il ouvrir plusieurs Projets ?",
+    question: "Cardinalité Besoin → Projet : 1–1 ou 1–N ?",
+    answer: "Oui, potentiellement. Cardinalité Besoin 1 → N Projets, même si dans 90 % des cas il n’y en aura qu’un. Un besoin peut évoluer en plusieurs lots, missions ou démarrages distincts. Figer 1–1 maintenant risque de bloquer plus tard.",
+    by: "Ahmed", status: "decide" },
+  { id: "q3", title: "Positionnement retenu → Projet automatique ?",
+    question: "Un positionnement « retenu » doit-il créer le projet tout seul ?",
+    answer: "Non. Garder une action métier explicite : créer le projet. « Retenu » signifie que le staffing est validé, pas que tous les paramètres contractuels du projet sont prêts. Ça permet aussi une validation humaine (dates, client, conditions commerciales).",
+    by: "Ahmed", status: "decide" },
+  { id: "q4", title: "Qui porte le TJM vendu et le coût ?",
+    question: "Fiche ressource, ligne de matching, ou prestation ?",
+    answer: "La Prestation porte les valeurs contractuelles réelles. La Ressource peut avoir un coût de référence et éventuellement un TJM indicatif. Le Positionnement peut porter le TJM négocié / proposé. Dès que la mission existe, la Prestation fige le TJM vendu et le coût appliqué à cette mission.",
+    by: "Ahmed", status: "decide" },
+  { id: "q5", title: "Quand la marge se fige ?",
+    question: "À la clôture prestation, à la clôture projet, ou toujours recalculée ?",
+    answer: "", by: "", status: "open" },
+  { id: "q6", title: "Plusieurs Prestations simultanées pour une Ressource ?",
+    question: "Une ressource peut-elle être sur plusieurs projets / prestations en même temps ?",
+    answer: "", by: "", status: "open" },
+  { id: "q7", title: "Une Prestation peut-elle changer de Ressource ?",
+    question: "Réaffectation sur la même ligne, ou clôture + nouvelle prestation ?",
+    answer: "", by: "", status: "open" },
+  { id: "q8", title: "Ressource interne vs externe",
+    question: "Champ type, ou deux sous-types ? L’externe est-elle liée à une Société fournisseur ?",
+    answer: "", by: "", status: "open" },
+  { id: "q9", title: "Que conserve la conversion Candidat → Ressource ?",
+    question: "Identité, DT, salaire souhaité ? Le profil Candidat reste-t-il lisible ?",
+    answer: "Lié à Q1 : l’identité reste sur Personne, l’historique Candidat est conservé. Le détail de copie DT / salaire reste à préciser.",
+    by: "Ahmed", status: "open" },
+  { id: "q10", title: "P1 / P2 / P3 : état ou priorité ?",
+    question: "Dans Boond ce sont des colonnes Kanban (états). Pour Ava : champ priorité + états courts ?",
+    answer: "", by: "", status: "open" },
+  { id: "q11", title: "CreateNeed standalone : Contact obligatoire ?",
+    question: "Même depuis une fiche Société, le besoin doit-il toujours partir d’un Contact ?",
+    answer: "", by: "", status: "open" },
+  { id: "q12", title: "Projet créé depuis un Candidat",
+    question: "Le menu + candidat propose Projet. Trou Boond à fermer pour Ava, ou porte réelle ?",
+    answer: "", by: "", status: "open" }
+];
+
+function loadQuestions(){
+  try {
+    const raw = localStorage.getItem(Q_STORE);
+    if (!raw) return QUESTIONS_DEFAULT.map(q => ({...q}));
+    const saved = JSON.parse(raw);
+    return QUESTIONS_DEFAULT.map(d => {
+      const s = saved.find(x => x.id === d.id);
+      return s ? { ...d, answer: s.answer, by: s.by || d.by, status: s.status || d.status } : { ...d };
+    });
+  } catch (e) { return QUESTIONS_DEFAULT.map(q => ({...q})); }
+}
+function saveQuestions(list){
+  localStorage.setItem(Q_STORE, JSON.stringify(list.map(q => ({ id: q.id, answer: q.answer, by: q.by, status: q.status }))));
+}
+let QUESTIONS = loadQuestions();
+let Q_EDIT = null;
+
+function qBadge(q){
+  if (Q_EDIT === q.id) return '<span class="tag edit">Modification</span>';
+  if (q.status === "decide" && q.answer) return '<span class="tag ok">Décidé</span>';
+  if (q.answer) return '<span class="tag edit">Répondu</span>';
+  return '<span class="tag warn">À trancher</span>';
+}
+function renderQuestions(){
+  const box = document.getElementById("q-list");
+  if (!box) return;
+  box.innerHTML = QUESTIONS.map((q, i) => {
+    const editing = Q_EDIT === q.id;
+    const body = editing
+      ? `<textarea data-q-text="${q.id}">${q.answer.replace(/</g,"&lt;")}</textarea>
+         <div class="rowbtns">
+           <button type="button" class="create-btn primary" data-q-save="${q.id}">Enregistrer</button>
+           <button type="button" data-q-cancel="${q.id}">Annuler</button>
+         </div>`
+      : `<p class="q-answer${q.answer ? "" : " empty"}">${q.answer ? q.answer.replace(/</g,"&lt;").replace(/\n/g,"<br>") : "Pas encore de réponse. Modifier pour écrire."}</p>
+         <div class="rowbtns"><button type="button" data-q-edit="${q.id}">Modifier</button></div>`;
+    return `<article class="q-card">
+      <h3>${i+1}. ${q.title} ${qBadge(q)}</h3>
+      <p class="q-meta">${q.question}${q.by ? " · Auteur : " + q.by : ""}</p>
+      ${body}
+    </article>`;
+  }).join("");
+}
+function bindQuestions(){
+  const root = document.getElementById("view-questions");
+  if (!root || root.dataset.bound) return;
+  root.dataset.bound = "1";
+  root.addEventListener("click", e => {
+    const ed = e.target.closest("[data-q-edit]");
+    if (ed) { Q_EDIT = ed.dataset.qEdit; renderQuestions(); return; }
+    const ca = e.target.closest("[data-q-cancel]");
+    if (ca) { Q_EDIT = null; QUESTIONS = loadQuestions(); renderQuestions(); return; }
+    const sv = e.target.closest("[data-q-save]");
+    if (sv) {
+      const id = sv.dataset.qSave;
+      const ta = root.querySelector('[data-q-text="'+id+'"]');
+      const q = QUESTIONS.find(x => x.id === id);
+      q.answer = ta.value.trim();
+      q.by = q.by || "Direction";
+      q.status = q.answer ? "decide" : "open";
+      saveQuestions(QUESTIONS);
+      Q_EDIT = null;
+      renderQuestions();
+      const f = document.getElementById("q-flash");
+      f.hidden = false; f.textContent = "Enregistré dans ce navigateur. Pour figer sur le lien public, copie le JSON et envoie-le.";
+      return;
+    }
+  });
+  document.getElementById("q-copy").onclick = () => {
+    const payload = JSON.stringify(QUESTIONS, null, 2);
+    navigator.clipboard.writeText(payload).then(() => {
+      const f = document.getElementById("q-flash");
+      f.hidden = false; f.textContent = "JSON copié. Envoie-le pour figer les réponses dans le hub.";
+    });
+  };
+  document.getElementById("q-dl").onclick = () => {
+    const blob = new Blob([JSON.stringify(QUESTIONS, null, 2)], {type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ava-reponses-metier.json";
+    a.click();
+  };
+}
+
 function bindSim(){
   document.getElementById("view-simulateur").addEventListener("click", e => {
     const okb = e.target.closest("[data-scen-ok]");
@@ -2079,13 +2218,14 @@ function bindSim(){
 }
 
 function showView(name){
-  ["metier","simulateur","spec","audit"].forEach(v => {
+  ["metier","simulateur","spec","questions","audit"].forEach(v => {
     document.getElementById("view-"+v).hidden = v !== name;
     document.querySelector('#hub [data-view="'+v+'"]').setAttribute("aria-pressed", v===name ? "true" : "false");
   });
   if (name === "metier" && typeof draw === "function") draw();
   if (name === "simulateur") { renderScenarios(); renderSim(); }
   if (name === "spec") bindSpecToc();
+  if (name === "questions") { bindQuestions(); renderQuestions(); }
   location.hash = name;
 }
 document.getElementById("hub").addEventListener("click", e => {
@@ -2094,7 +2234,7 @@ document.getElementById("hub").addEventListener("click", e => {
 });
 bindSim();
 const start = (location.hash || "#metier").slice(1);
-showView(["metier","simulateur","spec","audit"].includes(start) ? start : "metier");
+showView(["metier","simulateur","spec","questions","audit"].includes(start) ? start : "metier");
 </script>
 </body>
 </html>
