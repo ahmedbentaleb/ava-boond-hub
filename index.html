@@ -239,8 +239,9 @@
       padding: 5px 12px; border-radius: 999px; cursor: pointer; font: inherit; font-size: 13px;
     }
     .hub-nested button[aria-pressed="true"] { background: #2a2a2a; color: var(--text); border-color: #1E5B3A; }
-    .hub-doc { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px;
-      padding-top: 12px; border-top: 1px solid var(--line); }
+    .hub-row { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+    .hub-row .hub-product { margin-bottom: 0; }
+    .hub-doc { display: flex; gap: 8px; align-items: center; margin-left: auto; }
     .hub-doc .lab { font-size: 11px; letter-spacing: .08em; color: var(--muted); font-weight: 600; margin-right: 2px; }
     .hub-doc a { text-decoration: none; font: inherit; font-size: 13px; font-weight: 600;
       padding: 6px 14px; border-radius: 999px; }
@@ -450,15 +451,16 @@
   <h1>Ava Manager</h1>
   <p class="lead">Un lien, deux produits. Ava Manager = builder du métier cible. Boond Manager = reverse engineering de l’existant.</p>
   <div class="hub-wrap" id="hub">
-    <div class="hub-product" id="hub-product"></div>
+    <div class="hub-row">
+      <div class="hub-product" id="hub-product"></div>
+      <div class="hub-doc">
+        <span class="lab">CAHIER DES CHARGES</span>
+        <a class="pri" href="cahier.html">Ouvrir</a>
+        <a class="sec" href="CAHIER_RELECTURE_METIER.pdf" download>PDF à imprimer</a>
+      </div>
+    </div>
     <div class="hub-sub" id="hub-sub"></div>
     <div class="hub-nested" id="hub-nested"></div>
-    <div class="hub-doc">
-      <span class="lab">CAHIER DE RELECTURE MÉTIER</span>
-      <a class="pri" href="cahier.html">Ouvrir</a>
-      <a class="sec" href="CAHIER_RELECTURE_METIER.pdf" download>PDF à imprimer</a>
-      <span class="hint">15 histoires, 61 réglages, 15 interdits — à faire relire par le métier</span>
-    </div>
   </div>
 
   <section class="view" id="view-ava-metier" hidden></section>
