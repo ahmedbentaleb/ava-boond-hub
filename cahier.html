@@ -1,0 +1,984 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<title>Cahier de relecture métier — Ava Manager</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --violet:#430A4B; --vert:#AEBF38; --vert-clair:#CDD749;
+  --encre:#212529; --gris:#5D5D5D; --gris-2:#8A8A8A; --trait:#E9E9E9; --fond:#F3F3F3;
+  --critique:#A93226; --eleve:#C75B12; --moyen:#D9A21B; --bon:#1E5B3A;
+  --sora:'Sora',system-ui,'Segoe UI',sans-serif; --mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{margin:0;background:#fff;color:var(--encre);font-family:var(--sora);font-size:10.5pt;line-height:1.5}
+
+/* ---------- barre d'action, jamais imprimée ---------- */
+.actions{position:sticky;top:0;z-index:9;background:var(--violet);color:#fff;padding:10px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.actions b{font-weight:700;letter-spacing:.04em;font-size:12px}
+.actions .sep{flex:1}
+.actions button,.actions a{font-family:var(--sora);font-size:12px;font-weight:600;border:1px solid rgba(255,255,255,.55);background:transparent;color:#fff;border-radius:4px;padding:7px 13px;cursor:pointer;text-decoration:none}
+.actions button:hover,.actions a:hover{background:rgba(255,255,255,.12)}
+@media print{.actions{display:none}}
+
+.page{max-width:19cm;margin:0 auto;padding:0 1.2cm 2cm}
+
+/* ---------- couverture ---------- */
+.cover{padding:1.4cm 0 0;page-break-after:always}
+.cover img{height:34px;display:block}
+.cover .bande{margin:1.6cm 0 0;background:var(--vert);padding:1.1cm 1cm}
+.cover h1{margin:0;font-size:30pt;line-height:1.1;font-weight:800;color:var(--violet);letter-spacing:-.01em}
+.cover .st{margin:.35cm 0 0;font-size:13pt;font-weight:600;color:var(--violet)}
+.cover .meta{margin-top:1.1cm;font-family:var(--mono);font-size:9pt;color:var(--gris)}
+.cover .intro{margin-top:1.2cm;font-size:12pt;line-height:1.6;max-width:15cm}
+.cover .intro strong{color:var(--violet)}
+
+/* ---------- titres ---------- */
+h1{font-size:19pt;font-weight:800;color:var(--violet);margin:0 0 .35cm;letter-spacing:-.01em;line-height:1.2}
+h1.partie{page-break-before:always;border-bottom:3px solid var(--vert);padding-bottom:.18cm;margin-top:.4cm}
+h2{font-size:13pt;font-weight:700;color:var(--violet);margin:.75cm 0 .22cm;page-break-after:avoid}
+h3{font-size:11pt;font-weight:700;color:var(--violet);margin:.6cm 0 .18cm;page-break-after:avoid}
+h3+p,h2+p,h3+table,h2+table{page-break-before:avoid}
+p{margin:.22cm 0}
+hr{border:0;border-top:1px solid var(--trait);margin:.6cm 0}
+strong{color:var(--violet);font-weight:700}
+a{color:var(--violet)}
+code{font-family:var(--mono);font-size:9pt;background:var(--fond);padding:1px 4px;border-radius:2px;color:var(--gris)}
+
+/* ---------- tableaux ---------- */
+table{width:100%;border-collapse:collapse;margin:.3cm 0 .5cm;font-size:9.5pt;page-break-inside:auto}
+thead{display:table-header-group}
+tr{page-break-inside:avoid}
+th{text-align:left;background:var(--vert);color:var(--violet);font-weight:700;font-size:8.5pt;letter-spacing:.04em;padding:5px 8px;border:1px solid #9EAE30}
+td{padding:5px 8px;border:1px solid var(--trait);vertical-align:top}
+tbody tr:nth-child(even) td{background:#FAFAFA}
+td.c-mk{white-space:nowrap;text-align:center}
+
+/* ---------- marqueurs ---------- */
+.mk{display:inline-block;font-size:7.5pt;font-weight:700;letter-spacing:.06em;padding:2px 6px;border-radius:2px;white-space:nowrap}
+.mk-ess{background:var(--vert);color:var(--violet)}
+.mk-tec{border:1px solid var(--gris-2);color:var(--gris)}
+.mk-lot{border:1px solid var(--moyen);color:var(--eleve);font-size:7pt;padding:1px 5px}
+.inl{font-size:7.5pt;font-weight:700;letter-spacing:.06em;padding:1px 5px;border-radius:2px;white-space:nowrap}
+.inl-stop{border:1px solid var(--critique);color:var(--critique)}
+.inl-att{border:1px solid var(--eleve);color:var(--eleve)}
+.inl-cle{background:var(--vert);color:var(--violet)}
+.inl-ok{border:1px solid var(--bon);color:var(--bon)}
+.bloc{border-left:3px solid var(--violet);background:var(--fond);padding:.25cm .35cm;margin:.35cm 0;page-break-inside:avoid}
+.bloc-stop{border-left-color:var(--critique)}
+.bloc-att{border-left-color:var(--eleve)}
+.bloc-cle{border-left-color:var(--vert);background:#F7F9E8}
+td.m-stop{border-left:3px solid var(--critique)}
+td.m-att{border-left:3px solid var(--eleve)}
+td.m-cle{border-left:3px solid var(--vert)}
+td.m-ok{border-left:3px solid var(--bon)}
+
+/* ---------- le schéma du parcours ---------- */
+pre.schema{font-family:var(--mono);font-size:8.5pt;line-height:1.45;color:var(--violet);background:var(--fond);border-left:3px solid var(--vert);padding:.35cm .45cm;margin:.35cm 0;overflow:visible;white-space:pre;page-break-inside:avoid}
+pre.schema code{background:none;padding:0;color:inherit;font-size:inherit}
+
+/* ---------- ce que le lecteur écrit ---------- */
+.ecrire{page-break-inside:avoid;margin:.3cm 0 .75cm}
+.ecrire-q{display:block;font-size:9.5pt;font-style:italic;color:var(--gris);margin-bottom:.15cm}
+.ecrire::after{content:"";display:block;height:1.35cm;border-bottom:1px solid var(--trait);
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent .44cm,var(--trait) .44cm,var(--trait) calc(.44cm + 1px));}
+
+/* ---------- histoires ---------- */
+h3[id^="h"]{border-top:1px solid var(--trait);padding-top:.35cm}
+
+blockquote{margin:.35cm 0;padding:.25cm .4cm;border-left:3px solid var(--vert);background:#F7F9E8}
+blockquote p{margin:.1cm 0}
+ol,ul{margin:.22cm 0;padding-left:1.1em}
+li{margin:.1cm 0}
+
+@page{size:A4;margin:1.5cm 1.2cm 1.6cm}
+@media print{
+  .page{max-width:none;padding:0}
+  body{font-size:9.8pt}
+  h1{font-size:17pt} h2{font-size:12pt} h3{font-size:10.5pt}
+  table{font-size:8.8pt}
+}
+</style>
+</head><body>
+
+<div class="actions">
+  <b>CAHIER DE RELECTURE MÉTIER — AVA MANAGER</b>
+  <span class="sep"></span>
+  <a href="CAHIER_RELECTURE_METIER.pdf" download>Télécharger le PDF</a>
+  <button type="button" onclick="window.print()">Imprimer</button>
+</div>
+
+<div class="page">
+  <section class="cover">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWwAAABeCAYAAAAHWi6rAAAWfmNhQlgAABZ+anVtYgAAAB5qdW1kYzJwYQARABCAAACqADibcQNjMnBhAAAAFlhqdW1iAAAAR2p1bWRjMm1hABEAEIAAAKoAOJtxA3VybjpjMnBhOmRhZDMwODczLWY3ZTgtNGYzMy1iMjMzLWVjNDNjYzQ1ZTM3MwAAAAOTanVtYgAAAClqdW1kYzJhcwARABCAAACqADibcQNjMnBhLmFzc2VydGlvbnMAAAAAuGp1bWIAAABEanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5pbmdyZWRpZW50LnYzAAAAABhjMnNokX9LZYQoYYupkQV5bct6JwAAAGxjYm9yo2lkYzpmb3JtYXRpaW1hZ2UvcG5namluc3RhbmNlSUR4LHhtcDppaWQ6MzU4MzI1NjMtZDZlYy00ZDI5LTg1MGQtYTIwZjE4MWNlN2YybHJlbGF0aW9uc2hpcGhwYXJlbnRPZgAAAeJqdW1iAAAAQWp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuYWN0aW9ucy52MgAAAAAYYzJzaDWR9Q6FuFpC96v33W9bWV4AAAGZY2JvcqJnYWN0aW9uc4KiZmFjdGlvbmtjMnBhLm9wZW5lZGpwYXJhbWV0ZXJzoWtpbmdyZWRpZW50c4GiY3VybHgtc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5pbmdyZWRpZW50LnYzZGhhc2hYIBy/fADYi3I/7ty6bOumZX6gkIiYshf4b9bJceBmya4epGZhY3Rpb254HWNvbS5hbnRocm9waWMuY2xhdWRlLnByb3ZpZGVkanBhcmFtZXRlcnOheB9jb20uYW50aHJvcGljLm9yaWdpbi1jb25maWRlbmNlZ3Vua25vd25rZGVzY3JpcHRpb254ZkNsYXVkZSBwcm92aWRlZCB0aGlzIGZpbGUgYXQgdGhlIHJlcXVlc3Qgb2YgYSB1c2VyIGFuZCBtYXkgaGF2ZSBjcmVhdGVkIG9yIG1vZGlmaWVkIHRoZSBmaWxlIGNvbnRlbnRzLm1zb2Z0d2FyZUFnZW50oWRuYW1lZkNsYXVkZXJhbGxBY3Rpb25zSW5jbHVkZWT1AAAAyGp1bWIAAABAanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5oYXNoLmRhdGEAAAAAGGMyc2gEGo9dp1FD/FdASuI3hBxGAAAAgGNib3KlY2FsZ2ZzaGEyNTZjcGFkTQAAAAAAAAAAAAAAAABkaGFzaFggWEJPxpPC42yJNOURq+/FAVPKuKfig6GpvPaTu9NwQtVkbmFtZW5qdW1iZiBtYW5pZmVzdGpleGNsdXNpb25zgaJlc3RhcnQYIWZsZW5ndGgZFooAAAI+anVtYgAAACdqdW1kYzJjbAARABCAAACqADibcQNjMnBhLmNsYWltLnYyAAAAAg9jYm9ypWNhbGdmc2hhMjU2aXNpZ25hdHVyZXhNc2VsZiNqdW1iZj0vYzJwYS91cm46YzJwYTpkYWQzMDg3My1mN2U4LTRmMzMtYjIzMy1lYzQzY2M0NWUzNzMvYzJwYS5zaWduYXR1cmVqaW5zdGFuY2VJRHgseG1wOmlpZDowNDdmODM4ZC1iYTY2LTRlM2QtYmEyZS02MWM0MzVmYTYyN2FyY3JlYXRlZF9hc3NlcnRpb25zg6JjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggHL98ANiLcj/u3Lps66ZlfqCQiJiyF/hv1slx4GbJrh6iY3VybHgqc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5hY3Rpb25zLnYyZGhhc2hYIPoHadYMQVFOJD3Xk3NhWV0xEVNhH1gvsKfWz+4pyOHKomN1cmx4KXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaGFzaC5kYXRhZGhhc2hYIKJ1+QSZe4YyY520rtN596tBqyMvLiuoaxDWWqRFTM+TdGNsYWltX2dlbmVyYXRvcl9pbmZvo2RuYW1lb0FudGhyb3BpYyBGaWxlc2d2ZXJzaW9uZTEuMC4wa3NwZWNWZXJzaW9uZTIuNC4wAAAQOGp1bWIAAAAoanVtZGMyY3MAEQAQgAAAqgA4m3EDYzJwYS5zaWduYXR1cmUAAAAQCGNib3LShFkCEqIBJhghWQIKMIICBjCCAY2gAwIBAgIUQOWgCu7COdC+uIP6BkIFPWdVEwAwCgYIKoZIzj0EAwMwSTEXMBUGA1UEChMOQW50aHJvcGljLCBQQkMxLjAsBgNVBAMTJUFudGhyb3BpYyBDb250ZW50IENyZWRlbnRpYWxzIFJvb3QgQ0EwHhcNMjYwODA3MTg0MzU2WhcNMjgwODA2MTk0MzU2WjBEMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEpMCcGA1UEAxMgQW50aHJvcGljIENsYXVkZSBDb250ZW50IFNpZ25pbmcwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASYegpry1AYBRTVNL1CpTlbROnY3dey+UrsF9C3phYrATN3ZHf93Mo8RQN0KOUuOn19P4oWNFWe5n2/She9N7eTo1gwVjAOBgNVHQ8BAf8EBAMCB4AwFQYDVR0lBA4wDAYKKwYBBAGD6F4CATAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFM5R4gSBTmRbI/jjxM+aPpzB11zCMAoGCCqGSM49BAMDA2cAMGQCMDFzHRSeAXrSy1WOzkbhPZ6Km2wGTmZ/2gK18k8BQGXyqz88Rdrz6CTX9flAnYNVxgIwcF9c3fVhqmJKpi+UhasNUMko69cyX6STPfta3Q8EjyzDjzoyrol46FP6VFHhvUcJoWNwYWRZDZ4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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" alt="Avaliance">
+    <div class="bande">
+      <h1>Cahier de relecture métier</h1>
+      <div class="st">Ava Manager — dites-nous où nous nous sommes trompés</div>
+    </div>
+    <div class="meta">À l'attention des directeurs d'Avaliance · 17 septembre 2026 · version 1</div>
+    <div class="intro">
+      <p>Quinze histoires tirées de votre quotidien, soixante et un réglages et quinze interdits.
+      <strong>Aucune table, aucun code, aucun écran.</strong></p>
+      <p>Vous n'écrivez que là où c'est faux — <strong>le silence vaut accord</strong>.</p>
+    </div>
+  </section>
+
+<h2>Ce qu'on vous demande</h2>
+<p>Nous avons écrit comment Ava Manager doit se comporter. <strong>Avant d'écrire la moindre ligne de logiciel</strong>, nous voulons que vous nous disiez où nous nous sommes trompés.</p>
+<p>Ce cahier ne demande aucune connaissance technique. Il ne contient ni table, ni code, ni écran. Il contient <strong>ce qui va se passer</strong> quand votre équipe travaillera, et <strong>ce que le logiciel refusera</strong>.</p>
+<h3>Comment y répondre</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vous n'avez rien à écrire là où vous êtes d'accord.</strong></td>
+<td>Chaque ligne porte déjà la réponse retenue aujourd'hui. Le silence vaut accord.</td>
+</tr>
+<tr>
+<td><strong>Là où c'est faux, écrivez-le.</strong></td>
+<td>Une phrase suffit : « non, chez nous c'est… ». Le numéro de la ligne nous suffit à retrouver.</td>
+</tr>
+<tr>
+<td class="m-cle"><strong>Les lignes marquées ESSENTIEL</strong></td>
+<td>Ce sont celles qui changent votre façon de travailler ou vos chiffres. Si vous ne devez en lire qu'une partie, lisez celles-là : <strong>37 lignes</strong>.</td>
+</tr>
+<tr>
+<td><span class="mk mk-tec">technique</span> Les lignes marquées ainsi</td>
+<td>Choix internes, affichage, mécanique. Nous avons tranché ; regardez-les seulement si le cœur vous en dit : <strong>24 lignes</strong>.</td>
+</tr>
+<tr>
+<td class="m-stop"><strong>La partie 4 n'est pas négociable</strong></td>
+<td>Ce sont les quinze choses qu'Ava Manager rendra <strong>impossibles</strong>. Elles ne se règlent pas. Si l'une vous gêne, dites-le : ce serait une décision lourde, pas un réglage.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Trois façons de relire, par ordre d'efficacité :</strong></p>
+<ol>
+<li><strong>Essayez le logiciel</strong> — un simulateur jouable existe. Vous y prenez un rôle, vous faites les gestes de vos équipes, et chaque refus vous explique sa raison. C'est là qu'on voit une erreur en trente secondes. <em>(L'adresse est en partie 5.)</em></li>
+<li><strong>Lisez les 15 histoires</strong> de la partie 2. Elles sont concrètes, avec des noms et des chiffres. Une histoire qui vous fait dire « ça ne se passe pas comme ça » vaut dix pages de règles.</li>
+<li><strong>Parcourez les réglages</strong> de la partie 3.</li>
+</ol>
+<hr />
+<h1 class="partie">Partie 1 — Ce que fait Ava Manager, en une page</h1>
+<p>Alpha, une entreprise cliente, cherche quelqu'un pour une mission. Voici le trajet, du premier appel à la facture de fin.</p>
+<p><code>Alpha exprime un besoin
+        │
+        ▼
+Le commercial enregistre LE BESOIN         ← la demande du client
+        │
+        ▼
+L'équipe cherche dans le vivier ou dehors
+        │
+        ▼
+On propose une personne : LE POSITIONNEMENT ← « cette personne pour ce besoin »
+        │
+        ▼
+Alpha répond : retenu, ou refusé
+        │  (retenu)
+        ▼
+On crée LE PROJET                          ← le dossier avec le client
+        │
+        ▼
+On crée LA PRESTATION                      ← qui travaille, quand, à quelles conditions
+        │
+        ▼
+La personne saisit son temps · on suit la charge
+        │
+        ▼
+On clôture la prestation, puis le projet   ← la marge est figée à cet instant</code></p>
+<h2>Les sept mots qui comptent</h2>
+<table>
+<thead>
+<tr>
+<th>Mot</th>
+<th>Ce que c'est</th>
+<th>À ne pas confondre avec</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Société</strong></td>
+<td>l'entreprise cliente : Alpha</td>
+<td>son contact</td>
+</tr>
+<tr>
+<td><strong>Contact</strong></td>
+<td>une personne chez Alpha : Alice</td>
+<td>un candidat — ce sont deux fichiers séparés</td>
+</tr>
+<tr>
+<td><strong>Besoin</strong></td>
+<td>ce qu'Alpha demande. Il peut viser <strong>plusieurs postes</strong></td>
+<td>le projet : un besoin peut n'aboutir à rien</td>
+</tr>
+<tr>
+<td><strong>Positionnement</strong></td>
+<td>la proposition d'<strong>une</strong> personne sur <strong>un</strong> besoin</td>
+<td>la mission : rien n'est encore signé</td>
+</tr>
+<tr>
+<td><strong>Projet</strong></td>
+<td>le dossier d'exécution avec Alpha</td>
+<td>la prestation : un projet peut en porter plusieurs</td>
+</tr>
+<tr>
+<td><strong>Prestation</strong></td>
+<td>la mission d'<strong>une</strong> personne sur un projet, avec ses dates, sa charge et ses conditions économiques</td>
+<td>le projet</td>
+</tr>
+<tr>
+<td><strong>Candidat / Ressource</strong></td>
+<td>deux <strong>profils</strong> d'une même personne. Un candidat peut être présenté au client ; il ne peut <strong>pas</strong> travailler ni saisir de temps tant que les RH ne l'ont pas passé en ressource</td>
+<td>deux fiches distinctes — c'est la <strong>même personne</strong>, son historique est conservé</td>
+</tr>
+</tbody>
+</table>
+<p class="bloc bloc-cle"><strong>Le principe qui commande tout le reste.</strong> Chaque fois qu'une règle pouvait se décider dans un sens ou dans l'autre, nous en avons fait <strong>un réglage</strong>, pas du code. Une autre société qu'Avaliance pourra trancher autrement sans refaire le logiciel. C'est la partie 3 de ce cahier. Ce qui n'est pas réglable est en partie 4, et c'est court : quinze lignes.</p>
+<hr />
+<h1 class="partie">Partie 2 — Quinze histoires. Est-ce que ça se passe comme ça chez vous ?</h1>
+<p>Chaque histoire décrit un cas réel, du début à la fin, avec ce qu'Ava Manager fera. <strong>Lisez la fin de chaque histoire</strong> : c'est là qu'est la règle.</p>
+<hr />
+<h3>H1 · Placer quelqu'un qui travaille déjà chez nous</h3>
+<p>Martin, commercial, enregistre un besoin pour Alpha. Karim propose Jean, qui est salarié d'Avaliance. Alpha répond qu'elle retient Jean. Karim crée le projet, puis la mission de Jean : du 1er au 31 janvier, à 60 %. Jean saisit 0,6 jour le 4 janvier.</p>
+<p><strong>Ce que fait Ava :</strong> dès que Karim propose Jean, le besoin passe tout seul de « à pourvoir » à « en recherche » — personne n'a de bouton à penser à cliquer. Le projet, lui, <strong>ne se crée jamais tout seul</strong> : Karim le crée, en confirmant les informations.</p>
+<p class="ecrire"><span class="ecrire-q">Vrai chez vous ?</span></p>
+<hr />
+<h3>H2 · Un candidat est retenu, puis embauché</h3>
+<p>Sophie, aux RH, crée la fiche candidate d'Amina. Martin ouvre un besoin chez Alpha. Sophie propose Amina. Alpha la retient. Sophie transforme alors Amina en ressource. Karim crée le projet et la mission.</p>
+<p><strong>Ce que fait Ava :</strong> la transformation <strong>n'efface rien et ne recopie rien</strong> — Amina reste une seule personne, avec son dossier de candidate et l'historique de sa présentation chez Alpha. Et comme le client a déjà dit oui, <strong>on ne la re-propose pas</strong> : créer la mission suffit.</p>
+<p class="ecrire"><span class="ecrire-q">Vrai chez vous ?</span></p>
+<hr />
+<h3>H3 · Un besoin, deux projets</h3>
+<p>Martin ouvre un besoin chez Alpha pour <strong>deux postes</strong>. Karim propose Sara, Alpha la retient. Karim crée un premier projet depuis ce besoin, puis un second depuis le même besoin.</p>
+<p><strong>Ce que fait Ava :</strong> un besoin peut ouvrir <strong>autant de projets que nécessaire</strong>. Créer un projet ne crée aucune mission automatiquement : un projet peut rester vide un moment, c'est normal avant le chiffrage.</p>
+<p><em>Vrai chez vous ? Ou un besoin ne doit-il ouvrir qu'un seul projet ?</em> → aussi ligne <strong>2</strong> de la partie 3</p>
+<hr />
+<h3>H4 · Sara à 60 % ici et 40 % là <span class="inl inl-cle">À RETENIR</span></h3>
+<p>Sara travaille à 60 % sur un projet. Karim l'affecte à 40 % sur un second projet, aux mêmes dates.</p>
+<p><strong>Ce que fait Ava :</strong> 60 + 40 = 100 % chaque jour, aucune alerte. Et <strong>Sara compte pour deux postes pourvus</strong>, pas pour une personne : on compte les missions signées, pas les têtes.</p>
+<p class="bloc bloc-att"><strong>Nous avons hésité et corrigé le 17 septembre au soir.</strong> Un besoin de deux postes ne devient « pourvu » que lorsque <strong>toutes</strong> ses missions sont signées — pas à la première. Si vous voulez pouvoir déclarer un besoin pourvu plus tôt, c'est réglable : ligne <strong>5</strong> de la partie 3.</p>
+<p class="ecrire"><span class="ecrire-q">Une personne à 60 % + 40 %, c'est deux postes ou une personne ?</span></p>
+<hr />
+<h3>H5 · Quelqu'un est surchargé</h3>
+<p>Sara est déjà à 100 % en mars. Karim l'affecte à 10 % de plus, du 15 au 19 mars.</p>
+<p><strong>Ce que fait Ava :</strong> il <strong>accepte</strong> et <strong>signale</strong> 110 % sur ces cinq jours seulement. Il ne refuse pas. Le calcul se fait jour par jour, sur le calendrier de l'agence — donc les week-ends et les fériés ne comptent pas.</p>
+<p class="bloc bloc-att">Le refus est possible, mais ce n'est pas notre réglage par défaut : ligne <strong>16</strong>.</p>
+<p class="ecrire"><span class="ecrire-q">Alerte, ou refus pur et simple ?</span></p>
+<hr />
+<h3>H6 · Deux missions qui ne se chevauchent pas</h3>
+<p>Paul travaille à 60 % du 1er au 9 avril, puis à 50 % du 12 au 30 avril.</p>
+<p><strong>Ce que fait Ava :</strong> aucune alerte. 60 % en début de mois et 50 % en fin de mois ne font jamais 110 % — la charge se calcule <strong>au jour</strong>, jamais en additionnant des pourcentages d'un mois.</p>
+<p class="ecrire"><span class="ecrire-q">Vrai ?</span></p>
+<hr />
+<h3>H7 · Remplacer quelqu'un en cours de mission <span class="inl inl-stop">INTERDIT</span></h3>
+<p>Jean est sur une mission et a déjà saisi du temps. Il faut le remplacer par Paul au 15 janvier.</p>
+<p><strong>Ce que fait Ava :</strong> il <strong>refuse</strong> de changer la personne sur la mission existante. Karim doit clôturer la mission de Jean au 15, puis en créer une nouvelle pour Paul à partir du 16.</p>
+<p><strong>Pourquoi c'est bloqué :</strong> sinon les jours déjà travaillés par Jean deviendraient ceux de Paul. C'est un des quinze interdits (partie 4).</p>
+<p class="ecrire"><span class="ecrire-q">Cette manière de faire vous convient-elle ?</span></p>
+<hr />
+<h3>H8 · Clôturer une mission, puis le projet</h3>
+<p>Une mission est clôturée, une autre est encore ouverte sur le même projet. Karim essaie de clôturer le projet.</p>
+<p><strong>Ce que fait Ava :</strong> il <strong>refuse</strong> tant qu'une mission est ouverte. À la clôture de chaque mission, <strong>la marge est figée</strong> — et si les RH changent plus tard le coût d'un salarié, <strong>la marge déjà figée ne bouge pas</strong>.</p>
+<p class="ecrire"><span class="ecrire-q">Vrai ? Ou faut-il pouvoir clôturer un projet et ses missions d'un seul geste ?* → ligne **14*</span></p>
+<hr />
+<h3>H9 · Un candidat sur une mission <span class="inl inl-stop">INTERDIT</span></h3>
+<p>Karim, qui a tous les droits pour créer des missions, essaie de mettre Mehdi — simple candidat — sur un projet.</p>
+<p><strong>Ce que fait Ava :</strong> il <strong>refuse</strong>, et ce n'est pas une question de droits : la structure même du logiciel ne sait pas rattacher un candidat à une mission. Il faut d'abord que les RH le passent en ressource.</p>
+<p class="ecrire"><span class="ecrire-q">D'accord ?</span></p>
+<hr />
+<h3>H10 · Un droit qu'on n'a pas</h3>
+<p>Sophie est aux RH. Elle essaie de créer une fiche société.</p>
+<p><strong>Ce que fait Ava :</strong> il refuse. Martin, commercial, fait la même chose : ça passe.</p>
+<p class="bloc bloc-att">Un bouton visible n'est jamais une autorisation : c'est la commande qui est contrôlée, pas l'écran.</p>
+<p class="ecrire"><span class="ecrire-q">La répartition RH / commercial vous convient-elle ? Détail en ligne 42.</span></p>
+<hr />
+<h3>H11 · Un besoin sans interlocuteur</h3>
+<p>Alpha appelle, on connaît la demande mais pas encore la personne à qui parler.</p>
+<p><strong>Ce que fait Ava :</strong> le besoin s'enregistre <strong>sans contact</strong>. En revanche, au moment de créer le <strong>projet</strong>, il demandera un contact — un dossier client sans interlocuteur, ça ne tient pas.</p>
+<p class="ecrire"><span class="ecrire-q">Ou faut-il exiger le contact dès le besoin ?* → lignes **1** et **13*</span></p>
+<hr />
+<h3>H12 · Archiver un service du client</h3>
+<p>Martin veut archiver le Service 1 d'Alpha, qui porte encore un besoin actif.</p>
+<p><strong>Ce que fait Ava :</strong> il refuse tant que le besoin est actif. Une fois le besoin fermé, l'archivage passe — et <strong>tout reste consultable</strong> : les anciens besoins, les projets, les missions, les temps. Rien n'est jamais supprimé dans Ava Manager, tout est archivé.</p>
+<p class="ecrire"><span class="ecrire-q">Vrai ?</span></p>
+<hr />
+<h3>H13 · La même commande dans deux agences</h3>
+<p>Martin travaille sur l'agence A. Il crée un besoin chez un client de A : ça passe. Il essaie chez un client de l'agence B : refus.</p>
+<p><strong>Ce que fait Ava :</strong> chaque droit est attaché à un <strong>périmètre</strong>. « Créer un besoin » n'existe jamais tout seul : c'est toujours « créer un besoin <strong>sur l'agence A</strong> ».</p>
+<p class="ecrire"><span class="ecrire-q">Vos périmètres sont-ils les agences, ou autre chose — pôles, équipes, régions ?</span></p>
+<hr />
+<h3>H14 · Deux casquettes qui ne se mélangent pas</h3>
+<p>On donne à Martin, en plus, un droit de <strong>lecture</strong> sur l'agence B.</p>
+<p><strong>Ce que fait Ava :</strong> il lit B, il continue de créer dans A — et il ne peut <strong>toujours pas</strong> créer dans B. Lire ailleurs ne donne jamais le droit d'écrire ailleurs.</p>
+<p class="ecrire"><span class="ecrire-q">Vrai ?</span></p>
+<hr />
+<h3>H15 · Qui embauche ?</h3>
+<p>Léa évalue un candidat. Elle essaie ensuite de le transformer en ressource.</p>
+<p><strong>Ce que fait Ava :</strong> il refuse — seules les RH transforment un candidat en ressource. Évaluer et embaucher sont deux métiers différents.</p>
+<p class="ecrire"><span class="ecrire-q">Qui, chez vous, a le droit de transformer un candidat en ressource ?* → ligne **42*</span></p>
+<hr />
+<h1 class="partie">Partie 3 — Les 61 réglages</h1>
+<p>Chaque ligne : ce qu'Ava Manager fait <strong>aujourd'hui</strong> (en gras), et les autres possibilités. Tout ceci se change dans l'écran d'administration, <strong>sans développement</strong>.</p>
+<p class="bloc bloc-cle"><span class="mk mk-ess">ESSENTIEL</span> = à lire en priorité · <span class="mk mk-tec">technique</span> = déjà tranché · <span class="mk mk-lot">hors lot</span> = prévu, pas dans le premier lot</p>
+<h2>Le besoin et la proposition de candidats</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th><span class="inl inl-cle">À RETENIR</span></th>
+<th>La question</th>
+<th>Aujourd'hui</th>
+<th>Les autres choix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Faut-il un contact pour enregistrer un besoin ?</td>
+<td><strong>non, facultatif</strong></td>
+<td>obligatoire</td>
+</tr>
+<tr>
+<td>2</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Un besoin peut-il ouvrir plusieurs projets ?</td>
+<td><strong>oui, autant que nécessaire</strong></td>
+<td>un seul</td>
+</tr>
+<tr>
+<td>3</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Qu'est-ce qui fait passer un besoin de « à pourvoir » à « en recherche » ?</td>
+<td><strong>la première personne proposée</strong></td>
+<td>une commande explicite du staffing · le retour positif du client</td>
+</tr>
+<tr>
+<td>4</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Qui déclare un besoin « pourvu » ?</td>
+<td><strong>le staffing, à la main</strong></td>
+<td>automatiquement à la signature d'une mission · automatiquement à la première personne signée</td>
+</tr>
+<tr>
+<td>5</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Qu'exige-t-on pour déclarer « pourvu » ?</td>
+<td><strong>toutes les missions signées</strong> <em>(corrigé le 17/09)</em></td>
+<td>au moins une mission signée · rien</td>
+</tr>
+<tr>
+<td>6</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Peut-on proposer quelqu'un sur un besoin pourvu, suspendu ou fermé ?</td>
+<td><strong>non, refusé</strong></td>
+<td>alerte seulement · libre</td>
+</tr>
+<tr>
+<td>7</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Peut-on proposer deux fois la même personne sur un même besoin ?</td>
+<td><strong>pas tant que la première proposition est en cours</strong> — après un refus, oui</td>
+<td>jamais de contrainte · jamais deux fois, même après un refus</td>
+</tr>
+<tr>
+<td>8</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Faut-il avoir envoyé un CV avant d'enregistrer la réponse du client ?</td>
+<td><strong>oui</strong></td>
+<td>non</td>
+</tr>
+<tr>
+<td>9</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Faut-il une qualification avant d'enregistrer la réponse du client ?</td>
+<td><strong>non</strong></td>
+<td>oui</td>
+</tr>
+</tbody>
+</table>
+<h2>Le projet et la mission</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th><span class="inl inl-cle">À RETENIR</span></th>
+<th>La question</th>
+<th>Aujourd'hui</th>
+<th>Les autres choix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Un client qui dit « je le prends » crée-t-il le projet tout seul ?</td>
+<td><strong>non, quelqu'un le crée</strong></td>
+<td>oui, automatiquement</td>
+</tr>
+<tr>
+<td>11</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Faut-il un candidat retenu pour créer un projet depuis un besoin ?</td>
+<td><strong>oui</strong></td>
+<td>non, libre</td>
+</tr>
+<tr>
+<td>12</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Un candidat retenu <strong>puis embauché</strong> permet-il d'ouvrir le projet ?</td>
+<td><strong>oui — c'est la même personne</strong></td>
+<td>non : il faut une proposition portée par une fiche ressource</td>
+</tr>
+<tr>
+<td>13</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Faut-il un contact sur le projet ?</td>
+<td><strong>oui, obligatoire</strong></td>
+<td>facultatif</td>
+</tr>
+<tr>
+<td>14</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Peut-on clôturer un projet qui a encore des missions ouvertes ?</td>
+<td><strong>non</strong></td>
+<td>oui, en clôturant tout d'un coup</td>
+</tr>
+<tr>
+<td>15</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Après avoir embauché un candidat, faut-il le re-proposer avant de créer sa mission ?</td>
+<td><strong>non</strong></td>
+<td>oui</td>
+</tr>
+<tr>
+<td>16</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Que se passe-t-il quand quelqu'un dépasse sa charge ?</td>
+<td><strong>alerte, la mission est créée</strong></td>
+<td>refus · rien du tout</td>
+</tr>
+<tr>
+<td>17</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>À partir de quel pourcentage ?</td>
+<td><strong>100 %</strong></td>
+<td>tout entier (80, 120…)</td>
+</tr>
+<tr>
+<td>18</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Peut-on annuler une mission sur laquelle du temps a été saisi ?</td>
+<td><strong>non — il faut la clôturer</strong></td>
+<td>oui</td>
+</tr>
+<tr>
+<td>19</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Comment gère-t-on un avenant (changement de tarif, de durée) ?</td>
+<td><strong>une nouvelle mission</strong></td>
+<td><em>(seul choix dans ce lot)</em></td>
+</tr>
+</tbody>
+</table>
+<h2>Les personnes, le temps, les absences</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th><span class="inl inl-cle">À RETENIR</span></th>
+<th>La question</th>
+<th>Aujourd'hui</th>
+<th>Les autres choix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>« En mission » / « intercontrat » : saisi ou calculé ?</td>
+<td><strong>saisi à la main</strong></td>
+<td>calculé depuis les missions en cours</td>
+</tr>
+<tr>
+<td>21</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Une ressource externe doit-elle avoir une société fournisseur ?</td>
+<td><strong>oui, obligatoire</strong></td>
+<td>facultatif</td>
+</tr>
+<tr>
+<td>22</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Sur quelle période peut-on saisir du temps ?</td>
+<td><strong>entre le début et la fin de la mission</strong></td>
+<td>idem + verrou mensuel <span class="mk mk-lot">hors lot</span></td>
+</tr>
+<tr>
+<td>23</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Peut-on corriger du temps après la clôture d'une mission ?</td>
+<td><strong>oui, tracé comme un ajustement</strong> — la marge figée ne bouge jamais</td>
+<td>non, refusé</td>
+</tr>
+<tr>
+<td>24</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Peut-on saisir du temps sans mission (interne, formation) ?</td>
+<td><strong>non</strong></td>
+<td>oui, sur un type interne <span class="mk mk-lot">hors lot</span></td>
+</tr>
+<tr>
+<td>25</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Les temps saisis doivent-ils être validés par un responsable ?</td>
+<td><strong>non, dans ce lot</strong></td>
+<td>oui, par le directeur de projet <span class="mk mk-lot">hors lot</span></td>
+</tr>
+<tr>
+<td>26</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Peut-on enregistrer une absence pour quelqu'un sans mission ?</td>
+<td><strong>oui</strong></td>
+<td>non</td>
+</tr>
+<tr>
+<td>27</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Les absences sont-elles validées ?</td>
+<td><strong>non, dans ce lot</strong></td>
+<td>oui, par le manager <span class="mk mk-lot">hors lot</span></td>
+</tr>
+<tr>
+<td>60</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Peut-on saisir <strong>plus d'une journée</strong> de travail sur un même jour — deux missions à 0,6 + 0,6 ?</td>
+<td><strong>alerte, la saisie passe</strong></td>
+<td>refus · rien <em>(question née de la relecture du 17/09 : aucun texte antérieur ne la tranchait — c'est vous qui la tranchez)</em></td>
+</tr>
+</tbody>
+</table>
+<h2>Les clients et les doublons</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th><span class="inl inl-cle">À RETENIR</span></th>
+<th>La question</th>
+<th>Aujourd'hui</th>
+<th>Les autres choix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>28</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Qu'est-ce qui fait d'un prospect un <strong>client</strong> ?</td>
+<td><strong>la première mission signée</strong></td>
+<td>la création du projet · à la main</td>
+</tr>
+<tr>
+<td>29</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Jusqu'où le statut « client » se propage-t-il ?</td>
+<td><strong>la branche qui contracte et les contacts de ce service</strong></td>
+<td>la société seule · toute la société</td>
+</tr>
+<tr>
+<td>30</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Un client redevient-il prospect ?</td>
+<td><strong>seulement à la main, avec un motif</strong></td>
+<td>à la fin du dernier contrat · après un délai</td>
+</tr>
+<tr>
+<td>31</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Quel délai, si c'est automatique ?</td>
+<td><strong>6 mois</strong></td>
+<td>tout nombre de mois</td>
+</tr>
+<tr>
+<td>32</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Quand un contact part, que deviennent ses dossiers en cours ?</td>
+<td><strong>on doit les réaffecter</strong></td>
+<td>on garde les liens tels quels</td>
+</tr>
+<tr>
+<td>33</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Peut-on archiver un service qui porte encore un besoin actif ?</td>
+<td><strong>non</strong></td>
+<td>oui</td>
+</tr>
+<tr>
+<td>34</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Que fait-on si on crée une personne qui existe peut-être déjà ?</td>
+<td><strong>on avertit, on n'empêche pas</strong></td>
+<td>on bloque · on ignore</td>
+</tr>
+<tr>
+<td>35</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Sur quoi repère-t-on un doublon de personne ?</td>
+<td><strong>l'e-mail, ou nom + prénom + date de naissance</strong></td>
+<td>toute autre combinaison</td>
+</tr>
+<tr>
+<td>36</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Même question pour un contact</td>
+<td><strong>on avertit</strong></td>
+<td>bloquer · ignorer</td>
+</tr>
+<tr>
+<td>37</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Sur quoi ?</td>
+<td><strong>e-mail, ou nom + prénom + société</strong></td>
+<td>autre</td>
+</tr>
+<tr>
+<td>38</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Même question pour une société</td>
+<td><strong>on avertit</strong></td>
+<td>bloquer · ignorer</td>
+</tr>
+<tr>
+<td>39</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Sur quoi ?</td>
+<td><strong>le nom normalisé, ou le SIREN</strong></td>
+<td>autre</td>
+</tr>
+<tr>
+<td>40</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Fusionne-t-on deux doublons automatiquement ?</td>
+<td><strong>jamais — une personne habilitée le fait</strong></td>
+<td><em>(seul choix)</em></td>
+</tr>
+</tbody>
+</table>
+<h2>Le recrutement</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th><span class="inl inl-cle">À RETENIR</span></th>
+<th>La question</th>
+<th>Aujourd'hui</th>
+<th>Les autres choix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>41</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Que faut-il pour qu'un dossier candidat soit « complet » ?</td>
+<td><strong>nom, prénom, civilité, localisation, e-mail ou téléphone</strong></td>
+<td>toute autre liste</td>
+</tr>
+<tr>
+<td>42</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td><strong>Qui transforme un candidat en ressource ?</strong></td>
+<td><strong>les RH seules</strong></td>
+<td>RH ou responsable recrutement · toute personne habilitée</td>
+</tr>
+<tr>
+<td>43</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Une embauche passe-t-elle par une approbation ?</td>
+<td><strong>non, dans ce lot</strong></td>
+<td>oui, du responsable recrutement <span class="mk mk-lot">hors lot</span></td>
+</tr>
+<tr>
+<td>44</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Une qualification est-elle toujours rattachée à un besoin ?</td>
+<td><strong>oui</strong></td>
+<td>non, on peut qualifier dans l'absolu</td>
+</tr>
+<tr>
+<td>45</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Une nouvelle évaluation efface-t-elle la précédente ?</td>
+<td><strong>non, l'historique est conservé</strong></td>
+<td><em>(seul choix)</em></td>
+</tr>
+</tbody>
+</table>
+<h2>La charge et les chiffres</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th><span class="inl inl-cle">À RETENIR</span></th>
+<th>La question</th>
+<th>Aujourd'hui</th>
+<th>Les autres choix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>46</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>On raisonne à la journée ou à la demi-journée ?</td>
+<td><strong>à la journée</strong></td>
+<td>à la demi-journée</td>
+</tr>
+<tr>
+<td>47</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Le planning s'affiche par défaut...</td>
+<td><strong>à la semaine</strong></td>
+<td>au mois</td>
+</tr>
+<tr>
+<td>48</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Les missions prévisionnelles comptent-elles dans la charge ?</td>
+<td><strong>oui, mais affichées à part</strong></td>
+<td>non</td>
+</tr>
+<tr>
+<td>49</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Combien vaut une journée pleine ?</td>
+<td><strong>1,0</strong></td>
+<td><em>(temps partiel hors lot)</em></td>
+</tr>
+<tr>
+<td>50</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Quel calendrier fait référence ?</td>
+<td><strong>celui de l'agence</strong></td>
+<td>un calendrier global</td>
+</tr>
+<tr>
+<td>51</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Le chiffre d'affaires produit se calcule sur...</td>
+<td><strong>les temps saisis</strong></td>
+<td>les temps validés <em>(suppose la ligne 25)</em></td>
+</tr>
+<tr>
+<td>52</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Un forfait se reconnaît...</td>
+<td><strong>au prorata des jours ouvrés</strong></td>
+<td>à des jalons <span class="mk mk-lot">hors lot</span></td>
+</tr>
+<tr>
+<td>53</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Les frais entrent-ils dans la marge ?</td>
+<td><strong>oui</strong></td>
+<td>non</td>
+</tr>
+<tr>
+<td>54</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Que fait-on des devises différentes ?</td>
+<td><strong>aucune conversion : on ne mélange pas</strong></td>
+<td>avec un taux saisi <span class="mk mk-lot">hors lot</span></td>
+</tr>
+<tr>
+<td>55</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Un taux de marge sans chiffre d'affaires s'affiche...</td>
+<td><strong>« — »</strong></td>
+<td>zéro</td>
+</tr>
+<tr>
+<td>61</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Un même projet peut-il porter des missions en <strong>devises différentes</strong> — un freelance payé en dirhams sur un projet facturé en euros ?</td>
+<td><strong>oui — le projet s'affiche en deux lignes, jamais additionnées</strong></td>
+<td>non, une seule devise par projet <em>(question née de la relecture du 17/09)</em></td>
+</tr>
+</tbody>
+</table>
+<h2>Les droits et l'administration</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th><span class="inl inl-cle">À RETENIR</span></th>
+<th>La question</th>
+<th>Aujourd'hui</th>
+<th>Les autres choix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>56</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Un groupe autorise, un autre restreint : qui gagne ?</td>
+<td><strong>la restriction</strong></td>
+<td>l'autorisation <span class="inl inl-att">ATTENTION</span> affaiblit toutes les restrictions nominatives</td>
+</tr>
+<tr>
+<td>57</td>
+<td class="c-mk"><span class="mk mk-ess">ESSENTIEL</span></td>
+<td>Le support peut-il agir sur vos données ?</td>
+<td><strong>non, lecture seule</strong></td>
+<td>oui, sur délégation <span class="mk mk-lot">hors lot</span></td>
+</tr>
+<tr>
+<td>58</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Peut-on désarchiver un objet ?</td>
+<td><strong>non, dans ce lot</strong></td>
+<td>oui, par une commande dédiée <span class="mk mk-lot">hors lot</span></td>
+</tr>
+<tr>
+<td>59</td>
+<td class="c-mk"><span class="mk mk-tec">technique</span></td>
+<td>Trace-t-on les tentatives refusées ?</td>
+<td><strong>oui, à part</strong></td>
+<td>non</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 class="partie">Partie 4 — Les quinze choses qu'Ava Manager rendra impossibles <span class="inl inl-stop">INTERDIT</span></h1>
+<p>Celles-ci <strong>ne sont pas des réglages</strong>. Elles sont inscrites dans la structure même des données. Aucun utilisateur, aucun administrateur, aucun développeur pressé ne pourra les contourner par un écran.</p>
+<p>Si l'une d'elles vous gêne, dites-le : ce n'est pas un refus, c'est une décision lourde qu'il faudra reprendre — et qui a un coût.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Ce qui sera impossible</th>
+<th>Ce qui arriverait sans ce garde-fou</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Un <strong>candidat</strong> ne portera jamais de mission ni de temps</td>
+<td>du temps facturé sur quelqu'un qui n'est pas payé</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Une proposition relie un besoin à <strong>exactement une</strong> personne</td>
+<td>des propositions à deux têtes, des doublons</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Une personne a <strong>au plus un</strong> dossier candidat et <strong>un</strong> dossier ressource</td>
+<td>deux coûts différents pour le même salarié</td>
+</tr>
+<tr>
+<td>4</td>
+<td>On ne <strong>change pas la personne</strong> d'une mission</td>
+<td>les jours travaillés par Jean deviennent ceux de Paul</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Le projet ne porte <strong>pas</strong> de personne — ce sont ses missions qui le font</td>
+<td>deux réponses à « qui travaille sur ce projet ? »</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Une <strong>marge figée à la clôture ne se réécrit jamais</strong></td>
+<td>la marge d'un dossier clos change quand un salaire change</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Un <strong>événement d'historique</strong> ne se modifie ni ne s'efface</td>
+<td>l'historique ment</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Rien ne se supprime</strong> — tout s'archive</td>
+<td>des dossiers vidés de leur passé</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Une action a <strong>exactement un</strong> dossier de rattachement</td>
+<td>un journal éclaté, introuvable</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Le temps saisi porte <strong>la même personne</strong> que sa mission</td>
+<td>même conséquence que le n° 4</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Un besoin a <strong>toujours</strong> une société <em>(y compris vos recrutements internes : Avaliance est une société dans sa propre base)</em></td>
+<td>des besoins flottants, hors de tout périmètre</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Un contact et un service appartiennent <strong>à la société de leur dossier</strong></td>
+<td>un besoin Alpha avec un interlocuteur Beta</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Un droit est <strong>toujours</strong> attaché à un périmètre</td>
+<td>un droit sans limite</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Les conditions économiques d'une mission <strong>ne suivent pas</strong> la fiche de la personne</td>
+<td>un changement de salaire qui réécrit le passé</td>
+</tr>
+<tr>
+<td>15</td>
+<td>On <strong>n'additionne jamais</strong> deux devises sans taux</td>
+<td>un chiffre faux affiché comme vrai</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 class="partie">Partie 5 — Essayez-le</h1>
+<p>Un <strong>simulateur</strong> reproduit toute cette logique, jouable dans un navigateur, à cette adresse :</p>
+<p><code>https://claude.ai/artifact/H8yAb1Cbw4wdL9V1Jama1Y</code></p>
+<p>Il Vous choisissez un rôle — commercial, RH, staffing, ressource, administrateur — et vous faites les gestes de vos équipes. Chaque refus vous dit <strong>pourquoi</strong> il refuse et d'où vient la règle. Un écran « Politiques » vous laisse changer les réglages de la partie 3 <strong>en direct</strong> et refaire le même geste pour voir la différence.</p>
+<p>Rien n'y est enregistré : c'est un banc d'essai, pas le logiciel.</p>
+<p class="ecrire"><span class="ecrire-q">Ce qui m'a surpris en l'essayant :</span></p>
+<blockquote>
+<p>—</p>
+<p>—</p>
+</blockquote>
+<hr />
+<h1 class="partie">Ce que nous attendons de vous</h1>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Les numéros de ce cahier où <strong>nous nous sommes trompés</strong>, avec une phrase</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Ce qui <strong>manque</strong> : un cas de votre quotidien qu'aucune des quinze histoires ne couvre</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Votre accord — ou vos réserves numérotées — <strong>par écrit et daté</strong></td>
+</tr>
+</tbody>
+</table>
+<p class="bloc bloc-stop">Tant que cet accord n'existe pas, aucune ligne du logiciel n'est écrite. C'est délibéré : corriger un cahier coûte une soirée, corriger un logiciel livré coûte un trimestre.</p>
+<hr />
+<p><em>Ce cahier est dérivé du cadrage métier du 16 septembre, des décisions DEC-01→18, de la feuille F1–F36 signée le 16 septembre au soir, des arbitrages G1–G15 et du registre des politiques. Il ne contient aucune règle qui ne soit tracée à sa source.</em></p>
+</div>
+</body></html>
