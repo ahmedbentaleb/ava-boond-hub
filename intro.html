@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ava Manager</title>
+  <meta name="description" content="Ava Manager s’ouvre. Le métier s’allume.">
+  <style>
+    html, body { margin: 0; height: 100%; background: #050506; overflow: hidden; font-family: system-ui, sans-serif; }
+    #stage { position: fixed; inset: 0; }
+    #stage canvas { display: block; width: 100%; height: 100%; }
+    #brand {
+      position: fixed; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end; padding: 0 24px 12vh;
+      pointer-events: none; opacity: 0; transform: translateY(18px);
+      transition: opacity 1.1s ease, transform 1.1s ease;
+    }
+    #brand.on { opacity: 1; transform: none; }
+    #brand .kicker {
+      color: #9a9a9a; letter-spacing: .28em; text-transform: uppercase;
+      font-size: 11px; margin: 0 0 14px;
+    }
+    #brand h1 {
+      margin: 0; font-size: clamp(40px, 7vw, 88px); font-weight: 650;
+      color: #430A4B; background: #AEBF38; padding: .12em .42em .16em;
+      border-radius: 10px; line-height: 1.05;
+    }
+    #brand .sub { color: #c8c8c8; margin: 16px 0 0; font-size: clamp(15px, 2vw, 20px); }
+    #load {
+      position: fixed; left: 50%; bottom: 6vh; width: min(280px, 60vw);
+      height: 2px; background: #1c1c1c; transform: translateX(-50%);
+      overflow: hidden; opacity: 0; transition: opacity .6s ease;
+    }
+    #load.on { opacity: 1; }
+    #load span {
+      display: block; height: 100%; width: 40%; background: #AEBF38;
+      animation: load 1.6s ease-in-out infinite;
+    }
+    @keyframes load {
+      0% { transform: translateX(-120%); }
+      100% { transform: translateX(320%); }
+    }
+    #skip {
+      position: fixed; top: 20px; right: 20px; z-index: 3;
+      border: 1px solid #3a3a3a; background: transparent; color: #9a9a9a;
+      padding: 8px 14px; border-radius: 999px; cursor: pointer; font: inherit; font-size: 13px;
+    }
+    #skip:hover { color: #f0f0f0; border-color: #666; }
+    #name {
+      position: fixed; left: 24px; top: 22px; color: #430A4B; background: #AEBF38;
+      font-size: 12px; font-weight: 650; padding: 4px 10px; border-radius: 6px;
+      letter-spacing: .04em; opacity: 0; transition: opacity .8s ease;
+    }
+    #name.on { opacity: 1; }
+  </style>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="stage"></div>
+  <div id="name">AVA</div>
+  <div id="brand">
+    <p class="kicker">Avaliance</p>
+    <h1>Ava Manager</h1>
+    <p class="sub">Le métier s’allume</p>
+  </div>
+  <div id="load"><span></span></div>
+  <button type="button" id="skip">Entrer</button>
+  <script type="module">
+    import * as THREE from "three";
+    import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+    import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+    import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+
+    const NODES = {
+      societe: { x: 24, y: 80, label: "Société" },
+      besoin: { x: 200, y: 160, label: "Besoin" },
+      positionnement: { x: 400, y: 110, label: "Positionnement" },
+      projet: { x: 560, y: 60, label: "Projet" },
+      prestation: { x: 620, y: 200, label: "Prestation" }
+    };
+    const PATH = ["societe", "besoin", "positionnement", "projet", "prestation"];
+    const COLOR = 0x2f9d6a;
+    const HEAD = 0xAEBF38;
+    const hub = /github\.io/.test(location.host) ? "./index.html" : "./ava-manager.html";
+
+    const go = () => { location.href = hub; };
+    document.getElementById("skip").onclick = go;
+
+    const vec = (id) => {
+      const n = NODES[id];
+      return new THREE.Vector3((n.x - 330) * 0.018, 0.2, (n.y - 130) * 0.018);
+    };
+    const arc = (a, b) => {
+      const pa = vec(a), pb = vec(b);
+      const mid = pa.clone().lerp(pb, 0.5);
+      mid.y += Math.max(0.7, pa.distanceTo(pb) * 0.5);
+      return new THREE.QuadraticBezierCurve3(pa, mid, pb);
+    };
+    const label = (text) => {
+      const c = document.createElement("canvas");
+      c.width = 512; c.height = 128;
+      const ctx = c.getContext("2d");
+      ctx.fillStyle = "#AEBF38";
+      ctx.beginPath();
+      const r = 28, x = 40, y = 28, w = 432, h = 72;
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = "#430A4B";
+      ctx.font = "700 44px system-ui, sans-serif";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText(text, 256, 66);
+      const tex = new THREE.CanvasTexture(c);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false }));
+      s.scale.set(1.9, 0.48, 1);
+      s.material.opacity = 0;
+      return s;
+    };
+
+    const stage = document.getElementById("stage");
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+    renderer.setClearColor(0x050506, 1);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    stage.appendChild(renderer.domElement);
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x050506, 14, 30);
+    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 80);
+    camera.position.set(-1.2, 3.2, 6.4);
+    const look = new THREE.Vector3(0, 0.35, 0);
+    scene.add(new THREE.AmbientLight(0x430A4B, 0.4));
+    const key = new THREE.DirectionalLight(0xffffff, 0.28);
+    key.position.set(2, 7, 5); scene.add(key);
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloom = new UnrealBloomPass(new THREE.Vector2(800, 600), 0.82, 0.45, 0.2);
+    composer.addPass(bloom);
+
+    const fit = () => {
+      const w = innerWidth, h = innerHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h, false);
+      composer.setSize(w, h);
+    };
+    addEventListener("resize", fit); fit();
+
+    const spawned = [];
+    const beads = [];
+    for (let i = 0; i < 34; i++) {
+      const m = new THREE.Mesh(
+        new THREE.SphereGeometry(0.04, 10, 8),
+        new THREE.MeshBasicMaterial({ color: COLOR, transparent: true, opacity: 0, depthWrite: false })
+      );
+      scene.add(m); beads.push(m);
+    }
+    const head = new THREE.Mesh(
+      new THREE.SphereGeometry(0.1, 18, 14),
+      new THREE.MeshBasicMaterial({ color: HEAD, transparent: true, opacity: 0, depthWrite: false })
+    );
+    const headLight = new THREE.PointLight(HEAD, 0, 6, 2);
+    scene.add(head, headLight);
+
+    function spawn(id) {
+      const p = vec(id);
+      const mat = new THREE.MeshStandardMaterial({
+        color: 0x111111, emissive: COLOR, emissiveIntensity: 0,
+        roughness: 0.22, metalness: 0.12, transparent: true, opacity: 0
+      });
+      const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.24, 32, 24), mat);
+      mesh.position.copy(p);
+      const glow = new THREE.Mesh(
+        new THREE.SphereGeometry(0.42, 16, 12),
+        new THREE.MeshBasicMaterial({ color: HEAD, transparent: true, opacity: 0, depthWrite: false })
+      );
+      glow.position.copy(p);
+      const spr = label(NODES[id].label);
+      spr.position.set(p.x, p.y + 0.55, p.z);
+      const light = new THREE.PointLight(HEAD, 0, 4.8, 2);
+      light.position.copy(p);
+      scene.add(mesh, glow, spr, light);
+      const n = { id, mesh, glow, spr, light, mat };
+      spawned.push(n);
+      return n;
+    }
+    function setNode(n, k) {
+      const live = Math.max(0, Math.min(1, k));
+      n.mat.opacity = 0.12 + 0.88 * live;
+      n.mat.emissiveIntensity = 0.35 + 2.4 * live;
+      n.mesh.scale.setScalar(0.3 + 0.7 * live);
+      n.glow.material.opacity = 0.28 * live;
+      n.spr.material.opacity = live;
+      n.light.intensity = 2 * live;
+    }
+    function drawCurve(curve, p) {
+      const u = Math.max(0, Math.min(1, p));
+      beads.forEach((b, i) => {
+        const t = u * ((i + 1) / beads.length);
+        b.position.copy(curve.getPoint(t));
+        const along = (i + 1) / beads.length;
+        b.material.opacity = u <= 0 ? 0 : Math.pow(along, 1.3) * (0.2 + 0.8 * u);
+        b.scale.setScalar(0.5 + along * 1.15);
+      });
+      const hp = curve.getPoint(u);
+      head.position.copy(hp);
+      head.material.opacity = u > 0.03 ? 1 : 0;
+      headLight.position.copy(hp);
+      headLight.intensity = 2.6 * u;
+    }
+
+    let i = 0, mode = "wait", t0 = performance.now(), curve = null;
+    const brand = document.getElementById("brand");
+    const load = document.getElementById("load");
+    const ava = document.getElementById("name");
+
+    const tick = (now) => {
+      const dt = (now - t0) / 1000;
+      if (mode === "wait") {
+        if (dt > 0.45) { t0 = now; mode = "spawn"; spawn(PATH[0]); ava.classList.add("on"); }
+      } else if (mode === "spawn") {
+        const n = spawned[i];
+        const k = Math.min(1, dt / 0.55);
+        setNode(n, k);
+        look.lerp(n.mesh.position, 0.08);
+        if (k >= 1) { t0 = now; mode = "rest"; }
+      } else if (mode === "draw") {
+        const k = Math.min(1, dt / 0.95);
+        drawCurve(curve, k);
+        setNode(spawned[i], k);
+        look.lerp(curve.getPoint(k), 0.12);
+        camera.position.x += (1.6 - camera.position.x) * 0.012;
+        camera.position.z += (8.6 - camera.position.z) * 0.01;
+        camera.position.y += (4.8 - camera.position.y) * 0.01;
+        if (k >= 1) {
+          t0 = now; mode = "rest";
+          if (spawned[i - 1]) spawned[i - 1]._dim = true;
+        }
+      } else if (mode === "rest") {
+        spawned.forEach((s, idx) => {
+          if (s._dim) setNode(s, Math.max(0.12, 0.7 - dt));
+          else if (idx === i) setNode(s, 0.86 + 0.14 * Math.sin(now * 0.006));
+        });
+        if (dt > 0.38) {
+          t0 = now;
+          if (i < PATH.length - 1) {
+            i += 1; mode = "draw"; curve = arc(PATH[i - 1], PATH[i]);
+            spawn(PATH[i]); setNode(spawned[i], 0);
+          } else { mode = "title"; }
+        }
+      } else if (mode === "title") {
+        brand.classList.add("on");
+        load.classList.add("on");
+        spawned.forEach((s) => setNode(s, 0.22 + 0.08 * Math.sin(now * 0.004)));
+        beads.forEach((b) => { b.material.opacity *= 0.985; });
+        head.material.opacity = 0.45 + 0.25 * Math.sin(now * 0.004);
+        headLight.intensity = 1.2;
+        camera.position.x += Math.sin(now * 0.00025) * 0.002;
+        if (dt > 12) go();
+      }
+      camera.lookAt(look);
+      composer.render();
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+    addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === "Escape" || e.key === " ") go(); });
+  </script>
+</body>
+</html>

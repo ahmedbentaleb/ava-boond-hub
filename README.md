@@ -1,6 +1,9 @@
 # Ava Manager — hub
 
-Page unique Ava / Boond. Les deux guides sont sous le bouton Quiz. Métiers 3D (Three.js) :
+Ouverture (splash 3D, le métier s’allume) :
+
+https://ahmedbentaleb.github.io/ava-boond-hub/intro.html
+
+Métiers 3D :
 
 https://ahmedbentaleb.github.io/ava-boond-hub/?v=tri3#ava-3d
-
