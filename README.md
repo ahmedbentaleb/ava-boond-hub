@@ -1,9 +1,9 @@
 # Ava Manager — hub
 
-Page unique Ava / Boond. Les deux guides sont sous le même bouton : Quiz et parcours et jeu de rôle.
+Page unique Ava / Boond. Les deux guides sont sous le bouton Quiz.
 
-https://ahmedbentaleb.github.io/ava-boond-hub/?v=sous#ava-guide
+https://ahmedbentaleb.github.io/ava-boond-hub/?v=quiz#ava-guide
 
 Jeu de rôle :
 
-https://ahmedbentaleb.github.io/ava-boond-hub/?v=sous#ava-rpg
+https://ahmedbentaleb.github.io/ava-boond-hub/?v=quiz#ava-rpg
