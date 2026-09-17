@@ -1,0 +1,1429 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ava Manager — Banc d'essai métier</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   LA LANGUE DU BANC — celle du constructeur Kurso, pas une autre.
+   Une échelle de gris e0→e900 qui BASCULE avec la peau : e0 est le fond en clair
+   et le premier plan en sombre. L'interface s'écrit une fois. Rayons 0 / 2 / 3 —
+   rien d'arrondi, aucune capsule. Corps 13 px / 20 px. Chiffres en chasse fixe.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root{
+  --police:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:"SF Mono",Menlo,Consolas,"IBM Plex Mono",monospace;
+  /* CLAIR — traits sombres sur fond blanc */
+  --e0:#fff; --e50:#f5f5f5; --e100:#ebebeb; --e150:#ddd; --e200:#d0d0d0; --e300:#b5b5b5; --e400:#9a9a9a;
+  --e500:#808080; --e600:#656565; --e700:#4a4a4a; --e800:#2f2f2f; --e900:#141414; --sur-e900:#fff;
+  --trait:#141414; --trait-2:#8a8a8a;
+  --bleu:#0c79a8; --bleu-fond:#daedf8; --bleu-texte:#0b6e99;
+  --orange:#a35e10; --orange-fond:#f8e8db; --vert:#27783f; --vert-fond:#e4f2e8; --rouge:#b63636; --rouge-fond:#fce5e3;
+  --c1:#0c79a8; --c2:#6b3fb5; --c3:#27783f; --c4:#a35e10; --c5:#b63636;
+  --ombre:0 1px 3px rgba(0,0,0,.1),0 8px 30px rgba(0,0,0,.08);
+  --r-s:2px; --r-m:3px;
+  color-scheme:light;
+}
+:root[data-skin="nuit"]{
+  /* NUIT — lignes argentées sur graphite */
+  --e0:#141414; --e50:#1d1d1d; --e100:#2a2a2a; --e150:#3a3a3a; --e200:#4a4a4a; --e300:#656565; --e400:#8d8d8d;
+  --e500:#9a9a9a; --e600:#b5b5b5; --e700:#d0d0d0; --e800:#ebebeb; --e900:#fff; --sur-e900:#141414;
+  --trait:#c9ccd1; --trait-2:#5c6067;
+  --bleu:#41b2ec; --bleu-fond:#10364f; --bleu-texte:#9cd8fd;
+  --orange:#e6a758; --orange-fond:#4a3318; --vert:#7fd3a0; --vert-fond:#1c3a28; --rouge:#f6807a; --rouge-fond:#4a2320;
+  --c1:#41b2ec; --c2:#b79cf5; --c3:#7fd3a0; --c4:#e6a758; --c5:#f6807a;
+  --ombre:0 1px 3px rgba(0,0,0,.5),0 10px 40px rgba(0,0,0,.45);
+  color-scheme:dark;
+}
+/* Nuit : les cadres aussi prennent le fil argenté — un seul trait, partout, jamais une grille. */
+:root[data-skin="nuit"] .card,:root[data-skin="nuit"] .kpi,:root[data-skin="nuit"] .note{border-color:var(--trait-2)}
+:root[data-skin="nuit"] .journal{border-left-color:var(--trait-2)}
+:root[data-skin="nuit"] .nav{border-right-color:var(--trait-2)}
+:root[data-skin="avaliance"]{
+  /* AVALIANCE — la charte du site, à plat : violet porteur, vert dessous, jamais d'encre verte */
+  --police:"Sora",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --e0:#fff; --e50:#f7f5f8; --e100:#efeaf0; --e150:#e2dbe4; --e200:#cfc4d2; --e300:#b09fb4; --e400:#8f7a94;
+  --e500:#6e5874; --e600:#5D5D5D; --e700:#3f2f43; --e800:#2E0734; --e900:#430A4B; --sur-e900:#fff;
+  --trait:#430A4B; --trait-2:#b09fb4;
+  --bleu:#430A4B; --bleu-fond:#AEBF38; --bleu-texte:#430A4B;
+  --orange:#C75B12; --orange-fond:#FBEFE6; --vert:#1E5B3A; --vert-fond:#AEBF38; --rouge:#A93226; --rouge-fond:#F8ECEA;
+  --c1:#430A4B; --c2:#7B3F86; --c3:#8f9a24; --c4:#5D5D5D; --c5:#A93226;
+  --ombre:none;
+  color-scheme:light;
+}
+:root{ /* alias lus par les écrans : ils suivent la peau par l'échelle */
+  --brand:var(--e900); --ink:var(--e900); --ink3:var(--e600); --surf3:var(--e100);
+  --crit:var(--rouge); --ok:var(--vert); --warn:var(--orange); --neu:var(--e400); --f-display:var(--police);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--e0);color:var(--e800);font:13px/20px var(--police);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3{margin:0;font-weight:500}
+:focus-visible{outline:2px solid var(--e900);outline-offset:2px;border-radius:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ═══════════ La coquille ═══════════ */
+.app{display:flex;flex-direction:column;height:100%;min-height:0}
+.bar{flex:none;display:flex;align-items:center;gap:14px;padding:0 16px;height:48px;border-bottom:1px solid var(--trait);background:var(--e0)}
+.marque{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;letter-spacing:-.2px;color:var(--e900)}
+.marque svg{width:18px;height:18px;display:block}
+.marque .sub{font-family:var(--mono);font-weight:400;font-size:11px;color:var(--e600);letter-spacing:0;margin-left:4px;padding-left:10px;border-left:1px solid var(--e200)}
+.bar .sep{flex:1 1 auto}
+.monde{font-family:var(--mono);font-size:11px;color:var(--e600);white-space:nowrap;letter-spacing:.02em}
+.champ{display:flex;align-items:center;gap:8px}
+.champ label{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--e600)}
+.champ select{background:var(--e0);color:var(--e800);border:1px solid var(--e200);border-radius:var(--r-m);padding:6px 9px;min-height:32px;font-size:12.5px}
+.champ select:focus{border-color:var(--e600);outline:0}
+.peaux{display:inline-flex;border:1px solid var(--e200);border-radius:var(--r-m);overflow:hidden}
+.peaux button{border:0;background:transparent;color:var(--e700);padding:6px 12px;min-height:32px;font-size:12px}
+.peaux button+button{border-left:1px solid var(--e200)}
+.peaux button:hover{background:var(--e50)}
+.peaux button[aria-pressed="true"]{background:var(--e900);color:var(--sur-e900);font-weight:500}
+.bar .reset{border:1px solid var(--e200);background:transparent;color:var(--e800);border-radius:var(--r-m);padding:6px 12px;min-height:32px;font-size:12px}
+.bar .reset:hover{background:var(--e50)}
+
+.corps{flex:1 1 auto;display:flex;min-height:0}
+.nav{flex:0 0 216px;background:var(--e50);border-right:1px solid var(--e150);overflow:auto;padding:0 0 24px}
+.nav h2{padding:13px 16px 5px;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--e600);font-weight:600}
+.nav button{width:100%;border:0;background:transparent;text-align:left;color:var(--e700);padding:7px 16px;display:flex;align-items:center;gap:9px;min-height:36px;font-size:13px}
+.nav button i{width:7px;height:7px;flex:none;background:var(--dot,var(--e400))}
+.nav button:hover{background:var(--e100);color:var(--e900)}
+.nav button[aria-current="page"]{background:var(--e900);color:var(--sur-e900);font-weight:600}
+.nav button[aria-current="page"] i{box-shadow:0 0 0 1.5px var(--sur-e900)}
+.nav button[disabled]{opacity:.5;cursor:not-allowed}
+.nav button[disabled]:hover{background:none}
+
+.vue{flex:1 1 auto;min-width:0;overflow:auto;padding:20px 22px 44px}
+.journal{flex:0 0 300px;border-left:1px solid var(--e150);background:var(--e0);display:flex;flex-direction:column;min-height:0}
+
+/* ═══════════ Les têtes ═══════════ */
+.eyebrow{display:flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--e600);font-weight:600;margin-bottom:6px}
+.eyebrow i{width:7px;height:7px;background:var(--dot,var(--e400))}
+h1{font-size:22px;line-height:28px;letter-spacing:-.3px;color:var(--e900);font-weight:500}
+:root[data-skin="avaliance"] h1{font-weight:700;text-transform:uppercase;letter-spacing:0;font-size:20px}
+.lead{margin:5px 0 18px;color:var(--e600);font-size:12.5px;line-height:18px;max-width:70ch}
+.lead strong{color:var(--e800);font-weight:600}
+h3{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--e600);font-weight:600;margin-bottom:10px}
+
+/* ═══════════ Blocs, chiffres, tableaux ═══════════ */
+.card{border:1px solid var(--e150);border-radius:var(--r-m);padding:14px 16px;background:var(--e0)}
+.card.stroke{border-top:2px solid var(--dot,var(--e900))}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.row>*{min-width:0}
+.stack{display:flex;flex-direction:column;gap:10px}
+.grid{display:grid;gap:12px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:8px;margin-bottom:20px}
+.kpi{border:1px solid var(--e150);border-top:2px solid var(--dot,var(--e900));border-radius:var(--r-m);padding:11px 13px;background:var(--e0)}
+.kpi .n{font-family:var(--mono);font-size:24px;line-height:30px;letter-spacing:-.5px;color:var(--e900);font-variant-numeric:tabular-nums}
+.kpi .l{color:var(--e600);font-size:11.5px;margin-top:2px}
+
+.tab-box{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;font-weight:600;color:var(--e600);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:0 10px 8px 0;border-bottom:1px solid var(--trait);white-space:nowrap}
+td{padding:8px 10px 8px 0;border-bottom:1px solid var(--e150);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+.mono{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums}
+.dim{color:var(--e600)}
+.tiny{font-size:11px;color:var(--e600);line-height:15px}
+.id{font-family:var(--mono);font-size:11px;color:var(--e600);letter-spacing:.01em}
+
+/* ⛔ Rayon 2 px, jamais 999 : les capsules sont interdites. Un badge est un
+   bloc carré, chasse fixe, capitales — et un point carré de 6 px pour l'état. */
+.bd{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;line-height:16px;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:var(--r-s);white-space:nowrap;background:var(--e100);color:var(--e700)}
+.bd::before{content:"";width:6px;height:6px;background:currentColor;flex:none}
+.bd.pos{background:var(--vert-fond);color:var(--vert)}
+.bd.enc{background:var(--bleu-fond);color:var(--bleu-texte)}
+.bd.neg{background:var(--rouge-fond);color:var(--rouge)}
+.bd.warn{background:var(--orange-fond);color:var(--orange)}
+.bd.neu{background:var(--e100);color:var(--e600)}
+:root[data-skin="avaliance"] .bd.pos,:root[data-skin="avaliance"] .bd.enc{background:#AEBF38;color:#430A4B}
+
+/* ═══════════ Les commandes ═══════════ */
+.b{border:1px solid var(--e900);background:var(--e900);color:var(--sur-e900);padding:7px 14px;border-radius:var(--r-m);font-weight:500;display:inline-flex;align-items:center;gap:7px;min-height:34px;white-space:nowrap;font-size:12.5px}
+.b:hover{opacity:.88}
+.b.sec{background:transparent;color:var(--e800);border-color:var(--e200)}
+.b.sec:hover{background:var(--e50);opacity:1}
+.b.ghost{background:transparent;color:var(--e700);border-color:transparent}
+.b.ghost:hover{background:var(--e100);opacity:1}
+.b.sm{padding:4px 10px;min-height:28px;font-size:12px}
+.b.danger{background:transparent;color:var(--rouge);border-color:var(--rouge)}
+.b.danger:hover{background:var(--rouge-fond);opacity:1}
+.b:disabled,.b.dis{opacity:.45;cursor:not-allowed}
+.acts{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+@media (pointer:coarse){.b,.b.sm{min-height:44px}}
+
+.form{display:grid;gap:12px}
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-weight:500;font-size:12.5px;color:var(--e800)}
+.f input,.f select,.f textarea,.inl{width:100%;background:var(--e0);color:var(--e800);border:1px solid var(--e200);border-radius:var(--r-m);padding:8px 10px;min-height:36px;font-size:13px}
+.f input:focus,.f select:focus,.inl:focus{border-color:var(--e600);outline:0}
+.f .req{color:var(--rouge);font-size:11px;font-weight:400;margin-left:4px}
+.f .help{color:var(--e600);font-size:11.5px;line-height:15px}
+.inl{width:auto}
+
+/* ═══════════ Encadrés ═══════════ */
+.note{border:1px solid var(--e150);border-left:3px solid var(--e900);border-radius:var(--r-m);padding:11px 14px;font-size:12.5px;line-height:18px;color:var(--e700);background:var(--e0)}
+.note strong{color:var(--e900);font-weight:600}
+.note .t{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;margin-bottom:4px;color:var(--e900)}
+.note.mur{border-left-color:var(--rouge)}.note.mur .t{color:var(--rouge)}
+.note.ok{border-left-color:var(--vert)}.note.ok .t{color:var(--vert)}
+.note.warn{border-left-color:var(--orange)}.note.warn .t{color:var(--orange)}
+:root[data-skin="avaliance"] .note.ok .t{color:#1E5B3A}
+
+/* ═══════════ Le journal ═══════════ */
+.journal .head{padding:12px 14px 10px;border-bottom:1px solid var(--e150);display:flex;align-items:center;justify-content:space-between;flex:none}
+.journal .head h3{margin:0}
+.journal .flux{flex:1 1 auto;overflow:auto;padding:0 14px 14px}
+.ev{position:relative;padding:8px 0 8px 16px;border-bottom:1px solid var(--e150)}
+.ev::before{content:"";position:absolute;left:2px;top:14px;width:7px;height:7px;background:var(--vert)}
+.ev.refus::before{background:var(--rouge)}
+.ev .ty{font-family:var(--mono);font-size:11px;color:var(--e900);letter-spacing:.01em}
+.ev.refus .ty{color:var(--rouge)}
+.ev .de{font-size:11.5px;color:var(--e700);line-height:16px;margin-top:1px}
+.ev .me{font-size:10.5px;color:var(--e600);font-family:var(--mono);margin-top:2px;word-break:break-all}
+
+/* ═══════════ Le message ═══════════ */
+.msg{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;max-width:min(640px,92vw);z-index:50;border-radius:var(--r-m);padding:12px 16px;font-size:12.5px;line-height:18px;background:var(--e0);color:var(--e800);border:1px solid var(--e900);box-shadow:var(--ombre)}
+.msg.ko{border-color:var(--rouge);box-shadow:inset 0 0 0 1px var(--rouge),var(--ombre)}
+.msg .t{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;margin-bottom:3px;color:var(--vert)}
+.msg.ko .t{color:var(--rouge)}
+.msg .src{font-family:var(--mono);font-size:11px;margin-top:6px;color:var(--e600)}
+.msg[hidden]{display:none!important}
+
+/* ═══════════ La charge ═══════════ */
+.charge{display:flex;gap:2px;align-items:flex-end;height:30px}
+.charge i{flex:1 1 0;display:block;min-width:4px}
+.lg{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--e700)}
+.lg i{width:12px;height:12px;display:inline-block;border:1px solid var(--e200)}
+
+/* ═══════════ Politiques ═══════════ */
+tr.hb td{opacity:.55}
+tr.rouge td{background:var(--rouge-fond)}
+
+@media (max-width:1200px){.journal{display:none}}
+@media (max-width:900px){
+  .corps{flex-direction:column}
+  .nav{flex:none;display:flex;overflow-x:auto;padding:4px;border-right:0;border-bottom:1px solid var(--e150)}
+  .nav h2{display:none}
+  .nav button{width:auto;white-space:nowrap;min-width:0;padding:8px 12px;min-height:44px}
+  .vue{padding:14px}
+  .bar{height:auto;padding:8px 12px;flex-wrap:wrap;gap:8px}
+}
+</style>
+
+<div class="app">
+  <header class="bar">
+    <span class="marque">
+      <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M2 16 11 2h3L5 16z" fill="currentColor"/><path d="M8 16 16 4h-3L5 16z" fill="currentColor" opacity=".5"/></svg>
+      Ava Manager <span class="sub">banc d'essai métier</span>
+    </span>
+    <span class="sep"></span>
+    <span class="monde" id="monde"></span>
+    <span class="champ"><label for="sel-role">Je suis</label><select id="sel-role"></select></span>
+    <span class="peaux" role="group" aria-label="Apparence">
+      <button type="button" data-skin="nuit">Nuit</button>
+      <button type="button" data-skin="clair">Clair</button>
+      <button type="button" data-skin="avaliance">Avaliance</button>
+    </span>
+    <button type="button" class="reset" id="btn-reset">Réinitialiser</button>
+  </header>
+  <div class="corps">
+    <nav class="nav" id="nav" aria-label="Sections"></nav>
+    <main class="vue" id="vue"></main>
+    <aside class="journal">
+      <div class="head"><h3>Journal métier</h3><span class="tiny mono" id="ev-n"></span></div>
+      <div class="flux" id="flux"></div>
+    </aside>
+  </div>
+</div>
+<div class="msg" id="msg" role="status" aria-live="polite" hidden></div>
+
+<script>
+(function(){
+"use strict";
+var CLE="ava-banc-v1",CLE_SKIN="ava-banc-skin";
+
+/* ===================== SCHÉMA — colonnes connues, contraintes physiques (livrable 5 §9) ===================== */
+var SCHEMA={
+  personne:{cols:["id","nom","ville","pays","archive_le"],historique:true},
+  pc:{cols:["id","personne","titre","etat","provenance","dispo","archive_le"],unique:["personne"],historique:true,fk:{personne:"personne"}},
+  pr:{cols:["id","personne","titre","type","etat","agence","fournisseur","cout","tjm","archive_le"],unique:["personne"],historique:true,fk:{personne:"personne"}},
+  societe:{cols:["id","nom","roles","secteur","ville","statut","archive_le"],historique:true},
+  unite:{cols:["id","societe","parent","type","nom","statut","archive_le"],historique:true,fk:{societe:"societe"}},
+  contact:{cols:["id","societe","unite","nom","fonction","statut","archive_le"],historique:true,fk:{societe:"societe"}},
+  besoin:{cols:["id","societe","contact","agence","titre","type","etat","precedent","priorite","postes","demarrage","archive_le"],historique:true,fk:{societe:"societe"}},
+  pos:{cols:["id","besoin","pc","pr","personne","etat","cv","motif","decision","archive_le"],historique:true,xor:["pc","pr"],fk:{besoin:"besoin",pc:"pc",pr:"pr"}},
+  projet:{cols:["id","societe","contact","besoin","agence","type","titre","etat","devise_defaut","archive_le"],historique:true,fk:{societe:"societe"}},  /* D-9 : aucune devise porteuse — seulement une devise PROPOSÉE au formulaire */
+  prestation:{cols:["id","projet","pr","etat","debut","fin","taux","tjm","cjm","devise","cjm_devise","jours","cloture","archive_le"],historique:true,immuable:["pr"],economiques:["tjm","cjm","devise","cjm_devise","jours"],fk:{projet:"projet",pr:"pr"}},
+  temps:{cols:["id","prestation","pr","jour","qte","ajust"],historique:true,fk:{prestation:"prestation",pr:"pr"},trigger:"temps_pr"},
+  absence:{cols:["id","pr","type","debut","fin"],historique:true,fk:{pr:"pr"}},
+  action:{cols:["id","societe","contact","pc","pr","besoin","projet","type","contenu"],historique:true,unPorteur:["societe","contact","pc","pr","besoin","projet"]},
+  snap:{cols:["id","prestation","le","version","tempsSaisis","ca","ca_devise","cout","cout_devise","marge","marge_motif"],appendOnly:true,mur:"M-6"},
+  ev:{cols:["id","t","o","r","d","p","a","h","ko"],appendOnly:true,mur:"M-7"}
+};
+function Mur(id,msg){this.mur=id;this.msg=msg;}
+var MUR_MSG={
+  "M-1":"Aucune clé étrangère de prestation ni de temps ne pointe vers un candidat : la colonne référence profil_ressource, et rien d'autre. Convertissez d'abord.",
+  "M-2":"CHECK XOR refusé : (candidat vide) doit être différent de (ressource vide). Un positionnement porte exactement un humain.",
+  "M-3":"UNIQUE(personne) refusé : cette personne a déjà un profil de ce type. Deux profils, ce sont deux coûts de référence et deux vérités.",
+  "M-4":"Trigger BEFORE UPDATE : la ressource d'une prestation est immuable. Clôturez et créez une nouvelle prestation — sinon les temps déjà saisis changeraient de propriétaire.",
+  "M-5":"Colonne inconnue. La table projet n'a pas de colonne ressource : les personnes d'un projet se lisent dans ses prestations.",
+  "M-6":"Table en INSERT et SELECT seulement : un snapshot de marge ne se réécrit pas. La marge de clôture ne bouge pas quand un coût de référence change.",
+  "M-7":"Journal en ajout seul : un événement ne se modifie ni ne s'efface. Un historique qu'on corrige n'est pas un historique.",
+  "M-8":"Aucun DELETE sur un objet historique : le rôle applicatif n'a pas ce droit. Archivez — l'objet sort des vues actives, ses liens et son passé restent.",
+  "M-9":"CHECK de somme refusé : une action porte exactement un porteur parmi société, contact, candidat, ressource, besoin, projet.",
+  "M-10":"Trigger d'égalité refusé : la ressource d'une ligne de temps doit être celle de sa prestation.",
+  "M-11":"NOT NULL refusé : un besoin porte toujours une société. Pour un recrutement sur profil, choisissez AVALIANCE (rôle interne).",
+  "M-12":"Trigger de cohérence refusé : ce contact appartient à une autre société que celle du besoin.",
+  "M-13":"Une permission vit toujours dans un périmètre : ce besoin est sur une autre agence que la vôtre.",
+  "M-14":"Trigger BEFORE UPDATE : dès la signature, TJM, CJM, devises, jours et frais sont figés. Un avenant est une nouvelle prestation (ATL-18) — sinon la marge déjà calculée changerait derrière.",
+  "M-15":"Le rôle d'agrégation n'a pas SELECT sur cette table : les montants ne s'exposent que par une vue groupée par devise. Aucune colonne « montant converti » n'existe, et sans taux saisi on n'invente rien."
+};
+var db={
+  insert:function(t,row){
+    var sc=SCHEMA[t];if(!sc)throw new Mur("schéma","Table inconnue : "+t);
+    Object.keys(row).forEach(function(k){if(sc.cols.indexOf(k)<0)throw new Mur("M-5","La table "+t+" n'a pas de colonne « "+k+" ». "+MUR_MSG["M-5"]);});
+    if(sc.xor){var a=row[sc.xor[0]]==null,b=row[sc.xor[1]]==null;if(a===b)throw new Mur("M-2",MUR_MSG["M-2"]);}
+    if(sc.unPorteur){var n=sc.unPorteur.filter(function(c){return row[c]!=null;}).length;if(n!==1)throw new Mur("M-9",MUR_MSG["M-9"]+" Ici : "+n+".");}
+    if(sc.unique)sc.unique.forEach(function(c){if(S[t].some(function(x){return x[c]===row[c];}))throw new Mur("M-3",MUR_MSG["M-3"]);});
+    if(sc.fk)Object.keys(sc.fk).forEach(function(c){
+      if(row[c]==null)return;
+      if(!get(sc.fk[c],row[c])){
+        if(c==="pr"&&get("pc",row[c]))throw new Mur("M-1",MUR_MSG["M-1"]);
+        throw new Mur("FK","Clé étrangère refusée : "+t+"."+c+" = "+row[c]+" ne pointe sur aucune ligne de "+sc.fk[c]+".");
+      }
+    });
+    if(sc.trigger==="temps_pr"){var p=get("prestation",row.prestation);if(p&&p.pr!==row.pr)throw new Mur("M-10",MUR_MSG["M-10"]);}
+    row.id=id(t);S[t].push(row);return row;
+  },
+  update:function(t,i,patch){
+    var sc=SCHEMA[t];if(!sc)throw new Mur("schéma","Table inconnue : "+t);
+    if(sc.appendOnly)throw new Mur(sc.mur,MUR_MSG[sc.mur]);
+    var row=get(t,i);if(!row)throw new Mur("objet","Ligne "+i+" introuvable dans "+t+".");
+    Object.keys(patch).forEach(function(k){
+      if(sc.cols.indexOf(k)<0)throw new Mur("M-5","La table "+t+" n'a pas de colonne « "+k+" ». "+MUR_MSG["M-5"]);
+      if(sc.immuable&&sc.immuable.indexOf(k)>=0&&patch[k]!==row[k])throw new Mur("M-4",MUR_MSG["M-4"]);
+      /* M-14 (T-2) : conditions économiques figées dès la catégorie engage */
+      if(sc.economiques&&sc.economiques.indexOf(k)>=0&&patch[k]!==row[k]){
+        var c=categorie(row.etat);
+        if(c==="engage"||c==="clos")throw new Mur("M-14",MUR_MSG["M-14"]);
+      }
+    });
+    Object.keys(patch).forEach(function(k){row[k]=patch[k];});return row;
+  },
+  del:function(t,i){
+    var sc=SCHEMA[t];if(!sc)throw new Mur("schéma","Table inconnue : "+t);
+    if(sc.appendOnly)throw new Mur(sc.mur,MUR_MSG[sc.mur]);
+    if(sc.historique)throw new Mur("M-8",MUR_MSG["M-8"]);
+    S[t]=S[t].filter(function(x){return x.id!==i;});
+  },
+  /* M-15 : aucune somme directe sur une table de montants — seulement des vues par devise */
+  agrege:function(table,champ){throw new Mur("M-15",MUR_MSG["M-15"]+" Tentative : SUM("+champ+") sur "+table+".");},
+  vue:function(nom){
+    var out={};
+    if(nom==="ca_par_devise"){
+      S.prestation.forEach(function(p){var c=categorie(p.etat);if(c!=="engage"&&c!=="clos")return;
+        var t=num(p.tjm),j=num(p.jours);if(!(t>0)||!(j>0))return;out[p.devise]=(out[p.devise]||0)+t*j;});
+    }else if(nom==="marge_par_devise"){
+      S.snap.forEach(function(x){if(x.marge==null)return;out[x.ca_devise]=(out[x.ca_devise]||0)+x.marge;});
+    }else if(nom==="occupation_valorisee_par_devise"){
+      S.temps.forEach(function(x){var p=get("prestation",x.prestation);if(!p)return;var t=num(p.tjm);if(!(t>0))return;
+        out[p.devise]=(out[p.devise]||0)+x.qte*t;});
+    }else throw new Mur("M-15","Vue inconnue : "+nom+". Les seules exposées sont ca_par_devise, marge_par_devise, occupation_valorisee_par_devise.");
+    return Object.keys(out).sort().map(function(d){return {devise:d,montant:Math.round(out[d]*100)/100};});
+  }
+};
+
+/* ===================== RÔLES (matrice retenue F8–F14, machines §1–§6) ===================== */
+var ROLES={
+  ia:{nom:"Ingénieur d'affaires",agence:"A",perms:["CreateCompany","CreateContact","CreateNeed","RecordClientDecision","PositionCandidate","DeclareCVShared","WithdrawPositioning","SuspendNeed","ResumeNeed","CloseNeed","ReopenNeed","RequalifyCompany","CreateAction"]},
+  rh:{nom:"Ressources humaines",agence:"A",perms:["CreateCandidate","CompleteCandidate","ConvertCandidateToResource","CreateResource","SetResourceState","PositionCandidate","DeclareCVShared","WithdrawPositioning","RecordAbsence","CreateAction"]},
+  rr:{nom:"Responsable recrutement",agence:"A",perms:["CreateCandidate","ConvertCandidateToResource","CreateAction"]},
+  eval:{nom:"Évaluateur",agence:"A",perms:["RecordQualification"]},
+  staffing:{nom:"Staffing",agence:"A",perms:["PositionResource","DeclareCVShared","WithdrawPositioning","TakeNeedInCharge","DeclareNeedFilled","SuspendNeed","ResumeNeed","CreateProject","CreateProjectFromNeed","CreatePrestation","CancelPrestation","RecordTimesheet","ConvertCandidateToResource","SetResourceState","CreateAction"]},
+  dp:{nom:"Directeur de projet",agence:"A",perms:["CreateProject","CreateProjectFromNeed","CreatePrestation","SignPrestation","ClosePrestation","CancelPrestation","CloseProject","RecordTimesheet","CreateAction"]},
+  ressource:{nom:"Ressource en self-service",agence:"A",perms:["RecordOwnTimesheet","RecordOwnAbsence"],self:true},
+  admin:{nom:"Administrateur",agence:"*",perms:["SetPolicy","ManageRefs","ManageGroups"]},
+  support:{nom:"Support",agence:"*",perms:[]}
+};
+var roleActif="staffing";
+function R(){return ROLES[roleActif];}
+function peut(c){return R().perms.indexOf(c)>=0;}
+function maPersonne(){if(!R().self)return null;var r=S&&S.pr&&S.pr[0];return r?r.personne:null;}
+function agenceCourante(){return R().agence==="*"?"A":R().agence;}
+
+/* ===================== POLITIQUES — sous-ensemble du registre §C ; le compte s'affiche, il ne se recopie pas ===================== */
+var HB="hors banc — aucun effet ici";
+var POL_DEF=[
+ {c:"besoin.contact",f:"Besoin",l:"Contact sur le besoin",o:["facultatif","obligatoire"],s:"DEC-04",e:"Créer un besoin sans contact connu."},
+ {c:"besoin.projets_max",f:"Besoin",l:"Projets par besoin",o:["illimite","un_seul"],s:"DEC-05",e:"Ouvrir un deuxième projet depuis le même besoin."},
+ {c:"besoin.staffing.declencheur",f:"Besoin",l:"Passage en recherche",o:["premier_positionnement","commande_prise_en_charge","retour_client_retenu"],s:"G3",e:"Ce qui fait passer le besoin de « à pourvoir » à « en recherche »."},
+ {c:"besoin.pourvu.mode",f:"Besoin",l:"Passage à pourvu",o:["manuel_avec_garde","auto_par_prestation_signee","auto_par_personne_signee"],s:"F3 · G4",e:"Qui déclare un besoin pourvu, et quand."},
+ {c:"besoin.pourvu.garde_minimale",f:"Besoin",l:"Ce que « pourvu » exige",o:["tous_les_postes_signes","une_prestation_signee","aucune"],s:"F3 · G4 · S4 · T-1",e:"Un poste = une prestation signée. Par défaut, il en faut autant que de postes visés."},
+ {c:"positionnement.sur_besoin_inactif",f:"Positionnement",l:"Positionner sur un besoin inactif",o:["refus","alerte","libre"],s:"F5",e:"Positionner sur un besoin pourvu, suspendu ou fermé."},
+ {c:"positionnement.unicite",f:"Positionnement",l:"Même personne deux fois",o:["actifs","aucune","historique"],s:"G7 · BM-21",e:"Proposer deux fois la même personne sur un besoin."},
+ {c:"positionnement.cv_partage_obligatoire",f:"Positionnement",l:"CV présenté avant décision",o:["oui","non"],s:"BM-23 · G10 · C-1",e:"Enregistrer un retour client sans avoir présenté de CV."},
+ {c:"projet.creation_depuis_besoin",f:"Projet",l:"Création du projet",o:["explicite","automatique_au_retenu"],s:"DEC-06 · US6",e:"Un positionnement retenu crée-t-il le projet tout seul — sous les mêmes gardes."},
+ {c:"projet.depuis_besoin.garde",f:"Projet",l:"Garde de création depuis un besoin",o:["retenu_requis","libre"],s:"F1",e:"Créer un projet sans aucun positionnement retenu."},
+ {c:"projet.depuis_besoin.garde_profil",f:"Projet",l:"Ce que « retenu » doit porter",o:["personne_avec_ressource","positionnement_ressource_strict"],s:"G1",e:"Un candidat retenu puis converti ouvre-t-il le projet."},
+ {c:"projet.contact",f:"Projet",l:"Contact sur le projet",o:["obligatoire","facultatif"],s:"US5 · F4",e:"Créer un projet sans contact."},
+ {c:"projet.cloture.garde",f:"Projet",l:"Clôture du projet",o:["prestations_closes","cascade_cloture_prestations"],s:"F7",e:"Clôturer un projet qui a encore des missions ouvertes."},
+ {c:"prestation.surcharge.mode",f:"Prestation",l:"Dépassement de charge",o:["alerte","refus","silencieux"],s:"DEC-10 · C-2",e:"Ce qui arrive quand la charge engagée dépasse le seuil."},
+ {c:"prestation.surcharge.seuil_pct",f:"Prestation",l:"Seuil de charge",o:["100","80","120"],s:"DEC-10",e:"À partir de quel pourcentage engagé on réagit."},
+ {c:"prestation.annulation.garde",f:"Prestation",l:"Annuler une prestation",o:["aucun_temps_saisi","libre"],s:"G11",e:"Annuler une mission sur laquelle du temps a été saisi."},
+ {c:"projet.devises_mixtes",f:"Projet",l:"Devises sur un même projet",o:["autorise","refus"],s:"D-9 · cahier Q61",e:"Une prestation dans une autre devise que la première du projet. Le projet s'affiche alors par devise, jamais additionné."},
+ {c:"ressource.etat.mode",f:"Ressource",l:"État de la ressource",o:["manuel","derive_des_prestations"],s:"F26",e:"L'état en mission ou disponible est-il déduit des missions signées."},
+ {c:"temps.periode",f:"Temps",l:"Période de saisie",o:["dates_prestation","dates_prestation_et_mois_ouvert"],s:"G9",e:"Saisir hors des dates de la mission. « mois ouvert » : "+HB+".",hb:["dates_prestation_et_mois_ouvert"]},
+ {c:"temps.correction_apres_cloture",f:"Temps",l:"Correction après clôture",o:["ajustement_trace","refus"],s:"F34",e:"Corriger un temps sur une mission déjà clôturée."},
+ {c:"temps.plafond_jour",f:"Temps",l:"Plafond par jour",o:["alerte","refus","aucun"],s:"P-6 · cahier Q60",e:"Une personne dépasse 1 jour de temps sur une même date, toutes missions confondues."},
+ {c:"societe.passage_client.declencheur",f:"Société",l:"Passage en client",o:["premiere_prestation_signee","creation_projet","manuel"],s:"G8 · BM-15",e:"Ce qui fait d'un prospect un client."},
+ {c:"societe.passage_client.propagation",f:"Société",l:"Jusqu'où descend le statut client",o:["branche_contractante_et_contacts_du_service","societe_seule","toute_la_societe"],s:"BM-15 · CdC II.F · D-2",e:"Ce qui devient client quand une mission est signée : la société seule, sa branche contractante, ou tout."},
+ {c:"societe.retour_prospect",f:"Société",l:"Retour à prospect",o:["manuel","auto_fin_dernier_contrat","auto_apres_delai"],s:"F23",e:"Un client redevient-il prospect tout seul. Les deux options automatiques : "+HB+".",hb:["auto_fin_dernier_contrat","auto_apres_delai"]},
+ {c:"doublon.personne.mode",f:"Doublons",l:"Doublon de personne",o:["avertir","bloquer","ignorer"],s:"F20",e:"Créer quelqu'un dont le nom existe déjà."},
+ {c:"doublon.societe.mode",f:"Doublons",l:"Doublon de société",o:["avertir","bloquer","ignorer"],s:"F20",e:"Créer une société dont le nom existe déjà."},
+ {c:"candidat.conversion.acteur",f:"Recrutement",l:"Qui convertit un candidat",o:["groupe_rh","groupe_rh_ou_rr","tout_habilite"],s:"F9",e:"Le groupe autorisé à créer un profil ressource, en plus de la permission."},
+ {c:"droits.surcharge_restrictive",f:"Droits",l:"Surcharge restrictive",o:["restriction_gagne","union_gagne"],s:"F28",e:"Ce qui l'emporte quand un groupe autorise et un autre restreint — "+HB+".",rouge:true,hb:["restriction_gagne","union_gagne"]}
+];
+var POL={};POL_DEF.forEach(function(p){POL[p.c]=p;});
+function pol(c){var v=S.pol[c];var d=POL[c];if(!d)throw new Mur("registre","Politique inconnue : "+c+" — aucun if métier sans clé au registre.");return d.o.indexOf(v)>=0?v:d.o[0];}
+
+/* ===================== MONDE ===================== */
+var S=null,ui={ecran:"tableau",ctx:{}};
+function id(t){S.seq[t]=(S.seq[t]||0)+1;return t.toUpperCase()+"-"+String(S.seq[t]).padStart(4,"0");}
+function get(t,i){var a=S[t];if(!a)return null;for(var k=0;k<a.length;k++){if(a[k].id===i)return a[k];}return null;}
+function ev(type,objet,ref,detail,pols,ko){
+  return db.insert("ev",{t:type,o:objet,r:ref||"",d:detail,p:pols||"",a:R().nom,h:Date.now(),ko:!!ko});
+}
+function neuf(){
+  var w={seq:{},aujourdhui:"2027-04-06",personne:[],pc:[],pr:[],societe:[],unite:[],contact:[],besoin:[],pos:[],projet:[],prestation:[],temps:[],absence:[],action:[],snap:[],ev:[],pol:{}};
+  POL_DEF.forEach(function(p){w.pol[p.c]=p.o[0];});
+  S=w;
+  /* D-3 : `roles` = fournisseur / interne seulement ; prospect et client sont un STATUT */
+  var alpha=db.insert("societe",{nom:"ALPHA",roles:[],secteur:"Industrie",ville:"Casablanca",statut:"client"});
+  var beta=db.insert("societe",{nom:"BETA",roles:[],secteur:"Banque",ville:"Rabat",statut:"prospect"});
+  var gamma=db.insert("societe",{nom:"GAMMA",roles:["fournisseur"],secteur:"Services",ville:"Casablanca",statut:"prospect"});
+  db.insert("societe",{nom:"AVALIANCE",roles:["interne"],secteur:"ESN",ville:"Casablanca",statut:null});
+  /* D-2 : NULL = prospect, jamais « hérite ». ALPHA a une mission signée : sa branche est écrite en clair. */
+  var p1=db.insert("unite",{societe:alpha.id,parent:null,type:"pole",nom:"Pôle 1",statut:"client"});
+  var bu=db.insert("unite",{societe:alpha.id,parent:p1.id,type:"bu",nom:"BU A",statut:"client"});
+  var s1=db.insert("unite",{societe:alpha.id,parent:bu.id,type:"service",nom:"Service 1",statut:"client"});
+  db.insert("unite",{societe:alpha.id,parent:bu.id,type:"service",nom:"Service 2",statut:null});
+  db.insert("unite",{societe:alpha.id,parent:null,type:"pole",nom:"Pôle 2",statut:null});
+  var ct1=db.insert("contact",{societe:alpha.id,unite:s1.id,nom:"Contact CT-0101",fonction:"Décisionnaire",statut:"client"});
+  db.insert("contact",{societe:alpha.id,unite:null,nom:"Contact CT-0102",fonction:"Technique",statut:null});
+  /* BETA a une organisation, prospecte de bout en bout : c'est sur elle qu'on verra la propagation écrire, et une sœur rester prospect */
+  var pb=db.insert("unite",{societe:beta.id,parent:null,type:"pole",nom:"Pôle B",statut:null});
+  var sb1=db.insert("unite",{societe:beta.id,parent:pb.id,type:"service",nom:"Service B1",statut:null});
+  db.insert("unite",{societe:beta.id,parent:pb.id,type:"service",nom:"Service B2",statut:null});
+  db.insert("contact",{societe:beta.id,unite:sb1.id,nom:"Contact CT-0140",fonction:"Achats",statut:null});
+  db.insert("contact",{societe:beta.id,unite:sb1.id,nom:"Contact CT-0141",fonction:"Technique",statut:null});
+  var r1=ressource("Ressource R-0142","Développeur Java senior","INTERNAL",null);
+  var r2=ressource("Ressource R-0098","Architecte cloud","EXTERNAL",gamma.id);
+  var r3=ressource("Ressource R-0233","Analyste métier","INTERNAL",null);
+  candidat("Candidat C-0088","Développeur Java senior","complete");
+  candidat("Candidat C-0091","Chef de projet","draft");
+  var b=db.insert("besoin",{societe:alpha.id,contact:ct1.id,agence:"A",titre:"Deux développeurs Java seniors",type:"regie",etat:"staffing",precedent:null,priorite:"P1",postes:2,demarrage:"2027-03-01"});
+  db.insert("pos",{besoin:b.id,pc:null,pr:r1.pr.id,personne:r1.p.id,etat:"retenu",cv:true,motif:null,decision:"2027-02-10"});
+  db.insert("pos",{besoin:b.id,pc:S.pc[0].id,pr:null,personne:S.pc[0].personne,etat:"presente",cv:true,motif:null,decision:null});
+  db.insert("besoin",{societe:beta.id,contact:null,agence:"A",titre:"Architecte cloud",type:"forfait",etat:"ouvert",precedent:null,priorite:"P2",postes:1,demarrage:"2027-05-01"});
+  var pj=db.insert("projet",{societe:alpha.id,contact:ct1.id,besoin:b.id,agence:"A",type:"regie",titre:"Plateforme Alpha — lot 1",etat:"ouvert",devise_defaut:"EUR"});
+  var pr=db.insert("prestation",{projet:pj.id,pr:r1.pr.id,etat:"signee",debut:"2027-03-01",fin:"2027-08-31",taux:60,tjm:1,cjm:null,devise:"EUR",cjm_devise:"EUR",jours:120,cloture:null});
+  db.insert("prestation",{projet:pj.id,pr:r1.pr.id,etat:"previsionnelle",debut:"2027-04-01",fin:"2027-04-30",taux:50,tjm:1,cjm:null,devise:"EUR",cjm_devise:"EUR",jours:10,cloture:null});
+  db.insert("prestation",{projet:pj.id,pr:r2.pr.id,etat:"previsionnelle",debut:"2027-04-01",fin:"2027-09-30",taux:40,tjm:1,cjm:null,devise:"EUR",cjm_devise:"EUR",jours:50,cloture:null});
+  db.insert("temps",{prestation:pr.id,pr:r1.pr.id,jour:"2027-03-01",qte:0.6,ajust:false});
+  db.insert("temps",{prestation:pr.id,pr:r1.pr.id,jour:"2027-03-02",qte:0.6,ajust:false});
+  db.insert("absence",{pr:r3.pr.id,type:"conge",debut:"2027-04-14",fin:"2027-04-18"});
+  /* une mission déjà close, avec son snapshot : le banc M-6 a quelque chose à tenter dès le chargement */
+  var pj0=db.insert("projet",{societe:alpha.id,contact:ct1.id,besoin:null,agence:"A",type:"forfait",titre:"Audit Alpha — clos",etat:"ouvert",devise_defaut:"EUR"});
+  var pr0=db.insert("prestation",{projet:pj0.id,pr:r3.pr.id,etat:"signee",debut:"2027-01-05",fin:"2027-02-27",taux:100,tjm:1,cjm:null,devise:"EUR",cjm_devise:"EUR",jours:38,cloture:null});
+  db.insert("temps",{prestation:pr0.id,pr:r3.pr.id,jour:"2027-01-05",qte:1,ajust:false});
+  cloturerPrestation(pr0,"2027-02-27");
+  db.update("projet",pj0.id,{etat:"clos"});
+  ev("MondeInitialise","monde","","Monde de démonstration chargé — date du monde : 06/04/2027","");
+  return w;
+}
+function ressource(nom,titre,type,fourn){
+  var p=db.insert("personne",{nom:nom,ville:"Casablanca",pays:"MA"});
+  var r=db.insert("pr",{personne:p.id,titre:titre,type:type,etat:"en_cours",agence:"A",fournisseur:fourn,cout:null,tjm:null});
+  return {p:p,pr:r};
+}
+function candidat(nom,titre,etat){
+  var p=db.insert("personne",{nom:nom,ville:"Rabat",pays:"MA"});
+  var c=db.insert("pc",{personne:p.id,titre:titre,etat:etat,provenance:"LinkedIn",dispo:"1 à 3 mois"});
+  return {p:p,pc:c};
+}
+
+/* ===================== OUTILS ===================== */
+function nomPersonne(pid){var p=get("personne",pid);return p?p.nom:"—";}
+function nomPr(prid){var r=get("pr",prid);return r?nomPersonne(r.personne):"—";}
+function nomSoc(sid){var s=get("societe",sid);return s?s.nom:"—";}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function jours(a,b){var o=[],d=new Date(a+"T00:00:00Z"),f=new Date(b+"T00:00:00Z");while(d<=f){o.push(d.toISOString().slice(0,10));d.setUTCDate(d.getUTCDate()+1);}return o;}
+function ouvre(j){var d=new Date(j+"T00:00:00Z").getUTCDay();return d!==0&&d!==6;}
+function fr(j){if(!j)return "—";var p=j.split("-");return p[2]+"/"+p[1]+"/"+p[0];}
+function categorie(e){
+  return {ouvert:"a_pourvoir",staffing:"en_recherche",pourvu:"pourvu",suspendu:"suspendu",ferme:"ferme",
+    draft:"brouillon",complete:"actif",
+    en_cours:"en_mission",intercontrat:"disponible",sortie:"sorti",
+    propose:"propose",presente:"presente",retenu:"terminal_positif",refuse_client:"terminal_negatif",retire:"retire",
+    previsionnelle:"previsionnel",signee:"engage",cloturee:"clos",annulee:"annule",
+    ouvert_projet:"ouvert",clos:"clos"}[e]||e;
+}
+/* E-2 : deux sommes distinguées ; la garde lit engage seule (C-3) */
+function chargeJour(prid,j){
+  var e=0,pv=0;
+  S.prestation.forEach(function(p){
+    if(p.pr!==prid||j<p.debut||j>p.fin)return;
+    var c=categorie(p.etat);
+    if(c==="engage")e+=p.taux;else if(c==="previsionnel")pv+=p.taux;
+  });
+  return {engage:e,previsionnel:pv};
+}
+function prestationsSignees(b){
+  var n=0,vus={};
+  S.projet.forEach(function(pj){
+    if(pj.besoin!==b.id)return;
+    S.prestation.forEach(function(p){
+      if(p.projet!==pj.id)return;
+      var c=categorie(p.etat);
+      if(c==="engage"||c==="clos"){n++;var r=get("pr",p.pr);if(r)vus[r.personne]=1;}
+    });
+  });
+  return {prestations:n,personnes:Object.keys(vus).length};
+}
+function etatRessource(r){
+  if(pol("ressource.etat.mode")==="derive_des_prestations"&&categorie(r.etat)!=="sorti"){
+    var j=S.aujourdhui;
+    var enMission=S.prestation.some(function(p){return p.pr===r.id&&categorie(p.etat)==="engage"&&j>=p.debut&&j<=p.fin;});
+    return enMission?"en_cours":"intercontrat";
+  }
+  return r.etat;
+}
+function tjmAff(v){return (v===1||v==null)?"[TARIF]":String(v);}
+
+/* ===================== REFUS / RÉUSSITE ===================== */
+function KO(src,msg){return {ok:false,src:src,msg:msg};}
+function OK(msg,pols){return {ok:true,msg:msg,pol:pols||""};}
+function droit(c){
+  if(peut(c))return null;
+  return KO("DEC-17 · permission","Votre groupe ("+R().nom+") ne porte pas la commande "+c+". Un bouton visible n'est pas une autorisation.");
+}
+function perimetre(agence){
+  if(R().agence!=="*"&&agence!==R().agence)return KO("M-13 · périmètre",MUR_MSG["M-13"]+" Vous : agence "+R().agence+", la cible : agence "+agence+".");
+  return null;
+}
+function num(v){var n=parseFloat(String(v==null?"":v).replace(",","."));return isNaN(n)?null:n;}
+
+/* ===================== EFFETS FACTORISÉS ===================== */
+/* §4 : passage client — appelé à la signature (défaut) ou à la création de projet */
+function effetsPassageClient(societeId,declencheurAttendu,contactId){
+  if(pol("societe.passage_client.declencheur")!==declencheurAttendu)return "";
+  var soc=get("societe",societeId);
+  if(!soc||soc.roles.indexOf("interne")>=0)return "";
+  var portee=pol("societe.passage_client.propagation"),ecrits=[];
+  if(soc.statut!=="client"){db.update("societe",soc.id,{statut:"client"});ecrits.push(soc.nom);}  /* D-3 : le statut, jamais les rôles */
+  if(portee==="toute_la_societe"){
+    S.unite.forEach(function(u){if(u.societe===soc.id&&u.statut!=="client"){db.update("unite",u.id,{statut:"client"});ecrits.push(u.nom);}});
+    S.contact.forEach(function(c){if(c.societe===soc.id&&c.statut!=="client"){db.update("contact",c.id,{statut:"client"});ecrits.push(c.nom);}});
+  }else if(portee==="branche_contractante_et_contacts_du_service"){
+    var ct=contactId?get("contact",contactId):null,u=ct&&ct.unite?get("unite",ct.unite):null,garde=0;
+    while(u&&garde++<20){
+      if(u.statut!=="client"){db.update("unite",u.id,{statut:"client"});ecrits.push(u.nom);}
+      var uid=u.id;
+      S.contact.forEach(function(c){if(c.unite===uid&&c.statut!=="client"){db.update("contact",c.id,{statut:"client"});ecrits.push(c.nom);}});
+      u=u.parent?get("unite",u.parent):null;   /* on remonte la branche ; une sœur reste NULL = prospect */
+    }
+  }
+  if(!ecrits.length)return "";
+  ev("ClientStatusDerived","societe",soc.id,"passage client ("+portee.replace(/_/g," ")+") — écrit sur : "+ecrits.join(", "),"societe.passage_client.declencheur, societe.passage_client.propagation");
+  return " Passage client : "+ecrits.join(", ")+" — une branche sœur reste prospect.";
+}
+/* E-1 : tout passage en engage produit les mêmes effets, quel que soit le chemin */
+function effetsSignature(p){
+  var msg="";
+  ev("PrestationSigned","prestation",p.id,nomPr(p.pr)+" — mission engagée","");
+  var pj=get("projet",p.projet);
+  msg+=effetsPassageClient(pj.societe,"premiere_prestation_signee",pj.contact);
+  if(pj.besoin){
+    var b=get("besoin",pj.besoin),mode=pol("besoin.pourvu.mode");
+    if(b&&categorie(b.etat)==="en_recherche"&&mode!=="manuel_avec_garde"){
+      var s=prestationsSignees(b);
+      var ok=mode==="auto_par_prestation_signee"?s.prestations>=b.postes:s.personnes>=b.postes;
+      if(ok){db.update("besoin",b.id,{etat:"pourvu"});
+        ev("NeedStateChanged","besoin",b.id,"vers pourvu — automatique à la signature ("+mode.replace(/_/g," ")+")","besoin.pourvu.mode");
+        msg+=" Le besoin "+b.id+" passe à pourvu tout seul : réglage actuel, pas le défaut.";}
+    }
+  }
+  return msg;
+}
+function gardeSignature(d){
+  var tjm=num(d.tjm),jours=num(d.jours),taux=num(d.taux);
+  if(!(tjm>0)||!(jours>0)||!(taux>0))
+    return KO("machines §5 · garde de signature","TJM vendu, jours vendus et taux d'occupation doivent être numériques et positifs. Saisissez un TJM, même fictif : le banc ne certifie aucun euro.");
+  return null;
+}
+/* E-3 : une seule garde de création depuis un besoin, pour le manuel comme pour l'automatique */
+function creerProjetDepuisBesoin(b,contactId,titre,auto){
+  if(categorie(b.etat)==="ferme")return KO("cycle besoin","Ce besoin est fermé.");
+  if(pol("besoin.projets_max")==="un_seul"&&S.projet.some(function(p){return p.besoin===b.id;}))
+    return KO("politique besoin.projets_max","Ce besoin a déjà un projet et le réglage n'en autorise qu'un.");
+  if(pol("projet.depuis_besoin.garde")==="retenu_requis"){
+    var retenus=S.pos.filter(function(p){return p.besoin===b.id&&categorie(p.etat)==="terminal_positif";});
+    if(!retenus.length)return KO("F1 · politique projet.depuis_besoin.garde","Aucun positionnement retenu sur ce besoin. Enregistrez d'abord le retour client.");
+    if(pol("projet.depuis_besoin.garde_profil")==="personne_avec_ressource"){
+      if(!retenus.some(function(p){return S.pr.some(function(r){return r.personne===p.personne&&categorie(r.etat)!=="sorti";});}))
+        return KO("G1 · politique projet.depuis_besoin.garde_profil","La personne retenue n'a pas de profil ressource actif. Convertissez le candidat, puis revenez : c'est la même personne, la garde le reconnaîtra.");
+    }else if(!retenus.some(function(p){return !!p.pr;})){
+      return KO("G1 · réglage strict","Le réglage strict exige un positionnement porté par un profil ressource. Un candidat converti ne suffit pas — c'est l'autre lecture de F1.");
+    }
+  }
+  var contact=contactId||b.contact;
+  if(pol("projet.contact")==="obligatoire"&&!contact)
+    return KO("US5 · F4 · politique projet.contact","Le besoin n'a pas de contact. Donnez-en un maintenant : le besoin reste valide sans, le projet non.");
+  if(contact){var ct=get("contact",contact);if(!ct||ct.societe!==b.societe)return KO("M-12 · cohérence",MUR_MSG["M-12"]);}
+  var pj=db.insert("projet",{societe:b.societe,contact:contact||null,besoin:b.id,agence:b.agence,type:b.type,titre:titre||b.titre,etat:"ouvert",devise_defaut:"EUR"});
+  ev("ProjectCreated","projet",pj.id,pj.titre+" — depuis "+b.id+(auto?" — automatique au retenu (réglage projet.creation_depuis_besoin)":""),"projet.depuis_besoin.garde, projet.depuis_besoin.garde_profil, projet.contact, besoin.projets_max");
+  var m=effetsPassageClient(b.societe,"creation_projet",contact);
+  return OK("Projet "+pj.id+" créé. Le besoin n'a pas changé d'état, aucune prestation n'a été créée."+m,"projet.depuis_besoin.garde, projet.contact");
+}
+function cloturerPrestation(p,date){
+  var t=S.temps.filter(function(x){return x.prestation===p.id;}).reduce(function(a,b){return a+b.qte;},0);
+  db.update("prestation",p.id,{etat:"cloturee",cloture:date||p.fin});
+  var tjm=num(p.tjm),cjm=num(p.cjm),cjmDev=p.cjm_devise||p.devise;
+  var ca=tjm?t*tjm:null,cout=cjm?t*cjm:null;
+  /* D-9 / M-15 : la marge n'existe que si vente et coût sont dans la même devise — aucun taux n'est saisi */
+  /* trois raisons distinctes de n'avoir pas de marge — on écrit laquelle, sinon l'écran ment */
+  var motif=null;
+  if(cjmDev!==p.devise)motif="devises";                 /* M-15 : vendu et payé dans deux devises, aucun taux */
+  else if(ca==null)motif="ca";                          /* ATL-16 : aucun TJM saisi, CA non chiffré */
+  else if(cout==null)motif="cout";                      /* aucun CJM saisi */
+  var marge=motif?null:ca-cout;
+  db.insert("snap",{prestation:p.id,le:new Date().toISOString(),version:"ATL-2026-09-16",tempsSaisis:t,ca:ca,ca_devise:p.devise,cout:cout,cout_devise:cjmDev,marge:marge,marge_motif:motif});
+  ev("PrestationClosed","prestation",p.id,nomPr(p.pr)+" — marge figée, "+t.toFixed(1)+" jour(s) saisis"+(marge==null?" — marge « — » : "+p.devise+" / "+cjmDev+", pas de taux":""),"change.mode");
+  return t;
+}
+
+/* ===================== COMMANDES ===================== */
+var CMD={};
+
+CMD.CreateCompany=function(d){
+  var e=droit("CreateCompany");if(e)return e;
+  if(!d.nom)return KO("identité","Renseignez l'identité de la société.");
+  var hom=S.societe.some(function(s){return s.nom.toLowerCase()===d.nom.toLowerCase();});
+  var mode=pol("doublon.societe.mode");
+  if(hom&&mode==="bloquer")return KO("F20 · politique doublon.societe.mode","Une société porte déjà ce nom. Le réglage actuel bloque la création.");
+  var roles=(d.roles||[]).filter(function(r){return r==="fournisseur"||r==="interne";});   /* D-3 */
+  var statut=d.statut==="client"?"client":"prospect";
+  var s=db.insert("societe",{nom:d.nom,roles:roles,secteur:d.secteur||"",ville:d.ville||"",statut:statut});
+  ev("CompanyCreated","societe",s.id,s.nom+" créée — statut "+statut+(roles.length?", rôles "+roles.join(", "):", aucun rôle")+(hom&&mode==="avertir"?" — homonyme signalé":""),"doublon.societe.mode="+mode);
+  return OK("Société "+s.nom+" créée."+(hom&&mode==="avertir"?" Un homonyme existe : signalé, pas bloqué.":""),"doublon.societe.mode");
+};
+CMD.CreateContact=function(d){
+  var e=droit("CreateContact");if(e)return e;
+  if(!d.societe)return KO("M-12 · cohérence","Choisissez la société du contact. Un contact n'existe pas sans société.");
+  var c=db.insert("contact",{societe:d.societe,unite:null,nom:d.nom||"Contact sans nom",fonction:d.fonction||""});
+  ev("ContactCreated","contact",c.id,c.nom+" chez "+nomSoc(d.societe),"");
+  return OK("Contact créé chez "+nomSoc(d.societe)+".");
+};
+CMD.CreateCandidate=function(d){
+  var e=droit("CreateCandidate");if(e)return e;
+  if(!d.nom||!d.titre)return KO("champs requis","Le nom et le titre sont obligatoires pour ouvrir un dossier candidat.");
+  var hom=S.personne.some(function(p){return p.nom.toLowerCase()===d.nom.toLowerCase();});
+  var mode=pol("doublon.personne.mode");
+  if(hom&&mode==="bloquer")return KO("F20 · politique doublon.personne.mode","Une personne porte déjà ce nom. Le réglage actuel bloque.");
+  var c=candidat(d.nom,d.titre,"draft");
+  ev("CandidateCreated","pc",c.pc.id,d.nom+" — dossier ouvert en brouillon"+(hom&&mode==="avertir"?" — homonyme signalé":""),"doublon.personne.mode="+mode);
+  return OK("Candidat créé en brouillon."+(hom&&mode==="avertir"?" Un homonyme existe : signalé, jamais fusionné.":""),"doublon.personne.mode");
+};
+CMD.CompleteCandidate=function(d){
+  var e=droit("CompleteCandidate");if(e)return e;
+  var c=get("pc",d.pc);if(!c)return KO("objet","Candidat introuvable.");
+  if(categorie(c.etat)!=="brouillon")return KO("cycle candidat","Ce dossier n'est pas en brouillon.");
+  db.update("pc",c.id,{etat:"complete"});
+  ev("CandidateStateChanged","pc",c.id,"brouillon vers complété","candidat.complete.champs_requis");
+  return OK("Dossier complété. La conversion reste une commande à part, pas un troisième statut.");
+};
+CMD.ConvertCandidateToResource=function(d){
+  var acteur=pol("candidat.conversion.acteur");
+  var autorises={groupe_rh:["rh"],groupe_rh_ou_rr:["rh","rr"]}[acteur];
+  if(autorises&&autorises.indexOf(roleActif)<0)
+    return KO("F9 · politique candidat.conversion.acteur","Sous ce réglage, seul "+(acteur==="groupe_rh"?"le groupe RH":"RH ou Responsable recrutement")+" convertit. Vous êtes "+R().nom+". Changez de rôle, ou changez le réglage.");
+  var e=droit("ConvertCandidateToResource");if(e)return e;
+  var c=get("pc",d.pc);if(!c)return KO("objet","Candidat introuvable.");
+  var r=db.insert("pr",{personne:c.personne,titre:c.titre,type:"INTERNAL",etat:"en_cours",agence:agenceCourante(),fournisseur:null,cout:null,tjm:null});
+  ev("CandidateConverted","pr",r.id,nomPersonne(c.personne)+" reçoit un profil ressource — identité et historique candidat conservés","candidat.conversion.acteur");
+  return OK("Profil ressource créé sur la même personne. Le dossier candidat reste « "+c.etat+" », ses positionnements restent lisibles.","candidat.conversion.acteur");
+};
+CMD.SetResourceState=function(d){
+  var e=droit("SetResourceState");if(e)return e;
+  var r=get("pr",d.pr);if(!r)return KO("objet","Ressource introuvable.");
+  if(pol("ressource.etat.mode")==="derive_des_prestations"&&categorie(d.etat)!=="sorti")
+    return KO("F26 · politique ressource.etat.mode","Sous ce réglage, « en mission » et « disponible » se déduisent des missions signées. Seule la sortie se saisit.");
+  db.update("pr",r.id,{etat:d.etat});
+  ev("ResourceStateChanged","pr",r.id,nomPersonne(r.personne)+" — "+d.etat.replace(/_/g," "),"ressource.etat.mode");
+  return OK("État de la ressource modifié.","ressource.etat.mode");
+};
+CMD.CreateNeed=function(d){
+  var e=droit("CreateNeed");if(e)return e;
+  if(!d.societe)return KO("M-11 · besoin sans société",MUR_MSG["M-11"]);
+  if(pol("besoin.contact")==="obligatoire"&&!d.contact)
+    return KO("politique besoin.contact","Le réglage actuel exige un contact sur le besoin. Le défaut Avaliance le rend facultatif.");
+  if(d.contact){var ct=get("contact",d.contact);if(ct&&ct.societe!==d.societe)return KO("M-12 · cohérence",MUR_MSG["M-12"]);}
+  var b=db.insert("besoin",{societe:d.societe,contact:d.contact||null,agence:agenceCourante(),titre:d.titre||"Besoin sans titre",type:d.type||"regie",etat:"ouvert",precedent:null,priorite:d.priorite||"P2",postes:Math.max(1,parseInt(d.postes,10)||1),demarrage:d.demarrage||""});
+  ev("NeedCreated","besoin",b.id,b.titre+" chez "+nomSoc(b.societe)+" — "+b.postes+" poste(s)","besoin.contact");
+  return OK("Besoin créé, état « ouvert ». La priorité et l'état sont deux colonnes séparées.","besoin.contact");
+};
+function positionner(d,cmdName){
+  var e=droit(cmdName);if(e)return e;
+  var b=get("besoin",d.besoin);if(!b)return KO("objet","Besoin introuvable.");
+  var pe=perimetre(b.agence);if(pe)return pe;
+  var cat=categorie(b.etat),alerte="";
+  if(cat!=="a_pourvoir"&&cat!=="en_recherche"){
+    var m=pol("positionnement.sur_besoin_inactif");
+    if(m==="refus")return KO("F5 · politique positionnement.sur_besoin_inactif","Le besoin est « "+b.etat+" ». Réactivez-le avant un nouveau positionnement.");
+    if(m==="alerte")alerte=" Alerte : le besoin est « "+b.etat+" » — le positionnement passe quand même, c'est le réglage.";
+  }
+  var prof=d.pc?get("pc",d.pc):get("pr",d.pr);if(!prof)return KO("objet","Profil introuvable.");
+  var personne=prof.personne,uni=pol("positionnement.unicite");
+  if(uni!=="aucune"){
+    var dup=S.pos.some(function(p){
+      if(p.besoin!==b.id||p.personne!==personne)return false;
+      if(uni==="historique")return true;
+      var c=categorie(p.etat);return c==="propose"||c==="presente";
+    });
+    if(dup)return KO("G7 · politique positionnement.unicite",uni==="historique"?"Cette personne a déjà été proposée sur ce besoin, un jour. Le réglage historique l'interdit à jamais.":"Cette personne est déjà proposée sur ce besoin. Après un refus ou un retrait, elle pourra l'être à nouveau.");
+  }
+  var p=db.insert("pos",{besoin:b.id,pc:d.pc||null,pr:d.pr||null,personne:personne,etat:"propose",cv:false,motif:null,decision:null});
+  var msg="Positionnement créé, état « proposé ».";
+  if(pol("besoin.staffing.declencheur")==="premier_positionnement"&&cat==="a_pourvoir"){
+    db.update("besoin",b.id,{etat:"staffing"});
+    ev("NeedStateChanged","besoin",b.id,"à pourvoir vers en recherche — premier positionnement","besoin.staffing.declencheur");
+    msg+=" Le besoin passe en recherche : c'est son premier positionnement.";
+  }
+  ev("PositioningCreated","pos",p.id,nomPersonne(personne)+" sur "+b.titre+alerte,"positionnement.unicite, positionnement.sur_besoin_inactif");
+  return OK(msg+alerte,"besoin.staffing.declencheur, positionnement.unicite, positionnement.sur_besoin_inactif");
+}
+CMD.PositionCandidate=function(d){return positionner(d,"PositionCandidate");};
+CMD.PositionResource=function(d){return positionner(d,"PositionResource");};
+CMD.TakeNeedInCharge=function(d){
+  var e=droit("TakeNeedInCharge");if(e)return e;
+  if(pol("besoin.staffing.declencheur")!=="commande_prise_en_charge")return KO("politique besoin.staffing.declencheur","Sous le réglage actuel, la prise en charge n'est pas une commande : le besoin passe en recherche autrement.");
+  var b=get("besoin",d.besoin);if(!b)return KO("objet","Besoin introuvable.");
+  if(categorie(b.etat)!=="a_pourvoir")return KO("cycle besoin","Ce besoin n'est pas « à pourvoir ».");
+  db.update("besoin",b.id,{etat:"staffing"});
+  ev("NeedStateChanged","besoin",b.id,"à pourvoir vers en recherche — prise en charge explicite","besoin.staffing.declencheur");
+  return OK("Besoin pris en charge : en recherche.","besoin.staffing.declencheur");
+};
+CMD.DeclareCVShared=function(d){
+  var e=droit("DeclareCVShared");if(e)return e;
+  var p=get("pos",d.pos);if(!p)return KO("objet","Positionnement introuvable.");
+  if(categorie(p.etat)!=="propose")return KO("cycle positionnement","Le partage de CV se déclare depuis l'état « proposé ».");
+  db.update("pos",p.id,{etat:"presente",cv:true});
+  ev("CVShareDeclared","pos",p.id,nomPersonne(p.personne)+" — CV présenté au client","");
+  return OK("CV déclaré présenté. Le positionnement passe à « présenté ».");
+};
+CMD.RecordClientDecision=function(d){
+  var e=droit("RecordClientDecision");if(e)return e;
+  var p=get("pos",d.pos);if(!p)return KO("objet","Positionnement introuvable.");
+  var cat=categorie(p.etat);
+  if(cat!=="propose"&&cat!=="presente")return KO("cycle positionnement","Ce positionnement est déjà dans un état terminal. Un retenu ne redevient jamais proposé.");
+  if(pol("positionnement.cv_partage_obligatoire")==="oui"&&cat!=="presente")
+    return KO("BM-23 · C-1 · politique positionnement.cv_partage_obligatoire","Aucun CV n'a été présenté. Déclarez le partage, puis enregistrez la décision — deux commandes, une minute.");
+  db.update("pos",p.id,{etat:d.retenu?"retenu":"refuse_client",decision:S.aujourdhui});
+  ev("ClientDecisionRecorded","pos",p.id,nomPersonne(p.personne)+" — "+(d.retenu?"retenu par le client":"refusé par le client"),"positionnement.cv_partage_obligatoire");
+  if(!d.retenu)return OK("Retour client enregistré : refusé.","positionnement.cv_partage_obligatoire");
+  var msg="Retour client enregistré : retenu.";
+  var b=get("besoin",p.besoin);
+  if(pol("besoin.staffing.declencheur")==="retour_client_retenu"&&categorie(b.etat)==="a_pourvoir"){
+    db.update("besoin",b.id,{etat:"staffing"});
+    ev("NeedStateChanged","besoin",b.id,"à pourvoir vers en recherche — retour client retenu","besoin.staffing.declencheur");
+    msg+=" Le besoin passe en recherche : c'est le réglage.";
+  }
+  if(pol("projet.creation_depuis_besoin")==="automatique_au_retenu"){
+    var r=creerProjetDepuisBesoin(b,null,null,true);
+    if(r.ok)msg+=" Et le projet s'est créé automatiquement : réglage actuel, pas le défaut Avaliance.";
+    else{ev("ProjectAutoCreationRefused","besoin",b.id,"création automatique refusée — "+r.msg,r.src,true);
+      msg+=" La création automatique du projet a été refusée ("+r.src+") : "+r.msg+" Le retenu, lui, est enregistré.";}
+  }else msg+=" Aucun projet n'a été créé.";
+  return OK(msg,"positionnement.cv_partage_obligatoire, projet.creation_depuis_besoin, besoin.staffing.declencheur");
+};
+CMD.WithdrawPositioning=function(d){
+  var e=droit("WithdrawPositioning");if(e)return e;
+  var p=get("pos",d.pos);if(!p)return KO("objet","Positionnement introuvable.");
+  var cat=categorie(p.etat);
+  if(cat!=="propose"&&cat!=="presente")return KO("machines §4","Un positionnement ne se retire que depuis « proposé » ou « présenté ». Celui-ci est « "+p.etat+" ».");
+  var motif=["desistement","no_go_interne","autre"].indexOf(d.motif)>=0?d.motif:null;
+  if(!motif)return KO("ref_motif_retrait","Choisissez un motif : désistement, no-go interne ou autre.");
+  db.update("pos",p.id,{etat:"retire",motif:motif});
+  ev("PositioningStateChanged","pos",p.id,nomPersonne(p.personne)+" retiré — "+motif.replace(/_/g," "),"");
+  return OK("Positionnement retiré. La personne pourra être re-proposée.");
+};
+CMD.DeclareNeedFilled=function(d){
+  var e=droit("DeclareNeedFilled");if(e)return e;
+  var b=get("besoin",d.besoin);if(!b)return KO("objet","Besoin introuvable.");
+  if(categorie(b.etat)!=="en_recherche")return KO("cycle besoin","« Pourvu » se déclare depuis « en recherche ». Ce besoin est « "+b.etat+" ».");
+  if(pol("besoin.pourvu.mode")!=="manuel_avec_garde")return KO("politique besoin.pourvu.mode","Sous ce réglage, « pourvu » se déclenche tout seul à la signature. Rien à déclarer.");
+  var s=prestationsSignees(b),g=pol("besoin.pourvu.garde_minimale");
+  if(g==="tous_les_postes_signes"&&s.prestations<b.postes)
+    return KO("F3 (3B) · T-1 · politique besoin.pourvu.garde_minimale",s.prestations+" prestation(s) signée(s) pour "+b.postes+" poste(s) visés. Le besoin reste en recherche tant que tous les postes ne sont pas signés — c'est la ligne d'Ahmed.");
+  if(g==="une_prestation_signee"&&s.prestations<1)
+    return KO("G4 · politique besoin.pourvu.garde_minimale","Aucune prestation signée ne rattache une personne à ce besoin.");
+  db.update("besoin",b.id,{etat:"pourvu"});
+  ev("NeedStateChanged","besoin",b.id,"vers pourvu — "+s.prestations+" prestation(s) signée(s), "+s.personnes+" personne(s), "+b.postes+" poste(s)","besoin.pourvu.mode, besoin.pourvu.garde_minimale");
+  return OK("Besoin déclaré pourvu : "+s.prestations+" prestation(s) signée(s) sur "+b.postes+" poste(s), "+s.personnes+" personne(s) distincte(s). Rien ne l'a fait à votre place.","besoin.pourvu.garde_minimale");
+};
+CMD.SuspendNeed=function(d){
+  var e=droit("SuspendNeed");if(e)return e;
+  var b=get("besoin",d.besoin);if(!b)return KO("objet","Besoin introuvable.");
+  var cat=categorie(b.etat);
+  if(["a_pourvoir","en_recherche","pourvu"].indexOf(cat)<0)return KO("machines §1","On ne suspend qu'un besoin à pourvoir, en recherche ou pourvu. Celui-ci est « "+b.etat+" ».");
+  if(!d.motif)return KO("machines §1 · motif obligatoire","Une suspension porte un motif. Écrivez-le dans le champ à côté.");
+  db.update("besoin",b.id,{precedent:b.etat,etat:"suspendu"});
+  ev("NeedStateChanged","besoin",b.id,"suspendu depuis « "+b.precedent+" » — "+d.motif,"");
+  return OK("Besoin suspendu. Son état d'origine est mémorisé ; les projets déjà créés ne bougent pas.");
+};
+CMD.ResumeNeed=function(d){
+  var e=droit("ResumeNeed");if(e)return e;
+  var b=get("besoin",d.besoin);if(!b)return KO("objet","Besoin introuvable.");
+  if(categorie(b.etat)!=="suspendu")return KO("machines §1","Ce besoin n'est pas suspendu.");
+  var vers=b.precedent||"ouvert";
+  db.update("besoin",b.id,{etat:vers,precedent:null});
+  ev("NeedStateChanged","besoin",b.id,"repris : suspendu vers « "+vers+" »","");
+  return OK("Besoin repris, revenu à « "+vers+" ».");
+};
+CMD.CloseNeed=function(d){
+  var e=droit("CloseNeed");if(e)return e;
+  var b=get("besoin",d.besoin);if(!b)return KO("objet","Besoin introuvable.");
+  if(categorie(b.etat)==="ferme")return KO("machines §1","Ce besoin est déjà fermé.");
+  if(!d.motif)return KO("machines §1 · motif obligatoire","Une fermeture porte un motif. Écrivez-le dans le champ à côté.");
+  db.update("besoin",b.id,{precedent:b.etat,etat:"ferme"});
+  ev("NeedStateChanged","besoin",b.id,"fermé — "+d.motif,"");
+  return OK("Besoin fermé. Les projets ne bougent pas. Rouvrir est une commande dédiée.");
+};
+CMD.ReopenNeed=function(d){
+  var e=droit("ReopenNeed");if(e)return e;
+  var b=get("besoin",d.besoin);if(!b)return KO("objet","Besoin introuvable.");
+  if(categorie(b.etat)!=="ferme")return KO("machines §1","Seul un besoin fermé se rouvre.");
+  var actifs=S.pos.some(function(p){var c=categorie(p.etat);return p.besoin===b.id&&(c==="propose"||c==="presente");});
+  var vers=actifs?"staffing":"ouvert";
+  db.update("besoin",b.id,{etat:vers,precedent:null});
+  ev("NeedStateChanged","besoin",b.id,"rouvert vers « "+vers+" »"+(actifs?" — il a des positionnements actifs":""),"");
+  return OK("Besoin rouvert, état « "+vers+" ».");
+};
+CMD.CreateProjectFromNeed=function(d){
+  var e=droit("CreateProjectFromNeed");if(e)return e;
+  var b=get("besoin",d.besoin);if(!b)return KO("objet","Besoin introuvable.");
+  var pe=perimetre(b.agence);if(pe)return pe;
+  return creerProjetDepuisBesoin(b,d.contact||null,d.titre||null,false);
+};
+CMD.CreateProject=function(d){
+  var e=droit("CreateProject");if(e)return e;
+  if(!d.societe)return KO("objet","Un projet porte toujours une société.");
+  if(pol("projet.contact")==="obligatoire"&&!d.contact)return KO("US5 · politique projet.contact","Le formulaire de création manuelle exige un contact.");
+  if(d.contact){var ct=get("contact",d.contact);if(!ct||ct.societe!==d.societe)return KO("M-12 · cohérence",MUR_MSG["M-12"]);}
+  var pj=db.insert("projet",{societe:d.societe,contact:d.contact||null,besoin:null,agence:agenceCourante(),type:d.type||"regie",titre:d.titre||"Projet sans titre",etat:"ouvert",devise_defaut:["EUR","USD","MAD"].indexOf(d.devise_defaut)>=0?d.devise_defaut:"EUR"});
+  ev("ProjectCreated","projet",pj.id,pj.titre+" — création directe, sans besoin","projet.contact");
+  var m=effetsPassageClient(d.societe,"creation_projet",d.contact);
+  return OK("Projet créé sans besoin. C'est légal : tout projet ne vient pas d'un besoin."+m,"projet.contact, societe.passage_client.declencheur");
+};
+CMD.CreatePrestation=function(d){
+  var e=droit("CreatePrestation");if(e)return e;
+  var pj=get("projet",d.projet);if(!pj)return KO("objet","Projet introuvable.");
+  if(categorie(pj.etat)==="clos")return KO("cycle projet","Ce projet est clos.");
+  if(!d.debut||!d.fin||d.fin<d.debut)return KO("cohérence des dates","La date de fin ne peut pas précéder la date de début.");
+  var taux=num(d.taux);if(!(taux>0))return KO("champs requis","Le taux d'occupation est obligatoire et strictement positif.");
+  var etat=d.etat==="signee"?"signee":"previsionnelle";
+  if(etat==="signee"){
+    if(!peut("SignPrestation"))return KO("O-2 · machines §5 · DEC-17","Créer une mission déjà signée, c'est la signer : il faut le droit de signature (O-2). Créez-la prévisionnelle, ou changez de rôle pour Directeur de projet.");
+    var g=gardeSignature(d);if(g)return g;
+  }
+  var seuil=parseInt(pol("prestation.surcharge.seuil_pct"),10),mode=pol("prestation.surcharge.mode"),depasse=[];
+  if(etat==="signee")jours(d.debut,d.fin).forEach(function(j){if(ouvre(j)&&chargeJour(d.pr,j).engage+taux>seuil)depasse.push(j);});
+  if(depasse.length&&mode==="refus")
+    return KO("DEC-10 · C-2 · politique prestation.surcharge.mode","Charge engagée au-dessus de "+seuil+" % sur "+depasse.length+" jour(s) ouvré(s). Le réglage actuel refuse — le défaut Avaliance se contente d'alerter.");
+  /* D-9 : la devise est celle de la prestation ; deux devises sur un projet = bifurcation */
+  var devise=["EUR","USD","MAD"].indexOf(d.devise)>=0?d.devise:(pj.devise_defaut||"EUR"),mixte="";
+  var cjmDevise=["EUR","USD","MAD"].indexOf(d.cjm_devise)>=0?d.cjm_devise:devise;   /* D-9 : par défaut = celle de la vente */
+  var premiere=S.prestation.filter(function(x){return x.projet===pj.id;})[0];
+  if(premiere&&premiere.devise!==devise){
+    if(pol("projet.devises_mixtes")==="refus")return KO("D-9 · politique projet.devises_mixtes","Ce projet est en "+premiere.devise+" ; une prestation en "+devise+" est refusée par le réglage actuel. Le défaut l'autorise — un freelance en MAD sur un projet en EUR est un cas réel.");
+    mixte=" Ce projet porte maintenant deux devises ("+premiere.devise+", "+devise+") : ses chiffres s'affichent par devise, jamais additionnés.";
+  }
+  /* M-1 : la clé étrangère refuse un candidat — c'est db qui le dit */
+  var p=db.insert("prestation",{projet:pj.id,pr:d.pr,etat:etat,debut:d.debut,fin:d.fin,taux:taux,tjm:num(d.tjm),cjm:num(d.cjm),devise:devise,cjm_devise:cjmDevise,jours:num(d.jours)||0,cloture:null});
+  ev("PrestationCreated","prestation",p.id,nomPr(p.pr)+" sur "+pj.titre+" — "+taux+" %, "+etat+", "+devise+(mixte?" — devises mixtes":""),"prestation.surcharge.mode, prestation.surcharge.seuil_pct, projet.devises_mixtes");
+  var msg="Prestation créée en « "+etat+" », vendue en "+devise+", coût en "+cjmDevise+". La ressource et les conditions sont verrouillées dès la signature (M-14)."+mixte+
+    (cjmDevise!==devise?" ⚠️ Vente et coût dans deux devises : la marge de cette mission vaudra « — » à la clôture, aucun taux n'est saisi.":"");
+  if(etat==="signee")msg+=effetsSignature(p);
+  if(depasse.length&&mode==="alerte")msg+=" Alerte : "+seuil+" % engagés dépassés sur "+depasse.length+" jour(s) ouvré(s), du "+fr(depasse[0])+" au "+fr(depasse[depasse.length-1])+". Le prévisionnel ne compte pas dans cette garde.";
+  if(depasse.length&&mode==="silencieux")msg+=" Un dépassement existe mais le réglage actuel ne le signale pas.";
+  return OK(msg,"prestation.surcharge.mode, prestation.surcharge.seuil_pct, projet.devises_mixtes, societe.passage_client.declencheur");
+};
+CMD.SignPrestation=function(d){
+  var e=droit("SignPrestation");if(e)return e;
+  var p=get("prestation",d.prestation);if(!p)return KO("objet","Prestation introuvable.");
+  if(categorie(p.etat)!=="previsionnel")return KO("cycle prestation","Seule une prestation prévisionnelle se signe.");
+  var g=gardeSignature(p);if(g)return g;
+  db.update("prestation",p.id,{etat:"signee"});
+  var m=effetsSignature(p);
+  return OK("Prestation signée. Elle sort du prévisionnel et entre dans le CA signé."+m,"societe.passage_client.declencheur, besoin.pourvu.mode");
+};
+CMD.ClosePrestation=function(d){
+  var e=droit("ClosePrestation");if(e)return e;
+  var p=get("prestation",d.prestation);if(!p)return KO("objet","Prestation introuvable.");
+  if(categorie(p.etat)!=="engage")return KO("cycle prestation","Seule une prestation signée se clôture.");
+  var t=cloturerPrestation(p,null);
+  var sn=S.snap[S.snap.length-1];
+  return OK("Prestation clôturée, "+t.toFixed(1)+" jour(s) saisis. Snapshot écrit"+(sn&&sn.marge==null?" avec une marge « — » : "+motifMarge(sn):"")+" ; plus rien ne le réécrira.");
+};
+CMD.CancelPrestation=function(d){
+  var e=droit("CancelPrestation");if(e)return e;
+  var p=get("prestation",d.prestation);if(!p)return KO("objet","Prestation introuvable.");
+  var c=categorie(p.etat);if(c!=="previsionnel"&&c!=="engage")return KO("cycle prestation","Cette prestation n'est plus annulable.");
+  var n=S.temps.filter(function(x){return x.prestation===p.id;}).length;
+  if(n&&pol("prestation.annulation.garde")==="aucun_temps_saisi")
+    return KO("G11 · politique prestation.annulation.garde",n+" ligne(s) de temps existent sur cette mission. Clôturez-la au lieu de l'annuler : le travail fait ne s'efface pas.");
+  db.update("prestation",p.id,{etat:"annulee"});
+  ev("PrestationCancelled","prestation",p.id,nomPr(p.pr)+" — annulée","prestation.annulation.garde");
+  return OK("Prestation annulée.","prestation.annulation.garde");
+};
+CMD.CloseProject=function(d){
+  var e=droit("CloseProject");if(e)return e;
+  var pj=get("projet",d.projet);if(!pj)return KO("objet","Projet introuvable.");
+  if(categorie(pj.etat)==="clos")return KO("cycle projet","Déjà clos.");
+  var ouvertes=S.prestation.filter(function(p){var c=categorie(p.etat);return p.projet===pj.id&&(c==="engage"||c==="previsionnel");});
+  if(ouvertes.length&&pol("projet.cloture.garde")==="prestations_closes")
+    return KO("F7 · politique projet.cloture.garde",ouvertes.length+" prestation(s) encore ouverte(s). Clôturez-les d'abord — chacune écrit sa marge au passage.");
+  var nc=0,na=0;
+  ouvertes.forEach(function(p){
+    if(categorie(p.etat)==="engage"){cloturerPrestation(p,null);nc++;}
+    else{db.update("prestation",p.id,{etat:"annulee"});ev("PrestationCancelled","prestation",p.id,nomPr(p.pr)+" — annulée par la clôture en cascade du projet","projet.cloture.garde");na++;}
+  });
+  db.update("projet",pj.id,{etat:"clos"});
+  ev("ProjectClosed","projet",pj.id,pj.titre+" clos"+(ouvertes.length?" — cascade : "+nc+" clôturée(s) avec snapshot, "+na+" prévisionnelle(s) annulée(s)":""),"projet.cloture.garde");
+  return OK("Projet clos."+(ouvertes.length?" Cascade (réglage actuel) : "+nc+" mission(s) clôturée(s) avec leur vraie somme de temps, "+na+" prévisionnelle(s) annulée(s).":""),"projet.cloture.garde");
+};
+CMD.RecordTimesheet=function(d){
+  var p=get("prestation",d.prestation);if(!p)return KO("objet","Prestation introuvable.");
+  var mp=maPersonne(),propre=mp&&get("pr",p.pr)&&get("pr",p.pr).personne===mp;
+  if(!peut("RecordTimesheet")&&!(peut("RecordOwnTimesheet")&&propre))
+    return KO("DEC-17 · périmètre","Vous ne pouvez saisir que vos propres temps. Cette mission est portée par "+nomPr(p.pr)+".");
+  var q=num(d.qte);if(!(q>0))return KO("champs requis","La quantité doit être strictement positive.");
+  var cat=categorie(p.etat);
+  if(cat==="clos"){
+    if(pol("temps.correction_apres_cloture")==="refus")return KO("F34 · politique temps.correction_apres_cloture","Mission clôturée : le réglage actuel refuse toute correction.");
+    db.insert("temps",{prestation:p.id,pr:p.pr,jour:d.jour,qte:q,ajust:true});
+    ev("TimesheetAdjustedAfterClose","temps",p.id,"ajustement daté sur mission close — le snapshot ne bouge pas","temps.correction_apres_cloture");
+    return OK("Ajustement enregistré, et marqué comme tel. Le snapshot de marge n'a pas bougé.","temps.correction_apres_cloture");
+  }
+  if(cat!=="engage")return KO("cycle prestation","Le temps se saisit sur une mission signée. Celle-ci est « "+p.etat+" ».");
+  if(pol("temps.periode")==="dates_prestation"&&(d.jour<p.debut||d.jour>p.fin))
+    return KO("G9 · politique temps.periode","Le "+fr(d.jour)+" est hors des dates de la mission ("+fr(p.debut)+" au "+fr(p.fin)+").");
+  /* P-6 : plafond par jour, toutes missions confondues, capacité 1 jour */
+  var deja=S.temps.filter(function(x){return x.pr===p.pr&&x.jour===d.jour;}).reduce(function(a,x){return a+x.qte;},0),plafond=pol("temps.plafond_jour"),alerte="";
+  if(deja+q>1){
+    if(plafond==="refus")return KO("P-6 · politique temps.plafond_jour",nomPr(p.pr)+" a déjà "+deja+" jour saisi le "+fr(d.jour)+" ; "+(deja+q)+" dépasse la capacité d'un jour. Le réglage actuel refuse — le défaut alerte.");
+    if(plafond==="alerte")alerte=" Alerte : "+(deja+q)+" jour sur la journée du "+fr(d.jour)+", au-dessus de la capacité de 1. Enregistré quand même — c'est le réglage.";
+  }
+  db.insert("temps",{prestation:p.id,pr:p.pr,jour:d.jour,qte:q,ajust:false});
+  ev("TimesheetRecorded","temps",p.id,nomPr(p.pr)+" — "+q+" jour le "+fr(d.jour)+alerte,"temps.periode, temps.plafond_jour");
+  return OK("Temps enregistré. Il entrera dans le CA produit sans validation : c'est le choix V1."+alerte,"temps.periode, temps.plafond_jour");
+};
+CMD.RecordAbsence=function(d){
+  if(!peut("RecordAbsence")&&!peut("RecordOwnAbsence"))return droit("RecordAbsence");
+  var r=get("pr",d.pr);if(!r)return KO("objet","Ressource introuvable.");
+  db.insert("absence",{pr:r.id,type:d.type||"conge",debut:d.debut,fin:d.fin});
+  ev("AbsenceRecorded","absence",r.id,nomPr(r.id)+" — du "+fr(d.debut)+" au "+fr(d.fin),"");
+  return OK("Absence enregistrée. Elle n'a besoin d'aucune mission pour exister.");
+};
+CMD.SetPolicy=function(d){
+  var e=droit("SetPolicy");if(e)return e;
+  var def=POL[d.cle];if(!def||def.o.indexOf(d.val)<0)return KO("registre","Valeur hors registre.");
+  var av=S.pol[d.cle];S.pol[d.cle]=d.val;
+  ev("PolicyChanged","politique",d.cle,av+" vers "+d.val,d.cle);
+  var hb=def.hb&&def.hb.indexOf(d.val)>=0;
+  return OK("Réglage « "+d.cle+" » : "+av+" vers "+d.val+"."+(hb?" Cette option est hors banc : aucun effet ici.":" Le passé ne bouge pas, chaque fait garde la règle sous laquelle il s'est produit."));
+};
+CMD.RequalifyCompany=function(d){
+  var e=droit("RequalifyCompany");if(e)return e;
+  var s=get("societe",d.societe);if(!s)return KO("objet","Société introuvable.");
+  db.update("societe",s.id,{statut:"prospect"});   /* D-3 : le statut seul ; les rôles ne bougent pas */
+  ev("ClientStatusOverridden","societe",s.id,s.nom+" requalifiée prospect — "+(d.motif||"sans motif"),"societe.retour_prospect");
+  return OK(s.nom+" repasse prospect. Sous le défaut, ça ne se fait jamais tout seul.","societe.retour_prospect");
+};
+/* toute commande passe par ici : un mur levé par db devient un refus nommé */
+function run(name,d){
+  try{return CMD[name]?CMD[name](d):KO("commande","Commande inconnue : "+name);}
+  catch(x){if(x instanceof Mur)return KO(x.mur,x.msg);throw x;}
+}
+
+/* ===================== BANC DES 15 MURS — chaque bouton tente pour de vrai, c'est db qui refuse ===================== */
+function tente(fn){try{var r=fn();return r||OK("L'opération est passée.");}catch(x){if(x instanceof Mur)return KO(x.mur,x.msg);throw x;}}
+var MURS=[
+ {id:"M-1",t:"Un candidat ne porte jamais de mission",e:"db.insert(prestation, {pr: <un candidat>}) — la clé étrangère pointe sur profil_ressource.",f:function(){
+   var pj=S.projet[0];if(!pj)return KO("monde","Créez d'abord un projet.");
+   return tente(function(){db.insert("prestation",{projet:pj.id,pr:S.pc[0].id,etat:"previsionnelle",debut:"2027-06-01",fin:"2027-06-30",taux:50,tjm:1,cjm:null,devise:"EUR",jours:10,cloture:null});});}},
+ {id:"M-2",t:"Un positionnement porte exactement un humain",e:"db.insert(pos, {pc: X, pr: Y}) puis {pc: null, pr: null}.",f:function(){
+   var b=S.besoin[0];
+   var r1=tente(function(){db.insert("pos",{besoin:b.id,pc:S.pc[0].id,pr:S.pr[0].id,personne:S.pr[0].personne,etat:"propose",cv:false,motif:null,decision:null});});
+   if(r1.ok)return OK("Attention : la double ligne est passée.");
+   var r2=tente(function(){db.insert("pos",{besoin:b.id,pc:null,pr:null,personne:S.pr[0].personne,etat:"propose",cv:false,motif:null,decision:null});});
+   if(r2.ok)return OK("Attention : la ligne vide est passée.");
+   return KO(r1.src,"Deux humains : refusé. Aucun humain : refusé. "+r1.msg);}},
+ {id:"M-3",t:"Un seul profil de chaque type par personne",e:"db.insert(pr, {personne: <déjà ressource>}).",f:function(){
+   var r=S.pr[0];return tente(function(){db.insert("pr",{personne:r.personne,titre:"doublon",type:"INTERNAL",etat:"en_cours",agence:"A",fournisseur:null,cout:null,tjm:null});});}},
+ {id:"M-4",t:"La ressource d'une mission est immuable",e:"db.update(prestation, id, {pr: <autre ressource>}).",f:function(){
+   var p=S.prestation[0];if(!p)return KO("monde","Aucune prestation.");
+   var autre=S.pr.filter(function(r){return r.id!==p.pr;})[0];if(!autre)return KO("monde","Une seule ressource.");
+   return tente(function(){db.update("prestation",p.id,{pr:autre.id});});}},
+ {id:"M-5",t:"Le projet ne porte pas de ressource",e:"db.insert(projet, {…, pr: X}) — colonne inconnue.",f:function(){
+   var s=S.societe[0];return tente(function(){db.insert("projet",{societe:s.id,contact:null,besoin:null,agence:"A",type:"regie",titre:"test",etat:"ouvert",devise_defaut:"EUR",pr:S.pr[0].id});});}},
+ {id:"M-6",t:"Une marge figée ne se réécrit pas",e:"db.update(snap, id, {ca: 0}).",f:function(){
+   var s=S.snap[0];if(!s)return KO("monde","Clôturez d'abord une prestation (écran Projets) pour créer un snapshot, puis revenez.");
+   return tente(function(){db.update("snap",s.id,{ca:0});});}},
+ {id:"M-7",t:"Un événement ne se modifie ni ne s'efface",e:"db.update(ev, …) puis db.del(ev, …).",f:function(){
+   var e=S.ev[0];var r1=tente(function(){db.update("ev",e.id,{d:"réécrit"});});if(r1.ok)return OK("Attention : la réécriture est passée.");
+   var r2=tente(function(){db.del("ev",e.id);});if(r2.ok)return OK("Attention : la suppression est passée.");
+   return KO(r1.src,"UPDATE refusé, DELETE refusé. "+r1.msg);}},
+ {id:"M-8",t:"Rien ne se supprime, tout s'archive",e:"db.del(societe, id) sur une société qui porte un historique.",f:function(){
+   return tente(function(){db.del("societe",S.societe[0].id);});}},
+ {id:"M-9",t:"Une action a exactement un porteur",e:"db.insert(action, {societe: A, projet: P}) puis {}.",f:function(){
+   var r1=tente(function(){db.insert("action",{societe:S.societe[0].id,contact:null,pc:null,pr:null,besoin:null,projet:S.projet[0]?S.projet[0].id:null,type:"note",contenu:"test"});});
+   if(r1.ok)return OK("Attention : deux porteurs sont passés.");
+   var r2=tente(function(){db.insert("action",{societe:null,contact:null,pc:null,pr:null,besoin:null,projet:null,type:"note",contenu:"test"});});
+   if(r2.ok)return OK("Attention : zéro porteur est passé.");
+   return KO(r1.src,"Deux porteurs : refusé. Aucun : refusé. "+r1.msg);}},
+ {id:"M-10",t:"Le temps suit la ressource de sa mission",e:"db.insert(temps, {prestation: P, pr: <autre ressource>}).",f:function(){
+   var p=S.prestation[0];var autre=S.pr.filter(function(r){return r.id!==p.pr;})[0];
+   return tente(function(){db.insert("temps",{prestation:p.id,pr:autre.id,jour:p.debut,qte:0.5,ajust:false});});}},
+ {id:"M-11",t:"Un besoin porte toujours une société",e:"CreateNeed sans société, en tant qu'ingénieur d'affaires.",f:function(){
+   var sauv=roleActif;roleActif="ia";var r=run("CreateNeed",{societe:null,titre:"test",type:"regie",priorite:"P2",postes:1});roleActif=sauv;return r;}},
+ {id:"M-12",t:"Contact et société restent cohérents",e:"CreateNeed ALPHA avec un contact BETA.",f:function(){
+   var alpha=S.societe[0];var ctb=S.contact.filter(function(c){return c.societe!==alpha.id;})[0];if(!ctb)return KO("monde","Pas de contact d'une autre société.");
+   var sauv=roleActif;roleActif="ia";var r=run("CreateNeed",{societe:alpha.id,contact:ctb.id,titre:"test",type:"regie",priorite:"P2",postes:1});roleActif=sauv;return r;}},
+ {id:"M-13",t:"Une permission vit dans un périmètre",e:"Positionner sur un besoin de l'agence A depuis l'agence B.",f:function(){
+   var b=S.besoin[0];var sa=ROLES.ia.agence;ROLES.ia.agence="B";var sauv=roleActif;roleActif="ia";
+   var r=run("PositionCandidate",{besoin:b.id,pc:S.pc[0].id});roleActif=sauv;ROLES.ia.agence=sa;return r;}},
+ {id:"M-14",t:"Les conditions d'une mission sont figées dès la signature",e:"(a) db.update(prestation signée, {tjm}) → refus ; (b) db.update(pr, {tjm:999}) → passe, et la mission ne bouge pas.",f:function(){
+   var p=S.prestation.filter(function(x){var c=categorie(x.etat);return c==="engage"||c==="clos";})[0];
+   if(!p)return KO("monde","Aucune mission signée ou close : signez-en une, puis revenez.");
+   var a=tente(function(){db.update("prestation",p.id,{tjm:(num(p.tjm)||1)+500});});
+   if(a.ok)return OK("Attention : le TJM d'une mission signée a été modifié. Ce serait un bug.");
+   var r=get("pr",p.pr),avant=p.tjm;
+   var b=tente(function(){db.update("pr",r.id,{tjm:999});});if(!b.ok)return b;
+   var apres=get("prestation",p.id).tjm;
+   return KO(a.src,"(a) "+a.msg+" — (b) la fiche ressource porte maintenant 999 en TJM indicatif, et la mission "+p.id+" garde "+tjmAff(apres)+(apres===avant?" : inchangée.":" : CHANGÉE, ce serait un bug."));}},
+ {id:"M-15",t:"Les montants ne s'exposent que par devise",e:"(a) db.agrege(\"prestation\",\"tjm\") → refus ; (b) db.vue(\"ca_par_devise\") → une ligne par devise.",f:function(){
+   var a=tente(function(){return OK("Total : "+db.agrege("prestation","tjm"));});
+   if(a.ok)return OK("Attention : la somme directe est passée. Ce serait un bug.");
+   var lignes=db.vue("ca_par_devise");
+   var txt=lignes.length?lignes.map(function(l){return l.montant+" "+l.devise;}).join(" · "):"aucune mission signée";
+   return KO(a.src,"(a) "+a.msg+" — (b) la vue rend "+lignes.length+" ligne(s), jamais un total : "+txt+".");}}
+];
+
+/* ===================== RENDU ===================== */
+var vue=document.getElementById("vue"),flux=document.getElementById("flux"),msgEl=document.getElementById("msg"),tMsg=null;
+function dis(r){
+  clearTimeout(tMsg);msgEl.hidden=false;msgEl.className="msg"+(r.ok?"":" ko");
+  msgEl.innerHTML='<div class="t">'+(r.ok?"Fait":"Refusé")+'</div>'+esc(r.msg)+(r.src?'<div class="src">source : '+esc(r.src)+'</div>':(r.pol?'<div class="src">réglages lus : '+esc(r.pol)+'</div>':''));
+  if(!r.ok)try{ev("Refus","—","",r.msg,r.src,true);}catch(x){}
+  tMsg=setTimeout(function(){msgEl.hidden=true;},10000);
+}
+var ECRANS=[
+  {k:"tableau",n:"Tableau de bord",dot:"var(--ink3)"},
+  {k:"societes",n:"Sociétés",dot:"var(--c1)"},
+  {k:"candidats",n:"Candidats",dot:"var(--c2)"},
+  {k:"ressources",n:"Ressources",dot:"var(--c3)"},
+  {k:"besoins",n:"Besoins",dot:"var(--c3)"},
+  {k:"projets",n:"Projets",dot:"var(--c4)"},
+  {k:"charge",n:"Plan de charge",dot:"var(--c4)"},
+  {k:"temps",n:"Mes temps",dot:"var(--c4)"},
+  {k:"murs",n:"Banc des 15 murs",dot:"var(--crit)",g:"CE QUI SE RÈGLE — OU PAS"},
+  {k:"politiques",n:"Politiques",dot:"var(--ok)"}
+];
+function nav(){
+  var h='<h2>LE MÉTIER</h2>';
+  ECRANS.forEach(function(e){
+    if(e.g)h+='<h2>'+esc(e.g)+'</h2>';
+    var off=(e.k==="temps"&&!maPersonne());
+    h+='<button type="button" data-ecran="'+e.k+'" style="--dot:'+e.dot+'"'+(ui.ecran===e.k?' aria-current="page"':'')+(off?' disabled':'')+'><i></i>'+esc(e.n)+'</button>';
+  });
+  document.getElementById("nav").innerHTML=h;
+}
+function tete(chemin,dot,titre,lead){return '<div class="eyebrow" style="--dot:'+dot+'"><i></i>'+esc(chemin)+'</div><h1>'+esc(titre)+'</h1>'+(lead?'<p class="lead">'+lead+'</p>':'');}
+function bd(e){
+  var c=categorie(e),cl="neu";
+  if(["terminal_positif","engage","pourvu","actif","en_mission","client"].indexOf(c)>=0)cl="pos";
+  else if(["presente","previsionnel","en_recherche","a_pourvoir","propose","brouillon","disponible","ouvert"].indexOf(c)>=0)cl="enc";
+  else if(c==="terminal_negatif")cl="neg";
+  else if(c==="suspendu")cl="warn";
+  return '<span class="bd '+cl+'">'+esc(String(e).replace("_projet","").replace(/_/g," "))+'</span>';
+}
+function selSoc(id,v){return '<select id="'+id+'">'+S.societe.map(function(s){return '<option value="'+s.id+'"'+(s.id===v?" selected":"")+'>'+esc(s.nom)+'</option>';}).join("")+'</select>';}
+function selCt(id,soc){var l=S.contact.filter(function(c){return !soc||c.societe===soc;});
+  return '<select id="'+id+'"><option value="">— aucun —</option>'+l.map(function(c){return '<option value="'+c.id+'">'+esc(c.nom)+' ('+esc(nomSoc(c.societe))+')</option>';}).join("")+'</select>';}
+function kpi(n,l,dot){return '<div class="kpi" style="--dot:'+(dot||"var(--brand)")+'"><div class="n">'+esc(n)+'</div><div class="l">'+esc(l)+'</div></div>';}
+
+function ecranTableau(){
+  var t=S.temps.reduce(function(a,x){return a+x.qte;},0);
+  return tete("Vue d'ensemble","var(--ink3)","Ce que le monde contient",
+    'Vous êtes <strong>'+esc(R().nom)+'</strong>. Changez de rôle en haut : les écrans, les boutons et les refus changent avec vous. Tout vit en mémoire — aucune base, aucun serveur. Date du monde : <strong>'+fr(S.aujourdhui)+'</strong>.')+
+  '<div class="kpis">'+kpi(S.societe.length,"sociétés","var(--c1)")+kpi(S.pc.length,"candidats","var(--c2)")+kpi(S.pr.length,"ressources","var(--c3)")+kpi(S.besoin.length,"besoins","var(--c3)")+kpi(S.pos.length,"positionnements","var(--c3)")+kpi(S.projet.length,"projets","var(--c4)")+kpi(S.prestation.length,"prestations","var(--c4)")+kpi(t.toFixed(1),"jours saisis","var(--c4)")+'</div>'+
+  caParDevise()+
+  '<div class="row"><div class="card" style="flex:2 1 460px"><h3>Par où commencer</h3><ol style="margin:0;padding-left:18px;line-height:1.85">'+
+   '<li><strong>Besoins</strong> : le besoin ALPHA vise deux postes, une seule prestation est signée. Tentez « Déclarer pourvu » — la ligne d\'Ahmed (F3) refuse.</li>'+
+   '<li><strong>Projets</strong> : ajoutez une prestation et mettez-la directement en « signée ». Vous êtes Staffing, pas Directeur de projet : créer une mission signée, c\'est la signer (O-2).</li>'+
+   '<li><strong>Candidats</strong> : tentez une conversion. Vous êtes staffing, pas RH : le refus cite le réglage, et vous dit quoi faire.</li>'+
+   '<li><strong>Banc des 15 murs</strong> : chaque bouton tente vraiment l\'opération contre la couche base ; c\'est elle qui refuse, en nommant le mur.</li>'+
+   '<li><strong>Politiques</strong> : passez <span class="mono">projet.creation_depuis_besoin</span> à automatique, puis enregistrez un retour client retenu. Le projet se crée seul — sous les mêmes gardes.</li>'+
+  '</ol></div>'+
+  '<div class="note ok" style="flex:1 1 280px"><div class="t">Ce que ce banc prouve</div>Les règles ne vivent pas dans les écrans : elles vivent dans le moteur et dans la couche base. Un bouton peut être visible et la commande refusée — c\'est exactement DEC-17.</div></div>';
+}
+function caParDevise(){
+  var l=db.vue("ca_par_devise"),m=db.vue("marge_par_devise");
+  return '<div class="row" style="margin-bottom:20px"><div class="card" style="flex:1 1 100%"><h3>CA signé et marge — une ligne par devise, jamais un total</h3><div class="tab-box"><table><thead><tr><th>Devise</th><th>CA signé</th><th>Marge figée</th></tr></thead><tbody>'+
+   (l.length?l.map(function(x){var mm=m.filter(function(y){return y.devise===x.devise;})[0];
+     return '<tr><td class="mono">'+esc(x.devise)+'</td><td class="mono">'+x.montant+'</td><td class="mono">'+(mm?mm.montant:"—")+'</td></tr>';}).join("")
+    :'<tr><td colspan="3" class="dim">Aucune mission signée.</td></tr>')+
+   '</tbody></table></div><div class="tiny" style="margin-top:8px">M-15 : ces chiffres viennent d\'une <strong>vue groupée par devise</strong>. Une somme directe sur la table est refusée — testez-la au banc. Les montants sont fictifs : un TJM à 1 s\'écrit [TARIF].</div></div></div>';
+}
+function ecranSocietes(){
+  var h=tete("C1 · CRM","var(--c1)","Sociétés et contacts","Une société cumule ses rôles : cliente et fournisseuse à la fois, sans être saisie deux fois. Le statut client se dérive d'un déclencheur réglable, et ne revient jamais en arrière tout seul.");
+  h+='<div class="row"><div class="card" style="flex:2 1 460px"><h3>Sociétés — statut et rôles sont deux choses</h3><div class="tab-box"><table><thead><tr><th>Société</th><th>Statut commercial</th><th>Rôles cumulables</th><th>Ville</th><th></th></tr></thead><tbody>';
+  S.societe.forEach(function(s){
+    h+='<tr><td><strong>'+esc(s.nom)+'</strong><div class="id">'+esc(s.id)+'</div></td><td>'+statutP(s.statut)+'</td><td>'+(s.roles.length?s.roles.map(function(r){return '<span class="bd neu">'+esc(r)+'</span>';}).join(" "):'<span class="tiny">aucun</span>')+'</td><td class="dim">'+esc(s.ville)+'</td><td>'+(s.statut==="client"?'<button type="button" class="b sec sm" data-cmd="RequalifyCompany" data-societe="'+s.id+'">Requalifier prospect</button>':'')+'</td></tr>';
+  });
+  h+='</tbody></table><div class="tiny" style="margin-top:8px">Prospect et client sont un <strong>statut</strong> ; fournisseur et interne sont des <strong>rôles</strong> qui se cumulent. Une société peut être cliente et fournisseuse (D-3).</div></div></div>';
+  h+=arbreUnites();
+  h+='<div class="card" style="flex:1 1 300px"><h3>Créer une société</h3><div class="form">'+
+   '<div class="f"><label for="so-nom">Nom <span class="req">obligatoire</span></label><input id="so-nom" type="text" placeholder="DELTA"></div>'+
+   '<div class="f"><label for="so-statut">Statut commercial</label><select id="so-statut"><option value="prospect">Prospect</option><option value="client">Client</option></select></div>'+
+   '<div class="f"><label>Rôles cumulables</label><div class="acts"><label class="tiny" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="so-r-f" style="width:auto;min-height:0"> fournisseur</label><label class="tiny" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="so-r-i" style="width:auto;min-height:0"> interne</label></div><span class="help">ni prospect ni client ici : ce sont des statuts (D-3)</span></div>'+
+   '<div class="f"><label for="so-ville">Ville</label><input id="so-ville" type="text" placeholder="Casablanca"></div>'+
+   '<button type="button" class="b" data-cmd="CreateCompany">Créer la société</button><div class="tiny">Homonyme : selon <span class="mono">doublon.societe.mode</span>.</div></div></div></div>';
+  h+='<div class="row" style="margin-top:14px"><div class="card" style="flex:2 1 460px"><h3>Contacts</h3><div class="tab-box"><table><thead><tr><th>Contact</th><th>Société</th><th>Unité</th><th>Fonction</th></tr></thead><tbody>';
+  S.contact.forEach(function(c){var u=c.unite?get("unite",c.unite):null;h+='<tr><td>'+esc(c.nom)+'</td><td>'+esc(nomSoc(c.societe))+'</td><td class="dim">'+esc(u?u.nom:"—")+'</td><td class="dim">'+esc(c.fonction)+'</td></tr>';});
+  h+='</tbody></table></div></div><div class="card" style="flex:1 1 300px"><h3>Créer un contact</h3><div class="form">'+
+   '<div class="f"><label for="ct-soc">Société <span class="req">obligatoire</span></label>'+selSoc("ct-soc")+'</div>'+
+   '<div class="f"><label for="ct-nom">Nom</label><input id="ct-nom" type="text" placeholder="Contact CT-0150"></div>'+
+   '<div class="f"><label for="ct-fct">Fonction</label><input id="ct-fct" type="text" placeholder="Décisionnaire"></div>'+
+   '<button type="button" class="b" data-cmd="CreateContact">Créer le contact</button></div></div></div>';
+  return h;
+}
+function motifMarge(sn){
+  if(!sn||sn.marge!=null)return "";
+  if(sn.marge_motif==="devises")return sn.ca_devise+" / "+sn.cout_devise+", aucun taux saisi (M-15)";
+  if(sn.marge_motif==="cout")return "aucun coût chiffré sur cette mission";
+  return "aucun CA chiffré : pas de TJM saisi (ATL-16)";   /* motif "ca", et les snapshots d'avant qui n'ont pas de motif */
+}
+function statutP(v){return v==="client"?'<span class="bd pos">client</span>':(v?'<span class="bd enc">'+esc(v)+'</span>':'<span class="bd neu">prospect</span>');}
+function arbreUnites(){
+  return S.societe.filter(function(x){return S.unite.some(function(u){return u.societe===x.id;});}).map(arbreUneSociete).join("");
+}
+function arbreUneSociete(soc){
+  var lignes=[],vus={};
+  function descend(parent,niveau){
+    S.unite.forEach(function(u){
+      if(u.societe!==soc.id||u.parent!==parent||vus[u.id])return;vus[u.id]=1;
+      var cts=S.contact.filter(function(c){return c.unite===u.id;});
+      lignes.push('<tr><td style="padding-left:'+(niveau*22)+'px"><strong>'+esc(u.nom)+'</strong><div class="id">'+esc(u.type)+'</div></td><td>'+statutP(u.statut)+'</td><td class="tiny">'+(cts.length?cts.map(function(c){return esc(c.nom)+" "+(c.statut==="client"?"· client":"· prospect");}).join("<br>"):"—")+'</td></tr>');
+      descend(u.id,niveau+1);
+    });
+  }
+  descend(null,0);
+  var hors=S.contact.filter(function(c){return c.societe===soc.id&&!c.unite;});
+  return '<div class="row" style="margin-top:14px"><div class="card" style="flex:1 1 100%"><h3>Organisation de '+esc(soc.nom)+' — où le statut client est écrit</h3><div class="tab-box"><table><thead><tr><th>Unité</th><th>Statut</th><th>Contacts</th></tr></thead><tbody>'+lignes.join("")+
+   (hors.length?'<tr><td class="dim">— rattachés à la société</td><td></td><td class="tiny">'+hors.map(function(c){return esc(c.nom)+" "+(c.statut==="client"?"· client":"· prospect");}).join("<br>")+'</td></tr>':"")+
+   '</tbody></table></div><div class="tiny" style="margin-top:8px">Le statut est écrit <strong>explicitement</strong> sur chaque ligne : <span class="mono">null</span> vaut prospect, jamais « hérite » (D-2). Réglage <span class="mono">societe.passage_client.propagation</span> = <strong>'+esc(pol("societe.passage_client.propagation").replace(/_/g," "))+'</strong>.</div></div></div>';
+}
+function ecranCandidats(){
+  var h=tete("C2 · Recrutement","var(--c2)","Le vivier","Un candidat n'a ni onglet Prestations ni onglet Temps, et ce n'est pas un choix d'écran : la table prestation n'a pas de colonne pour lui. La conversion crée un profil ressource sur la même personne — elle ne recopie rien et n'efface rien.");
+  h+='<div class="row"><div class="card" style="flex:2 1 520px"><h3>Candidats</h3><div class="tab-box"><table><thead><tr><th>Candidat</th><th>Titre</th><th>État</th><th>Ressource</th><th></th></tr></thead><tbody>';
+  S.pc.forEach(function(c){
+    var deja=S.pr.some(function(r){return r.personne===c.personne;});
+    h+='<tr><td><strong>'+esc(nomPersonne(c.personne))+'</strong><div class="id">'+esc(c.personne)+'</div></td><td class="dim">'+esc(c.titre)+'</td><td>'+bd(c.etat)+'</td><td>'+(deja?'<span class="bd pos">profil existant</span>':'<span class="tiny">aucun</span>')+'</td>'+
+    '<td><div class="acts">'+(categorie(c.etat)==="brouillon"?'<button type="button" class="b sec sm" data-cmd="CompleteCandidate" data-pc="'+c.id+'">Compléter</button>':'')+
+    (deja?'':'<button type="button" class="b sm" data-cmd="ConvertCandidateToResource" data-pc="'+c.id+'">Convertir</button>')+
+    '<button type="button" class="b ghost sm" data-cmd="__pos" data-pc="'+c.id+'">Positionner</button></div></td></tr>';
+  });
+  h+='</tbody></table></div></div><div class="card" style="flex:1 1 300px"><h3>Ouvrir un dossier</h3><div class="form">'+
+   '<div class="f"><label for="ca-nom">Identifiant ou nom <span class="req">obligatoire</span></label><input id="ca-nom" type="text" placeholder="Candidat C-0102"></div>'+
+   '<div class="f"><label for="ca-titre">Titre <span class="req">obligatoire</span></label><input id="ca-titre" type="text" placeholder="Développeur Python"></div>'+
+   '<button type="button" class="b" data-cmd="CreateCandidate">Créer le candidat</button><div class="tiny">Le dossier s\'ouvre en brouillon. Un homonyme est signalé, jamais fusionné.</div></div></div></div>'+
+   '<div class="note mur" style="margin-top:14px"><div class="t">Mur M-1</div>Tentez de mettre un candidat sur une mission depuis le <strong>banc des murs</strong> : le refus ne vient pas de l\'écran, il vient de la clé étrangère. Qui convertit : selon <span class="mono">candidat.conversion.acteur</span> — RH seule par défaut, même si le staffing porte la permission.</div>';
+  return h;
+}
+function ecranRessources(){
+  var derive=pol("ressource.etat.mode")==="derive_des_prestations";
+  var h=tete("C3 · Staffing","var(--c3)","Qui peut travailler","Interne ou externe, c'est un seul type de profil. L'état "+(derive?"<strong>se déduit des missions signées</strong> à la date du monde (réglage actuel) ; seule la sortie se saisit.":"<strong>se saisit à la main</strong> (F26, défaut) — rien n'est déduit des missions."))+'<div class="card"><div class="tab-box"><table><thead><tr><th>Ressource</th><th>Titre</th><th>Type</th><th>État</th><th>Missions</th><th>Engagé au '+fr(S.aujourdhui)+'</th><th></th></tr></thead><tbody>';
+  S.pr.forEach(function(r){
+    var m=S.prestation.filter(function(p){return p.pr===r.id;}),ch=chargeJour(r.id,S.aujourdhui),seuil=parseInt(pol("prestation.surcharge.seuil_pct"),10);
+    h+='<tr><td><strong>'+esc(nomPersonne(r.personne))+'</strong><div class="id">'+esc(r.personne)+'</div></td><td class="dim">'+esc(r.titre)+'</td>'+
+    '<td>'+(r.type==="EXTERNAL"?'<span class="bd neu">externe</span><div class="tiny">'+esc(r.fournisseur?nomSoc(r.fournisseur):"")+'</div>':'<span class="bd enc">interne</span>')+'</td>'+
+    '<td>'+bd(etatRessource(r))+'</td><td class="mono">'+m.length+'</td><td class="mono"'+(ch.engage>seuil?' style="color:var(--warn);font-weight:700"':'')+'>'+ch.engage+' %'+(ch.previsionnel?' <span class="tiny">+ '+ch.previsionnel+' % prév.</span>':'')+'</td>'+
+    '<td><div class="acts"><select class="inl" id="rs-'+r.id+'" style="padding:5px 8px;font-size:12px"><option value="en_cours"'+(derive?" disabled":"")+'>en mission</option><option value="intercontrat"'+(derive?" disabled":"")+'>disponible</option><option value="sortie">sortie</option></select><button type="button" class="b sec sm" data-cmd="SetResourceState" data-pr="'+r.id+'">Changer l\'état</button></div></td></tr>';
+  });
+  h+='</tbody></table></div></div>';
+  return h;
+}
+function ecranBesoins(){
+  var h=tete("C3 · Staffing","var(--c3)","La demande client","La priorité et l'état sont deux colonnes séparées. « Gagné » n'existe pas dans le cycle. Un poste = une prestation signée : le besoin reste en recherche tant que tous ses postes ne le sont pas (F3).");
+  var decl=pol("besoin.staffing.declencheur");
+  S.besoin.forEach(function(b){
+    var pos=S.pos.filter(function(p){return p.besoin===b.id;}),s=prestationsSignees(b),cat=categorie(b.etat);
+    var projets=S.projet.filter(function(p){return p.besoin===b.id;});
+    h+='<div class="card stroke" style="--dot:var(--c3);margin-bottom:14px"><div class="row" style="align-items:center;margin-bottom:12px">'+
+      '<div style="flex:1 1 260px"><strong style="font-family:var(--f-display);font-size:16px">'+esc(b.titre)+'</strong><div class="id">'+esc(b.id)+' · '+esc(nomSoc(b.societe))+' · agence '+esc(b.agence)+(b.contact?' · '+esc(get("contact",b.contact).nom):' · sans contact')+'</div></div>'+
+      '<div class="acts">'+bd(b.etat)+'<span class="bd warn">'+esc(b.priorite)+'</span><span class="bd '+(s.prestations>=b.postes?"pos":"neu")+'">'+s.prestations+' / '+b.postes+' postes</span><span class="tiny">'+s.personnes+' personne(s)</span></div></div>';
+    h+='<div class="tab-box"><table><thead><tr><th>Profil positionné</th><th>Type</th><th>État</th><th>CV</th><th>Actions</th></tr></thead><tbody>';
+    if(!pos.length)h+='<tr><td colspan="5" class="dim">Aucun positionnement. Le besoin attend.</td></tr>';
+    pos.forEach(function(p){
+      var c=categorie(p.etat);
+      h+='<tr><td><strong>'+esc(nomPersonne(p.personne))+'</strong></td><td class="dim">'+(p.pc?"Candidat":"Ressource")+'</td><td>'+bd(p.etat)+(p.motif?'<div class="tiny">'+esc(p.motif.replace(/_/g," "))+'</div>':'')+'</td><td class="tiny">'+(p.cv?"présenté":"—")+'</td><td><div class="acts">';
+      if(c==="propose")h+='<button type="button" class="b sec sm" data-cmd="DeclareCVShared" data-pos="'+p.id+'">CV présenté</button>';
+      if(c==="propose"||c==="presente"){
+        h+='<button type="button" class="b sm" data-cmd="RecordClientDecision" data-pos="'+p.id+'" data-retenu="1">Client : retenu</button>'+
+           '<button type="button" class="b sec sm" data-cmd="RecordClientDecision" data-pos="'+p.id+'">Client : refusé</button>'+
+           '<select class="inl" id="wd-'+p.id+'" style="padding:5px 8px;font-size:12px"><option value="desistement">désistement</option><option value="no_go_interne">no-go interne</option><option value="autre">autre</option></select>'+
+           '<button type="button" class="b ghost sm" data-cmd="WithdrawPositioning" data-pos="'+p.id+'">Retirer</button>';
+      }
+      h+='</div></td></tr>';
+    });
+    h+='</tbody></table></div><div class="acts" style="margin-top:12px">';
+    if(cat==="a_pourvoir"&&decl==="commande_prise_en_charge")h+='<button type="button" class="b" data-cmd="TakeNeedInCharge" data-besoin="'+b.id+'">Prendre en charge</button>';
+    if(cat!=="ferme")h+='<button type="button" class="b" data-cmd="CreateProjectFromNeed" data-besoin="'+b.id+'">Créer le projet</button>';
+    if(!b.contact&&cat!=="ferme")h+='<select class="inl" id="pjct-'+b.id+'" style="padding:6px 8px;font-size:12px"><option value="">contact pour le projet…</option>'+S.contact.filter(function(c){return c.societe===b.societe;}).map(function(c){return '<option value="'+c.id+'">'+esc(c.nom)+'</option>';}).join("")+'</select>';
+    if(cat==="en_recherche")h+='<button type="button" class="b sec" data-cmd="DeclareNeedFilled" data-besoin="'+b.id+'">Déclarer pourvu</button>';
+    if(cat==="a_pourvoir"||cat==="en_recherche"||cat==="pourvu")h+='<button type="button" class="b sec" data-cmd="SuspendNeed" data-besoin="'+b.id+'">Suspendre</button>';
+    if(cat==="suspendu")h+='<button type="button" class="b sec" data-cmd="ResumeNeed" data-besoin="'+b.id+'">Reprendre</button>';
+    if(cat!=="ferme")h+='<button type="button" class="b sec" data-cmd="CloseNeed" data-besoin="'+b.id+'">Fermer</button>';
+    if(cat==="ferme")h+='<button type="button" class="b sec" data-cmd="ReopenNeed" data-besoin="'+b.id+'">Rouvrir</button>';
+    if(cat!=="ferme")h+='<input class="inl" id="mot-'+b.id+'" type="text" placeholder="motif (suspendre / fermer)" style="padding:6px 9px;font-size:12px;width:220px">';
+    h+='<button type="button" class="b ghost" data-cmd="__pos" data-besoin="'+b.id+'">Positionner quelqu\'un</button>'+
+      (projets.length?'<span class="tiny">projets : '+projets.map(function(p){return esc(p.id);}).join(", ")+'</span>':'')+'</div></div>';
+  });
+  h+='<div class="card"><h3>Créer un besoin</h3><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">'+
+   '<div class="f"><label for="be-soc">Société <span class="req">obligatoire</span></label>'+selSoc("be-soc")+'</div>'+
+   '<div class="f"><label for="be-ct">Contact</label>'+selCt("be-ct")+'<span class="help">facultatif par défaut</span></div>'+
+   '<div class="f"><label for="be-titre">Titre</label><input id="be-titre" type="text" placeholder="Deux ingénieurs DevOps"></div>'+
+   '<div class="f"><label for="be-type">Type</label><select id="be-type"><option value="regie">Régie</option><option value="forfait">Forfait</option></select></div>'+
+   '<div class="f"><label for="be-prio">Priorité</label><select id="be-prio"><option>P1</option><option selected>P2</option><option>P3</option></select></div>'+
+   '<div class="f"><label for="be-postes">Postes visés</label><input id="be-postes" type="number" min="1" value="1"></div>'+
+   '</div><div style="margin-top:12px"><button type="button" class="b" data-cmd="CreateNeed">Créer le besoin</button></div></div>';
+  return h;
+}
+function ecranPositionner(){
+  var b=ui.ctx.besoin?get("besoin",ui.ctx.besoin):null;
+  return tete("C3 · Staffing","var(--c3)","Proposer quelqu'un sur un besoin","Un positionnement relie un besoin et <strong>exactement un humain</strong> : un candidat ou une ressource, jamais les deux. C'est une contrainte de table, pas une règle d'écran.")+
+  '<div class="card" style="max-width:640px"><div class="form">'+
+  '<div class="f"><label for="po-besoin">Besoin</label><select id="po-besoin">'+S.besoin.map(function(x){return '<option value="'+x.id+'"'+(b&&b.id===x.id?" selected":"")+'>'+esc(x.titre)+' — '+esc(x.etat)+'</option>';}).join("")+'</select></div>'+
+  '<div class="f"><label for="po-profil">Qui</label><select id="po-profil"><optgroup label="Candidats">'+S.pc.map(function(c){return '<option value="pc:'+c.id+'"'+(ui.ctx.pc===c.id?" selected":"")+'>'+esc(nomPersonne(c.personne))+'</option>';}).join("")+'</optgroup><optgroup label="Ressources">'+S.pr.map(function(r){return '<option value="pr:'+r.id+'">'+esc(nomPersonne(r.personne))+'</option>';}).join("")+'</optgroup></select></div>'+
+  '<div class="acts"><button type="button" class="b" data-cmd="__faire-pos">Positionner</button><button type="button" class="b ghost" data-ecran="besoins">Retour</button></div>'+
+  '<div class="tiny">RH et IA positionnent des candidats, le staffing des ressources. Sans la commande, le refus le dira.</div></div></div>';
+}
+function ecranProjets(){
+  var h=tete("C4 · Production","var(--c4)","Les missions en cours","Le projet est le cadre contractuel ; la prestation dit qui travaille. Cherchez un champ « ressource » sur un projet : il n'y en a pas, et c'est voulu.");
+  S.projet.forEach(function(pj){
+    var ps=S.prestation.filter(function(p){return p.projet===pj.id;});
+    h+='<div class="card stroke" style="--dot:var(--c4);margin-bottom:14px"><div class="row" style="align-items:center;margin-bottom:12px"><div style="flex:1 1 260px"><strong style="font-family:var(--f-display);font-size:16px">'+esc(pj.titre)+'</strong><div class="id">'+esc(pj.id)+' · '+esc(nomSoc(pj.societe))+' · '+esc(pj.type)+(pj.besoin?' · depuis '+esc(pj.besoin):' · création directe')+(pj.contact?' · '+esc(get("contact",pj.contact).nom):' · sans contact')+'</div></div>'+bd(pj.etat==="ouvert"?"ouvert_projet":pj.etat)+'</div>';
+    h+='<div class="tab-box"><table><thead><tr><th>Ressource</th><th>État</th><th>Période</th><th>Taux</th><th>TJM</th><th>Temps</th><th>Actions</th></tr></thead><tbody>';
+    if(!ps.length)h+='<tr><td colspan="7" class="dim">Aucune prestation. Un projet sans mission reste un titre — mais c\'est légal.</td></tr>';
+    ps.forEach(function(p){
+      var c=categorie(p.etat),t=S.temps.filter(function(x){return x.prestation===p.id;}).reduce(function(a,b2){return a+b2.qte;},0);
+      h+='<tr><td><strong>'+esc(nomPr(p.pr))+'</strong><div class="id">'+esc(p.id)+'</div></td><td>'+bd(p.etat)+'</td><td class="mono">'+fr(p.debut)+' → '+fr(p.fin)+'</td><td class="mono">'+p.taux+' %</td><td class="mono">'+esc(tjmAff(p.tjm))+' '+esc(p.devise)+(p.cjm_devise&&p.cjm_devise!==p.devise?' <span class="tiny">coût '+esc(p.cjm_devise)+'</span>':'')+'</td><td class="mono">'+t.toFixed(1)+'</td><td><div class="acts">';
+      if(c==="previsionnel")h+='<button type="button" class="b sm" data-cmd="SignPrestation" data-prestation="'+p.id+'">Signer</button>';
+      if(c==="engage")h+='<button type="button" class="b sm" data-cmd="ClosePrestation" data-prestation="'+p.id+'">Clôturer</button>';
+      if(c==="previsionnel"||c==="engage")h+='<button type="button" class="b ghost sm" data-cmd="CancelPrestation" data-prestation="'+p.id+'">Annuler</button>';
+      if(c==="clos"){var sn=S.snap.filter(function(x){return x.prestation===p.id;})[0];
+        h+='<span class="tiny">'+(sn&&sn.marge==null?'marge <strong>—</strong> · '+esc(motifMarge(sn)):'marge figée · CA [CA]')+'</span>';}
+      h+='</div></td></tr>';
+    });
+    h+='</tbody></table></div><div class="acts" style="margin-top:12px"><button type="button" class="b sec" data-cmd="__prest" data-projet="'+pj.id+'">Ajouter une prestation</button><button type="button" class="b sec" data-cmd="CloseProject" data-projet="'+pj.id+'">Clôturer le projet</button></div></div>';
+  });
+  h+='<div class="card"><h3>Créer un projet directement, sans besoin</h3><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">'+
+   '<div class="f"><label for="pj-soc">Société</label>'+selSoc("pj-soc")+'</div><div class="f"><label for="pj-ct">Contact <span class="req">obligatoire</span></label>'+selCt("pj-ct")+'</div>'+
+   '<div class="f"><label for="pj-titre">Titre</label><input id="pj-titre" type="text" placeholder="Maintenance 2027"></div><div class="f"><label for="pj-type">Type</label><select id="pj-type"><option value="regie">Régie</option><option value="forfait">Forfait</option></select></div>'+
+   '<div class="f"><label for="pj-dev">Devise proposée</label><select id="pj-dev"><option>EUR</option><option>USD</option><option>MAD</option></select><span class="help">seulement un pré-remplissage : le projet ne porte pas de devise (D-9)</span></div>'+
+   '</div><div style="margin-top:12px"><button type="button" class="b" data-cmd="CreateProject">Créer le projet</button></div></div>';
+  return h;
+}
+function ecranPrestation(){
+  var pj=get("projet",ui.ctx.projet)||S.projet[0];
+  if(!pj)return tete("C4 · Production","var(--c4)","Aucun projet","Créez d'abord un projet.");
+  var seuil=pol("prestation.surcharge.seuil_pct"),mode=pol("prestation.surcharge.mode");
+  var h=tete("C4 · Production · "+pj.id,"var(--c4)","Affecter quelqu'un à ce projet","Les conditions saisies ici appartiennent à <strong>cette mission</strong>. Elles ne suivront jamais la fiche ressource, et la personne sera verrouillée dès l'enregistrement. Convention du banc : un TJM à <span class=\"mono\">1</span> s'affiche <span class=\"mono\">[TARIF]</span> — aucun euro n'est certifié.");
+  h+='<div class="row"><div class="card" style="flex:2 1 460px"><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">'+
+   '<div class="f"><label for="pe-pr">Ressource <span class="req">obligatoire</span></label><select id="pe-pr">'+S.pr.map(function(r){return '<option value="'+r.id+'">'+esc(nomPersonne(r.personne))+' — '+esc(r.titre)+'</option>';}).join("")+'</select><span class="help">aucun candidat ici : la table n\'a pas de colonne pour eux</span></div>'+
+   '<div class="f"><label for="pe-etat">État</label><select id="pe-etat"><option value="previsionnelle">Prévisionnelle</option><option value="signee">Signée</option></select></div>'+
+   '<div class="f"><label for="pe-deb">Début <span class="req">obligatoire</span></label><input id="pe-deb" type="date" value="2027-04-01"></div>'+
+   '<div class="f"><label for="pe-fin">Fin <span class="req">obligatoire</span></label><input id="pe-fin" type="date" value="2027-09-30"></div>'+
+   '<div class="f"><label for="pe-taux">Taux d\'occupation % <span class="req">obligatoire</span></label><input id="pe-taux" type="number" min="1" max="200" value="50"></div>'+
+   '<div class="f"><label for="pe-jours">Jours vendus</label><input id="pe-jours" type="number" min="0" step="0.5" value="120"></div>'+
+   '<div class="f"><label for="pe-tjm">TJM vendu HT</label><input id="pe-tjm" type="number" min="0" value="1"><span class="help">1 = [TARIF], fictif</span></div>'+
+   '<div class="f"><label for="pe-cjm">CJM contrat HT</label><input id="pe-cjm" type="number" min="0" placeholder="[COÛT]"></div>'+
+   '<div class="f"><label for="pe-dev">Devise de vente</label><select id="pe-dev">'+["EUR","USD","MAD"].map(function(d){return '<option'+(d===(pj.devise_defaut||"EUR")?" selected":"")+'>'+d+'</option>';}).join("")+'</select><span class="help">pré-remplie depuis la devise proposée du projet ; le projet n\'en porte aucune (D-9)</span></div>'+
+   '<div class="f"><label for="pe-cdev">Devise du coût</label><select id="pe-cdev">'+["EUR","USD","MAD"].map(function(d){return '<option'+(d===(pj.devise_defaut||"EUR")?" selected":"")+'>'+d+'</option>';}).join("")+'</select><span class="help">différente = marge « — » à la clôture, aucun taux saisi</span></div>'+
+   '</div><div class="acts" style="margin-top:14px"><button type="button" class="b" data-cmd="CreatePrestation" data-projet="'+pj.id+'">Enregistrer la prestation</button><button type="button" class="b ghost" data-ecran="projets">Retour aux projets</button></div></div>';
+  h+='<div class="card" style="flex:1 1 280px"><h3>Engagé au '+fr(S.aujourdhui)+'</h3><div class="tab-box"><table><tbody>';
+  S.pr.forEach(function(r){var ch=chargeJour(r.id,S.aujourdhui);h+='<tr><td>'+esc(nomPersonne(r.personne))+'</td><td class="mono" style="text-align:right'+(ch.engage>parseInt(seuil,10)?";color:var(--warn);font-weight:700":"")+'">'+ch.engage+' %'+(ch.previsionnel?' <span class="tiny">+'+ch.previsionnel+' prév.</span>':'')+'</td></tr>';});
+  h+='</tbody></table></div><div class="note warn" style="margin-top:12px"><div class="t">Ce qui arrivera</div>Au-dessus de '+esc(seuil)+' % <strong>engagés</strong> sur un jour commun, le réglage est « '+esc(mode)+' ». Le prévisionnel s\'affiche mais ne déclenche rien (C-3). Une prestation créée directement « signée » produit les mêmes effets qu\'une signature.</div></div></div>';
+  return h;
+}
+function ecranCharge(){
+  var js=jours("2027-04-01","2027-04-28"),seuil=parseInt(pol("prestation.surcharge.seuil_pct"),10);
+  var h=tete("C4 · Production","var(--c4)","Occupation au jour — avril 2027","Cette vue ne se saisit pas : elle est calculée depuis les prestations, les absences et le calendrier. Il n'existe aucune table « planning ». Signé et prévisionnel s'affichent séparés ; seul le signé déclenche l'alerte.");
+  h+='<div class="card"><div class="row" style="gap:16px;margin-bottom:14px">'+lg("var(--c3)","Signée")+lg("var(--c2)","Prévisionnelle, empilée")+lg("var(--warn)","Engagé au-dessus du seuil")+lg("var(--neu)","Absence")+lg("var(--surf3)","Non ouvré")+'</div><div class="tab-box"><table><tbody>';
+  S.pr.forEach(function(r){
+    var abs=S.absence.filter(function(a){return a.pr===r.id;}),som=0,n=0;
+    var barres=js.map(function(j){
+      if(!ouvre(j))return '<i style="background:var(--surf3);height:100%"></i>';
+      if(abs.some(function(a){return j>=a.debut&&j<=a.fin;}))return '<i style="background:var(--neu);height:100%"></i>';
+      var ch=chargeJour(r.id,j);som+=ch.engage;n++;
+      if(ch.engage===0&&ch.previsionnel===0)return '<i style="background:var(--surf3);height:14%"></i>';
+      var he=Math.min(100,ch.engage),hp=Math.min(100-he,ch.previsionnel);
+      var ce=ch.engage>seuil?"var(--warn)":"var(--c3)";
+      return '<i style="height:100%;background:linear-gradient(to top,'+ce+' 0 '+he+'%,var(--c2) '+he+'% '+(he+hp)+'%,transparent '+(he+hp)+'%)"></i>';
+    }).join("");
+    var moy=n?Math.round(som/n):0;
+    h+='<tr><td style="width:210px"><strong>'+esc(nomPersonne(r.personne))+'</strong><div class="tiny">'+esc(r.titre)+'</div></td><td><div class="charge">'+barres+'</div></td><td class="mono" style="width:80px;text-align:right'+(moy>seuil?";color:var(--warn);font-weight:700":"")+'">'+moy+' %</td></tr>';
+  });
+  h+='</tbody></table></div><div class="tiny" style="margin-top:8px">du 1er au 28 avril 2027 — moyenne sur l\'engagé, jours ouvrés seulement</div></div>';
+  h+='<div class="note ok" style="margin-top:14px"><div class="t">Ce que cette vue prouve</div>La première ligne porte 60 % signés et 50 % prévisionnels le même mois : 110 % affichés, distingués, <strong>aucune alerte</strong>. Créez une deuxième mission <strong>signée</strong> à 50 % sur la même période : là, l\'alerte se déclenche.</div>';
+  return h;
+}
+function lg(c,t){return '<span class="lg"><i style="background:'+c+'"></i>'+esc(t)+'</span>';}
+function ecranTemps(){
+  var per=maPersonne();if(!per)return tete("Self-service","var(--c4)","Pas de compte personnel","Ce rôle n'est lié à aucune personne. Passez en « Ressource en self-service ».");
+  var r=S.pr.filter(function(x){return x.personne===per;})[0],mes=r?S.prestation.filter(function(p){return p.pr===r.id;}):[];
+  var h=tete("Self-service · "+esc(nomPersonne(per)),"var(--c4)","Mes missions et mon temps","Cet écran ne peut montrer que vos missions : le compte est lié à une personne, la personne à un profil ressource, le profil à ses prestations. Saisir sur la mission d'un collègue n'est pas « interdit par l'écran » — la base refuse la ligne (M-10).");
+  h+='<div class="card"><div class="tab-box"><table><thead><tr><th>Mission</th><th>État</th><th>Période</th><th>Jour</th><th>Quantité</th><th></th></tr></thead><tbody>';
+  if(!mes.length)h+='<tr><td colspan="6" class="dim">Aucune mission.</td></tr>';
+  mes.forEach(function(p){var pj=get("projet",p.projet);
+    h+='<tr><td><strong>'+esc(pj?pj.titre:"—")+'</strong><div class="id">'+esc(p.id)+'</div></td><td>'+bd(p.etat)+'</td><td class="mono">'+fr(p.debut)+' → '+fr(p.fin)+'</td>'+
+    '<td><input class="inl" id="tp-j-'+p.id+'" type="date" value="'+esc(p.debut)+'"></td><td><input class="inl" id="tp-q-'+p.id+'" type="number" step="0.1" min="0" max="1" value="0.6" style="width:80px"></td>'+
+    '<td><button type="button" class="b sm" data-cmd="RecordTimesheet" data-prestation="'+p.id+'">Saisir</button></td></tr>';});
+  h+='</tbody></table></div></div>';
+  var lignes=r?S.temps.filter(function(t){return t.pr===r.id;}):[];
+  h+='<div class="card" style="margin-top:14px"><h3>Mes lignes — '+lignes.length+'</h3><div class="tab-box"><table><thead><tr><th>Jour</th><th>Mission</th><th>Quantité</th><th>Nature</th></tr></thead><tbody>';
+  lignes.slice().reverse().forEach(function(t){h+='<tr><td class="mono">'+fr(t.jour)+'</td><td class="dim">'+esc(t.prestation)+'</td><td class="mono">'+t.qte+'</td><td>'+(t.ajust?'<span class="bd warn">ajustement après clôture</span>':'<span class="tiny">saisie normale</span>')+'</td></tr>';});
+  h+='</tbody></table></div></div>';
+  return h;
+}
+function ecranMurs(){
+  var h=tete("Ce qui ne se règle pas","var(--crit)","Les quinze interdits, à l'essai","Chaque bouton tente <strong>vraiment</strong> l'opération contre la couche base du banc — insert, update, delete, agrégat — et c'est elle qui refuse, en nommant le mur. Un mur n'est pas un réglage : il tombe par une décision écrite, ou il tient.")+'<div class="stack">';
+  MURS.forEach(function(m,i){h+='<div class="card"><div class="row" style="align-items:center"><div style="flex:1 1 320px"><div class="acts"><span class="bd neg">'+esc(m.id)+'</span><strong>'+esc(m.t)+'</strong></div><div class="tiny mono" style="margin-top:5px">'+esc(m.e)+'</div></div><button type="button" class="b danger" data-mur="'+i+'">Tenter l\'interdit</button></div></div>';});
+  return h+'</div>';
+}
+function ecranPolitiques(){
+  var h=tete("Ce qui se règle","var(--ok)","Les règles qui se règlent","<strong>"+POL_DEF.length+" réglages</strong> sur ceux du registre §E — le banc en porte un sous-ensemble, celui que ses écrans savent jouer. Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance au 17 septembre 2026. Changez-en une, refaites la même manipulation : le produit se comporte autrement, sans une ligne de code. Une option « hors banc » est portée par le registre mais n'a pas d'effet ici.");
+  if(!peut("SetPolicy"))h+='<div class="note warn" style="margin-bottom:14px"><div class="t">Lecture seule</div>Vous êtes '+esc(R().nom)+'. Seul l\'administrateur change un réglage.</div>';
+  var fam={};POL_DEF.forEach(function(p){(fam[p.f]=fam[p.f]||[]).push(p);});
+  Object.keys(fam).forEach(function(f){
+    h+='<div class="card" style="margin-bottom:12px"><h3>'+esc(f)+'</h3><div class="tab-box"><table><thead><tr><th>Clé</th><th>Valeur</th><th>Ce que ça change</th><th>Source</th></tr></thead><tbody>';
+    fam[f].forEach(function(p){
+      var v=pol(p.c),hb=p.hb&&p.hb.indexOf(v)>=0,tout=p.hb&&p.hb.length===p.o.length;
+      h+='<tr class="'+(p.rouge?"rouge ":"")+(hb||tout?"hb":"")+'"><td><div class="mono" style="color:'+(p.rouge?"var(--crit)":"var(--ink)")+'">'+esc(p.c)+'</div><div class="tiny">'+esc(p.l)+'</div></td>'+
+      '<td><select data-pol="'+esc(p.c)+'"'+(peut("SetPolicy")?"":" disabled")+' class="inl" style="max-width:240px;padding:6px 8px">'+p.o.map(function(o,i){return '<option value="'+esc(o)+'"'+(o===v?" selected":"")+'>'+esc(o.replace(/_/g," "))+(i===0?" (défaut)":"")+(p.hb&&p.hb.indexOf(o)>=0?" — hors banc":"")+'</option>';}).join("")+'</select>'+(v!==p.o[0]?'<div class="tiny" style="color:var(--warn)">modifié</div>':'')+'</td>'+
+      '<td class="dim" style="font-size:12px">'+esc(p.e)+'</td><td class="mono tiny">'+esc(p.s)+'</td></tr>';
+    });
+    h+='</tbody></table></div></div>';
+  });
+  return h+'<div class="note mur"><div class="t">Ce qui n\'est pas ici</div>Les 15 murs se tentent au <strong>banc</strong>, ils ne se règlent pas. Ce ne sont pas des préférences : c\'est ce qui rend les chiffres vrais.</div>';
+}
+function rendre(){
+  nav();
+  var f={tableau:ecranTableau,societes:ecranSocietes,candidats:ecranCandidats,ressources:ecranRessources,besoins:ecranBesoins,projets:ecranProjets,charge:ecranCharge,temps:ecranTemps,murs:ecranMurs,politiques:ecranPolitiques,positionner:ecranPositionner,prestation:ecranPrestation}[ui.ecran]||ecranTableau;
+  vue.innerHTML=f();vue.scrollTop=0;
+  document.getElementById("monde").textContent="monde au "+fr(S.aujourdhui)+" · "+POL_DEF.length+" réglages sur ceux du registre §E";
+  journal();sauver();
+}
+function journal(){
+  var l=S.ev.slice(-80).reverse();
+  document.getElementById("ev-n").textContent=S.ev.length+" écrits";
+  flux.innerHTML=l.map(function(e){return '<div class="ev'+(e.ko?" refus":"")+'"><div class="ty">'+esc(e.t)+'</div><div class="de">'+esc(e.d)+'</div>'+(e.p?'<div class="me">'+esc(e.p)+'</div>':'')+'<div class="me">par '+esc(e.a)+'</div></div>';}).join("")||'<div class="tiny">Rien encore.</div>';
+}
+function sauver(){try{localStorage.setItem(CLE,JSON.stringify({s:S,r:roleActif}));}catch(x){}}
+function charger(){
+  try{var d=JSON.parse(localStorage.getItem(CLE));if(!d||!d.s||!d.s.personne)return false;S=d.s;roleActif=ROLES[d.r]?d.r:"staffing";
+    ["action","snap","ev","absence","temps"].forEach(function(t){if(!S[t])S[t]=[];});
+    if(!S.aujourdhui)S.aujourdhui="2027-04-06";if(!S.pol)S.pol={};
+    POL_DEF.forEach(function(p){if(p.o.indexOf(S.pol[p.c])<0)S.pol[p.c]=p.o[0];});   /* clés manquantes ou valeurs hors registre (ex. temps.periode = libre) : retour au défaut */
+    Object.keys(S.pol).forEach(function(k){if(!POL[k])delete S.pol[k];});
+    S.ev.forEach(function(e,i){if(!e.id)e.id="EV-old-"+i;});
+    /* migration v5 → v6 : rôles nettoyés (D-3), statuts explicites (D-2), devise du coût (D-9) */
+    S.societe.forEach(function(x){
+      if(!Array.isArray(x.roles))x.roles=[];
+      if(x.roles.indexOf("client")>=0&&x.statut!=="client")x.statut="client";
+      x.roles=x.roles.filter(function(r){return r==="fournisseur"||r==="interne";});
+      if(x.statut==="interne"){x.statut=null;if(x.roles.indexOf("interne")<0)x.roles.push("interne");}
+    });
+    S.unite.forEach(function(x){if(x.statut===undefined)x.statut=null;});
+    S.contact.forEach(function(x){if(x.statut===undefined)x.statut=null;});
+    S.projet.forEach(function(x){if(x.devise_defaut===undefined)x.devise_defaut=x.devise||"EUR";delete x.devise;});
+    S.prestation.forEach(function(x){if(!x.cjm_devise)x.cjm_devise=x.devise||"EUR";});
+    S.snap.forEach(function(x){if(x.ca_devise===undefined){x.ca_devise=x.devise||"EUR";x.cout_devise=x.ca_devise;x.cout=null;x.marge=null;delete x.devise;}
+      if(x.marge==null&&x.marge_motif===undefined)x.marge_motif=(x.cout_devise!==x.ca_devise)?"devises":(x.ca==null?"ca":"cout");});
+    if(!ROLES[roleActif])roleActif="staffing";
+    return true;}catch(x){return false;}
+}
+/* ===================== ÉVÉNEMENTS UI ===================== */
+function val(i){var e=document.getElementById(i);return e?e.value:"";}
+function coche(i){var e=document.getElementById(i);return !!(e&&e.checked);}
+document.addEventListener("click",function(ev2){
+  var b=ev2.target.closest("button");if(!b)return;
+  if(b.dataset.skin){peau(b.dataset.skin);return;}
+  if(b.dataset.ecran){ui.ecran=b.dataset.ecran;ui.ctx={};rendre();return;}
+  if(b.id==="btn-reset"){neuf();ui.ecran="tableau";rendre();dis({ok:true,msg:"Monde réinitialisé."});return;}
+  if(b.dataset.mur!==undefined){var m=MURS[parseInt(b.dataset.mur,10)],r0=m.f();if(r0.ok&&m.id!=="M-14")r0.msg="Attention : l'opération est passée. "+r0.msg;dis(r0);rendre();return;}
+  var c=b.dataset.cmd;if(!c)return;var d={},res;
+  if(c==="__pos"){ui.ecran="positionner";ui.ctx={besoin:b.dataset.besoin,pc:b.dataset.pc};rendre();return;}
+  if(c==="__prest"){ui.ecran="prestation";ui.ctx={projet:b.dataset.projet};rendre();return;}
+  if(c==="__faire-pos"){var p=val("po-profil").split(":");res=p[0]==="pc"?run("PositionCandidate",{besoin:val("po-besoin"),pc:p[1]}):run("PositionResource",{besoin:val("po-besoin"),pr:p[1]});dis(res);if(res.ok){ui.ecran="besoins";ui.ctx={};}rendre();return;}
+  switch(c){
+    case "CreateCompany":d={nom:val("so-nom"),statut:val("so-statut"),ville:val("so-ville"),roles:[coche("so-r-f")?"fournisseur":null,coche("so-r-i")?"interne":null].filter(Boolean)};break;
+    case "CreateContact":d={societe:val("ct-soc"),nom:val("ct-nom"),fonction:val("ct-fct")};break;
+    case "CreateCandidate":d={nom:val("ca-nom"),titre:val("ca-titre")};break;
+    case "CreateNeed":d={societe:val("be-soc"),contact:val("be-ct"),titre:val("be-titre"),type:val("be-type"),priorite:val("be-prio"),postes:val("be-postes")};break;
+    case "CreateProject":d={societe:val("pj-soc"),contact:val("pj-ct"),titre:val("pj-titre"),type:val("pj-type"),devise_defaut:val("pj-dev")};break;
+    case "CreatePrestation":d={projet:b.dataset.projet,pr:val("pe-pr"),etat:val("pe-etat"),debut:val("pe-deb"),fin:val("pe-fin"),taux:val("pe-taux"),jours:val("pe-jours"),tjm:val("pe-tjm"),cjm:val("pe-cjm"),devise:val("pe-dev"),cjm_devise:val("pe-cdev")};break;
+    case "RecordTimesheet":d={prestation:b.dataset.prestation,jour:val("tp-j-"+b.dataset.prestation),qte:val("tp-q-"+b.dataset.prestation)};break;
+    case "RecordClientDecision":d={pos:b.dataset.pos,retenu:b.dataset.retenu==="1"};break;
+    case "WithdrawPositioning":d={pos:b.dataset.pos,motif:val("wd-"+b.dataset.pos)};break;
+    case "CreateProjectFromNeed":d={besoin:b.dataset.besoin,contact:val("pjct-"+b.dataset.besoin)||null};break;
+    case "SuspendNeed":case "CloseNeed":d={besoin:b.dataset.besoin,motif:val("mot-"+b.dataset.besoin)};break;
+    case "SetResourceState":d={pr:b.dataset.pr,etat:val("rs-"+b.dataset.pr)};break;
+    case "RequalifyCompany":d={societe:b.dataset.societe,motif:"requalification manuelle"};break;
+    default:d={pc:b.dataset.pc,pos:b.dataset.pos,besoin:b.dataset.besoin,projet:b.dataset.projet,prestation:b.dataset.prestation,pr:b.dataset.pr};
+  }
+  res=run(c,d);dis(res);
+  if(res.ok&&c==="CreatePrestation")ui.ecran="projets";
+  rendre();
+});
+document.addEventListener("change",function(e){
+  var s=e.target;
+  if(s.id==="sel-role"){roleActif=s.value;if(ui.ecran==="temps"&&!maPersonne())ui.ecran="tableau";rendre();return;}
+  if(s.dataset.pol){dis(run("SetPolicy",{cle:s.dataset.pol,val:s.value}));rendre();return;}
+  if(s.id==="be-soc"){var w=document.getElementById("be-ct");if(w)w.outerHTML=selCt("be-ct",s.value);return;}
+  if(s.id==="pj-soc"){var w2=document.getElementById("pj-ct");if(w2)w2.outerHTML=selCt("pj-ct",s.value);return;}
+});
+function peau(k){
+  if(["nuit","clair","avaliance"].indexOf(k)<0)k="nuit";
+  document.documentElement.setAttribute("data-skin",k);
+  document.querySelectorAll(".peaux button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.skin===k?"true":"false");});
+  try{localStorage.setItem(CLE_SKIN,k);}catch(x){}
+}
+/* ===================== DÉMARRAGE ===================== */
+var sk="nuit";try{sk=localStorage.getItem(CLE_SKIN)||"nuit";}catch(x){}
+peau(sk);
+var sr=document.getElementById("sel-role");
+sr.innerHTML=Object.keys(ROLES).map(function(k){return '<option value="'+k+'">'+esc(ROLES[k].nom)+'</option>';}).join("");
+if(!charger())neuf();
+sr.value=roleActif;
+rendre();
+})();
+
+</script>

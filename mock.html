@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ava Manager — mock d’écrans</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #0e141d;
+      --glass: rgba(16, 24, 36, 0.78);
+      --ink: #e8eef6;
+      --muted: #8b97a8;
+      --line: rgba(197, 208, 220, 0.14);
+      --silver: #c5d0dc;
+      --chrome: #f3f6fa;
+      --gold: #e8b86d;
+      --gold-2: #f0c98a;
+      --blue: #4aa3ff;
+      --ok: #7dcea0;
+      --ko: #e07a6e;
+      --side: 232px;
+      --c1: #5aa7ff;
+      --c2: #9b8cff;
+      --c3: #e8b86d;
+      --c4: #5ec8ff;
+      --c5: #7ad4c8;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      font: 14px/1.45 Outfit, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1100px 520px at 88% -8%, rgba(74, 163, 255, 0.16), transparent 55%),
+        radial-gradient(900px 480px at -8% 108%, rgba(232, 184, 109, 0.1), transparent 52%),
+        #070b12;
+    }
+    code, .mono { font-family: "IBM Plex Mono", monospace; color: var(--muted); font-size: 12px; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    .kv button, .card > button, .statrow button {
+      background: transparent; border: 0; color: var(--gold-2); cursor: pointer; padding: 0; font-weight: 600;
+    }
+    a { color: var(--gold-2); }
+    .app { display: grid; grid-template-rows: auto 64px 1fr; min-height: 100%; }
+    header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 0 18px; background: rgba(8, 12, 20, 0.72);
+      border-bottom: 1px solid var(--line); backdrop-filter: blur(16px);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: var(--side); }
+    .mark {
+      width: 28px; height: 28px; display: grid; gap: 3px;
+    }
+    .mark i { display: block; height: 7px; border-radius: 2px; background: linear-gradient(90deg, #9aa7b6, #f3f6fa 55%, #8b97a8); }
+    .mark i:nth-child(2) { width: 78%; }
+    .mark i:nth-child(3) { width: 54%; }
+    .brand strong {
+      display: block; color: var(--chrome); font-size: 15px; letter-spacing: .14em;
+      font-weight: 700;
+    }
+    .brand em { display: block; color: var(--muted); font-style: normal; font-size: 11px; letter-spacing: .04em; }
+    .paths { display: flex; gap: 8px; flex-wrap: wrap; }
+    .paths button {
+      border: 1px solid var(--line); background: rgba(14, 20, 29, 0.7); color: var(--silver);
+      padding: 6px 12px; border-radius: 999px; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .paths button.on { border-color: rgba(232, 184, 109, 0.55); color: var(--chrome); box-shadow: 0 0 0 1px rgba(232, 184, 109, 0.18) inset; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .dot.C1 { background: var(--c1); } .dot.C2 { background: var(--c2); }
+    .dot.C3 { background: var(--c3); } .dot.C4 { background: var(--c4); }
+    .dot.C5 { background: var(--c5); }
+    .spacer { flex: 1; }
+    .who { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; }
+    .who select {
+      border: 1px solid var(--line); background: var(--panel); color: var(--silver);
+      padding: 6px 8px; border-radius: 8px;
+    }
+    .k {
+      border: 1px solid var(--line); background: var(--panel); color: var(--silver);
+      padding: 6px 10px; border-radius: 8px; cursor: pointer;
+    }
+    .shell { display: grid; grid-template-columns: var(--side) 1fr; min-height: 0; }
+    aside {
+      background: rgba(8, 12, 20, 0.55); border-right: 1px solid var(--line);
+      padding: 12px 10px 32px; overflow: auto;
+    }
+    .g { color: var(--muted); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin: 14px 8px 6px; }
+    aside button.nav {
+      display: flex; justify-content: space-between; align-items: center;
+      width: 100%; text-align: left; border: 0; background: transparent;
+      color: var(--silver); padding: 8px 10px; border-radius: 8px; cursor: pointer;
+    }
+    aside button.nav.on { background: rgba(232, 184, 109, 0.12); color: var(--chrome); font-weight: 600; }
+    aside button.nav.dim { color: var(--muted); }
+    aside button.nav .tag { font-size: 10px; color: var(--muted); letter-spacing: .04em; }
+    .main { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+    .crumb { padding: 12px 22px 0; color: var(--muted); font-size: 12px; }
+    .crumb button { border: 0; background: none; color: var(--gold-2); cursor: pointer; padding: 0; }
+    .page { padding: 8px 22px 48px; overflow: auto; flex: 1; }
+    .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin: 8px 0 14px; }
+    h1 {
+      margin: 0; font-size: 26px; color: var(--chrome); font-weight: 700;
+      letter-spacing: .02em;
+    }
+    .count { color: var(--muted); font-weight: 500; font-size: 14px; }
+    .tools { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      border: 1px solid var(--line); background: rgba(14, 20, 29, 0.8); color: var(--silver);
+      padding: 8px 14px; border-radius: 10px; cursor: pointer;
+    }
+    .btn.primary {
+      background: linear-gradient(180deg, var(--gold-2), var(--gold));
+      border-color: transparent; color: #14110c; font-weight: 700;
+      box-shadow: 0 0 28px rgba(232, 184, 109, 0.28);
+    }
+    .btn[disabled] { opacity: .4; cursor: not-allowed; box-shadow: none; }
+    .search {
+      width: 280px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px;
+      background: rgba(14, 20, 29, 0.8); color: var(--chrome);
+    }
+    table.list {
+      width: 100%; border-collapse: collapse;
+      background: var(--glass); border: 1px solid var(--line); border-radius: 14px;
+      overflow: hidden;
+    }
+    table.list th, table.list td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+    table.list th { color: var(--muted); font-weight: 500; font-size: 12px; letter-spacing: .04em; }
+    table.list tr.click { cursor: pointer; }
+    table.list tr.click:hover td { background: rgba(74, 163, 255, 0.05); }
+    table.list button { background: none; border: 0; color: var(--chrome); cursor: pointer; font-weight: 600; padding: 0; }
+    .pill {
+      display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600;
+      background: rgba(197, 208, 220, 0.1); color: var(--silver);
+    }
+    .pill.ok { background: rgba(125, 206, 160, 0.14); color: var(--ok); }
+    .pill.warn { background: rgba(232, 184, 109, 0.14); color: var(--gold-2); }
+    .pill.ko { background: rgba(224, 122, 110, 0.14); color: var(--ko); }
+    .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--line); margin: 0 0 16px; }
+    .tabs button {
+      border: 0; background: none; color: var(--muted); padding: 10px 14px; cursor: pointer;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .tabs button.on { color: var(--chrome); font-weight: 600; border-bottom-color: var(--gold); }
+    .tabs button.hors { color: #6c7786; }
+    .card {
+      background: var(--glass); border: 1px solid var(--line); border-radius: 14px; padding: 16px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset;
+    }
+    .grid2 { display: grid; grid-template-columns: 280px 1fr; gap: 16px; }
+    .kv { display: grid; grid-template-columns: 120px 1fr; gap: 6px 10px; font-size: 13px; }
+    .kv span:first-child { color: var(--muted); }
+    .statrow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 0 0 16px; }
+    .stat {
+      background: var(--glass); border: 1px solid var(--line); border-radius: 14px; padding: 12px;
+    }
+    .stat b { display: block; color: var(--chrome); font-size: 22px; letter-spacing: .02em; }
+    .stat span { color: var(--muted); font-size: 12px; }
+    .note { color: var(--muted); font-size: 13px; }
+    .banner {
+      background: linear-gradient(90deg, rgba(26, 74, 138, 0.35), rgba(232, 184, 109, 0.12));
+      color: var(--silver); padding: 8px 18px; font-size: 12px; letter-spacing: .04em;
+      border-bottom: 1px solid var(--line);
+    }
+    .tables {
+      margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--line);
+      color: var(--muted); font-size: 12px;
+    }
+    .kanban { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); align-items: start; }
+    .col { background: var(--glass); border: 1px solid var(--line); border-radius: 14px; padding: 10px; min-height: 120px; }
+    .col h3 { margin: 0 0 8px; font-size: 13px; color: var(--gold-2); }
+    .tile { border: 1px solid var(--line); border-radius: 10px; padding: 8px; margin: 0 0 8px; cursor: pointer; }
+    .tile:hover { background: rgba(74, 163, 255, 0.06); }
+    .menu { position: relative; }
+    .menu .drop {
+      display: none; position: absolute; right: 0; top: 110%; background: #101820;
+      border: 1px solid var(--line); border-radius: 12px; min-width: 240px; z-index: 5; padding: 6px;
+    }
+    .menu.open .drop { display: block; }
+    .drop button {
+      display: block; width: 100%; text-align: left; border: 0; background: none;
+      padding: 8px 10px; cursor: pointer; color: var(--silver); border-radius: 8px;
+    }
+    .drop button:hover { background: rgba(232, 184, 109, 0.1); color: var(--chrome); }
+    .drop button[disabled] { color: var(--muted); cursor: not-allowed; }
+    .drop .why { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .toast {
+      position: fixed; right: 16px; bottom: 16px; max-width: 360px; z-index: 20;
+      background: #101820; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px;
+    }
+    .toast.ko { border-color: var(--ko); }
+    .toast.ok { border-color: var(--gold); }
+    .toast strong { display: block; color: var(--chrome); margin-bottom: 4px; }
+    .overlay {
+      display: none; position: fixed; inset: 0; background: rgba(5, 8, 14, 0.72); z-index: 15;
+      align-items: flex-start; justify-content: center; padding: 48px 16px;
+    }
+    .overlay.on { display: flex; }
+    .modal {
+      background: #101820; border: 1px solid var(--line); border-radius: 16px;
+      width: min(640px, 100%); padding: 22px;
+      box-shadow: 0 0 80px rgba(74, 163, 255, 0.12);
+    }
+    .modal h2 { margin: 0 0 12px; color: var(--chrome); font-size: 18px; letter-spacing: .04em; }
+    .field { margin: 0 0 12px; }
+    .field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+    .field input, .field select, .field textarea {
+      width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px;
+      background: #0b1118; color: var(--chrome);
+    }
+    .admin-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+    .admin-cards button {
+      text-align: left; background: var(--glass); border: 1px solid var(--line);
+      border-radius: 14px; padding: 16px; cursor: pointer; color: var(--chrome);
+    }
+    .admin-cards button.hors { color: var(--muted); }
+    .admin-cards small { display: block; color: var(--muted); margin-top: 6px; }
+    .empty {
+      padding: 28px; text-align: center; color: var(--muted);
+      background: var(--glass); border: 1px dashed var(--line); border-radius: 14px;
+    }
+    @media (max-width: 900px) {
+      .shell { grid-template-columns: 1fr; }
+      aside { display: none; }
+      .grid2, .statrow { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="banner">Mock 5b — pas le produit. Plus qu’un ERP, un accélérateur humain.</div>
+  <header>
+    <div class="brand">
+      <span class="mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <div>
+        <strong>AVA MANAGER</strong>
+        <em>Espace de travail</em>
+      </div>
+    </div>
+    <div class="paths" id="paths"></div>
+    <div class="spacer"></div>
+    <button class="k" type="button" id="searchBtn">Recherche</button>
+    <div class="who">
+      <span>Compte</span>
+      <select id="account"></select>
+    </div>
+  </header>
+  <div class="shell">
+    <aside id="side"></aside>
+    <div class="main">
+      <div class="crumb" id="crumb"></div>
+      <div class="page" id="page"></div>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="overlay"></div>
+<div id="toast" hidden></div>
+<script>
+(function () {
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const byId = (arr, id) => arr.find((x) => x.id === id);
+
+  const PATHS = [
+    { id: "C1", label: "C1 CRM", first: "societes", nav: ["actions", "societes", "contacts"] },
+    { id: "C2", label: "C2 Recrutement", first: "candidats", nav: ["candidats", "actions", "positionnements"] },
+    { id: "C3", label: "C3 Staffing", first: "besoins", nav: ["societes", "besoins", "positionnements", "projets"] },
+    { id: "C4", label: "C4 Production", first: "projets", nav: ["ressources", "projets", "prestations", "temps"] },
+    { id: "C5", label: "C5 Externe", first: "ressources", nav: ["ressources", "societes"] }
+  ];
+
+  const NAV = [
+    { group: "Pilotage", items: [
+      { id: "dash", label: "Tableau de bord", hors: true, ecran: "01" },
+      { id: "alertes", label: "Mes alertes", hors: true, ecran: "02" }
+    ]},
+    { group: "CRM", items: [
+      { id: "actions", label: "Actions", plus: false, ecran: "03" },
+      { id: "societes", label: "Sociétés", plus: true, ecran: "10" },
+      { id: "contacts", label: "Contacts", plus: true, ecran: "11" }
+    ]},
+    { group: "Humains", items: [
+      { id: "candidats", label: "Candidats", plus: true, kanban: true, ecran: "04" },
+      { id: "ressources", label: "Ressources", plus: true, kanban: true, ecran: "07" }
+    ]},
+    { group: "Staffing", items: [
+      { id: "besoins", label: "Besoins", plus: true, kanban: true, ecran: "12" },
+      { id: "positionnements", label: "Positionnements", plus: false, kanban: true, ecran: "13" }
+    ]},
+    { group: "Production", items: [
+      { id: "projets", label: "Projets", plus: true, ecran: "14" },
+      { id: "prestations", label: "Prestations", plus: false, ecran: "40" },
+      { id: "temps", label: "Temps", plus: false, ecran: "50" }
+    ]},
+    { group: "Réglage", items: [
+      { id: "admin", label: "Administration", plus: false, ecran: "57" }
+    ]},
+    { group: "Hors V1", items: [
+      { id: "profils", label: "Profils types", hors: true, ecran: "08" },
+      { id: "produits", label: "Produits", hors: true, ecran: "09" },
+      { id: "achats", label: "Achats", hors: true, ecran: "41" },
+      { id: "apps", label: "Apps", hors: true, ecran: "16" },
+      { id: "reporting", label: "Reporting", hors: true, ecran: "45" }
+    ]}
+  ];
+
+  const TABS = {
+    candidat: ["Synthèse", "Informations", "Administratif", "DTs", "Actions", "Positionnements"],
+    ressource: ["Synthèse", "Informations", "Administratif", "DTs", "Actions", "Positionnements", "Prestations", "Projets", "Formulaires"],
+    societe: ["Synthèse", "Informations", "Contacts", "Actions", "Besoins", "Projets", "Achats", "Facturation"],
+    besoin: ["Informations", "Positionnements", "Actions", "Projets"],
+    projet: ["Informations", "Actions", "Prestations"],
+    contact: ["Synthèse", "Informations", "Actions", "Besoins", "Projets", "Achats"]
+  };
+  const HORS_TABS = {
+    ressource: ["Formulaires"],
+    societe: ["Achats", "Facturation"],
+    contact: ["Achats"]
+  };
+
+  const POLS = [
+    { cle: "besoin.contact", defaut: "facultatif", effet: "CreateNeed : la société suffit." },
+    { cle: "besoin.staffing.declencheur", defaut: "premier_positionnement", effet: "a_pourvoir → en_recherche au 1er Position*." },
+    { cle: "besoin.pourvu.mode", defaut: "manuel_avec_garde", effet: "DeclareNeedFilled, pas un statut magique." },
+    { cle: "positionnement.sur_besoin_inactif", defaut: "refus", effet: "Pas de matching sur pourvu / suspendu / fermé." },
+    { cle: "projet.creation_depuis_besoin", defaut: "explicite", effet: "Retenu ne crée pas le projet." },
+    { cle: "projet.depuis_besoin.garde", defaut: "retenu_requis", effet: "CreateProjectFromNeed lit un terminal_positif." },
+    { cle: "projet.contact", defaut: "obligatoire", effet: "Le projet demande un contact, pas le besoin." },
+    { cle: "prestation.surcharge.mode", defaut: "alerte", effet: ">100 % : on prévient, on n’interdit pas." },
+    { cle: "societe.passage_client.declencheur", defaut: "premiere_prestation_engage", effet: "Prospect → client à la 1re prestation signée." }
+  ];
+
+  function seed() {
+    return {
+      seq: 40,
+      accountId: "martin",
+      path: "C3",
+      view: "liste",
+      kanban: false,
+      q: "",
+      accounts: [
+        { id: "martin", name: "Compte commercial", role: "Commercial" },
+        { id: "sophie", name: "Compte RH", role: "RH / Recrutement" },
+        { id: "karim", name: "Compte staffing", role: "Staffing / DP" },
+        { id: "jean-user", name: "Compte ressource", role: "Ressource" },
+        { id: "admin", name: "Compte admin", role: "Administration" }
+      ],
+      companies: [
+        { id: "alpha", name: "Société Alpha", etat: "client", secteur: "Industrie", lieu: "Lyon", manager: "Compte commercial" },
+        { id: "beta", name: "Société Beta", etat: "prospect", secteur: "Services", lieu: "Paris", manager: "Compte commercial" },
+        { id: "gamma", name: "Gamma Staffing", etat: "fournisseur", secteur: "ESN", lieu: "Lille", manager: "Compte staffing" }
+      ],
+      contacts: [
+        { id: "c1", prenom: "Interlocuteur", nom: "Alpha", fonction: "DSI", type: "Décisionnaire", companyId: "alpha", etat: "contact" },
+        { id: "c2", prenom: "Interlocuteur", nom: "Beta", fonction: "DRH", type: "Décisionnaire", companyId: "beta", etat: "prospect" }
+      ],
+      candidates: [
+        { id: "dupont", prenom: "Candidat", nom: "Cloud", titre: "Consultant Cloud", etat: "actif", dispo: "1 mois", pos: 1, manager: "Compte RH", cv: true },
+        { id: "leila", prenom: "Candidat", nom: "Data", titre: "Data Engineer", etat: "actif", dispo: "immédiate", pos: 0, manager: "Compte RH", cv: true },
+        { id: "yanis", prenom: "Candidat", nom: "Pilotage", titre: "Chef de projet", etat: "brouillon", dispo: "—", pos: 0, manager: "Compte RH", cv: false }
+      ],
+      resources: [
+        { id: "jean", prenom: "Ressource", nom: "Interne", type: "interne", etat: "en_mission", tarif: "520", supplierId: "" },
+        { id: "sara", prenom: "Ressource", nom: "Externe", type: "externe", etat: "en_mission", tarif: "480", supplierId: "gamma" },
+        { id: "ahmedr", prenom: "Ressource", nom: "Cloud", type: "interne", etat: "disponible", tarif: "560", supplierId: "" }
+      ],
+      needs: [
+        { id: "n1", title: "Développeur Backend", companyId: "alpha", contactId: "c1", etat: "a_pourvoir", priorite: "P1", type: "Régie", debut: "2026-10-01", ca: "45 000" },
+        { id: "n2", title: "Data Engineer", companyId: "beta", contactId: "c2", etat: "en_recherche", priorite: "P2", type: "Régie", debut: "2026-09-22", ca: "38 000" },
+        { id: "n3", title: "Chef de projet SI", companyId: "alpha", contactId: "c1", etat: "pourvu", priorite: "P3", type: "Forfait", debut: "2026-06-01", ca: "72 000" },
+        { id: "n4", title: "Mobile Flutter", companyId: "alpha", contactId: "", etat: "a_pourvoir", priorite: "P1", type: "Régie", debut: "2026-11-03", ca: "—" }
+      ],
+      positionings: [
+        { id: "pos1", needId: "n1", resourceId: "jean", candidateId: "", etat: "propose", maj: "17/09" },
+        { id: "pos2", needId: "n2", resourceId: "", candidateId: "dupont", etat: "presente", maj: "16/09" },
+        { id: "pos3", needId: "n3", resourceId: "jean", candidateId: "", etat: "retenu", maj: "12/06" },
+        { id: "pos4", needId: "n2", resourceId: "ahmedr", candidateId: "", etat: "propose", maj: "17/09" }
+      ],
+      projects: [
+        { id: "p1", name: "AVA-PRJ-1 Backend Alpha", companyId: "alpha", needId: "n3", contactId: "c1", etat: "ouvert", debut: "2026-06-01", fin: "2026-12-31", type: "Régie" }
+      ],
+      prestations: [
+        { id: "s1", projectId: "p1", resourceId: "jean", load: 60, etat: "signee", debut: "2026-06-01", fin: "2026-12-31", tjm: "650" },
+        { id: "s2", projectId: "p1", resourceId: "sara", load: 40, etat: "signee", debut: "2026-06-01", fin: "2026-12-31", tjm: "620" }
+      ],
+      actions: [
+        { id: "a1", date: "17/09", type: "Note", porteur: "Besoin n1", texte: "Brief client reçu.", manager: "Compte commercial" },
+        { id: "a2", date: "16/09", type: "Entretien visio", porteur: "Candidat Cloud", texte: "Entretien de qualification.", manager: "Compte RH" }
+      ],
+      times: [
+        { id: "t1", resourceId: "jean", prestationId: "s1", jour: "2026-09-16", jours: "1,00" }
+      ]
+    };
+  }
+  let W = seed();
+  let S = { list: "besoins", kind: "", id: "", tab: "", modal: null };
+
+  function next(prefix) { W.seq += 1; return prefix + W.seq; }
+  function co(id) { return byId(W.companies, id); }
+  function coName(id) { return co(id) ? co(id).name : "—"; }
+  function contactName(id) {
+    const c = byId(W.contacts, id);
+    return c ? c.prenom + " " + c.nom : "—";
+  }
+  function humainPos(p) {
+    if (p.candidateId) {
+      const c = byId(W.candidates, p.candidateId);
+      return c ? "Candidat · " + c.nom : "Candidat";
+    }
+    const r = byId(W.resources, p.resourceId);
+    return r ? "Ressource · " + r.nom : "Ressource";
+  }
+  function etatPill(code) {
+    const ok = ["actif", "client", "retenu", "signee", "ouvert", "pourvu", "en_mission"];
+    const ko = ["refuse_client", "ferme", "annulee", "sorti"];
+    const warn = ["brouillon", "prospect", "a_pourvoir", "propose", "previsionnelle", "disponible"];
+    const cls = ok.includes(code) ? "ok" : ko.includes(code) ? "ko" : warn.includes(code) ? "warn" : "";
+    return `<span class="pill ${cls}">${esc(code)}</span>`;
+  }
+  function toast(title, text, ko) {
+    const el = document.getElementById("toast");
+    el.hidden = false;
+    el.className = "toast " + (ko ? "ko" : "ok");
+    el.innerHTML = `<strong>${esc(title)}</strong>${esc(text)}`;
+    clearTimeout(toast.t);
+    toast.t = setTimeout(() => { el.hidden = true; }, 4200);
+  }
+  function account() { return byId(W.accounts, W.accountId); }
+
+  const TABLES = {
+    dash: "aucune en V1 — hors lot",
+    actions: "action, evenement_metier",
+    societes: "societe, societe_role, contact, besoin, projet",
+    societe: "societe, societe_role, unite_organisation, contact, besoin, projet, action, evenement_metier",
+    contacts: "contact, societe",
+    contact: "contact, societe, action, besoin, projet",
+    candidats: "personne, profil_candidat, document",
+    candidat: "personne, profil_candidat, document, positionnement, action, qualification",
+    ressources: "personne, profil_ressource, societe (fournisseur)",
+    ressource: "personne, profil_ressource, prestation, projet, positionnement, temps, absence",
+    besoins: "besoin, societe, contact, besoin_competence",
+    besoin: "besoin, positionnement, projet, action, societe, contact",
+    positionnements: "positionnement, besoin, profil_candidat XOR profil_ressource",
+    projets: "projet, societe, besoin, prestation",
+    projet: "projet, prestation, action, societe, contact, besoin",
+    prestations: "prestation, projet, profil_ressource, snapshot_marge",
+    temps: "temps, prestation, profil_ressource, calendrier_jour_non_ouvre",
+    admin: "politique, ref_*, groupe, compte, agence"
+  };
+
+  function go(list, kind, id, tab) {
+    S = { list: list, kind: kind || "", id: id || "", tab: tab || "", modal: null };
+    if (!kind) W.view = "liste";
+    closeMenu();
+    render();
+  }
+  function openFiche(kind, id, tab) {
+    const defaults = { candidat: "Synthèse", ressource: "Synthèse", societe: "Synthèse", besoin: "Informations", projet: "Informations", contact: "Synthèse" };
+    S = { list: kind + "s", kind, id, tab: tab || defaults[kind], modal: null };
+    if (kind === "besoin") S.list = "besoins";
+    if (kind === "societe") S.list = "societes";
+    render();
+  }
+
+  function navActive() {
+    if (S.kind === "candidat") return "candidats";
+    if (S.kind === "ressource") return "ressources";
+    if (S.kind === "societe") return "societes";
+    if (S.kind === "contact") return "contacts";
+    if (S.kind === "besoin") return "besoins";
+    if (S.kind === "projet") return "projets";
+    return S.list;
+  }
+
+  function pathOf(list) {
+    const p = PATHS.find((x) => x.id === W.path);
+    return p && p.nav.includes(list);
+  }
+
+  function renderSide() {
+    const active = navActive();
+    document.getElementById("side").innerHTML = NAV.map((g) =>
+      `<div class="g">${esc(g.group)}</div>` + g.items.map((it) =>
+        `<button type="button" class="nav ${it.id === active ? "on" : ""} ${it.hors || !pathOf(it.id) ? "dim" : ""}" data-go="${it.id}">
+          ${esc(it.label)}${it.hors ? '<span class="tag">hors V1</span>' : ""}
+        </button>`
+      ).join("")
+    ).join("");
+  }
+
+  function renderPaths() {
+    document.getElementById("paths").innerHTML = PATHS.map((p) =>
+      `<button type="button" class="${p.id === W.path ? "on" : ""}" data-path="${p.id}"><span class="dot ${p.id}"></span>${esc(p.label)}</button>`
+    ).join("");
+  }
+
+  function crumb() {
+    const bits = [`<button type="button" data-go="${S.list}">${esc(S.list)}</button>`];
+    if (S.kind && S.id) bits.push(`<span> / ${esc(S.kind)} ${esc(S.id)}</span>`);
+    if (S.tab) bits.push(`<span> / ${esc(S.tab)}</span>`);
+    document.getElementById("crumb").innerHTML = bits.join("");
+  }
+
+  function tables() {
+    const key = S.kind || S.list;
+    return `<p class="tables">Tables lues · <span class="mono">${esc(TABLES[key] || TABLES[S.list] || "—")}</span></p>`;
+  }
+
+  function listMeta(id) {
+    return NAV.flatMap((g) => g.items).find((x) => x.id === id);
+  }
+
+  function plusMenu(kind) {
+    const items = {
+      candidat: [
+        { ok: true, label: "Action", run: () => openModal("action", { porteur: "candidat", id: S.id }) },
+        { ok: true, label: "Positionnement", run: () => openModal("position", { from: "candidat", id: S.id }) },
+        { ok: true, label: "Besoin", run: () => openModal("need", { from: "candidat" }) },
+        { ok: false, label: "Projet", why: "Pas de projet depuis un candidat (DEC-06 / fiche C2)." },
+        { ok: false, label: "Contrat", why: "Pas d’objet Contrat en V1 (G8)." }
+      ],
+      ressource: [
+        { ok: true, label: "Action", run: () => openModal("action", { porteur: "ressource", id: S.id }) },
+        { ok: true, label: "Positionnement", run: () => openModal("position", { from: "ressource", id: S.id }) },
+        { ok: true, label: "Prestation", run: () => openModal("presta", { resourceId: S.id }) },
+        { ok: false, label: "Avantage", why: "Hors V1." },
+        { ok: false, label: "Formulaire", why: "Hors V1 — écran 59." }
+      ],
+      societe: [
+        { ok: true, label: "Action", run: () => openModal("action", { porteur: "societe", id: S.id }) },
+        { ok: true, label: "Besoin", run: () => openModal("need", { companyId: S.id }) },
+        { ok: true, label: "Projet", run: () => openModal("projetDirect", { companyId: S.id }) },
+        { ok: false, label: "Achat", why: "Hors V1 — C5." }
+      ],
+      besoin: [
+        { ok: true, label: "Action", run: () => openModal("action", { porteur: "besoin", id: S.id }) },
+        { ok: true, label: "Positionnement", run: () => openModal("position", { from: "besoin", id: S.id }) },
+        { ok: true, label: "Projet", run: () => openModal("projetNeed", { needId: S.id }) }
+      ],
+      projet: [
+        { ok: true, label: "Action", run: () => openModal("action", { porteur: "projet", id: S.id }) },
+        { ok: true, label: "Prestation", run: () => openModal("presta", { projectId: S.id }) },
+        { ok: false, label: "Groupement", why: "Hors V1." }
+      ],
+      contact: [
+        { ok: true, label: "Action", run: () => openModal("action", { porteur: "contact", id: S.id }) },
+        { ok: true, label: "Besoin", run: () => openModal("need", { contactId: S.id }) },
+        { ok: false, label: "Achat", why: "Hors V1. Le + contact ne crée pas de projet ni de positionnement (écran 36)." }
+      ]
+    }[kind] || [];
+    return `<div class="menu" id="plusMenu">
+      <button type="button" class="btn primary" data-plus="1">+ Créer</button>
+      <div class="drop">${items.map((it, i) =>
+        it.ok
+          ? `<button type="button" data-plus-i="${i}">${esc(it.label)}</button>`
+          : `<button type="button" disabled>${esc(it.label)}<span class="why">${esc(it.why)}</span></button>`
+      ).join("")}</div>
+    </div>`;
+  }
+
+  function filterRows(rows, textFn) {
+    const q = (W.q || "").trim().toLowerCase();
+    if (!q) return rows;
+    return rows.filter((r) => textFn(r).toLowerCase().includes(q));
+  }
+
+  function listChrome(meta, count, extra) {
+    return `<div class="head">
+      <div><h1>${esc(meta.label)} <span class="count">${count}</span></h1>
+        <p class="note">Écran ${esc(meta.ecran)} · ${meta.plus === false ? "Pas de + sur la liste — création depuis une fiche." : "Le + de la liste crée une fiche."}</p></div>
+      <div class="tools">
+        <input class="search" id="q" placeholder="Mots-clefs" value="${esc(W.q)}">
+        ${meta.kanban ? `<button type="button" class="btn" data-view="liste">Liste</button><button type="button" class="btn" data-view="kanban">Kanban</button>` : ""}
+        ${extra || (meta.plus ? `<button type="button" class="btn primary" data-create="${meta.id}">+</button>` : `<button type="button" class="btn" disabled>+ <span class="why"></span></button>`)}
+      </div>
+    </div>`;
+  }
+
+  function renderListe() {
+    const meta = listMeta(S.list);
+    if (!meta) return "";
+    if (meta.hors) {
+      return `<div class="head"><h1>${esc(meta.label)}</h1></div>
+        <div class="card"><p><strong>Hors V1.</strong> Porte vue à l’audit (écran ${esc(meta.ecran)}), non mockée, non à coder. Le livrable 5 la nomme pour ne pas l’oublier.</p></div>${tables()}`;
+    }
+    if (S.list === "admin") return renderAdmin();
+    if (W.view === "kanban" && meta.kanban) return renderKanban(meta);
+
+    if (S.list === "actions") {
+      const rows = filterRows(W.actions, (a) => a.type + a.porteur + a.texte);
+      return listChrome(meta, rows.length) + table(["Date", "Type", "Porteur", "Action", "Manager"],
+        rows.map((a) => [a.date, a.type, a.porteur, a.texte, a.manager])) + tables();
+    }
+    if (S.list === "candidats") {
+      const rows = filterRows(W.candidates, (c) => c.nom + c.titre + c.etat);
+      return listChrome(meta, rows.length) + table(
+        ["Candidat", "Titre", "Étape", "Pos.", "Dispo.", "Manager", "CV"],
+        rows.map((c) => [`<button type="button" data-open="candidat:${c.id}">${esc(c.prenom + " " + c.nom)}</button>`, c.titre, etatPill(c.etat), String(W.positionings.filter((p) => p.candidateId === c.id).length), c.dispo, c.manager, c.cv ? "oui" : "—"]),
+        true
+      ) + tables();
+    }
+    if (S.list === "ressources") {
+      const rows = filterRows(W.resources, (r) => r.nom + r.type + r.etat);
+      return listChrome(meta, rows.length) + table(
+        ["Ressource", "Type", "État", "Tarif HT", "Fournisseur"],
+        rows.map((r) => [`<button type="button" data-open="ressource:${r.id}">${esc(r.prenom + " " + r.nom)}</button>`, r.type, etatPill(r.etat), r.tarif + " €", r.supplierId ? coName(r.supplierId) : "—"]),
+        true
+      ) + tables();
+    }
+    if (S.list === "societes") {
+      const rows = filterRows(W.companies, (c) => c.name + c.etat);
+      return listChrome(meta, rows.length) + table(
+        ["Société", "Secteur", "État", "Lieu", "Manager"],
+        rows.map((c) => [`<button type="button" data-open="societe:${c.id}">${esc(c.name)}</button>`, c.secteur, etatPill(c.etat), c.lieu, c.manager]),
+        true
+      ) + tables();
+    }
+    if (S.list === "contacts") {
+      const rows = filterRows(W.contacts, (c) => c.nom + c.fonction);
+      return listChrome(meta, rows.length) + table(
+        ["Contact", "Fonction", "Type", "Société", "État"],
+        rows.map((c) => [`<button type="button" data-open="contact:${c.id}">${esc(c.prenom + " " + c.nom)}</button>`, c.fonction, c.type, coName(c.companyId), etatPill(c.etat)]),
+        true
+      ) + tables();
+    }
+    if (S.list === "besoins") {
+      const rows = filterRows(W.needs, (n) => n.title + n.etat);
+      return listChrome(meta, rows.length) + table(
+        ["Besoin", "Client", "État", "Pos. actif", "Démarrage", "CA", "Priorité"],
+        rows.map((n) => [`<button type="button" data-open="besoin:${n.id}">${esc(n.title)}</button><div class="note">${esc(n.type)}</div>`, coName(n.companyId) + (n.contactId ? " · " + contactName(n.contactId) : ""), etatPill(n.etat), String(W.positionings.filter((p) => p.needId === n.id && !["refuse_client", "retire"].includes(p.etat)).length), n.debut, n.ca, n.priorite]),
+        true
+      ) + tables();
+    }
+    if (S.list === "positionnements") {
+      const rows = filterRows(W.positionings, (p) => humainPos(p) + p.etat);
+      return listChrome(meta, rows.length) + table(
+        ["MAJ", "Profil positionné", "Besoin", "État", "Client"],
+        rows.map((p) => {
+          const n = byId(W.needs, p.needId);
+          return [p.maj, humainPos(p), n ? `<button type="button" data-open="besoin:${n.id}">${esc(n.title)}</button>` : "—", etatPill(p.etat), n ? coName(n.companyId) : "—"];
+        }),
+        true
+      ) + tables();
+    }
+    if (S.list === "projets") {
+      const rows = filterRows(W.projects, (p) => p.name + p.etat);
+      return listChrome(meta, rows.length) + table(
+        ["Début", "Fin", "Référence", "Client", "État"],
+        rows.map((p) => [p.debut, p.fin, `<button type="button" data-open="projet:${p.id}">${esc(p.name)}</button><div class="note">${esc(p.type)}</div>`, coName(p.companyId), etatPill(p.etat)]),
+        true
+      ) + tables();
+    }
+    if (S.list === "prestations") {
+      return listChrome(meta, W.prestations.length) + table(
+        ["Projet", "Ressource", "Occupation", "TJM vendu", "État"],
+        W.prestations.map((s) => {
+          const p = byId(W.projects, s.projectId);
+          const r = byId(W.resources, s.resourceId);
+          return [p ? `<button type="button" data-open="projet:${p.id}">${esc(p.name)}</button>` : "—", r ? `<button type="button" data-open="ressource:${r.id}">${esc(r.prenom + " " + r.nom)}</button>` : "—", s.load + " %", s.tjm + " €", etatPill(s.etat)];
+        }),
+        true
+      ) + tables();
+    }
+    if (S.list === "temps") {
+      const mine = W.accountId === "jean-user" ? W.times.filter((t) => t.resourceId === "jean") : W.times;
+      return listChrome(meta, mine.length) +
+        `<p class="note">Saisie seulement sur une prestation <span class="pill ok">signee</span>, période [début, fin]. Écran 50 Boond = 403 sur ce tenant : ici le self-service V1.</p>` +
+        table(["Jour", "Ressource", "Prestation", "Jours"],
+          mine.map((t) => {
+            const r = byId(W.resources, t.resourceId);
+            return [t.jour, r ? r.prenom + " " + r.nom : "—", t.prestationId, t.jours];
+          })) +
+        `<div class="tools" style="margin-top:12px"><button type="button" class="btn primary" data-create="temps">Saisir un temps</button></div>` + tables();
+    }
+    return "";
+  }
+
+  function table(headers, rows, htmlCells) {
+    if (!rows.length) return `<div class="empty">Aucune ligne. ${S.list === "actions" || S.list === "positionnements" ? "Créer depuis une fiche, pas depuis cette liste." : "Le + crée une fiche."}</div>`;
+    return `<table class="list"><thead><tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${
+      rows.map((r) => `<tr>${r.map((c) => `<td>${htmlCells ? c : esc(c)}</td>`).join("")}</tr>`).join("")
+    }</tbody></table>`;
+  }
+
+  function renderKanban(meta) {
+    let groups = [];
+    let open = () => {};
+    if (S.list === "candidats") {
+      groups = ["brouillon", "actif", "sorti"].map((e) => ({ e, items: W.candidates.filter((c) => c.etat === e).map((c) => ({ id: c.id, title: c.prenom + " " + c.nom, sub: c.titre, kind: "candidat" })) }));
+    } else if (S.list === "besoins") {
+      groups = ["a_pourvoir", "en_recherche", "pourvu", "suspendu", "ferme"].map((e) => ({ e, items: W.needs.filter((n) => n.etat === e).map((n) => ({ id: n.id, title: n.title, sub: coName(n.companyId), kind: "besoin" })) }));
+    } else if (S.list === "positionnements") {
+      groups = ["propose", "presente", "retenu", "refuse_client", "retire"].map((e) => ({ e, items: W.positionings.filter((p) => p.etat === e).map((p) => ({ id: p.needId, title: humainPos(p), sub: byId(W.needs, p.needId)?.title || "", kind: "besoin" })) }));
+    } else if (S.list === "ressources") {
+      groups = ["en_mission", "disponible", "sorti"].map((e) => ({ e, items: W.resources.filter((r) => r.etat === e).map((r) => ({ id: r.id, title: r.prenom + " " + r.nom, sub: r.type, kind: "ressource" })) }));
+    }
+    return listChrome(meta, groups.reduce((n, g) => n + g.items.length, 0)) +
+      `<div class="kanban">${groups.map((g) => `<div class="col"><h3>${esc(g.e)} · ${g.items.length}</h3>${
+        g.items.map((it) => `<div class="tile" data-open="${it.kind}:${it.id}"><b>${esc(it.title)}</b><div class="note">${esc(it.sub)}</div></div>`).join("") || `<p class="note">Vide</p>`
+      }</div>`).join("")}</div>` + tables();
+  }
+
+  function tabsBar(kind) {
+    const hors = HORS_TABS[kind] || [];
+    return `<div class="tabs">${TABS[kind].map((t) =>
+      `<button type="button" class="${t === S.tab ? "on" : ""} ${hors.includes(t) ? "hors" : ""}" data-tab="${esc(t)}">${esc(t)}${hors.includes(t) ? " · hors V1" : ""}</button>`
+    ).join("")}</div>`;
+  }
+
+  function ficheHead(title, kind) {
+    return `<div class="head"><div><h1>${esc(title)}</h1></div><div class="tools">${plusMenu(kind)}</div></div>` + tabsBar(kind);
+  }
+
+  function kv(pairs) {
+    return `<div class="kv">${pairs.map(([k, v]) => `<span>${esc(k)}</span><span>${v}</span>`).join("")}</div>`;
+  }
+
+  function actionsOf(label) {
+    const rows = W.actions.filter((a) => a.porteur.toLowerCase().includes(label.toLowerCase()) || a.porteur.endsWith(S.id));
+    if (!rows.length) return `<div class="empty">Aucune action trouvée pour cette fiche. Le + accroche l’action au porteur — pas de page /actions/new.</div>`;
+    return table(["Date", "Type", "Action", "Manager"], rows.map((a) => [a.date, a.type, a.texte, a.manager]));
+  }
+
+  function renderFiche() {
+    if (S.kind === "candidat") return renderCandidat();
+    if (S.kind === "ressource") return renderRessource();
+    if (S.kind === "societe") return renderSociete();
+    if (S.kind === "contact") return renderContact();
+    if (S.kind === "besoin") return renderBesoin();
+    if (S.kind === "projet") return renderProjet();
+    return renderListe();
+  }
+
+  function renderCandidat() {
+    const c = byId(W.candidates, S.id); if (!c) return renderListe();
+    const pos = W.positionings.filter((p) => p.candidateId === c.id);
+    let body = "";
+    if (S.tab === "Synthèse") {
+      body = `<div class="statrow"><div class="stat"><b>${pos.length}</b><span>Positionnements</span></div><div class="stat"><b>${c.cv ? "1" : "0"}</b><span>CV</span></div><div class="stat"><b>0</b><span>Prestations — mur</span></div></div>
+        <div class="grid2"><div class="card">${kv([["Identité", c.prenom + " " + c.nom], ["Titre", c.titre], ["Étape", etatPill(c.etat)], ["Dispo.", c.dispo], ["Manager", c.manager]])}
+          <p class="note" style="margin-top:12px">Pas d’onglet Prestation / Temps. Preuve C2 ≠ C4.</p></div>
+          <div class="card"><p class="note">Dossier technique (confort V1 : un CV + compétences, pas 13 expériences).</p>
+          <p>${c.cv ? "CV présent — on peut déclarer un partage." : "Pas de CV : DeclareCVShared refusera."}</p></div></div>`;
+    } else if (S.tab === "Informations") {
+      body = `<div class="card">${kv([["Nom", c.nom], ["Prénom", c.prenom], ["Titre", c.titre], ["Étape", etatPill(c.etat)], ["Manager", c.manager], ["CV", c.cv ? "fichier" : "absent"]])}
+        <p class="note" style="margin-top:12px">Champs v1 : nom, titre, étape, manager, CV. Le reste est confort (écran 06).</p></div>`;
+    } else if (S.tab === "Administratif") {
+      body = `<div class="card"><p>Données contractuelles souhaitées. Ce n’est pas une prestation. + Contrat hors V1 (G8).</p></div>`;
+    } else if (S.tab === "DTs") {
+      body = `<div class="card"><p>Dossier technique éditable. Le matching reste le + Positionnement, pas cet onglet.</p></div>`;
+    } else if (S.tab === "Actions") {
+      body = actionsOf(c.nom);
+    } else if (S.tab === "Positionnements") {
+      body = pos.length
+        ? table(["Besoin", "Client", "État"], pos.map((p) => {
+            const n = byId(W.needs, p.needId);
+            return [n ? `<button type="button" data-open="besoin:${n.id}">${esc(n.title)}</button>` : "—", n ? coName(n.companyId) : "—", etatPill(p.etat)];
+          }), true)
+        : `<div class="empty">Aucun positionnement. Créer un positionnement = choisir un besoin déjà là (écran 23).</div>`;
+    }
+    return ficheHead(c.prenom + " " + c.nom, "candidat") + body +
+      (c.etat === "actif" ? `<div class="tools" style="margin-top:16px"><button type="button" class="btn" data-cmd="convert:${c.id}">Convertir → ressource</button></div>` : "") +
+      tables();
+  }
+
+  function renderRessource() {
+    const r = byId(W.resources, S.id); if (!r) return renderListe();
+    const pos = W.positionings.filter((p) => p.resourceId === r.id);
+    const prest = W.prestations.filter((s) => s.resourceId === r.id);
+    const prjs = W.projects.filter((p) => prest.some((s) => s.projectId === p.id));
+    let body = "";
+    if (S.tab === "Synthèse") {
+      body = `<div class="statrow"><div class="stat"><b>${prest.length}</b><span>Prestations</span></div><div class="stat"><b>${prjs.length}</b><span>Projets</span></div><div class="stat"><b>${pos.length}</b><span>Positionnements</span></div></div>
+        <div class="card">${kv([["Type", r.type], ["État", etatPill(r.etat)], ["Tarif HT", r.tarif + " €"], ["Fournisseur", r.supplierId ? coName(r.supplierId) : "—"]])}</div>`;
+    } else if (["Informations", "Administratif", "DTs"].includes(S.tab)) {
+      body = `<div class="card"><p>Même chrome que le candidat, autre objet. État, pas Étape. Tarif HT.</p></div>`;
+    } else if (S.tab === "Actions") {
+      body = actionsOf(r.nom);
+    } else if (S.tab === "Positionnements") {
+      body = pos.length
+        ? table(["Besoin", "État"], pos.map((p) => {
+            const n = byId(W.needs, p.needId);
+            return [n ? `<button type="button" data-open="besoin:${n.id}">${esc(n.title)}</button>` : "—", etatPill(p.etat)];
+          }), true)
+        : `<div class="empty">Aucun positionnement ressource.</div>`;
+    } else if (S.tab === "Prestations") {
+      body = prest.length
+        ? table(["Projet", "Occupation", "État"], prest.map((s) => {
+            const p = byId(W.projects, s.projectId);
+            return [p ? `<button type="button" data-open="projet:${p.id}">${esc(p.name)}</button>` : "—", s.load + " %", etatPill(s.etat)];
+          }), true)
+        : `<div class="empty">Créer une prestation · Créer de l’inactivité (cousin, pas un besoin).</div>`;
+    } else if (S.tab === "Projets") {
+      body = prjs.length
+        ? table(["Projet", "État"], prjs.map((p) => [`<button type="button" data-open="projet:${p.id}">${esc(p.name)}</button>`, etatPill(p.etat)]), true)
+        : `<div class="empty">Les projets se dérivent des prestations, pas d’une FK sur le projet.</div>`;
+    } else if (S.tab === "Formulaires") {
+      body = `<div class="card"><p><strong>Hors V1.</strong> Onglet vu (écran 59), vide + Créer un formulaire. Document RH généré, pas le staffing quotidien.</p></div>`;
+    }
+    return ficheHead(r.prenom + " " + r.nom, "ressource") + body + tables();
+  }
+
+  function renderSociete() {
+    const c = co(S.id); if (!c) return renderListe();
+    const cts = W.contacts.filter((x) => x.companyId === c.id);
+    const ns = W.needs.filter((x) => x.companyId === c.id);
+    const ps = W.projects.filter((x) => x.companyId === c.id);
+    let body = "";
+    if (S.tab === "Synthèse") {
+      body = `<div class="statrow">
+        <div class="stat"><b>${cts.length}</b><span>Contacts</span></div>
+        <div class="stat"><b>${ns.length}</b><span>Besoins</span></div>
+        <div class="stat"><b>${ps.length}</b><span>Projets</span></div>
+        <div class="stat"><b>—</b><span>Achats · hors V1</span></div>
+      </div><div class="card">${kv([["État", etatPill(c.etat)], ["Secteur", c.secteur], ["Lieu", c.lieu], ["Manager", c.manager]])}</div>`;
+    } else if (S.tab === "Informations") {
+      body = `<div class="card">${kv([["Nom", c.name], ["État", etatPill(c.etat)], ["Secteur", c.secteur]])}</div>`;
+    } else if (S.tab === "Contacts") {
+      body = table(["Contact", "Fonction"], cts.map((x) => [`<button type="button" data-open="contact:${x.id}">${esc(x.prenom + " " + x.nom)}</button>`, x.fonction]), true);
+    } else if (S.tab === "Actions") {
+      body = actionsOf(c.name);
+    } else if (S.tab === "Besoins") {
+      body = table(["Besoin", "État"], ns.map((n) => [`<button type="button" data-open="besoin:${n.id}">${esc(n.title)}</button>`, etatPill(n.etat)]), true);
+    } else if (S.tab === "Projets") {
+      body = table(["Projet", "État"], ps.map((p) => [`<button type="button" data-open="projet:${p.id}">${esc(p.name)}</button>`, etatPill(p.etat)]), true);
+    } else if (S.tab === "Achats" || S.tab === "Facturation") {
+      body = `<div class="card"><p><strong>Hors V1.</strong> Onglet présent sur la fiche (écrans 32 / 58). C5 et PostProduction ne se mockent pas.</p></div>`;
+    }
+    return ficheHead(c.name, "societe") + body + tables();
+  }
+
+  function renderContact() {
+    const c = byId(W.contacts, S.id); if (!c) return renderListe();
+    const ns = W.needs.filter((n) => n.contactId === c.id);
+    const ps = W.projects.filter((p) => p.contactId === c.id);
+    let body = "";
+    if (S.tab === "Synthèse" || S.tab === "Informations") {
+      body = `<div class="card">${kv([["Fonction", c.fonction], ["Type", c.type], ["Société", `<button type="button" data-open="societe:${c.companyId}">${esc(coName(c.companyId))}</button>`], ["État", etatPill(c.etat)]])}
+        <p class="note" style="margin-top:12px">Le contact hérite besoins/projets de SA société. Il ne staffe pas. + = Action, Besoin, Achat (écran 36).</p></div>`;
+    } else if (S.tab === "Actions") {
+      body = actionsOf(c.nom);
+    } else if (S.tab === "Besoins") {
+      body = ns.length ? table(["Besoin", "État"], ns.map((n) => [`<button type="button" data-open="besoin:${n.id}">${esc(n.title)}</button>`, etatPill(n.etat)]), true) : `<div class="empty">Aucun besoin rattaché à ce contact. Un besoin peut exister sans contact (DEC-04).</div>`;
+    } else if (S.tab === "Projets") {
+      body = ps.length ? table(["Projet", "État"], ps.map((p) => [`<button type="button" data-open="projet:${p.id}">${esc(p.name)}</button>`, etatPill(p.etat)]), true) : `<div class="empty">Pas de projet. Le + contact ne crée pas de projet.</div>`;
+    } else if (S.tab === "Achats") {
+      body = `<div class="card"><p><strong>Hors V1.</strong></p></div>`;
+    }
+    return ficheHead(c.prenom + " " + c.nom, "contact") + body + tables();
+  }
+
+  function renderBesoin() {
+    const n = byId(W.needs, S.id); if (!n) return renderListe();
+    const pos = W.positionings.filter((p) => p.needId === n.id);
+    const prjs = W.projects.filter((p) => p.needId === n.id);
+    let body = "";
+    if (S.tab === "Informations") {
+      body = `<div class="grid2"><div class="card">${kv([["Titre", n.title], ["Type", n.type], ["Priorité", n.priorite], ["Début", n.debut]])}</div>
+        <div class="card">${kv([["État", etatPill(n.etat)], ["Client", `<button type="button" data-open="societe:${n.companyId}">${esc(coName(n.companyId))}</button>`], ["Contact", n.contactId ? `<button type="button" data-open="contact:${n.contactId}">${esc(contactName(n.contactId))}</button>` : "— (facultatif)"], ["CA", n.ca]])}</div></div>`;
+    } else if (S.tab === "Positionnements") {
+      body = (pos.length ? table(["Profil", "État", "Commande"], pos.map((p) => {
+        const cmds = [];
+        if (p.etat === "propose") cmds.push(`<button type="button" class="btn" data-cmd="cv:${p.id}">Déclarer CV partagé</button>`);
+        if (p.etat === "presente") {
+          cmds.push(`<button type="button" class="btn primary" data-cmd="oui:${p.id}">Client retient</button>`);
+          cmds.push(`<button type="button" class="btn" data-cmd="non:${p.id}">Client refuse</button>`);
+        }
+        return [humainPos(p), etatPill(p.etat), cmds.join(" ") || "—"];
+      }), true) : `<div class="empty">Aucun profil posé. Le besoin crée le positionnement, pas l’inverse.</div>`);
+    } else if (S.tab === "Actions") {
+      body = actionsOf(n.id);
+    } else if (S.tab === "Projets") {
+      body = prjs.length
+        ? table(["Projet", "État"], prjs.map((p) => [`<button type="button" data-open="projet:${p.id}">${esc(p.name)}</button>`, etatPill(p.etat)]), true)
+        : `<div class="empty">Aucun projet. Un besoin sans projet est normal — pas encore confirmé. Créer un projet convertit des positionnements ressource retenus. Les candidats sont exclus (écran 28).</div>`;
+    }
+    return ficheHead(n.title, "besoin") + body + tables();
+  }
+
+  function renderProjet() {
+    const p = byId(W.projects, S.id); if (!p) return renderListe();
+    const prest = W.prestations.filter((s) => s.projectId === p.id);
+    let body = "";
+    if (S.tab === "Informations") {
+      body = `<div class="card">${kv([["Référence", p.name], ["Type", p.type], ["État", etatPill(p.etat)], ["Client", `<button type="button" data-open="societe:${p.companyId}">${esc(coName(p.companyId))}</button>`], ["Besoin", p.needId ? `<button type="button" data-open="besoin:${p.needId}">${esc(byId(W.needs, p.needId)?.title || p.needId)}</button>` : "—"], ["Contact", contactName(p.contactId)], ["Début / Fin", p.debut + " → " + p.fin]])}
+        <p class="note" style="margin-top:12px">Pas d’onglet Candidat. Un projet sans prestation = un titre.</p></div>`;
+    } else if (S.tab === "Actions") {
+      body = actionsOf(p.name);
+    } else if (S.tab === "Prestations") {
+      body = prest.length
+        ? table(["Ressource", "Occupation", "TJM", "État"], prest.map((s) => {
+            const r = byId(W.resources, s.resourceId);
+            return [r ? `<button type="button" data-open="ressource:${r.id}">${esc(r.prenom + " " + r.nom)}</button>` : "—", s.load + " %", s.tjm + " €", etatPill(s.etat)];
+          }), true)
+        : `<div class="empty">+ Prestation. La ressource est immuable : remplacement = clôturer + créer.</div>`;
+    }
+    return ficheHead(p.name, "projet") + body + tables();
+  }
+
+  function renderAdmin() {
+    if (S.tab === "Politiques") {
+      return `<div class="head"><h1>Administration · Politiques</h1></div>
+        <p class="note">Chaque bifurcation a une clé. Le défaut = la décision du 17/09. Ce n’est pas un if métier sans clé au registre.</p>
+        ${table(["Clé", "Valeur actuelle", "Effet"], POLS.map((p) => [`<span class="mono">${esc(p.cle)}</span>`, `<span class="pill">${esc(p.defaut)}</span>`, p.effet]), true)}
+        ${tables()}`;
+    }
+    if (S.tab === "Référentiels") {
+      return `<div class="head"><h1>Administration · Référentiels</h1></div>
+        <p class="note">Les états sont des listes à catégorie, pas un enum figé. V1 : vocabulaire + ajout dans une catégorie (P2).</p>
+        ${table(["Liste", "Valeurs système"], [
+          ["ref_etat_besoin", "a_pourvoir · en_recherche · pourvu · suspendu · ferme"],
+          ["ref_etat_candidat", "brouillon · actif · sorti"],
+          ["ref_etat_ressource", "en_mission · disponible · sorti"],
+          ["ref_etat_positionnement", "propose · presente · retenu · refuse_client · retire"],
+          ["ref_etat_prestation", "previsionnelle · signee · cloturee · annulee"],
+          ["ref_etat_projet", "ouvert · clos"],
+          ["ref_type_action", "note · todo · rdv · entretien_tel · entretien_physique · entretien_visio · qualification · mail · autre"]
+        ])}${tables()}`;
+    }
+    return `<div class="head"><h1>Administration</h1></div>
+      <p class="note">Écran 57. V1 : rôles + politiques + référentiels. Le reste des cartes est une porte hors lot.</p>
+      <div class="admin-cards">
+        <button type="button" data-admin="Politiques"><b>Politiques</b><small>59 bifurcations. Défaut = aujourd’hui.</small></button>
+        <button type="button" data-admin="Référentiels"><b>Paramètres globaux</b><small>États, types, étapes — catégorie sémantique.</small></button>
+        <button type="button" data-admin="Roles"><b>Managers / Rôles</b><small>Groupes + périmètre. Matrice à l’exécution.</small></button>
+        <button type="button" class="hors" data-hors="Modèles"><b>Modèles</b><small>Hors V1</small></button>
+        <button type="button" class="hors" data-hors="Apps"><b>Apps / Marketplace</b><small>Hors V1 — écran 16</small></button>
+        <button type="button" class="hors" data-hors="Alertes"><b>Alertes</b><small>Hors V1 — écran 02</small></button>
+      </div>${tables()}`;
+  }
+
+  function openModal(type, ctx) {
+    S.modal = { type, ctx: ctx || {} };
+    paintModal();
+  }
+  function closeModal() { S.modal = null; document.getElementById("overlay").className = "overlay"; document.getElementById("overlay").innerHTML = ""; }
+
+  function paintModal() {
+    const ov = document.getElementById("overlay");
+    if (!S.modal) { ov.className = "overlay"; ov.innerHTML = ""; return; }
+    ov.className = "overlay on";
+    const { type, ctx } = S.modal;
+    let html = "";
+    if (type === "action") {
+      html = `<h2>Créer une action</h2><p class="note">Le porteur est déjà choisi. Pas d’action orpheline (écran 20).</p>
+        <div class="field"><label>Porteur</label><input value="${esc(ctx.porteur + " · " + ctx.id)}" disabled></div>
+        <div class="field"><label>Type</label><select id="m-type"><option>Note</option><option>Rappel / To do</option><option>Rendez-vous</option><option>Entretien visio</option><option>Mail</option></select></div>
+        <div class="field"><label>Corps</label><textarea id="m-body" rows="3"></textarea></div>
+        <div class="tools"><button class="btn" data-cancel="1">Annuler</button><button class="btn primary" data-ok="action">Enregistrer</button></div>`;
+    } else if (type === "position") {
+      const needs = W.needs.filter((n) => n.etat === "a_pourvoir" || n.etat === "en_recherche");
+      const humans = ctx.from === "besoin"
+        ? W.candidates.filter((c) => c.etat === "actif").map((c) => ({ id: "c:" + c.id, label: "Candidat · " + c.nom }))
+          .concat(W.resources.map((r) => ({ id: "r:" + r.id, label: "Ressource · " + r.nom })))
+        : [];
+      html = `<h2>Créer un positionnement</h2>
+        <p class="note">${ctx.from === "candidat" || ctx.from === "ressource" ? "On ne crée pas un besoin : on en choisit un déjà là (écran 23)." : "Le + besoin n’offre pas « Candidat » : on choisit un humain."}</p>
+        ${ctx.from === "besoin" ? `<div class="field"><label>Profil</label><select id="m-humain">${humans.map((h) => `<option value="${h.id}">${esc(h.label)}</option>`).join("")}</select></div>` : `<div class="field"><label>Besoin</label><select id="m-need">${needs.map((n) => `<option value="${n.id}">${esc(n.title)} · ${esc(coName(n.companyId))}</option>`).join("")}</select></div>`}
+        <div class="tools"><button class="btn" data-cancel="1">Annuler</button><button class="btn primary" data-ok="position">Positionner</button></div>`;
+    } else if (type === "need") {
+      html = `<h2>Créer un besoin</h2>
+        <p class="note">Ava : la société est obligatoire, le contact est facultatif (DEC-04). Boond écran 56 part du contact — on ne recopie pas cette porte.</p>
+        <div class="field"><label>Société</label><select id="m-co">${W.companies.map((c) => `<option value="${c.id}" ${c.id === ctx.companyId ? "selected" : ""}>${esc(c.name)}</option>`).join("")}</select></div>
+        <div class="field"><label>Contact</label><select id="m-ct"><option value="">— facultatif</option>${W.contacts.map((c) => `<option value="${c.id}" ${c.id === ctx.contactId ? "selected" : ""}>${esc(c.prenom + " " + c.nom)}</option>`).join("")}</select></div>
+        <div class="field"><label>Titre</label><input id="m-title" value="Nouveau besoin"></div>
+        <div class="tools"><button class="btn" data-cancel="1">Annuler</button><button class="btn primary" data-ok="need">Créer</button></div>`;
+    } else if (type === "projetNeed") {
+      const n = byId(W.needs, ctx.needId);
+      const retenus = W.positionings.filter((p) => p.needId === ctx.needId && p.etat === "retenu");
+      const ok = retenus.filter((p) => p.resourceId);
+      const exclus = retenus.filter((p) => p.candidateId);
+      html = `<h2>Créer un projet depuis le besoin</h2>
+        <p class="note">« Les positionnements liés à des candidats sont exclus. Convertir d’abord. » (écran 28)</p>
+        <div class="field"><label>Besoin</label><input disabled value="${esc(n ? n.title : "")}"></div>
+        <div class="field"><label>Contact du projet (obligatoire, F4)</label><select id="m-ct">${W.contacts.filter((c) => !n || c.companyId === n.companyId).map((c) => `<option value="${c.id}">${esc(c.prenom + " " + c.nom)}</option>`).join("")}</select></div>
+        <p>${ok.length ? ok.map((p) => humainPos(p)).join(" · ") : "Aucun positionnement ressource retenu."}</p>
+        ${exclus.length ? `<p class="note">Exclus : ${exclus.map((p) => humainPos(p)).join(" · ")}</p>` : ""}
+        <div class="tools"><button class="btn" data-cancel="1">Annuler</button><button class="btn primary" data-ok="projetNeed" ${ok.length && n && n.contactId !== undefined ? "" : ""}>Créer</button></div>`;
+    } else if (type === "presta") {
+      html = `<h2>Créer une prestation</h2>
+        <p class="note">Projet + ressource, dates, occupation. Un candidat ne peut pas servir (mur M-1).</p>
+        <div class="field"><label>Projet</label><select id="m-prj">${W.projects.map((p) => `<option value="${p.id}" ${p.id === ctx.projectId ? "selected" : ""}>${esc(p.name)}</option>`).join("")}</select></div>
+        <div class="field"><label>Ressource</label><select id="m-res">${W.resources.map((r) => `<option value="${r.id}" ${r.id === ctx.resourceId ? "selected" : ""}>${esc(r.prenom + " " + r.nom)}</option>`).join("")}</select></div>
+        <div class="field"><label>Occupation %</label><input id="m-load" value="40"></div>
+        <div class="tools"><button class="btn" data-cancel="1">Annuler</button><button class="btn primary" data-ok="presta">Créer</button></div>`;
+    } else if (type === "company") {
+      html = `<h2>Créer une société</h2>
+        <div class="field"><label>Nom</label><input id="m-name" value="Nouvelle société"></div>
+        <div class="tools"><button class="btn" data-cancel="1">Annuler</button><button class="btn primary" data-ok="company">Créer</button></div>`;
+    } else if (type === "contactNew") {
+      html = `<h2>Créer un contact</h2>
+        <div class="field"><label>Société</label><select id="m-co">${W.companies.map((c) => `<option value="${c.id}">${esc(c.name)}</option>`).join("")}</select></div>
+        <div class="field"><label>Fonction</label><input id="m-fn" value="Contact"></div>
+        <div class="tools"><button class="btn" data-cancel="1">Annuler</button><button class="btn primary" data-ok="contactNew">Créer</button></div>`;
+    } else if (type === "candidatNew") {
+      html = `<h2>Nouveau candidat</h2>
+        <div class="field"><label>Titre</label><input id="m-title" value="Consultant"></div>
+        <div class="tools"><button class="btn" data-cancel="1">Annuler</button><button class="btn primary" data-ok="candidatNew">Créer</button></div>`;
+    } else if (type === "ressourceNew") {
+      html = `<h2>Nouvelle ressource</h2>
+        <div class="field"><label>Type</label><select id="m-type"><option value="interne">interne</option><option value="externe">externe</option></select></div>
+        <div class="tools"><button class="btn" data-cancel="1">Annuler</button><button class="btn primary" data-ok="ressourceNew">Créer</button></div>`;
+    } else if (type === "projetDirect") {
+      html = `<h2>Créer un projet (US5)</h2>
+        <p class="note">Création directe possible. Contact obligatoire (F4).</p>
+        <div class="field"><label>Société</label><select id="m-co">${W.companies.map((c) => `<option value="${c.id}" ${c.id === ctx.companyId ? "selected" : ""}>${esc(c.name)}</option>`).join("")}</select></div>
+        <div class="field"><label>Contact</label><select id="m-ct">${W.contacts.map((c) => `<option value="${c.id}">${esc(c.prenom + " " + c.nom)}</option>`).join("")}</select></div>
+        <div class="field"><label>Référence</label><input id="m-name" value="AVA-PRJ-direct"></div>
+        <div class="tools"><button class="btn" data-cancel="1">Annuler</button><button class="btn primary" data-ok="projetDirect">Créer</button></div>`;
+    } else if (type === "search") {
+      html = `<h2>Recherche</h2>
+        <div class="field"><input id="m-q" placeholder="Société, besoin, humain…"></div>
+        <div id="m-res" class="note">Personnes et sociétés dans un champ, objets distincts derrière (écran 54).</div>`;
+    } else if (type === "temps") {
+      const signed = W.prestations.filter((s) => s.etat === "signee");
+      html = `<h2>Saisir un temps</h2>
+        <div class="field"><label>Prestation signée</label><select id="m-s">${signed.map((s) => `<option value="${s.id}">${esc(s.id)} · ${esc(s.resourceId)}</option>`).join("")}</select></div>
+        <div class="field"><label>Jour</label><input id="m-d" value="2026-09-17"></div>
+        <div class="tools"><button class="btn" data-cancel="1">Annuler</button><button class="btn primary" data-ok="temps">Saisir</button></div>`;
+    }
+    ov.innerHTML = `<div class="modal">${html}</div>`;
+  }
+
+  function occup(resourceId) {
+    return W.prestations.filter((p) => p.resourceId === resourceId && (p.etat === "signee" || p.etat === "previsionnelle")).reduce((s, p) => s + Number(p.load || 0), 0);
+  }
+
+  function cmd(name, id) {
+    if (name === "convert") {
+      const c = byId(W.candidates, id);
+      if (!c) return;
+      const rid = next("r");
+      W.resources.push({ id: rid, prenom: "Ressource", nom: c.nom, type: "interne", etat: "disponible", tarif: "500", supplierId: "", from: c.id });
+      toast("Candidat converti", "Profil ressource créé sur la même personne. Le candidat reste " + c.etat + ". Pas de prestation tant que CreatePrestation n’est pas passé.");
+      openFiche("ressource", rid, "Synthèse");
+      return;
+    }
+    const p = byId(W.positionings, id);
+    if (!p) return;
+    if (name === "cv") {
+      if (p.etat !== "propose") return;
+      const human = p.candidateId ? byId(W.candidates, p.candidateId) : byId(W.resources, p.resourceId);
+      if (p.candidateId && human && !human.cv) { toast("Refus", "Document CV absent.", true); return; }
+      p.etat = "presente";
+      toast("CV partagé", "propose → presente.");
+    }
+    if (name === "oui") {
+      p.etat = "retenu";
+      toast("Client retient", "Le projet ne se crée pas tout seul (DEC-06).");
+    }
+    if (name === "non") {
+      p.etat = "refuse_client";
+      toast("Client refuse", "La recherche peut continuer.");
+    }
+    render();
+  }
+
+  function submitModal(ok) {
+    const ctx = S.modal?.ctx || {};
+    if (ok === "action") {
+      const body = document.getElementById("m-body").value || "Note";
+      const type = document.getElementById("m-type").value;
+      W.actions.unshift({ id: next("a"), date: "17/09", type, porteur: ctx.porteur + " " + ctx.id, texte: body, manager: account().name });
+      toast("Action créée", "Accrochée au porteur.");
+      closeModal(); render(); return;
+    }
+    if (ok === "position") {
+      let needId = ctx.from === "besoin" ? ctx.id : document.getElementById("m-need")?.value;
+      const n = byId(W.needs, needId);
+      if (!n) return;
+      if (!["a_pourvoir", "en_recherche"].includes(n.etat)) {
+        toast("Refus", "On ne positionne pas sur un besoin inactif (F5).", true); return;
+      }
+      let candidateId = "", resourceId = "";
+      if (ctx.from === "candidat") candidateId = ctx.id;
+      else if (ctx.from === "ressource") resourceId = ctx.id;
+      else {
+        const h = document.getElementById("m-humain").value;
+        if (h.startsWith("c:")) candidateId = h.slice(2); else resourceId = h.slice(2);
+      }
+      const same = W.positionings.find((p) => p.needId === needId && ((candidateId && p.candidateId === candidateId) || (resourceId && p.resourceId === resourceId)) && !["refuse_client", "retire"].includes(p.etat));
+      if (same) { toast("Refus", "Unicité : pas deux positionnements actifs de la même personne (G7).", true); return; }
+      W.positionings.push({ id: next("pos"), needId, candidateId, resourceId, etat: "propose", maj: "17/09" });
+      if (n.etat === "a_pourvoir") n.etat = "en_recherche";
+      toast("Positionnement", "Humain × besoin. Le besoin passe en recherche.");
+      closeModal(); openFiche("besoin", needId, "Positionnements"); return;
+    }
+    if (ok === "need") {
+      const companyId = document.getElementById("m-co").value;
+      const contactId = document.getElementById("m-ct").value;
+      const title = document.getElementById("m-title").value || "Besoin";
+      if (contactId && byId(W.contacts, contactId).companyId !== companyId) {
+        toast("Refus", "Le contact n’appartient pas à cette société.", true); return;
+      }
+      const id = next("n");
+      W.needs.unshift({ id, title, companyId, contactId, etat: "a_pourvoir", priorite: "P2", type: "Régie", debut: "2026-10-15", ca: "—" });
+      toast("Besoin ouvert", "Société obligatoire, contact facultatif.");
+      closeModal(); openFiche("besoin", id, "Informations"); return;
+    }
+    if (ok === "projetNeed") {
+      const n = byId(W.needs, ctx.needId);
+      if (n.etat === "ferme") { toast("Refus", "Pas de projet depuis un besoin fermé.", true); return; }
+      const okPos = W.positionings.filter((p) => p.needId === n.id && p.etat === "retenu" && p.resourceId);
+      if (!okPos.length) { toast("Refus", "Garde F1 : il faut un retenu dont la personne a un profil ressource.", true); return; }
+      const contactId = document.getElementById("m-ct").value;
+      if (!contactId) { toast("Refus", "Contact obligatoire pour le projet (F4).", true); return; }
+      const id = next("p");
+      W.projects.unshift({ id, name: "AVA-PRJ-" + id, companyId: n.companyId, needId: n.id, contactId, etat: "ouvert", debut: "2026-10-01", fin: "2027-03-31", type: n.type });
+      toast("Projet créé", "Commande explicite. Les candidats retenus restent exclus jusqu’à conversion.");
+      closeModal(); openFiche("projet", id, "Informations"); return;
+    }
+    if (ok === "presta") {
+      const projectId = document.getElementById("m-prj").value;
+      const resourceId = document.getElementById("m-res").value;
+      const load = Number(document.getElementById("m-load").value || 0);
+      if (!byId(W.projects, projectId) || !byId(W.resources, resourceId)) return;
+      const total = occup(resourceId) + load;
+      const id = next("s");
+      W.prestations.push({ id, projectId, resourceId, load, etat: "previsionnelle", debut: "2026-10-01", fin: "2027-03-31", tjm: "600" });
+      if (total > 100) toast("Alerte occupation", total + " % > 100. On n’interdit pas (DEC-10).");
+      else toast("Prestation", "Prévisionnelle. Signée plus tard, TJM et jours requis.");
+      closeModal(); openFiche("projet", projectId, "Prestations"); return;
+    }
+    if (ok === "company") {
+      const id = next("co");
+      W.companies.push({ id, name: document.getElementById("m-name").value || "Société", etat: "prospect", secteur: "—", lieu: "—", manager: account().name });
+      closeModal(); openFiche("societe", id, "Synthèse"); return;
+    }
+    if (ok === "contactNew") {
+      const id = next("c");
+      const companyId = document.getElementById("m-co").value;
+      W.contacts.push({ id, prenom: "Nouveau", nom: "Contact", fonction: document.getElementById("m-fn").value || "Contact", type: "Contact", companyId, etat: "contact" });
+      closeModal(); openFiche("contact", id, "Synthèse"); return;
+    }
+    if (ok === "candidatNew") {
+      const id = next("cand");
+      W.candidates.push({ id, prenom: "Nouveau", nom: "Candidat", titre: document.getElementById("m-title").value || "Consultant", etat: "brouillon", dispo: "—", pos: 0, manager: account().name, cv: false });
+      closeModal(); openFiche("candidat", id, "Informations"); return;
+    }
+    if (ok === "ressourceNew") {
+      const id = next("r");
+      W.resources.push({ id, prenom: "Nouvelle", nom: "Ressource", type: document.getElementById("m-type").value, etat: "disponible", tarif: "500", supplierId: "" });
+      closeModal(); openFiche("ressource", id, "Synthèse"); return;
+    }
+    if (ok === "projetDirect") {
+      const contactId = document.getElementById("m-ct").value;
+      if (!contactId) { toast("Refus", "Contact obligatoire (F4).", true); return; }
+      const id = next("p");
+      W.projects.unshift({ id, name: document.getElementById("m-name").value || id, companyId: document.getElementById("m-co").value, needId: "", contactId, etat: "ouvert", debut: "2026-10-01", fin: "2027-03-31", type: "Régie" });
+      closeModal(); openFiche("projet", id, "Informations"); return;
+    }
+    if (ok === "temps") {
+      const sid = document.getElementById("m-s").value;
+      const s = byId(W.prestations, sid);
+      if (!s || s.etat !== "signee") { toast("Refus", "Temps seulement sur une prestation signée.", true); return; }
+      W.times.push({ id: next("t"), resourceId: s.resourceId, prestationId: s.id, jour: document.getElementById("m-d").value, jours: "1,00" });
+      toast("Temps saisi", "Ajustement après clôture = autre commande, le snapshot ne bouge pas.");
+      closeModal(); go("temps"); return;
+    }
+  }
+
+  function closeMenu() { const m = document.getElementById("plusMenu"); if (m) m.classList.remove("open"); }
+
+  function render() {
+    document.getElementById("account").innerHTML = W.accounts.map((a) =>
+      `<option value="${a.id}" ${a.id === W.accountId ? "selected" : ""}>${esc(a.name)} · ${esc(a.role)}</option>`
+    ).join("");
+    renderPaths();
+    renderSide();
+    crumb();
+    document.getElementById("page").innerHTML = S.kind ? renderFiche() : renderListe();
+    paintModal();
+    bindPlus();
+  }
+
+  function bindPlus() {
+    const menu = document.getElementById("plusMenu");
+    if (!menu) return;
+    const kind = S.kind;
+    const items = {
+      candidat: [
+        () => openModal("action", { porteur: "candidat", id: S.id }),
+        () => openModal("position", { from: "candidat", id: S.id }),
+        () => openModal("need", { from: "candidat" })
+      ],
+      ressource: [
+        () => openModal("action", { porteur: "ressource", id: S.id }),
+        () => openModal("position", { from: "ressource", id: S.id }),
+        () => openModal("presta", { resourceId: S.id })
+      ],
+      societe: [
+        () => openModal("action", { porteur: "societe", id: S.id }),
+        () => openModal("need", { companyId: S.id }),
+        () => openModal("projetDirect", { companyId: S.id })
+      ],
+      besoin: [
+        () => openModal("action", { porteur: "besoin", id: S.id }),
+        () => openModal("position", { from: "besoin", id: S.id }),
+        () => openModal("projetNeed", { needId: S.id })
+      ],
+      projet: [
+        () => openModal("action", { porteur: "projet", id: S.id }),
+        () => openModal("presta", { projectId: S.id })
+      ],
+      contact: [
+        () => openModal("action", { porteur: "contact", id: S.id }),
+        () => openModal("need", { contactId: S.id, companyId: byId(W.contacts, S.id)?.companyId })
+      ]
+    }[kind] || [];
+    menu.querySelector("[data-plus]")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      menu.classList.toggle("open");
+    });
+    menu.querySelectorAll("[data-plus-i]").forEach((b) => {
+      b.addEventListener("click", () => { items[+b.dataset.plusI]?.(); menu.classList.remove("open"); });
+    });
+  }
+
+  document.getElementById("account").onchange = (e) => { W.accountId = e.target.value; render(); };
+  document.getElementById("searchBtn").onclick = () => openModal("search");
+  document.body.addEventListener("click", (e) => {
+    if (!e.target.closest(".menu")) closeMenu();
+    const path = e.target.closest("[data-path]");
+    if (path) {
+      W.path = path.dataset.path;
+      const p = PATHS.find((x) => x.id === W.path);
+      go(p.first);
+      return;
+    }
+    const goBtn = e.target.closest("[data-go]");
+    if (goBtn) { W.view = "liste"; W.q = ""; S.tab = ""; go(goBtn.dataset.go); return; }
+    const open = e.target.closest("[data-open]");
+    if (open) { const [k, id] = open.dataset.open.split(":"); openFiche(k, id); return; }
+    const tab = e.target.closest("[data-tab]");
+    if (tab) { S.tab = tab.dataset.tab; render(); return; }
+    const view = e.target.closest("[data-view]");
+    if (view) { W.view = view.dataset.view; render(); return; }
+    const create = e.target.closest("[data-create]");
+    if (create) {
+      const map = { societes: "company", contacts: "contactNew", candidats: "candidatNew", ressources: "ressourceNew", besoins: "need", projets: "projetDirect", temps: "temps" };
+      if (create.dataset.create === "positionnements" || create.dataset.create === "actions") {
+        toast("Pas de +", "Création depuis une fiche, pas depuis la liste.", true); return;
+      }
+      const t = map[create.dataset.create];
+      if (t) openModal(t, {});
+      return;
+    }
+    const cmdEl = e.target.closest("[data-cmd]");
+    if (cmdEl) { const [n, id] = cmdEl.dataset.cmd.split(":"); cmd(n, id); return; }
+    const admin = e.target.closest("[data-admin]");
+    if (admin) { S.list = "admin"; S.kind = ""; S.tab = admin.dataset.admin; render(); return; }
+    const hors = e.target.closest("[data-hors]");
+    if (hors) { toast("Hors V1", hors.dataset.hors + " : porte d’audit, pas un écran du mock.", true); return; }
+    if (e.target.closest("[data-cancel]")) { closeModal(); return; }
+    const ok = e.target.closest("[data-ok]");
+    if (ok) submitModal(ok.dataset.ok);
+  });
+  document.body.addEventListener("input", (e) => {
+    if (e.target.id === "q") { W.q = e.target.value; render(); const q = document.getElementById("q"); if (q) { q.focus(); q.setSelectionRange(W.q.length, W.q.length); } }
+    if (e.target.id === "m-q") {
+      const q = e.target.value.toLowerCase();
+      const hits = [
+        ...W.companies.filter((c) => c.name.toLowerCase().includes(q)).map((c) => ({ k: "societe", id: c.id, t: c.name })),
+        ...W.needs.filter((n) => n.title.toLowerCase().includes(q)).map((n) => ({ k: "besoin", id: n.id, t: n.title })),
+        ...W.candidates.filter((c) => (c.nom + c.titre).toLowerCase().includes(q)).map((c) => ({ k: "candidat", id: c.id, t: c.prenom + " " + c.nom }))
+      ];
+      document.getElementById("m-res").innerHTML = hits.slice(0, 8).map((h) => `<div><button type="button" class="btn" data-open="${h.k}:${h.id}">${esc(h.t)}</button></div>`).join("") || "Aucun résultat";
+    }
+  });
+  window.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); openModal("search"); }
+    if (e.key === "Escape") closeModal();
+  });
+
+  go("besoins");
+})();
+</script>
+</body>
+</html>
