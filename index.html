@@ -227,6 +227,13 @@
       padding: 5px 12px; border-radius: 999px; cursor: pointer; font: inherit; font-size: 13px;
     }
     .hub-sub button[aria-pressed="true"] { background: #2a2a2a; color: var(--text); border-color: #666; }
+    .hub-nested { display: none; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .hub-nested.on { display: flex; }
+    .hub-nested button {
+      border: 1px solid var(--line); background: transparent; color: var(--muted);
+      padding: 5px 12px; border-radius: 999px; cursor: pointer; font: inherit; font-size: 13px;
+    }
+    .hub-nested button[aria-pressed="true"] { background: #2a2a2a; color: var(--text); border-color: #1E5B3A; }
     .arch-stack { display: grid; gap: 8px; margin: 16px 0 24px; }
     .arch-box {
       background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
@@ -422,6 +429,7 @@
   <div class="hub-wrap" id="hub">
     <div class="hub-product" id="hub-product"></div>
     <div class="hub-sub" id="hub-sub"></div>
+    <div class="hub-nested" id="hub-nested"></div>
   </div>
 
   <section class="view" id="view-ava-metier" hidden></section>
@@ -2536,8 +2544,14 @@ function showView(name){
       hint: "Builder",
       views: [
         { id: "ava-metier", label: "Métier" },
-        { id: "ava-guide", label: "Parcours" },
-        { id: "ava-rpg", label: "Jeu de rôle" },
+        {
+          id: "ava-guides",
+          label: "Quiz et parcours et jeu de rôle",
+          children: [
+            { id: "ava-guide", label: "Parcours" },
+            { id: "ava-rpg", label: "Jeu de rôle" }
+          ]
+        },
         { id: "ava-simulateur", label: "Simulateur" },
         { id: "ava-sim-rules", label: "Simulateur de règles" },
         { id: "ava-cadrage", label: "Contrats" },
@@ -2559,7 +2573,10 @@ function showView(name){
     }
   };
 
-  const ALL_VIEWS = Object.values(PRODUCTS).flatMap((p) => p.views).map((v) => v.id);
+  const flattenViews = (views) =>
+    views.flatMap((v) => (v.children && v.children.length ? v.children : [v]));
+  const ALL_VIEWS = Object.values(PRODUCTS).flatMap((p) => flattenViews(p.views).map((v) => v.id));
+  const nestedLast = {};
 
   const DECISIONS = [
     {
@@ -5651,26 +5668,51 @@ function showView(name){
   };
 
   function productOf(view) {
-    return PRODUCTS.ava.views.some((v) => v.id === view) ? "ava" : "boond";
+    return flattenViews(PRODUCTS.ava.views).some((v) => v.id === view) ? "ava" : "boond";
+  }
+
+  function familyOf(product, view) {
+    return PRODUCTS[product].views.find((v) =>
+      v.id === view || (v.children && v.children.some((c) => c.id === view))
+    );
+  }
+
+  function entryView(v) {
+    if (!v.children || !v.children.length) return v.id;
+    return nestedLast[v.id] || v.children[0].id;
   }
 
   function paintNav(product, view) {
+    const family = familyOf(product, view);
     document.getElementById("hub-product").innerHTML = Object.keys(PRODUCTS).map((id) =>
       `<button type="button" data-product="${id}" aria-pressed="${id === product}">
         <strong>${PRODUCTS[id].label}</strong>
         <span>${PRODUCTS[id].hint}</span>
       </button>`
     ).join("");
-    document.getElementById("hub-sub").innerHTML = PRODUCTS[product].views.map((v) =>
-      `<button type="button" data-view="${v.id}" aria-pressed="${v.id === view}">${v.label}</button>`
-    ).join("");
+    document.getElementById("hub-sub").innerHTML = PRODUCTS[product].views.map((v) => {
+      const on = family && family.id === v.id;
+      return `<button type="button" data-view="${entryView(v)}" aria-pressed="${!!on}">${v.label}</button>`;
+    }).join("");
+    const nested = document.getElementById("hub-nested");
+    if (family && family.children) {
+      nested.className = "hub-nested on";
+      nested.innerHTML = family.children.map((c) =>
+        `<button type="button" data-view="${c.id}" aria-pressed="${c.id === view}">${c.label}</button>`
+      ).join("");
+    } else {
+      nested.className = "hub-nested";
+      nested.innerHTML = "";
+    }
   }
 
   function showHubView(name) {
-    const aliases = { ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-guide", guide: "ava-guide", fil: "ava-guide", rpg: "ava-rpg", role: "ava-rpg", jours: "ava-parcours", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules" };
+    const aliases = { ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-guide", guide: "ava-guide", fil: "ava-guide", "ava-guides": "ava-guide", quiz: "ava-guide", rpg: "ava-rpg", role: "ava-rpg", jours: "ava-parcours", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules" };
     if (aliases[name]) name = aliases[name];
     if (!ALL_VIEWS.includes(name)) name = "ava-metier";
     const product = productOf(name);
+    const family = familyOf(product, name);
+    if (family && family.children) nestedLast[family.id] = name;
     ALL_VIEWS.forEach((id) => {
       const node = document.getElementById("view-" + id);
       if (node) node.hidden = id !== name;
@@ -5690,7 +5732,11 @@ function showView(name){
 
   document.getElementById("hub").addEventListener("click", (e) => {
     const p = e.target.closest("[data-product]");
-    if (p) { showHubView(PRODUCTS[p.dataset.product].views[0].id); return; }
+    if (p) {
+      const first = PRODUCTS[p.dataset.product].views[0];
+      showHubView(entryView(first));
+      return;
+    }
     const v = e.target.closest("[data-view]");
     if (v) showHubView(v.dataset.view);
   });
