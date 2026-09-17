@@ -62,7 +62,7 @@
     .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
     .graph-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; overflow-x: auto; }
     .tri-stage {
-      height: 560px; background: #141414; border: 1px solid var(--line);
+      height: 620px; background: #08080a; border: 1px solid var(--line);
       border-radius: 8px; overflow: hidden; position: relative;
     }
     .tri-stage canvas { display: block; width: 100%; height: 100%; }
@@ -5461,36 +5461,39 @@ function showView(name){
     action: { x: 420, y: 280, label: "Action" },
     temps: { x: 620, y: 320, label: "Temps" }
   };
-  const TRI_EDGES = AVA_EDGES.concat([["prestation", "temps"]]);
+  const TRI_PLAY = {
+    1: ["societe", "contact", "besoin"],
+    2: ["personne", "candidat", "positionnement", "ressource"],
+    3: ["societe", "besoin", "positionnement", "projet"],
+    4: ["personne", "ressource", "projet", "prestation", "temps"],
+    5: ["societe", "ressource", "positionnement", "prestation"]
+  };
   const TRI_BLURB = {
     societe: "Client et fournisseur. Un seul objet, deux rôles.",
-    contact: "Interlocuteur. Facultatif sur le besoin (DEC-04).",
-    besoin: "Demande. Cycle ouvert / staffing / pourvu / suspendu / fermé.",
-    personne: "L’identité. Candidat et Ressource sont des profils.",
-    candidat: "Profil vivier. Jamais une prestation.",
-    ressource: "Profil qui travaille. Interne ou EXTERNAL.",
-    positionnement: "Pivot : 1 besoin × 1 humain. XOR candidat/ressource.",
-    projet: "Commande explicite. US5 possible sans besoin.",
-    prestation: "Pivot production : 1 projet × 1 ressource.",
-    action: "Geste transversal. Ne crée pas le projet.",
-    temps: "Jours saisis par la ressource sur la prestation."
+    contact: "Interlocuteur. Facultatif sur le besoin.",
+    besoin: "La demande. Rien n’est signé.",
+    personne: "L’identité. Les profils viennent après.",
+    candidat: "Le vivier. Pas une mission.",
+    ressource: "Celle qui travaille.",
+    positionnement: "La proposition. 1 besoin × 1 humain.",
+    projet: "La commande. Elle se crée exprès.",
+    prestation: "La mission. 1 projet × 1 ressource.",
+    action: "Un geste. Ça n’ouvre pas le projet.",
+    temps: "Les jours. Saisis par la ressource."
   };
   let triActive = 0;
-  let triPick = null;
   let triWorld = null;
 
   function triHex(h) { return parseInt(String(h).replace("#", ""), 16); }
-  function triPos(n) {
-    return { x: (n.x - 390) * 0.012, y: 0.15, z: (n.y - 190) * 0.012 };
-  }
-  function triMetiers(id) {
-    return AVA_CHEMINS.filter((c) => c.edges.some(([a, b]) => a === id || b === id));
+  function triCaption(html) {
+    const el = document.getElementById("tri-caption");
+    if (el) el.innerHTML = html;
   }
   function disposeTri() {
     if (!triWorld) return;
     triWorld.alive = false;
     window.removeEventListener("resize", triWorld.onResize);
-    if (triWorld.stage) triWorld.stage.onpointerdown = null;
+    if (triWorld.composer) triWorld.composer = null;
     if (triWorld.renderer) {
       triWorld.renderer.dispose();
       if (triWorld.renderer.domElement && triWorld.renderer.domElement.parentNode) {
@@ -5502,79 +5505,243 @@ function showView(name){
         if (obj.geometry) obj.geometry.dispose();
         const mats = obj.material ? (Array.isArray(obj.material) ? obj.material : [obj.material]) : [];
         mats.forEach((m) => {
-          if (m.map) m.map.dispose();
+          if (m && m.map) m.map.dispose();
           if (m) m.dispose();
         });
       });
     }
     triWorld = null;
   }
-  function triLabel(text) {
+  function triVec(id) {
+    const n = TRI_NODES[id];
+    return new triWorld.THREE.Vector3((n.x - 390) * 0.016, 0.12, (n.y - 190) * 0.016);
+  }
+  function triArc(a, b) {
+    const THREE = triWorld.THREE;
+    const pa = triVec(a), pb = triVec(b);
+    const mid = pa.clone().lerp(pb, 0.5);
+    mid.y += Math.max(0.55, pa.distanceTo(pb) * 0.42);
+    return new THREE.QuadraticBezierCurve3(pa, mid, pb);
+  }
+  function triMakeLabel(text) {
+    const THREE = triWorld.THREE;
     const c = document.createElement("canvas");
-    c.width = 384;
-    c.height = 96;
+    c.width = 512;
+    c.height = 128;
     const ctx = c.getContext("2d");
-    ctx.fillStyle = "#f0f0f0";
-    ctx.font = "600 42px system-ui, sans-serif";
+    ctx.clearRect(0, 0, 512, 128);
+    ctx.fillStyle = "#AEBF38";
+    ctx.beginPath();
+    const r = 28, x = 36, y = 28, w = 440, h = 72;
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = "#430A4B";
+    ctx.font = "700 44px system-ui, sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText(text, 192, 48);
-    const tex = new triWorld.THREE.CanvasTexture(c);
-    tex.colorSpace = triWorld.THREE.SRGBColorSpace;
-    const spr = new triWorld.THREE.Sprite(new triWorld.THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false }));
-    spr.scale.set(2.15, 0.54, 1);
-    spr.center.set(0.5, 0);
+    ctx.fillText(text, 256, 66);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    const spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
+    spr.scale.set(1.85, 0.46, 1);
     return spr;
   }
-  function triPaint() {
+  function triClearPlay() {
     if (!triWorld) return;
-    const live = new Set();
-    const liveN = new Set();
-    if (triActive) {
-      const c = AVA_CHEMINS.find((x) => x.id === triActive);
-      (c.edges || []).forEach(([a, b]) => {
-        live.add(a + ">" + b);
-        liveN.add(a);
-        liveN.add(b);
+    (triWorld.spawned || []).forEach((s) => {
+      triWorld.scene.remove(s.mesh);
+      triWorld.scene.remove(s.glow);
+      triWorld.scene.remove(s.label);
+      if (s.light) triWorld.scene.remove(s.light);
+    });
+    (triWorld.beads || []).forEach((b) => triWorld.scene.remove(b));
+    if (triWorld.head) triWorld.scene.remove(triWorld.head);
+    if (triWorld.headLight) triWorld.scene.remove(triWorld.headLight);
+    triWorld.spawned = [];
+    triWorld.beads = [];
+    triWorld.head = null;
+    triWorld.headLight = null;
+    triWorld.play = null;
+  }
+  function triSpawnNode(id, color) {
+    const THREE = triWorld.THREE;
+    const p = triVec(id);
+    const mat = new THREE.MeshStandardMaterial({
+      color: 0x111111,
+      emissive: color,
+      emissiveIntensity: 0,
+      roughness: 0.25,
+      metalness: 0.15,
+      transparent: true,
+      opacity: 0
+    });
+    const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.22, 32, 24), mat);
+    mesh.position.copy(p);
+    mesh.scale.setScalar(0.01);
+    const glow = new THREE.Mesh(
+      new THREE.SphereGeometry(0.38, 16, 12),
+      new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 0, depthWrite: false })
+    );
+    glow.position.copy(p);
+    const label = triMakeLabel(TRI_NODES[id].label);
+    label.position.set(p.x, p.y + 0.52, p.z);
+    label.material.opacity = 0;
+    const light = new THREE.PointLight(color, 0, 4.5, 2);
+    light.position.copy(p);
+    triWorld.scene.add(mesh, glow, label, light);
+    const node = { id, mesh, glow, label, light, mat };
+    triWorld.spawned.push(node);
+    return node;
+  }
+  function triEnsureBeads(color) {
+    const THREE = triWorld.THREE;
+    if (triWorld.beads && triWorld.beads.length) {
+      triWorld.beads.forEach((b) => b.material.color.setHex(color));
+      if (triWorld.head) triWorld.head.material.color.setHex(color);
+      if (triWorld.headLight) triWorld.headLight.color.setHex(color);
+      return;
+    }
+    triWorld.beads = [];
+    for (let i = 0; i < 30; i++) {
+      const m = new THREE.Mesh(
+        new THREE.SphereGeometry(0.045, 10, 8),
+        new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 0, depthWrite: false })
+      );
+      triWorld.scene.add(m);
+      triWorld.beads.push(m);
+    }
+    triWorld.head = new THREE.Mesh(
+      new THREE.SphereGeometry(0.09, 16, 12),
+      new THREE.MeshBasicMaterial({ color: 0xAEBF38, transparent: true, opacity: 0, depthWrite: false })
+    );
+    triWorld.headLight = new THREE.PointLight(0xAEBF38, 0, 5, 2);
+    triWorld.scene.add(triWorld.head, triWorld.headLight);
+  }
+  function triSetNode(node, k) {
+    const live = Math.max(0, Math.min(1, k));
+    node.mat.opacity = 0.15 + 0.85 * live;
+    node.mat.emissiveIntensity = 0.4 + 2.2 * live;
+    node.mesh.scale.setScalar(0.35 + 0.65 * live);
+    node.glow.material.opacity = 0.22 * live;
+    node.glow.scale.setScalar(0.8 + 0.5 * live);
+    node.label.material.opacity = live;
+    node.light.intensity = 1.8 * live;
+  }
+  function triDrawCurve(curve, p, color) {
+    triEnsureBeads(color);
+    const u = Math.max(0, Math.min(1, p));
+    triWorld.beads.forEach((b, i) => {
+      const t = u * ((i + 1) / triWorld.beads.length);
+      const pos = curve.getPoint(t);
+      b.position.copy(pos);
+      const along = (i + 1) / triWorld.beads.length;
+      b.material.opacity = u <= 0 ? 0 : Math.pow(along, 1.35) * (0.25 + 0.75 * u);
+      b.scale.setScalar(0.45 + along * 1.1);
+    });
+    const hp = curve.getPoint(u);
+    triWorld.head.position.copy(hp);
+    triWorld.head.material.opacity = u > 0.04 ? 1 : 0;
+    triWorld.headLight.position.copy(hp);
+    triWorld.headLight.intensity = 2.4 * u;
+  }
+  function triStartPath(id) {
+    if (!triWorld) return;
+    triClearPlay();
+    const ids = TRI_PLAY[id];
+    if (!ids) return;
+    const color = triHex(AVA_COLORS[id]);
+    triWorld.play = {
+      ids: ids,
+      color: color,
+      chemin: id,
+      i: 0,
+      mode: "spawn",
+      t0: performance.now(),
+      curve: null
+    };
+    const c = AVA_CHEMINS.find((x) => x.id === id);
+    triCaption(`<strong>C${c.id} ${esc(c.nom)}</strong> · ${esc(c.verbe)}<br>${esc(c.caption)}`);
+  }
+  function triTick(now) {
+    const P = triWorld && triWorld.play;
+    if (!P) return;
+    const dt = (now - P.t0) / 1000;
+    const ids = P.ids;
+    const cur = triWorld.spawned[P.i];
+    if (P.mode === "spawn") {
+      if (!cur) triSpawnNode(ids[P.i], P.color);
+      const node = triWorld.spawned[P.i];
+      const k = Math.min(1, dt / 0.55);
+      triSetNode(node, k);
+      triWorld.controls.target.lerp(node.mesh.position, 0.08);
+      const n = TRI_NODES[ids[P.i]];
+      triCaption(`<strong>${esc(n.label)}</strong> — ${esc(TRI_BLURB[ids[P.i]])}<br><span class="note">C${P.chemin} ${esc(AVA_CHEMINS.find((x) => x.id === P.chemin).nom)}</span>`);
+      if (k >= 1) { P.t0 = now; P.mode = "rest"; }
+    } else if (P.mode === "draw") {
+      const k = Math.min(1, dt / 0.95);
+      triDrawCurve(P.curve, k, P.color);
+      const dest = triWorld.spawned[P.i];
+      triSetNode(dest, k);
+      triWorld.controls.target.lerp(P.curve.getPoint(k), 0.12);
+      if (k > 0.45) {
+        const n = TRI_NODES[ids[P.i]];
+        triCaption(`<strong>${esc(n.label)}</strong> — ${esc(TRI_BLURB[ids[P.i]])}<br><span class="note">C${P.chemin} ${esc(AVA_CHEMINS.find((x) => x.id === P.chemin).nom)}</span>`);
+      }
+      if (k >= 1) {
+        P.t0 = now;
+        P.mode = "rest";
+        const prev = triWorld.spawned[P.i - 1];
+        if (prev) prev._dim = true;
+      }
+    } else if (P.mode === "rest") {
+      triWorld.spawned.forEach((s, idx) => {
+        if (s._dim) triSetNode(s, Math.max(0.1, 0.78 - dt));
+        else if (idx === P.i) triSetNode(s, 0.84 + 0.16 * Math.sin(now * 0.006));
       });
+      if (dt > 0.42) {
+        P.t0 = now;
+        if (P.i < ids.length - 1) {
+          P.i += 1;
+          P.mode = "draw";
+          P.curve = triArc(ids[P.i - 1], ids[P.i]);
+          triSpawnNode(ids[P.i], P.color);
+          triSetNode(triWorld.spawned[P.i], 0);
+        } else P.mode = "fade";
+      }
+    } else if (P.mode === "fade") {
+      const k = Math.min(1, dt / 1.05);
+      triWorld.spawned.forEach((s) => triSetNode(s, 1 - k));
+      (triWorld.beads || []).forEach((b) => { b.material.opacity *= 0.9; });
+      if (triWorld.head) triWorld.head.material.opacity = 1 - k;
+      if (triWorld.headLight) triWorld.headLight.intensity = 2.4 * (1 - k);
+      if (k >= 1) {
+        const next = triActive === 0 ? (P.chemin === 5 ? 1 : P.chemin + 1) : P.chemin;
+        triStartPath(next);
+        if (triActive === 0) {
+          const pills = document.getElementById("tri-pills");
+          if (pills) {
+            Array.from(pills.querySelectorAll("[data-tri-c]")).forEach((btn) => {
+              btn.setAttribute("aria-pressed", String(btn.dataset.triC === "0"));
+            });
+          }
+        }
+      }
     }
-    Object.keys(triWorld.nodes).forEach((id) => {
-      const on = !triActive || liveN.has(id);
-      const picked = id === triPick;
-      const col = picked ? 0xAEBF38 : (on && triActive ? triHex(AVA_COLORS[triActive]) : (on ? 0x8a8a8a : 0x2a2a2a));
-      const mesh = triWorld.nodes[id];
-      mesh.material.color.setHex(col);
-      mesh.material.emissive.setHex(picked ? 0x3a4a10 : 0x000000);
-      mesh.material.opacity = on ? 1 : 0.28;
-      mesh.scale.setScalar(picked ? 1.12 : 1);
-    });
-    triWorld.edgeMats.forEach((e) => {
-      const on = !triActive || live.has(e.a + ">" + e.b);
-      e.mat.color.setHex(on && triActive ? triHex(AVA_COLORS[triActive]) : (on ? 0x5a5a5a : 0x2a2a2a));
-      e.mat.opacity = on ? (triActive ? 0.95 : 0.45) : 0.12;
-    });
-    const cap = document.getElementById("tri-caption");
-    if (!cap) return;
-    if (triPick) {
-      const n = TRI_NODES[triPick];
-      const ms = triMetiers(triPick).map((c) => "C" + c.id + " " + c.nom).join(" · ") || "transversal";
-      cap.innerHTML = `<strong>${esc(n.label)}</strong> — ${esc(TRI_BLURB[triPick] || "")}<br><span class="note">${esc(ms)}</span>`;
-      return;
-    }
-    if (triActive) {
-      const c = AVA_CHEMINS.find((x) => x.id === triActive);
-      cap.innerHTML = `<strong>C${c.id} ${esc(c.nom)}</strong> · ${esc(c.verbe)}<br>${esc(c.caption)}<br><span class="note">${esc(c.hint)}</span>`;
-      return;
-    }
-    cap.innerHTML = "<strong>Les cinq métiers, un graphe.</strong> Orbite : glisser. Molette : zoom. Clic une case. C1–C5 colorent un chemin.";
   }
   function triFit() {
     if (!triWorld || !triWorld.stage) return;
     const w = triWorld.stage.clientWidth || 800;
-    const h = triWorld.stage.clientHeight || 520;
+    const h = triWorld.stage.clientHeight || 560;
     triWorld.camera.aspect = w / Math.max(h, 1);
     triWorld.camera.updateProjectionMatrix();
     triWorld.renderer.setSize(w, h, false);
+    if (triWorld.composer) triWorld.composer.setSize(w, h);
+    if (triWorld.bloom) triWorld.bloom.setSize(w, h);
   }
   async function bootTri() {
     disposeTri();
@@ -5582,78 +5749,48 @@ function showView(name){
     if (!stage) return;
     const THREE = await import("three");
     const { OrbitControls } = await import("three/addons/controls/OrbitControls.js");
+    const { EffectComposer } = await import("three/addons/postprocessing/EffectComposer.js");
+    const { RenderPass } = await import("three/addons/postprocessing/RenderPass.js");
+    const { UnrealBloomPass } = await import("three/addons/postprocessing/UnrealBloomPass.js");
     if (!document.getElementById("tri-stage")) return;
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setClearColor(0x141414, 1);
+    renderer.setClearColor(0x08080a, 1);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     stage.appendChild(renderer.domElement);
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x141414, 12, 28);
-    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 80);
-    camera.position.set(0, 7.4, 11.5);
+    scene.fog = new THREE.Fog(0x08080a, 16, 32);
+    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 80);
+    camera.position.set(1.4, 5.8, 9.2);
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.target.set(0, 0.2, 0);
-    controls.minDistance = 6;
-    controls.maxDistance = 22;
-    controls.maxPolarAngle = Math.PI * 0.48;
-    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-    const key = new THREE.DirectionalLight(0xffffff, 1.05);
-    key.position.set(4, 10, 6);
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.35;
+    controls.target.set(0, 0.3, 0);
+    controls.minDistance = 5;
+    controls.maxDistance = 18;
+    controls.maxPolarAngle = Math.PI * 0.49;
+    scene.add(new THREE.AmbientLight(0x430A4B, 0.35));
+    const key = new THREE.DirectionalLight(0xffffff, 0.35);
+    key.position.set(3, 8, 4);
     scene.add(key);
-    const fill = new THREE.DirectionalLight(0xAEBF38, 0.18);
-    fill.position.set(-6, 4, -3);
-    scene.add(fill);
-    const grid = new THREE.GridHelper(18, 18, 0x2a2a2a, 0x1c1c1c);
-    grid.position.y = -0.35;
-    scene.add(grid);
-    triWorld = { THREE, alive: true, renderer, scene, camera, controls, stage, nodes: {}, edgeMats: [] };
-    const boxGeo = new THREE.BoxGeometry(1.85, 0.42, 0.95);
-    Object.entries(TRI_NODES).forEach(([id, n]) => {
-      const p = triPos(n);
-      const mat = new THREE.MeshStandardMaterial({ color: 0x8a8a8a, metalness: 0.12, roughness: 0.46, transparent: true });
-      const mesh = new THREE.Mesh(boxGeo, mat);
-      mesh.position.set(p.x, p.y, p.z);
-      mesh.userData.id = id;
-      const spr = triLabel(n.label);
-      spr.position.set(p.x, p.y + 0.38, p.z);
-      scene.add(mesh);
-      scene.add(spr);
-      triWorld.nodes[id] = mesh;
-    });
-    const lineMatBase = () => new THREE.LineBasicMaterial({ color: 0x5a5a5a, transparent: true, opacity: 0.45 });
-    TRI_EDGES.forEach(([a, b]) => {
-      const pa = triPos(TRI_NODES[a]), pb = triPos(TRI_NODES[b]);
-      const geo = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(pa.x, pa.y, pa.z),
-        new THREE.Vector3(pb.x, pb.y, pb.z)
-      ]);
-      const mat = lineMatBase();
-      const line = new THREE.Line(geo, mat);
-      scene.add(line);
-      triWorld.edgeMats.push({ a, b, mat });
-    });
-    const ray = new THREE.Raycaster();
-    const ptr = new THREE.Vector2();
-    stage.onpointerdown = (ev) => {
-      if (ev.button !== 0) return;
-      const r = stage.getBoundingClientRect();
-      ptr.x = ((ev.clientX - r.left) / r.width) * 2 - 1;
-      ptr.y = -((ev.clientY - r.top) / r.height) * 2 + 1;
-      ray.setFromCamera(ptr, camera);
-      const hits = ray.intersectObjects(Object.values(triWorld.nodes), false);
-      if (!hits.length) { triPick = null; triPaint(); return; }
-      triPick = hits[0].object.userData.id;
-      triPaint();
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloom = new UnrealBloomPass(new THREE.Vector2(800, 560), 0.78, 0.42, 0.22);
+    composer.addPass(bloom);
+    triWorld = {
+      THREE, alive: true, renderer, scene, camera, controls, stage, composer, bloom,
+      spawned: [], beads: [], play: null
     };
     triWorld.onResize = () => triFit();
     window.addEventListener("resize", triWorld.onResize);
     triFit();
-    triPaint();
-    const tick = () => {
+    triStartPath(triActive === 0 ? 1 : triActive);
+    const tick = (now) => {
       if (!triWorld || !triWorld.alive) return;
+      triTick(now);
       controls.update();
-      renderer.render(scene, camera);
+      composer.render();
       requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
@@ -5663,11 +5800,11 @@ function showView(name){
     if (!el) return;
     el.innerHTML = `
       <h2>Métiers en 3D</h2>
-      <p class="lead">Le graphe Ava, orbitable. C1 à C5 allument un chemin. Une case cliquée dit ce qu’elle est.</p>
+      <p class="lead">Rien n’est posé d’avance. Un métier part d’un objet, le chemin s’allume, puis s’éteint.</p>
       <div class="pills" id="tri-pills"></div>
       <p id="tri-caption" class="lead"></p>
       <div class="tri-stage" id="tri-stage"></div>
-      <p class="note">Glisser pour tourner · molette pour zoomer · clic droit pour glisser le plateau. Le schéma 2D reste dans Métier.</p>`;
+      <p class="note">Glisser pour tourner. Tous = les cinq métiers, l’un après l’autre.</p>`;
     const pills = document.getElementById("tri-pills");
     pills.innerHTML = `<button class="pill" type="button" aria-pressed="${triActive===0}" data-tri-c="0">Tous</button>` +
       AVA_CHEMINS.map((x) =>
@@ -5682,7 +5819,7 @@ function showView(name){
       Array.from(pills.querySelectorAll("[data-tri-c]")).forEach((btn) => {
         btn.setAttribute("aria-pressed", String(btn.dataset.triC === String(triActive)));
       });
-      triPaint();
+      if (triWorld) triStartPath(triActive === 0 ? 1 : triActive);
     };
     bootTri();
   }
