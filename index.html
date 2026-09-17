@@ -239,6 +239,16 @@
       padding: 5px 12px; border-radius: 999px; cursor: pointer; font: inherit; font-size: 13px;
     }
     .hub-nested button[aria-pressed="true"] { background: #2a2a2a; color: var(--text); border-color: #1E5B3A; }
+    .hub-doc { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px;
+      padding-top: 12px; border-top: 1px solid var(--line); }
+    .hub-doc .lab { font-size: 11px; letter-spacing: .08em; color: var(--muted); font-weight: 600; margin-right: 2px; }
+    .hub-doc a { text-decoration: none; font: inherit; font-size: 13px; font-weight: 600;
+      padding: 6px 14px; border-radius: 999px; }
+    .hub-doc a.pri { background: #AEBF38; color: #430A4B; }
+    .hub-doc a.pri:hover { background: #CDD749; }
+    .hub-doc a.sec { border: 1px solid var(--line); color: var(--muted); }
+    .hub-doc a.sec:hover { border-color: #AEBF38; color: #CDD749; }
+    .hub-doc .hint { font-size: 11px; color: var(--muted); }
     .arch-stack { display: grid; gap: 8px; margin: 16px 0 24px; }
     .arch-box {
       background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
@@ -443,6 +453,12 @@
     <div class="hub-product" id="hub-product"></div>
     <div class="hub-sub" id="hub-sub"></div>
     <div class="hub-nested" id="hub-nested"></div>
+    <div class="hub-doc">
+      <span class="lab">CAHIER DE RELECTURE MÉTIER</span>
+      <a class="pri" href="cahier.html">Ouvrir</a>
+      <a class="sec" href="CAHIER_RELECTURE_METIER.pdf" download>PDF à imprimer</a>
+      <span class="hint">15 histoires, 61 réglages, 15 interdits — à faire relire par le métier</span>
+    </div>
   </div>
 
   <section class="view" id="view-ava-metier" hidden></section>
@@ -4676,9 +4692,9 @@ function showView(name){
           l: "Un rapport minimal opérationnel.",
           i: "Annoncer l’emailing en V1 sans l’avoir tranché." },
         { id: "BM-60", st: "acquise", titre: "Le cycle du besoin, sans « gagné »",
-          qui: "Martin demande ; Karim prend en charge — F6, F3",
+          qui: "Martin demande ; le premier positionnement fait passer en staffing — G3, F6, F3",
           quand: "N1 avance.",
-          dit: "Ouvert → staffing → pourvu. On peut suspendre ou fermer. Reprendre un suspendu se dit. Rouvrir un fermé est une commande. Pourvu = tous les postes visés ont une prestation signée. Une première signature laisse le besoin en staffing (F3, pas une DEC).",
+          dit: "Ouvert → staffing → pourvu. Le premier positionnement fait passer en staffing (G3) — pas un clic de prise en charge. On peut suspendre ou fermer. Reprendre un suspendu se dit. Rouvrir un fermé est une commande. Pourvu = tous les postes visés ont une prestation signée. Une première signature laisse le besoin en staffing (F3, pas une DEC).",
           refus: "Cette transition nécessite une réactivation ou une décision explicite.",
           v: "Dernier poste signé → pourvu.",
           l: "Une prestation sur deux : encore staffing.",
@@ -4726,8 +4742,8 @@ function showView(name){
       st: "f",
       etapes: [
         "Martin crée N1 pour Alpha / Service1, contact Alice.",
-        "Karim positionne Jean (ressource) : X1.",
-        "Martin enregistre : le client retient Jean. N1 passe en staffing (F6).",
+        "Karim positionne Jean (ressource) : X1. N1 passe en staffing — premier positionnement (G3).",
+        "Martin enregistre : le client retient Jean. X1 passe à retenu (G2) ; N1 reste en staffing.",
         "Karim confirme P1 depuis N1 (garde ressource retenue : F1).",
         "Karim crée T1 : Jean, janvier, signée, 60 %.",
         "Jean saisit 0,6 jour le 4 janvier sur T1."
