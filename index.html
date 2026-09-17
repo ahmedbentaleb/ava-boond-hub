@@ -383,6 +383,22 @@
     .fil-who .fil-pawn { width: 100%; }
     .fil-lab { display: grid; grid-template-columns: minmax(280px, 340px) 1fr; gap: 16px; align-items: start; }
     @media (max-width: 900px) { .fil-lab { grid-template-columns: 1fr; } }
+    .fil-deck { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .fil-card {
+      min-height: 92px; border-radius: 10px; cursor: pointer; font: inherit; font-weight: 600;
+      font-size: 14px;
+    }
+    .fil-card.back {
+      color: transparent; border: 1px solid #2a082e;
+      background-color: #430A4B;
+      background-image: radial-gradient(#AEBF38 1.1px, transparent 1.2px);
+      background-size: 9px 9px;
+    }
+    .fil-card.ok { background: #AEBF38; color: #430A4B; border: 2px solid #1E5B3A; }
+    .fil-card.ko {
+      background: #141414; color: #f0f0f0; border: 2px solid #A93226;
+      animation: fil-shake .35s ease;
+    }
     .fil-toast { border-radius: 6px; padding: 10px 12px; margin: 12px 0; color: var(--text); }
     .fil-toast.ok { border-left: 4px solid #1E5B3A; background: #141414; }
     .fil-toast.ko { border-left: 4px solid #A93226; background: #141414; }
@@ -3084,6 +3100,7 @@ function showView(name){
   let filTrail = [];
   let filFlash = null;
   let filToast = null;
+  let filDeck = [];
 
   function filColor(id) {
     return ({ c1: "var(--c1)", c2: "var(--c2)", c3: "var(--c3)", c4: "var(--c4)", c5: "var(--c5)" })[id] || "var(--c1)";
@@ -3129,19 +3146,19 @@ function showView(name){
     societe: {
       s0: {
         titre: "Tu es Alpha",
-        dit: "Clique une case du schéma. Le bon chemin s’allume. Le mauvais devient rouge.",
+        dit: "Tu es une entreprise. Tu cherches quelqu’un. Tire une carte. On ne te dit pas laquelle.",
         ici: "societe",
         vers: { contact: "s1", besoin: "s2", action: "s1", projet: "s0x", prestation: "s0x", candidat: "s0x", ressource: "s0x", personne: "s0x", temps: "s0x", positionnement: "s0x" }
       },
       s0x: {
         ko: true, titre: "Pas ta main",
-        dit: "Une société n’ouvre pas Candidat, Ressource ou Prestation. Clique Contact ou Besoin.",
+        dit: "Une société ne s’ouvre pas les listes du cabinet.",
         ici: "societe",
         vers: { contact: "s1", besoin: "s2" }
       },
       s1: {
         titre: "Martin ouvre le contact",
-        dit: "Alice peut être collée. Ensuite le besoin. Pas le projet.",
+        dit: "Martin peut coller Alice. Ensuite quelqu’un cherche. Ce n’est pas encore une mission.",
         ici: "contact",
         entre: { nom: "Martin", role: "Commercial" },
         mot: "Contact",
@@ -3149,13 +3166,13 @@ function showView(name){
       },
       s1x: {
         ko: true, titre: "Pas encore un projet",
-        dit: "Un besoin n’est pas un projet. Clique Besoin.",
+        dit: "Un besoin n’est pas un projet.",
         ici: "projet",
         vers: { besoin: "s2", contact: "s1" }
       },
       s2: {
         titre: "Le besoin est ouvert",
-        dit: "L’équipe va proposer quelqu’un. Clique Positionnement quand on te présente. Pas Projet.",
+        dit: "Ta demande est posée. L’équipe cherche. Rien n’est signé.",
         ici: "besoin",
         mot: "Besoin",
         entre: { nom: "Martin", role: "Commercial" },
@@ -3163,7 +3180,7 @@ function showView(name){
       },
       s3: {
         titre: "On te présente Paul",
-        dit: "C’est un positionnement. Clique Besoin si tu refuses. Si tu dis oui, le projet ne tombe pas tout seul.",
+        dit: "On te présente Paul. Ce n’est ni le projet, ni la mission. C’est une proposition.",
         ici: "positionnement",
         mot: "Positionnement",
         entre: { nom: "Paul", role: "Freelance proposé" },
@@ -3175,7 +3192,7 @@ function showView(name){
       },
       s4: {
         titre: "Oui noté — le projet n’apparaît pas tout seul",
-        dit: "Karim créera le projet. Si tu cliques Projet toi-même, c’est rouge.",
+        dit: "Tu as dit oui. Karim, lui, organise. Toi, tu n’affectes personne.",
         ici: "positionnement",
         entre: { nom: "Karim", role: "Staffing / DP" },
         gestes: [{ label: "Laisser le cabinet continuer", to: "s6", ok: true }],
@@ -3183,14 +3200,14 @@ function showView(name){
       },
       s4x: {
         ko: true, titre: "Pas ta commande",
-        dit: "Alpha ne crée pas le projet ni la prestation. Laisse le cabinet.",
+        dit: "Alpha ne crée pas la mission. C’est le cabinet.",
         ici: "projet",
         vers: { positionnement: "s4" },
         gestes: [{ label: "Laisser le cabinet continuer", to: "s6", ok: true }]
       },
       s5: {
         titre: "Refus — la recherche continue",
-        dit: "Clique Positionnement pour un autre profil.",
+        dit: "Martin enregistre le non. Le besoin reste vivant.",
         ici: "besoin",
         vers: { positionnement: "s3" },
         gestes: [{ label: "Arrêter là", to: "s5f", ok: true }]
@@ -3198,7 +3215,7 @@ function showView(name){
       s5f: { fin: true, titre: "Fin", dit: "Tu as parlé, tu as refusé. Pas de projet automatique.", ici: "besoin" },
       s6: {
         fin: true, titre: "Le cabinet organise la mission",
-        dit: "Projet et prestation s’allument : c’est Karim, pas toi.",
+        dit: "Le cabinet organise. Ce n’est plus ta main.",
         ici: "positionnement",
         lit: ["projet", "prestation"]
       }
@@ -3206,19 +3223,19 @@ function showView(name){
     freelance: {
       f0: {
         titre: "Tu es Paul, freelance",
-        dit: "Clique Candidat pour déposer un CV. Clique Ressource si le cabinet te connaît déjà.",
+        dit: "Tu n’es pas encore dans le logiciel. Qu’est-ce que tu tentes ?",
         ici: "personne",
         vers: { candidat: "f1", ressource: "f2", personne: "f1", societe: "f0x", besoin: "f0x", projet: "f0x", prestation: "f0x", contact: "f0x", temps: "f0x" }
       },
       f0x: {
         ko: true, titre: "Pas ta fiche",
-        dit: "Tu ne crées pas le besoin d’Alpha. Clique Candidat ou Ressource.",
+        dit: "Un freelance ne crée pas le besoin d’un client.",
         ici: "besoin",
         vers: { candidat: "f1", ressource: "f2", personne: "f0" }
       },
       f1: {
         titre: "CV dans le vivier",
-        dit: "Tu es candidat. Clique Positionnement pour être proposé. Prestation est rouge : tu ne travailles pas encore.",
+        dit: "Ton CV est au vivier. Tu n’as pas encore de mission.",
         ici: "candidat",
         mot: "Candidat",
         entre: { nom: "Sophie", role: "RH" },
@@ -3226,20 +3243,20 @@ function showView(name){
       },
       f1x: {
         ko: true, titre: "Un candidat ne travaille pas",
-        dit: "Pas de mission sans conversion. Clique Positionnement.",
+        dit: "Pas de mission sans conversion.",
         ici: "prestation",
         vers: { positionnement: "f3", candidat: "f1" }
       },
       f2: {
         titre: "Déjà ressource externe",
-        dit: "Clique Positionnement.",
+        dit: "Le cabinet te connaît déjà. On peut te proposer.",
         ici: "ressource",
         mot: "Ressource",
         vers: { positionnement: "f3b", prestation: "f1x", candidat: "f1" }
       },
       f3: {
         titre: "On te positionne",
-        dit: "Martin présente à Alpha. Après le oui, clique Ressource (conversion Sophie). Prestation trop tôt = rouge.",
+        dit: "Martin te présente à Alpha. Après un oui, Sophie doit encore t’activer.",
         ici: "positionnement",
         mot: "Positionnement",
         entre: { nom: "Martin", role: "Commercial" },
@@ -3251,7 +3268,7 @@ function showView(name){
       },
       f3b: {
         titre: "Positionné, déjà ressource",
-        dit: "Si Alpha dit oui, clique Prestation.",
+        dit: "Tu es déjà ressource. Si Alpha dit oui, on t’affecte.",
         ici: "positionnement",
         entre: { nom: "Karim", role: "Staffing" },
         gestes: [
@@ -3262,7 +3279,7 @@ function showView(name){
       },
       f5: {
         titre: "Refusé",
-        dit: "Clique Candidat pour rester au vivier.",
+        dit: "Pas de mission cette fois. Tu restes au vivier.",
         ici: "positionnement",
         vers: { candidat: "f1", ressource: "f2" },
         gestes: [{ label: "Arrêter là", to: "f5f", ok: true }]
@@ -3270,20 +3287,20 @@ function showView(name){
       f5f: { fin: true, titre: "Fin de cette tentative", dit: "Pas de mission.", ici: "candidat" },
       f4: {
         titre: "Oui — Sophie doit t’activer",
-        dit: "Clique Ressource. Clique Prestation trop tôt = rouge.",
+        dit: "Oui. Sophie doit t’activer. Pas de jours avant ça.",
         ici: "candidat",
         entre: { nom: "Sophie", role: "RH — conversion" },
         vers: { ressource: "f6", prestation: "f4x", temps: "f4x" }
       },
       f4x: {
         ko: true, titre: "Pas de jours sans ressource",
-        dit: "Clique Ressource : Sophie convertit.",
+        dit: "Pas de jours sans ressource.",
         ici: "prestation",
         vers: { ressource: "f6", candidat: "f4" }
       },
       f6: {
         titre: "Ressource. Karim t’affecte",
-        dit: "Clique Prestation. Projet par toi-même = rouge.",
+        dit: "Tu es ressource. Karim t’affecte. Toi, tu n’es pas le cabinet.",
         ici: "ressource",
         mot: "Prestation",
         entre: { nom: "Karim", role: "Staffing / DP" },
@@ -3292,13 +3309,13 @@ function showView(name){
       },
       f6x: {
         ko: true, titre: "Tu n’es pas le cabinet",
-        dit: "Clique Prestation : on t’affecte.",
+        dit: "Tu n’es pas le cabinet.",
         ici: "projet",
         vers: { prestation: "f6b", ressource: "f6" }
       },
       f6b: {
         titre: "Ta mission",
-        dit: "Clique Temps pour saisir tes jours.",
+        dit: "Ta mission est collée. Les jours, c’est toi.",
         ici: "prestation",
         vers: { temps: "f7", ressource: "f6" }
       },
@@ -3311,39 +3328,39 @@ function showView(name){
     salarie: {
       j0: {
         titre: "Tu es Jean, salarié",
-        dit: "Tu es déjà Ressource. Clique Positionnement. Candidat et Société sont rouge.",
+        dit: "Tu es déjà dans la boîte. On t’affecte. Tu ne tiens pas le vivier.",
         ici: "ressource",
         mot: "Ressource",
         vers: { positionnement: "j1", candidat: "j0x", societe: "j0y", besoin: "j0y", contact: "j0y" }
       },
       j0x: {
-        ko: true, titre: "Tu n’es plus le vivier",
-        dit: "Clique Ressource, puis Positionnement.",
+        ko: true,         titre: "Tu n’es plus le vivier",
+        dit: "Un salarié n’est plus un candidat.",
         ici: "candidat",
         vers: { ressource: "j0", positionnement: "j1" }
       },
       j0y: {
-        ko: true, titre: "Pas le commercial",
-        dit: "Clique Ressource.",
+        ko: true,         titre: "Pas le commercial",
+        dit: "Tu ne tiens pas la fiche client.",
         ici: "societe",
         vers: { ressource: "j0" }
       },
       j1: {
         titre: "Karim te positionne",
-        dit: "Clique Prestation si Alpha dit oui.",
+        dit: "On te propose. Si Alpha dit oui, tu travailles.",
         ici: "positionnement",
         entre: { nom: "Karim", role: "Staffing" },
         vers: { prestation: "j2", ressource: "j0", projet: "j1x", candidat: "j0x" }
       },
       j1x: {
-        ko: true, titre: "On ne te replace pas en silence",
-        dit: "Clique Prestation.",
+        ko: true,         titre: "On ne te replace pas en silence",
+        dit: "Une affectation, ça se voit.",
         ici: "projet",
         vers: { prestation: "j2", positionnement: "j1" }
       },
       j2: {
         titre: "Ta prestation",
-        dit: "Clique Temps.",
+        dit: "La mission est collée. Les jours, c’est toi.",
         ici: "prestation",
         mot: "Prestation",
         vers: { temps: "j3", ressource: "j0" }
@@ -3353,26 +3370,26 @@ function showView(name){
     rh: {
       r0: {
         titre: "Tu es Sophie, RH",
-        dit: "Clique Candidat. Société et Projet sont rouge.",
+        dit: "Tu tiens le vivier. Pas le client. Pas le projet.",
         ici: "personne",
         mot: "Vivier",
         vers: { candidat: "r1", personne: "r1", societe: "r0x", projet: "r0y", prestation: "r0y" }
       },
       r0x: {
-        ko: true, titre: "Ce n’est pas ta porte",
-        dit: "Clique Candidat.",
+        ko: true,         titre: "Ce n’est pas ta porte",
+        dit: "La fiche client, ce n’est pas le RH.",
         ici: "societe",
         vers: { candidat: "r1", personne: "r0" }
       },
       r0y: {
-        ko: true, titre: "Pas le projet",
-        dit: "Clique Candidat.",
+        ko: true,         titre: "Pas le projet",
+        dit: "Le RH ne crée pas le projet.",
         ici: "projet",
         vers: { candidat: "r1", personne: "r0" }
       },
       r1: {
         titre: "Paul, candidat",
-        dit: "Clique Positionnement pour le proposer. Clique Action pour envoyer le CV. Prestation = rouge.",
+        dit: "Paul est au vivier. Tu peux le proposer. Tu ne l’affectes pas.",
         ici: "candidat",
         mot: "Candidat",
         entre: { nom: "Paul", role: "Candidat" },
@@ -3380,20 +3397,20 @@ function showView(name){
       },
       r1a: {
         titre: "Action posée",
-        dit: "Ça n’a pas créé de projet. Clique Positionnement.",
+        dit: "Un envoi de CV n’a pas créé de projet.",
         ici: "action",
         mot: "Action",
         vers: { positionnement: "r2", candidat: "r1" }
       },
       r1x: {
-        ko: true, titre: "Pas de mission sur un candidat",
-        dit: "Clique Positionnement.",
+        ko: true,         titre: "Pas de mission sur un candidat",
+        dit: "Un candidat ne travaille pas.",
         ici: "prestation",
         vers: { positionnement: "r2", candidat: "r1" }
       },
       r2: {
         titre: "Positionnement créé",
-        dit: "Si Alpha dit oui, clique Ressource (conversion). Prestation reste rouge pour toi.",
+        dit: "Si Alpha dit oui, tu convertis. Tu n’affectes pas.",
         ici: "positionnement",
         entre: { nom: "Martin", role: "Commercial" },
         vers: { ressource: "r3", candidat: "r1", prestation: "r1x", projet: "r0y", besoin: "r2" }
@@ -3407,25 +3424,25 @@ function showView(name){
     com: {
       c0: {
         titre: "Tu es Martin, commercial",
-        dit: "Clique Société. Candidat et Temps sont rouge.",
+        dit: "Tu ouvres le client. Pas le vivier. Pas les jours.",
         ici: "societe",
         vers: { societe: "c1", contact: "c1", besoin: "c2", candidat: "c0x", temps: "c0y", prestation: "c0y" }
       },
       c0x: {
-        ko: true, titre: "Pas RH",
-        dit: "La conversion, c’est Sophie. Clique Société.",
+        ko: true,         titre: "Pas RH",
+        dit: "La conversion, c’est Sophie.",
         ici: "candidat",
         vers: { societe: "c1" }
       },
       c0y: {
-        ko: true, titre: "Pas la production",
-        dit: "Clique Société.",
+        ko: true,         titre: "Pas la production",
+        dit: "Les jours, ce n’est pas le commercial.",
         ici: "temps",
         vers: { societe: "c1" }
       },
       c1: {
         titre: "Fiche Société",
-        dit: "Clique Besoin. Projet trop tôt n’est pas cette histoire.",
+        dit: "Alpha est ouvert. Tu peux poser la demande.",
         ici: "societe",
         mot: "Société",
         entre: { nom: "Alpha", role: "Société cliente" },
@@ -3433,13 +3450,13 @@ function showView(name){
       },
       c1x: {
         titre: "Projet sans besoin",
-        dit: "Possible (US5), pas cette histoire. Clique Besoin.",
+        dit: "Possible, mais pas cette histoire.",
         ici: "projet",
         vers: { besoin: "c2", societe: "c1" }
       },
       c2: {
         titre: "Besoin ouvert",
-        dit: "Note le retour d’Alpha. Projet en silence = rouge.",
+        dit: "Alpha a une demande. Tu notes le retour. Rien ne se crée tout seul.",
         ici: "besoin",
         mot: "Besoin",
         gestes: [
@@ -3449,8 +3466,8 @@ function showView(name){
         vers: { projet: "c2x", positionnement: "c2", societe: "c1" }
       },
       c2x: {
-        ko: true, titre: "Jamais en silence",
-        dit: "Clique Besoin, puis note le oui.",
+        ko: true,         titre: "Jamais en silence",
+        dit: "Un oui ne fait pas apparaître un projet tout seul.",
         ici: "projet",
         vers: { besoin: "c2" }
       },
@@ -3483,14 +3500,22 @@ function showView(name){
     filTrail = filTrail.concat([[a, b]]);
   }
 
+  function filShuffle(ids) {
+    const a = ids.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
   function filClickNode(id) {
     const sc = filSc();
     if (!sc || sc.fin) return;
-    if (id === sc.ici && !(sc.vers && sc.vers[id])) return;
     const next = sc.vers && sc.vers[id];
     if (!next) {
       filFlash = { id: id, ok: false };
-      filToast = { ok: false, texte: "Interdit. « " + FIL_NODES[id].label + " » n’est pas ton chemin depuis ici." };
+      filToast = { ok: false, texte: "Interdit." };
       paintFil();
       return;
     }
@@ -3498,9 +3523,7 @@ function showView(name){
     filScene = next;
     const nx = filSc();
     filFlash = { id: id, ok: !nx.ko };
-    filToast = nx.ko
-      ? { ok: false, texte: nx.titre + " — " + nx.dit }
-      : { ok: true, texte: "Autorisé. « " + FIL_NODES[id].label + " » s’allume." };
+    filToast = { ok: !nx.ko, texte: nx.ko ? "Interdit." : "Ça passe." };
     if (!nx.ko) {
       filAddLit(id);
       filAddTrail(prev, id);
@@ -3517,7 +3540,7 @@ function showView(name){
     filScene = to;
     const nx = filSc();
     filFlash = { id: nx.ici, ok: !nx.ko };
-    filToast = nx.ko ? { ok: false, texte: nx.titre } : { ok: true, texte: nx.titre };
+    filToast = nx.ko ? { ok: false, texte: "Interdit." } : { ok: true, texte: "Ça passe." };
     if (!nx.ko) {
       filAddLit(nx.ici);
       filAddTrail(sc.ici, nx.ici);
@@ -3527,37 +3550,18 @@ function showView(name){
     paintFil();
   }
 
-  function drawFilGraph() {
-    const svg = document.getElementById("fil-graph");
-    if (!svg) return;
-    const sc = filSc();
-    const ici = sc && sc.ici;
-    const doors = (sc && sc.vers) ? Object.keys(sc.vers) : [];
-    const lit = new Set(filLit);
-    const lines = filTrail.map(([a, b]) => {
-      const p = filCenter(a), q = filCenter(b);
-      if (!p || !q) return "";
-      return `<line x1="${p.x}" y1="${p.y}" x2="${q.x}" y2="${q.y}" stroke="#AEBF38" stroke-width="3"/>`;
-    }).join("");
-    const boxes = Object.entries(FIL_NODES).map(([id, n]) => {
-      const here = id === ici;
-      const okDoor = doors.indexOf(id) >= 0;
+  function paintFilDeck() {
+    const deck = document.getElementById("fil-deck");
+    if (!deck) return;
+    deck.innerHTML = filDeck.map((id) => {
+      const n = FIL_NODES[id];
       const flash = filFlash && filFlash.id === id;
-      const known = lit.has(id) || here;
-      let fill = known ? "#2a2a2a" : "#141414";
-      let stroke = known ? "#666" : "#3a3a3a";
-      let tw = 1;
-      let text = known || okDoor ? "#f0f0f0" : "#7a7a7a";
-      if (okDoor && !here) { stroke = "#1E5B3A"; tw = 2; }
-      if (here) { fill = "#AEBF38"; stroke = "#AEBF38"; text = "#430A4B"; tw = 2; }
-      if (flash && filFlash.ok) { fill = "#AEBF38"; stroke = "#1E5B3A"; text = "#430A4B"; }
-      if (flash && filFlash.ok === false) { fill = "#3a1515"; stroke = "#A93226"; text = "#f0f0f0"; tw = 3; }
-      return `<g data-fil-n="${id}" style="cursor:pointer">
-        <rect x="${n.x}" y="${n.y}" width="${FIL_W}" height="${FIL_H}" rx="4" fill="${fill}" stroke="${stroke}" stroke-width="${tw}"/>
-        <text x="${n.x + FIL_W / 2}" y="${n.y + 23}" text-anchor="middle" fill="${text}" font-size="12">${n.label}</text>
-      </g>`;
+      let cls = "fil-card back";
+      let label = "";
+      if (flash && filFlash.ok) { cls = "fil-card ok"; label = n.label; }
+      else if (flash && filFlash.ok === false) { cls = "fil-card ko"; label = n.label; }
+      return `<button type="button" class="${cls}" data-fil-n="${id}">${label ? esc(label) : ""}</button>`;
     }).join("");
-    svg.innerHTML = lines + boxes;
   }
 
   function paintFil() {
@@ -3565,7 +3569,7 @@ function showView(name){
     if (!root) return;
     if (!filWho) {
       root.innerHTML = `
-        <p class="lead">Qui es-tu ? Ensuite le schéma s’allume comme dans Métier : tu cliques une case, pas une liste 1-2-3.</p>
+        <p class="lead">À l’aveugle. Tu tires une carte. Verte = ça passe. Rouge = interdit. Personne ne te dit lesquelles.</p>
         <div class="fil-who">${FIL_WHO.map((w) =>
           `<button type="button" class="fil-pawn" data-fil-who="${w.id}" style="border-left:4px solid ${filColor(w.color)}">
             <strong>${esc(w.label)}</strong><span>${esc(w.name)}</span><small>${esc(w.pitch)}</small>
@@ -3580,10 +3584,10 @@ function showView(name){
     const entre = sc.entre
       ? `<div class="fil-arrive">Quelqu’un entre : <strong>${esc(sc.entre.nom)}</strong> — ${esc(sc.entre.role)}</div>`
       : "";
-    const mot = sc.mot ? `<p class="fil-phase start">Mot métier : ${esc(sc.mot)}</p>` : "";
+    const mot = "";
     const toast = filToast
       ? `<div class="fil-toast ${filToast.ok ? "ok" : "ko"}">${esc(filToast.texte)}</div>`
-      : `<p class="note">Clique une case du schéma. Cadre sapin = porte possible. Rouge = interdit.</p>`;
+      : `<p class="note">Dos des cartes. Tu appuies. On verra.</p>`;
     const gestes = (sc.gestes || []).map((g) =>
       `<button type="button" class="fil-geste" data-fil-geste="${g.to}">${esc(g.label)}</button>`
     ).join("");
@@ -3604,18 +3608,9 @@ function showView(name){
           ${gestes ? `<div class="fil-choices">${gestes}</div>` : ""}
           <div class="rowbtns">${finBtns}</div>
         </div>
-        <div class="graph-wrap">
-          <svg id="fil-graph" viewBox="0 0 780 380" role="img" aria-label="Schéma métier du parcours"></svg>
-        </div>
+        <div class="fil-deck" id="fil-deck"></div>
       </div>`;
-    drawFilGraph();
-    const svg = document.getElementById("fil-graph");
-    if (svg) {
-      svg.onclick = (e) => {
-        const g = e.target.closest("[data-fil-n]");
-        if (g) filClickNode(g.dataset.filN);
-      };
-    }
+    paintFilDeck();
   }
 
   function filBoot(whoId) {
@@ -3626,6 +3621,7 @@ function showView(name){
     filTrail = [];
     filFlash = null;
     filToast = null;
+    filDeck = filShuffle(Object.keys(FIL_NODES));
     const sc = filSc();
     filAddLit(sc.ici);
     filPushSeen(sc.entre);
@@ -3637,17 +3633,19 @@ function showView(name){
     const el = document.getElementById("view-ava-guide");
     if (!el) return;
     el.innerHTML = `
-      <h2>Parcours — labyrinthe métier</h2>
+      <h2>Parcours</h2>
       <div id="fil-root"></div>`;
     paintFil();
     el.onclick = (e) => {
       const whoBtn = e.target.closest("[data-fil-who]");
       if (whoBtn) { filBoot(whoBtn.dataset.filWho); return; }
+      const card = e.target.closest("[data-fil-n]");
+      if (card && filWho) { filClickNode(card.dataset.filN); return; }
       const g = e.target.closest("[data-fil-geste]");
       if (g && filWho) { filGeste(g.dataset.filGeste); return; }
       if (e.target.closest("[data-fil-reset]") && filWho) { filBoot(filWho); return; }
       if (e.target.closest("[data-fil-home]")) {
-        filWho = null; filScene = null; filSeen = []; filLit = []; filTrail = []; filFlash = null; filToast = null;
+        filWho = null; filScene = null; filSeen = []; filLit = []; filTrail = []; filFlash = null; filToast = null; filDeck = [];
         paintFil();
       }
     };
