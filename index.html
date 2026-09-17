@@ -61,6 +61,11 @@
     button.pill[aria-pressed="true"] { background: #2a2a2a; }
     .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
     .graph-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; overflow-x: auto; }
+    .tri-stage {
+      height: 560px; background: #141414; border: 1px solid var(--line);
+      border-radius: 8px; overflow: hidden; position: relative;
+    }
+    .tri-stage canvas { display: block; width: 100%; height: 100%; }
     svg text { font: 12px system-ui, sans-serif; }
     .note { font-size: 13px; margin-top: 10px; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -421,6 +426,14 @@
       75% { transform: translateX(4px); }
     }
 </style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
 </head>
 <body>
 <main>
@@ -433,6 +446,7 @@
   </div>
 
   <section class="view" id="view-ava-metier" hidden></section>
+  <section class="view" id="view-ava-3d" hidden></section>
   <section class="view" id="view-ava-guide" hidden></section>
   <section class="view" id="view-ava-rpg" hidden></section>
   <section class="view" id="view-ava-simulateur" hidden></section>
@@ -2544,6 +2558,7 @@ function showView(name){
       hint: "Builder",
       views: [
         { id: "ava-metier", label: "Métier" },
+        { id: "ava-3d", label: "3D" },
         {
           id: "ava-guides",
           label: "Quiz",
@@ -5433,6 +5448,245 @@ function showView(name){
     graph.innerHTML = lines + boxes;
   }
 
+  const TRI_NODES = {
+    societe: { x: 24, y: 24, label: "Société" },
+    contact: { x: 200, y: 24, label: "Contact" },
+    besoin: { x: 200, y: 140, label: "Besoin" },
+    personne: { x: 24, y: 200, label: "Personne" },
+    candidat: { x: 200, y: 260, label: "Candidat" },
+    ressource: { x: 24, y: 320, label: "Ressource" },
+    positionnement: { x: 420, y: 140, label: "Positionnement" },
+    projet: { x: 620, y: 80, label: "Projet" },
+    prestation: { x: 620, y: 220, label: "Prestation" },
+    action: { x: 420, y: 280, label: "Action" },
+    temps: { x: 620, y: 320, label: "Temps" }
+  };
+  const TRI_EDGES = AVA_EDGES.concat([["prestation", "temps"]]);
+  const TRI_BLURB = {
+    societe: "Client et fournisseur. Un seul objet, deux rôles.",
+    contact: "Interlocuteur. Facultatif sur le besoin (DEC-04).",
+    besoin: "Demande. Cycle ouvert / staffing / pourvu / suspendu / fermé.",
+    personne: "L’identité. Candidat et Ressource sont des profils.",
+    candidat: "Profil vivier. Jamais une prestation.",
+    ressource: "Profil qui travaille. Interne ou EXTERNAL.",
+    positionnement: "Pivot : 1 besoin × 1 humain. XOR candidat/ressource.",
+    projet: "Commande explicite. US5 possible sans besoin.",
+    prestation: "Pivot production : 1 projet × 1 ressource.",
+    action: "Geste transversal. Ne crée pas le projet.",
+    temps: "Jours saisis par la ressource sur la prestation."
+  };
+  let triActive = 0;
+  let triPick = null;
+  let triWorld = null;
+
+  function triHex(h) { return parseInt(String(h).replace("#", ""), 16); }
+  function triPos(n) {
+    return { x: (n.x - 390) * 0.012, y: 0.15, z: (n.y - 190) * 0.012 };
+  }
+  function triMetiers(id) {
+    return AVA_CHEMINS.filter((c) => c.edges.some(([a, b]) => a === id || b === id));
+  }
+  function disposeTri() {
+    if (!triWorld) return;
+    triWorld.alive = false;
+    window.removeEventListener("resize", triWorld.onResize);
+    if (triWorld.stage) triWorld.stage.onpointerdown = null;
+    if (triWorld.renderer) {
+      triWorld.renderer.dispose();
+      if (triWorld.renderer.domElement && triWorld.renderer.domElement.parentNode) {
+        triWorld.renderer.domElement.parentNode.removeChild(triWorld.renderer.domElement);
+      }
+    }
+    if (triWorld.scene) {
+      triWorld.scene.traverse((obj) => {
+        if (obj.geometry) obj.geometry.dispose();
+        const mats = obj.material ? (Array.isArray(obj.material) ? obj.material : [obj.material]) : [];
+        mats.forEach((m) => {
+          if (m.map) m.map.dispose();
+          if (m) m.dispose();
+        });
+      });
+    }
+    triWorld = null;
+  }
+  function triLabel(text) {
+    const c = document.createElement("canvas");
+    c.width = 384;
+    c.height = 96;
+    const ctx = c.getContext("2d");
+    ctx.fillStyle = "#f0f0f0";
+    ctx.font = "600 42px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(text, 192, 48);
+    const tex = new triWorld.THREE.CanvasTexture(c);
+    tex.colorSpace = triWorld.THREE.SRGBColorSpace;
+    const spr = new triWorld.THREE.Sprite(new triWorld.THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false }));
+    spr.scale.set(2.15, 0.54, 1);
+    spr.center.set(0.5, 0);
+    return spr;
+  }
+  function triPaint() {
+    if (!triWorld) return;
+    const live = new Set();
+    const liveN = new Set();
+    if (triActive) {
+      const c = AVA_CHEMINS.find((x) => x.id === triActive);
+      (c.edges || []).forEach(([a, b]) => {
+        live.add(a + ">" + b);
+        liveN.add(a);
+        liveN.add(b);
+      });
+    }
+    Object.keys(triWorld.nodes).forEach((id) => {
+      const on = !triActive || liveN.has(id);
+      const picked = id === triPick;
+      const col = picked ? 0xAEBF38 : (on && triActive ? triHex(AVA_COLORS[triActive]) : (on ? 0x8a8a8a : 0x2a2a2a));
+      const mesh = triWorld.nodes[id];
+      mesh.material.color.setHex(col);
+      mesh.material.emissive.setHex(picked ? 0x3a4a10 : 0x000000);
+      mesh.material.opacity = on ? 1 : 0.28;
+      mesh.scale.setScalar(picked ? 1.12 : 1);
+    });
+    triWorld.edgeMats.forEach((e) => {
+      const on = !triActive || live.has(e.a + ">" + e.b);
+      e.mat.color.setHex(on && triActive ? triHex(AVA_COLORS[triActive]) : (on ? 0x5a5a5a : 0x2a2a2a));
+      e.mat.opacity = on ? (triActive ? 0.95 : 0.45) : 0.12;
+    });
+    const cap = document.getElementById("tri-caption");
+    if (!cap) return;
+    if (triPick) {
+      const n = TRI_NODES[triPick];
+      const ms = triMetiers(triPick).map((c) => "C" + c.id + " " + c.nom).join(" · ") || "transversal";
+      cap.innerHTML = `<strong>${esc(n.label)}</strong> — ${esc(TRI_BLURB[triPick] || "")}<br><span class="note">${esc(ms)}</span>`;
+      return;
+    }
+    if (triActive) {
+      const c = AVA_CHEMINS.find((x) => x.id === triActive);
+      cap.innerHTML = `<strong>C${c.id} ${esc(c.nom)}</strong> · ${esc(c.verbe)}<br>${esc(c.caption)}<br><span class="note">${esc(c.hint)}</span>`;
+      return;
+    }
+    cap.innerHTML = "<strong>Les cinq métiers, un graphe.</strong> Orbite : glisser. Molette : zoom. Clic une case. C1–C5 colorent un chemin.";
+  }
+  function triFit() {
+    if (!triWorld || !triWorld.stage) return;
+    const w = triWorld.stage.clientWidth || 800;
+    const h = triWorld.stage.clientHeight || 520;
+    triWorld.camera.aspect = w / Math.max(h, 1);
+    triWorld.camera.updateProjectionMatrix();
+    triWorld.renderer.setSize(w, h, false);
+  }
+  async function bootTri() {
+    disposeTri();
+    const stage = document.getElementById("tri-stage");
+    if (!stage) return;
+    const THREE = await import("three");
+    const { OrbitControls } = await import("three/addons/controls/OrbitControls.js");
+    if (!document.getElementById("tri-stage")) return;
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setClearColor(0x141414, 1);
+    stage.appendChild(renderer.domElement);
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x141414, 12, 28);
+    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 80);
+    camera.position.set(0, 7.4, 11.5);
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 0.2, 0);
+    controls.minDistance = 6;
+    controls.maxDistance = 22;
+    controls.maxPolarAngle = Math.PI * 0.48;
+    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+    const key = new THREE.DirectionalLight(0xffffff, 1.05);
+    key.position.set(4, 10, 6);
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0xAEBF38, 0.18);
+    fill.position.set(-6, 4, -3);
+    scene.add(fill);
+    const grid = new THREE.GridHelper(18, 18, 0x2a2a2a, 0x1c1c1c);
+    grid.position.y = -0.35;
+    scene.add(grid);
+    triWorld = { THREE, alive: true, renderer, scene, camera, controls, stage, nodes: {}, edgeMats: [] };
+    const boxGeo = new THREE.BoxGeometry(1.85, 0.42, 0.95);
+    Object.entries(TRI_NODES).forEach(([id, n]) => {
+      const p = triPos(n);
+      const mat = new THREE.MeshStandardMaterial({ color: 0x8a8a8a, metalness: 0.12, roughness: 0.46, transparent: true });
+      const mesh = new THREE.Mesh(boxGeo, mat);
+      mesh.position.set(p.x, p.y, p.z);
+      mesh.userData.id = id;
+      const spr = triLabel(n.label);
+      spr.position.set(p.x, p.y + 0.38, p.z);
+      scene.add(mesh);
+      scene.add(spr);
+      triWorld.nodes[id] = mesh;
+    });
+    const lineMatBase = () => new THREE.LineBasicMaterial({ color: 0x5a5a5a, transparent: true, opacity: 0.45 });
+    TRI_EDGES.forEach(([a, b]) => {
+      const pa = triPos(TRI_NODES[a]), pb = triPos(TRI_NODES[b]);
+      const geo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(pa.x, pa.y, pa.z),
+        new THREE.Vector3(pb.x, pb.y, pb.z)
+      ]);
+      const mat = lineMatBase();
+      const line = new THREE.Line(geo, mat);
+      scene.add(line);
+      triWorld.edgeMats.push({ a, b, mat });
+    });
+    const ray = new THREE.Raycaster();
+    const ptr = new THREE.Vector2();
+    stage.onpointerdown = (ev) => {
+      if (ev.button !== 0) return;
+      const r = stage.getBoundingClientRect();
+      ptr.x = ((ev.clientX - r.left) / r.width) * 2 - 1;
+      ptr.y = -((ev.clientY - r.top) / r.height) * 2 + 1;
+      ray.setFromCamera(ptr, camera);
+      const hits = ray.intersectObjects(Object.values(triWorld.nodes), false);
+      if (!hits.length) { triPick = null; triPaint(); return; }
+      triPick = hits[0].object.userData.id;
+      triPaint();
+    };
+    triWorld.onResize = () => triFit();
+    window.addEventListener("resize", triWorld.onResize);
+    triFit();
+    triPaint();
+    const tick = () => {
+      if (!triWorld || !triWorld.alive) return;
+      controls.update();
+      renderer.render(scene, camera);
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+  function renderAva3d() {
+    const el = document.getElementById("view-ava-3d");
+    if (!el) return;
+    el.innerHTML = `
+      <h2>Métiers en 3D</h2>
+      <p class="lead">Le graphe Ava, orbitable. C1 à C5 allument un chemin. Une case cliquée dit ce qu’elle est.</p>
+      <div class="pills" id="tri-pills"></div>
+      <p id="tri-caption" class="lead"></p>
+      <div class="tri-stage" id="tri-stage"></div>
+      <p class="note">Glisser pour tourner · molette pour zoomer · clic droit pour glisser le plateau. Le schéma 2D reste dans Métier.</p>`;
+    const pills = document.getElementById("tri-pills");
+    pills.innerHTML = `<button class="pill" type="button" aria-pressed="${triActive===0}" data-tri-c="0">Tous</button>` +
+      AVA_CHEMINS.map((x) =>
+        `<button class="pill" type="button" aria-pressed="${x.id===triActive}" data-tri-c="${x.id}">
+          <span class="swatch" style="background:${AVA_COLORS[x.id]}"></span>C${x.id} ${x.nom}
+        </button>`
+      ).join("");
+    pills.onclick = (e) => {
+      const b = e.target.closest("[data-tri-c]");
+      if (!b) return;
+      triActive = +b.dataset.triC;
+      Array.from(pills.querySelectorAll("[data-tri-c]")).forEach((btn) => {
+        btn.setAttribute("aria-pressed", String(btn.dataset.triC === String(triActive)));
+      });
+      triPaint();
+    };
+    bootTri();
+  }
+
   const AVA_SIM_COLORS = { C1: "#4a90c8", C2: "#8b73c7", C3: "#2f9d6a", C4: "#d17a3a", C5: "#d45a8a" };
   const AVA_SIM_META = {
     C1: { label: "CRM", verbe: "Nourrir le client", path: "Société → Contact? → Besoin", first: "ava-societes" },
@@ -5652,6 +5906,7 @@ function showView(name){
 
   const RENDER = {
     "ava-metier": renderAvaMetier,
+    "ava-3d": renderAva3d,
     "ava-simulateur": renderAvaSimulateur,
     "ava-guide": renderGuide,
     "ava-rpg": renderRpg,
@@ -5704,12 +5959,13 @@ function showView(name){
   }
 
   function showHubView(name) {
-    const aliases = { ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-guide", guide: "ava-guide", fil: "ava-guide", "ava-guides": "ava-guide", quiz: "ava-guide", rpg: "ava-rpg", role: "ava-rpg", jours: "ava-parcours", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules" };
+    const aliases = { ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-guide", guide: "ava-guide", fil: "ava-guide", "ava-guides": "ava-guide", quiz: "ava-guide", rpg: "ava-rpg", role: "ava-rpg", jours: "ava-parcours", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-3d", trijs: "ava-3d", three: "ava-3d" };
     if (aliases[name]) name = aliases[name];
     if (!ALL_VIEWS.includes(name)) name = "ava-metier";
     const product = productOf(name);
     const family = familyOf(product, name);
     if (family && family.children) nestedLast[family.id] = name;
+    if (name !== "ava-3d") disposeTri();
     ALL_VIEWS.forEach((id) => {
       const node = document.getElementById("view-" + id);
       if (node) node.hidden = id !== name;
