@@ -383,22 +383,6 @@
     .fil-who .fil-pawn { width: 100%; }
     .fil-lab { display: grid; grid-template-columns: minmax(280px, 340px) 1fr; gap: 16px; align-items: start; }
     @media (max-width: 900px) { .fil-lab { grid-template-columns: 1fr; } }
-    .fil-deck { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .fil-card {
-      min-height: 92px; border-radius: 10px; cursor: pointer; font: inherit; font-weight: 600;
-      font-size: 14px;
-    }
-    .fil-card.back {
-      color: transparent; border: 1px solid #2a082e;
-      background-color: #430A4B;
-      background-image: radial-gradient(#AEBF38 1.1px, transparent 1.2px);
-      background-size: 9px 9px;
-    }
-    .fil-card.ok { background: #AEBF38; color: #430A4B; border: 2px solid #1E5B3A; }
-    .fil-card.ko {
-      background: #141414; color: #f0f0f0; border: 2px solid #A93226;
-      animation: fil-shake .35s ease;
-    }
     .fil-toast { border-radius: 6px; padding: 10px 12px; margin: 12px 0; color: var(--text); }
     .fil-toast.ok { border-left: 4px solid #1E5B3A; background: #141414; }
     .fil-toast.ko { border-left: 4px solid #A93226; background: #141414; }
@@ -3100,7 +3084,6 @@ function showView(name){
   let filTrail = [];
   let filFlash = null;
   let filToast = null;
-  let filDeck = [];
 
   function filColor(id) {
     return ({ c1: "var(--c1)", c2: "var(--c2)", c3: "var(--c3)", c4: "var(--c4)", c5: "var(--c5)" })[id] || "var(--c1)";
@@ -3146,7 +3129,7 @@ function showView(name){
     societe: {
       s0: {
         titre: "Tu es Alpha",
-        dit: "Tu es une entreprise. Tu cherches quelqu’un. Tire une carte. On ne te dit pas laquelle.",
+        dit: "Tu es une entreprise. Tu cherches quelqu’un. Clique les cases, de A jusqu’à Z.",
         ici: "societe",
         vers: { contact: "s1", besoin: "s2", action: "s1", projet: "s0x", prestation: "s0x", candidat: "s0x", ressource: "s0x", personne: "s0x", temps: "s0x", positionnement: "s0x" }
       },
@@ -3500,34 +3483,24 @@ function showView(name){
     filTrail = filTrail.concat([[a, b]]);
   }
 
-  function filShuffle(ids) {
-    const a = ids.slice();
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const t = a[i]; a[i] = a[j]; a[j] = t;
-    }
-    return a;
-  }
-
   function filClickNode(id) {
     const sc = filSc();
     if (!sc || sc.fin) return;
+    if (id === sc.ici) return;
     const next = sc.vers && sc.vers[id];
-    if (!next) {
+    const nx = next ? FIL_PLAY[filWho][next] : null;
+    if (!nx || nx.ko) {
       filFlash = { id: id, ok: false };
-      filToast = { ok: false, texte: "Interdit." };
+      filToast = { ok: false, texte: (nx && nx.titre) ? nx.titre : "Interdit." };
       paintFil();
       return;
     }
     const prev = sc.ici;
     filScene = next;
-    const nx = filSc();
-    filFlash = { id: id, ok: !nx.ko };
-    filToast = { ok: !nx.ko, texte: nx.ko ? "Interdit." : "Ça passe." };
-    if (!nx.ko) {
-      filAddLit(id);
-      filAddTrail(prev, id);
-    }
+    filFlash = { id: id, ok: true };
+    filToast = { ok: true, texte: "Tu es sur « " + FIL_NODES[id].label + " »." };
+    filAddLit(id);
+    filAddTrail(prev, id);
     filPushSeen(nx.entre);
     (nx.lit || []).forEach(filAddLit);
     filAddLit(nx.ici);
@@ -3537,31 +3510,51 @@ function showView(name){
   function filGeste(to) {
     const sc = filSc();
     if (!sc) return;
-    filScene = to;
-    const nx = filSc();
-    filFlash = { id: nx.ici, ok: !nx.ko };
-    filToast = nx.ko ? { ok: false, texte: "Interdit." } : { ok: true, texte: "Ça passe." };
-    if (!nx.ko) {
-      filAddLit(nx.ici);
-      filAddTrail(sc.ici, nx.ici);
+    const nx = FIL_PLAY[filWho][to];
+    if (!nx || nx.ko) {
+      filFlash = { id: sc.ici, ok: false };
+      filToast = { ok: false, texte: (nx && nx.titre) ? nx.titre : "Interdit." };
+      paintFil();
+      return;
     }
+    filScene = to;
+    filFlash = { id: nx.ici, ok: true };
+    filToast = { ok: true, texte: nx.titre };
+    filAddLit(nx.ici);
+    filAddTrail(sc.ici, nx.ici);
     filPushSeen(nx.entre);
     (nx.lit || []).forEach(filAddLit);
     paintFil();
   }
 
-  function paintFilDeck() {
-    const deck = document.getElementById("fil-deck");
-    if (!deck) return;
-    deck.innerHTML = filDeck.map((id) => {
-      const n = FIL_NODES[id];
-      const flash = filFlash && filFlash.id === id;
-      let cls = "fil-card back";
-      let label = "";
-      if (flash && filFlash.ok) { cls = "fil-card ok"; label = n.label; }
-      else if (flash && filFlash.ok === false) { cls = "fil-card ko"; label = n.label; }
-      return `<button type="button" class="${cls}" data-fil-n="${id}">${label ? esc(label) : ""}</button>`;
+  function drawFilGraph() {
+    const svg = document.getElementById("fil-graph");
+    if (!svg) return;
+    const sc = filSc();
+    const ici = sc && sc.ici;
+    const lit = new Set(filLit);
+    const lines = filTrail.map(([a, b]) => {
+      const p = filCenter(a), q = filCenter(b);
+      if (!p || !q) return "";
+      return `<line x1="${p.x}" y1="${p.y}" x2="${q.x}" y2="${q.y}" stroke="#AEBF38" stroke-width="3"/>`;
     }).join("");
+    const boxes = Object.entries(FIL_NODES).map(([id, n]) => {
+      const here = id === ici;
+      const flash = filFlash && filFlash.id === id;
+      const known = lit.has(id) || here;
+      let fill = known ? "#2a2a2a" : "#141414";
+      let stroke = known ? "#666" : "#3a3a3a";
+      let tw = 1;
+      let text = "#f0f0f0";
+      if (here) { fill = "#AEBF38"; stroke = "#AEBF38"; text = "#430A4B"; tw = 2; }
+      if (flash && filFlash.ok) { fill = "#AEBF38"; stroke = "#1E5B3A"; text = "#430A4B"; tw = 2; }
+      if (flash && filFlash.ok === false) { fill = "#3a1515"; stroke = "#A93226"; text = "#f0f0f0"; tw = 3; }
+      return `<g data-fil-n="${id}" style="cursor:pointer">
+        <rect x="${n.x}" y="${n.y}" width="${FIL_W}" height="${FIL_H}" rx="4" fill="${fill}" stroke="${stroke}" stroke-width="${tw}"/>
+        <text x="${n.x + FIL_W / 2}" y="${n.y + 23}" text-anchor="middle" fill="${text}" font-size="12">${n.label}</text>
+      </g>`;
+    }).join("");
+    svg.innerHTML = lines + boxes;
   }
 
   function paintFil() {
@@ -3569,7 +3562,7 @@ function showView(name){
     if (!root) return;
     if (!filWho) {
       root.innerHTML = `
-        <p class="lead">À l’aveugle. Tu tires une carte. Verte = ça passe. Rouge = interdit. Personne ne te dit lesquelles.</p>
+        <p class="lead">Qui es-tu ? Ensuite tu cliques les cases, de A jusqu’à Z. Interdit = rouge, tu restes. Bon = tu avances sur cette case.</p>
         <div class="fil-who">${FIL_WHO.map((w) =>
           `<button type="button" class="fil-pawn" data-fil-who="${w.id}" style="border-left:4px solid ${filColor(w.color)}">
             <strong>${esc(w.label)}</strong><span>${esc(w.name)}</span><small>${esc(w.pitch)}</small>
@@ -3584,10 +3577,10 @@ function showView(name){
     const entre = sc.entre
       ? `<div class="fil-arrive">Quelqu’un entre : <strong>${esc(sc.entre.nom)}</strong> — ${esc(sc.entre.role)}</div>`
       : "";
-    const mot = "";
+    const mot = sc.mot ? `<p class="fil-phase start">${esc(sc.mot)}</p>` : "";
     const toast = filToast
       ? `<div class="fil-toast ${filToast.ok ? "ok" : "ko"}">${esc(filToast.texte)}</div>`
-      : `<p class="note">Dos des cartes. Tu appuies. On verra.</p>`;
+      : `<p class="note">Clique une case. Pas de chemin dessiné : tu avances seulement si c’est le bon.</p>`;
     const gestes = (sc.gestes || []).map((g) =>
       `<button type="button" class="fil-geste" data-fil-geste="${g.to}">${esc(g.label)}</button>`
     ).join("");
@@ -3597,7 +3590,7 @@ function showView(name){
       : `<button type="button" data-fil-home="1">Changer de personnage</button>`;
     root.innerHTML = `
       <div class="fil-lab">
-        <div class="fil-scene ${sc.ko ? "ko" : ""}">
+        <div class="fil-scene">
           <p class="note">Tu es ${esc(who.name)} · ${esc(who.label)}</p>
           ${mot}
           <h3>${esc(sc.titre)}</h3>
@@ -3608,9 +3601,18 @@ function showView(name){
           ${gestes ? `<div class="fil-choices">${gestes}</div>` : ""}
           <div class="rowbtns">${finBtns}</div>
         </div>
-        <div class="fil-deck" id="fil-deck"></div>
+        <div class="graph-wrap">
+          <svg id="fil-graph" viewBox="0 0 780 380" role="img" aria-label="Schéma métier du parcours"></svg>
+        </div>
       </div>`;
-    paintFilDeck();
+    drawFilGraph();
+    const svg = document.getElementById("fil-graph");
+    if (svg) {
+      svg.onclick = (e) => {
+        const g = e.target.closest("[data-fil-n]");
+        if (g) filClickNode(g.dataset.filN);
+      };
+    }
   }
 
   function filBoot(whoId) {
@@ -3621,7 +3623,6 @@ function showView(name){
     filTrail = [];
     filFlash = null;
     filToast = null;
-    filDeck = filShuffle(Object.keys(FIL_NODES));
     const sc = filSc();
     filAddLit(sc.ici);
     filPushSeen(sc.entre);
@@ -3639,13 +3640,11 @@ function showView(name){
     el.onclick = (e) => {
       const whoBtn = e.target.closest("[data-fil-who]");
       if (whoBtn) { filBoot(whoBtn.dataset.filWho); return; }
-      const card = e.target.closest("[data-fil-n]");
-      if (card && filWho) { filClickNode(card.dataset.filN); return; }
       const g = e.target.closest("[data-fil-geste]");
       if (g && filWho) { filGeste(g.dataset.filGeste); return; }
       if (e.target.closest("[data-fil-reset]") && filWho) { filBoot(filWho); return; }
       if (e.target.closest("[data-fil-home]")) {
-        filWho = null; filScene = null; filSeen = []; filLit = []; filTrail = []; filFlash = null; filToast = null; filDeck = [];
+        filWho = null; filScene = null; filSeen = []; filLit = []; filTrail = []; filFlash = null; filToast = null;
         paintFil();
       }
     };
