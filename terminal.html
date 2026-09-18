@@ -179,14 +179,14 @@ select:hover{border-color:var(--t4)}
 .expert[hidden]{display:none}
 
 /* ─── KPI ─── */
-.kpi{border-radius:var(--r);padding:calc(9px*var(--dens)) 12px calc(10px*var(--dens));min-width:0;--c:var(--action)}
+.kpi{border-radius:var(--r);padding:calc(9px*var(--dens)) 12px calc(10px*var(--dens));min-width:0;--c:var(--action);--c-encre:var(--action-encre)}
 .kpi .k{font-size:8px;letter-spacing:1.5px;color:var(--t3)}
 .kpi .v{font-size:26px;font-weight:600;line-height:1.15;margin-top:2px;color:var(--t1);font-variant-numeric:tabular-nums}
 .kpi .d{font-size:9px;margin-top:5px;line-height:1.45;color:var(--t3)}
 .kpi .d em{font-style:normal;font-weight:600;color:var(--warn)}
 [data-carte="bande"] .kpi{background:var(--f2);border:var(--trait) solid var(--bord);border-left:var(--bande) solid var(--c)}
-[data-carte="contour"] .kpi{background:transparent;border:var(--contour) solid color-mix(in srgb,var(--c) 62%,transparent)}
-[data-carte="contour"] .kpi .k{color:var(--c)}
+[data-carte="contour"] .kpi{background:transparent;border:var(--contour) solid var(--c)}
+[data-carte="contour"] .kpi .k{color:var(--c-encre)}
 [data-carte="plein"] .kpi{background:var(--c);border:1px solid var(--c)}
 [data-carte="plein"] .kpi .k{color:var(--sur-c);opacity:.68}
 [data-carte="plein"] .kpi .v{color:var(--sur-c)}
@@ -629,10 +629,16 @@ function applique(){
   root.style.setProperty("--dens", DENSITES.find(d => d.k === S.densite).v);
   app.setAttribute("data-rail", S.rail);
 
+  /* ⛔ `cA` est la teinte de TEXTE : sur fond clair c'est la variante sombre,
+     et la tuile portait donc un second vert. Elle prend l'aplat de la charte. */
   const M = METIERS[S.mode === "clair" ? "clair" : "vif"];
   document.querySelectorAll(".kpi").forEach(el => {
-    const c = S.coloration === "metier" ? M[el.dataset.m] : cA;
-    el.style.setProperty("--c", c); el.style.setProperty("--sur-c", sur(c));
+    const c = S.coloration === "metier" ? M[el.dataset.m] : aplat(kAction);
+    el.style.setProperty("--c", c);
+    el.style.setProperty("--sur-c", sur(c));
+    /* le libelle ne s'ecrit en couleur que si cette couleur se lit sur le fond */
+    el.style.setProperty("--c-encre", S.mode === "clair" && lum(hex6(c)) > .30
+      ? getComputedStyle(root).getPropertyValue("--t2").trim() : c);
   });
   document.querySelectorAll("[data-r]").forEach(b => b.setAttribute("aria-pressed", String(S[b.dataset.r] === b.dataset.v)));
   document.querySelectorAll("[data-r='action'] b,[data-r='struct'] b").forEach(b => { b.style.background = teinte(b.dataset.c, S.mode); });
