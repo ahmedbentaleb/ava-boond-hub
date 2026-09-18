@@ -1,0 +1,1551 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ava Manager — Terminal</title>
+<style>*{box-sizing:border-box}html,body{margin:0;height:100%}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Ava Manager — Terminal</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Roboto+Mono:wght@400;500;700&family=Source+Code+Pro:wght@400;500;700&family=Fira+Code:wght@400;500;700&family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* ══════════════════════════════════════════════════════════════════════════
+   QUATRE RÔLES, PAS QUATRE COULEURS.
+   ACTION   — ce sur quoi on clique. ~5 % de l'écran, la seule teinte vive.
+   STRUCTURE— titres, étiquettes, filets. Présente mais sourde.
+   DONNÉES  — les chiffres. JAMAIS colorés : c'est ce qui les rend lisibles.
+   SENS     — bon / attention / critique. Échelle séparée, aucune palette
+              ne la touche : un danger reste rouge sous tous les thèmes.
+   TROIS FONDS — sombre · intermédiaire · clair. Sur un fond foncé le texte
+              est argenté et les couleurs sont vives : un gris moyen sur du
+              noir ne se lit pas, quelle que soit la palette.
+   ══════════════════════════════════════════════════════════════════════════ */
+:root{
+  --f0:#000; --f1:#0a0a10; --f2:#101017; --f3:#191921; --f4:#23232d; --bord:#2e2e3a;
+  --t1:#ffffff; --t2:#cfcfdb; --t3:#9a9aad; --t4:#74748a;
+  --ok:#3ddc84; --warn:#ffcc33; --ko:#ff6b5e;
+  --action:#AEBF38; --struct:#B98BC4;
+  --sur-action:#000; --struct-op:.72; --tint:.06; --bande:3px;
+  --police:'JetBrains Mono','Consolas',monospace;
+  --r:0px; --nav:214px; --dens:1; --trait:1px; --contour:2px;
+  /* la hauteur du bandeau de marque : la ou commence « PILOTAGE ».
+     La colonne d'outils de droite demarre sur cette meme ligne. */
+  --haut-menu:54px;
+  color-scheme:dark;
+}
+:root[data-mode="gris"]{
+  --f0:#22222a; --f1:#2a2a34; --f2:#31313d; --f3:#3a3a47; --f4:#454554; --bord:#6b6b83;
+  --t1:#ffffff; --t2:#dcdce6; --t3:#adadbe; --t4:#8b8b9e;
+  --ok:#4ade80; --warn:#fcd34d; --ko:#ff7a6e;
+  color-scheme:dark;
+}
+:root[data-mode="clair"]{
+  --f0:#e7e5ea; --f1:#fff; --f2:#fbfafc; --f3:#f2f0f5; --f4:#dcd7e3; --bord:#a79fb6;
+  --t1:#120e16; --t2:#453f4f; --t3:#6d6679; --t4:#948da1;
+  --ok:#15803d; --warn:#a16207; --ko:#b42318;
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--f0);color:var(--t2);font-family:var(--police);font-size:12px;line-height:1.42;letter-spacing:.24px;-webkit-font-smoothing:antialiased}
+button,select{font:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0}
+:focus-visible{outline:2px solid var(--action);outline-offset:1px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+svg{display:block;flex:none}
+/* DONNÉES — le seul endroit où le texte prend la couleur pleine */
+.num{font-variant-numeric:tabular-nums;color:var(--t1)}
+
+.app{display:flex;min-height:100%}
+
+/* ─── barre latérale ─── */
+.nav{position:relative;z-index:60;width:var(--nav);flex:none;background:var(--f1);border-right:var(--trait) solid var(--bord);
+  display:flex;flex-direction:column;position:sticky;top:0;height:100vh;transition:width .16s ease}
+.app[data-nav="icones"] .nav{width:50px}
+.nav .marque{display:flex;align-items:center;gap:9px;padding:13px 14px;border-bottom:1px solid var(--bord);min-height:46px}
+.nav .marque .logo{width:19px;height:19px;color:var(--action)}
+.nav .marque .m{min-width:0;overflow:hidden;white-space:nowrap}
+.nav .marque b{display:block;font-size:11px;font-weight:700;letter-spacing:1.4px;color:var(--t1)}
+.nav .marque i{font-style:normal;font-size:8px;letter-spacing:1.7px;color:var(--t4)}
+.app[data-nav="icones"] .nav .m{display:none}
+#menu{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden}
+.nav .gr{padding:12px 14px 5px;font-size:8px;letter-spacing:1.6px;color:var(--t3);white-space:nowrap;overflow:hidden}
+.app[data-nav="icones"] .nav .gr{padding:12px 0 4px;text-align:center;font-size:6.5px;letter-spacing:.4px}
+.nav a{display:flex;align-items:center;gap:11px;padding:7px 14px;color:var(--t2);text-decoration:none;
+  border-left:2px solid transparent;font-size:11.5px;white-space:nowrap;overflow:hidden}
+.nav a svg{width:14px;height:14px;color:var(--t3)}
+.nav a:hover{background:var(--f3);color:var(--t1)}
+.nav a[aria-current]{background:color-mix(in srgb,var(--action) calc(var(--tint)*100%),var(--f3));color:var(--action);border-left-color:var(--action)}
+.nav a[aria-current] svg{color:var(--action)}
+.app[data-nav="icones"] .nav a{justify-content:center;padding:9px 0;gap:0}
+.app[data-nav="icones"] .nav a span{display:none}
+/* Replier se commande d'ou on regarde : en haut, a cote du titre. */
+/* Hors du carre : posee sur le filet, a hauteur du titre de l'ecran. Aucune
+   ligne en plus dans la colonne — l'en-tete reste le logo et le nom. */
+.nav .rep{position:absolute;z-index:55;top:12px;right:-26px;width:22px;height:22px;
+  display:grid;place-items:center;color:var(--t3);background:var(--f1);
+  border:var(--trait) solid var(--bord);border-radius:var(--r)}
+.nav .rep svg{width:15px;height:15px}
+.nav .rep:hover{background:var(--f3);color:var(--action);border-color:var(--action)}
+.app[data-nav="icones"] .nav .marque{justify-content:center;padding:13px 0}
+.app[data-nav="icones"] .nav .rep svg{transform:rotate(180deg)}
+
+/* ─── haut ─── */
+.corps{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--f1);border-bottom:var(--trait) solid var(--bord);
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 18px 8px 34px;min-height:46px}
+.bar h1{font-size:12.5px;font-weight:600;letter-spacing:.5px;color:var(--t1);white-space:nowrap}
+.bar .grow{flex:1 1 auto}
+.chip{font-size:9px;letter-spacing:1.2px;color:var(--t2);white-space:nowrap}
+.chip b{color:var(--t2);font-weight:500}
+.live{display:inline-flex;align-items:center;gap:5px;font-size:9px;letter-spacing:1.2px;color:var(--ok)}
+.live::before{content:"";width:5px;height:5px;background:var(--ok);border-radius:50%;animation:p 2.6s infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.18}}
+select{background:var(--f2);border:1px solid var(--bord);border-radius:var(--r);padding:4px 7px;font-size:10.5px;color:var(--t1)}
+select:hover{border-color:var(--t4)}
+.lab{font-size:8px;letter-spacing:1.5px;color:var(--t3)}
+
+.zone{flex:1 1 auto;padding:15px 18px 40px}
+.cadre{max-width:2320px;margin:0 auto;display:flex;flex-direction:column;gap:9px}
+.row{display:grid;gap:9px}
+.r-kpi{grid-template-columns:repeat(auto-fit,minmax(148px,1fr))}
+.r-main{grid-template-columns:minmax(0,1.42fr) minmax(0,1fr)}
+.r-sub{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+/* Le journal tient toute la largeur tant qu'il n'y a que deux colonnes. */
+.r-sub>.p-journal{grid-column:1 / -1}
+/* 40 evenements font 2 200 px : le journal defile dans son panneau,
+   il n'allonge pas la page de tout le monde. */
+.r-sub>.pan>.in{max-height:min(58vh,560px);overflow:auto}
+/* Au-dela de 1660 px, un ecran large gagne une COLONNE, il n'etire pas les deux
+   qu'il a : c'est ce qui donnait des panneaux de 900 px a moitie vides. */
+@media (min-width:1660px){
+  .r-main{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}
+  .r-sub{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.05fr)}
+  .r-sub>.p-journal{grid-column:auto}
+}
+@media (min-width:2100px){.r-kpi{grid-template-columns:repeat(8,minmax(0,1fr))}}
+@media (max-width:1080px){.r-main,.r-sub{grid-template-columns:1fr}}
+@media (max-width:760px){.nav{position:fixed;z-index:60;transform:translateX(-100%)}.app[data-nav="ouvert"] .nav{transform:none}.zone{padding:13px}}
+
+/* ─── panneaux : STRUCTURE ─── */
+.pan{background:var(--f2);border:var(--trait) solid var(--bord);border-radius:var(--r);display:flex;flex-direction:column;min-width:0}
+.pan[hidden]{display:none}
+.pan>h2{font-size:8.5px;font-weight:600;letter-spacing:1.6px;padding:8px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));
+  background:color-mix(in srgb,var(--struct) calc(var(--tint)*70%),var(--f1));
+  border-bottom:var(--trait) solid var(--bord);border-radius:var(--r) var(--r) 0 0}
+.pan>h2 em{font-style:normal;margin-left:auto;font-size:8px;letter-spacing:1px;color:var(--t4);font-weight:400}
+.pan .in{padding:calc(10px*var(--dens)) 12px;min-width:0}
+.pan .foot{padding:7px 12px;border-top:var(--trait) solid var(--bord);max-width:118ch;font-size:9px;letter-spacing:.35px;color:var(--t2);line-height:1.6}
+.pan .foot b{color:var(--t2);font-weight:500}
+
+/* ─── INTENSITÉ : c'est la couleur qui bouge, pas les traits ─── */
+/* La meme regle aux trois crans. Ce qui change, c'est le melange — et l'encre
+   dedans, qui se recalcule a chaque cran : blanc a 100 %, noir a 20 % sur clair. */
+[data-intensite] .pan>h2{background:var(--plaque-struct);color:var(--sur-plaque-struct)}
+[data-intensite] .pan>h2 em{color:var(--sur-plaque-struct);opacity:.72}
+[data-intensite] .nav a[aria-current]{background:var(--plaque-action);color:var(--sur-plaque-action)}
+[data-intensite] .nav a[aria-current] svg{color:var(--sur-plaque-action)}
+[data-intensite] .rail .vue>h3{background:var(--plaque-struct);color:var(--sur-plaque-struct)}
+[data-intensite] .rail .vue>h3 em{color:var(--sur-plaque-struct);opacity:.72}
+[data-intensite="fort"] .ongs{background:color-mix(in srgb,var(--plaque-struct) 34%,var(--f1))}
+[data-intensite="fort"] .tables{background:color-mix(in srgb,var(--plaque-struct) 26%,var(--f1))}
+[data-intensite="fort"] .barre-f{background:color-mix(in srgb,var(--plaque-struct) 20%,var(--f1))}
+
+/* ─── réglages ─── */
+.reg-row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.reg{display:flex;flex-direction:column;gap:5px;min-width:0}
+.reg>span{font-size:8px;letter-spacing:1.5px;color:var(--t3)}
+.opts{display:flex;gap:4px;flex-wrap:wrap}
+.opt{display:inline-flex;align-items:center;gap:6px;background:var(--f3);border:1px solid var(--bord);
+  border-radius:var(--r);padding:5px 9px;font-size:9px;letter-spacing:1.1px;color:var(--t2);white-space:nowrap}
+.opt:hover{border-color:var(--t4);color:var(--t1)}
+.opt[aria-pressed="true"]{border-color:var(--action);color:var(--action);background:color-mix(in srgb,var(--action) 11%,transparent)}
+.opt u{text-decoration:none;display:flex;gap:2px}
+.opt u b{width:8px;height:8px;display:block}
+.expert{margin-top:12px;padding-top:11px;border-top:1px dashed var(--bord)}
+.expert[hidden]{display:none}
+
+/* ─── KPI ─── */
+.kpi{border-radius:var(--r);padding:calc(9px*var(--dens)) 12px calc(10px*var(--dens));min-width:0;--c:var(--action)}
+.kpi .k{font-size:8px;letter-spacing:1.5px;color:var(--t3)}
+.kpi .v{font-size:26px;font-weight:600;line-height:1.15;margin-top:2px;color:var(--t1);font-variant-numeric:tabular-nums}
+.kpi .d{font-size:9px;margin-top:5px;line-height:1.45;color:var(--t3)}
+.kpi .d em{font-style:normal;font-weight:600;color:var(--warn)}
+[data-carte="bande"] .kpi{background:var(--f2);border:var(--trait) solid var(--bord);border-left:var(--bande) solid var(--c)}
+[data-carte="contour"] .kpi{background:transparent;border:var(--contour) solid color-mix(in srgb,var(--c) 62%,transparent)}
+[data-carte="contour"] .kpi .k{color:var(--c)}
+[data-carte="plein"] .kpi{background:var(--c);border:1px solid var(--c)}
+[data-carte="plein"] .kpi .k{color:var(--sur-c);opacity:.68}
+[data-carte="plein"] .kpi .v{color:var(--sur-c)}
+[data-carte="plein"] .kpi .d{color:var(--sur-c);opacity:.76}
+[data-carte="plein"] .kpi .d em{color:var(--sur-c);text-decoration:underline}
+
+/* ─── tableaux ─── */
+.tb{width:100%;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{text-align:left;font-size:8px;letter-spacing:1.4px;font-weight:600;padding:0 8px 7px 0;white-space:nowrap;
+  color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*80%),var(--t3));border-bottom:var(--trait) solid var(--bord)}
+td{padding:calc(7px*var(--dens)) 8px calc(7px*var(--dens)) 0;border-bottom:1px solid var(--f4);vertical-align:middle;color:var(--t2)}
+tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:var(--f3)}
+th:last-child,td:last-child{padding-right:0;text-align:right}
+.nom{color:var(--t1)}
+.id{font-size:9px;color:var(--t3);letter-spacing:.4px;margin-top:2px}
+
+/* ─── pastilles : SENS, jamais la palette ─── */
+.b{display:inline-block;font-size:8px;font-weight:700;letter-spacing:1.2px;padding:3px 7px;border-radius:var(--r);white-space:nowrap;border:1px solid transparent}
+[data-pastille="contour"] .b{background:transparent;border-width:var(--contour);padding:2px 6px}
+[data-pastille="contour"] .b.ok{color:var(--ok);border-color:var(--ok)}
+[data-pastille="contour"] .b.w{color:var(--warn);border-color:var(--warn)}
+[data-pastille="contour"] .b.k{color:var(--ko);border-color:var(--ko)}
+[data-pastille="contour"] .b.s{color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));border-color:color-mix(in srgb,var(--struct) 55%,transparent)}
+[data-pastille="contour"] .b.n{color:var(--t3);border-color:var(--t4)}
+[data-pastille="plein"] .b.ok{background:var(--ok);color:var(--sur-ok)}
+[data-pastille="plein"] .b.w{background:var(--warn);color:var(--sur-warn)}
+[data-pastille="plein"] .b.k{background:var(--ko);color:#fff}
+[data-pastille="plein"] .b.s{background:var(--struct);color:var(--sur-struct)}
+[data-pastille="plein"] .b.n{background:var(--f4);color:var(--t2)}
+
+/* ─── file ─── */
+.q{list-style:none}
+.q li{display:flex;gap:10px;align-items:flex-start;padding:calc(9px*var(--dens)) 0;border-bottom:1px solid var(--f4)}
+.q li:last-child{border-bottom:0}
+.q .g{width:2px;align-self:stretch;flex:none}
+.q .x{flex:1 1 auto;min-width:0}
+.q .x b{display:block;font-size:11.5px;font-weight:500;color:var(--t1);letter-spacing:.2px}
+.q .x span{display:block;font-size:10.5px;color:var(--t3);line-height:1.6;margin-top:3px}
+.q .x code{color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));font-size:10px}
+
+/* ─── boutons d'ACTION ─── */
+.cta{flex:none;align-self:center;border-radius:var(--r);font-size:9px;letter-spacing:1.3px;font-weight:700;white-space:nowrap;border:var(--contour) solid transparent;padding:4px 10px}
+[data-bouton="contour"] .cta{background:transparent;color:var(--action);border-color:var(--action)}
+[data-bouton="contour"] .cta:hover{background:color-mix(in srgb,var(--action) 17%,transparent)}
+[data-bouton="plein"] .cta{background:var(--action);color:var(--sur-action);border-color:var(--action);border-width:1px;padding:5px 11px}
+[data-bouton="plein"] .cta:hover{opacity:.85}
+[data-bouton="fantome"] .cta{background:transparent;color:var(--action);border-color:transparent;padding:5px 8px}
+[data-bouton="fantome"] .cta:hover{background:color-mix(in srgb,var(--action) 15%,transparent)}
+[data-bouton="souligne"] .cta{background:transparent;color:var(--action);border-color:transparent;border-bottom:2px solid var(--action);border-radius:0;padding:4px 3px 2px}
+[data-bouton="souligne"] .cta:hover{background:color-mix(in srgb,var(--action) 15%,transparent)}
+.cta[disabled]{border-color:var(--t4)!important;color:var(--t4)!important;cursor:not-allowed;background:transparent!important}
+[data-bouton="fantome"] .cta[disabled],[data-bouton="souligne"] .cta[disabled]{border-color:transparent!important}
+
+/* ─── charge ─── */
+.bars{display:flex;gap:1px;align-items:flex-end;height:29px}
+.bars i{flex:1 1 0;min-width:2px;display:block}
+.lg{display:inline-flex;align-items:center;gap:4px;font-size:8px;letter-spacing:.9px;color:var(--t4)}
+.lg i{width:8px;height:8px;display:block}
+
+/* ─── journal ─── */
+.log{display:flex;gap:10px;padding:calc(7px*var(--dens)) 0;border-bottom:1px solid var(--f4);font-size:10.5px}
+.log:last-child{border-bottom:0}
+.log .h{color:var(--t4);flex:none;width:33px;font-variant-numeric:tabular-nums}
+.log .c b{font-weight:500;letter-spacing:.4px;color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2))}
+.log .c span{display:block;color:var(--t3);line-height:1.5}
+.log .c em{font-style:normal;display:block;color:var(--t3);font-size:9px;margin-top:2px}
+.log.ko .c b{color:var(--ko)}
+
+/* ─── RAIL : la colonne d'outils. Sa position, ses outils et celui qui s'ouvre
+       sont des réglages — rien n'est écrit en dur. ─── */
+.rail{flex:none;display:flex;background:var(--f1);border-left:1px solid var(--bord)}
+[data-rail="gauche"] .rail{order:-1;border-left:0;border-right:1px solid var(--bord)}
+[data-rail="masque"] .rail .vue{display:none}
+[data-rail="masque"] .rail .strip button[data-w]:not([data-w="reglages"]){display:none}
+[data-rail="masque"] .rail .strip .sep{display:none}
+.rail .strip{width:42px;flex:none;display:flex;flex-direction:column;gap:2px;padding:var(--haut-menu) 0 7px;
+  border-left:1px solid var(--bord);position:sticky;top:0;height:100vh;align-items:center}
+[data-rail="gauche"] .rail .strip{order:2;border-left:1px solid var(--bord);border-right:0}
+.rail .strip button{width:30px;height:30px;display:grid;place-items:center;color:var(--t3);border-radius:var(--r)}
+.rail .strip button:hover{background:var(--f3);color:var(--t1)}
+.rail .strip button[aria-pressed="true"]{background:color-mix(in srgb,var(--action) calc(var(--tint)*140%),var(--f3));color:var(--action)}
+.rail .strip svg{width:15px;height:15px}
+/* Ce qui se pousse en bas de la colonne : les reglages, puis le fond. */
+.rail .strip .fill{flex:1;min-height:12px}
+.rail .strip .bas{position:relative;display:flex}
+/* Les deux boutons du bas ne sont pas des outils : ils portent un cadre, sinon
+   on ne les voit pas au milieu de six icones grises de la meme couleur. */
+.rail .strip .bas>button,
+.rail .strip>button[data-w="reglages"]{width:32px;height:32px;background:var(--f3);
+  border:var(--contour) solid var(--bord);color:var(--t1)}
+.rail .strip>button[data-w="reglages"]{margin-bottom:2px}
+.rail .strip .bas>button:hover,
+.rail .strip>button[data-w="reglages"]:hover{border-color:var(--action);color:var(--action)}
+.rail .strip>button[data-w="reglages"][aria-pressed="true"]{background:var(--plaque-action);
+  border-color:var(--action-aplat);color:var(--sur-plaque-action)}
+.rail .strip .pop{position:absolute;right:calc(100% + 7px);bottom:0;display:flex;gap:3px;padding:4px;
+  background:var(--f2);border:var(--trait) solid var(--bord);border-radius:var(--r);white-space:nowrap;z-index:60;
+  box-shadow:0 2px 14px rgba(0,0,0,.34)}
+[data-rail="gauche"] .rail .strip .pop{right:auto;left:calc(100% + 7px)}
+.rail .strip .pop[hidden]{display:none}
+.rail .strip .pop button{width:auto;height:26px;padding:0 9px;font-size:8.5px;letter-spacing:1.1px;
+  border:var(--trait) solid var(--bord);background:var(--f3);display:inline-flex;align-items:center;gap:5px}
+.rail .strip .pop button[aria-pressed="true"]{border-color:var(--action);color:var(--action);
+  background:color-mix(in srgb,var(--action) 12%,transparent)}
+.rail .strip .sep{width:20px;height:1px;background:var(--bord);margin:4px 0;flex:none}
+.rail .vue[data-large="1"]{width:322px}
+.rail .vue #railReglages[hidden]{display:none}
+#panApparence{border:0;border-radius:0;background:transparent}
+#panApparence>h2{display:none}
+#panApparence .in{padding:10px 12px}
+#panApparence .foot{font-size:9px;line-height:1.55}
+#panApparence .reg-row{gap:11px}
+.rail .vue{width:260px;flex:none;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:auto}
+.rail .vue[hidden]{display:none}
+.rail .vue>h3{font-size:8px;letter-spacing:1.6px;font-weight:600;padding:9px 12px;min-height:46px;display:flex;align-items:center;gap:8px;
+  color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));border-bottom:1px solid var(--bord)}
+.rail .vue>h3 em{font-style:normal;margin-left:auto;font-size:8px;color:var(--t4);font-weight:400;letter-spacing:.8px}
+.rail .corpsw{padding:10px 12px;display:flex;flex-direction:column;gap:9px;font-size:10.5px}
+.rail .corpsw[hidden]{display:none}
+.rail textarea{width:100%;min-height:150px;resize:vertical;background:var(--f2);border:1px solid var(--bord);
+  border-radius:var(--r);color:var(--t1);font:inherit;font-size:10.5px;padding:8px;line-height:1.6}
+.rail textarea:focus{outline:0;border-color:var(--action)}
+.al{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--f4)}
+.al:last-child{border-bottom:0}
+.al i{width:2px;align-self:stretch;flex:none}
+.al b{display:block;font-size:10.5px;font-weight:500;color:var(--t1)}
+.al span{display:block;font-size:9.5px;color:var(--t3);line-height:1.5;margin-top:2px}
+.todo{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--f4);cursor:pointer}
+.todo:last-child{border-bottom:0}
+.todo input{accent-color:var(--action);margin-top:2px;flex:none}
+.todo span{font-size:10.5px;color:var(--t2);line-height:1.5}
+.todo input:checked+span{color:var(--t4);text-decoration:line-through}
+.ind{display:flex;justify-content:space-between;align-items:flex-end;gap:9px;padding:8px 0;border-bottom:1px solid var(--f4)}
+.ind:last-child{border-bottom:0}
+.ind .l{font-size:8.5px;letter-spacing:1.2px;color:var(--t4)}
+.ind .v{font-size:16px;font-variant-numeric:tabular-nums;color:var(--t1);line-height:1.1}
+.ind .t{font-size:9px;color:var(--t3);margin-top:1px}
+.spark{display:flex;gap:1px;align-items:flex-end;height:22px;flex:none;width:76px}
+.spark i{flex:1 1 0;display:block;background:color-mix(in srgb,var(--action) 55%,transparent)}
+.spark i:last-child{background:var(--action)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal b{font-size:7.5px;letter-spacing:.6px;color:var(--t4);text-align:center;padding-bottom:3px;font-weight:500}
+.cal span{aspect-ratio:1;display:grid;place-items:center;font-size:9.5px;color:var(--t3);border-radius:var(--r);font-variant-numeric:tabular-nums}
+.cal span.we{color:var(--t4);background:var(--f3)}
+.cal span.today{background:var(--action);color:var(--sur-action);font-weight:700}
+.cal span.ev{box-shadow:inset 0 -2px 0 var(--struct);color:var(--t1)}
+.ia-q{width:100%;background:var(--f2);border:1px solid var(--bord);border-radius:var(--r);color:var(--t1);
+  font:inherit;font-size:10.5px;padding:7px 8px}
+.ia-q:focus{outline:0;border-color:var(--action)}
+.ia-ex{font-size:9.5px;color:var(--t3);line-height:1.6;padding:7px 0;border-bottom:1px solid var(--f4);cursor:pointer}
+.ia-ex:hover{color:var(--t1)}
+.ia-ex:last-child{border-bottom:0}
+.vide{font-size:9.5px;color:var(--t4);line-height:1.6;text-align:center;padding:18px 6px}
+
+/* ─── ÉCRANS : en-tête, filtres, onglets, champs, matrice ─── */
+.eh{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;margin-bottom:9px}
+.eh h1{font-size:15px;font-weight:600;letter-spacing:.3px;color:var(--t1)}
+.eh-n{font-size:10px;color:var(--t3);margin-top:3px;line-height:1.55;max-width:74ch}
+.eh-n.mono-s{letter-spacing:.5px}
+.eh-a{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.barre-f{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:8px 12px;border-bottom:var(--trait) solid var(--bord);background:var(--f1)}
+.rech{flex:1 1 180px;min-width:120px;background:var(--f2);border:1px solid var(--bord);border-radius:var(--r);
+  color:var(--t1);font:inherit;font-size:10.5px;padding:5px 8px}
+.rech:focus{outline:0;border-color:var(--action)}
+.filtre{background:var(--f3);border:var(--trait) solid var(--bord);border-radius:var(--r);padding:5px 9px;
+  font-size:9px;letter-spacing:1.1px;color:var(--t2)}
+.filtre:hover{border-color:var(--action);color:var(--action)}
+.filtre b{color:var(--t4);font-weight:400}
+.barre-f .grow{flex:1 1 auto}
+.pagin{font-size:9px;letter-spacing:1px;color:var(--t3);white-space:nowrap}
+.lien{font-size:9px;letter-spacing:1.2px;font-weight:700;color:var(--action);padding:3px 6px;border-radius:var(--r);white-space:nowrap}
+.lien:hover{background:color-mix(in srgb,var(--action) 16%,transparent)}
+.lien[disabled]{color:var(--t4);cursor:not-allowed}
+.tables{padding:6px 12px;border-top:var(--trait) solid var(--bord);font-size:8.5px;letter-spacing:.9px;color:var(--t4);background:var(--f1)}
+.tables code{color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));font-size:8.5px;margin-right:5px}
+.ongs{display:flex;gap:2px;flex-wrap:wrap;padding:0 8px;border-bottom:var(--trait) solid var(--bord);background:var(--f1)}
+.ong{padding:9px 11px;font-size:9.5px;letter-spacing:1.1px;color:var(--t3);border-bottom:var(--contour) solid transparent;white-space:nowrap}
+.ong:hover{color:var(--t1)}
+.ong[aria-pressed="true"]{color:var(--action);border-bottom-color:var(--action)}
+.cadenas{color:var(--warn);font-size:7px;vertical-align:middle}
+.note-i{font-size:10px;color:var(--t3);line-height:1.65;margin-top:10px;max-width:92ch}
+.note-i b{color:var(--t2);font-weight:500}
+.note-i code{color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));font-size:9.5px}
+.verrou{display:inline-block;font-size:8.5px;letter-spacing:1.3px;font-weight:700;padding:4px 9px;border-radius:var(--r);
+  border:var(--contour) solid var(--warn);color:var(--warn);margin-bottom:10px}
+.verrou.ko{border-color:var(--ko);color:var(--ko)}
+.verrou code{font-size:8.5px}
+.champs{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:8px}
+.ch{border:1px solid var(--bord);border-radius:var(--r);padding:8px 10px;background:var(--f1);opacity:.72}
+.ch-l{display:block;font-size:8px;letter-spacing:1.4px;color:var(--t3)}
+.ch-v{display:block;font-size:15px;margin-top:3px}
+.saisie{background:var(--f2);border:1px solid var(--bord);border-radius:var(--r);color:var(--t1);font:inherit;font-size:10.5px;padding:4px 6px}
+.saisie:focus{outline:0;border-color:var(--action)}
+.saisie[disabled]{opacity:.42;cursor:not-allowed}
+.sel{display:inline-block;background:var(--f3);border:1px solid var(--bord);border-radius:var(--r);
+  padding:3px 8px;font-size:9.5px;color:var(--t1);white-space:nowrap}
+.sel b{color:var(--t4);font-weight:400}
+.cle{color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));font-size:10px}
+tr.rouge td{background:color-mix(in srgb,var(--ko) 9%,transparent)}
+tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
+.matrice td,.matrice th{padding-right:4px}
+.cell{display:inline-block;width:19px;height:17px;line-height:17px;text-align:center;font-size:9px;font-weight:700;border-radius:var(--r)}
+.cell.ok{background:var(--ok);color:var(--sur-ok,#000)}
+.cell.w{border:1px solid var(--warn);color:var(--warn)}
+.cell.s{border:1px solid var(--struct);color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2))}
+.cell.vide{color:var(--t4)}
+.foot.ko-f{color:var(--ko)}
+.b.ok{--x:0}
+
+.sig{display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;font-size:8.5px;letter-spacing:.7px;color:var(--t3);padding-top:2px}
+</style>
+
+<div class="app" id="app" data-nav="ouvert" data-pastille="contour" data-bouton="contour" data-carte="bande">
+  <nav class="nav">
+    <div class="marque">
+      <svg class="logo" viewBox="0 0 20 20" fill="none"><path d="M2 18 12 2h3L5 18z" fill="currentColor"/><path d="M9 18 18 4h-3L6 18z" fill="currentColor" opacity=".45"/></svg>
+      <span class="m"><b>AVA MANAGER</b><i>TERMINAL</i></span>
+    </div>
+    <button class="rep" type="button" id="rep" title="Replier la colonne">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10.2 3.4 5.6 8l4.6 4.6"/></svg></button>
+    <div id="menu"></div>
+  </nav>
+
+  <div class="corps">
+    <header class="bar">
+      <h1 id="titreEcran">Tableau de bord</h1>
+      <span class="live">EN DIRECT</span>
+      <span class="chip">MONDE <b>06/04/2027</b></span>
+      <span class="grow"></span>
+      <span class="lab">RÔLE</span>
+      <select id="role">
+        <option value="staffing">STAFFING</option><option value="dp">DIRECTEUR DE PROJET</option>
+        <option value="ia">INGÉNIEUR D'AFFAIRES</option><option value="rh">RESSOURCES HUMAINES</option>
+        <option value="ressource">RESSOURCE</option>
+      </select>
+      <span class="lab">PÉRIMÈTRE</span><span class="chip"><b>AGENCE A</b></span>
+    </header>
+
+    <div class="zone"><div class="cadre">
+
+      <section class="pan" id="panApparence">
+        <h2>APPARENCE<em></em></h2>
+        <div class="in">
+          <div class="reg-row">
+            <div class="reg"><span>PALETTE</span><div class="opts" id="rPalette"></div></div>
+            <div class="reg"><span>MODE</span><div class="opts" id="rMode"></div></div>
+            <div class="reg"><span>INTENSITÉ</span><div class="opts" id="rIntensite"></div></div>
+            <div class="reg"><span>POLICE</span><div class="opts" id="rPolice"></div></div>
+            <div class="reg"><span>DENSITÉ</span><div class="opts" id="rDensite"></div></div>
+            <div class="reg"><span>ÉPAISSEUR DES TRAITS</span><div class="opts" id="rEpaisseur"></div></div>
+            <div class="reg"><span>&nbsp;</span><div class="opts"><button class="opt" type="button" id="btnExpert">MODE EXPERT</button></div></div>
+          </div>
+          <div class="expert" id="expert" hidden>
+            <div class="reg-row">
+              <div class="reg"><span>ACTION — CE SUR QUOI ON CLIQUE</span><div class="opts" id="rAction"></div></div>
+              <div class="reg"><span>STRUCTURE — TITRES ET FILETS</span><div class="opts" id="rStruct"></div></div>
+            </div>
+            <div class="reg-row" style="margin-top:11px">
+              <div class="reg"><span>COLONNE D'OUTILS</span><div class="opts" id="rRail"></div></div>
+              <div class="reg"><span>OUTILS AFFICHÉS</span><div class="opts" id="rOutils"></div></div>
+            </div>
+            <div class="reg-row" style="margin-top:11px">
+              <div class="reg"><span>ANGLES</span><div class="opts" id="rAngle"></div></div>
+              <div class="reg"><span>PASTILLES</span><div class="opts" id="rPastille"></div></div>
+              <div class="reg"><span>BOUTONS</span><div class="opts" id="rBouton"></div></div>
+              <div class="reg"><span>CARTES</span><div class="opts" id="rCarte"></div></div>
+              <div class="reg"><span>COLORATION</span><div class="opts" id="rColoration"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="foot"><b>Quatre rôles, pas quatre couleurs.</b> ACTION ne colore que ce sur quoi on clique. STRUCTURE porte les titres et les filets. Les <b>données restent neutres</b>. Le SENS a son échelle : <b>aucune palette ne la touche</b>.</div>
+      </section>
+
+      <div id="ecran"></div>
+
+      <div class="sig">
+        <span>MONDE DE DÉMONSTRATION — AUCUNE DONNÉE RÉELLE · LES MONTANTS S'ÉCRIVENT [TARIF] TANT QU'AUCUN TARIF N'EST SAISI</span>
+        <span>AVA-MANAGER.AHMEDBENTALEB.COM</span>
+      </div>
+    </div></div>
+  </div>
+
+  <aside class="rail">
+    <div class="vue" id="railVue"><h3 id="railTitre"></h3>
+      <div class="corpsw" id="railCorps"></div>
+      <div id="railReglages" hidden></div>
+    </div>
+    <div class="strip" id="railStrip"></div>
+  </aside>
+</div>
+
+<script>
+"use strict";
+const $ = (s) => document.querySelector(s);
+const app = $("#app"), root = document.documentElement;
+
+/* l'encre d'un aplat se calcule, elle ne se choisit pas */
+/* `#fff` et `#ffffff` doivent se lire pareil : les fonds s'ecrivent des deux facons. */
+const hex6 = (h) => { h = h.trim().replace("#",""); return "#" + (h.length === 3 ? h.split("").map(c => c+c).join("") : h); };
+const lum = (h) => { const v = [1,3,5].map(i => parseInt(h.substr(i,2),16)/255)
+  .map(c => c <= .03928 ? c/12.92 : Math.pow((c+.055)/1.055, 2.4)); return .2126*v[0]+.7152*v[1]+.0722*v[2]; };
+/* 0.179, c'est le point exact ou le noir et le blanc contrastent pareil.
+   A .36 on ecrivait en blanc sur des mauves clairs : 3:1, illisible. */
+const sur = (h) => lum(hex6(h)) > .179 ? "#000" : "#fff";
+/* Un aplat a 50 %, c'est la couleur melangee au fond — puis l'encre se recalcule
+   DESSUS. C'est la seule facon d'avoir du blanc a 100 % et du noir a 20 % sans
+   ecrire nulle part quelle encre va ou. */
+const melange = (a, b, t) => { a = hex6(a); b = hex6(b);
+  const n = i => Math.round(parseInt(a.substr(i,2),16)*t + parseInt(b.substr(i,2),16)*(1-t));
+  return "#" + [1,3,5].map(i => n(i).toString(16).padStart(2,"0")).join(""); };
+
+const COULEURS = [
+  { k:"vert_avaliance",   n:"VERT AVALIANCE",   d:"#AEBF38", c:"#6E7A1E", v:"#AEBF38" },
+  { k:"violet_avaliance", n:"VIOLET AVALIANCE", d:"#D9AEE8", c:"#430A4B", v:"#430A4B" },
+  { k:"vert_vif",  n:"VERT VIF",  d:"#00E676", c:"#00893E" },
+  { k:"vert_normal",n:"VERT NORMAL",d:"#22C55E", c:"#15803D" },
+  { k:"vert_clair",n:"VERT CLAIR", d:"#CDD749", c:"#7E8A22" },
+  { k:"rouge",     n:"ROUGE",      d:"#F04438", c:"#B42318" },
+  { k:"orange",    n:"ORANGE",     d:"#FF8C00", c:"#B85C00" },
+  { k:"ambre",     n:"AMBRE",      d:"#FFB000", c:"#8A5D00" },
+  { k:"bleu",      n:"BLEU",       d:"#4EA8FF", c:"#0B63C4" },
+  { k:"cyan",      n:"CYAN",       d:"#00D4AA", c:"#00786A" },
+  { k:"magenta",   n:"MAGENTA",    d:"#E879F9", c:"#A21CAF" },
+  { k:"gris",      n:"ARGENT",     d:"#DCDCE6", c:"#5A5364" }
+];
+const teinte = (k, mode) => { const o = COULEURS.find(c => c.k === k) || COULEURS[0]; return mode === "clair" ? o.c : o.d; };
+/* sombre et intermediaire prennent la version vive : sur un fond fonce, une couleur sourde disparait */
+
+/* Six palettes qui tiennent — chacune remplit les deux rôles colorés */
+const PALETTES = [
+  { k:"avaliance", n:"AVALIANCE", a:"vert_avaliance",   s:"violet_avaliance" },
+  { k:"terminal",  n:"TERMINAL",  a:"orange",           s:"bleu" },
+  { k:"ambre",     n:"AMBRE",     a:"ambre",            s:"cyan" },
+  { k:"glace",     n:"GLACE",     a:"bleu",             s:"cyan" },
+  { k:"encre",     n:"ENCRE",     a:"gris",             s:"gris" },
+  { k:"phosphore", n:"PHOSPHORE", a:"vert_vif",         s:"ambre" }
+];
+/* INTENSITE : la vivacite de la couleur, rien d'autre. */
+const INTENSITES = [
+  { k:"discret", n:"DISCRET", pc:.20, op:.62, tint:.03 },
+  { k:"normal",  n:"NORMAL",  pc:.50, op:.88, tint:.09 },
+  { k:"fort",    n:"FORT",    pc:1,   op:1,   tint:.18 }
+];
+/* EPAISSEUR : les traits. Bordures, filets, bandes, contours — jamais la couleur. */
+const EPAISSEURS = [
+  { k:"fin",    n:"FIN",    t:"1px", b:"2px", c:"1px" },
+  { k:"medium", n:"MEDIUM", t:"1px", b:"3px", c:"2px" },
+  { k:"large",  n:"LARGE",  t:"2px", b:"5px", c:"3px" }
+];
+const POLICES = [
+  { k:"jetbrains", n:"JETBRAINS",   v:"'JetBrains Mono','Consolas',monospace" },
+  { k:"plex",      n:"PLEX MONO",   v:"'IBM Plex Mono',monospace" },
+  { k:"space",     n:"SPACE MONO",  v:"'Space Mono',monospace" },
+  { k:"roboto",    n:"ROBOTO MONO", v:"'Roboto Mono',monospace" },
+  { k:"source",    n:"SOURCE CODE", v:"'Source Code Pro',monospace" },
+  { k:"fira",      n:"FIRA CODE",   v:"'Fira Code',monospace" },
+  { k:"sora",      n:"SORA",        v:"'Sora',system-ui,sans-serif" },
+  { k:"inter",     n:"INTER",       v:"'Inter',system-ui,sans-serif" },
+  /* La pile du constructeur Kurso — `--font-body` de Payload, a la lettre.
+     Aucune police web : rien a telecharger, aucun decalage au chargement. */
+  { k:"systeme",   n:"SYSTÈME",     v:"-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" }
+];
+const MODES = [{k:"sombre",n:"SOMBRE"},{k:"gris",n:"INTERMÉDIAIRE"},{k:"clair",n:"CLAIR"}];
+const ANGLES = [{k:"carre",n:"CARRÉ",v:"0px"},{k:"leger",n:"LÉGER",v:"2px"},{k:"arrondi",n:"ARRONDI",v:"7px"}];
+const PASTILLES = [{k:"contour",n:"CONTOUR"},{k:"plein",n:"PLEIN"}];
+const BOUTONS = [{k:"contour",n:"CONTOUR"},{k:"plein",n:"PLEIN"},{k:"fantome",n:"FANTÔME"},{k:"souligne",n:"SOULIGNÉ"}];
+const CARTES = [{k:"bande",n:"BANDE"},{k:"contour",n:"CONTOUR"},{k:"plein",n:"PLEIN"}];
+const COLORATIONS = [{k:"une",n:"UNE COULEUR"},{k:"metier",n:"PAR MÉTIER"}];
+/* Les cinq chemins du cadrage */
+const METIERS = { vif:{c1:"#5CB4FF",c2:"#D9AEE8",c3:"#C3D442",c4:"#FF9E24",c5:"#1FE0BC"},
+                  clair:{c1:"#0B63C4",c2:"#430A4B",c3:"#6E7A1E",c4:"#B85C00",c5:"#00786A"} };
+
+const DENSITES = [{k:"compact",n:"COMPACT",v:.72},{k:"normal",n:"NORMAL",v:1},{k:"confort",n:"CONFORT",v:1.35}];
+const RAILS = [{k:"droite",n:"À DROITE"},{k:"gauche",n:"À GAUCHE"},{k:"masque",n:"MASQUÉE"}];
+/* Les outils de la colonne : un catalogue, pas une liste ecrite en dur */
+const OUTILS = [
+  { k:"notes",  n:"BLOC-NOTES", t:"Bloc-notes",   i:'<path d="M3 2h7l3 3v9H3z"/><path d="M10 2v3h3M5.5 8h5M5.5 10.5h3"/>' },
+  { k:"alertes",n:"ALERTES",    t:"Alertes",      i:'<path d="M8 2a4 4 0 0 0-4 4v3l-1.5 2.5h11L12 9V6a4 4 0 0 0-4-4z"/><path d="M6.5 13.5a1.5 1.5 0 0 0 3 0"/>' },
+  { k:"ia",     n:"ASSISTANT",  t:"Assistant",    i:'<path d="M8 2 9.4 6.2 13.5 7.5 9.4 8.8 8 13l-1.4-4.2L2.5 7.5l4.1-1.3z"/><path d="M13 2.5v2M12 3.5h2"/>' },
+  { k:"todo",   n:"À FAIRE",    t:"À faire",      i:'<path d="M2.5 4.5 4 6l2.5-2.5M8.5 5H14M2.5 9.5 4 11l2.5-2.5M8.5 10H14"/>' },
+  { k:"indic",  n:"INDICATEURS",t:"Indicateurs",  i:'<path d="M2 13h12M4 13V9M7 13V5M10 13V7.5M13 13V3"/>' },
+  { k:"cal",    n:"CALENDRIER", t:"Calendrier",   i:'<rect x="2.5" y="3.5" width="11" height="10" rx="1"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"/>' }
+];
+
+let S = { palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
+          action:null, struct:null, angle:"carre", pastille:"contour", bouton:"contour", carte:"bande", coloration:"une",
+          rail:"droite", outils:["notes","alertes","ia","todo","indic","cal"], outilOuvert:"alertes", expert:false };
+try { S = Object.assign(S, JSON.parse(localStorage.getItem("ava-term5") || "{}")); } catch(e){}
+
+/* L'APLAT. `teinte()` eclaircit sur fond sombre pour que le TEXTE reste lisible.
+   Un aplat n'est pas du texte : il porte le vrai hex de la charte, et l'encre
+   dedans se calcule. Violet Avaliance = #430A4B, avec du blanc ecrit dessus. */
+function aplat(k){ const c = COULEURS.find(x => x.k === k); return c.v || c.d; }
+
+function applique(){
+  const P = PALETTES.find(p => p.k === S.palette) || PALETTES[0];
+  const I = INTENSITES.find(i => i.k === S.intensite);
+  const kAction = S.action || P.a, kStruct = S.struct || P.s;
+  const cA = teinte(kAction, S.mode), cS = teinte(kStruct, S.mode);
+
+  root.setAttribute("data-mode", S.mode);
+  app.setAttribute("data-pastille", S.pastille);
+  app.setAttribute("data-bouton", S.bouton);
+  app.setAttribute("data-carte", S.carte);
+  root.style.setProperty("--action", cA);
+  root.style.setProperty("--struct", cS);
+  root.style.setProperty("--sur-action", sur(cA));
+  root.style.setProperty("--sur-struct", sur(cS));
+  root.style.setProperty("--sur-ok", sur(getComputedStyle(root).getPropertyValue("--ok").trim() || "#22c55e"));
+  root.style.setProperty("--sur-warn", S.mode === "clair" ? "#fff" : "#000");
+  const E = EPAISSEURS.find(x => x.k === S.epaisseur) || EPAISSEURS[1];
+  root.style.setProperty("--struct-op", I.op);
+  root.style.setProperty("--tint", I.tint);
+  root.style.setProperty("--trait", E.t);
+  root.style.setProperty("--bande", E.b);
+  root.style.setProperty("--contour", E.c);
+  const aA = aplat(kAction), aS = aplat(kStruct);
+  root.style.setProperty("--action-aplat", aA);
+  root.style.setProperty("--struct-aplat", aS);
+  root.style.setProperty("--sur-action-aplat", sur(aA));
+  root.style.setProperty("--sur-struct-aplat", sur(aS));
+  const fond = getComputedStyle(root).getPropertyValue("--f1");
+  const plA = melange(aA, fond, I.pc), plS = melange(aS, fond, I.pc);
+  root.style.setProperty("--plaque-action", plA);
+  root.style.setProperty("--plaque-struct", plS);
+  root.style.setProperty("--sur-plaque-action", sur(plA));
+  root.style.setProperty("--sur-plaque-struct", sur(plS));
+  app.setAttribute("data-intensite", S.intensite);
+  root.style.setProperty("--r", ANGLES.find(a => a.k === S.angle).v);
+  root.style.setProperty("--police", POLICES.find(p => p.k === S.police).v);
+  root.style.setProperty("--dens", DENSITES.find(d => d.k === S.densite).v);
+  app.setAttribute("data-rail", S.rail);
+
+  const M = METIERS[S.mode === "clair" ? "clair" : "vif"];
+  document.querySelectorAll(".kpi").forEach(el => {
+    const c = S.coloration === "metier" ? M[el.dataset.m] : cA;
+    el.style.setProperty("--c", c); el.style.setProperty("--sur-c", sur(c));
+  });
+  document.querySelectorAll("[data-r]").forEach(b => b.setAttribute("aria-pressed", String(S[b.dataset.r] === b.dataset.v)));
+  document.querySelectorAll("[data-r='action'] b,[data-r='struct'] b").forEach(b => { b.style.background = teinte(b.dataset.c, S.mode); });
+  document.querySelectorAll("[data-o]").forEach(b => b.setAttribute("aria-pressed", String(S.outils.includes(b.dataset.o))));
+  rail();
+  $("#expert").hidden = !S.expert;
+  $("#btnExpert").setAttribute("aria-pressed", String(S.expert));
+  $("#btnExpert").textContent = S.expert ? "MASQUER L'EXPERT" : "MODE EXPERT";
+  if ($("#etat")) $("#etat").textContent = `${P.n} · ${S.mode.toUpperCase()} · ${I.n} · ${POLICES.find(p=>p.k===S.police).n} · TRAITS ${E.n} · ${S.outils.length} OUTILS`
+    + (S.action || S.struct ? " · RETOUCHÉE" : "") + (S.coloration === "metier" ? " · PAR MÉTIER" : "");
+  try { localStorage.setItem("ava-term5", JSON.stringify(S)); } catch(e){}
+}
+function boutons(id, liste, champ, pastille){
+  $(id).innerHTML = liste.map(o => `<button class="opt" type="button" data-r="${champ}" data-v="${o.k}" aria-pressed="false">${
+    pastille ? `<u><b data-c="${o.k}"></b></u>` : ""}${o.n}</button>`).join("");
+}
+boutons("#rPalette", PALETTES, "palette", false);
+boutons("#rMode", MODES, "mode", false);
+boutons("#rIntensite", INTENSITES, "intensite", false);
+boutons("#rPolice", POLICES, "police", false);
+boutons("#rAction", COULEURS, "action", true);
+boutons("#rStruct", COULEURS, "struct", true);
+boutons("#rAngle", ANGLES, "angle", false);
+boutons("#rPastille", PASTILLES, "pastille", false);
+boutons("#rBouton", BOUTONS, "bouton", false);
+boutons("#rCarte", CARTES, "carte", false);
+boutons("#rColoration", COLORATIONS, "coloration", false);
+boutons("#rDensite", DENSITES, "densite", false);
+boutons("#rEpaisseur", EPAISSEURS, "epaisseur", false);
+boutons("#rRail", RAILS, "rail", false);
+$("#rOutils").innerHTML = OUTILS.map(o => `<button class="opt" type="button" data-o="${o.k}" aria-pressed="true">${o.n}</button>`).join("");
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-r]");
+  if (b){ S[b.dataset.r] = b.dataset.v; if (b.dataset.r === "palette"){ S.action = null; S.struct = null; } applique(); return; }
+  if (e.target.closest("#btnExpert")){ S.expert = !S.expert; applique(); return; }
+  const o = e.target.closest("[data-o]");
+  if (o){ const k = o.dataset.o;
+    S.outils = S.outils.includes(k) ? S.outils.filter(x => x !== k) : [...S.outils, k];
+    if (!S.outils.includes(S.outilOuvert)) S.outilOuvert = S.outils[0] || null;
+    applique(); return; }
+  const w = e.target.closest("[data-w]");
+  if (w){ S.outilOuvert = S.outilOuvert === w.dataset.w ? null : w.dataset.w; applique(); }
+});
+
+/* ─── barre latérale ─── */
+const IC = {
+  ct:'<circle cx="8" cy="5.5" r="2.5"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/><path d="M12 3.5h2.5M13.2 2.3v2.4"/>',
+  abs:'<rect x="2.5" y="3.5" width="11" height="10" rx="1"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"/><path d="M6 10l4 0"/>',
+  act:'<path d="M3 3.5h10M3 8h10M3 12.5h6"/><circle cx="12" cy="12.5" r="1.6"/>',
+  fs:'<path d="M2 14V3l5-1v12M7 14V6l7-1v9"/>', fc:'<circle cx="8" cy="5.5" r="2.5"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/>',
+  fk:'<path d="M3.5 2h6L13 5.5V14H3.5z"/><path d="M9 2v4h4"/>', fr:'<circle cx="8" cy="5" r="2.5"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/>',
+  fb:'<circle cx="8" cy="8" r="5.5"/><circle cx="8" cy="8" r="2"/>', fp:'<path d="M2 4.5A1.5 1.5 0 0 1 3.5 3h3L8 4.5h4.5A1.5 1.5 0 0 1 14 6v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>',
+  fx:'<path d="M3.5 2h6L13 5.5V14H3.5zM9 2v4h4M5.5 9h5"/>',
+  ref:'<path d="M3 3.5h10M3 8h10M3 12.5h10"/><circle cx="5" cy="3.5" r="1"/><circle cx="5" cy="8" r="1"/>',
+  dr:'<path d="M8 1.8 13.5 4v4.2c0 3-2.3 5.3-5.5 6-3.2-.7-5.5-3-5.5-6V4z"/><path d="M5.8 8 7.4 9.6l3-3.4"/>',
+  cpt:'<circle cx="8" cy="5" r="2.5"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/>',
+  ag:'<path d="M2 14V6l6-4 6 4v8"/><path d="M6 14V9.5h4V14"/>',
+  bord:'<path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z"/>',
+  soc:'<path d="M2 14V3l5-1v12M7 14V6l7-1v9M4 6h1M4 9h1M10 8h1M10 11h1"/>',
+  cand:'<circle cx="8" cy="5" r="2.5"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/>',
+  res:'<circle cx="5.5" cy="5" r="2"/><circle cx="11" cy="5.5" r="1.7"/><path d="M2 13c0-2 1.6-3.5 3.5-3.5S9 11 9 13M10 9.6c1.8 0 3 1.4 3 3.4"/>',
+  bes:'<circle cx="8" cy="8" r="5.5"/><circle cx="8" cy="8" r="2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/>',
+  proj:'<path d="M2 4.5A1.5 1.5 0 0 1 3.5 3h3L8 4.5h4.5A1.5 1.5 0 0 1 14 6v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>',
+  prest:'<path d="M3.5 2h6L13 5.5V14H3.5zM9 2v4h4M5.5 9h5M5.5 11.5h3"/>',
+  charge:'<path d="M2 13h12M4 13V8M7 13V4M10 13V9.5M13 13V6"/>',
+  temps:'<circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/>',
+  regl:'<circle cx="8" cy="8" r="2"/><path d="M8 1.5v2M8 12.5v2M14.5 8h-2M3.5 8h-2M12.6 3.4l-1.4 1.4M4.8 11.2l-1.4 1.4M12.6 12.6l-1.4-1.4M4.8 4.8 3.4 3.4"/>'
+};
+$("#rep").addEventListener("click", () => {
+  app.dataset.nav = app.dataset.nav === "icones" ? "ouvert" : "icones";
+  try { localStorage.setItem("ava-nav", app.dataset.nav); } catch(e){}
+});
+try { app.dataset.nav = localStorage.getItem("ava-nav") || "ouvert"; } catch(e){}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LE MONDE — les mêmes données que le banc d'essai métier, en lecture.
+   Aucune donnée réelle. Les montants s'écrivent [TARIF] tant qu'aucun
+   tarif n'est saisi : le banc ne certifie aucun euro.
+   ══════════════════════════════════════════════════════════════════════════ */
+const MONDE = {
+  jour: "2027-04-06",
+
+  societe: [
+    { id:"SOCIETE-0001", nom:"ALPHA", statut:"client", roles:[], secteur:"Industrie", ville:"Casablanca", besoins:1, projets:3, contact:"Contact CT-0101" },
+    { id:"SOCIETE-0002", nom:"BETA", statut:"prospect", roles:[], secteur:"Banque", ville:"Rabat", besoins:1, projets:0, contact:"Contact CT-0111" },
+    { id:"SOCIETE-0003", nom:"GAMMA", statut:"client", roles:["fournisseur"], secteur:"Services", ville:"Paris", besoins:0, projets:0, contact:"Contact CT-0121" },
+    { id:"SOCIETE-0004", nom:"DELTA", statut:"client", roles:[], secteur:"Assurance", ville:"Lyon", besoins:1, projets:2, contact:"Contact CT-0131" },
+    { id:"SOCIETE-0005", nom:"EPSILON", statut:"prospect", roles:[], secteur:"Télécom", ville:"Dubaï", besoins:1, projets:1, contact:"Contact CT-0141" },
+    { id:"SOCIETE-0006", nom:"ZETA", statut:"client", roles:["fournisseur"], secteur:"Énergie", ville:"New York", besoins:0, projets:1, contact:"Contact CT-0151" },
+    { id:"SOCIETE-0007", nom:"ETA", statut:"prospect", roles:[], secteur:"Distribution", ville:"Montréal", besoins:1, projets:1, contact:"Contact CT-0161" },
+    { id:"SOCIETE-0008", nom:"THETA", statut:"client", roles:[], secteur:"Santé", ville:"Tanger", besoins:1, projets:0, contact:"Contact CT-0171" },
+    { id:"SOCIETE-0009", nom:"IOTA", statut:"prospect", roles:[], secteur:"Transport", ville:"Marrakech", besoins:1, projets:0, contact:"Contact CT-0181" },
+    { id:"SOCIETE-0010", nom:"KAPPA", statut:"prospect", roles:["fournisseur"], secteur:"Public", ville:"Toulouse", besoins:1, projets:2, contact:"Contact CT-0191" },
+    { id:"SOCIETE-0011", nom:"LAMBDA", statut:"client", roles:[], secteur:"Industrie", ville:"Casablanca", besoins:1, projets:1, contact:"—" },
+    { id:"SOCIETE-0012", nom:"AVALIANCE", statut:"prospect", roles:["interne"], secteur:"Banque", ville:"Rabat", besoins:0, projets:0, contact:"—" }
+  ],
+  unite: [
+    { id:"UNITE-0001", societe:"ALPHA", parent:null, type:"pole", nom:"Pôle 1", statut:"client", agence:"—" },
+    { id:"UNITE-0002", societe:"ALPHA", parent:"Pôle 1", type:"bu", nom:"BU A", statut:"client", agence:"—" },
+    { id:"UNITE-0003", societe:"ALPHA", parent:"BU A", type:"service", nom:"Service 1", statut:"client", agence:"—" },
+    { id:"UNITE-0004", societe:"ALPHA", parent:"BU A", type:"service", nom:"Service 2", statut:null, agence:"—" },
+    { id:"UNITE-0005", societe:"ALPHA", parent:null, type:"pole", nom:"Pôle 2", statut:null, agence:"—" },
+    { id:"UNITE-0006", societe:"ALPHA", parent:"Pôle 2", type:"bu", nom:"BU C", statut:null, agence:"—" },
+    { id:"UNITE-0007", societe:"ALPHA", parent:"BU C", type:"equipe", nom:"Équipe Data", statut:null, agence:"—" },
+    { id:"UNITE-0008", societe:"BETA", parent:null, type:"pole", nom:"Pôle B", statut:null, agence:"—" },
+    { id:"UNITE-0009", societe:"BETA", parent:"Pôle B", type:"service", nom:"Service B1", statut:null, agence:"—" },
+    { id:"UNITE-0010", societe:"BETA", parent:"Pôle B", type:"service", nom:"Service B2", statut:null, agence:"—" },
+    { id:"UNITE-0011", societe:"DELTA", parent:null, type:"pole", nom:"Direction SI", statut:"client", agence:"—" },
+    { id:"UNITE-0012", societe:"DELTA", parent:"Direction SI", type:"bu", nom:"BU Digital", statut:"client", agence:"—" },
+    { id:"UNITE-0013", societe:"ETA", parent:null, type:"pole", nom:"Pôle Réseau", statut:null, agence:"—" },
+    { id:"UNITE-0014", societe:"KAPPA", parent:null, type:"pole", nom:"Pôle Exploitation", statut:"client", agence:"—" }
+  ],
+  contact: [
+    { id:"CONTACT-0001", nom:"Contact CT-0101", fonction:"Décisionnaire", societe:"ALPHA", unite:"Pôle 1", statut:"client", tel:"+212 5 22 …", mail:"ct0101@alpha.com" },
+    { id:"CONTACT-0002", nom:"Contact CT-0102", fonction:"Technique", societe:"ALPHA", unite:"—", statut:null, tel:"+212 5 22 …", mail:"ct0102@alpha.com" },
+    { id:"CONTACT-0003", nom:"Contact CT-0111", fonction:"Technique", societe:"BETA", unite:"Pôle B", statut:"prospect", tel:"+212 5 22 …", mail:"ct0111@beta.com" },
+    { id:"CONTACT-0004", nom:"Contact CT-0112", fonction:"Achats", societe:"BETA", unite:"—", statut:null, tel:"+212 5 22 …", mail:"ct0112@beta.com" },
+    { id:"CONTACT-0005", nom:"Contact CT-0121", fonction:"Achats", societe:"GAMMA", unite:"—", statut:"client", tel:"+33 1 44 …", mail:"ct0121@gamma.com" },
+    { id:"CONTACT-0006", nom:"Contact CT-0122", fonction:"Facturation", societe:"GAMMA", unite:"—", statut:null, tel:"+33 1 44 …", mail:"ct0122@gamma.com" },
+    { id:"CONTACT-0007", nom:"Contact CT-0131", fonction:"Facturation", societe:"DELTA", unite:"Direction SI", statut:"client", tel:"+33 1 44 …", mail:"ct0131@delta.com" },
+    { id:"CONTACT-0008", nom:"Contact CT-0132", fonction:"RH", societe:"DELTA", unite:"—", statut:null, tel:"+33 1 44 …", mail:"ct0132@delta.com" },
+    { id:"CONTACT-0009", nom:"Contact CT-0141", fonction:"RH", societe:"EPSILON", unite:"—", statut:"prospect", tel:"+33 1 44 …", mail:"ct0141@epsilon.com" },
+    { id:"CONTACT-0010", nom:"Contact CT-0142", fonction:"Décisionnaire", societe:"EPSILON", unite:"—", statut:null, tel:"+33 1 44 …", mail:"ct0142@epsilon.com" },
+    { id:"CONTACT-0011", nom:"Contact CT-0151", fonction:"Décisionnaire", societe:"ZETA", unite:"—", statut:"client", tel:"+33 1 44 …", mail:"ct0151@zeta.com" },
+    { id:"CONTACT-0012", nom:"Contact CT-0152", fonction:"Technique", societe:"ZETA", unite:"—", statut:null, tel:"+33 1 44 …", mail:"ct0152@zeta.com" },
+    { id:"CONTACT-0013", nom:"Contact CT-0161", fonction:"Technique", societe:"ETA", unite:"Pôle Réseau", statut:"prospect", tel:"+33 1 44 …", mail:"ct0161@eta.com" },
+    { id:"CONTACT-0014", nom:"Contact CT-0162", fonction:"Achats", societe:"ETA", unite:"—", statut:null, tel:"+33 1 44 …", mail:"ct0162@eta.com" },
+    { id:"CONTACT-0015", nom:"Contact CT-0171", fonction:"Achats", societe:"THETA", unite:"—", statut:"client", tel:"+212 5 22 …", mail:"ct0171@theta.com" },
+    { id:"CONTACT-0016", nom:"Contact CT-0172", fonction:"Facturation", societe:"THETA", unite:"—", statut:null, tel:"+212 5 22 …", mail:"ct0172@theta.com" },
+    { id:"CONTACT-0017", nom:"Contact CT-0181", fonction:"Facturation", societe:"IOTA", unite:"—", statut:"prospect", tel:"+212 5 22 …", mail:"ct0181@iota.com" },
+    { id:"CONTACT-0018", nom:"Contact CT-0182", fonction:"RH", societe:"IOTA", unite:"—", statut:null, tel:"+212 5 22 …", mail:"ct0182@iota.com" },
+    { id:"CONTACT-0019", nom:"Contact CT-0191", fonction:"RH", societe:"KAPPA", unite:"Pôle Exploitation", statut:"prospect", tel:"+33 1 44 …", mail:"ct0191@kappa.com" },
+    { id:"CONTACT-0020", nom:"Contact CT-0192", fonction:"Décisionnaire", societe:"KAPPA", unite:"—", statut:null, tel:"+33 1 44 …", mail:"ct0192@kappa.com" }
+  ],
+  candidat: [
+    { id:"PC-0001", nom:"Candidat C-0088", titre:"Développeur Java senior", etat:"complété", dispo:"immédiate", provenance:"LinkedIn", ressource:"oui", ville:"Casablanca" },
+    { id:"PC-0002", nom:"Candidat C-0091", titre:"Architecte cloud", etat:"complété", dispo:"1 à 3 mois", provenance:"Cooptation", ressource:"non", ville:"Rabat" },
+    { id:"PC-0003", nom:"Candidat C-0094", titre:"Analyste métier", etat:"brouillon", dispo:"—", provenance:"Site carrière", ressource:"non", ville:"Paris" },
+    { id:"PC-0004", nom:"Candidat C-0097", titre:"Chef de projet", etat:"complété", dispo:"immédiate", provenance:"Cabinet", ressource:"oui", ville:"Lyon" },
+    { id:"PC-0005", nom:"Candidat C-0100", titre:"Ingénieur DevOps", etat:"complété", dispo:"1 à 3 mois", provenance:"Candidature spontanée", ressource:"non", ville:"Dubaï" },
+    { id:"PC-0006", nom:"Candidat C-0103", titre:"Data engineer", etat:"brouillon", dispo:"—", provenance:"LinkedIn", ressource:"non", ville:"New York" },
+    { id:"PC-0007", nom:"Candidat C-0106", titre:"Développeur React", etat:"complété", dispo:"immédiate", provenance:"Cooptation", ressource:"non", ville:"Montréal" },
+    { id:"PC-0008", nom:"Candidat C-0109", titre:"Expert sécurité", etat:"complété", dispo:"1 à 3 mois", provenance:"Site carrière", ressource:"oui", ville:"Tanger" },
+    { id:"PC-0009", nom:"Candidat C-0112", titre:"Administrateur système", etat:"complété", dispo:"3 mois et plus", provenance:"Cabinet", ressource:"non", ville:"Marrakech" },
+    { id:"PC-0010", nom:"Candidat C-0115", titre:"Product owner", etat:"brouillon", dispo:"—", provenance:"Candidature spontanée", ressource:"non", ville:"Toulouse" },
+    { id:"PC-0011", nom:"Candidat C-0118", titre:"Testeur QA", etat:"complété", dispo:"1 à 3 mois", provenance:"LinkedIn", ressource:"non", ville:"Casablanca" },
+    { id:"PC-0012", nom:"Candidat C-0121", titre:"Développeur Python", etat:"complété", dispo:"3 mois et plus", provenance:"Cooptation", ressource:"oui", ville:"Rabat" },
+    { id:"PC-0013", nom:"Candidat C-0124", titre:"Architecte données", etat:"complété", dispo:"immédiate", provenance:"Site carrière", ressource:"non", ville:"Paris" },
+    { id:"PC-0014", nom:"Candidat C-0127", titre:"Scrum master", etat:"brouillon", dispo:"—", provenance:"Cabinet", ressource:"non", ville:"Lyon" },
+    { id:"PC-0015", nom:"Candidat C-0130", titre:"Consultant SAP", etat:"complété", dispo:"3 mois et plus", provenance:"Candidature spontanée", ressource:"non", ville:"Dubaï" },
+    { id:"PC-0016", nom:"Candidat C-0133", titre:"Ingénieur réseau", etat:"complété", dispo:"immédiate", provenance:"LinkedIn", ressource:"oui", ville:"New York" },
+    { id:"PC-0017", nom:"Candidat C-0136", titre:"Développeur mobile", etat:"brouillon", dispo:"—", provenance:"Cooptation", ressource:"non", ville:"Montréal" },
+    { id:"PC-0018", nom:"Candidat C-0139", titre:"UX designer", etat:"complété", dispo:"3 mois et plus", provenance:"Site carrière", ressource:"non", ville:"Tanger" },
+    { id:"PC-0019", nom:"Candidat C-0142", titre:"Analyste BI", etat:"complété", dispo:"immédiate", provenance:"Cabinet", ressource:"non", ville:"Marrakech" },
+    { id:"PC-0020", nom:"Candidat C-0145", titre:"Expert Kubernetes", etat:"brouillon", dispo:"—", provenance:"Candidature spontanée", ressource:"non", ville:"Toulouse" }
+  ],
+  ressource: [
+    { id:"PR-0001", nom:"Ressource R-0142", titre:"Chef de projet", type:"interne", fournisseur:"—", etat:"en mission", agence:"B", charge:60, prev:50, missions:1 },
+    { id:"PR-0002", nom:"Ressource R-0159", titre:"Ingénieur DevOps", type:"externe", fournisseur:"ZETA", etat:"en mission", agence:"A", charge:0, prev:40, missions:2 },
+    { id:"PR-0003", nom:"Ressource R-0176", titre:"Data engineer", type:"interne", fournisseur:"—", etat:"disponible", agence:"A", charge:0, prev:0, missions:3 },
+    { id:"PR-0004", nom:"Ressource R-0193", titre:"Développeur React", type:"interne", fournisseur:"—", etat:"en mission", agence:"B", charge:100, prev:0, missions:1 },
+    { id:"PR-0005", nom:"Ressource R-0210", titre:"Expert sécurité", type:"externe", fournisseur:"ZETA", etat:"en mission", agence:"A", charge:80, prev:20, missions:2 },
+    { id:"PR-0006", nom:"Ressource R-0227", titre:"Administrateur système", type:"interne", fournisseur:"—", etat:"en mission", agence:"A", charge:40, prev:30, missions:3 },
+    { id:"PR-0007", nom:"Ressource R-0244", titre:"Product owner", type:"interne", fournisseur:"—", etat:"disponible", agence:"B", charge:0, prev:0, missions:1 },
+    { id:"PR-0008", nom:"Ressource R-0261", titre:"Testeur QA", type:"interne", fournisseur:"—", etat:"en mission", agence:"A", charge:90, prev:10, missions:2 },
+    { id:"PR-0009", nom:"Ressource R-0278", titre:"Développeur Python", type:"externe", fournisseur:"KAPPA", etat:"en mission", agence:"A", charge:55, prev:25, missions:3 },
+    { id:"PR-0010", nom:"Ressource R-0295", titre:"Architecte données", type:"interne", fournisseur:"—", etat:"en mission", agence:"B", charge:70, prev:0, missions:1 },
+    { id:"PR-0011", nom:"Ressource R-0312", titre:"Scrum master", type:"externe", fournisseur:"ZETA", etat:"en mission", agence:"A", charge:35, prev:45, missions:2 },
+    { id:"PR-0012", nom:"Ressource R-0329", titre:"Consultant SAP", type:"interne", fournisseur:"—", etat:"disponible", agence:"A", charge:0, prev:0, missions:3 },
+    { id:"PR-0013", nom:"Ressource R-0346", titre:"Ingénieur réseau", type:"externe", fournisseur:"GAMMA", etat:"en mission", agence:"B", charge:100, prev:0, missions:1 },
+    { id:"PR-0014", nom:"Ressource R-0363", titre:"Développeur mobile", type:"interne", fournisseur:"—", etat:"sortie", agence:"A", charge:0, prev:0, missions:2 }
+  ],
+  besoin: [
+    { id:"BESOIN-0001", titre:"Deux développeurs Java seniors", societe:"ALPHA", contact:"Contact CT-0101", agence:"A", etat:"en recherche", prio:"P1", signees:1, postes:2, demarrage:"01/03/2027", type:"régie", budget:"[BUDGET] EUR" },
+    { id:"BESOIN-0002", titre:"Architecte cloud", societe:"BETA", contact:"Contact CT-0111", agence:"B", etat:"à pourvoir", prio:"P2", signees:0, postes:1, demarrage:"01/05/2027", type:"forfait", budget:"[BUDGET] EUR" },
+    { id:"BESOIN-0003", titre:"Trois ingénieurs DevOps", societe:"DELTA", contact:"Contact CT-0131", agence:"A", etat:"en recherche", prio:"P1", signees:2, postes:3, demarrage:"15/04/2027", type:"régie", budget:"[BUDGET] EUR" },
+    { id:"BESOIN-0004", titre:"Analyste BI", societe:"EPSILON", contact:"Contact CT-0141", agence:"B", etat:"à pourvoir", prio:"P3", signees:0, postes:1, demarrage:"01/06/2027", type:"régie", budget:"[BUDGET] EUR" },
+    { id:"BESOIN-0005", titre:"Expert sécurité", societe:"ETA", contact:"Contact CT-0161", agence:"A", etat:"pourvu", prio:"P1", signees:1, postes:1, demarrage:"01/02/2027", type:"forfait", budget:"[BUDGET] EUR" },
+    { id:"BESOIN-0006", titre:"Product owner", societe:"THETA", contact:"Contact CT-0171", agence:"B", etat:"suspendu", prio:"P2", signees:0, postes:1, demarrage:"—", type:"régie", budget:"[BUDGET] EUR" },
+    { id:"BESOIN-0007", titre:"Deux développeurs React", societe:"KAPPA", contact:"Contact CT-0191", agence:"A", etat:"en recherche", prio:"P2", signees:1, postes:2, demarrage:"02/05/2027", type:"régie", budget:"[BUDGET] EUR" },
+    { id:"BESOIN-0008", titre:"Consultant SAP", societe:"IOTA", contact:"Contact CT-0181", agence:"B", etat:"fermé", prio:"P3", signees:0, postes:1, demarrage:"—", type:"forfait", budget:"[BUDGET] EUR" },
+    { id:"BESOIN-0009", titre:"Data engineer", societe:"LAMBDA", contact:"—", agence:"A", etat:"à pourvoir", prio:"P1", signees:0, postes:1, demarrage:"01/07/2027", type:"régie", budget:"[BUDGET] EUR" }
+  ],
+  positionnement: [
+    { id:"POS-0001", besoin:"BESOIN-0001", personne:"Candidat C-0088", profil:"candidat", etat:"présenté", cv:"—", decision:"—", motif:"—" },
+    { id:"POS-0002", besoin:"BESOIN-0002", personne:"Ressource R-0159", profil:"ressource", etat:"retenu", cv:"présenté", decision:"10/02/2027", motif:"—" },
+    { id:"POS-0003", besoin:"BESOIN-0003", personne:"Candidat C-0094", profil:"candidat", etat:"refusé", cv:"présenté", decision:"10/02/2027", motif:"profil non retenu par le client" },
+    { id:"POS-0004", besoin:"BESOIN-0004", personne:"Ressource R-0193", profil:"ressource", etat:"retiré", cv:"présenté", decision:"—", motif:"plus disponible" },
+    { id:"POS-0005", besoin:"BESOIN-0005", personne:"Candidat C-0100", profil:"candidat", etat:"cv envoyé", cv:"présenté", decision:"—", motif:"—" },
+    { id:"POS-0006", besoin:"BESOIN-0006", personne:"Ressource R-0227", profil:"ressource", etat:"présenté", cv:"—", decision:"—", motif:"—" },
+    { id:"POS-0007", besoin:"BESOIN-0007", personne:"Candidat C-0106", profil:"candidat", etat:"retenu", cv:"présenté", decision:"10/02/2027", motif:"—" },
+    { id:"POS-0008", besoin:"BESOIN-0008", personne:"Ressource R-0261", profil:"ressource", etat:"refusé", cv:"présenté", decision:"10/02/2027", motif:"profil non retenu par le client" },
+    { id:"POS-0009", besoin:"BESOIN-0009", personne:"Candidat C-0112", profil:"candidat", etat:"retiré", cv:"présenté", decision:"—", motif:"plus disponible" },
+    { id:"POS-0010", besoin:"BESOIN-0001", personne:"Ressource R-0295", profil:"ressource", etat:"cv envoyé", cv:"présenté", decision:"—", motif:"—" },
+    { id:"POS-0011", besoin:"BESOIN-0002", personne:"Candidat C-0118", profil:"candidat", etat:"présenté", cv:"—", decision:"—", motif:"—" },
+    { id:"POS-0012", besoin:"BESOIN-0003", personne:"Ressource R-0329", profil:"ressource", etat:"retenu", cv:"présenté", decision:"10/02/2027", motif:"—" },
+    { id:"POS-0013", besoin:"BESOIN-0004", personne:"Candidat C-0124", profil:"candidat", etat:"refusé", cv:"présenté", decision:"10/02/2027", motif:"profil non retenu par le client" },
+    { id:"POS-0014", besoin:"BESOIN-0005", personne:"Ressource R-0363", profil:"ressource", etat:"retiré", cv:"présenté", decision:"—", motif:"plus disponible" },
+    { id:"POS-0015", besoin:"BESOIN-0006", personne:"Candidat C-0130", profil:"candidat", etat:"cv envoyé", cv:"présenté", decision:"—", motif:"—" },
+    { id:"POS-0016", besoin:"BESOIN-0007", personne:"Ressource R-0159", profil:"ressource", etat:"présenté", cv:"—", decision:"—", motif:"—" },
+    { id:"POS-0017", besoin:"BESOIN-0008", personne:"Candidat C-0136", profil:"candidat", etat:"retenu", cv:"présenté", decision:"10/02/2027", motif:"—" },
+    { id:"POS-0018", besoin:"BESOIN-0009", personne:"Ressource R-0193", profil:"ressource", etat:"refusé", cv:"présenté", decision:"10/02/2027", motif:"profil non retenu par le client" }
+  ],
+  projet: [
+    { id:"PROJET-0001", ref:"PRJ-0001", titre:"Plateforme Alpha — lot 1", societe:"ALPHA", contact:"Contact CT-0101", besoin:"BESOIN-0001", type:"régie", etat:"ouvert", prestations:3, agence:"A" },
+    { id:"PROJET-0002", ref:"PRJ-0002", titre:"Audit Alpha — clos", societe:"ALPHA", contact:"Contact CT-0101", besoin:"—", type:"forfait", etat:"clos", prestations:1, agence:"B" },
+    { id:"PROJET-0003", ref:"PRJ-0003", titre:"Maintenance 2027", societe:"ALPHA", contact:"Contact CT-0101", besoin:"—", type:"régie", etat:"ouvert", prestations:2, agence:"A" },
+    { id:"PROJET-0004", ref:"PRJ-0004", titre:"Socle DevOps Delta", societe:"DELTA", contact:"Contact CT-0131", besoin:"BESOIN-0003", type:"régie", etat:"ouvert", prestations:3, agence:"B" },
+    { id:"PROJET-0005", ref:"PRJ-0005", titre:"Migration cloud Delta", societe:"DELTA", contact:"Contact CT-0131", besoin:"—", type:"forfait", etat:"ouvert", prestations:1, agence:"A" },
+    { id:"PROJET-0006", ref:"PRJ-0006", titre:"Sécurisation Eta", societe:"ETA", contact:"Contact CT-0161", besoin:"BESOIN-0005", type:"forfait", etat:"ouvert", prestations:1, agence:"B" },
+    { id:"PROJET-0007", ref:"PRJ-0007", titre:"Refonte portail Kappa", societe:"KAPPA", contact:"Contact CT-0191", besoin:"BESOIN-0007", type:"régie", etat:"ouvert", prestations:2, agence:"A" },
+    { id:"PROJET-0008", ref:"PRJ-0008", titre:"Exploitation Kappa", societe:"KAPPA", contact:"Contact CT-0191", besoin:"—", type:"régie", etat:"ouvert", prestations:1, agence:"B" },
+    { id:"PROJET-0009", ref:"PRJ-0009", titre:"Décisionnel Epsilon", societe:"EPSILON", contact:"Contact CT-0141", besoin:"—", type:"forfait", etat:"clos", prestations:1, agence:"A" },
+    { id:"PROJET-0010", ref:"PRJ-0010", titre:"TMA Zeta", societe:"ZETA", contact:"Contact CT-0151", besoin:"—", type:"régie", etat:"ouvert", prestations:2, agence:"B" },
+    { id:"PROJET-0011", ref:"PRJ-0011", titre:"Cadrage Lambda", societe:"LAMBDA", contact:"—", besoin:"—", type:"forfait", etat:"ouvert", prestations:1, agence:"A" }
+  ],
+  prestation: [
+    { id:"PRESTATION-0001", ressource:"Ressource R-0142", projet:"Plateforme Alpha — lot 1", etat:"signée", debut:"01/03/2027", fin:"31/08/2027", taux:60, tjm:"[TARIF]", devise:"EUR", cjmDevise:"EUR", jours:"1.2", marge:"—" },
+    { id:"PRESTATION-0002", ressource:"Ressource R-0142", projet:"Plateforme Alpha — lot 1", etat:"prévisionnelle", debut:"01/04/2027", fin:"30/04/2027", taux:50, tjm:"[TARIF]", devise:"EUR", cjmDevise:"EUR", jours:"0.0", marge:"—" },
+    { id:"PRESTATION-0003", ressource:"Ressource R-0159", projet:"Plateforme Alpha — lot 1", etat:"prévisionnelle", debut:"01/04/2027", fin:"30/09/2027", taux:40, tjm:"[TARIF]", devise:"EUR", cjmDevise:"EUR", jours:"0.0", marge:"—" },
+    { id:"PRESTATION-0004", ressource:"Ressource R-0176", projet:"Audit Alpha — clos", etat:"clôturée", debut:"05/01/2027", fin:"27/02/2027", taux:100, tjm:"[TARIF]", devise:"EUR", cjmDevise:"EUR", jours:"1.0", marge:"— aucun coût chiffré" },
+    { id:"PRESTATION-0005", ressource:"Ressource R-0142", projet:"Maintenance 2027", etat:"clôturée", debut:"01/04/2027", fin:"30/09/2027", taux:20, tjm:"500", devise:"EUR", cjmDevise:"MAD", jours:"0.0", marge:"— EUR / MAD, aucun taux" },
+    { id:"PRESTATION-0006", ressource:"Ressource R-0193", projet:"Socle DevOps Delta", etat:"signée", debut:"15/04/2027", fin:"31/12/2027", taux:100, tjm:"[TARIF]", devise:"EUR", cjmDevise:"EUR", jours:"3.0", marge:"—" },
+    { id:"PRESTATION-0007", ressource:"Ressource R-0210", projet:"Socle DevOps Delta", etat:"signée", debut:"15/04/2027", fin:"31/10/2027", taux:80, tjm:"[TARIF]", devise:"EUR", cjmDevise:"EUR", jours:"2.0", marge:"—" },
+    { id:"PRESTATION-0008", ressource:"Ressource R-0227", projet:"Socle DevOps Delta", etat:"prévisionnelle", debut:"01/06/2027", fin:"31/12/2027", taux:50, tjm:"[TARIF]", devise:"EUR", cjmDevise:"EUR", jours:"0.0", marge:"—" },
+    { id:"PRESTATION-0009", ressource:"Ressource R-0244", projet:"Migration cloud Delta", etat:"signée", debut:"01/03/2027", fin:"30/06/2027", taux:100, tjm:"[TARIF]", devise:"USD", cjmDevise:"USD", jours:"4.5", marge:"—" },
+    { id:"PRESTATION-0010", ressource:"Ressource R-0261", projet:"Sécurisation Eta", etat:"signée", debut:"01/02/2027", fin:"31/07/2027", taux:90, tjm:"[TARIF]", devise:"EUR", cjmDevise:"EUR", jours:"5.0", marge:"—" },
+    { id:"PRESTATION-0011", ressource:"Ressource R-0278", projet:"Refonte portail Kappa", etat:"signée", debut:"02/05/2027", fin:"31/12/2027", taux:60, tjm:"[TARIF]", devise:"AED", cjmDevise:"AED", jours:"0.0", marge:"—" },
+    { id:"PRESTATION-0012", ressource:"Ressource R-0295", projet:"Refonte portail Kappa", etat:"prévisionnelle", debut:"02/05/2027", fin:"31/12/2027", taux:50, tjm:"[TARIF]", devise:"AED", cjmDevise:"EUR", jours:"0.0", marge:"—" },
+    { id:"PRESTATION-0013", ressource:"Ressource R-0312", projet:"Exploitation Kappa", etat:"signée", debut:"01/01/2027", fin:"31/12/2027", taux:35, tjm:"[TARIF]", devise:"MAD", cjmDevise:"MAD", jours:"6.0", marge:"—" },
+    { id:"PRESTATION-0014", ressource:"Ressource R-0329", projet:"Décisionnel Epsilon", etat:"clôturée", debut:"01/09/2026", fin:"31/12/2026", taux:100, tjm:"[TARIF]", devise:"EUR", cjmDevise:"EUR", jours:"62.0", marge:"— clôturée avant la reprise" },
+    { id:"PRESTATION-0015", ressource:"Ressource R-0346", projet:"TMA Zeta", etat:"signée", debut:"01/04/2027", fin:"31/03/2028", taux:100, tjm:"[TARIF]", devise:"EUR", cjmDevise:"EUR", jours:"1.0", marge:"—" },
+    { id:"PRESTATION-0016", ressource:"Ressource R-0363", projet:"TMA Zeta", etat:"annulée", debut:"01/04/2027", fin:"30/04/2027", taux:0, tjm:"[TARIF]", devise:"EUR", cjmDevise:"EUR", jours:"0.0", marge:"—" },
+    { id:"PRESTATION-0017", ressource:"Ressource R-0159", projet:"Cadrage Lambda", etat:"prévisionnelle", debut:"01/07/2027", fin:"31/08/2027", taux:30, tjm:"[TARIF]", devise:"EUR", cjmDevise:"EUR", jours:"0.0", marge:"—" },
+    { id:"PRESTATION-0018", ressource:"Ressource R-0193", projet:"Maintenance 2027", etat:"signée", debut:"01/04/2027", fin:"31/12/2027", taux:25, tjm:"[TARIF]", devise:"EUR", cjmDevise:"EUR", jours:"0.6", marge:"—" }
+  ],
+  temps: [
+    { id:"TEMPS-0001", jour:"01/03/2027", ressource:"Ressource R-0142", prestation:"PRESTATION-0001", qte:"1.0", nature:"saisie normale" },
+    { id:"TEMPS-0002", jour:"02/04/2027", ressource:"Ressource R-0142", prestation:"PRESTATION-0002", qte:"0.5", nature:"saisie normale" },
+    { id:"TEMPS-0003", jour:"03/03/2027", ressource:"Ressource R-0159", prestation:"PRESTATION-0003", qte:"0.6", nature:"saisie normale" },
+    { id:"TEMPS-0004", jour:"04/04/2027", ressource:"Ressource R-0176", prestation:"PRESTATION-0004", qte:"0.8", nature:"saisie normale" },
+    { id:"TEMPS-0005", jour:"05/03/2027", ressource:"Ressource R-0142", prestation:"PRESTATION-0005", qte:"1.0", nature:"saisie normale" },
+    { id:"TEMPS-0006", jour:"06/04/2027", ressource:"Ressource R-0193", prestation:"PRESTATION-0006", qte:"0.5", nature:"saisie normale" },
+    { id:"TEMPS-0007", jour:"07/03/2027", ressource:"Ressource R-0210", prestation:"PRESTATION-0007", qte:"0.6", nature:"saisie normale" },
+    { id:"TEMPS-0008", jour:"08/04/2027", ressource:"Ressource R-0227", prestation:"PRESTATION-0008", qte:"0.8", nature:"ajustement après clôture" },
+    { id:"TEMPS-0009", jour:"09/03/2027", ressource:"Ressource R-0142", prestation:"PRESTATION-0001", qte:"1.0", nature:"saisie normale" },
+    { id:"TEMPS-0010", jour:"10/04/2027", ressource:"Ressource R-0142", prestation:"PRESTATION-0002", qte:"0.5", nature:"saisie normale" },
+    { id:"TEMPS-0011", jour:"11/03/2027", ressource:"Ressource R-0159", prestation:"PRESTATION-0003", qte:"0.6", nature:"saisie normale" },
+    { id:"TEMPS-0012", jour:"12/04/2027", ressource:"Ressource R-0176", prestation:"PRESTATION-0004", qte:"0.8", nature:"saisie normale" },
+    { id:"TEMPS-0013", jour:"13/03/2027", ressource:"Ressource R-0142", prestation:"PRESTATION-0005", qte:"1.0", nature:"saisie normale" },
+    { id:"TEMPS-0014", jour:"14/04/2027", ressource:"Ressource R-0193", prestation:"PRESTATION-0006", qte:"0.5", nature:"saisie normale" },
+    { id:"TEMPS-0015", jour:"15/03/2027", ressource:"Ressource R-0210", prestation:"PRESTATION-0007", qte:"0.6", nature:"saisie normale" },
+    { id:"TEMPS-0016", jour:"16/04/2027", ressource:"Ressource R-0227", prestation:"PRESTATION-0008", qte:"0.8", nature:"saisie normale" },
+    { id:"TEMPS-0017", jour:"17/03/2027", ressource:"Ressource R-0142", prestation:"PRESTATION-0001", qte:"1.0", nature:"saisie normale" },
+    { id:"TEMPS-0018", jour:"18/04/2027", ressource:"Ressource R-0142", prestation:"PRESTATION-0002", qte:"0.5", nature:"saisie normale" },
+    { id:"TEMPS-0019", jour:"19/03/2027", ressource:"Ressource R-0159", prestation:"PRESTATION-0003", qte:"0.6", nature:"saisie normale" },
+    { id:"TEMPS-0020", jour:"20/04/2027", ressource:"Ressource R-0176", prestation:"PRESTATION-0004", qte:"0.8", nature:"ajustement après clôture" },
+    { id:"TEMPS-0021", jour:"21/03/2027", ressource:"Ressource R-0142", prestation:"PRESTATION-0005", qte:"1.0", nature:"saisie normale" },
+    { id:"TEMPS-0022", jour:"22/04/2027", ressource:"Ressource R-0193", prestation:"PRESTATION-0006", qte:"0.5", nature:"saisie normale" },
+    { id:"TEMPS-0023", jour:"23/03/2027", ressource:"Ressource R-0210", prestation:"PRESTATION-0007", qte:"0.6", nature:"saisie normale" },
+    { id:"TEMPS-0024", jour:"24/04/2027", ressource:"Ressource R-0227", prestation:"PRESTATION-0008", qte:"0.8", nature:"saisie normale" },
+    { id:"TEMPS-0025", jour:"25/03/2027", ressource:"Ressource R-0142", prestation:"PRESTATION-0001", qte:"1.0", nature:"saisie normale" },
+    { id:"TEMPS-0026", jour:"26/04/2027", ressource:"Ressource R-0142", prestation:"PRESTATION-0002", qte:"0.5", nature:"saisie normale" }
+  ],
+  absence: [
+    { id:"ABSENCE-0001", ressource:"Ressource R-0176", type:"congé", debut:"14/04/2027", fin:"18/04/2027", jours:"5", statut:"enregistrée" },
+    { id:"ABSENCE-0002", ressource:"Ressource R-0142", type:"congé", debut:"03/05/2027", fin:"07/05/2027", jours:"5", statut:"enregistrée" },
+    { id:"ABSENCE-0003", ressource:"Ressource R-0227", type:"maladie", debut:"22/03/2027", fin:"24/03/2027", jours:"3", statut:"enregistrée" },
+    { id:"ABSENCE-0004", ressource:"Ressource R-0295", type:"formation", debut:"12/04/2027", fin:"13/04/2027", jours:"2", statut:"enregistrée" },
+    { id:"ABSENCE-0005", ressource:"Ressource R-0193", type:"congé sans solde", debut:"01/06/2027", fin:"30/06/2027", jours:"22", statut:"enregistrée" }
+  ],
+  action: [
+    { id:"ACTION-0001", type:"relance", date:"02/04/2027", porteur:"BESOIN-0001", contenu:"Relancer ALPHA sur le second poste", responsable:"Staffing" },
+    { id:"ACTION-0002", type:"entretien", date:"28/03/2027", porteur:"PC-0001", contenu:"Entretien technique — retour favorable", responsable:"Évaluateur" },
+    { id:"ACTION-0003", type:"note", date:"25/03/2027", porteur:"SOCIETE-0002", contenu:"BETA demande une proposition sous 15 j", responsable:"Ing. d'affaires" },
+    { id:"ACTION-0004", type:"appel", date:"24/03/2027", porteur:"SOCIETE-0004", contenu:"DELTA valide le cadrage du socle DevOps", responsable:"Ing. d'affaires" },
+    { id:"ACTION-0005", type:"relance", date:"23/03/2027", porteur:"BESOIN-0003", contenu:"Deux postes encore ouverts sur les trois", responsable:"Staffing" },
+    { id:"ACTION-0006", type:"entretien", date:"20/03/2027", porteur:"PC-0004", contenu:"Second entretien — en attente du client", responsable:"Évaluateur" },
+    { id:"ACTION-0007", type:"note", date:"18/03/2027", porteur:"PROJET-0004", contenu:"Démarrage confirmé au 15 avril", responsable:"DP" },
+    { id:"ACTION-0008", type:"appel", date:"17/03/2027", porteur:"CONTACT-0005", contenu:"Point mensuel — aucune demande nouvelle", responsable:"Ing. d'affaires" },
+    { id:"ACTION-0009", type:"relance", date:"14/03/2027", porteur:"BESOIN-0007", contenu:"CV envoyé le 2 mars, aucune réponse", responsable:"Staffing" },
+    { id:"ACTION-0010", type:"note", date:"12/03/2027", porteur:"PR-0003", contenu:"Disponible à partir du 1er mai", responsable:"RH" },
+    { id:"ACTION-0011", type:"entretien", date:"10/03/2027", porteur:"PC-0008", contenu:"Profil écarté — prétentions hors budget", responsable:"Évaluateur" },
+    { id:"ACTION-0012", type:"note", date:"06/03/2027", porteur:"SOCIETE-0008", contenu:"THETA suspend son besoin, budget gelé", responsable:"Ing. d'affaires" }
+  ],
+  politique: [
+    { cle:"besoin.pourvu.garde_minimale", famille:"Besoin",        valeur:"tous_les_postes_signes", defaut:true,  effet:"Un poste = une prestation signée. Il en faut autant que de postes visés.", source:"F3 · T-1" },
+    { cle:"besoin.staffing.declencheur",  famille:"Besoin",        valeur:"premier_positionnement", defaut:true,  effet:"Ce qui fait passer le besoin de « à pourvoir » à « en recherche ».",       source:"G3" },
+    { cle:"positionnement.unicite",       famille:"Positionnement",valeur:"actifs",                 defaut:true,  effet:"Proposer deux fois la même personne sur un besoin.",                        source:"G7" },
+    { cle:"projet.contact",               famille:"Projet",        valeur:"obligatoire",            defaut:true,  effet:"Créer un projet sans contact.",                                            source:"US5 · F4" },
+    { cle:"prestation.surcharge.mode",    famille:"Prestation",    valeur:"alerte",                 defaut:true,  effet:"Ce qui arrive quand la charge engagée dépasse le seuil.",                   source:"DEC-10" },
+    { cle:"projet.devises_mixtes",        famille:"Projet",        valeur:"autorise",               defaut:true,  effet:"Une prestation dans une autre devise que la première du projet.",           source:"D-9" },
+    { cle:"temps.plafond_jour",           famille:"Temps",         valeur:"alerte",                 defaut:true,  effet:"Une personne dépasse 1 jour sur une même date.",                            source:"P-6" },
+    { cle:"societe.passage_client.propagation", famille:"Société",  valeur:"branche_contractante",   defaut:true,  effet:"Jusqu'où descend le statut client.",                                        source:"BM-15 · D-2" },
+    { cle:"droits.surcharge_restrictive", famille:"Droits",        valeur:"restriction_gagne",      defaut:true,  effet:"Ce qui l'emporte quand un groupe autorise et un autre restreint.",          source:"F28", rouge:true },
+    { cle:"ui.palette",                   famille:"Apparence",     valeur:"avaliance",              defaut:true,  effet:"Remplit les deux rôles colorés d'un coup.",                                 source:"18/09" },
+    { cle:"auth.fournisseur",             famille:"Installation",  valeur:"microsoft",              defaut:true,  effet:"Comment on se connecte. Chaque installation a le sien.",                    source:"18/09" },
+    { cle:"rgpd.duree_conservation_candidat", famille:"Installation", valeur:"24 mois",             defaut:true,  effet:"Au-delà, l'anonymisation est proposée.",                                    source:"RGPD" }
+  ],
+  ref: [
+    { ref:"ref_etat_besoin",        code:"staffing",   libelle:"En recherche",  categorie:"en_recherche",     systeme:"oui", actif:"oui" },
+    { ref:"ref_etat_besoin",        code:"pourvu",     libelle:"Pourvu",        categorie:"pourvu",           systeme:"oui", actif:"oui" },
+    { ref:"ref_etat_positionnement",code:"retenu",     libelle:"Retenu",        categorie:"terminal_positif", systeme:"oui", actif:"oui" },
+    { ref:"ref_etat_prestation",    code:"signee",     libelle:"Signée",        categorie:"engage",           systeme:"oui", actif:"oui" },
+    { ref:"ref_role_societe",       code:"fournisseur",libelle:"Fournisseur",   categorie:"—",                systeme:"oui", actif:"oui" },
+    { ref:"ref_statut_commercial",  code:"client",     libelle:"Client",        categorie:"—",                systeme:"oui", actif:"oui" },
+    { ref:"ref_motif_retrait",      code:"desistement",libelle:"Désistement",   categorie:"—",                systeme:"non", actif:"oui" },
+    { ref:"ref_couleur",            code:"vert_avaliance", libelle:"Vert Avaliance", categorie:"marque",      systeme:"oui", actif:"oui" },
+    { ref:"ref_outil",              code:"alertes",    libelle:"Alertes",       categorie:"—",                systeme:"oui", actif:"oui" }
+  ],
+  droit: [
+    { commande:"CreateCompany",              ia:"✓", rh:"—", rr:"—", eval:"—", staffing:"—", dp:"—", res:"—", adm:"D", sup:"—" },
+    { commande:"CreateNeed",                 ia:"✓", rh:"—", rr:"—", eval:"—", staffing:"D", dp:"—", res:"—", adm:"D", sup:"—" },
+    { commande:"PositionCandidate",          ia:"✓", rh:"✓", rr:"—", eval:"—", staffing:"D", dp:"—", res:"—", adm:"D", sup:"—" },
+    { commande:"RecordClientDecision",       ia:"✓", rh:"—", rr:"—", eval:"—", staffing:"—", dp:"—", res:"—", adm:"D", sup:"—" },
+    { commande:"ConvertCandidateToResource", ia:"—", rh:"✓", rr:"D", eval:"—", staffing:"D", dp:"—", res:"—", adm:"D", sup:"—" },
+    { commande:"DeclareNeedFilled",          ia:"—", rh:"—", rr:"—", eval:"—", staffing:"✓", dp:"—", res:"—", adm:"D", sup:"—" },
+    { commande:"CreatePrestation",           ia:"—", rh:"—", rr:"—", eval:"—", staffing:"✓", dp:"✓", res:"—", adm:"D", sup:"—" },
+    { commande:"SignPrestation",             ia:"—", rh:"—", rr:"—", eval:"—", staffing:"—", dp:"✓", res:"—", adm:"D", sup:"—", cle:true },
+    { commande:"ClosePrestation",            ia:"—", rh:"—", rr:"—", eval:"—", staffing:"D", dp:"✓", res:"—", adm:"D", sup:"—" },
+    { commande:"UpdateResourceCost",         ia:"—", rh:"D", rr:"—", eval:"—", staffing:"—", dp:"D", res:"—", adm:"D", sup:"—", cle:true },
+    { commande:"RecordTimesheet",            ia:"—", rh:"—", rr:"—", eval:"—", staffing:"✓", dp:"✓", res:"S", adm:"D", sup:"—" },
+    { commande:"RecordQualification",        ia:"—", rh:"D", rr:"D", eval:"✓", staffing:"—", dp:"—", res:"—", adm:"D", sup:"—" },
+    { commande:"SetPolicy",                  ia:"—", rh:"—", rr:"—", eval:"—", staffing:"—", dp:"—", res:"—", adm:"✓", sup:"—" },
+    { commande:"SetOwnTheme",                ia:"✓", rh:"✓", rr:"✓", eval:"✓", staffing:"✓", dp:"✓", res:"✓", adm:"✓", sup:"✓" }
+  ],
+  compte: [
+    { id:"COMPTE-0001", mail:"martin@avaliance.com", personne:"—", groupes:"IA", agence:"A", theme:"avaliance / sombre", actif:"oui" },
+    { id:"COMPTE-0002", mail:"sophie@avaliance.com", personne:"—", groupes:"RH", agence:"A", theme:"(installation)", actif:"oui" },
+    { id:"COMPTE-0003", mail:"karim@avaliance.com", personne:"—", groupes:"Staffing · DP", agence:"A", theme:"terminal / sombre", actif:"oui" },
+    { id:"COMPTE-0004", mail:"jean@avaliance.com", personne:"Ressource R-0142", groupes:"Ressource", agence:"A", theme:"(installation)", actif:"oui" },
+    { id:"COMPTE-0005", mail:"lea@avaliance.com", personne:"—", groupes:"Évaluateur", agence:"A", theme:"glace / clair", actif:"oui" },
+    { id:"COMPTE-0006", mail:"nadia@avaliance.com", personne:"—", groupes:"Staffing", agence:"B", theme:"ambre / intermediaire", actif:"oui" },
+    { id:"COMPTE-0007", mail:"omar@avaliance.com", personne:"—", groupes:"DP", agence:"B", theme:"(installation)", actif:"oui" },
+    { id:"COMPTE-0008", mail:"sara@avaliance.com", personne:"—", groupes:"RR", agence:"A", theme:"encre / clair", actif:"non" },
+    { id:"COMPTE-0009", mail:"youssef@avaliance.com", personne:"Ressource R-0193", groupes:"Ressource", agence:"B", theme:"(installation)", actif:"oui" },
+    { id:"COMPTE-0010", mail:"admin@avaliance.com", personne:"—", groupes:"Administrateur", agence:"A", theme:"phosphore / sombre", actif:"oui" }
+  ],
+  agence: [
+    { id:"AGENCE-0001", nom:"Agence A", code:"A", pays:"Maroc",  ressources:3, nonOuvres:114 },
+    { id:"AGENCE-0002", nom:"Agence B", code:"B", pays:"France", ressources:0, nonOuvres:116 }
+  ],
+  ev: [
+    ["10:24","PrestationClosed","Analyste métier — marge figée, 1,0 jour saisi","change.mode",0],
+    ["10:19","Refus","« Pourvu » refusé : 1 prestation signée pour 2 postes visés","besoin.pourvu.garde_minimale",1],
+    ["09:51","ClientStatusDerived","ALPHA devient cliente — Pôle 1 › BU A › Service 1","societe.passage_client.propagation",0],
+    ["09:47","PrestationSigned","Développeur Java senior — mission engagée","",0],
+    ["09:12","NeedStateChanged","à pourvoir vers en recherche — premier positionnement","besoin.staffing.declencheur",0],
+    ["08:58","PositioningCreated","Candidat C-0088 sur Deux développeurs Java seniors","positionnement.unicite",0],
+    ["08:41","Refus","Saisie de temps refusée : le candidat n'est pas ressource","",1],
+    ["08:30","TimesheetRecorded","0,6 jour sur Plateforme Alpha — lot 1","temps.plafond_jour",0],
+    ["08:12","PrestationCreated","Ingénieur DevOps sur Socle DevOps Delta","",0],
+    ["07:58","CandidateConverted","Candidat C-0091 devient ressource","",0],
+    ["07:44","NeedSuspended","Product owner chez THETA — budget gelé","",0],
+    ["07:31","Refus","Clôture de projet refusée : 2 missions ouvertes","",1],
+    ["07:20","ClientDecisionRecorded","Expert sécurité retenu chez ETA","",0],
+    ["07:05","PrestationSigned","Architecte cloud — 80 %, Socle DevOps Delta","",0],
+    ["06:52","ProjectCreated","Refonte portail Kappa — issu de BESOIN-0007","projet.contact",0],
+    ["06:40","AbsenceRecorded","Analyste métier — congé du 14 au 18 avril","absence.validation",0],
+    ["06:28","Refus","Devise mixte signalée : vendu EUR, payé MAD","projet.devises_mixtes",1],
+    ["06:15","QualificationRecorded","Entretien technique — retour favorable","",0],
+    ["06:02","PolicyChanged","ui.epaisseur passe de medium à large","",0],
+    ["05:49","CompanyCreated","LAMBDA enregistrée — prospect","",0],
+    ["05:36","NeedClosed","Consultant SAP chez IOTA — fermé sans suite","",0],
+    ["05:24","PrestationCancelled","TMA Zeta — mission annulée avant démarrage","",0],
+    ["05:11","TimesheetAdjusted","Ajustement après clôture — 0,5 jour","",0],
+    ["04:58","ContactCreated","Contact CT-0141 chez BETA","",0],
+    ["04:45","Refus","Création de projet refusée : aucun contact","projet.contact",1],
+    ["04:32","PositioningWithdrawn","Candidat retiré — plus disponible","",0],
+    ["04:20","ResourceCostUpdated","Coût de référence modifié — permission spécifique","droits.surcharge_restrictive",0],
+    ["04:07","PrestationClosed","Consultant SAP — 62,0 jours, clôturée avant reprise","",0],
+    ["03:54","NeedFilled","Expert sécurité — 1 poste sur 1, pourvu","besoin.pourvu.garde_minimale",0],
+    ["03:41","UnitCreated","Équipe Data sous BU C — ALPHA","",0],
+    ["03:28","Refus","Ajout d'un total toutes devises refusé","",1],
+    ["03:16","PositioningCreated","Développeur React sur Refonte portail Kappa","",0],
+    ["03:03","ThemeChanged","karim@avaliance.com passe en terminal / sombre","ui.theme.choix_utilisateur",0],
+    ["02:50","AccountDisabled","sara@avaliance.com désactivée","",0],
+    ["02:37","ProjectClosed","Décisionnel Epsilon — clos","",0],
+    ["02:24","PrestationSigned","Développeur mobile — 60 %, AED","",0],
+    ["02:11","CandidateCreated","Candidat C-0145 — brouillon","",0],
+    ["01:58","Refus","Conversion refusée : dossier candidat incomplet","recrutement.approbation",1],
+    ["01:45","AgencyCalendarSet","Agence B — 116 jours non ouvrés en 2027","",0],
+    ["01:32","NeedCreated","Data engineer chez LAMBDA — P1","besoin.staffing.declencheur",0]
+  ]
+};
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LES 24 ÉCRANS — déclarés, pas codés. Cinq gabarits seulement :
+   liste · fiche · bord · grille · reglages.
+   Chaque écran nomme LES TABLES QU'IL LIT : un écran qui lit une table qui
+   n'existe pas est une erreur visible, pas une surprise à la livraison.
+   ══════════════════════════════════════════════════════════════════════════ */
+const ECRANS = {
+
+  /* ─────────────── LE TABLEAU DE BORD ─────────────── */
+  bord: { nom:"Tableau de bord", gabarit:"bord", metier:"c0", tables:["toutes, en lecture"] },
+
+  /* ─────────────── LES 7 LISTES ─────────────── */
+  societes: { nom:"Sociétés", gabarit:"liste", metier:"c1", source:"societe", tables:["societe","societe_role","unite_organisation"],
+    filtres:["Statut","Rôle","Ville"], creer:"Créer une société",
+    cols:[ {c:"nom",t:"SOCIÉTÉ",fort:1,sous:"id"}, {c:"statut",t:"STATUT",b:1}, {c:"roles",t:"RÔLES",liste:1},
+           {c:"secteur",t:"SECTEUR"}, {c:"ville",t:"VILLE"}, {c:"besoins",t:"BESOINS",n:1}, {c:"projets",t:"PROJETS",n:1} ] },
+
+  contacts: { nom:"Contacts", gabarit:"liste", metier:"c1", source:"contact", tables:["contact","societe","unite_organisation"],
+    filtres:["Société","Fonction","Statut"], creer:"Créer un contact",
+    cols:[ {c:"nom",t:"CONTACT",fort:1,sous:"id"}, {c:"fonction",t:"FONCTION"}, {c:"societe",t:"SOCIÉTÉ"},
+           {c:"unite",t:"UNITÉ"}, {c:"statut",t:"STATUT",b:1}, {c:"mail",t:"E-MAIL"} ] },
+
+  candidats: { nom:"Candidats", gabarit:"liste", metier:"c2", source:"candidat", tables:["profil_candidat","personne","document"],
+    filtres:["État","Disponibilité","Provenance"], creer:"Ouvrir un dossier",
+    cols:[ {c:"nom",t:"CANDIDAT",fort:1,sous:"titre"}, {c:"etat",t:"ÉTAT",b:1}, {c:"dispo",t:"DISPONIBILITÉ"},
+           {c:"provenance",t:"PROVENANCE"}, {c:"ville",t:"VILLE"}, {c:"ressource",t:"PROFIL RESSOURCE",b:1} ],
+    note:"Un candidat n'a ni onglet Prestations ni onglet Temps — la table prestation n'a pas de colonne pour lui." },
+
+  ressources: { nom:"Ressources", gabarit:"liste", metier:"c3", source:"ressource", tables:["profil_ressource","personne","prestation"],
+    filtres:["Type","État","Agence"], creer:"Créer une ressource",
+    cols:[ {c:"nom",t:"RESSOURCE",fort:1,sous:"titre"}, {c:"type",t:"TYPE",b:1}, {c:"fournisseur",t:"FOURNISSEUR"},
+           {c:"etat",t:"ÉTAT",b:1}, {c:"agence",t:"AGENCE"}, {c:"missions",t:"MISSIONS",n:1}, {c:"charge",t:"ENGAGÉ",pct:1} ] },
+
+  besoins: { nom:"Besoins", gabarit:"liste", metier:"c3", source:"besoin", tables:["besoin","besoin_competence","positionnement","societe"],
+    filtres:["État","Priorité","Société","Agence"], creer:"Créer un besoin",
+    cols:[ {c:"titre",t:"BESOIN",fort:1,sous:"id"}, {c:"societe",t:"SOCIÉTÉ"}, {c:"etat",t:"ÉTAT",b:1},
+           {c:"prio",t:"PRIORITÉ",b:1}, {c:"postes",t:"POSTES",fraction:"signees"}, {c:"demarrage",t:"DÉMARRAGE"} ],
+    note:"La priorité et l'état sont deux colonnes séparées. « Gagné » n'existe pas dans le cycle." },
+
+  projets: { nom:"Projets", gabarit:"liste", metier:"c4", source:"projet", tables:["projet","prestation","societe","contact"],
+    filtres:["État","Type","Société"], creer:"Créer un projet",
+    cols:[ {c:"ref",t:"RÉF.",mono:1}, {c:"titre",t:"PROJET",fort:1}, {c:"societe",t:"SOCIÉTÉ"}, {c:"contact",t:"CONTACT"},
+           {c:"type",t:"TYPE"}, {c:"etat",t:"ÉTAT",b:1}, {c:"prestations",t:"MISSIONS",n:1} ],
+    note:"Aucune colonne « ressource » : les personnes d'un projet se lisent dans ses prestations." },
+
+  prestations: { nom:"Prestations", gabarit:"liste", metier:"c4", source:"prestation", tables:["prestation","profil_ressource","projet","snapshot_marge"],
+    filtres:["État","Projet","Ressource","Devise"], creer:"Créer une prestation",
+    cols:[ {c:"ressource",t:"RESSOURCE",fort:1,sous:"id"}, {c:"projet",t:"PROJET"}, {c:"etat",t:"ÉTAT",b:1},
+           {c:"debut",t:"DÉBUT"}, {c:"fin",t:"FIN"}, {c:"taux",t:"TAUX",pct:1}, {c:"tjm",t:"TJM",devise:"devise"}, {c:"marge",t:"MARGE",faible:1} ] },
+
+  /* ─────────────── LES 7 FICHES ─────────────── */
+  fSociete: { nom:"Fiche société", gabarit:"fiche", metier:"c1", titre:"ALPHA", sous:"SOCIETE-0001 · Industrie · Casablanca",
+    etats:[["client","ok"],["aucun rôle","n"]], tables:["societe","societe_role","unite_organisation","contact","besoin","projet","action"],
+    onglets:["Synthèse","Organisation","Contacts","Besoins","Projets","Actions","Historique"], ouvert:"Organisation",
+    actions:["Requalifier prospect","Archiver"] },
+
+  fContact: { nom:"Fiche contact", gabarit:"fiche", metier:"c1", titre:"Contact CT-0101", sous:"CONTACT-0001 · Décisionnaire · ALPHA › Service 1",
+    etats:[["client","ok"]], tables:["contact","societe","unite_organisation","besoin","projet","action"],
+    onglets:["Synthèse","Besoins","Projets","Actions","Historique"], ouvert:"Synthèse",
+    actions:["Transférer","Archiver"] },
+
+  fCandidat: { nom:"Fiche candidat", gabarit:"fiche", metier:"c2", titre:"Candidat C-0088", sous:"PC-0001 · Développeur Java senior · Rabat",
+    etats:[["complété","ok"],["profil ressource existant","s"]], tables:["profil_candidat","personne","document","positionnement","qualification","action"],
+    onglets:["Synthèse","Informations","Documents","Positionnements","Qualifications","Actions","Historique"], ouvert:"Positionnements",
+    actions:["Convertir en ressource","Positionner"],
+    interdit:"Ni onglet Prestations, ni onglet Temps — ce n'est pas un choix d'écran, la table n'a pas de colonne pour un candidat (M-1)." },
+
+  fRessource: { nom:"Fiche ressource", gabarit:"fiche", metier:"c3", titre:"Ressource R-0142", sous:"PR-0001 · Développeur Java senior · interne · agence A",
+    etats:[["en mission","ok"]], tables:["profil_ressource","personne","prestation","temps","absence","document"],
+    onglets:["Synthèse","Informations","Coût de référence","Prestations","Temps","Absences","Documents","Historique"], ouvert:"Prestations",
+    verrou:"Coût de référence", actions:["Changer l'état","Positionner"] },
+
+  fBesoin: { nom:"Fiche besoin", gabarit:"fiche", metier:"c3", titre:"Deux développeurs Java seniors", sous:"BESOIN-0001 · ALPHA › Service 1 · agence A · P1",
+    etats:[["en recherche","s"],["1 / 2 postes","w"]], tables:["besoin","besoin_competence","positionnement","positionnement_suivi","projet"],
+    onglets:["Synthèse","Compétences","Positionnements","Projets","Historique"], ouvert:"Positionnements",
+    actions:["Créer le projet","Déclarer pourvu","Suspendre","Fermer"], refus:{ "Déclarer pourvu":"1 prestation signée pour 2 postes visés" } },
+
+  fProjet: { nom:"Fiche projet", gabarit:"fiche", metier:"c4", titre:"Plateforme Alpha — lot 1", sous:"PRJ-0001 · ALPHA · régie · depuis BESOIN-0001",
+    etats:[["ouvert","s"]], tables:["projet","prestation","prestation_ligne_ca","document","contact"],
+    onglets:["Synthèse","Prestations","Lignes de CA","Documents","Historique"], ouvert:"Prestations",
+    actions:["Ajouter une prestation","Clôturer le projet"], refus:{ "Clôturer le projet":"2 missions encore ouvertes" },
+    interdit:"Aucun champ « ressource » sur cette fiche : elles se lisent dans les prestations (M-5)." },
+
+  fPrestation: { nom:"Fiche prestation", gabarit:"fiche", metier:"c4", titre:"PRESTATION-0005", sous:"Ressource R-0142 · Maintenance 2027 · 20 %",
+    etats:[["clôturée","n"],["marge —","w"]], tables:["prestation","profil_ressource","temps","snapshot_marge"],
+    onglets:["Synthèse","Conditions économiques","Temps saisis","Snapshot de marge","Historique"], ouvert:"Conditions économiques",
+    verrou:"Conditions économiques", actions:["Ajuster un temps"],
+    interdit:"La ressource et les conditions sont verrouillées depuis la signature (M-4, M-14)." },
+
+  /* ─────────────── LES 5 TRANSVERSES ─────────────── */
+  charge: { nom:"Plan de charge", gabarit:"grille", metier:"c4", mode:"charge", tables:["prestation","absence","calendrier_jour_non_ouvre"] },
+  mesTemps: { nom:"Mes temps", gabarit:"grille", metier:"c4", mode:"temps", tables:["temps","prestation","compte"] },
+  mesAbsences: { nom:"Mes absences", gabarit:"grille", metier:"c4", mode:"absences", tables:["absence","profil_ressource"] },
+  actions: { nom:"Actions", gabarit:"liste", metier:"c0", source:"action", tables:["action"],
+    filtres:["Type","Porteur","Responsable"], creer:"Créer une action",
+    cols:[ {c:"contenu",t:"ACTION",fort:1}, {c:"type",t:"TYPE",b:1}, {c:"date",t:"DATE"}, {c:"porteur",t:"PORTEUR",mono:1}, {c:"responsable",t:"RESPONSABLE"} ],
+    note:"Exactement un porteur par action — jamais deux, jamais zéro (M-9)." },
+
+  /* ─────────────── LES 5 ÉCRANS D'ADMINISTRATION ─────────────── */
+  politiques: { nom:"Politiques", gabarit:"reglages", metier:"c5", mode:"politiques", tables:["politique"] },
+  referentiels: { nom:"Référentiels", gabarit:"reglages", metier:"c5", mode:"ref", tables:["ref_*"] },
+  droits: { nom:"Groupes et droits", gabarit:"reglages", metier:"c5", mode:"droits", tables:["groupe","permission","perimetre","groupe_permission_perimetre","compte_surcharge"] },
+  comptes: { nom:"Comptes", gabarit:"liste", metier:"c5", source:"compte", tables:["compte","compte_groupe","personne"],
+    filtres:["Groupe","Agence","Actif"], creer:"Créer un compte",
+    cols:[ {c:"mail",t:"COMPTE",fort:1,sous:"id"}, {c:"personne",t:"PERSONNE LIÉE"}, {c:"groupes",t:"GROUPES"},
+           {c:"agence",t:"AGENCE"}, {c:"theme",t:"APPARENCE"}, {c:"actif",t:"ACTIF",b:1} ],
+    note:"La personne liée est ce qui rend vérifiable le « soi-même » de la matrice." },
+  agences: { nom:"Agences et calendrier", gabarit:"reglages", metier:"c5", mode:"agences", tables:["agence","calendrier_jour_non_ouvre"] }
+};
+
+const MENU = [
+  { g:"PILOTAGE",   i:[["bord","bord"]] },
+  { g:"CRM",        i:[["soc","societes"],["ct","contacts"]] },
+  { g:"RECRUTEMENT",i:[["cand","candidats"]] },
+  { g:"STAFFING",   i:[["res","ressources"],["bes","besoins"]] },
+  { g:"PRODUCTION", i:[["proj","projets"],["prest","prestations"],["charge","charge"],["temps","mesTemps"],["abs","mesAbsences"]] },
+  { g:"TRANSVERSE", i:[["act","actions"]] },
+  { g:"FICHES",     i:[["fs","fSociete"],["fc","fContact"],["fk","fCandidat"],["fr","fRessource"],["fb","fBesoin"],["fp","fProjet"],["fx","fPrestation"]] },
+  { g:"ADMIN",      i:[["regl","politiques"],["ref","referentiels"],["dr","droits"],["cpt","comptes"],["ag","agences"]] }
+];
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CINQ GABARITS. 24 écrans. Aucun écran n'a de code à lui : il est déclaré.
+   ══════════════════════════════════════════════════════════════════════════ */
+const esc = (v) => String(v == null ? "" : v).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const CL_ETAT = {
+  "client":"ok","en mission":"ok","signée":"ok","retenu":"ok","complété":"ok","oui":"ok","interne":"s",
+  "en recherche":"s","présenté":"s","ouvert":"s","prévisionnelle":"s","disponible":"s","à pourvoir":"n",
+  "prospect":"n","clos":"n","clôturée":"n","brouillon":"n","non":"n","externe":"n","—":"n",
+  "P1":"k","P2":"w","P3":"n","annulée":"k","sortie":"k","relance":"w","entretien":"s","note":"n"
+};
+const bd = (v) => v == null || v === "" ? '<span class="b n">prospect</span>' : `<span class="b ${CL_ETAT[v] || "n"}">${esc(v)}</span>`;
+
+function tablesDe(e){
+  return `<div class="tables">LIT : ${e.tables.map(t => `<code>${esc(t)}</code>`).join(" ")}</div>`;
+}
+function entete(e){
+  return `<div class="eh"><div><h1>${esc(e.nom)}</h1>${e.note ? `<p class="eh-n">${e.note}</p>` : ""}</div>
+    <div class="eh-a">${e.creer ? `<button class="cta" type="button">${esc(e.creer)}</button>` : ""}</div></div>`;
+}
+
+/* ─────────────── GABARIT 1 : LISTE ─────────────── */
+function gListe(e){
+  const lignes = MONDE[e.source] || [];
+  let h = entete(e);
+  h += `<div class="pan"><h2>${esc(e.nom.toUpperCase())}<em>${lignes.length} LIGNES</em></h2>
+    <div class="barre-f">
+      <input class="rech" placeholder="Rechercher…" aria-label="Rechercher">
+      ${(e.filtres || []).map(f => `<button class="filtre" type="button">${esc(f)} <b>▾</b></button>`).join("")}
+      <span class="grow"></span><span class="pagin">1 – ${lignes.length} sur ${lignes.length}</span>
+    </div>
+    <div class="in"><div class="tb"><table><thead><tr>${
+      e.cols.map(c => `<th>${esc(c.t)}</th>`).join("")}<th></th></tr></thead><tbody>`;
+  lignes.forEach(l => {
+    h += "<tr>" + e.cols.map(c => {
+      const v = l[c.c];
+      if (c.b) return `<td>${bd(v)}</td>`;
+      if (c.liste) return `<td>${Array.isArray(v) && v.length ? v.map(x => `<span class="b s">${esc(x)}</span>`).join(" ") : '<span class="id">aucun</span>'}</td>`;
+      if (c.fraction) return `<td><span class="b ${l[c.fraction] >= v ? "ok" : "w"}">${l[c.fraction]} / ${v}</span></td>`;
+      if (c.pct) return `<td><span class="num">${v} %</span>${l.prev ? `<span class="id"> +${l.prev} prév.</span>` : ""}</td>`;
+      if (c.n) return `<td><span class="num">${esc(v)}</span></td>`;
+      if (c.devise) return `<td><span class="num">${esc(v)}</span> <span class="b s">${esc(l[c.devise])}</span>${
+        l.cjmDevise && l.cjmDevise !== l[c.devise] ? `<div class="id">coût ${esc(l.cjmDevise)}</div>` : ""}</td>`;
+      if (c.mono) return `<td><span class="id" style="font-size:10.5px">${esc(v)}</span></td>`;
+      if (c.faible) return `<td><span class="id">${esc(v)}</span></td>`;
+      if (c.fort) return `<td><span class="nom">${esc(v)}</span>${c.sous ? `<div class="id">${esc(l[c.sous])}</div>` : ""}</td>`;
+      return `<td>${esc(v)}</td>`;
+    }).join("") + `<td><button class="lien" type="button">OUVRIR</button></td></tr>`;
+  });
+  h += `</tbody></table></div></div>${tablesDe(e)}</div>`;
+  return h;
+}
+
+/* ─────────────── GABARIT 2 : FICHE À ONGLETS ─────────────── */
+const CONTENU_ONGLET = {
+  "Organisation": () => `<table><thead><tr><th>UNITÉ</th><th>TYPE</th><th>STATUT</th><th>CONTACTS</th></tr></thead><tbody>` +
+    MONDE.unite.filter(u => u.societe === "ALPHA").map(u => `<tr>
+      <td style="padding-left:${u.parent ? (u.parent === "Pôle 1" ? 16 : 32) : 0}px"><span class="nom">${esc(u.nom)}</span></td>
+      <td><span class="id">${esc(u.type)}</span></td><td>${bd(u.statut)}</td>
+      <td>${MONDE.contact.filter(c => c.unite === u.nom).map(c => esc(c.nom)).join("<br>") || '<span class="id">—</span>'}</td></tr>`).join("") +
+    `</tbody></table><p class="note-i">Le statut est écrit <b>explicitement</b> sur chaque ligne : <code>null</code> vaut prospect, jamais « hérite ». Service 2 et Pôle 2 restent prospects — la propagation n'a écrit que la branche contractante.</p>`,
+  "Positionnements": () => `<table><thead><tr><th>PERSONNE</th><th>PROFIL</th><th>ÉTAT</th><th>CV</th><th>DÉCISION</th><th></th></tr></thead><tbody>` +
+    MONDE.positionnement.map(p => `<tr><td><span class="nom">${esc(p.personne)}</span><div class="id">${esc(p.id)}</div></td>
+      <td>${bd(p.profil === "candidat" ? "brouillon" : "interne")}<span class="id"> ${esc(p.profil)}</span></td>
+      <td>${bd(p.etat)}</td><td><span class="id">${esc(p.cv)}</span></td><td><span class="id">${esc(p.decision)}</span></td>
+      <td><div class="acts">${p.etat === "retenu" ? '<span class="id">terminal</span>' :
+        '<button class="lien" type="button">CLIENT : RETENU</button><button class="lien" type="button">REFUSÉ</button><button class="lien" type="button">RETIRER</button>'}</div></td></tr>`).join("") +
+    `</tbody></table><p class="note-i">Un positionnement relie un besoin et <b>exactement un humain</b> — candidat ou ressource, jamais les deux (M-2). Un retenu ne redevient jamais proposé.</p>`,
+  "Prestations": () => `<table><thead><tr><th>PROJET</th><th>ÉTAT</th><th>PÉRIODE</th><th>TAUX</th><th>TJM</th><th>MARGE</th></tr></thead><tbody>` +
+    MONDE.prestation.filter(p => p.ressource === "Ressource R-0142" || p.projet === "Plateforme Alpha — lot 1").map(p => `<tr>
+      <td><span class="nom">${esc(p.projet)}</span><div class="id">${esc(p.id)}</div></td><td>${bd(p.etat)}</td>
+      <td><span class="num">${esc(p.debut)} → ${esc(p.fin)}</span></td><td><span class="num">${p.taux} %</span></td>
+      <td><span class="num">${esc(p.tjm)}</span> <span class="b s">${esc(p.devise)}</span></td>
+      <td><span class="id">${esc(p.marge)}</span></td></tr>`).join("") +
+    `</tbody></table><p class="note-i">La ressource d'une mission est <b>immuable</b> : remplacer quelqu'un, c'est clôturer et créer (M-4).</p>`,
+  "Conditions économiques": () => `<div class="verrou">VERROUILLÉ DEPUIS LA SIGNATURE — M-14</div>
+    <div class="champs">${[["TJM vendu HT","500","EUR"],["CJM contrat HT","3 000","MAD"],["Jours vendus","0",""],["Taux d'occupation","20 %",""],["Frais journaliers","—",""]]
+      .map(([l,v,d]) => `<div class="ch"><span class="ch-l">${l}</span><span class="ch-v num">${v}${d ? ` <span class="b s">${d}</span>` : ""}</span></div>`).join("")}</div>
+    <p class="note-i">Vente en EUR, coût en MAD, <b>aucun taux saisi</b> : la marge de cette mission vaut « — » et le snapshot garde les deux devises. On n'invente pas un taux de change (M-15).</p>`,
+  "Coût de référence": () => `<div class="verrou ko">PERMISSION SPÉCIFIQUE REQUISE — <code>UpdateResourceCost</code></div>
+    <p class="note-i">Le coût de référence n'est donné à aucun groupe par défaut : ni aux RH, ni au directeur de projet. C'est une délégation écrite, une personne à la fois — et elle se voit dans le journal.</p>`,
+  "Temps": () => `<table><thead><tr><th>JOUR</th><th>MISSION</th><th>QUANTITÉ</th><th>NATURE</th></tr></thead><tbody>` +
+    MONDE.temps.map(t => `<tr><td><span class="num">${esc(t.jour)}</span></td><td><span class="id">${esc(t.prestation)}</span></td>
+      <td><span class="num">${esc(t.qte)}</span></td><td><span class="id">${esc(t.nature)}</span></td></tr>`).join("") +
+    `</tbody></table><p class="note-i">Un temps porte <b>la même ressource que sa prestation</b> — c'est un trigger, pas une règle d'écran (M-10).</p>`
+};
+function gFiche(e){
+  const onglets = e.onglets.map(o => `<button class="ong" type="button" data-ong="${esc(o)}" aria-pressed="${o === e.ouvert}">${esc(o)}${
+    e.verrou === o ? ' <span class="cadenas">◼</span>' : ""}</button>`).join("");
+  const contenu = CONTENU_ONGLET[e.ouvert] ? CONTENU_ONGLET[e.ouvert]() :
+    `<p class="note-i">Onglet <b>${esc(e.ouvert)}</b> — ses champs viennent des tables listées en bas de l'écran, et d'aucune autre.</p>`;
+  return `<div class="eh"><div><h1>${esc(e.titre)}</h1><p class="eh-n mono-s">${esc(e.sous)}</p>
+      <div class="acts" style="margin-top:7px">${e.etats.map(([t,c]) => `<span class="b ${c}">${esc(t)}</span>`).join("")}</div></div>
+    <div class="eh-a">${(e.actions || []).map(a => {
+      const r = e.refus && e.refus[a];
+      return `<button class="${r ? "cta" : "lien"}" type="button" ${r ? `disabled title="${esc(r)}"` : ""}>${esc(a)}</button>`;
+    }).join("")}</div></div>
+  <div class="pan"><div class="ongs">${onglets}</div><div class="in">${contenu}</div>
+    ${e.interdit ? `<div class="foot ko-f">⛔ ${e.interdit}</div>` : ""}${tablesDe(e)}</div>`;
+}
+
+/* ─────────────── GABARIT 3 : GRILLE ─────────────── */
+function gGrille(e){
+  if (e.mode === "charge"){
+    let h = entete(e) + `<div class="pan"><h2>OCCUPATION — AVRIL 2027<em>
+      <span class="lg"><i style="background:var(--action)"></i>SIGNÉ</span>
+      <span class="lg"><i style="background:color-mix(in srgb,var(--action) 40%,var(--f2))"></i>PRÉV.</span>
+      <span class="lg"><i style="background:var(--warn)"></i>SEUIL</span>
+      <span class="lg"><i style="background:var(--t4)"></i>ABSENCE</span></em></h2><div class="in"><div class="tb"><table><tbody>`;
+    MONDE.ressource.forEach(r => {
+      const abs = r.nom === "Ressource R-0233";
+      const bars = Array.from({length:20}, (_, i) => {
+        if (abs && i >= 8 && i <= 12) return `<i style="background:var(--t4);height:100%"></i>`;
+        const pv = i > 2 ? r.prev : 0, tot = r.charge + pv;
+        if (!tot) return `<i style="background:var(--f4);height:10%"></i>`;
+        const he = Math.min(100, r.charge), hp = Math.min(100 - he, pv);
+        const c = r.charge > 100 ? "var(--warn)" : "var(--action)";
+        return `<i style="height:100%;background:linear-gradient(to top,${c} 0 ${he}%,color-mix(in srgb,var(--action) 40%,var(--f2)) ${he}% ${he+hp}%,transparent ${he+hp}%)"></i>`;
+      }).join("");
+      h += `<tr><td style="width:32%"><span class="nom">${esc(r.nom)}</span><div class="id">${esc(r.titre)}</div></td>
+        <td><div class="bars">${bars}</div></td><td style="width:60px"><span class="num" style="font-size:13px">${abs ? 0 : r.charge}%</span></td></tr>`;
+    });
+    return h + `</tbody></table></div></div><div class="foot">Aucune table « planning » : cette vue est <b>calculée</b> depuis les prestations, les absences et le calendrier de l'agence. Seul l'engagé déclenche l'alerte.</div>${tablesDe(e)}</div>`;
+  }
+  if (e.mode === "temps"){
+    return entete(e) + `<div class="pan"><h2>MES MISSIONS<em>RESSOURCE R-0142</em></h2><div class="in"><div class="tb">
+      <table><thead><tr><th>MISSION</th><th>ÉTAT</th><th>PÉRIODE</th><th>JOUR</th><th>QUANTITÉ</th><th></th></tr></thead><tbody>` +
+      MONDE.prestation.filter(p => p.ressource === "Ressource R-0142").map(p => `<tr>
+        <td><span class="nom">${esc(p.projet)}</span><div class="id">${esc(p.id)}</div></td><td>${bd(p.etat)}</td>
+        <td><span class="num">${esc(p.debut)} → ${esc(p.fin)}</span></td>
+        <td><input class="saisie" type="date" value="2027-04-06" ${p.etat !== "signée" ? "disabled" : ""}></td>
+        <td><input class="saisie" type="number" step="0.1" min="0" max="1" value="0.6" style="width:62px" ${p.etat !== "signée" ? "disabled" : ""}></td>
+        <td><button class="cta" type="button" ${p.etat !== "signée" ? `disabled title="Le temps se saisit sur une mission signée"` : ""}>SAISIR</button></td></tr>`).join("") +
+      `</tbody></table></div></div><div class="foot">Cet écran ne peut montrer <b>que vos missions</b> : le compte est lié à une personne, la personne à ses prestations. Saisir sur la mission d'un collègue n'est pas interdit par l'écran — la base refuse la ligne (M-10).</div>${tablesDe(e)}</div>
+      <div class="pan" style="margin-top:9px"><h2>MES LIGNES<em>${MONDE.temps.filter(t => t.ressource === "Ressource R-0142").length} SAISIES</em></h2><div class="in"><div class="tb">
+      <table><thead><tr><th>JOUR</th><th>MISSION</th><th>QUANTITÉ</th><th>NATURE</th></tr></thead><tbody>` +
+      MONDE.temps.filter(t => t.ressource === "Ressource R-0142").map(t => `<tr><td><span class="num">${esc(t.jour)}</span></td>
+        <td><span class="id">${esc(t.prestation)}</span></td><td><span class="num">${esc(t.qte)}</span></td>
+        <td><span class="id">${esc(t.nature)}</span></td></tr>`).join("") + `</tbody></table></div></div></div>`;
+  }
+  return entete(e) + `<div class="pan"><h2>MES ABSENCES<em>${MONDE.absence.length} ENREGISTRÉE</em></h2><div class="in"><div class="tb">
+    <table><thead><tr><th>TYPE</th><th>DÉBUT</th><th>FIN</th><th>JOURS</th><th>STATUT</th></tr></thead><tbody>` +
+    MONDE.absence.map(a => `<tr><td>${bd(a.type === "congé" ? "note" : a.type)}<span class="id"> ${esc(a.type)}</span></td>
+      <td><span class="num">${esc(a.debut)}</span></td><td><span class="num">${esc(a.fin)}</span></td>
+      <td><span class="num">${esc(a.jours)}</span></td><td><span class="id">${esc(a.statut)}</span></td></tr>`).join("") +
+    `</tbody></table></div></div><div class="foot">Une absence <b>n'a besoin d'aucune mission pour exister</b> (F25). Elle entre dans la capacité, pas dans l'occupation.</div>${tablesDe(e)}</div>`;
+}
+
+/* ─────────────── GABARIT 4 : RÉGLAGES ─────────────── */
+function gReglages(e){
+  if (e.mode === "politiques"){
+    const fam = {};
+    MONDE.politique.forEach(p => (fam[p.famille] = fam[p.famille] || []).push(p));
+    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 79 ; en voici un extrait.</p>` +
+      Object.keys(fam).map(f => `<div class="pan" style="margin-bottom:9px"><h2>${esc(f.toUpperCase())}</h2><div class="in"><div class="tb">
+        <table><thead><tr><th>CLÉ</th><th>VALEUR</th><th>CE QUE ÇA CHANGE</th><th>SOURCE</th></tr></thead><tbody>` +
+        fam[f].map(p => `<tr class="${p.rouge ? "rouge" : ""}"><td><code class="cle">${esc(p.cle)}</code></td>
+          <td><span class="sel">${esc(p.valeur.replace(/_/g," "))} <b>▾</b></span>${p.defaut ? '<div class="id">défaut</div>' : ""}</td>
+          <td>${esc(p.effet)}</td><td><span class="id">${esc(p.source)}</span></td></tr>`).join("") +
+        `</tbody></table></div></div></div>`).join("") +
+      `<div class="pan"><div class="foot ko-f">⛔ Les 15 murs ne sont pas ici : ils ne se règlent pas. Un candidat ne portera jamais de mission, une marge figée ne sera jamais réécrite — ce ne sont pas des préférences, c'est ce qui rend les chiffres vrais.</div>${tablesDe(e)}</div>`;
+  }
+  if (e.mode === "ref"){
+    return entete(e) + `<div class="pan"><h2>RÉFÉRENTIELS<em>27 LISTES · EXTRAIT</em></h2><div class="in"><div class="tb">
+      <table><thead><tr><th>RÉFÉRENTIEL</th><th>CODE</th><th>LIBELLÉ</th><th>CATÉGORIE</th><th>SYSTÈME</th><th>ACTIF</th></tr></thead><tbody>` +
+      MONDE.ref.map(r => `<tr><td><code class="cle">${esc(r.ref)}</code></td><td><span class="num">${esc(r.code)}</span></td>
+        <td><input class="saisie" value="${esc(r.libelle)}" style="width:130px"></td>
+        <td><span class="b s">${esc(r.categorie)}</span></td>
+        <td>${r.systeme === "oui" ? '<span class="b w">◼ SYSTÈME</span>' : '<span class="id">non</span>'}</td>
+        <td>${bd(r.actif)}</td></tr>`).join("") +
+      `</tbody></table></div></div><div class="foot">Le <b>code</b> est stable, le <b>libellé</b> se renomme, une valeur s'ajoute dans une catégorie existante. La <b>catégorie est fermée</b> : les transitions et les gardes raisonnent dessus, jamais sur le code.</div>${tablesDe(e)}</div>`;
+  }
+  if (e.mode === "droits"){
+    const G = ["ia","rh","rr","eval","staffing","dp","res","adm","sup"];
+    const T = ["IA","RH","RR","ÉVAL","STAF","DP","RES","ADM","SUP"];
+    return entete(e) + `<div class="pan"><h2>MATRICE — COMMANDE × GROUPE<em>44 COMMANDES · EXTRAIT</em></h2><div class="in"><div class="tb">
+      <table class="matrice"><thead><tr><th>COMMANDE</th>${T.map(t => `<th style="text-align:center">${t}</th>`).join("")}</tr></thead><tbody>` +
+      MONDE.droit.map(d => `<tr class="${d.cle ? "cle-l" : ""}"><td><code class="cle">${esc(d.commande)}</code></td>` +
+        G.map(g => { const v = d[g];
+          const c = v === "✓" ? "ok" : v === "D" ? "w" : v === "S" ? "s" : "vide";
+          return `<td style="text-align:center"><span class="cell ${c}">${v}</span></td>`; }).join("") + `</tr>`).join("") +
+      `</tbody></table></div></div>
+      <div class="in" style="padding-top:0"><div class="acts" style="gap:12px">
+        <span class="lg"><span class="cell ok">✓</span> attribué</span>
+        <span class="lg"><span class="cell w">D</span> délégation explicite</span>
+        <span class="lg"><span class="cell s">S</span> soi-même</span>
+        <span class="lg"><span class="cell vide">—</span> refus attendu, et il a son test</span>
+      </div></div>
+      <div class="foot">Une permission <b>n'existe jamais sans périmètre</b> : lire sur B et écrire sur A ne donne pas écrire sur B. L'administrateur n'a <b>aucun droit métier implicite</b> ; le support ne mute rien, sur les 44 lignes.</div>${tablesDe(e)}</div>`;
+  }
+  return entete(e) + `<div class="pan"><h2>AGENCES<em>${MONDE.agence.length}</em></h2><div class="in"><div class="tb">
+    <table><thead><tr><th>AGENCE</th><th>CODE</th><th>PAYS</th><th>RESSOURCES</th><th>JOURS NON OUVRÉS</th><th></th></tr></thead><tbody>` +
+    MONDE.agence.map(a => `<tr><td><span class="nom">${esc(a.nom)}</span><div class="id">${esc(a.id)}</div></td>
+      <td><span class="num">${esc(a.code)}</span></td><td>${esc(a.pays)}</td><td><span class="num">${a.ressources}</span></td>
+      <td><span class="num">${a.nonOuvres}</span> <span class="id">/ an</span></td>
+      <td><button class="lien" type="button">OUVRIR LE CALENDRIER</button></td></tr>`).join("") +
+    `</tbody></table></div></div><div class="foot">Sans le calendrier d'une agence, <b>l'occupation et la capacité sont incalculables</b> — c'était l'objet manquant n° 2 de l'audit.</div>${tablesDe(e)}</div>`;
+}
+
+const GABARITS = { liste:gListe, fiche:gFiche, grille:gGrille, reglages:gReglages, bord:() => gBord() };
+
+
+/* ─────────────── LE TABLEAU DE BORD ─────────────── */
+const FILES = {
+  staffing:[
+    { g:"warn", t:"Le besoin ALPHA ne peut pas passer « pourvu »", s:"1 prestation signée pour 2 postes visés — <code>besoin.pourvu.garde_minimale</code>.", a:"OUVRIR", ok:true },
+    { g:"struct", t:"Un candidat attend une décision client", s:"CV présenté le 2 avril, aucune réponse. C'est l'ingénieur d'affaires qui l'enregistre, pas vous.", a:"RELANCER", ok:true },
+    { g:"t4", t:"Une mission commence dans 3 semaines", s:"Architecte cloud, prévisionnelle. Elle n'entre dans le CA signé qu'à la signature.", a:"SIGNER", ok:false, pq:"Signer demande le droit de signature" }
+  ],
+  dp:[
+    { g:"ko", t:"Une mission close porte une marge « — »", s:"Vendue EUR, payée MAD, aucun taux. Le snapshot garde les deux devises et ne calcule rien.", a:"OUVRIR", ok:true },
+    { g:"warn", t:"Une prestation attend votre signature", s:"Architecte cloud, 40 %. La signer fige TJM, CJM, devises et jours — définitivement.", a:"SIGNER", ok:true },
+    { g:"struct", t:"Un projet ne peut pas être clôturé", s:"Plateforme Alpha — lot 1 porte 2 missions ouvertes. Chacune écrira sa marge en se clôturant.", a:"OUVRIR", ok:true }
+  ],
+  ia:[
+    { g:"warn", t:"Un retour client n'est pas enregistré", s:"Candidat C-0088 présenté chez ALPHA. Vous êtes le seul à pouvoir enregistrer sa réponse.", a:"SAISIR", ok:true },
+    { g:"struct", t:"BETA est toujours prospect", s:"Un besoin ouvert, aucun projet. Le statut passera à client à la première mission signée.", a:"OUVRIR", ok:true },
+    { g:"t4", t:"Un besoin n'a pas de contact", s:"Architecte cloud chez BETA. Valide sans ; le projet, lui, en demandera un.", a:"COMPLÉTER", ok:true }
+  ],
+  rh:[
+    { g:"warn", t:"Un dossier candidat est en brouillon", s:"Chef de projet, créé le 14 mars. Il manque la localisation et un moyen de contact.", a:"COMPLÉTER", ok:true },
+    { g:"struct", t:"Un candidat retenu n'est pas ressource", s:"Le client a dit oui. Sans profil ressource, aucune mission ne peut lui être attachée.", a:"CONVERTIR", ok:true },
+    { g:"t4", t:"Une absence en avril", s:"Analyste métier, congé du 14 au 18. Elle n'a besoin d'aucune mission pour exister.", a:"OUVRIR", ok:true }
+  ],
+  ressource:[
+    { g:"warn", t:"3 jours ouvrés sans temps saisi", s:"Semaine du 1er au 3 avril, Plateforme Alpha — lot 1.", a:"SAISIR", ok:true },
+    { g:"t4", t:"Votre mission se termine le 31 août", s:"60 % d'occupation. Rien à faire — information.", a:"OUVRIR", ok:true }
+  ]
+};
+const G = { ko:"var(--ko)", warn:"var(--warn)", struct:"var(--struct)", t4:"var(--t4)" };
+/* Une tuile ne porte jamais un chiffre ecrit a la main : elle compte le monde.
+   Un compte saisi deux fois diverge — c'est ce qui a coute trois relectures. */
+const n = (t, f) => t.filter(f).length;
+function calculeKPI(){
+  const M = MONDE, pr = M.prestation, tp = M.temps;
+  const jours = tp.reduce((a, t) => a + parseFloat(t.qte), 0);
+  return [
+    { k:"SOCIÉTÉS", v:M.societe.length, m:"c1",
+      d:`${n(M.societe, s => s.statut === "client")} clientes · ${n(M.societe, s => s.roles.includes("fournisseur"))} fournisseurs · ${n(M.societe, s => s.roles.includes("interne"))} interne` },
+    { k:"CANDIDATS", v:M.candidat.length, m:"c2",
+      d:`${n(M.candidat, c => c.etat === "complété")} complétés · <em>${n(M.candidat, c => c.etat === "brouillon")} brouillons</em>` },
+    { k:"RESSOURCES", v:M.ressource.length, m:"c3",
+      d:`${n(M.ressource, r => r.type === "interne")} internes · ${n(M.ressource, r => r.type === "externe")} externes` },
+    { k:"BESOINS", v:M.besoin.length, m:"c3",
+      d:`<em>${n(M.besoin, b => b.etat === "en recherche")} en recherche</em> · ${n(M.besoin, b => b.etat === "à pourvoir")} à pourvoir` },
+    { k:"POSITIONNEMENTS", v:M.positionnement.length, m:"c3",
+      d:`${n(M.positionnement, o => o.etat === "retenu")} retenus · ${n(M.positionnement, o => o.etat === "présenté")} présentés` },
+    { k:"PROJETS", v:M.projet.length, m:"c4",
+      d:`${n(M.projet, j => j.etat === "ouvert")} ouverts · ${n(M.projet, j => j.etat === "clos")} clos` },
+    { k:"PRESTATIONS", v:pr.length, m:"c4",
+      d:`${n(pr, x => x.etat === "signée")} signées · ${n(pr, x => x.etat === "prévisionnelle")} prév. · ${n(pr, x => x.etat === "clôturée")} closes` },
+    { k:"JOURS SAISIS", v:jours.toFixed(1).replace(".", ","), m:"c4",
+      d:`sur ${new Set(tp.map(t => t.prestation)).size} missions` }
+  ];
+}
+/* Une ligne par devise. ⛔ Jamais un total : rien ne convertit. */
+function calculeCA(){
+  const par = {};
+  MONDE.prestation.filter(p => p.etat === "signée").forEach(p => {
+    (par[p.devise] = par[p.devise] || { n:0, mixte:false }).n++;
+    if (p.cjmDevise !== p.devise) par[p.devise].mixte = true;
+  });
+  return Object.entries(par).map(([d, o]) => [d, o.n,
+    o.mixte ? "vendu et payé en devises différentes — aucun taux saisi" : "aucun coût chiffré sur ces missions"]);
+}
+let ROLE = "staffing";
+function gBord(){
+  const l = FILES[ROLE];
+  return `<div class="row r-kpi">${calculeKPI().map(k => `<div class="kpi" data-m="${k.m}"><div class="k">${k.k}</div><div class="v">${k.v}</div><div class="d">${k.d}</div></div>`).join("")}</div>
+  <div class="row r-main" style="margin-top:9px">
+    <section class="pan"><h2>CE QUI VOUS ATTEND<em>${l.length} ÉLÉMENTS · PAR CE QUE ÇA COÛTE DE LAISSER PASSER</em></h2>
+      <div class="in"><ul class="q">${l.map(i => `<li><span class="g" style="background:${G[i.g]}"></span>
+        <span class="x"><b>${i.t}</b><span>${i.s}</span></span>
+        <button class="cta" type="button" ${i.ok ? "" : `disabled title="${i.pq}"`}>${i.a}</button></li>`).join("")}</ul></div>
+      <div class="foot">Un bouton visible n'est pas une autorisation : la commande vérifie le groupe <b>et</b> le périmètre, et le refus dit lequel a manqué.</div></section>
+    <section class="pan"><h2>CHIFFRE D'AFFAIRES<em>UNE LIGNE PAR DEVISE</em></h2>
+      <div class="in"><div class="tb"><table><thead><tr><th>DEVISE</th><th>CA SIGNÉ</th><th>MARGE</th></tr></thead><tbody>
+      ${calculeCA().map(([d,k,m]) => `<tr><td><span class="b s">${d}</span></td>
+        <td><span class="num">[CA]</span><div class="id">${k} mission${k > 1 ? "s" : ""} signée${k > 1 ? "s" : ""}</div></td>
+        <td><span class="num" style="color:var(--t3)">—</span><div class="id">${m}</div></td></tr>`).join("")}
+      </tbody></table></div></div>
+      <div class="foot"><b>Jamais un total.</b> Aucune colonne de montant converti n'existe, aucun taux n'est saisi.</div></section>
+  </div>
+  <div class="row r-sub" style="margin-top:9px">
+    ${gGrille(ECRANS.charge).replace(/^<div class="eh">[\s\S]*?<\/div><\/div>/, "")}
+    <section class="pan"><h2>BESOINS EN COURS</h2><div class="in"><div class="tb">
+      <table><thead><tr><th>BESOIN</th><th>ÉTAT</th><th>POSTES</th></tr></thead><tbody>
+      ${MONDE.besoin.map(b => `<tr><td><span class="nom">${b.titre}</span><div class="id">${b.id} · ${b.societe} · ${b.prio}</div></td>
+        <td>${bd(b.etat)}</td><td><span class="b ${b.signees >= b.postes ? "ok" : "w"}">${b.signees} / ${b.postes}</span></td></tr>`).join("")}
+      </tbody></table></div></div>
+      <div class="foot">Un poste = <b>une prestation signée</b>. Le besoin reste en recherche tant que tous ses postes ne le sont pas.</div></section>
+    <section class="pan p-journal"><h2>JOURNAL MÉTIER<em>${MONDE.ev.length} DERNIERS · AJOUT SEUL</em></h2>
+    <div class="in">${MONDE.ev.map(([h,t,d,p,ko]) => `<div class="log${ko ? " ko" : ""}"><span class="h">${h}</span>
+      <span class="c"><b>${t}</b><span>${d}</span>${p ? `<em>${p}</em>` : ""}</span></div>`).join("")}</div>
+    <div class="foot">Ajout seul : un événement ne se modifie ni ne s'efface. Chaque ligne porte <b>la règle sous laquelle le fait s'est produit</b>.</div></section>
+  </div>`;
+}
+
+/* ─── LA COLONNE D'OUTILS ─────────────────────────────────────────── */
+const NOTES_CLE = "ava-notes";
+const W = {
+  notes: () => `<textarea id="notes" placeholder="Vos notes restent dans ce navigateur, elles ne partent nulle part."></textarea>
+    <div class="vide" style="padding:4px 0;text-align:left">Enregistré à la frappe.</div>`,
+  alertes: () => [
+    ["ko","Marge impossible à calculer","Une mission close, vendue EUR, payée MAD. Aucun taux saisi."],
+    ["warn","Besoin ALPHA à 1 poste sur 2","La commande « pourvu » refuse tant que le second n'est pas signé."],
+    ["struct","3 jours ouvrés sans temps saisi","Développeur Java senior, semaine du 1er avril."]
+  ].map(([g,t,d]) => `<div class="al"><i style="background:var(--${g === "struct" ? "struct" : g})"></i>
+    <div><b>${t}</b><span>${d}</span></div></div>`).join(""),
+  ia: () => `<input class="ia-q" id="iaq" placeholder="Posez une question sur ce monde…">
+    <div style="margin-top:4px">
+    ${["Pourquoi le besoin ALPHA ne peut pas passer pourvu ?",
+       "Qui a le droit de signer une prestation ?",
+       "Que se passe-t-il si je change le réglage de propagation ?",
+       "Montre-moi les missions sans coût chiffré."]
+      .map(q => `<div class="ia-ex">› ${q}</div>`).join("")}</div>
+    <div class="vide">L'assistant lit le registre des réglages<br>et cite la règle, jamais une opinion.</div>`,
+  todo: () => [
+    ["Relancer ALPHA sur le second poste", false],
+    ["Convertir le candidat retenu en ressource", false],
+    ["Saisir les temps de la semaine", true],
+    ["Vérifier la devise du CJM sur PRESTATION-0005", false]
+  ].map(([t,c],i) => `<label class="todo"><input type="checkbox" ${c ? "checked" : ""} data-todo="${i}"><span>${t}</span></label>`).join(""),
+  indic: () => [
+    ["TAUX D'OCCUPATION","60 %","engagé, moyenne agence A",[30,45,40,55,60,55,60]],
+    ["MISSIONS SIGNÉES","2","sur 5 prestations",[1,1,2,2,2,2,2]],
+    ["POSTES À POURVOIR","1","besoin ALPHA",[2,2,2,1,1,1,1]],
+    ["MARGE CALCULABLE","0 %","2 missions closes, 2 devises",[0,0,0,0,0,0,0]]
+  ].map(([l,v,t,d]) => { const mx = Math.max(...d,1);
+    return `<div class="ind"><div><div class="l">${l}</div><div class="v">${v}</div><div class="t">${t}</div></div>
+    <div class="spark">${d.map(x => `<i style="height:${Math.max(8,(x/mx)*100)}%"></i>`).join("")}</div></div>`; }).join(""),
+  cal: () => {
+    const jours = ["L","M","M","J","V","S","D"];
+    const ev = { 6:"aujourd'hui", 14:"absence", 18:"absence", 30:"fin de mission" };
+    let h = jours.map(j => `<b>${j}</b>`).join("");
+    for (let i = 0; i < 3; i++) h += `<span></span>`;       /* avril 2027 commence un jeudi */
+    for (let d = 1; d <= 30; d++){
+      const js = (d + 2) % 7, we = js === 5 || js === 6;
+      const cls = [we ? "we" : "", d === 6 ? "today" : "", ev[d] && d !== 6 ? "ev" : ""].filter(Boolean).join(" ");
+      h += `<span class="${cls}" title="${ev[d] || ""}">${d}</span>`;
+    }
+    return `<div class="cal">${h}</div>
+      <div class="vide" style="text-align:left;padding:8px 0 0">Avril 2027 · congé du 14 au 18 · fin de mission le 30.<br>Les jours non ouvrés viennent du calendrier de l'agence.</div>`;
+  }
+};
+/* Le panneau d'apparence n'appartient pas au tableau de bord : c'est un outil.
+   Il descend dans la colonne de droite une fois pour toutes, au demarrage. */
+$("#railReglages").appendChild($("#panApparence"));
+$("#panApparence").hidden = false;
+
+let popFondOuvert = false;
+const ICONE_REGLAGES = '<g transform="scale(0.6667)" stroke-width="1.9"><circle cx="12" cy="12" r="3.1"/>'
+  + '<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></g>';
+const ICONE_FOND = { sombre:'<path d="M13 9.6A5.6 5.6 0 0 1 6.4 3 5.6 5.6 0 1 0 13 9.6z"/>',
+                     gris:'<circle cx="8" cy="8" r="3.4"/><path d="M8 1.6v1.8M8 12.6v1.8M1.6 8h1.8M12.6 8h1.8"/><path d="M8 4.6v6.8" stroke-width="3"/>',
+                     clair:'<circle cx="8" cy="8" r="3.1"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M12.9 3.1l-1.4 1.4M4.5 11.5l-1.4 1.4"/>' };
+
+function rail(){
+  const actifs = OUTILS.filter(o => S.outils.includes(o.k));
+  $("#railStrip").innerHTML = actifs.map(o => `<button type="button" data-w="${o.k}" title="${o.t}" aria-pressed="${S.outilOuvert === o.k}">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${o.i}</svg></button>`).join("");
+  const svg = (d) => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+  $("#railStrip").insertAdjacentHTML("beforeend",
+    `<span class="fill"></span><span class="sep"></span>
+     <div class="bas">
+       <button type="button" id="btnFond" title="Fond — ${MODES.find(m => m.k === S.mode).n.toLowerCase()}"
+               aria-expanded="${popFondOuvert}">${svg(ICONE_FOND[S.mode])}</button>
+       <div class="pop" id="popFond" ${popFondOuvert ? "" : "hidden"}>${
+         MODES.map(m => `<button class="opt" type="button" data-r="mode" data-v="${m.k}"
+           aria-pressed="${S.mode === m.k}">${svg(ICONE_FOND[m.k])}${m.n}</button>`).join("")}</div>
+     </div>
+     <button type="button" data-w="reglages" title="Réglages" aria-pressed="${S.outilOuvert === "reglages"}">
+       ${svg(ICONE_REGLAGES)}</button>`);
+
+  const reglages = S.outilOuvert === "reglages";
+  const ouvert = reglages ? null : actifs.find(o => o.k === S.outilOuvert);
+  $("#railVue").hidden = !ouvert && !reglages;
+  $("#railReglages").hidden = !reglages;
+  $("#railCorps").hidden = reglages;
+  if (reglages){
+    $("#railVue").setAttribute("data-large", "1");
+    $("#railTitre").innerHTML = `RÉGLAGES<em id="etat"></em>`;
+    return;
+  }
+  $("#railVue").removeAttribute("data-large");
+  if (!ouvert) return;
+  $("#railTitre").innerHTML = `${ouvert.n}<em>${S.rail === "gauche" ? "À GAUCHE" : "À DROITE"}</em>`;
+  $("#railCorps").innerHTML = W[ouvert.k]();
+  const n = $("#notes");
+  if (n){ try { n.value = localStorage.getItem(NOTES_CLE) || ""; } catch(e){}
+    n.addEventListener("input", () => { try { localStorage.setItem(NOTES_CLE, n.value); } catch(e){} }); }
+}
+
+
+/* ─────────────── LE ROUTEUR ─────────────── */
+let ECRAN = "bord";
+function peindre(){
+  const e = ECRANS[ECRAN];
+  $("#titreEcran").textContent = e.nom;
+  $("#ecran").innerHTML = GABARITS[e.gabarit](e);
+  document.querySelectorAll("[data-e]").forEach(a => {
+    if (a.dataset.e === ECRAN) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  applique();
+}
+$("#menu").innerHTML = MENU.map(s => `<div class="gr">${s.g}</div>` + s.i.map(([ic, k]) => `
+  <a href="#" data-e="${k}" title="${ECRANS[k].nom}">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[ic] || IC.bord}</svg>
+    <span>${ECRANS[k].nom}</span></a>`).join("")).join("");
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-e]");
+  if (a){ e.preventDefault(); ECRAN = a.dataset.e; window.scrollTo(0, 0); peindre(); return; }
+  const o = e.target.closest("[data-ong]");
+  if (o){ ECRANS[ECRAN].ouvert = o.dataset.ong; peindre(); }
+});
+document.addEventListener("click", e => {
+  if (e.target.closest("#btnFond")){ popFondOuvert = !popFondOuvert; rail(); return; }
+  if (e.target.closest("[data-r='mode']")){ popFondOuvert = false; rail(); return; }
+  if (popFondOuvert && !e.target.closest("#popFond")){ popFondOuvert = false; rail(); }
+});
+$("#role").addEventListener("change", e => { ROLE = e.target.value; if (ECRAN === "bord") peindre(); });
+
+peindre();
+
+</script>
+
+</body></html>
