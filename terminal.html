@@ -28,6 +28,7 @@
   --action:#AEBF38; --struct:#B98BC4;
   --sur-action:#000; --struct-op:.72; --tint:.06; --bande:3px;
   --police:'JetBrains Mono','Consolas',monospace;
+  --action-encre:#AEBF38;
   --r:0px; --nav:214px; --dens:1; --trait:1px; --contour:2px;
   /* la hauteur du bandeau de marque : la ou commence « PILOTAGE ».
      La colonne d'outils de droite demarre sur cette meme ligne. */
@@ -54,6 +55,16 @@ button{cursor:pointer;background:none;border:0}
 :focus-visible{outline:2px solid var(--action);outline-offset:1px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 svg{display:block;flex:none}
+/* La barre de defilement se voyait plus que le contenu. Argent, fine, et le
+   rail transparent : elle n'existe que quand on la cherche. */
+*{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--t4) 40%,transparent) transparent}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-corner{background:transparent}
+::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--t4) 40%,transparent);border-radius:9px;
+  border:2px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:color-mix(in srgb,var(--t3) 62%,transparent);
+  border:2px solid transparent;background-clip:padding-box}
 /* DONNÉES — le seul endroit où le texte prend la couleur pleine */
 .num{font-variant-numeric:tabular-nums;color:var(--t1)}
 
@@ -64,7 +75,7 @@ svg{display:block;flex:none}
   display:flex;flex-direction:column;position:sticky;top:0;height:100vh;transition:width .16s ease}
 .app[data-nav="icones"] .nav{width:50px}
 .nav .marque{display:flex;align-items:center;gap:9px;padding:13px 14px;border-bottom:1px solid var(--bord);min-height:46px}
-.nav .marque .logo{width:19px;height:19px;color:var(--action)}
+.nav .marque .logo{width:19px;height:19px;color:var(--action-encre)}
 .nav .marque .m{min-width:0;overflow:hidden;white-space:nowrap}
 .nav .marque b{display:block;font-size:11px;font-weight:700;letter-spacing:1.4px;color:var(--t1)}
 .nav .marque i{font-style:normal;font-size:8px;letter-spacing:1.7px;color:var(--t4)}
@@ -76,8 +87,8 @@ svg{display:block;flex:none}
   border-left:2px solid transparent;font-size:11.5px;white-space:nowrap;overflow:hidden}
 .nav a svg{width:14px;height:14px;color:var(--t3)}
 .nav a:hover{background:var(--f3);color:var(--t1)}
-.nav a[aria-current]{background:color-mix(in srgb,var(--action) calc(var(--tint)*100%),var(--f3));color:var(--action);border-left-color:var(--action)}
-.nav a[aria-current] svg{color:var(--action)}
+.nav a[aria-current]{background:color-mix(in srgb,var(--action) calc(var(--tint)*100%),var(--f3));color:var(--action-encre);border-left-color:var(--action)}
+.nav a[aria-current] svg{color:var(--action-encre)}
 .app[data-nav="icones"] .nav a{justify-content:center;padding:9px 0;gap:0}
 .app[data-nav="icones"] .nav a span{display:none}
 /* Replier se commande d'ou on regarde : en haut, a cote du titre. */
@@ -87,7 +98,7 @@ svg{display:block;flex:none}
   display:grid;place-items:center;color:var(--t3);background:var(--f1);
   border:var(--trait) solid var(--bord);border-radius:var(--r)}
 .nav .rep svg{width:15px;height:15px}
-.nav .rep:hover{background:var(--f3);color:var(--action);border-color:var(--action)}
+.nav .rep:hover{background:var(--f3);color:var(--action-encre);border-color:var(--action)}
 .app[data-nav="icones"] .nav .marque{justify-content:center;padding:13px 0}
 .app[data-nav="icones"] .nav .rep svg{transform:rotate(180deg)}
 
@@ -161,7 +172,7 @@ select:hover{border-color:var(--t4)}
 .opt{display:inline-flex;align-items:center;gap:6px;background:var(--f3);border:1px solid var(--bord);
   border-radius:var(--r);padding:5px 9px;font-size:9px;letter-spacing:1.1px;color:var(--t2);white-space:nowrap}
 .opt:hover{border-color:var(--t4);color:var(--t1)}
-.opt[aria-pressed="true"]{border-color:var(--action);color:var(--action);background:color-mix(in srgb,var(--action) 11%,transparent)}
+.opt[aria-pressed="true"]{border-color:var(--action);color:var(--action-encre);background:color-mix(in srgb,var(--action) 11%,transparent)}
 .opt u{text-decoration:none;display:flex;gap:2px}
 .opt u b{width:8px;height:8px;display:block}
 .expert{margin-top:12px;padding-top:11px;border-top:1px dashed var(--bord)}
@@ -220,13 +231,13 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 
 /* ─── boutons d'ACTION ─── */
 .cta{flex:none;align-self:center;border-radius:var(--r);font-size:9px;letter-spacing:1.3px;font-weight:700;white-space:nowrap;border:var(--contour) solid transparent;padding:4px 10px}
-[data-bouton="contour"] .cta{background:transparent;color:var(--action);border-color:var(--action)}
+[data-bouton="contour"] .cta{background:transparent;color:var(--action-encre);border-color:var(--action)}
 [data-bouton="contour"] .cta:hover{background:color-mix(in srgb,var(--action) 17%,transparent)}
 [data-bouton="plein"] .cta{background:var(--action);color:var(--sur-action);border-color:var(--action);border-width:1px;padding:5px 11px}
 [data-bouton="plein"] .cta:hover{opacity:.85}
-[data-bouton="fantome"] .cta{background:transparent;color:var(--action);border-color:transparent;padding:5px 8px}
+[data-bouton="fantome"] .cta{background:transparent;color:var(--action-encre);border-color:transparent;padding:5px 8px}
 [data-bouton="fantome"] .cta:hover{background:color-mix(in srgb,var(--action) 15%,transparent)}
-[data-bouton="souligne"] .cta{background:transparent;color:var(--action);border-color:transparent;border-bottom:2px solid var(--action);border-radius:0;padding:4px 3px 2px}
+[data-bouton="souligne"] .cta{background:transparent;color:var(--action-encre);border-color:transparent;border-bottom:2px solid var(--action);border-radius:0;padding:4px 3px 2px}
 [data-bouton="souligne"] .cta:hover{background:color-mix(in srgb,var(--action) 15%,transparent)}
 .cta[disabled]{border-color:var(--t4)!important;color:var(--t4)!important;cursor:not-allowed;background:transparent!important}
 [data-bouton="fantome"] .cta[disabled],[data-bouton="souligne"] .cta[disabled]{border-color:transparent!important}
@@ -258,7 +269,7 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 [data-rail="gauche"] .rail .strip{order:2;border-left:1px solid var(--bord);border-right:0}
 .rail .strip button{width:30px;height:30px;display:grid;place-items:center;color:var(--t3);border-radius:var(--r)}
 .rail .strip button:hover{background:var(--f3);color:var(--t1)}
-.rail .strip button[aria-pressed="true"]{background:color-mix(in srgb,var(--action) calc(var(--tint)*140%),var(--f3));color:var(--action)}
+.rail .strip button[aria-pressed="true"]{background:color-mix(in srgb,var(--action) calc(var(--tint)*140%),var(--f3));color:var(--action-encre)}
 .rail .strip svg{width:15px;height:15px}
 /* Ce qui se pousse en bas de la colonne : les reglages, puis le fond. */
 .rail .strip .fill{flex:1;min-height:12px}
@@ -270,7 +281,7 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
   border:var(--contour) solid var(--bord);color:var(--t1)}
 .rail .strip>button[data-w="reglages"]{margin-bottom:2px}
 .rail .strip .bas>button:hover,
-.rail .strip>button[data-w="reglages"]:hover{border-color:var(--action);color:var(--action)}
+.rail .strip>button[data-w="reglages"]:hover{border-color:var(--action);color:var(--action-encre)}
 .rail .strip>button[data-w="reglages"][aria-pressed="true"]{background:var(--plaque-action);
   border-color:var(--action-aplat);color:var(--sur-plaque-action)}
 .rail .strip .pop{position:absolute;right:calc(100% + 7px);bottom:0;display:flex;gap:3px;padding:4px;
@@ -280,7 +291,7 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 .rail .strip .pop[hidden]{display:none}
 .rail .strip .pop button{width:auto;height:26px;padding:0 9px;font-size:8.5px;letter-spacing:1.1px;
   border:var(--trait) solid var(--bord);background:var(--f3);display:inline-flex;align-items:center;gap:5px}
-.rail .strip .pop button[aria-pressed="true"]{border-color:var(--action);color:var(--action);
+.rail .strip .pop button[aria-pressed="true"]{border-color:var(--action);color:var(--action-encre);
   background:color-mix(in srgb,var(--action) 12%,transparent)}
 .rail .strip .sep{width:20px;height:1px;background:var(--bord);margin:4px 0;flex:none}
 .rail .vue[data-large="1"]{width:322px}
@@ -344,11 +355,11 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 .rech:focus{outline:0;border-color:var(--action)}
 .filtre{background:var(--f3);border:var(--trait) solid var(--bord);border-radius:var(--r);padding:5px 9px;
   font-size:9px;letter-spacing:1.1px;color:var(--t2)}
-.filtre:hover{border-color:var(--action);color:var(--action)}
+.filtre:hover{border-color:var(--action);color:var(--action-encre)}
 .filtre b{color:var(--t4);font-weight:400}
 .barre-f .grow{flex:1 1 auto}
 .pagin{font-size:9px;letter-spacing:1px;color:var(--t3);white-space:nowrap}
-.lien{font-size:9px;letter-spacing:1.2px;font-weight:700;color:var(--action);padding:3px 6px;border-radius:var(--r);white-space:nowrap}
+.lien{font-size:9px;letter-spacing:1.2px;font-weight:700;color:var(--action-encre);padding:3px 6px;border-radius:var(--r);white-space:nowrap}
 .lien:hover{background:color-mix(in srgb,var(--action) 16%,transparent)}
 .lien[disabled]{color:var(--t4);cursor:not-allowed}
 .tables{padding:6px 12px;border-top:var(--trait) solid var(--bord);font-size:8.5px;letter-spacing:.9px;color:var(--t4);background:var(--f1)}
@@ -356,7 +367,7 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 .ongs{display:flex;gap:2px;flex-wrap:wrap;padding:0 8px;border-bottom:var(--trait) solid var(--bord);background:var(--f1)}
 .ong{padding:9px 11px;font-size:9.5px;letter-spacing:1.1px;color:var(--t3);border-bottom:var(--contour) solid transparent;white-space:nowrap}
 .ong:hover{color:var(--t1)}
-.ong[aria-pressed="true"]{color:var(--action);border-bottom-color:var(--action)}
+.ong[aria-pressed="true"]{color:var(--action-encre);border-bottom-color:var(--action)}
 .cadenas{color:var(--warn);font-size:7px;vertical-align:middle}
 .note-i{font-size:10px;color:var(--t3);line-height:1.65;margin-top:10px;max-width:92ch}
 .note-i b{color:var(--t2);font-weight:500}
@@ -583,9 +594,15 @@ function applique(){
   app.setAttribute("data-pastille", S.pastille);
   app.setAttribute("data-bouton", S.bouton);
   app.setAttribute("data-carte", S.carte);
-  root.style.setProperty("--action", cA);
+  /* ⛔ Deux verts a l'ecran, c'est un vert de trop. `--action` porte le hex de
+     la charte dans les trois fonds. Sur fond clair il servirait mal d'encre
+     (1,9:1) — mais la charte dit deja « jamais de texte vert » : l'encre prend
+     la couleur du texte courant, et le vert ne fait que remplir et border. */
+  root.style.setProperty("--action", aplat(kAction));
   root.style.setProperty("--struct", cS);
-  root.style.setProperty("--sur-action", sur(cA));
+  root.style.setProperty("--sur-action", sur(aplat(kAction)));
+  root.style.setProperty("--action-encre",
+    S.mode === "clair" ? getComputedStyle(root).getPropertyValue("--t1").trim() : aplat(kAction));
   root.style.setProperty("--sur-struct", sur(cS));
   root.style.setProperty("--sur-ok", sur(getComputedStyle(root).getPropertyValue("--ok").trim() || "#22c55e"));
   root.style.setProperty("--sur-warn", S.mode === "clair" ? "#fff" : "#000");
