@@ -80,17 +80,20 @@ svg{display:block;flex:none}
 .top .grow{flex:1 1 auto}
 /* ⭐ Le coin haut-gauche a la largeur du menu : le filet vertical ne s'interrompt
    plus sous le bandeau, il court du haut de l'écran jusqu'au fond. */
-/* ⛔ Le bandeau NE BOUGE PAS. Ni quand on replie à gauche, ni à droite.
-   C'est le seul repère qui reste fixe : il n'a pas à suivre les colonnes. */
-.coin{flex:none;display:flex;align-items:center;height:var(--h-top);
-  margin:0 0 0 -10px;padding:0 16px 0 14px;border-right:var(--trait) solid var(--bord)}
-/* ─── la bande de repli : entre le bandeau et l'écran, une par colonne ─── */
-.bande{height:44px;flex:none;display:flex;align-items:center;padding:0 9px;
-  border-bottom:var(--trait) solid var(--bord)}
-.bande-d{justify-content:center;padding:0;width:100%;border-bottom:0;border-top:0}
-.app[data-nav="icones"] .nav .bande{justify-content:center;padding:0}
-.app[data-nav="icones"] .nav .bande .pli-h svg{transform:rotate(180deg)}
-[data-rail="masque"] .rail .bande-d .pli-h svg{transform:rotate(180deg)}
+/* ⛔ UN SEUL bandeau. Le titre de l'écran y monte : deux bandeaux, c'était
+   deux fois la même ligne. La recherche tient le milieu. */
+.titre-h{font-size:14px;font-weight:600;letter-spacing:-.1px;color:var(--t1);
+  white-space:nowrap;padding-left:12px;margin-left:4px;border-left:1px solid var(--bord)}
+/* ─── le chevron se pose SUR le filet, dans un petit cadre ─── */
+.pli-l{position:absolute;z-index:70;top:14px;width:20px;height:20px;
+  display:grid;place-items:center;border-radius:var(--r);
+  background:var(--f1);border:1px solid var(--bord);color:var(--t3)}
+.pli-l svg{width:12px;height:12px}
+.pli-l:hover{border-color:var(--action);color:var(--action-encre);background:var(--f3)}
+.nav .pli-l{right:-10px}
+.rail .pli-d{left:-10px}
+.app[data-nav="icones"] .nav .pli-l svg{transform:rotate(180deg)}
+[data-rail="masque"] .rail .pli-d svg{transform:rotate(180deg)}
 .pli-h{width:30px;height:30px;flex:none;display:grid;place-items:center;color:var(--t3);border-radius:var(--r)}
 .pli-h svg{width:16px;height:16px}
 .pli-h:hover{background:var(--f3);color:var(--action-encre)}
@@ -191,7 +194,7 @@ select{background:var(--f2);border:1px solid var(--bord);border-radius:var(--r);
 select:hover{border-color:var(--t4)}
 .lab{font-size:8px;letter-spacing:1.5px;color:var(--t3)}
 
-.zone{flex:1 1 auto;padding:18px 22px 48px}
+.zone{flex:1 1 auto;padding:16px 22px 48px}
 .cadre{max-width:2320px;margin:0 auto;display:flex;flex-direction:column;gap:9px}
 .row{display:grid;gap:9px}
 .r-kpi{grid-template-columns:repeat(auto-fit,minmax(148px,1fr))}
@@ -334,13 +337,13 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 
 /* ─── RAIL : la colonne d'outils. Sa position, ses outils et celui qui s'ouvre
        sont des réglages — rien n'est écrit en dur. ─── */
-.rail{flex:none;display:flex;background:var(--f1);border-left:1px solid var(--bord)}
+.rail{position:relative;flex:none;display:flex;background:var(--f1);border-left:var(--trait) solid var(--bord)}
 [data-rail="gauche"] .rail{order:-1;border-left:0;border-right:1px solid var(--bord)}
 /* ⭐ La même cinématique qu'à gauche : elle s'écarte, elle ne surgit pas. */
 [data-rail="masque"] .rail .vue{width:0;min-width:0;overflow:hidden;border:0}
 [data-rail="masque"] .rail .strip button[data-w]:not([data-w="reglages"]){display:none}
 [data-rail="masque"] .rail .strip .sep{display:none}
-.rail .strip{width:42px;flex:none;display:flex;flex-direction:column;gap:2px;padding:0 0 7px;
+.rail .strip{width:42px;flex:none;display:flex;flex-direction:column;gap:2px;padding:10px 0 7px;
   border-left:1px solid var(--bord);position:sticky;top:var(--h-top);height:calc(100vh - var(--h-top));align-items:center}
 [data-rail="gauche"] .rail .strip{order:2;border-left:1px solid var(--bord);border-right:0}
 .rail .strip button{width:30px;height:30px;display:grid;place-items:center;color:var(--t3);border-radius:var(--r)}
@@ -380,7 +383,7 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 .rail .vue{width:260px;flex:none;display:flex;flex-direction:column;position:sticky;top:var(--h-top);
   height:calc(100vh - var(--h-top));overflow:auto;transition:width .16s ease}
 .rail .vue[hidden]{width:0;min-width:0;overflow:hidden}
-.rail .vue>h3{min-height:44px;font-size:8px;letter-spacing:1.6px;font-weight:600;padding:9px 12px;min-height:46px;display:flex;align-items:center;gap:8px;
+.rail .vue>h3{min-height:44px;font-size:9px;letter-spacing:1.6px;font-weight:600;padding:9px 12px;min-height:46px;display:flex;align-items:center;gap:8px;
   color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));border-bottom:1px solid var(--bord)}
 .rail .vue>h3 em{font-style:normal;margin-left:auto;font-size:8px;color:var(--t4);font-weight:400;letter-spacing:.8px}
 .rail .corpsw{padding:10px 12px;display:flex;flex-direction:column;gap:9px;font-size:10.5px}
@@ -501,21 +504,24 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
 <div class="app" id="app" data-nav="ouvert" data-pastille="contour" data-bouton="contour" data-carte="bande">
 
 <header class="top">
-  <span class="coin">
-    <span class="marque-h">
-      <svg class="logo" viewBox="0 0 20 20" fill="none"><path d="M2 18 12 2h3L5 18z" fill="currentColor"/><path d="M9 18 18 4h-3L6 18z" fill="currentColor" opacity=".45"/></svg>
-      <b>AVA MANAGER</b></span>
-  </span>
+  <span class="marque-h">
+    <svg class="logo" viewBox="0 0 20 20" fill="none"><path d="M2 18 12 2h3L5 18z" fill="currentColor"/><path d="M9 18 18 4h-3L6 18z" fill="currentColor" opacity=".45"/></svg>
+    <b>AVA MANAGER</b></span>
+  <h1 class="titre-h" id="titreEcran">Tableau de bord</h1>
+  <span class="live">EN DIRECT</span>
+  <span class="grow"></span>
   <label class="cherche">
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg>
     <input placeholder="Rechercher partout" aria-label="Rechercher partout"></label>
   <span class="grow"></span>
+  <span class="chip">MONDE <b>06/04/2027</b></span>
   <span class="lab">RÔLE</span>
   <select id="role">
     <option value="staffing">STAFFING</option><option value="dp">DIRECTEUR DE PROJET</option>
     <option value="ia">INGÉNIEUR D'AFFAIRES</option><option value="rh">RESSOURCES HUMAINES</option>
     <option value="ressource">RESSOURCE</option>
   </select>
+  <span class="lab">PÉRIMÈTRE</span><span class="chip"><b>AGENCE A</b></span>
   <div class="moi">
     <button class="qui" type="button" id="btnMoi" aria-expanded="false">
       <span class="ph" aria-hidden="true">AB</span>
@@ -527,22 +533,12 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
 
 <div class="sous-top">
   <nav class="nav">
-    <div class="bande">
-      <button class="pli-h" type="button" id="rep" title="Replier la colonne" aria-label="Replier la colonne">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3.5 5.5 8l4.5 4.5"/></svg></button>
-    </div>
+    <button class="pli-l" type="button" id="rep" title="Replier la colonne" aria-label="Replier la colonne">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3.5 5.5 8l4.5 4.5"/></svg></button>
     <div id="menu"></div>
   </nav>
 
   <div class="corps">
-    <header class="bar">
-      <h1 id="titreEcran">Tableau de bord</h1>
-      <span class="live">EN DIRECT</span>
-      <span class="chip">MONDE <b>06/04/2027</b></span>
-      <span class="grow"></span>
-      <span class="lab">PÉRIMÈTRE</span><span class="chip"><b>AGENCE A</b></span>
-    </header>
-
     <div class="zone"><div class="cadre">
 
       <section class="pan" id="panApparence">
@@ -589,6 +585,8 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
   </div>
 
   <aside class="rail">
+    <button class="pli-l pli-d" type="button" id="repRail" title="Replier la colonne" aria-label="Replier la colonne">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5 10.5 8 6 12.5"/></svg></button>
     <div class="vue" id="railVue"><h3 id="railTitre"></h3>
       <div class="corpsw" id="railCorps"></div>
       <div id="railReglages" hidden></div>
@@ -1739,10 +1737,7 @@ const ICONE_FOND = { sombre:'<path d="M13 9.6A5.6 5.6 0 0 1 6.4 3 5.6 5.6 0 1 0 
 
 function rail(){
   const actifs = OUTILS.filter(o => S.outils.includes(o.k));
-  $("#railStrip").innerHTML = `<div class="bande bande-d">
-      <button class="pli-h" type="button" id="repRail" title="Replier la colonne" aria-label="Replier la colonne">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5 10.5 8 6 12.5"/></svg></button>
-    </div>` + actifs.map(o => `<button type="button" data-w="${o.k}" title="${o.t}" aria-pressed="${S.outilOuvert === o.k}">
+  $("#railStrip").innerHTML = actifs.map(o => `<button type="button" data-w="${o.k}" title="${o.t}" aria-pressed="${S.outilOuvert === o.k}">
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${o.i}</svg></button>`).join("");
   const svg = (d) => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
   $("#railStrip").insertAdjacentHTML("beforeend",
