@@ -229,19 +229,52 @@ la prestation ne porte pas ?
 
 ---
 
-## 7 · LES OBJETS QUI N'ONT PAS DE FICHE — le motif se répète
+## 7 · ⛔ CORRIGÉ — le positionnement A une fiche
 
-| Objet | Où il vit | Ses liens |
-|---|---|---|
-| **Positionnement** | onglet du **besoin** | vers la personne · vers `/opportunities/<id>/positionings` |
-| **Prestation** | onglet du **projet** | vers la **ressource** (`/resources/<id>`) |
+⚠️⚠️ **Ce que j'avais écrit était FAUX.** J'avais conclu qu'un positionnement n'avait pas de
+page parce que les deux liens de la **liste** pointent la personne et le besoin. ⛔ **Un lien
+absent d'une liste ne prouve pas qu'une page n'existe pas.**
 
-⭐ **Deux fois le même motif : ce qui LIE deux objets n'a pas de page à soi.** Ça dit comment nos
-écrans doivent se comporter — **un clic sur un positionnement ouvre son besoin**, un clic sur une
-prestation ouvre sa ressource. ⛔ Ne pas inventer une fiche là où l'usage n'en veut pas.
+⭐ **Elle existe** : `Positionnement - POS4634`, fil d'Ariane **Besoins › fiche besoin › fiche
+positionnement**, avec une navigation « 5 / 1572 » d'une carte à l'autre. On y arrive par le
+**Kanban**, pas par la liste.
 
-⭐ **La prestation porte sa propre référence** (`MRD141`), comme le projet (`PRJ167`) et le
-contact (`CCON18570`). Trois compteurs, trois préfixes.
+### Ce qu'elle porte — et c'est bien plus que chez nous
+
+| Bloc | Champs |
+|---|---|
+| En-tête | **CA HT · Coût HT · Marge HT · Rentabilité** |
+| Informations générales | **État** · Début · Fin · **Tarif de vente journalier** · **Nombre de jours vendus** · *Ajouter des jours gratuits* · **Taux d'occupation** · **Coût journalier moyen** · *Ajouter des CA/investissements additionnels* · Commentaire |
+| Informations complémentaires | Candidat · **Besoin** · Type · Client · Responsable du besoin |
+| Pied | Référence `POS4634` · créé le, par qui · journal d'activité |
+
+⭐⭐ **LE POSITIONNEMENT PORTE DÉJÀ TOUTE L'ÉCONOMIE** — TJM, jours vendus, taux d'occupation,
+CJM, marge. ⛔ **C'est la prestation AVANT la signature.**
+
+⚠️ **Écart réel avec notre modèle** : notre `positionnement` ne porte que `tjm_propose` et sa
+devise. Ni jours vendus, ni taux d'occupation, ni CJM. ⭐ **Sans eux, on ne peut pas montrer la
+marge prévisionnelle d'une proposition** — et c'est ce que le commercial regarde avant d'envoyer
+un prix.
+
+⭐ **« Taux d'occupation » sur le positionnement** confirme **B-1** : la charge se raisonne dès la
+proposition, pas seulement à la signature.
+
+⬜ **« Ajouter des jours gratuits »** — un objet qu'on n'a pas. À décider.
+
+---
+
+## 7 bis · LA PRESTATION, elle, n'a pas de page à elle
+
+Dans l'onglet Prestations d'un projet, une ligne pointe vers la **ressource**
+(`/resources/<id>`), jamais vers elle-même. ⚠️ Elle porte pourtant sa **référence** — `MRD141`.
+
+⬜ **À vérifier** : une prestation a-t-elle une page, comme le positionnement en avait une ?
+⭐ **Je ne conclus plus rien de l'absence d'un lien** — je me suis déjà trompé une fois là-dessus.
+
+**Quatre compteurs de référence relevés** : `PRJ167` (projet) · `MRD141` (prestation) ·
+`POS4634` (positionnement) · `CCON18570` (contact) · `AO1953` (besoin) · `CAND35042` (candidat) ·
+`COMP35063` (ressource) · `CBSO0015` (société). ⭐ **Huit objets, huit préfixes** — chacun a son
+compteur lisible par un humain.
 
 ---
 
@@ -326,9 +359,13 @@ Lus au reporting, période en cours :
 | Nb projets et prestations **en cours · démarrées · arrêtées** | |
 | **CA signé · Coût signé · Marge signée · Rentabilité signée** | **ATL-05, ATL-12, ATL-15** ⭐ |
 
-⭐ **Tout est « signé », rien n'est « produit ».** Boond rapporte sur l'**engagement**, pas sur la
-production réelle. ⚠️ Notre distinction CA **signé** / CA **produit** (ATL-08) est donc un
-**ajout**, pas une reprise — et il faudra l'expliquer aux directeurs.
+⛔ **CORRIGÉ** — j'avais écrit « tout est signé, rien n'est produit ». **C'est faux.** Le
+reporting *Synthèse* ne montre que le signé, mais le catalogue de widgets du tableau de bord
+porte **« CA Période Facturé, CA Production, CA Signé »**. ⭐ **Boond distingue bien les trois.**
+
+⚠️ **Ce qui reste vrai** : le CA **produit** vaut zéro chez Avaliance, puisque les temps ne sont
+pas saisis. ⭐ **La fonction existe, l'usage manque** — et c'est exactement la règle d'Hamada :
+on code le chemin, la société décide de s'en servir.
 
 ⛔ **Le mélange priorité/état se propage** : le reporting compte « Nb besoins créés - P1 » comme
 s'il s'agissait d'un état. Chez nous, ce chiffre deviendra un croisement de deux colonnes.
@@ -545,6 +582,106 @@ registre.** ⬜ À ajouter, ou à décider qu'on ne la reprend pas.
 
 ---
 
+## 23 · LES 23 ALERTES — `alerte_regle` n'était pas une invention
+
+⭐⭐ **Boond a 23 alertes CONFIGURABLES**, avec pour chacune : son **périmètre**, son **type**,
+son **état**, son **seuil**, et **dans quels rapports** elle entre.
+
+| Exemples relevés, avec leur seuil |
+|---|
+| Actions à traiter dans moins de **0** jour |
+| Candidats non mis à jour depuis plus de **30** jours |
+| Ressources sans Entretien RH annuel depuis plus de **330** jours |
+| Périodes d'essai se terminant dans moins de **30** jours |
+| **Ressources sans contrat RH** · **sans contrat en cours** · **sans date de fin** |
+| **Contrats RH dont les dates se chevauchent** |
+| **Prestations non intégralement couvertes par un contrat RH** |
+| Documents arrivant à expiration dans moins de **60** jours |
+| Projets se terminant dans moins de **30** jours ou déjà terminés |
+
+⭐ **C'est exactement `alerte_regle` (S-10.3)** : un code, un objet, une condition, un seuil, une
+gravité. ⛔ **Ce n'était pas une invention de notre part** — c'est un besoin que l'outil existant
+porte déjà, et que nous avions trouvé en comparant.
+
+⭐⭐ **« Contrats RH dont les dates se chevauchent » est notre `EXCLUDE USING gist`** sur
+`periode_emploi` (M15). ⚠️ **Boond le signale ; nous l'INTERDISONS.** ⭐ C'est toute la
+différence entre une alerte et un mur — et c'est la bonne différence : deux contrats qui se
+chevauchent sont une erreur de saisie, pas un fait à commenter.
+
+⭐ **Les rapports d'alerte sont réglés** : jours d'envoi (lun→ven), heure quotidienne (08:00),
+jour et heure du rapport hebdomadaire. ⭐ Quatre politiques de plus, qu'on n'a pas.
+
+⚠️ Huit alertes affichent **« Droits insuffisants »** — Ahmed ne peut pas les voir. ⭐ Le droit
+se voit **jusque dans la liste des alertes**.
+
+---
+
+## 24 · LA CONFIGURATION D'UN COMPTE — nos `ui.*` existent déjà chez Boond
+
+`/resources/<id>/settings` — **9 onglets** : Intranet · **Tableau de bord** · Partage ·
+**Modèles d'action** · **Objectifs** · Reporting · Notifications · Suggestions de profils ·
+Configuration générale.
+
+| Réglage vu | Chez nous |
+|---|---|
+| ⭐⭐ **Barre de menu** — les 12 entrées, **cochables une par une** | **`ui.menu.entrees`** — confirmé, ce n'était pas une lubie |
+| **Page d'accueil** | ⬜ `ui.accueil` — **pas au registre** |
+| **Mémoriser ma dernière recherche** | ⬜ **pas au registre** |
+| **Opérateur entre les catégories du filtre Périmètre** : ET / OU | ⬜ **pas au registre** — et c'est fin |
+| Autoriser l'appel aux API Rest **par compte** | ⬜ hors V1 |
+| **Modèles d'action** comme onglet du compte | ⭐ `modele.portee_code = 'personnelle'` — confirmé |
+| **Objectifs** comme onglet du compte | ⬜ hors V1, nommé |
+
+⭐⭐ **Le tableau de bord est un CATALOGUE DE WIDGETS**, chacun `affiché` ou `Non affiché` :
+Mes temps · Répartition des besoins · **CA Période Facturé, CA Production, CA Signé** · Mes frais
+· CA Facturé, CA Signé · CA Signé, Marge Signée · Mes absences · Synthèse · Répartition des
+candidats.
+
+⭐ **C'est exactement notre catalogue + sélection ordonnée** (`ui.tuiles`). ⛔ Le motif qu'on a
+inventé six fois dans le mock existe déjà dans l'outil qu'on remplace.
+
+⚠️ **Trois réglages d'UI manquent à notre registre** : page d'accueil, mémoriser la dernière
+recherche, opérateur ET/OU du filtre de périmètre. ⬜ **À ajouter, ou à écarter — mais à décider.**
+
+---
+
+## 25 · LE KANBAN — et le vrai volume du staffing
+
+**4 488 positionnements.** Le Kanban les range en colonnes, **une par état**, avec le compte :
+
+| État | Compte |
+|---|---|
+| **Proposé** | **1 572** |
+| **NO GO interne** | **719** |
+| **GO interne** | **188** |
+| CV envoyé, Présenté Client, Validé, Rejeté, Gagné, Désistement | *reste à lire* |
+
+⭐⭐ **L'entonnoir est lisible d'un coup d'œil** : 1 572 proposés → 719 refusés en interne →
+188 GO. ⚠️ **Plus d'un positionnement sur trois meurt AVANT d'atteindre le client.**
+
+⭐ **Le Kanban est la vraie interface du staffing** — pas la liste. On y glisse une carte d'une
+colonne à l'autre, et c'est la transition d'état.
+
+⚠️ **Notre mock a-t-il un Kanban ?** ⬜ À vérifier. S'il n'en a pas, il manque l'écran que les
+gens utilisent le plus.
+
+---
+
+## 26 · WEBHOOKS ET API
+
+| | |
+|---|---|
+| **Webhooks** | **0** — jamais créés |
+| **API REST** | ✅ existe · token et clef affichés **en clair** dans `Espace développeur` |
+| **Apps développeur** | **0** |
+| **Traductions** | ⛔ la page rend une **erreur interne** — pas relevée |
+
+⚠️⚠️ **La clé d'API est affichée sans masquage.** Je ne l'ai pas utilisée et je ne la recopie
+nulle part. ⛔ Mais elle donne accès à **toute** la base, **sans passer par les droits d'écran** —
+et quiconque ouvre cette page la voit. ⭐ **À vérifier : qui a accès à cet écran ?**
+
+---
+
 <etat>
 
 **19/09/2026 — première passe. Ce qui reste à cliquer :**
@@ -563,7 +700,16 @@ registre.** ⬜ À ajouter, ou à décider qu'on ne la reprend pas.
 | ✅ | **Pôles, business units, profils types, produits** | §18 et §19 |
 | ✅ | La liste des **besoins** | §20 — et M-15 confirmé à l'écran |
 
-⭐ **Le relevé est CLOS.** Ce qui reste n'est plus du relevé : ce sont des **décisions**.
+| ✅ | **Alertes** | §23 — 23 alertes configurables |
+| ✅ | **Configuration du compte** | §24 — nos `ui.*` existent déjà |
+| ✅ | **Kanban** | §25 — 4 488 positionnements |
+| ✅ | **Webhooks, API, apps** | §26 |
+| ⬜ | **Traductions** | ⛔ erreur interne — à retenter |
+| ⬜ | Le reste du **Kanban** | les 6 colonnes non lues |
+| ⬜ | Une **fiche prestation** a-t-elle une page ? | ⚠️ je ne conclus plus d'un lien absent |
+
+⭐ **Le relevé est CLOS pour l'essentiel.** ⛔ **Et il a produit DEUX corrections de ma part** —
+voir §7 et §11. Un relevé qui ne se corrige jamais est un relevé qu'on n'a pas relu.
 
 ❓ **Cinq questions pour Hamada**, nées du relevé :
 1. **PORTALIANCE** : agence d'Avaliance, ou autre société ? *(change ADR-000)*
