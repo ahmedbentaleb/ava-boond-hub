@@ -522,9 +522,20 @@ tbody tr:has(td.ck input:checked) td{background:color-mix(in srgb,var(--action) 
 .vues button[aria-pressed="true"]{background:var(--f1);color:var(--action-encre);
   box-shadow:0 1px 2px rgba(0,0,0,.18)}
 /* Les explications se rallument par le réglage, jamais par défaut. */
-[data-notes="masquees"] .eh-n,
-[data-notes="masquees"] .pan>.foot,
-[data-notes="masquees"] .note-i{display:none}
+/* AU SURVOL : le « ? » parle, le paragraphe se tait. */
+[data-notes="infobulle"] .eh-n,
+[data-notes="infobulle"] .pan>.foot,
+[data-notes="infobulle"] .note-i{display:none}
+[data-notes="aucune"] .eh-n,
+[data-notes="aucune"] .pan>.foot,
+[data-notes="aucune"] .note-i,
+[data-notes="aucune"] .aide{display:none}
+[data-notes="sous_le_titre"] .aide{display:none}
+.aide{width:15px;height:15px;flex:none;display:inline-grid;place-items:center;vertical-align:middle;
+  margin-left:7px;border-radius:50%;border:1px solid var(--bord);background:transparent;
+  font-size:9px;font-weight:700;line-height:1;color:var(--t4);cursor:help}
+.aide:hover{border-color:var(--action);color:var(--action-encre)}
+.pan>h2 .aide{margin-left:6px}
 .eh-n{font-size:10px;color:var(--t3);margin-top:3px;line-height:1.55;max-width:74ch}
 .eh-n.mono-s{letter-spacing:.5px}
 .eh-a{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
@@ -779,7 +790,7 @@ const COLORATIONS = [{k:"une",n:"UNE COULEUR"},{k:"metier",n:"PAR MÉTIER"}];
 /* Ce qu'on voit devant chaque entree du menu. Six facons, aucune ecrite en dur. */
 /* ⛔ On parle a des professionnels : ils savent ce qu'est un candidat.
    Les notes pedagogiques sont MASQUEES par defaut, et se rallument au besoin. */
-const NOTES = [{k:"masquees",n:"MASQUÉES"},{k:"affichees",n:"AFFICHÉES"}];
+const NOTES = [{k:"infobulle",n:"AU SURVOL"},{k:"sous_le_titre",n:"SOUS LE TITRE"},{k:"aucune",n:"AUCUNE"}];
 const MARQUEURS = [
   {k:"icone",         n:"ICÔNE"},
   {k:"icone_mono",    n:"ICÔNE GRISE"},
@@ -807,7 +818,7 @@ const OUTILS = [
 let S = { palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
           action:null, struct:null, angle:"carre", pastille:"contour", bouton:"contour", carte:"bande", coloration:"une",
           rail:"droite", outils:["alertes","notes","ia","todo","indic","cal"], outilOuvert:"alertes", dernierOutil:"alertes",
-          marqueur:"icone", notes:"masquees", menu:null,
+          marqueur:"icone", notes:"infobulle", menu:null,
           /* ⭐ Aucune couleur n'est imposee. Chaque metier et chaque niveau de
              sens a la sienne, et null veut dire « celle d'origine ». */
           chapitres:["theme","couleurs"],
@@ -1527,10 +1538,16 @@ function tablesDe(e){
 /* ⛔ L'export puis le `+`, à l'extrême droite, sur les 24 écrans. Toujours.
    C'est le seul moyen qu'un geste appris sur un écran serve sur les 23 autres.
    La place vient de Boond (59 captures, hub) : on reprend la PLACE, pas les couleurs. */
+/* ⛔ Une explication ne s'ecrit pas sous un titre — elle attend qu'on la
+   demande. Un « ? » discret, et le texte au survol. */
+const aide = (t) => `<button class="aide" type="button" tabindex="0" aria-label="Qu'est-ce que c'est ?"
+  title="${esc(String(t).replace(/<[^>]+>/g, ""))}">?</button>`;
+
 function entete(e){
   const n = e.source && MONDE[e.source] ? MONDE[e.source].length : null;
   return `<div class="eh">
-    <div><h1>${esc(e.nom)}${n !== null ? ` <em class="cpt">(${n})</em>` : ""}</h1>${
+    <div><h1>${esc(e.nom)}${n !== null ? ` <em class="cpt">(${n})</em>` : ""}${
+      e.note ? aide(e.note) : ""}</h1>${
       e.note ? `<p class="eh-n">${e.note}</p>` : ""}</div>
     <div class="eh-a">
       ${e.creer ? `<button class="rd rd-p" type="button" title="${esc(e.creer)}" aria-label="${esc(e.creer)}">
@@ -1595,7 +1612,7 @@ function barreSelection(){
 function gListe(e){
   const lignes = MONDE[e.source] || [];
   let h = entete(e);
-  h += `<div class="pan"><h2>${esc(e.nom.toUpperCase())}<em>${lignes.length} LIGNES</em></h2>
+  h += `<div class="pan"><h2>${esc(e.nom.toUpperCase())}${e.note ? aide(e.note) : ""}<em>${lignes.length} LIGNES</em></h2>
     ${barreFiltres(e, lignes.length)}
     <div class="in"><div class="tb"><table><thead><tr>
       <th class="ck"><input type="checkbox" id="ckTout" aria-label="Tout sélectionner"></th>${
