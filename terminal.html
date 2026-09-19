@@ -366,6 +366,12 @@ tbody tr:hover td{background:var(--survol)}
   border-top:1px solid var(--selection);border-bottom:1px solid var(--selection)}
 [data-sel="barre"] tbody tr:has(td.ck input:checked) td{background:var(--selection-f)}
 [data-sel="barre"] tbody tr:has(td.ck input:checked) td:first-child{box-shadow:inset 3px 0 0 var(--selection)}
+/* PLEIN : l'aplat entier, et l'encre se calcule dessus. */
+[data-sel="plein"] tbody tr:has(td.ck input:checked) td{background:var(--selection);color:var(--sur-selection)}
+[data-sel="plein"] tbody tr:has(td.ck input:checked) .nom,
+[data-sel="plein"] tbody tr:has(td.ck input:checked) .num,
+[data-sel="plein"] tbody tr:has(td.ck input:checked) .id,
+[data-sel="plein"] tbody tr:has(td.ck input:checked) .lien{color:var(--sur-selection)}
 th:last-child,td:last-child{padding-right:0;text-align:right}
 .nom{color:var(--t1)}
 .id{font-size:10.5px;color:var(--t3);letter-spacing:.2px;margin-top:3px}
@@ -806,40 +812,40 @@ const teinte = (k, mode) => { const o = COULEURS.find(c => c.k === k) || COULEUR
    La palette reste un réglage à part, pour qui veut pousser plus loin. */
 const THEMES = [
   /* — MÉTIER — */
-  { k:"avaliance", n:"AVALIANCE", f:"metier", a:"vert_avaliance", s:"violet_avaliance", po:"sora"     , an:"carre",  pa:"point",       bo:"contour",  ca:"cadre"  ,   mi:"encre",   mp:"non",         ep:"medium", de:"normal" },
-  { k:"encre",     n:"ENCRE",     f:"metier", a:"violet_avaliance", s:"gris",          po:"systeme",   an:"carre",  pa:"point",       bo:"contour",  ca:"gauche",   mi:"encre",   mp:"non",         ep:"fin",    de:"normal" },
-  { k:"ardoise",   n:"ARDOISE",   f:"metier", a:"gris",           s:"gris",            po:"systeme",   an:"leger",  pa:"point",       bo:"souligne", ca:"cadre", mi:"grise",   mp:"non",    ep:"fin",    de:"normal" },
-  { k:"acier",     n:"ACIER",     f:"metier", a:"bleu_roi",       s:"gris",            po:"systeme",   an:"leger",  pa:"point",       bo:"contour",  ca:"gauche",   mi:"encre",   mp:"non",         ep:"fin",    de:"normal" },
-  { k:"foret",     n:"FORÊT",     f:"metier", a:"vert_normal",    s:"vert_clair",      po:"systeme",   an:"leger",  pa:"point",       bo:"contour",  ca:"gauche",   mi:"encre",   mp:"non",         ep:"medium", de:"normal" },
-  { k:"olive",     n:"OLIVE",     f:"metier", a:"vert_clair",     s:"vert_normal",     po:"sora",      an:"leger",  pa:"carre_vide",  bo:"contour",  ca:"cadre", mi:"encre",   mp:"non",         ep:"medium", de:"normal" },
-  /* — TERMINAL — ⛔ orange, gris, noir. Aucun bleu. */
-  { k:"terminal",  n:"TERMINAL",  f:"terminal", a:"ambre",        s:"gris",            po:"jetbrains", an:"carre",  pa:"carre_plein", bo:"plein",    ca:"cadre", mi:"non",     mp:"entree",         ep:"fin",    de:"compact" },
-  { k:"bloom",     n:"BLOOM",     f:"terminal", a:"orange",       s:"gris",            po:"plex",      an:"carre",  pa:"carre_plein", bo:"plein",    ca:"cadre", mi:"non",     mp:"entree",         ep:"fin",    de:"compact" },
-  { k:"phosphore", n:"PHOSPHORE", f:"terminal", a:"vert_vif",     s:"ambre",           po:"space",     an:"carre",  pa:"carre_plein", bo:"plein",    ca:"cadre", mi:"non",     mp:"entree", ep:"fin",    de:"compact" },
-  { k:"mural",     n:"MURAL",     f:"terminal", a:"vert_vif",     s:"orange",          po:"space",     an:"leger",  pa:"carre_plein", bo:"plein",    ca:"gauche",   mi:"couleur", mp:"entree", ep:"large",  de:"confort" },
+  { k:"avaliance",     n:"AVALIANCE",       f:"metier",   a:"vert_avaliance",    s:"violet_avaliance",  po:"sora",       an:"carre",    pa:"point",        bo:"contour",    ca:"cadre",    mi:"encre",    mp:"entree",   ep:"medium",  de:"normal",   sel:"fond",     ft:"violet_avaliance",                  ff:"legere",     fz:"tout", fm:["clair"] },
+  { k:"encre",         n:"ENCRE",           f:"metier",   a:"violet_avaliance",  s:"gris",              po:"sora",       an:"carre",    pa:"carre_vide",   bo:"souligne",   ca:"gauche",   mi:"encre",    mp:"non",      ep:"fin",     de:"normal",   sel:"barre",    ft:"violet_avaliance",    ff:"legere",     fz:"chrome" },
+  { k:"ardoise",       n:"ARDOISE",         f:"metier",   a:"gris",              s:"gris",              po:"systeme",    an:"leger",    pa:"point",        bo:"souligne",   ca:"aucun",    mi:"grise",    mp:"non",      ep:"fin",     de:"normal",   sel:"contour",  ft:null,                  ff:"aucune",     fz:"chrome" },
+  { k:"acier",         n:"ACIER",           f:"metier",   a:"bleu_roi",          s:"gris",              po:"systeme",    an:"leger",    pa:"rond_vide",    bo:"contour",    ca:"haut",     mi:"encre",    mp:"entree",   ep:"fin",     de:"normal",   sel:"fond",     ft:"bleu_roi",            ff:"legere",     fz:"chrome" },
+  { k:"foret",         n:"FORÊT",           f:"metier",   a:"vert_normal",       s:"vert_clair",        po:"systeme",    an:"leger",    pa:"point",        bo:"contour",    ca:"gauche",   mi:"encre",    mp:"metier",   ep:"medium",  de:"normal",   sel:"barre",    ft:"vert_normal",         ff:"legere",     fz:"chrome" },
+  { k:"olive",         n:"OLIVE",           f:"metier",   a:"vert_clair",        s:"vert_normal",       po:"sora",       an:"leger",    pa:"carre_vide",   bo:"fantome",    ca:"bas",      mi:"couleur",  mp:"non",      ep:"medium",  de:"normal",   sel:"fond",     ft:null,                  ff:"aucune",     fz:"chrome" },
+  /* — TERMINAL — */
+  { k:"terminal",      n:"TERMINAL",        f:"terminal", a:"ambre",             s:"gris",              po:"jetbrains",  an:"carre",    pa:"carre_plein",  bo:"plein",      ca:"cadre",    mi:"non",      mp:"entree",   ep:"fin",     de:"compact",  sel:"plein",     ft:null,                  ff:"aucune",     fz:"chrome" },
+  { k:"bloom",         n:"BLOOM",           f:"terminal", a:"orange",            s:"gris",              po:"plex",       an:"carre",    pa:"carre_plein",  bo:"plein",      ca:"gauche",   mi:"non",      mp:"entree",   ep:"fin",     de:"compact",  sel:"barre",    ft:null,                  ff:"aucune",     fz:"chrome" },
+  { k:"phosphore",     n:"PHOSPHORE",       f:"terminal", a:"vert_vif",          s:"ambre",             po:"space",      an:"carre",    pa:"carre_plein",  bo:"plein",      ca:"haut",     mi:"grise",    mp:"entree",   ep:"fin",     de:"compact",  sel:"plein",     ft:null,                  ff:"aucune",     fz:"chrome" },
+  { k:"mural",         n:"MURAL",           f:"terminal", a:"vert_vif",          s:"orange",            po:"space",      an:"leger",    pa:"carre_plein",  bo:"plein",      ca:"cadre",    mi:"couleur",  mp:"entree",   ep:"large",   de:"confort",  sel:"plein",     ft:null,                  ff:"aucune",     fz:"chrome" },
   /* — FROID — */
-  { k:"nuit",      n:"NUIT",      f:"froid", a:"bleu_roi",        s:"violet_avaliance",po:"inter",     an:"arrondi",pa:"rond_plein",  bo:"plein",    ca:"gauche",   mi:"encre",   mp:"non",         ep:"medium", de:"normal" },
-  { k:"ocean",     n:"OCÉAN",     f:"froid", a:"bleu",            s:"cyan",            po:"inter",     an:"arrondi",pa:"rond_vide",   bo:"contour",  ca:"gauche",   mi:"couleur", mp:"entree", ep:"medium", de:"normal" },
-  { k:"lagon",     n:"LAGON",     f:"froid", a:"cyan",            s:"bleu_roi",        po:"systeme",   an:"arrondi",pa:"point",       bo:"contour",  ca:"gauche",   mi:"encre",   mp:"non",         ep:"medium", de:"normal" },
-  { k:"glace",     n:"GLACE",     f:"froid", a:"cyan",            s:"gris",            po:"inter",     an:"tres",   pa:"rond_vide",   bo:"fantome",  ca:"cadre", mi:"grise",   mp:"non",    ep:"fin",    de:"confort" },
-  { k:"emeraude",  n:"ÉMERAUDE",  f:"froid", a:"vert_vif",        s:"cyan",            po:"inter",     an:"arrondi",pa:"rond_plein",  bo:"plein",    ca:"gauche",   mi:"couleur", mp:"entree", ep:"medium", de:"normal" },
+  { k:"nuit",          n:"NUIT",            f:"froid",    a:"bleu_roi",          s:"violet_avaliance",  po:"inter",      an:"arrondi",  pa:"rond_plein",   bo:"plein",      ca:"gauche",   mi:"encre",    mp:"entree",   ep:"medium",  de:"normal",   sel:"fond",     ft:"bleu_roi",            ff:"nette",      fz:"chrome" },
+  { k:"ocean",         n:"OCÉAN",           f:"froid",    a:"bleu",              s:"cyan",              po:"inter",      an:"arrondi",  pa:"rond_vide",    bo:"contour",    ca:"cadre",    mi:"couleur",  mp:"non",      ep:"medium",  de:"normal",   sel:"contour",  ft:"bleu",                ff:"legere",     fz:"tout" },
+  { k:"lagon",         n:"LAGON",           f:"froid",    a:"cyan",              s:"bleu_roi",          po:"systeme",    an:"arrondi",  pa:"point",        bo:"contour",    ca:"bas",      mi:"encre",    mp:"entree",   ep:"medium",  de:"normal",   sel:"barre",    ft:"cyan",                ff:"legere",     fz:"chrome" },
+  { k:"glace",         n:"GLACE",           f:"froid",    a:"cyan",              s:"gris",              po:"inter",      an:"tres",     pa:"rond_vide",    bo:"fantome",    ca:"aucun",    mi:"grise",    mp:"non",      ep:"fin",     de:"confort",  sel:"fond",     ft:"cyan",                ff:"legere",     fz:"tout" },
+  { k:"emeraude",      n:"ÉMERAUDE",        f:"froid",    a:"vert_vif",          s:"cyan",              po:"inter",      an:"arrondi",  pa:"rond_plein",   bo:"plein",      ca:"droite",   mi:"couleur",  mp:"entree",   ep:"medium",  de:"normal",   sel:"plein",     ft:"vert_vif",            ff:"legere",     fz:"chrome" },
   /* — CHAUD — */
-  { k:"sable",     n:"SABLE",     f:"chaud", a:"ambre",           s:"orange",          po:"sora",      an:"arrondi",pa:"point",       bo:"contour",  ca:"gauche",   mi:"encre",   mp:"non",         ep:"medium", de:"confort" },
-  { k:"cuivre",    n:"CUIVRE",    f:"chaud", a:"orange",          s:"vert_clair",      po:"plex",      an:"leger",  pa:"carre_plein", bo:"plein",    ca:"gauche",   mi:"encre",   mp:"non",         ep:"medium", de:"normal" },
-  { k:"brique",    n:"BRIQUE",    f:"chaud", a:"rouge",           s:"ambre",           po:"systeme",   an:"leger",  pa:"carre_vide",  bo:"contour",  ca:"cadre", mi:"encre",   mp:"non",         ep:"medium", de:"normal" },
-  { k:"corail",    n:"CORAIL",    f:"chaud", a:"rouge",           s:"magenta",         po:"sora",      an:"pilule", pa:"rond_plein",  bo:"plein",    ca:"plein",   mi:"non",     mp:"entree",  ep:"medium", de:"normal" },
-  { k:"prune",     n:"PRUNE",     f:"chaud", a:"magenta",         s:"violet_avaliance",po:"sora",      an:"tres",   pa:"rond_plein",  bo:"plein",    ca:"gauche",   mi:"couleur", mp:"entree", ep:"medium", de:"normal" },
+  { k:"sable",         n:"SABLE",           f:"chaud",    a:"ambre",             s:"orange",            po:"sora",       an:"arrondi",  pa:"point",        bo:"contour",    ca:"bas",      mi:"encre",    mp:"non",      ep:"medium",  de:"confort",  sel:"fond",     ft:"ambre",               ff:"legere",     fz:"tout" },
+  { k:"cuivre",        n:"CUIVRE",          f:"chaud",    a:"orange",            s:"vert_clair",        po:"plex",       an:"leger",    pa:"carre_plein",  bo:"plein",      ca:"gauche",   mi:"encre",    mp:"entree",   ep:"medium",  de:"normal",   sel:"barre",    ft:"orange",              ff:"legere",     fz:"chrome" },
+  { k:"brique",        n:"BRIQUE",          f:"chaud",    a:"rouge",             s:"ambre",             po:"systeme",    an:"leger",    pa:"carre_vide",   bo:"contour",    ca:"cadre",    mi:"encre",    mp:"non",      ep:"medium",  de:"normal",   sel:"contour",  ft:"rouge",               ff:"legere",     fz:"chrome" },
+  { k:"corail",        n:"CORAIL",          f:"chaud",    a:"rouge",             s:"magenta",           po:"sora",       an:"pilule",   pa:"rond_plein",   bo:"plein",      ca:"haut",     mi:"couleur",  mp:"entree",   ep:"medium",  de:"normal",   sel:"plein",     ft:"rouge",               ff:"nette",      fz:"chrome" },
+  { k:"prune",         n:"PRUNE",           f:"chaud",    a:"magenta",           s:"violet_avaliance",  po:"sora",       an:"tres",     pa:"rond_plein",   bo:"plein",      ca:"droite",   mi:"couleur",  mp:"entree",   ep:"medium",  de:"normal",   sel:"fond",     ft:"magenta",             ff:"nette",      fz:"tout" },
   /* — FLASHY — */
-  { k:"fluo",      n:"FLUO",      f:"flashy", a:"jaune_fluo",     s:"magenta",         po:"space",     an:"carre",  pa:"carre_plein", bo:"plein",    ca:"plein",   mi:"non",     mp:"entree", ep:"large",  de:"normal" },
-  { k:"neon",      n:"NÉON",      f:"flashy", a:"magenta",        s:"cyan",            po:"space",     an:"pilule", pa:"rond_plein",  bo:"plein",    ca:"plein",   mi:"non",     mp:"entree",  ep:"large",  de:"normal" },
-  { k:"citron",    n:"CITRON",    f:"flashy", a:"jaune_fluo",     s:"vert_normal",     po:"inter",     an:"arrondi",pa:"point",       bo:"plein",    ca:"gauche",   mi:"couleur", mp:"entree", ep:"medium", de:"normal" },
+  { k:"fluo",          n:"FLUO",            f:"flashy",   a:"jaune_fluo",        s:"magenta",           po:"space",      an:"carre",    pa:"carre_plein",  bo:"plein",      ca:"cadre",    mi:"non",      mp:"entree",   ep:"large",   de:"normal",   sel:"plein",     ft:"magenta",             ff:"nette",      fz:"chrome" },
+  { k:"neon",          n:"NÉON",            f:"flashy",   a:"magenta",           s:"cyan",              po:"space",      an:"pilule",   pa:"rond_plein",   bo:"plein",      ca:"plein",    mi:"couleur",  mp:"entree",   ep:"large",   de:"normal",   sel:"plein",     ft:"magenta",             ff:"forte",      fz:"chrome" },
+  { k:"citron",        n:"CITRON",          f:"flashy",   a:"jaune_fluo",        s:"vert_normal",       po:"inter",      an:"arrondi",  pa:"point",        bo:"plein",      ca:"haut",     mi:"couleur",  mp:"entree",   ep:"medium",  de:"normal",   sel:"barre",    ft:"vert_normal",         ff:"legere",     fz:"chrome" },
   /* — SEXY — */
-  { k:"rouge_levres", n:"ROUGE À LÈVRES", f:"sexy", a:"rose",     s:"violet_avaliance",po:"sora",      an:"pilule", pa:"rond_plein",  bo:"plein",    ca:"plein",   mi:"non",     mp:"entree",  ep:"medium", de:"confort" },
-  { k:"velours",   n:"VELOURS",   f:"sexy", a:"violet_avaliance", s:"rose",            po:"sora",      an:"tres",   pa:"rond_plein",  bo:"plein",    ca:"gauche",   mi:"couleur", mp:"entree", ep:"medium", de:"confort" },
-  { k:"lavande",   n:"LAVANDE",   f:"sexy", a:"lavande",          s:"violet_avaliance",po:"inter",     an:"tres",   pa:"rond_vide",   bo:"fantome",  ca:"cadre", mi:"encre",   mp:"non",         ep:"fin",    de:"confort" },
+  { k:"rouge_levres",  n:"ROUGE À LÈVRES",  f:"sexy",     a:"rose",              s:"violet_avaliance",  po:"sora",       an:"pilule",   pa:"rond_plein",   bo:"plein",      ca:"plein",    mi:"couleur",  mp:"entree",   ep:"medium",  de:"confort",  sel:"plein",     ft:"rose",                ff:"nette",      fz:"tout" },
+  { k:"velours",       n:"VELOURS",         f:"sexy",     a:"violet_avaliance",  s:"rose",              po:"sora",       an:"tres",     pa:"rond_plein",   bo:"plein",      ca:"gauche",   mi:"encre",    mp:"entree",   ep:"medium",  de:"confort",  sel:"barre",    ft:"violet_avaliance",    ff:"forte",      fz:"tout" },
+  { k:"lavande",       n:"LAVANDE",         f:"sexy",     a:"lavande",           s:"violet_avaliance",  po:"inter",      an:"tres",     pa:"rond_vide",    bo:"fantome",    ca:"droite",   mi:"encre",    mp:"non",      ep:"fin",     de:"confort",  sel:"fond",     ft:"lavande",             ff:"legere",     fz:"tout" },
   /* — SOBRE — */
-  { k:"craie",     n:"CRAIE",     f:"sobre", a:"gris",            s:"bleu",            po:"systeme",   an:"carre",  pa:"point",       bo:"souligne", ca:"cadre", mi:"grise",   mp:"non",    ep:"fin",    de:"normal" },
-  { k:"lin",       n:"LIN",       f:"sobre", a:"gris",            s:"vert_clair",      po:"systeme",   an:"leger",  pa:"point",       bo:"souligne", ca:"cadre", mi:"grise",   mp:"non",    ep:"fin",    de:"confort" }
+  { k:"craie",         n:"CRAIE",           f:"sobre",    a:"gris",              s:"bleu",              po:"systeme",    an:"carre",    pa:"point",        bo:"souligne",   ca:"aucun",    mi:"grise",    mp:"non",      ep:"fin",     de:"normal",   sel:"contour",  ft:null,                  ff:"aucune",     fz:"chrome" },
+  { k:"lin",           n:"LIN",             f:"sobre",    a:"gris",              s:"vert_clair",        po:"systeme",    an:"leger",    pa:"point",        bo:"souligne",   ca:"bas",      mi:"grise",    mp:"non",      ep:"fin",     de:"confort",  sel:"contour",  ft:null,                  ff:"aucune",     fz:"chrome" }
 ];
 const FAMILLES = [["metier","MÉTIER"],["terminal","TERMINAL"],["froid","FROID"],
                   ["chaud","CHAUD"],["flashy","FLASHY"],["sexy","SEXY"],["sobre","SOBRE"]];
@@ -851,7 +857,16 @@ function poseTheme(k){
   S.theme = k;
   S.action = t.a; S.struct = t.s; S.police = t.po; S.angle = t.an;
   S.pastille = t.pa; S.bouton = t.bo; S.carte = t.ca;
-  S.menuIcone = t.mi; S.menuPastille = t.mp;
+  S.menuIcone = t.mi; S.menuPastille = t.mp; S.selStyle = t.sel;
+  /* Le theme dit s'il teinte le fond, avec quoi, et jusqu'ou :
+     « chrome » = les barres et les colonnes · « tout » = les quatre surfaces. */
+  S.fondForce = t.ff;
+  /* Certains themes ne teignent le fond que sur un des trois. Avaliance :
+     rien en sombre ni en intermediaire, un violet leger sur le clair. */
+  S.fondModes = t.fm || null;
+  S.fonds = t.fz === "tout"
+    ? { page:t.ft, carte:t.ft, barre:t.ft, colonne:t.ft }
+    : { page:null, carte:null, barre:t.ft, colonne:t.ft };
   S.epaisseur = t.ep; S.densite = t.de;
 }
 
@@ -1030,8 +1045,9 @@ function applique(){
      Le fond du logiciel est un reglage comme les autres. */
   const base = FONDS[S.mode] || FONDS.sombre;
   const tf = TEINTES_FOND.find(t => t.k === S.fondForce) || TEINTES_FOND[0];
+  const modeOk = !S.fondModes || S.fondModes.includes(S.mode);
   const tein = (sf, gris) => {
-    const c = S.fonds[sf];
+    const c = modeOk ? S.fonds[sf] : null;
     return c && tf.v ? melange(aplat(c), gris, tf.v) : gris;
   };
   Object.keys(base).forEach(k => root.style.setProperty("--" + k, base[k]));
@@ -1125,7 +1141,7 @@ function choix(quoi, cle, libelle){
     </div></div>`;
 }
 const SURFACES = [["page","Hors carte"],["carte","Cartes"],["barre","Barres"],["colonne","Colonnes"]];
-const SEL_STYLES = [{k:"fond",n:"FOND"},{k:"barre",n:"BARRE À GAUCHE"},{k:"contour",n:"CONTOUR"}];
+const SEL_STYLES = [{k:"fond",n:"FOND"},{k:"plein",n:"PLEIN"},{k:"barre",n:"BARRE À GAUCHE"},{k:"contour",n:"CONTOUR"}];
 function peintThemes(){
   const z = $("#rTheme"); if (!z) return;
   z.innerHTML = FAMILLES.map(([f, n]) => `<span class="th-f">${n}</span>` +
