@@ -638,6 +638,8 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
               <div class="reg"><span>PALETTE</span><div class="opts" id="rPalette"></div></div>
               <div class="reg"><span>FOND</span><div class="opts" id="rMode"></div></div>
               <div class="reg"><span>INTENSITÉ</span><div class="opts" id="rIntensite"></div></div>
+              <div id="rFond" class="choix-z"></div>
+              <div class="reg"><span>TEINTE DU FOND</span><div class="opts" id="rFondForce"></div></div>
             </div>
           </section>
 
@@ -782,6 +784,16 @@ const POLICES = [
   { k:"systeme",   n:"SYSTÈME",     v:"-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" }
 ];
 const MODES = [{k:"sombre",n:"SOMBRE"},{k:"gris",n:"INTERMÉDIAIRE"},{k:"clair",n:"CLAIR"}];
+/* ⭐ Les gris de base, les memes qu'en CSS. Il faut les avoir ICI pour pouvoir
+   les teinter : on ne peut pas lire puis reecrire la meme variable. */
+const FONDS = {
+  sombre:{ f0:"#000000", f1:"#0a0a10", f2:"#101017", f3:"#191921", f4:"#23232d", bord:"#2e2e3a" },
+  gris:  { f0:"#22222a", f1:"#2a2a34", f2:"#31313d", f3:"#3a3a47", f4:"#454554", bord:"#6b6b83" },
+  clair: { f0:"#ffffff", f1:"#ffffff", f2:"#ffffff", f3:"#f6f4f8", f4:"#eceaf0", bord:"#a79fb6" }
+};
+/* Combien la teinte mord sur le gris. ⛔ Au-dela, le fond devient un aplat. */
+const TEINTES_FOND = [{k:"aucune",n:"AUCUNE",v:0},{k:"legere",n:"LÉGÈRE",v:.07},
+                      {k:"nette",n:"NETTE",v:.14},{k:"forte",n:"FORTE",v:.24}];
 const ANGLES = [{k:"carre",n:"CARRÉ",v:"0px"},{k:"leger",n:"LÉGER",v:"2px"},{k:"arrondi",n:"ARRONDI",v:"7px"}];
 const PASTILLES = [{k:"contour",n:"CONTOUR"},{k:"plein",n:"PLEIN"}];
 const BOUTONS = [{k:"contour",n:"CONTOUR"},{k:"plein",n:"PLEIN"},{k:"fantome",n:"FANTÔME"},{k:"souligne",n:"SOULIGNÉ"}];
@@ -822,11 +834,20 @@ let S = { palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbra
           /* ⭐ Aucune couleur n'est imposee. Chaque metier et chaque niveau de
              sens a la sienne, et null veut dire « celle d'origine ». */
           chapitres:["theme","couleurs"],
+          fondTeinte:null, fondForce:"aucune",
           metier:{ c1:null, c2:null, c3:null, c4:null, c5:null },
           sens:{ ok:null, warn:null, ko:null }, deplies:["crm","projets","planning"] };
 /* ⚠️ La cle porte un numero : un menu enregistre ne gagne pas les entrees
    ajoutees depuis. On change de cle quand le catalogue change. */
+/* ⛔ Un artefact republie change d'origine : son localStorage repart a zero, et
+   tous les reglages disparaissent. L'adresse, elle, se transmet. On ecrit donc
+   l'etat DANS l'adresse, et le stockage local ne sert que de doublure. */
+const litHash = () => { try {
+  const m = location.hash.match(/t=([A-Za-z0-9+/=_-]+)/);
+  return m ? JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g,"+").replace(/_/g,"/"))))) : null;
+} catch(e){ return null; } };
 try { S = Object.assign(S, JSON.parse(localStorage.getItem("ava-term6") || "{}")); } catch(e){}
+try { const h = litHash(); if (h) S = Object.assign(S, h); } catch(e){}
 
 /* L'APLAT. `teinte()` eclaircit sur fond sombre pour que le TEXTE reste lisible.
    Un aplat n'est pas du texte : il porte le vrai hex de la charte, et l'encre
@@ -882,6 +903,15 @@ function applique(){
 
   /* ⛔ `cA` est la teinte de TEXTE : sur fond clair c'est la variante sombre,
      et la tuile portait donc un second vert. Elle prend l'aplat de la charte. */
+  /* ⭐ Le fond se teinte : chaque gris est melange a la couleur choisie.
+     Le fond du logiciel est un reglage comme les autres. */
+  const base = FONDS[S.mode] || FONDS.sombre;
+  const tf = TEINTES_FOND.find(t => t.k === S.fondForce) || TEINTES_FOND[0];
+  const teinteF = S.fondTeinte ? aplat(S.fondTeinte) : null;
+  Object.keys(base).forEach(k => {
+    const v = teinteF && tf.v ? melange(teinteF, base[k], tf.v) : base[k];
+    root.style.setProperty("--" + k, v);
+  });
   NIVEAUX.forEach(([k]) => { if (S.sens[k]) root.style.setProperty("--" + k, aplat(S.sens[k])); });
   const M0 = METIERS[S.mode === "clair" ? "clair" : "vif"];
   const M = {}; CHEMINS.forEach(([k]) => { M[k] = S.metier[k] ? aplat(S.metier[k]) : M0[k]; });
@@ -909,6 +939,11 @@ function applique(){
   if ($("#etat")) $("#etat").textContent = `${P.n} · ${MODES.find(m=>m.k===S.mode).n}`
     + (S.action || S.struct ? " · RETOUCHÉE" : "");
   try { localStorage.setItem("ava-term6", JSON.stringify(S)); } catch(e){}
+  /* l'adresse porte l'etat : elle survit a tout, et elle se partage */
+  try {
+    const t = btoa(unescape(encodeURIComponent(JSON.stringify(S)))).replace(/\+/g,"-").replace(/\//g,"_");
+    history.replaceState(null, "", location.pathname + location.search + "#t=" + t);
+  } catch(e){}
 }
 /* ⭐ « On préfère voir que lire » — Hamada, 19/09.
    Une palette montre ses deux couleurs, une police s'écrit dans sa police,
@@ -920,12 +955,14 @@ const NIVEAUX = [["ok","Bon"],["warn","Alerte"],["ko","Critique"]];
 let popCoul = null;
 
 function couleurDe(quoi, cle){
+  if (quoi === "fond")   return S.fondTeinte || null;
   if (quoi === "metier") return S.metier[cle] || null;
   if (quoi === "sens")   return S.sens[cle]   || null;
   return S[cle] || null;
 }
 function hexDe(quoi, cle){
   const k = couleurDe(quoi, cle);
+  if (quoi === "fond") return k ? aplat(k) : (FONDS[S.mode] || FONDS.sombre).f1;
   if (k) return aplat(k);
   if (quoi === "metier") return METIERS[S.mode === "clair" ? "clair" : "vif"][cle];
   if (quoi === "sens")   return getComputedStyle(root).getPropertyValue("--" + cle).trim();
@@ -949,6 +986,8 @@ function choix(quoi, cle, libelle){
     </div></div>`;
 }
 function peintChoix(){
+  const f = $("#rFond");
+  if (f) f.innerHTML = choix("fond", "fondTeinte", "Fond");
   const z = $("#rCouleurs"); if (!z) return;
   z.innerHTML =
     `<div class="ch-gr">RÔLES</div>` +
@@ -985,6 +1024,7 @@ boutons("#rDensite", DENSITES, "densite", false);
 boutons("#rEpaisseur", EPAISSEURS, "epaisseur", false);
 boutons("#rMarqueur", MARQUEURS, "marqueur", false);
 boutons("#rNotes", NOTES, "notes", false);
+boutons("#rFondForce", TEINTES_FOND, "fondForce", false);
 boutons("#rRail", RAILS, "rail", false);
 $("#rOutils").innerHTML = OUTILS.map(o => `<button class="opt" type="button" data-o="${o.k}" aria-pressed="true">${o.n}</button>`).join("");
 
@@ -2080,7 +2120,8 @@ document.addEventListener("click", e => {
   const po = e.target.closest("[data-pose]");
   if (po){ e.preventDefault();
     const [quoi, cle] = po.dataset.pose.split(":"), k = po.dataset.k || null;
-    if (quoi === "metier") S.metier[cle] = k;
+    if (quoi === "fond") S.fondTeinte = k;
+    else if (quoi === "metier") S.metier[cle] = k;
     else if (quoi === "sens") S.sens[cle] = k;
     else S[cle] = k;
     popCoul = null; applique(); return; }
