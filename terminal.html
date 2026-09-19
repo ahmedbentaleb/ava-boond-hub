@@ -299,6 +299,10 @@ select:hover{border-color:var(--t4)}
 .opt[aria-pressed="true"]{border-color:var(--action);color:var(--action-encre);background:color-mix(in srgb,var(--action) 11%,transparent)}
 .opt u{text-decoration:none;display:flex;gap:2px}
 .opt u b{width:9px;height:9px;display:block;border-radius:50%}
+.themes{flex-direction:column;align-items:stretch;gap:3px}
+.th-f{font-size:7.5px;letter-spacing:1.1px;color:var(--t4);margin-top:7px}
+.th-f:first-child{margin-top:0}
+.opt.th{justify-content:flex-start;width:100%}
 .opt .aa{font-style:normal;font-size:13px;line-height:1;width:20px;text-align:center;color:var(--t1)}
 .opt .fd{width:12px;height:12px;flex:none;border-radius:50%;border:1px solid var(--bord)}
 .fd-sombre{background:#0a0a10}
@@ -652,9 +656,9 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
         <div class="in">
 
           <section class="chap" data-chap="theme">
-            <button class="chap-t" type="button" data-chapitre="theme" aria-expanded="true">Thème<i>▾</i></button>
+            <button class="chap-t" type="button" data-chapitre="theme" aria-expanded="true">L'essentiel<i>▾</i></button>
             <div class="chap-c">
-              <div class="reg"><span>PALETTE</span><div class="opts" id="rPalette"></div></div>
+              <div class="reg"><span>THÈME</span><div class="opts themes" id="rTheme"></div></div>
               <div class="reg"><span>FOND</span><div class="opts" id="rMode"></div></div>
               <div class="reg"><span>INTENSITÉ</span><div class="opts" id="rIntensite"></div></div>
               <div id="rFond" class="choix-z"></div>
@@ -663,8 +667,11 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
           </section>
 
           <section class="chap" data-chap="couleurs">
-            <button class="chap-t" type="button" data-chapitre="couleurs" aria-expanded="true">Couleurs<i>▾</i></button>
-            <div class="chap-c"><div id="rCouleurs" class="choix-z"></div></div>
+            <button class="chap-t" type="button" data-chapitre="couleurs" aria-expanded="true">Réglage fin — couleurs<i>▾</i></button>
+            <div class="chap-c">
+              <div class="reg"><span>PALETTE</span><div class="opts" id="rPalette"></div></div>
+              <div id="rCouleurs" class="choix-z"></div>
+            </div>
           </section>
 
           <section class="chap" data-chap="texte">
@@ -762,12 +769,70 @@ const COULEURS = [
   { k:"bleu_roi",  n:"BLEU ROI",   d:"#2F6BE8", c:"#1E4FB5", v:"#2F6BE8" },
   { k:"cyan",      n:"CYAN",       d:"#00D4AA", c:"#00786A" },
   { k:"magenta",   n:"MAGENTA",    d:"#E879F9", c:"#A21CAF" },
-  { k:"gris",      n:"ARGENT",     d:"#DCDCE6", c:"#5A5364" }
+  { k:"gris",      n:"ARGENT",     d:"#DCDCE6", c:"#5A5364" },
+  { k:"jaune_fluo",n:"JAUNE FLUO", d:"#E8FF00", c:"#8A9900", v:"#E8FF00" },
+  { k:"rose",      n:"ROSE",       d:"#FF4D8D", c:"#C21A5B", v:"#FF4D8D" },
+  { k:"lavande",   n:"LAVANDE",    d:"#B39DFF", c:"#6A4FD0", v:"#B39DFF" }
 ];
 const teinte = (k, mode) => { const o = COULEURS.find(c => c.k === k) || COULEURS[0]; return mode === "clair" ? o.c : o.d; };
 /* sombre et intermediaire prennent la version vive : sur un fond fonce, une couleur sourde disparait */
 
 /* Six palettes qui tiennent — chacune remplit les deux rôles colorés */
+/* ═══ LES 28 THÈMES ═══
+   ⭐ Un thème regroupe TOUT : les deux couleurs, la police, les angles, les
+   pastilles, les boutons, les cartes, le marqueur, l'épaisseur, la densité.
+   ⛔ Il ne porte PAS le fond : chacun tient en sombre, intermédiaire et clair.
+   La palette reste un réglage à part, pour qui veut pousser plus loin. */
+const THEMES = [
+  /* — MÉTIER — */
+  { k:"avaliance", n:"AVALIANCE", f:"metier", a:"vert_avaliance", s:"violet_avaliance", po:"jetbrains", an:"carre",  pa:"point",       bo:"contour",  ca:"bande",   mq:"icone",         ep:"medium", de:"normal" },
+  { k:"encre",     n:"ENCRE",     f:"metier", a:"violet_avaliance", s:"gris",          po:"systeme",   an:"carre",  pa:"point",       bo:"contour",  ca:"bande",   mq:"icone",         ep:"fin",    de:"normal" },
+  { k:"ardoise",   n:"ARDOISE",   f:"metier", a:"gris",           s:"gris",            po:"systeme",   an:"leger",  pa:"point",       bo:"souligne", ca:"contour", mq:"icone_mono",    ep:"fin",    de:"normal" },
+  { k:"acier",     n:"ACIER",     f:"metier", a:"bleu_roi",       s:"gris",            po:"systeme",   an:"leger",  pa:"point",       bo:"contour",  ca:"bande",   mq:"icone",         ep:"fin",    de:"normal" },
+  { k:"foret",     n:"FORÊT",     f:"metier", a:"vert_normal",    s:"vert_clair",      po:"systeme",   an:"leger",  pa:"point",       bo:"contour",  ca:"bande",   mq:"icone",         ep:"medium", de:"normal" },
+  { k:"olive",     n:"OLIVE",     f:"metier", a:"vert_clair",     s:"vert_normal",     po:"sora",      an:"leger",  pa:"carre_vide",  bo:"contour",  ca:"contour", mq:"icone",         ep:"medium", de:"normal" },
+  /* — TERMINAL — ⛔ orange, gris, noir. Aucun bleu. */
+  { k:"terminal",  n:"TERMINAL",  f:"terminal", a:"ambre",        s:"gris",            po:"jetbrains", an:"carre",  pa:"carre_plein", bo:"plein",    ca:"contour", mq:"carre",         ep:"fin",    de:"compact" },
+  { k:"bloomberg", n:"BLOOMBERG", f:"terminal", a:"orange",       s:"gris",            po:"plex",      an:"carre",  pa:"carre_plein", bo:"plein",    ca:"contour", mq:"carre",         ep:"fin",    de:"compact" },
+  { k:"phosphore", n:"PHOSPHORE", f:"terminal", a:"vert_vif",     s:"ambre",           po:"space",     an:"carre",  pa:"carre_plein", bo:"plein",    ca:"contour", mq:"carre_couleur", ep:"fin",    de:"compact" },
+  { k:"mural",     n:"MURAL",     f:"terminal", a:"vert_vif",     s:"orange",          po:"space",     an:"pilule", pa:"rond_plein",  bo:"plein",    ca:"plein",   mq:"rond_couleur",  ep:"large",  de:"confort" },
+  /* — FROID — */
+  { k:"nuit",      n:"NUIT",      f:"froid", a:"bleu_roi",        s:"violet_avaliance",po:"inter",     an:"arrondi",pa:"rond_plein",  bo:"plein",    ca:"bande",   mq:"icone",         ep:"medium", de:"normal" },
+  { k:"ocean",     n:"OCÉAN",     f:"froid", a:"bleu",            s:"cyan",            po:"inter",     an:"arrondi",pa:"rond_vide",   bo:"contour",  ca:"bande",   mq:"icone_couleur", ep:"medium", de:"normal" },
+  { k:"lagon",     n:"LAGON",     f:"froid", a:"cyan",            s:"bleu_roi",        po:"systeme",   an:"arrondi",pa:"point",       bo:"contour",  ca:"bande",   mq:"icone",         ep:"medium", de:"normal" },
+  { k:"glace",     n:"GLACE",     f:"froid", a:"cyan",            s:"gris",            po:"inter",     an:"tres",   pa:"rond_vide",   bo:"fantome",  ca:"contour", mq:"icone_mono",    ep:"fin",    de:"confort" },
+  { k:"emeraude",  n:"ÉMERAUDE",  f:"froid", a:"vert_vif",        s:"cyan",            po:"inter",     an:"arrondi",pa:"rond_plein",  bo:"plein",    ca:"bande",   mq:"icone_couleur", ep:"medium", de:"normal" },
+  /* — CHAUD — */
+  { k:"sable",     n:"SABLE",     f:"chaud", a:"ambre",           s:"orange",          po:"sora",      an:"arrondi",pa:"point",       bo:"contour",  ca:"bande",   mq:"icone",         ep:"medium", de:"confort" },
+  { k:"cuivre",    n:"CUIVRE",    f:"chaud", a:"orange",          s:"vert_clair",      po:"plex",      an:"leger",  pa:"carre_plein", bo:"plein",    ca:"bande",   mq:"icone",         ep:"medium", de:"normal" },
+  { k:"brique",    n:"BRIQUE",    f:"chaud", a:"rouge",           s:"ambre",           po:"systeme",   an:"leger",  pa:"carre_vide",  bo:"contour",  ca:"contour", mq:"icone",         ep:"medium", de:"normal" },
+  { k:"corail",    n:"CORAIL",    f:"chaud", a:"rouge",           s:"magenta",         po:"sora",      an:"pilule", pa:"rond_plein",  bo:"plein",    ca:"plein",   mq:"rond_couleur",  ep:"medium", de:"normal" },
+  { k:"prune",     n:"PRUNE",     f:"chaud", a:"magenta",         s:"violet_avaliance",po:"sora",      an:"tres",   pa:"rond_plein",  bo:"plein",    ca:"bande",   mq:"icone_couleur", ep:"medium", de:"normal" },
+  /* — FLASHY — */
+  { k:"fluo",      n:"FLUO",      f:"flashy", a:"jaune_fluo",     s:"magenta",         po:"space",     an:"carre",  pa:"carre_plein", bo:"plein",    ca:"plein",   mq:"carre_couleur", ep:"large",  de:"normal" },
+  { k:"neon",      n:"NÉON",      f:"flashy", a:"magenta",        s:"cyan",            po:"space",     an:"pilule", pa:"rond_plein",  bo:"plein",    ca:"plein",   mq:"rond_couleur",  ep:"large",  de:"normal" },
+  { k:"citron",    n:"CITRON",    f:"flashy", a:"jaune_fluo",     s:"vert_normal",     po:"inter",     an:"arrondi",pa:"point",       bo:"plein",    ca:"bande",   mq:"icone_couleur", ep:"medium", de:"normal" },
+  /* — SEXY — */
+  { k:"rouge_levres", n:"ROUGE À LÈVRES", f:"sexy", a:"rose",     s:"violet_avaliance",po:"sora",      an:"pilule", pa:"rond_plein",  bo:"plein",    ca:"plein",   mq:"rond_couleur",  ep:"medium", de:"confort" },
+  { k:"velours",   n:"VELOURS",   f:"sexy", a:"violet_avaliance", s:"rose",            po:"sora",      an:"tres",   pa:"rond_plein",  bo:"plein",    ca:"bande",   mq:"icone_couleur", ep:"medium", de:"confort" },
+  { k:"lavande",   n:"LAVANDE",   f:"sexy", a:"lavande",          s:"violet_avaliance",po:"inter",     an:"tres",   pa:"rond_vide",   bo:"fantome",  ca:"contour", mq:"icone",         ep:"fin",    de:"confort" },
+  /* — SOBRE — */
+  { k:"craie",     n:"CRAIE",     f:"sobre", a:"gris",            s:"bleu",            po:"systeme",   an:"carre",  pa:"point",       bo:"souligne", ca:"contour", mq:"icone_mono",    ep:"fin",    de:"normal" },
+  { k:"lin",       n:"LIN",       f:"sobre", a:"gris",            s:"vert_clair",      po:"systeme",   an:"leger",  pa:"point",       bo:"souligne", ca:"contour", mq:"icone_mono",    ep:"fin",    de:"confort" }
+];
+const FAMILLES = [["metier","MÉTIER"],["terminal","TERMINAL"],["froid","FROID"],
+                  ["chaud","CHAUD"],["flashy","FLASHY"],["sexy","SEXY"],["sobre","SOBRE"]];
+
+/* ⭐ Poser un theme, c'est poser NEUF reglages d'un coup. Ensuite, chacun se
+   retouche separement sous « Reglage fin » : le theme n'est pas une prison. */
+function poseTheme(k){
+  const t = THEMES.find(x => x.k === k); if (!t) return;
+  S.theme = k;
+  S.action = t.a; S.struct = t.s; S.police = t.po; S.angle = t.an;
+  S.pastille = t.pa; S.bouton = t.bo; S.carte = t.ca; S.marqueur = t.mq;
+  S.epaisseur = t.ep; S.densite = t.de;
+}
+
 const PALETTES = [
   { k:"avaliance", n:"AVALIANCE", a:"vert_avaliance",   s:"violet_avaliance" },
   { k:"terminal",  n:"TERMINAL",  a:"orange",           s:"bleu" },
@@ -852,7 +917,7 @@ const OUTILS = [
   { k:"cal",    n:"CALENDRIER", t:"Calendrier",   i:'<rect x="2.5" y="3.5" width="11" height="10" rx="1"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"/>' }
 ];
 
-let S = { palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
+let S = { theme:"avaliance", palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
           action:null, struct:null, angle:"carre", pastille:"point", bouton:"contour", carte:"bande", coloration:"une",
           rail:"droite", outils:["alertes","notes","ia","todo","indic","cal"], outilOuvert:"alertes", dernierOutil:"alertes",
           marqueur:"icone", notes:"infobulle", menu:null,
@@ -975,6 +1040,7 @@ function applique(){
     b.nextElementSibling.hidden = !o;
   });
   peintMenu();
+  peintThemes();
   peintChoix();
   peintMoi();
   peintRole();
@@ -1031,6 +1097,12 @@ function choix(quoi, cle, libelle){
 }
 const SURFACES = [["page","Hors carte"],["carte","Cartes"],["barre","Barres"],["colonne","Colonnes"]];
 const SEL_STYLES = [{k:"fond",n:"FOND"},{k:"barre",n:"BARRE À GAUCHE"},{k:"contour",n:"CONTOUR"}];
+function peintThemes(){
+  const z = $("#rTheme"); if (!z) return;
+  z.innerHTML = FAMILLES.map(([f, n]) => `<span class="th-f">${n}</span>` +
+    THEMES.filter(t => t.f === f).map(t => `<button class="opt th" type="button" data-theme="${t.k}"
+      aria-pressed="${S.theme === t.k}"><u><b style="background:${aplat(t.a)}"></b><b style="background:${aplat(t.s)}"></b></u>${t.n}</button>`).join("")).join("");
+}
 function peintChoix(){
   const f = $("#rFond");
   if (f) f.innerHTML = SURFACES.map(([k, n]) => choix("fond", k, n)).join("");
@@ -2165,6 +2237,8 @@ document.addEventListener("click", e => {
   if (cp){ e.preventDefault(); const k = cp.dataset.chapitre;
     S.chapitres = S.chapitres.includes(k) ? S.chapitres.filter(x => x !== k) : S.chapitres.concat(k);
     applique(); return; }
+  const th = e.target.closest("[data-theme]");
+  if (th){ e.preventDefault(); poseTheme(th.dataset.theme); applique(); return; }
   const cb = e.target.closest("[data-choix]");
   if (cb){ e.preventDefault(); popCoul = popCoul === cb.dataset.choix ? null : cb.dataset.choix; peintChoix(); return; }
   const po = e.target.closest("[data-pose]");
