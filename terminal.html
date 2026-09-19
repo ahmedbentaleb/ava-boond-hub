@@ -82,6 +82,9 @@ svg{display:block;flex:none}
    plus sous le bandeau, il court du haut de l'écran jusqu'au fond. */
 /* ⛔ UN SEUL bandeau. Le titre de l'écran y monte : deux bandeaux, c'était
    deux fois la même ligne. La recherche tient le milieu. */
+.banc{display:flex;align-items:center;gap:8px;flex:none;padding-left:12px;margin-left:4px;
+  border-left:1px solid var(--bord)}
+@media (max-width:1150px){.banc{display:none}}
 .titre-h{font-size:14px;font-weight:600;letter-spacing:-.1px;color:var(--t1);
   white-space:nowrap;padding-left:12px;margin-left:4px;border-left:1px solid var(--bord)}
 /* ─── le chevron se pose SUR le filet, dans un petit cadre ─── */
@@ -458,6 +461,8 @@ tbody tr:has(td.ck input:checked) td{background:color-mix(in srgb,var(--action) 
 .selbar button svg{width:14px;height:14px}
 .selbar button:hover{background:var(--f2);color:var(--action-encre)}
 .selbar .x{padding:0 8px;font-size:12px;color:var(--t4)}
+.selbar .hl{opacity:.45}
+.selbar .hl:hover{background:transparent;color:var(--t3)}
 .vues{display:flex;gap:1px;background:var(--f4);border-radius:var(--r);padding:2px;flex:none}
 .vues button{width:26px;height:22px;display:grid;place-items:center;color:var(--t4);border-radius:var(--r)}
 .vues button svg{width:14px;height:14px}
@@ -529,6 +534,10 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
   <span class="marque-h">
     <svg class="logo" viewBox="0 0 20 20" fill="none"><path d="M2 18 12 2h3L5 18z" fill="currentColor"/><path d="M9 18 18 4h-3L6 18z" fill="currentColor" opacity=".45"/></svg>
     <b>AVA MANAGER</b></span>
+  <span class="banc" title="Banc d'essai : les 26 écrans lisent le monde de démonstration sans recharger la page">
+    <span class="live">EN DIRECT</span>
+    <span class="chip" title="La date du monde de démonstration. Tout ce qui est « en retard » ou « dans 3 semaines » se compte par rapport à elle">MONDE <b>06/04/2027</b></span>
+  </span>
   <span class="grow"></span>
   <label class="cherche">
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg>
@@ -1426,6 +1435,8 @@ const SEL = new Set();
 const ACTIONS_GROUPEES = [
   {k:"action",  n:"Créer une action", i:'<path d="M3 2h7l3 3v9H3z"/><path d="M10 2v3h3M5.5 8h5M5.5 10.5h3"/>'},
   {k:"export",  n:"Exporter",         i:'<path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12v2h10v-2"/>'},
+  /* ⬜ Hors V1 : s'appuie sur `modele` de type `email`, entré au canon le 19/09. */
+  {k:"email",   n:"Envoyer un e-mail", horsLot:1, i:'<rect x="2" y="3.5" width="12" height="9" rx="1"/><path d="m2.6 4.4 5.4 4 5.4-4"/>'},
   {k:"archive", n:"Archiver",         i:'<path d="M2 4h12v3H2z"/><path d="M3.5 7v7h9V7M6.5 10h3"/>'}
 ];
 function barreSelection(){
@@ -1433,7 +1444,7 @@ function barreSelection(){
   return `<div class="selbar"${n ? "" : " hidden"}>
     <span class="n"><b>${n}</b> ${n > 1 ? "éléments sélectionnés" : "élément sélectionné"}</span>
     <span class="sep-v"></span>
-    ${ACTIONS_GROUPEES.map(a => `<button type="button" data-ga="${a.k}" title="${a.n}">
+    ${ACTIONS_GROUPEES.map(a => `<button type="button" data-ga="${a.k}"${a.horsLot ? ' class="hl"' : ""} title="${a.n}${a.horsLot ? " — hors lot" : ""}">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${a.i}</svg>
       <span>${a.n}</span></button>`).join("")}
     <button type="button" data-ga="rien" class="x" title="Tout désélectionner" aria-label="Tout désélectionner">✕</button>
