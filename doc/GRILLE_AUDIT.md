@@ -3,7 +3,7 @@
 ⭐ **Écrite AVANT qu'il code.** Une grille écrite après le code vérifie ce qu'il a fait, pas ce
 qu'on voulait. Celle-ci ne discute pas.
 
-**30 contrôles · 6 familles.** Un seul 🔴 refuse le lot entier.
+**34 contrôles · 6 familles.** Un seul 🔴 refuse le lot entier.
 
 ⭐ **Je suis l'auditeur GÉNÉRAL** : je passe sur le lot rendu. L'auditeur **interne** (sous-agent 4) passe **entre chaque étape**. Deux mailles, pas deux chefs.
 
@@ -120,10 +120,22 @@ lis `/web/src` une fois, à l'œil, à chaque lot — c'est ce qu'aucun grep ne 
 | **F3** | **Le nombre de portes n'a pas baissé** | `wc -l` sur `PORTES.md` au lot précédent vs celui-ci | 🔴 **le contrôle du cliquet** |
 | **F4** | Aucune porte désactivée, commentée, ou en `skip` | `grep -rniE "skip\|todo\|xit\|\.only\|disabled" test/` | 🔴 |
 | **F5** | Chaque porte a été **vue rouge** | la colonne du journal est remplie, avec la date | 🟠 |
+| **F6** | `/outils/cliquet.sh` existe et **mesure** | le lire : aucune case ne se déclare, toutes se calculent | 🔴 |
+| **F7** | Il est branché en **pre-push** | `git config core.hooksPath` vaut `.githooks` | 🟠 |
+| **F8** | La CI relance **le même** script | `.github/workflows/` appelle `cliquet.sh`, pas une copie | 🔴 — deux copies divergent |
+| **F9** | Le script ne s'arrête pas à la première case | il imprime les 7 lignes même après un échec | 🟠 |
 
 ⭐ **F3 est le seul contrôle qui mesure le cliquet.** Tout le reste dit si le code d'aujourd'hui
 est juste ; F3 dit si celui d'hier tient encore. ⛔ Une porte de moins qu'au lot précédent, sans
 ADR : refus, sans discussion.
+
+⭐ **F6 est le contrôle qui décide si le hook sert à quelque chose.** Une case qu'un agent coche
+en tapant « oui » ne vaut rien — un agent fatigué coche tout. ⛔ **Le hook lance les commandes et
+lit les résultats ; il ne pose aucune question.**
+
+⚠️ **Et je ne le prends jamais pour un mur** : `git push --no-verify` le contourne. Le hook donne
+la réponse en 30 secondes, **la CI est le vrai mur** — d'où F8. Un garde-fou qu'on croit plus
+solide qu'il n'est vaut moins qu'un garde-fou absent : on cesse de faire attention.
 
 ⚠️ **F4 attrape la désactivation polie.** Personne n'écrit « je retire cette porte » — on écrit
 `test.skip`, « le temps de livrer ». C'est ainsi que les cliquets se perdent, partout.

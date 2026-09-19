@@ -3,7 +3,7 @@
 ⭐ **À coller dans Cursor, tel quel.** Grok lit le dépôt : on ne colle aucun fichier, on donne
 des chemins. Le prompt tient en trois écrans **parce que le dépôt porte le reste**.
 
-**5 sous-agents · 7 étapes · un audit interne entre chaque · un cliquet qui ne recule pas.**
+**5 sous-agents · 7 étapes · un cliquet qui ne recule pas · un hook qui mesure les 7 cases.**
 
 ---
 
@@ -31,6 +31,10 @@ et fait foi. Tu n'inventes pas de métier.
 
 Tu travailles avec CINQ SOUS-AGENTS. Tu les orchestres ; tu ne
 fusionnes jamais deux rôles dans un même sous-agent.
+
+⭐ Rendre compte n'est pas une discipline, c'est un MÉCANISME.
+Tout ce qui dépend de la bonne volonté d'un agent fatigué ne
+tiendra pas la nuit. D'où le hook, plus bas.
 
 ╔═══════════════════════════════════════════════════════════════╗
 ║  LA RÈGLE QUI NE BOUGE JAMAIS — lis-la avant tout le reste    ║
@@ -153,6 +157,60 @@ règle d'organisation qui compte.
 ║     autres, et elle ne souffre pas d'exception.               ║
 ╚═══════════════════════════════════════════════════════════════╝
 
+╔═══════════════════════════════════════════════════════════════╗
+║  LE HOOK — le cliquet ne dépend de la bonne volonté de        ║
+║  personne                                                     ║
+║                                                               ║
+║  ⭐ Aucun sous-agent ne rend la main tant que les cases ne    ║
+║     sont pas remplies. Et ce n'est pas LUI qui les remplit :  ║
+║     c'est le hook qui les MESURE.                             ║
+║                                                               ║
+║  ⛔ Une case qu'on coche en tapant « oui » ne vaut rien. Un   ║
+║     agent fatigué à 2 h du matin coche tout. Le hook lance    ║
+║     les commandes et lit les résultats. Il ne pose aucune     ║
+║     question.                                                 ║
+║                                                               ║
+║  E7 pose /outils/cliquet.sh, et le branche à DEUX endroits :  ║
+║                                                               ║
+║   1. HOOK DE FIN DE TOUR (Cursor)                             ║
+║      Avant qu'un sous-agent rende la main, cliquet.sh tourne. ║
+║      S'il sort non-zéro, le sous-agent ne rend pas la main :  ║
+║      il répare, et relance.                                   ║
+║                                                               ║
+║   2. HOOK GIT `pre-push` (.githooks/, activé par              ║
+║      `git config core.hooksPath .githooks`)                   ║
+║      Même script. Rien ne part vers la branche sans lui.      ║
+║                                                               ║
+║  LES SEPT CASES — toutes mesurées, aucune déclarée :          ║
+║   1. `make test` sort en 0                                    ║
+║   2. les 22 assertions affichent 22 OK — pas 21               ║
+║   3. portes(maintenant) >= portes(dernier commit de la        ║
+║      branche principale). ⭐ C'EST LE CLIQUET, EN UNE LIGNE   ║
+║   4. zéro `skip`, `only`, `todo`, `xit`, `disabled` dans      ║
+║      /test                                                    ║
+║   5. chaque porte de /journal/PORTES.md a une date de         ║
+║      « vue rouge » non vide                                   ║
+║   6. /journal/ETAPES.md a une ligne pour l'étape en cours     ║
+║   7. `git diff --stat origin/main -- _ops/` est VIDE          ║
+║                                                               ║
+║  Le script imprime les sept lignes, chacune avec son verdict, ║
+║  puis sort 0 ou 1. ⛔ Il ne s'arrête pas à la première :      ║
+║  sinon la première cache les six autres et on répare en       ║
+║  aveugle.                                                     ║
+║                                                               ║
+║  ⚠️ CE QUE LE HOOK NE PEUT PAS FAIRE — dis-le, ne le cache    ║
+║  pas : `git push --no-verify` le contourne, et un sous-agent  ║
+║  qui possède /outils peut le modifier. Donc :                 ║
+║   - /outils/cliquet.sh appartient au SOUS-AGENT 3, pas aux    ║
+║     codeurs                                                   ║
+║   - la CI relance EXACTEMENT le même script sur la branche.   ║
+║     Le hook donne la réponse en 30 secondes ; la CI est le    ║
+║     vrai mur                                                  ║
+║  ⛔ Ne présente jamais le hook comme un mur. Un garde-fou      ║
+║     qu'on croit plus solide qu'il n'est vaut moins qu'un      ║
+║     garde-fou absent : on cesse de faire attention.           ║
+╚═══════════════════════════════════════════════════════════════╝
+
 ═══ CE QUE TU LIS, DANS CET ORDRE ═══
 1. _ops/DOSSIER.html                le point d'entrée
 2. _ops/SPEC_SQL_LISEZ-MOI.md       une page : par où entrer
@@ -215,10 +273,16 @@ E5  La preuve que le banc mord : retire un trigger, montre que
 E6  Le squelette : /server qui répond, /web qui affiche une page
     servie par /server. Aucun métier. C'est un tuyau, pas une
     fonctionnalité — mais le tuyau prouve la séparation.
-E7  Le cliquet est armé : les quatre espèces de portes existent
-    et tournent dans la CI, même avec une seule porte chacune.
-    /journal/PORTES.md est ouvert. ⭐ Sans E7, tout ce qui suit
-    pourra régresser en silence.
+E7  Le cliquet est armé ET branché :
+    - les quatre espèces de portes existent et tournent, même
+      avec une seule porte chacune
+    - /journal/PORTES.md est ouvert
+    - /outils/cliquet.sh écrit, les sept cases mesurées
+    - branché en hook de fin de tour ET en pre-push
+    - la CI relance le MÊME script
+    ⭐ Sans E7, tout ce qui suit pourra régresser en silence.
+    ⛔ E7 est la dernière étape du lot 1 et la condition de
+       toutes les suivantes. Aucun lot 2 sans elle.
 
 ═══ LES SIX INTERDITS — chacun est un refus ═══
 1. ⛔ Aucun `if` métier écrit en dur, ni serveur ni écran. Toute
@@ -263,6 +327,7 @@ Une branche `lot-1`, et dans le message de PR :
  - les fiches de l'auditeur interne, étape par étape
  - /journal/PORTES.md : combien de portes, de quelle espèce,
    et laquelle tu as vue rouge
+ - la sortie complète de /outils/cliquet.sh, les sept lignes
  - /journal/REMARQUES.md, ou « aucune »
  - ce que tu as décidé seul, en une liste
 
