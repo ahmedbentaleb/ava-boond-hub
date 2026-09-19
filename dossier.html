@@ -101,10 +101,40 @@ code{font-family:ui-monospace,"Cascadia Code",Consolas,monospace;font-size:12.5p
 .note{color:var(--t3);font-size:13px;margin:10px 0 0;max-width:72ch}
 footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
   color:var(--t3);font-size:12.5px}
-</style>
 
+.hub{position:sticky;top:0;z-index:9;background:var(--page);
+  border-bottom:1px solid var(--bord);margin:0 0 4px}
+.hub .in{max-width:1080px;margin:0 auto;padding:10px 16px 11px}
+.hub .r{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hub .r+.r{margin-top:8px}
+.hub .prod{display:flex;gap:8px}
+.hub .prod a{border:1px solid var(--bord);border-radius:7px;padding:7px 13px;
+  text-decoration:none;display:flex;flex-direction:column;gap:1px;line-height:1.2;
+  background:var(--carte)}
+.hub .prod b{font-size:13.5px;font-weight:600}
+.hub .prod i{font-style:normal;font-size:10.5px;color:var(--t3)}
+.hub .nav{display:flex;gap:7px;flex-wrap:wrap;margin-left:auto}
+.hub .nav a{text-decoration:none;font-size:13px;font-weight:600;
+  padding:6px 14px;border-radius:999px;border:1px solid transparent;
+  background:#AEBF38;color:#430A4B;white-space:nowrap}
+.hub .nav a:hover{background:#CDD749}
+.hub .nav a[aria-current]{background:transparent;color:var(--t1);
+  border-color:var(--bord2);cursor:default}
+@media (max-width:720px){.hub .nav{margin-left:0;width:100%}}
+</style>
+<div class="hub"><div class="in">
+<div class="r"><div class="prod">
+<a href="index.html"><b>Ava Manager</b><i>Builder</i></a>
+<a href="index.html"><b>Boond Manager</b><i>Reverse engineering</i></a>
+</div><div class="nav">
+<a href="index.html">Hub</a>
+<a href="dossier.html" aria-current="page">Dossier</a>
+<a href="terminal.html">Les 26 écrans</a>
+<a href="cdc.html">Cahier des charges</a>
+<a href="simulateur.html">Banc d’essai</a>
+</div></div></div></div>
 <div class="p">
-<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">19/09/2026 · 7231aaa</span></div>
+<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">19/09/2026 · 781a8b6</span></div>
 <p class="chapeau">Le point d'entrée unique. Une autre IA écrit le code, je l'audite. Tout ce qui fait foi est listé ici — et rien n'y est recopié : ce document <b>mesure</b> et <b>pointe</b>.</p>
 <div class="ch">
 <div><b>37</b><span>tables</span></div>
@@ -218,6 +248,6 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <p class="sub">49 documents dans <code>_ops/</code>. Les 10 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
 <p class="note">Ce fichier est <b>généré</b> par <code>python _ops/outils/dossier.py</code>. ⛔ Ne pas l'éditer à la main : la prochaine génération écraserait la correction, et on ne saurait pas laquelle était juste.<br>Pour en extraire une section sans tout lire :<br><code>sed -n '/&lt;etat&gt;/,/&lt;\/etat&gt;/p' _ops/DOSSIER.html</code></p>
 </source>
-<footer>Ava Manager · dossier généré le 19/09/2026 · commit 7231aaa · 37 tables · 167 politiques · 15 murs · 22 assertions</footer>
+<footer>Ava Manager · dossier généré le 19/09/2026 · commit 781a8b6 · 37 tables · 167 politiques · 15 murs · 22 assertions</footer>
 </div>
 </body></html>

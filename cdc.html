@@ -101,7 +101,38 @@ code{font-family:ui-monospace,"Cascadia Code",Consolas,monospace;font-size:12.5p
 .note{color:var(--t3);font-size:13px;margin:10px 0 0;max-width:72ch}
 footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
   color:var(--t3);font-size:12.5px}
+
+.hub{position:sticky;top:0;z-index:9;background:var(--page);
+  border-bottom:1px solid var(--bord);margin:0 0 4px}
+.hub .in{max-width:1080px;margin:0 auto;padding:10px 16px 11px}
+.hub .r{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hub .r+.r{margin-top:8px}
+.hub .prod{display:flex;gap:8px}
+.hub .prod a{border:1px solid var(--bord);border-radius:7px;padding:7px 13px;
+  text-decoration:none;display:flex;flex-direction:column;gap:1px;line-height:1.2;
+  background:var(--carte)}
+.hub .prod b{font-size:13.5px;font-weight:600}
+.hub .prod i{font-style:normal;font-size:10.5px;color:var(--t3)}
+.hub .nav{display:flex;gap:7px;flex-wrap:wrap;margin-left:auto}
+.hub .nav a{text-decoration:none;font-size:13px;font-weight:600;
+  padding:6px 14px;border-radius:999px;border:1px solid transparent;
+  background:#AEBF38;color:#430A4B;white-space:nowrap}
+.hub .nav a:hover{background:#CDD749}
+.hub .nav a[aria-current]{background:transparent;color:var(--t1);
+  border-color:var(--bord2);cursor:default}
+@media (max-width:720px){.hub .nav{margin-left:0;width:100%}}
 </style>
+<div class="hub"><div class="in">
+<div class="r"><div class="prod">
+<a href="index.html"><b>Ava Manager</b><i>Builder</i></a>
+<a href="index.html"><b>Boond Manager</b><i>Reverse engineering</i></a>
+</div><div class="nav">
+<a href="index.html">Hub</a>
+<a href="dossier.html">Dossier</a>
+<a href="terminal.html">Les 26 écrans</a>
+<a href="cdc.html" aria-current="page">Cahier des charges</a>
+<a href="simulateur.html">Banc d’essai</a>
+</div></div></div></div>
 <div class="p">
 <div class="hd"><h1>Le cahier des charges</h1><span class="dt">19/09/2026</span></div>
 <p class='chapeau'>Les <b>deux documents d&rsquo;Avaliance</b> &mdash; la commande du client. Tout le reste du dossier en est d&eacute;riv&eacute;.<br>&#9940; Ils ne se corrigent pas : quand ils se trompent, c&rsquo;est une ligne <b>BM-xx</b> dans le mod&egrave;le, pas une retouche du document.</p>
