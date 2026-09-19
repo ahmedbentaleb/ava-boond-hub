@@ -436,12 +436,70 @@
       25% { transform: translateX(-4px); }
       75% { transform: translateX(4px); }
     }
+/* ═══════════ LE QUIZ ═══════════ */
+.qz-prog{display:flex;align-items:center;gap:12px;margin:0 0 20px}
+.qz-bar{flex:1 1 auto;height:6px;background:rgba(255,255,255,.08);border-radius:0;overflow:hidden}
+.qz-bar i{display:block;height:100%;background:linear-gradient(90deg,#AEBF38,#CDD749);transition:width .3s}
+.qz-bar.mince{height:3px;margin:0 0 18px}
+.qz-prog span{font-variant-numeric:tabular-nums;font-size:13px;opacity:.7;white-space:nowrap}
+
+.qz-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:12px;margin-bottom:20px}
+.qz-carte{display:flex;flex-direction:column;gap:6px;text-align:left;padding:16px 18px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.03);color:inherit;cursor:pointer;border-radius:3px;transition:border-color .15s,background .15s}
+.qz-carte:hover{border-color:#AEBF38;background:rgba(174,191,56,.07)}
+.qz-carte.fait{border-left:3px solid #AEBF38}
+.qz-carte .qz-n{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.55}
+.qz-carte b{font-size:17px;line-height:1.25}
+.qz-carte .qz-s{font-size:13px;opacity:.72;line-height:1.5}
+.qz-carte .qz-etat{font-size:11.5px;opacity:.6;margin-top:4px;font-variant-numeric:tabular-nums}
+.qz-pied{display:flex;gap:8px;flex-wrap:wrap}
+
+.qz-scene{max-width:760px}
+.qz-tete{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.qz-retour{background:none;border:0;color:inherit;opacity:.6;cursor:pointer;font-size:13px;padding:0}
+.qz-retour:hover{opacity:1}
+.qz-fil{font-size:13px;opacity:.8;flex:1 1 auto}
+.qz-cpt{font-size:12px;opacity:.55;font-variant-numeric:tabular-nums}
+
+.qz-role{display:inline-block;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;padding:4px 10px;background:rgba(174,191,56,.16);color:#CDD749;margin-bottom:14px;border-radius:3px}
+.qz-dial{border-left:3px solid rgba(255,255,255,.2);padding:2px 0 2px 14px;margin:0 0 16px}
+.qz-dial .qz-qui{display:block;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;opacity:.55;margin-bottom:3px}
+.qz-dial p{margin:0;font-size:17px;line-height:1.45;font-style:italic;opacity:.92}
+.qz-scene h3{font-size:19px;line-height:1.35;margin:0 0 16px;font-weight:600}
+.qz-sq{font-size:13px;opacity:.65;margin:-8px 0 16px}
+
+.qz-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.qz-opt{text-align:left;padding:13px 16px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.02);color:inherit;cursor:pointer;font-size:15px;line-height:1.4;border-radius:3px;transition:border-color .15s,background .15s}
+.qz-opt:hover:not(:disabled){border-color:#AEBF38;background:rgba(174,191,56,.07)}
+.qz-opt:disabled{cursor:default}
+.qz-opt.bon{border-color:#AEBF38;background:rgba(174,191,56,.14);font-weight:600}
+.qz-opt.faux{border-color:#C25B4A;background:rgba(194,91,74,.12);opacity:.85}
+.qz-opts.reg .qz-opt.sel{border-color:#AEBF38;background:rgba(174,191,56,.14);font-weight:600}
+.qz-def{float:right;font-size:11px;opacity:.6;font-weight:400;letter-spacing:.04em}
+
+.qz-rep{border-left:3px solid #AEBF38;padding:14px 16px;background:rgba(255,255,255,.04);margin-bottom:18px;border-radius:0 3px 3px 0}
+.qz-rep.ko{border-left-color:#C25B4A}
+.qz-rep.alt{border-left-color:#7f8aa0}
+.qz-verdict{display:block;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;margin-bottom:6px;color:#CDD749}
+.qz-rep.ko .qz-verdict{color:#E08C7C}
+.qz-rep p{margin:0 0 8px;font-size:14.5px;line-height:1.55}
+.qz-rep p:last-of-type{margin-bottom:0}
+.qz-sinon{opacity:.78;font-size:13.5px!important}
+.qz-src{display:block;margin-top:10px;font-size:11.5px;opacity:.5;letter-spacing:.02em}
+
+.qz-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.qz-attente{font-size:12.5px;opacity:.45}
+
+.qz-bilan{max-width:560px;text-align:center;padding:36px 0}
+.qz-badge{display:inline-block;font-size:34px;font-weight:700;padding:16px 26px;border:2px solid rgba(255,255,255,.2);border-radius:3px;font-variant-numeric:tabular-nums;margin-bottom:18px}
+.qz-badge.or{border-color:#AEBF38;background:rgba(174,191,56,.14);color:#CDD749}
+.qz-bilan h3{font-size:19px;margin:0 0 22px;font-weight:600}
+.qz-bilan .qz-nav{justify-content:center}
+@media (max-width:640px){.qz-scene h3{font-size:17px}.qz-dial p{font-size:15px}}
+
 </style>
 <script type="importmap">
 {
   "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
   }
 }
 </script>
@@ -468,9 +526,7 @@
   </div>
 
   <section class="view" id="view-ava-metier" hidden></section>
-  <section class="view" id="view-ava-3d" hidden></section>
-  <section class="view" id="view-ava-guide" hidden></section>
-  <section class="view" id="view-ava-rpg" hidden></section>
+  <section class="view" id="view-ava-quiz" hidden></section>
   <section class="view" id="view-ava-simulateur" hidden></section>
   <section class="view" id="view-ava-sim-rules" hidden></section>
   <section class="view" id="view-ava-cadrage" hidden></section>
@@ -2580,15 +2636,7 @@ function showView(name){
       hint: "Builder",
       views: [
         { id: "ava-metier", label: "Métier" },
-        { id: "ava-3d", label: "3D" },
-        {
-          id: "ava-guides",
-          label: "Quiz",
-          children: [
-            { id: "ava-guide", label: "Parcours" },
-            { id: "ava-rpg", label: "Jeu de rôle" }
-          ]
-        },
+        { id: "ava-quiz", label: "Quiz" },
         { id: "ava-simulateur", label: "Simulateur" },
         { id: "ava-sim-rules", label: "Simulateur de règles" },
         { id: "ava-cadrage", label: "Contrats" },
@@ -3112,1024 +3160,6 @@ function showView(name){
       <div class="stat"><b>${c.r}</b><span>Contrats BM</span></div>
       <div class="stat"><b>${c.s}</b><span>Parcours</span></div>
     </div>`;
-  }
-
-  let filWho = null;
-  let filScene = null;
-  let filSeen = [];
-  let filLit = [];
-  let filTrail = [];
-  let filFlash = null;
-  let filToast = null;
-
-  function filColor(id) {
-    return ({ c1: "var(--c1)", c2: "var(--c2)", c3: "var(--c3)", c4: "var(--c4)", c5: "var(--c5)" })[id] || "var(--c1)";
-  }
-
-  const FIL_WHO = [
-    { id: "societe", label: "Une société", name: "Alpha", color: "c1", start: "s0",
-      pitch: "Tu as un besoin. Tu ne fais pas le staffing." },
-    { id: "freelance", label: "Un freelance", name: "Paul", color: "c5", start: "f0",
-      pitch: "Tu peux déposer un CV, être recruté, puis travailler." },
-    { id: "salarie", label: "Un salarié", name: "Jean", color: "c4", start: "j0",
-      pitch: "Tu es déjà ressource. On t’affecte. Tu saisis tes jours." },
-    { id: "rh", label: "Un RH", name: "Sophie", color: "c2", start: "r0",
-      pitch: "Tu tiens le vivier. Tu convertis. Tu ne crées pas le projet." },
-    { id: "com", label: "Un commercial", name: "Martin", color: "c1", start: "c0",
-      pitch: "Tu ouvres le client et le besoin. Tu notes le oui ou le non." }
-  ];
-
-  const FIL_NODES = {
-    societe: { x: 24, y: 24, label: "Société" },
-    contact: { x: 200, y: 24, label: "Contact" },
-    besoin: { x: 200, y: 140, label: "Besoin" },
-    personne: { x: 24, y: 200, label: "Personne" },
-    candidat: { x: 200, y: 260, label: "Candidat" },
-    ressource: { x: 24, y: 320, label: "Ressource" },
-    positionnement: { x: 420, y: 140, label: "Positionnement" },
-    projet: { x: 620, y: 80, label: "Projet" },
-    prestation: { x: 620, y: 220, label: "Prestation" },
-    action: { x: 420, y: 280, label: "Action" },
-    temps: { x: 620, y: 320, label: "Temps" }
-  };
-  const FIL_EDGES = [
-    ["societe","contact"],["contact","action"],["societe","besoin"],
-    ["personne","candidat"],["personne","ressource"],["candidat","action"],
-    ["candidat","positionnement"],["candidat","ressource"],
-    ["besoin","positionnement"],["ressource","positionnement"],["besoin","projet"],
-    ["projet","prestation"],["ressource","prestation"],["societe","ressource"],
-    ["prestation","temps"]
-  ];
-  const FIL_W = 128, FIL_H = 36;
-
-  const FIL_PLAY = {
-    societe: {
-      s0: {
-        titre: "Tu es Alpha",
-        dit: "Tu es une entreprise. Tu cherches quelqu’un. Clique les cases, de A jusqu’à Z.",
-        ici: "societe",
-        vers: { contact: "s1", besoin: "s2", action: "s1", projet: "s0x", prestation: "s0x", candidat: "s0x", ressource: "s0x", personne: "s0x", temps: "s0x", positionnement: "s0x" }
-      },
-      s0x: {
-        ko: true, titre: "Pas ta main",
-        dit: "Une société ne s’ouvre pas les listes du cabinet.",
-        ici: "societe",
-        vers: { contact: "s1", besoin: "s2" }
-      },
-      s1: {
-        titre: "Martin ouvre le contact",
-        dit: "Martin peut coller Alice. Ensuite quelqu’un cherche. Ce n’est pas encore une mission.",
-        ici: "contact",
-        entre: { nom: "Martin", role: "Commercial" },
-        mot: "Contact",
-        vers: { besoin: "s2", societe: "s0", projet: "s1x", prestation: "s1x" }
-      },
-      s1x: {
-        ko: true, titre: "Pas encore un projet",
-        dit: "Un besoin n’est pas un projet.",
-        ici: "projet",
-        vers: { besoin: "s2", contact: "s1" }
-      },
-      s2: {
-        titre: "Le besoin est ouvert",
-        dit: "Ta demande est posée. L’équipe cherche. Rien n’est signé.",
-        ici: "besoin",
-        mot: "Besoin",
-        entre: { nom: "Martin", role: "Commercial" },
-        vers: { positionnement: "s3", projet: "s1x", contact: "s1", societe: "s0" }
-      },
-      s3: {
-        titre: "On te présente Paul",
-        dit: "On te présente Paul. Ce n’est ni le projet, ni la mission. C’est une proposition.",
-        ici: "positionnement",
-        mot: "Positionnement",
-        entre: { nom: "Paul", role: "Freelance proposé" },
-        gestes: [
-          { label: "Retenir Paul", to: "s4", ok: true },
-          { label: "Refuser", to: "s5", ok: true }
-        ],
-        vers: { besoin: "s5", projet: "s4x", prestation: "s4x" }
-      },
-      s4: {
-        titre: "Oui noté — le projet n’apparaît pas tout seul",
-        dit: "Tu as dit oui. Karim, lui, organise. Toi, tu n’affectes personne.",
-        ici: "positionnement",
-        entre: { nom: "Karim", role: "Staffing / DP" },
-        gestes: [{ label: "Laisser le cabinet continuer", to: "s6", ok: true }],
-        vers: { projet: "s4x", prestation: "s4x", besoin: "s2" }
-      },
-      s4x: {
-        ko: true, titre: "Pas ta commande",
-        dit: "Alpha ne crée pas la mission. C’est le cabinet.",
-        ici: "projet",
-        vers: { positionnement: "s4" },
-        gestes: [{ label: "Laisser le cabinet continuer", to: "s6", ok: true }]
-      },
-      s5: {
-        titre: "Refus — la recherche continue",
-        dit: "Martin enregistre le non. Le besoin reste vivant.",
-        ici: "besoin",
-        vers: { positionnement: "s3" },
-        gestes: [{ label: "Arrêter là", to: "s5f", ok: true }]
-      },
-      s5f: { fin: true, titre: "Fin", dit: "Tu as parlé, tu as refusé. Pas de projet automatique.", ici: "besoin" },
-      s6: {
-        fin: true, titre: "Le cabinet organise la mission",
-        dit: "Le cabinet organise. Ce n’est plus ta main.",
-        ici: "positionnement",
-        lit: ["projet", "prestation"]
-      }
-    },
-    freelance: {
-      f0: {
-        titre: "Tu es Paul, freelance",
-        dit: "Tu n’es pas encore dans le logiciel. Qu’est-ce que tu tentes ?",
-        ici: "personne",
-        vers: { candidat: "f1", ressource: "f2", personne: "f1", societe: "f0x", besoin: "f0x", projet: "f0x", prestation: "f0x", contact: "f0x", temps: "f0x" }
-      },
-      f0x: {
-        ko: true, titre: "Pas ta fiche",
-        dit: "Un freelance ne crée pas le besoin d’un client.",
-        ici: "besoin",
-        vers: { candidat: "f1", ressource: "f2", personne: "f0" }
-      },
-      f1: {
-        titre: "CV dans le vivier",
-        dit: "Ton CV est au vivier. Tu n’as pas encore de mission.",
-        ici: "candidat",
-        mot: "Candidat",
-        entre: { nom: "Sophie", role: "RH" },
-        vers: { positionnement: "f3", prestation: "f1x", projet: "f1x", ressource: "f1x", temps: "f1x" }
-      },
-      f1x: {
-        ko: true, titre: "Un candidat ne travaille pas",
-        dit: "Pas de mission sans conversion.",
-        ici: "prestation",
-        vers: { positionnement: "f3", candidat: "f1" }
-      },
-      f2: {
-        titre: "Déjà ressource externe",
-        dit: "Le cabinet te connaît déjà. On peut te proposer.",
-        ici: "ressource",
-        mot: "Ressource",
-        vers: { positionnement: "f3b", prestation: "f1x", candidat: "f1" }
-      },
-      f3: {
-        titre: "On te positionne",
-        dit: "Martin te présente à Alpha. Après un oui, Sophie doit encore t’activer.",
-        ici: "positionnement",
-        mot: "Positionnement",
-        entre: { nom: "Martin", role: "Commercial" },
-        gestes: [
-          { label: "Alpha me retient", to: "f4", ok: true },
-          { label: "Alpha me refuse", to: "f5", ok: true }
-        ],
-        vers: { ressource: "f4", prestation: "f4x", projet: "f6x", candidat: "f1" }
-      },
-      f3b: {
-        titre: "Positionné, déjà ressource",
-        dit: "Tu es déjà ressource. Si Alpha dit oui, on t’affecte.",
-        ici: "positionnement",
-        entre: { nom: "Karim", role: "Staffing" },
-        gestes: [
-          { label: "Alpha me retient", to: "f6", ok: true },
-          { label: "Alpha me refuse", to: "f5", ok: true }
-        ],
-        vers: { prestation: "f6", projet: "f6x", ressource: "f2" }
-      },
-      f5: {
-        titre: "Refusé",
-        dit: "Pas de mission cette fois. Tu restes au vivier.",
-        ici: "positionnement",
-        vers: { candidat: "f1", ressource: "f2" },
-        gestes: [{ label: "Arrêter là", to: "f5f", ok: true }]
-      },
-      f5f: { fin: true, titre: "Fin de cette tentative", dit: "Pas de mission.", ici: "candidat" },
-      f4: {
-        titre: "Oui — Sophie doit t’activer",
-        dit: "Oui. Sophie doit t’activer. Pas de jours avant ça.",
-        ici: "candidat",
-        entre: { nom: "Sophie", role: "RH — conversion" },
-        vers: { ressource: "f6", prestation: "f4x", temps: "f4x" }
-      },
-      f4x: {
-        ko: true, titre: "Pas de jours sans ressource",
-        dit: "Pas de jours sans ressource.",
-        ici: "prestation",
-        vers: { ressource: "f6", candidat: "f4" }
-      },
-      f6: {
-        titre: "Ressource. Karim t’affecte",
-        dit: "Tu es ressource. Karim t’affecte. Toi, tu n’es pas le cabinet.",
-        ici: "ressource",
-        mot: "Prestation",
-        entre: { nom: "Karim", role: "Staffing / DP" },
-        lit: ["projet"],
-        vers: { prestation: "f6b", projet: "f6x", temps: "f4x" }
-      },
-      f6x: {
-        ko: true, titre: "Tu n’es pas le cabinet",
-        dit: "Tu n’es pas le cabinet.",
-        ici: "projet",
-        vers: { prestation: "f6b", ressource: "f6" }
-      },
-      f6b: {
-        titre: "Ta mission",
-        dit: "Ta mission est collée. Les jours, c’est toi.",
-        ici: "prestation",
-        vers: { temps: "f7", ressource: "f6" }
-      },
-      f7: {
-        fin: true, titre: "Tu travailles",
-        dit: "CV → proposition → conversion → mission → jours.",
-        ici: "temps"
-      }
-    },
-    salarie: {
-      j0: {
-        titre: "Tu es Jean, salarié",
-        dit: "Tu es déjà dans la boîte. On t’affecte. Tu ne tiens pas le vivier.",
-        ici: "ressource",
-        mot: "Ressource",
-        vers: { positionnement: "j1", candidat: "j0x", societe: "j0y", besoin: "j0y", contact: "j0y" }
-      },
-      j0x: {
-        ko: true,         titre: "Tu n’es plus le vivier",
-        dit: "Un salarié n’est plus un candidat.",
-        ici: "candidat",
-        vers: { ressource: "j0", positionnement: "j1" }
-      },
-      j0y: {
-        ko: true,         titre: "Pas le commercial",
-        dit: "Tu ne tiens pas la fiche client.",
-        ici: "societe",
-        vers: { ressource: "j0" }
-      },
-      j1: {
-        titre: "Karim te positionne",
-        dit: "On te propose. Si Alpha dit oui, tu travailles.",
-        ici: "positionnement",
-        entre: { nom: "Karim", role: "Staffing" },
-        vers: { prestation: "j2", ressource: "j0", projet: "j1x", candidat: "j0x" }
-      },
-      j1x: {
-        ko: true,         titre: "On ne te replace pas en silence",
-        dit: "Une affectation, ça se voit.",
-        ici: "projet",
-        vers: { prestation: "j2", positionnement: "j1" }
-      },
-      j2: {
-        titre: "Ta prestation",
-        dit: "La mission est collée. Les jours, c’est toi.",
-        ici: "prestation",
-        mot: "Prestation",
-        vers: { temps: "j3", ressource: "j0" }
-      },
-      j3: { fin: true, titre: "Les jours sont à Jean", dit: "Ressource → proposition → mission → jours.", ici: "temps" }
-    },
-    rh: {
-      r0: {
-        titre: "Tu es Sophie, RH",
-        dit: "Tu tiens le vivier. Pas le client. Pas le projet.",
-        ici: "personne",
-        mot: "Vivier",
-        vers: { candidat: "r1", personne: "r1", societe: "r0x", projet: "r0y", prestation: "r0y" }
-      },
-      r0x: {
-        ko: true,         titre: "Ce n’est pas ta porte",
-        dit: "La fiche client, ce n’est pas le RH.",
-        ici: "societe",
-        vers: { candidat: "r1", personne: "r0" }
-      },
-      r0y: {
-        ko: true,         titre: "Pas le projet",
-        dit: "Le RH ne crée pas le projet.",
-        ici: "projet",
-        vers: { candidat: "r1", personne: "r0" }
-      },
-      r1: {
-        titre: "Paul, candidat",
-        dit: "Paul est au vivier. Tu peux le proposer. Tu ne l’affectes pas.",
-        ici: "candidat",
-        mot: "Candidat",
-        entre: { nom: "Paul", role: "Candidat" },
-        vers: { positionnement: "r2", action: "r1a", prestation: "r1x", projet: "r0y", societe: "r0x" }
-      },
-      r1a: {
-        titre: "Action posée",
-        dit: "Un envoi de CV n’a pas créé de projet.",
-        ici: "action",
-        mot: "Action",
-        vers: { positionnement: "r2", candidat: "r1" }
-      },
-      r1x: {
-        ko: true,         titre: "Pas de mission sur un candidat",
-        dit: "Un candidat ne travaille pas.",
-        ici: "prestation",
-        vers: { positionnement: "r2", candidat: "r1" }
-      },
-      r2: {
-        titre: "Positionnement créé",
-        dit: "Si Alpha dit oui, tu convertis. Tu n’affectes pas.",
-        ici: "positionnement",
-        entre: { nom: "Martin", role: "Commercial" },
-        vers: { ressource: "r3", candidat: "r1", prestation: "r1x", projet: "r0y", besoin: "r2" }
-      },
-      r3: {
-        fin: true, titre: "Conversion faite",
-        dit: "Paul est ressource. Karim fera la prestation.",
-        ici: "ressource"
-      }
-    },
-    com: {
-      c0: {
-        titre: "Tu es Martin, commercial",
-        dit: "Tu ouvres le client. Pas le vivier. Pas les jours.",
-        ici: "societe",
-        vers: { societe: "c1", contact: "c1", besoin: "c2", candidat: "c0x", temps: "c0y", prestation: "c0y" }
-      },
-      c0x: {
-        ko: true,         titre: "Pas RH",
-        dit: "La conversion, c’est Sophie.",
-        ici: "candidat",
-        vers: { societe: "c1" }
-      },
-      c0y: {
-        ko: true,         titre: "Pas la production",
-        dit: "Les jours, ce n’est pas le commercial.",
-        ici: "temps",
-        vers: { societe: "c1" }
-      },
-      c1: {
-        titre: "Fiche Société",
-        dit: "Alpha est ouvert. Tu peux poser la demande.",
-        ici: "societe",
-        mot: "Société",
-        entre: { nom: "Alpha", role: "Société cliente" },
-        vers: { besoin: "c2", contact: "c1", projet: "c1x" }
-      },
-      c1x: {
-        titre: "Projet sans besoin",
-        dit: "Possible, mais pas cette histoire.",
-        ici: "projet",
-        vers: { besoin: "c2", societe: "c1" }
-      },
-      c2: {
-        titre: "Besoin ouvert",
-        dit: "Alpha a une demande. Tu notes le retour. Rien ne se crée tout seul.",
-        ici: "besoin",
-        mot: "Besoin",
-        gestes: [
-          { label: "Alpha dit oui", to: "c3", ok: true },
-          { label: "Alpha dit non", to: "c4", ok: true }
-        ],
-        vers: { projet: "c2x", positionnement: "c2", societe: "c1" }
-      },
-      c2x: {
-        ko: true,         titre: "Jamais en silence",
-        dit: "Un oui ne fait pas apparaître un projet tout seul.",
-        ici: "projet",
-        vers: { besoin: "c2" }
-      },
-      c3: {
-        fin: true, titre: "Le oui est noté",
-        dit: "Karim peut allumer Projet puis Prestation.",
-        ici: "besoin",
-        lit: ["projet", "prestation"]
-      },
-      c4: { fin: true, titre: "Le non est noté", dit: "Le besoin reste vivant. Pas de projet automatique.", ici: "besoin" }
-    }
-  };
-
-  function filPawn() { return FIL_WHO.find((w) => w.id === filWho); }
-  function filSc() { return filWho && FIL_PLAY[filWho][filScene]; }
-  function filCenter(id) {
-    const n = FIL_NODES[id];
-    return { x: n.x + FIL_W / 2, y: n.y + FIL_H / 2 };
-  }
-  function filPushSeen(entre) {
-    if (!entre) return;
-    if (filSeen.some((s) => s.nom === entre.nom)) return;
-    filSeen = filSeen.concat([entre]);
-  }
-  function filAddLit(id) {
-    if (id && FIL_NODES[id] && filLit.indexOf(id) < 0) filLit = filLit.concat([id]);
-  }
-  function filAddTrail(a, b) {
-    if (!a || !b || a === b) return;
-    filTrail = filTrail.concat([[a, b]]);
-  }
-
-  function filClickNode(id) {
-    const sc = filSc();
-    if (!sc || sc.fin) return;
-    if (id === sc.ici) return;
-    const next = sc.vers && sc.vers[id];
-    const nx = next ? FIL_PLAY[filWho][next] : null;
-    if (!nx || nx.ko) {
-      filFlash = { id: id, ok: false };
-      filToast = { ok: false, texte: (nx && nx.titre) ? nx.titre : "Interdit." };
-      paintFil();
-      return;
-    }
-    const prev = sc.ici;
-    filScene = next;
-    filFlash = { id: id, ok: true };
-    filToast = { ok: true, texte: "Tu es sur « " + FIL_NODES[id].label + " »." };
-    filAddLit(id);
-    filAddTrail(prev, id);
-    filPushSeen(nx.entre);
-    (nx.lit || []).forEach(filAddLit);
-    filAddLit(nx.ici);
-    paintFil();
-  }
-
-  function filGeste(to) {
-    const sc = filSc();
-    if (!sc) return;
-    const nx = FIL_PLAY[filWho][to];
-    if (!nx || nx.ko) {
-      filFlash = { id: sc.ici, ok: false };
-      filToast = { ok: false, texte: (nx && nx.titre) ? nx.titre : "Interdit." };
-      paintFil();
-      return;
-    }
-    filScene = to;
-    filFlash = { id: nx.ici, ok: true };
-    filToast = { ok: true, texte: nx.titre };
-    filAddLit(nx.ici);
-    filAddTrail(sc.ici, nx.ici);
-    filPushSeen(nx.entre);
-    (nx.lit || []).forEach(filAddLit);
-    paintFil();
-  }
-
-  function drawFilGraph() {
-    const svg = document.getElementById("fil-graph");
-    if (!svg) return;
-    const sc = filSc();
-    const ici = sc && sc.ici;
-    const lit = new Set(filLit);
-    const lines = filTrail.map(([a, b]) => {
-      const p = filCenter(a), q = filCenter(b);
-      if (!p || !q) return "";
-      return `<line x1="${p.x}" y1="${p.y}" x2="${q.x}" y2="${q.y}" stroke="#AEBF38" stroke-width="3"/>`;
-    }).join("");
-    const boxes = Object.entries(FIL_NODES).map(([id, n]) => {
-      const here = id === ici;
-      const flash = filFlash && filFlash.id === id;
-      const known = lit.has(id) || here;
-      let fill = known ? "#2a2a2a" : "#141414";
-      let stroke = known ? "#666" : "#3a3a3a";
-      let tw = 1;
-      let text = "#f0f0f0";
-      if (here) { fill = "#AEBF38"; stroke = "#AEBF38"; text = "#430A4B"; tw = 2; }
-      if (flash && filFlash.ok) { fill = "#AEBF38"; stroke = "#1E5B3A"; text = "#430A4B"; tw = 2; }
-      if (flash && filFlash.ok === false) { fill = "#3a1515"; stroke = "#A93226"; text = "#f0f0f0"; tw = 3; }
-      return `<g data-fil-n="${id}" style="cursor:pointer">
-        <rect x="${n.x}" y="${n.y}" width="${FIL_W}" height="${FIL_H}" rx="4" fill="${fill}" stroke="${stroke}" stroke-width="${tw}"/>
-        <text x="${n.x + FIL_W / 2}" y="${n.y + 23}" text-anchor="middle" fill="${text}" font-size="12">${n.label}</text>
-      </g>`;
-    }).join("");
-    svg.innerHTML = lines + boxes;
-  }
-
-  function paintFil() {
-    const root = document.getElementById("fil-root");
-    if (!root) return;
-    if (!filWho) {
-      root.innerHTML = `
-        <p class="lead">Qui es-tu ? Ensuite tu cliques les cases, de A jusqu’à Z. Interdit = rouge, tu restes. Bon = tu avances sur cette case.</p>
-        <div class="fil-who">${FIL_WHO.map((w) =>
-          `<button type="button" class="fil-pawn" data-fil-who="${w.id}" style="border-left:4px solid ${filColor(w.color)}">
-            <strong>${esc(w.label)}</strong><span>${esc(w.name)}</span><small>${esc(w.pitch)}</small>
-          </button>`
-        ).join("")}</div>`;
-      return;
-    }
-    const who = filPawn();
-    const sc = filSc();
-    if (!sc) return;
-    const seen = filSeen.map((s) => `<span class="fil-chip">${esc(s.nom)} · ${esc(s.role)}</span>`).join("");
-    const entre = sc.entre
-      ? `<div class="fil-arrive">Quelqu’un entre : <strong>${esc(sc.entre.nom)}</strong> — ${esc(sc.entre.role)}</div>`
-      : "";
-    const mot = sc.mot ? `<p class="fil-phase start">${esc(sc.mot)}</p>` : "";
-    const toast = filToast
-      ? `<div class="fil-toast ${filToast.ok ? "ok" : "ko"}">${esc(filToast.texte)}</div>`
-      : `<p class="note">Clique une case. Pas de chemin dessiné : tu avances seulement si c’est le bon.</p>`;
-    const gestes = (sc.gestes || []).map((g) =>
-      `<button type="button" class="fil-geste" data-fil-geste="${g.to}">${esc(g.label)}</button>`
-    ).join("");
-    const finBtns = sc.fin
-      ? `<button type="button" data-fil-reset="1">Rejouer</button>
-         <button type="button" data-fil-home="1">Autre personnage</button>`
-      : `<button type="button" data-fil-home="1">Changer de personnage</button>`;
-    root.innerHTML = `
-      <div class="fil-lab">
-        <div class="fil-scene">
-          <p class="note">Tu es ${esc(who.name)} · ${esc(who.label)}</p>
-          ${mot}
-          <h3>${esc(sc.titre)}</h3>
-          <p class="lead">${esc(sc.dit)}</p>
-          ${entre}
-          ${toast}
-          ${seen ? `<div class="fil-seen"><span>Déjà croisés</span>${seen}</div>` : ""}
-          ${gestes ? `<div class="fil-choices">${gestes}</div>` : ""}
-          <div class="rowbtns">${finBtns}</div>
-        </div>
-        <div class="graph-wrap">
-          <svg id="fil-graph" viewBox="0 0 780 380" role="img" aria-label="Schéma métier du parcours"></svg>
-        </div>
-      </div>`;
-    drawFilGraph();
-    const svg = document.getElementById("fil-graph");
-    if (svg) {
-      svg.onclick = (e) => {
-        const g = e.target.closest("[data-fil-n]");
-        if (g) filClickNode(g.dataset.filN);
-      };
-    }
-  }
-
-  function filBoot(whoId) {
-    filWho = whoId;
-    filScene = filPawn().start;
-    filSeen = [];
-    filLit = [];
-    filTrail = [];
-    filFlash = null;
-    filToast = null;
-    const sc = filSc();
-    filAddLit(sc.ici);
-    filPushSeen(sc.entre);
-    (sc.lit || []).forEach(filAddLit);
-    paintFil();
-  }
-
-  function renderGuide() {
-    const el = document.getElementById("view-ava-guide");
-    if (!el) return;
-    el.innerHTML = `
-      <h2>Parcours</h2>
-      <div id="fil-root"></div>`;
-    paintFil();
-    el.onclick = (e) => {
-      const whoBtn = e.target.closest("[data-fil-who]");
-      if (whoBtn) { filBoot(whoBtn.dataset.filWho); return; }
-      const g = e.target.closest("[data-fil-geste]");
-      if (g && filWho) { filGeste(g.dataset.filGeste); return; }
-      if (e.target.closest("[data-fil-reset]") && filWho) { filBoot(filWho); return; }
-      if (e.target.closest("[data-fil-home]")) {
-        filWho = null; filScene = null; filSeen = []; filLit = []; filTrail = []; filFlash = null; filToast = null;
-        paintFil();
-      }
-    };
-  }
-
-  let rpgWho = null;
-  let rpgScene = null;
-  let rpgSeen = [];
-  let rpgTick = 0;
-
-  const RPG_PLAY = {
-    societe: {
-      s0: {
-        titre: "Tu es Alpha",
-        dit: "Tu es une entreprise. Tu cherches quelqu’un pour une mission informatique. Dans Ava Manager, tu n’es pas celui qui clique partout : tu parles au cabinet.",
-        mot: "Société",
-        choix: [
-          { label: "Appeler le cabinet", to: "s1" },
-          { label: "Recruter moi-même dans le logiciel", to: "s0x" }
-        ]
-      },
-      s0x: {
-        ko: true, titre: "Ce n’est pas ta main",
-        dit: "Interdit. Une société ne s’ouvre pas les listes Candidat, Ressource, Prestation. C’est le cabinet qui enregistre ce que tu demandes.",
-        choix: [{ label: "Appeler le cabinet, alors", to: "s1" }]
-      },
-      s1: {
-        titre: "Martin arrive",
-        dit: "Martin, le commercial, ouvre ta fiche Société. Si Alice, ton interlocutrice, est connue, il peut l’attacher. Ce n’est pas obligatoire pour écrire le besoin.",
-        mot: "Contact",
-        entre: { nom: "Martin", role: "Commercial" },
-        choix: [
-          { label: "Décrire ce que je cherche", to: "s2" },
-          { label: "Exiger un projet tout de suite", to: "s1x" }
-        ]
-      },
-      s1x: {
-        ko: true, titre: "Pas encore un projet",
-        dit: "Interdit. Un besoin n’est pas un projet. Le projet naît plus tard, exprès, si tu as dit oui à quelqu’un.",
-        choix: [{ label: "Décrire le besoin", to: "s2" }]
-      },
-      s2: {
-        titre: "Le besoin est ouvert",
-        dit: "Martin a enregistré ta demande : compétences, période, infos commerciales. C’est un besoin. L’équipe va chercher une personne. Rien n’est signé.",
-        mot: "Besoin",
-        choix: [
-          { label: "Attendre qu’on me présente quelqu’un", to: "s3" }
-        ]
-      },
-      s3: {
-        titre: "On te présente Paul",
-        dit: "Un positionnement : « Paul, pour ton besoin ». Ce n’est ni le projet, ni la mission. C’est une proposition. Martin note ta réponse.",
-        mot: "Positionnement",
-        entre: { nom: "Paul", role: "Freelance proposé" },
-        choix: [
-          { label: "On le retient", to: "s4" },
-          { label: "On refuse", to: "s5" }
-        ]
-      },
-      s5: {
-        titre: "Refus, la recherche continue",
-        dit: "Martin enregistre le non. Le besoin reste vivant. Personne n’a créé de projet tout seul.",
-        choix: [
-          { label: "Voir un autre profil", to: "s3" },
-          { label: "Arrêter là", to: "s5f" }
-        ]
-      },
-      s5f: {
-        fin: true, titre: "Ton parcours s’arrête ici",
-        dit: "Tu as parlé, tu as refusé. Le cabinet peut chercher encore. Toi, Alpha, tu n’affectes personne."
-      },
-      s4: {
-        titre: "Oui — mais le projet n’apparaît pas tout seul",
-        dit: "Tu as dit oui. Karim, staffing / directeur de projet, doit encore confirmer et créer le projet. Puis une prestation collera une ressource dessus.",
-        mot: "Projet",
-        entre: { nom: "Karim", role: "Staffing / DP" },
-        choix: [
-          { label: "Laisser le cabinet organiser la mission", to: "s6" },
-          { label: "Créer la mission moi-même", to: "s4x" }
-        ]
-      },
-      s4x: {
-        ko: true, titre: "Pas ta commande",
-        dit: "Interdit. Une société ne crée pas la prestation. C’est Karim qui affecte une ressource au projet.",
-        choix: [{ label: "Laisser le cabinet faire", to: "s6" }]
-      },
-      s6: {
-        fin: true, titre: "La mission se suit sans toi aux commandes",
-        dit: "Le projet existe. Paul (une fois ressource) saisit ses jours. Tu restes le client. Tu n’es pas la personne qui travaille."
-      }
-    },
-    freelance: {
-      f0: {
-        titre: "Tu es Paul, freelance",
-        dit: "Tu n’es pas encore dans le logiciel. Qu’est-ce que tu peux faire, toi ?",
-        choix: [
-          { label: "Déposer mon CV", to: "f1" },
-          { label: "Je suis déjà connu du cabinet", to: "f2" },
-          { label: "Créer le besoin d’un client", to: "f0x" }
-        ]
-      },
-      f0x: {
-        ko: true, titre: "Pas ta fiche",
-        dit: "Interdit. Un freelance ne crée pas le besoin d’Alpha. C’est le commercial.",
-        choix: [{ label: "Revenir à ce que je peux faire", to: "f0" }]
-      },
-      f1: {
-        titre: "Ton CV est dans le vivier",
-        dit: "Sophie, RH, te voit. Tu es un candidat. On peut te proposer à un client. Tu ne travailles pas encore : pas de prestation, pas de jours.",
-        mot: "Candidat",
-        entre: { nom: "Sophie", role: "RH" },
-        choix: [
-          { label: "Attendre qu’on me propose", to: "f3" },
-          { label: "Commencer une mission tout de suite", to: "f1x" }
-        ]
-      },
-      f1x: {
-        ko: true, titre: "Un candidat ne travaille pas",
-        dit: "Interdit. Avant une mission, Sophie doit activer ton profil ressource — et seulement si le chemin métier le permet. Le CV ne suffit pas.",
-        choix: [{ label: "Attendre d’être proposé", to: "f3" }]
-      },
-      f2: {
-        titre: "Déjà ressource externe",
-        dit: "Le cabinet te connaît. Tu es une ressource freelance, pas un candidat. On peut te positionner directement.",
-        mot: "Ressource",
-        choix: [{ label: "Être proposé sur le besoin d’Alpha", to: "f3b" }]
-      },
-      f3: {
-        titre: "On te positionne",
-        dit: "Sophie ou Karim rattache Paul au besoin d’Alpha. C’est un positionnement. Martin va le montrer au client.",
-        mot: "Positionnement",
-        entre: { nom: "Martin", role: "Commercial" },
-        choix: [
-          { label: "Alpha me retient", to: "f4" },
-          { label: "Alpha me refuse", to: "f5" }
-        ]
-      },
-      f3b: {
-        titre: "On te positionne (déjà ressource)",
-        dit: "Même geste : une personne, un besoin. Martin présente. Si Alpha dit oui, Karim pourra t’affecter sans passer par une conversion.",
-        mot: "Positionnement",
-        entre: { nom: "Karim", role: "Staffing" },
-        choix: [
-          { label: "Alpha me retient", to: "f6" },
-          { label: "Alpha me refuse", to: "f5" }
-        ]
-      },
-      f5: {
-        titre: "Refusé — tu restes disponible",
-        dit: "Le besoin d’Alpha continue. Toi, tu peux être proposé ailleurs. Rien ne s’est créé tout seul.",
-        choix: [
-          { label: "Rester dans le vivier", to: "f1" },
-          { label: "Arrêter là", to: "f5f" }
-        ]
-      },
-      f5f: { fin: true, titre: "Fin de cette tentative", dit: "Pas de mission. Ton CV, ou ta fiche ressource, est toujours là." },
-      f4: {
-        titre: "Oui — il manque encore un geste RH",
-        dit: "Alpha t’a retenu. Tu es encore candidat. Sophie doit t’activer en ressource. Même personne, même historique.",
-        entre: { nom: "Sophie", role: "RH — conversion" },
-        choix: [
-          { label: "Laisser Sophie me convertir", to: "f6" },
-          { label: "Saisir mes jours tout de suite", to: "f4x" }
-        ]
-      },
-      f4x: {
-        ko: true, titre: "Pas de jours sans ressource",
-        dit: "Interdit. Le temps se saisit sur une prestation. Une prestation exige une ressource, jamais un candidat.",
-        choix: [{ label: "Laisser Sophie convertir", to: "f6" }]
-      },
-      f6: {
-        titre: "Tu es ressource. Karim t’affecte",
-        dit: "Karim crée le projet (pas toi), puis une prestation : toi, sur ce projet, avec dates et conditions. Ça, c’est ta mission.",
-        mot: "Prestation",
-        entre: { nom: "Karim", role: "Staffing / DP" },
-        choix: [
-          { label: "Saisir mes jours", to: "f7" },
-          { label: "Créer le projet moi-même", to: "f6x" }
-        ]
-      },
-      f6x: {
-        ko: true, titre: "Tu n’es pas le cabinet",
-        dit: "Interdit. Le freelance n’ouvre pas le projet client. On t’y met par une prestation.",
-        choix: [{ label: "Saisir mes jours", to: "f7" }]
-      },
-      f7: {
-        fin: true, titre: "Tu travailles",
-        dit: "Tes temps sont sur la prestation. Plus tard, Karim clôture la mission, puis le projet. Toi, tu as fait le parcours freelance : CV → proposition → (conversion) → mission → jours."
-      }
-    },
-    salarie: {
-      j0: {
-        titre: "Tu es Jean, salarié",
-        dit: "Tu es déjà une ressource interne. Tu n’es pas un candidat. Tu ne déposes pas un CV pour exister.",
-        mot: "Ressource",
-        choix: [
-          { label: "Être proposé sur un besoin", to: "j1" },
-          { label: "Déposer un CV comme un candidat", to: "j0x" },
-          { label: "Créer la fiche d’un client", to: "j0y" }
-        ]
-      },
-      j0x: {
-        ko: true, titre: "Tu n’es plus le vivier",
-        dit: "Interdit pour ce rôle. Le CV, c’est le candidat. Toi, tu es déjà dans l’équipe.",
-        choix: [{ label: "Être proposé sur un besoin", to: "j1" }]
-      },
-      j0y: {
-        ko: true, titre: "Pas le commercial",
-        dit: "Interdit. Ouvrir Alpha, c’est Martin.",
-        choix: [{ label: "Revenir à ce que je peux faire", to: "j0" }]
-      },
-      j1: {
-        titre: "Karim te positionne",
-        dit: "Un positionnement sur le besoin d’Alpha. Si Alpha dit oui, une prestation t’affecte. Tu peux avoir plusieurs missions à la fois : au-delà de 100 %, c’est une alerte, pas un mur.",
-        mot: "Positionnement",
-        entre: { nom: "Karim", role: "Staffing" },
-        choix: [
-          { label: "Alpha dit oui, j’y vais", to: "j2" },
-          { label: "Changer de mission en silence", to: "j1x" }
-        ]
-      },
-      j1x: {
-        ko: true, titre: "On ne te remplace pas en silence",
-        dit: "Interdit. On clôture ta ligne, on en crée une autre. Tes jours déjà saisis restent à toi.",
-        choix: [{ label: "Prendre la mission", to: "j2" }]
-      },
-      j2: {
-        titre: "Ta prestation",
-        dit: "Dates, charge, conditions : c’est ta mission sur le projet. Tu saisis tes jours dessus. Pas ailleurs.",
-        mot: "Prestation",
-        choix: [{ label: "Saisir mes jours", to: "j3" }]
-      },
-      j3: {
-        fin: true, titre: "Les jours sont à Jean",
-        dit: "Temps enregistrés. Karim suivra, puis clôturera. Ton parcours salarié : ressource → proposition → mission → jours."
-      }
-    },
-    rh: {
-      r0: {
-        titre: "Tu es Sophie, RH",
-        dit: "Ton terrain, c’est le vivier. Les gens. Pas les contrats d’Alpha.",
-        mot: "Vivier",
-        choix: [
-          { label: "Ouvrir le CV de Paul", to: "r1" },
-          { label: "Ouvrir la société Alpha", to: "r0x" },
-          { label: "Créer un projet", to: "r0y" }
-        ]
-      },
-      r0x: {
-        ko: true, titre: "Ce n’est pas ta porte",
-        dit: "Interdit. La fiche client, c’est Martin.",
-        choix: [{ label: "Ouvrir le CV de Paul", to: "r1" }]
-      },
-      r0y: {
-        ko: true, titre: "Pas le projet",
-        dit: "Interdit. Le projet, c’est Karim après confirmation. Toi, tu recrutes.",
-        choix: [{ label: "Ouvrir le CV de Paul", to: "r1" }]
-      },
-      r1: {
-        titre: "Paul, candidat",
-        dit: "Tu peux enrichir son dossier, poser une action (« envoyer le CV »), le proposer sur un besoin, ou — plus tard — l’activer en ressource.",
-        mot: "Candidat",
-        entre: { nom: "Paul", role: "Candidat" },
-        choix: [
-          { label: "Le proposer sur le besoin d’Alpha", to: "r2" },
-          { label: "Poser une action : envoyer le CV", to: "r1a" },
-          { label: "Lui créer une mission tout de suite", to: "r1x" }
-        ]
-      },
-      r1a: {
-        titre: "Action posée",
-        dit: "« Envoyer le CV » est collé à la fiche de Paul. Ça aide à ne pas oublier. Ça ne crée ni projet ni prestation.",
-        mot: "Action",
-        choix: [{ label: "Le proposer sur le besoin", to: "r2" }]
-      },
-      r1x: {
-        ko: true, titre: "Pas de mission sur un candidat",
-        dit: "Interdit. D’abord le proposer. Si Alpha dit oui, tu convertis. Ensuite Karim affecte.",
-        choix: [{ label: "Le proposer", to: "r2" }]
-      },
-      r2: {
-        titre: "Positionnement créé",
-        dit: "Paul est proposé. Martin présentera à Alpha. Toi, tu attends le retour, ou tu cherches un autre profil.",
-        mot: "Positionnement",
-        entre: { nom: "Martin", role: "Commercial" },
-        choix: [
-          { label: "Alpha a dit oui : je convertis Paul", to: "r3" },
-          { label: "Alpha a dit non : je cherche un autre", to: "r1" }
-        ]
-      },
-      r3: {
-        fin: true, titre: "Conversion faite",
-        dit: "Paul a un profil ressource. Même personne. L’historique candidat reste. La prestation, ce n’est plus toi : Karim s’en charge. Ton parcours RH : CV → proposition → conversion."
-      }
-    },
-    com: {
-      c0: {
-        titre: "Tu es Martin, commercial",
-        dit: "Tu nourris le client. Tu écris ce qu’il demande. Tu notes s’il dit oui ou non.",
-        choix: [
-          { label: "Ouvrir Alpha", to: "c1" },
-          { label: "Convertir un candidat", to: "c0x" },
-          { label: "Saisir les jours de Jean", to: "c0y" }
-        ]
-      },
-      c0x: {
-        ko: true, titre: "Pas RH",
-        dit: "Interdit. La conversion, c’est Sophie.",
-        choix: [{ label: "Ouvrir Alpha", to: "c1" }]
-      },
-      c0y: {
-        ko: true, titre: "Pas la production",
-        dit: "Interdit. Les jours, c’est la ressource sur sa prestation.",
-        choix: [{ label: "Ouvrir Alpha", to: "c1" }]
-      },
-      c1: {
-        titre: "Fiche Société",
-        dit: "Alpha existe. Alice peut être collée, ou pas. Le besoin exige la société, pas forcément le contact. Si le contact manque, tu le demandera au moment du projet.",
-        mot: "Société",
-        entre: { nom: "Alpha", role: "Société cliente" },
-        choix: [
-          { label: "Créer le besoin", to: "c2" },
-          { label: "Créer le projet sans besoin", to: "c1x" }
-        ]
-      },
-      c1x: {
-        titre: "Ça existe, mais ce n’est pas cette histoire",
-        dit: "On peut créer un projet sans besoin (création directe). Ici, Alpha a d’abord une demande : tu crées un besoin.",
-        choix: [{ label: "Créer le besoin", to: "c2" }]
-      },
-      c2: {
-        titre: "Besoin ouvert",
-        dit: "Staffing et RH cherchent. Toi, tu n’affectes personne. Tu attendras de noter le retour d’Alpha.",
-        mot: "Besoin",
-        choix: [
-          { label: "Enregistrer : Alpha dit oui", to: "c3" },
-          { label: "Enregistrer : Alpha dit non", to: "c4" },
-          { label: "Créer le projet en silence", to: "c2x" }
-        ]
-      },
-      c2x: {
-        ko: true, titre: "Jamais en silence",
-        dit: "Interdit. Le projet se crée par une commande explicite, après confirmation. Un oui sur un profil ne le fait pas apparaître tout seul.",
-        choix: [{ label: "Enregistrer le oui, simplement", to: "c3" }]
-      },
-      c3: {
-        fin: true, titre: "Le oui est noté",
-        dit: "Karim peut créer le projet, puis la prestation. Toi, tu as fait le parcours commercial : société → besoin → décision du client."
-      },
-      c4: {
-        fin: true, titre: "Le non est noté",
-        dit: "Le besoin reste en staffing. On propose quelqu’un d’autre. Pas de projet automatique."
-      }
-    }
-  };
-
-  function rpgPawn() { return FIL_WHO.find((w) => w.id === rpgWho); }
-
-  function rpgPushSeen(entre) {
-    if (!entre) return;
-    if (rpgSeen.some((s) => s.nom === entre.nom)) return;
-    rpgSeen = rpgSeen.concat([entre]);
-  }
-
-  function paintRpg() {
-    const root = document.getElementById("rpg-root");
-    if (!root) return;
-    if (!rpgWho) {
-      root.innerHTML = `
-        <p class="lead">Qui es-tu ? Un seul choix. Ensuite, tu appuies. La suite arrive. On n’affiche pas tout le logiciel d’un coup.</p>
-        <div class="fil-who">${FIL_WHO.map((w) =>
-          `<button type="button" class="fil-pawn" data-rpg-who="${w.id}" style="border-left:4px solid ${filColor(w.color)}">
-            <strong>${esc(w.label)}</strong><span>${esc(w.name)}</span><small>${esc(w.pitch)}</small>
-          </button>`
-        ).join("")}</div>`;
-      return;
-    }
-    const who = rpgPawn();
-    const sc = RPG_PLAY[rpgWho][rpgScene];
-    if (!sc) return;
-    const seen = rpgSeen.map((s) => `<span class="fil-chip">${esc(s.nom)} · ${esc(s.role)}</span>`).join("");
-    const entre = sc.entre
-      ? `<div class="fil-arrive">Quelqu’un entre : <strong>${esc(sc.entre.nom)}</strong> — ${esc(sc.entre.role)}</div>`
-      : "";
-    const mot = sc.mot ? `<p class="fil-phase start">Mot métier : ${esc(sc.mot)}</p>` : "";
-    const choix = (sc.choix || []).map((c) =>
-      `<button type="button" class="fil-choice" data-rpg-to="${c.to}">${esc(c.label)}</button>`
-    ).join("");
-    const finBtns = sc.fin
-      ? `<button type="button" data-rpg-reset="1">Rejouer ce personnage</button>
-         <button type="button" data-rpg-home="1">Choisir quelqu’un d’autre</button>`
-      : `<button type="button" data-rpg-home="1">Changer de personnage</button>`;
-    root.innerHTML = `
-      <div class="fil-scene ${sc.ko ? "ko" : ""}" data-rpg-tick="${rpgTick}">
-        <p class="note">Tu es ${esc(who.label)} · ${esc(who.name)}</p>
-        ${mot}
-        <h3>${esc(sc.titre)}</h3>
-        <p class="lead">${esc(sc.dit)}</p>
-        ${entre}
-        ${seen ? `<div class="fil-seen"><span>Déjà croisés</span>${seen}</div>` : ""}
-        <div class="fil-choices">${choix}</div>
-        <div class="rowbtns">${finBtns}</div>
-      </div>`;
-  }
-
-  function renderRpg() {
-    const el = document.getElementById("view-ava-rpg");
-    if (!el) return;
-    el.innerHTML = `
-      <h2>Jeu de rôle</h2>
-      <div id="rpg-root"></div>`;
-    paintRpg();
-    el.onclick = (e) => {
-      const whoBtn = e.target.closest("[data-rpg-who]");
-      if (whoBtn) {
-        rpgWho = whoBtn.dataset.rpgWho;
-        rpgScene = rpgPawn().start;
-        rpgSeen = [];
-        rpgTick += 1;
-        rpgPushSeen(RPG_PLAY[rpgWho][rpgScene].entre);
-        paintRpg();
-        return;
-      }
-      const to = e.target.closest("[data-rpg-to]");
-      if (to && rpgWho) {
-        rpgScene = to.dataset.rpgTo;
-        rpgTick += 1;
-        const sc = RPG_PLAY[rpgWho][rpgScene];
-        if (sc) rpgPushSeen(sc.entre);
-        paintRpg();
-        return;
-      }
-      if (e.target.closest("[data-rpg-reset]") && rpgWho) {
-        rpgScene = rpgPawn().start;
-        rpgSeen = [];
-        rpgTick += 1;
-        rpgPushSeen(RPG_PLAY[rpgWho][rpgScene].entre);
-        paintRpg();
-        return;
-      }
-      if (e.target.closest("[data-rpg-home]")) {
-        rpgWho = null;
-        rpgScene = null;
-        rpgSeen = [];
-        rpgTick += 1;
-        paintRpg();
-      }
-    };
   }
 
   const ST = {
@@ -5400,6 +4430,434 @@ function showView(name){
     return { x: n.x + AVA_W / 2, y: n.y + AVA_H / 2 };
   }
 
+  /* ═══════════ LE QUIZ — refonte du Parcours et du Jeu de rôle, 19/09/2026 ═══════════
+     On n'explique pas le logiciel : on joue le métier, et le logiciel apparaît derrière.
+     Source : cahier de relecture métier (15 histoires, 15 interdits, les réglages). */
+
+  const QZ_MANCHES = [
+    {
+      id: "m1", titre: "L'appel d'Alpha", sous: "Du premier coup de fil à la mission. Sept décisions, dans l'ordre où elles se posent.",
+      cas: [
+        { d: ["Alice, chez Alpha", "Bonjour, on cherche deux développeurs Java pour six mois."],
+          q: "Martin, commercial, raccroche. Qu'est-ce qu'il crée dans Ava ?",
+          o: ["Un besoin", "Un projet", "Deux positionnements", "Une mission"],
+          b: 0,
+          v: "Un <b>besoin</b> : la demande du client. Deux postes visés, une seule ligne.",
+          f: "Le projet n'existe pas encore — Alpha n'a encore dit oui à personne. Un besoin peut très bien n'aboutir à rien.",
+          s: "Cahier, partie 1" },
+        { d: ["Karim, staffing", "Jean est libre en mars. Je le propose."],
+          q: "Que devient le besoin, qui était « à pourvoir » ?",
+          o: ["Il reste « à pourvoir » jusqu'à ce que Karim clique", "Il passe tout seul en « en recherche »", "Il passe directement en « pourvu »"],
+          b: 1,
+          v: "Il passe <b>tout seul</b> en « en recherche ». La preuve qu'on cherche, c'est qu'on a proposé quelqu'un.",
+          f: "Un état qui dépend d'un bouton à penser à cliquer, c'est la moitié des besoins qui restent faux.",
+          s: "Histoire H1" },
+        { q: "La proposition de Jean sur ce besoin, ça s'appelle comment ?",
+          o: ["Une candidature", "Un positionnement", "Une mission", "Un contrat"],
+          b: 1,
+          v: "Un <b>positionnement</b> : une personne, un besoin. Rien n'est signé.",
+          f: "C'est le mot qu'on confond le plus avec « mission ». Un positionnement peut finir par un refus.",
+          s: "Les sept mots" },
+        { d: ["Alice", "D'accord pour Jean. On démarre le 1er mars."],
+          q: "Ava crée-t-il le projet automatiquement ?",
+          o: ["Oui, dès que le client dit oui", "Non, quelqu'un doit le créer en confirmant"],
+          b: 1,
+          v: "<b>Non.</b> Karim le crée, en confirmant les informations du contrat.",
+          f: "Un projet qui apparaît tout seul, c'est un dossier que personne n'a relu. Par réglage, une autre société peut choisir l'inverse.",
+          s: "Histoire H1 · réglage projet.creation_depuis_besoin" },
+        { q: "Le projet est créé. Jean travaille-t-il déjà ?",
+          o: ["Oui, le projet porte Jean", "Non, il faut encore créer sa mission"],
+          b: 1,
+          v: "<b>Non.</b> Le projet est le dossier ; la <b>prestation</b> dit qui travaille, quand, à quelles conditions.",
+          f: "Un projet peut rester vide un moment — c'est normal avant le chiffrage.",
+          s: "Histoire H3" },
+        { q: "Jean travaille. Qui saisit son temps ?",
+          o: ["Le commercial", "Jean lui-même, sur sa mission", "Le directeur de projet uniquement"],
+          b: 1,
+          v: "<b>Jean</b>, sur ses propres missions. Un responsable peut le faire pour lui, dans son périmètre.",
+          f: "Il ne peut pas saisir sur la mission d'un collègue : la structure refuse la ligne.",
+          s: "Interdit n° 10" },
+        { q: "La mission se termine. Qu'est-ce qui se fige à ce moment-là ?",
+          o: ["Rien, tout reste recalculable", "La marge", "Le nom du client"],
+          b: 1,
+          v: "<b>La marge.</b> Si les RH changent un salaire six mois plus tard, la marge déjà figée ne bouge pas.",
+          f: "Sinon un dossier clos changerait de résultat après coup, et plus aucun chiffre du passé ne voudrait rien dire.",
+          s: "Histoire H8 · interdit n° 6" }
+      ]
+    },
+    {
+      id: "m2", titre: "Qui a le droit ?", sous: "Dans Ava, un bouton visible ne donne jamais le droit. Enfile chaque casquette.",
+      cas: [
+        { r: "Tu es Sophie, RH", q: "Un candidat est retenu par le client. Tu le passes en ressource. Ça marche ?",
+          o: ["Oui", "Non, il faut le commercial"],
+          b: 0,
+          v: "<b>Oui.</b> Seules les RH transforment un candidat en ressource.",
+          f: "Évaluer et embaucher sont deux métiers différents.",
+          s: "Histoire H15" },
+        { r: "Tu es Léa, évaluatrice", q: "Tu viens d'évaluer quelqu'un d'excellent. Tu le passes en ressource ?",
+          o: ["Oui, tu l'as évalué", "Non, refusé"],
+          b: 1,
+          v: "<b>Refusé.</b> Tu évalues ; tu n'embauches pas.",
+          f: "Le bouton peut être visible : la commande refuse quand même.",
+          s: "Histoire H15" },
+        { r: "Tu es Karim, staffing", q: "Tu crées une mission et tu la mets directement en « signée ».",
+          o: ["Ça passe", "Refusé : signer demande le droit de signature"],
+          b: 1,
+          v: "<b>Refusé.</b> Créer une mission déjà signée, c'est la signer — c'est le directeur de projet.",
+          f: "Crée-la prévisionnelle : là, ça passe.",
+          s: "Machines d'état, la signature" },
+        { r: "Tu es Sophie, RH sur l'agence A", q: "Tu crées une société cliente.",
+          o: ["Ça passe", "Refusé"],
+          b: 1,
+          v: "<b>Refusé.</b> Ton groupe ne porte pas cette commande. Martin, commercial, le fait sans problème.",
+          f: "Ce n'est pas une question de confiance : c'est le périmètre du métier.",
+          s: "Histoire H10" },
+        { r: "Tu es Martin, commercial sur l'agence A", q: "On t'ajoute la lecture de l'agence B. Tu peux maintenant créer un besoin sur B ?",
+          o: ["Oui, tu vois B", "Non : lire ailleurs ne donne pas le droit d'écrire ailleurs"],
+          b: 1,
+          v: "<b>Non.</b> Tu lis B, tu continues de créer dans A, et tu ne peux toujours pas créer dans B.",
+          f: "Les droits s'additionnent par paire « quoi + où ». Ils ne se croisent jamais.",
+          s: "Histoire H14" },
+        { q: "« Créer un besoin » — est-ce un droit complet ?",
+          o: ["Oui", "Non : il manque toujours l'endroit"],
+          b: 1,
+          v: "<b>Non.</b> C'est toujours « créer un besoin <b>sur l'agence A</b> ». Un droit sans périmètre n'existe pas.",
+          f: "Sans ça, une permission donnée pour une agence ouvrirait toute la maison.",
+          s: "Histoire H13 · interdit n° 13" }
+      ]
+    },
+    {
+      id: "m3", titre: "Le mot juste", sous: "Ce sont les six confusions qui coûtent le plus cher les premières semaines.",
+      cas: [
+        { q: "Besoin ou projet ?", d: ["", "Alpha demande deux développeurs. On n'a encore parlé à personne."],
+          o: ["Besoin", "Projet"], b: 0,
+          v: "<b>Besoin</b> : la demande. Le projet, c'est le dossier une fois que le client a dit oui.",
+          f: "Un besoin peut ouvrir plusieurs projets — ou aucun.",
+          s: "Les sept mots" },
+        { q: "Projet ou prestation ?", d: ["", "Sara travaille à 60 % sur la refonte d'Alpha depuis mars."],
+          o: ["Projet", "Prestation"], b: 1,
+          v: "<b>Prestation</b> : la mission d'une personne, avec ses dates et sa charge. Le projet est le dossier qui la contient.",
+          f: "Un projet peut porter plusieurs prestations — et le projet ne porte jamais la personne lui-même.",
+          s: "Interdit n° 5" },
+        { q: "Contact ou candidat ?", d: ["", "Alice, chez Alpha, est celle qui passe les commandes."],
+          o: ["Contact", "Candidat"], b: 0,
+          v: "<b>Contact</b> : une personne chez le client. Deux fichiers séparés, qui ne se mélangent pas.",
+          f: "Un candidat est quelqu'un qu'on pourrait placer. Alice, elle, achète.",
+          s: "Les sept mots" },
+        { q: "Candidat ou ressource ?", d: ["", "Amina vient de signer son contrat chez Avaliance."],
+          o: ["Candidate", "Ressource"], b: 1,
+          v: "<b>Ressource.</b> Et c'est <b>la même personne</b> : son dossier de candidate reste, avec l'historique de sa présentation.",
+          f: "On ne crée jamais une deuxième fiche. La transformation n'efface rien et ne recopie rien.",
+          s: "Histoire H2" },
+        { q: "Positionnement ou prestation ?", d: ["", "On a envoyé le CV d'Omar à Alpha. On attend leur réponse."],
+          o: ["Positionnement", "Prestation"], b: 0,
+          v: "<b>Positionnement.</b> Rien n'est signé : c'est une proposition.",
+          f: "La prestation n'existe qu'après le oui du client et la création du projet.",
+          s: "Les sept mots" },
+        { q: "Supprimer ou archiver ?", d: ["", "Le service SI d'Alpha n'existe plus. On veut le sortir des écrans."],
+          o: ["Supprimer", "Archiver"], b: 1,
+          v: "<b>Archiver.</b> Rien ne se supprime dans Ava : tout reste consultable — anciens besoins, projets, missions, temps.",
+          f: "Et l'archivage est refusé tant qu'un besoin est encore actif dessus.",
+          s: "Histoire H12 · interdit n° 8" },
+        { q: "Une même personne peut-elle avoir deux dossiers ressource ?",
+          o: ["Oui, un par contrat", "Non, un seul"], b: 1,
+          v: "<b>Un seul.</b> Au plus un dossier candidat et un dossier ressource par personne.",
+          f: "Deux dossiers, ce sont deux coûts différents pour le même salarié — et des chiffres faux.",
+          s: "Interdit n° 3" }
+      ]
+    },
+    {
+      id: "m4", titre: "La charge de Sara", sous: "Des chiffres, pas des mots. Ava calcule au jour, jamais au mois.",
+      cas: [
+        { d: ["", "Sara : 60 % sur Alpha et 40 % sur Beta, du 1er au 31 mars."],
+          q: "Combien fait sa charge, et Ava alerte-t-il ?",
+          o: ["100 %, aucune alerte", "100 %, alerte quand même", "60 % seulement"],
+          b: 0,
+          v: "<b>100 % chaque jour, aucune alerte.</b> C'est exactement plein, pas au-dessus.",
+          f: "Et Sara compte pour <b>deux postes pourvus</b>, pas une personne : on compte les missions signées, pas les têtes.",
+          s: "Histoire H4" },
+        { d: ["", "Sara est déjà à 100 %. On lui ajoute 10 % du 15 au 19 mars."],
+          q: "Que fait Ava ?",
+          o: ["Il refuse", "Il accepte et signale 110 % sur ces cinq jours", "Il accepte en silence"],
+          b: 1,
+          v: "<b>Il accepte et signale</b> — sur ces cinq jours seulement, pas sur le mois.",
+          f: "Refuser serait bloquer un staffing que le terrain a peut-être raison de faire. Par réglage, une autre société peut choisir de refuser.",
+          s: "Histoire H5 · réglage prestation.surcharge.mode" },
+        { d: ["", "Paul : 60 % du 1er au 9 avril, puis 50 % du 12 au 30 avril."],
+          q: "A-t-il été à 110 % ?",
+          o: ["Oui, 60 + 50", "Non, jamais : les périodes ne se chevauchent pas"],
+          b: 1,
+          v: "<b>Jamais.</b> La charge se calcule au jour. Deux périodes qui ne se croisent pas ne s'additionnent pas.",
+          f: "C'est l'erreur classique : additionner des pourcentages d'un mois. Ava ne le fait jamais.",
+          s: "Histoire H6" },
+        { q: "Un samedi, Sara est-elle en surcharge ?",
+          o: ["Oui, la charge court tous les jours", "Non : le calcul suit le calendrier de l'agence"],
+          b: 1,
+          v: "<b>Non.</b> Week-ends et fériés ne comptent pas — le calcul suit le calendrier de l'agence.",
+          f: "Sinon toutes les missions seraient artificiellement en dépassement un week-end sur deux.",
+          s: "Histoire H5" },
+        { q: "Une mission « prévisionnelle » déclenche-t-elle l'alerte de surcharge ?",
+          o: ["Oui", "Non : seules les missions signées la déclenchent"],
+          b: 1,
+          v: "<b>Non.</b> Elle s'affiche dans le plan de charge, distinctement, mais ne déclenche rien.",
+          f: "Une alerte sur du prévisionnel, c'est une alerte qu'on apprend à ignorer.",
+          s: "Plan de charge" },
+        { q: "Sara est à 100 %. Peut-elle apparaître sur deux missions à la fois ?",
+          o: ["Non, une personne = une mission", "Oui, autant que nécessaire"],
+          b: 1,
+          v: "<b>Oui.</b> Plusieurs missions simultanées sont normales — c'est le métier.",
+          f: "Ce que Ava surveille, ce n'est pas le nombre de missions, c'est la charge cumulée du jour.",
+          s: "Histoire H4" }
+      ]
+    },
+    {
+      id: "m5", titre: "Ce qu'Ava refusera toujours", sous: "Quinze choses ne sont pas des réglages. Devine ce qui arriverait sans elles.",
+      cas: [
+        { d: ["Karim", "Jean part, Paul le remplace. Je change juste le nom sur la mission."],
+          q: "Que se passerait-il si Ava le permettait ?",
+          o: ["Rien de grave", "Les 10 jours déjà travaillés par Jean deviendraient ceux de Paul"],
+          b: 1,
+          v: "<b>Refusé.</b> On clôture la mission de Jean au 15, on en crée une pour Paul à partir du 16.",
+          f: "C'est l'interdit n° 4. Il protège tout ce qui est déjà saisi.",
+          s: "Histoire H7 · interdit n° 4" },
+        { d: ["Karim", "Mehdi est parfait, je le mets sur la mission."],
+          q: "Mehdi est candidat, pas encore ressource. Ava refuse — pourquoi ?",
+          o: ["Karim n'a pas le droit", "La structure ne sait pas rattacher un candidat à une mission"],
+          b: 1,
+          v: "<b>La structure.</b> Ce n'est pas une question de droits : aucun champ ne relie un candidat à une mission.",
+          f: "Sans ça : du temps facturé sur quelqu'un qui n'est pas payé.",
+          s: "Histoire H9 · interdit n° 1" },
+        { q: "Une proposition peut-elle porter deux personnes à la fois ?",
+          o: ["Oui, pour aller plus vite", "Non, exactement une"],
+          b: 1,
+          v: "<b>Exactement une.</b> Un besoin, une personne, une ligne.",
+          f: "Sinon : des propositions à deux têtes, et des doublons partout.",
+          s: "Interdit n° 2" },
+        { q: "Qui travaille sur le projet PRJ-117 ? Où Ava va-t-il chercher la réponse ?",
+          o: ["Dans un champ « ressource » du projet", "Dans les missions du projet"],
+          b: 1,
+          v: "<b>Dans ses missions.</b> Le projet ne porte aucune personne.",
+          f: "Un champ sur le projet donnerait deux réponses différentes à la même question dès le deuxième intervenant.",
+          s: "Interdit n° 5" },
+        { q: "Une ligne d'historique peut-elle être corrigée ?",
+          o: ["Oui, par un administrateur", "Non, jamais"],
+          b: 1,
+          v: "<b>Jamais.</b> Un événement ne se modifie ni ne s'efface.",
+          f: "Un historique qu'on peut corriger n'est pas un historique.",
+          s: "Interdit n° 7" },
+        { q: "Un besoin de recrutement interne — sans client. Ava l'accepte ?",
+          o: ["Oui, sans société", "Oui, sur Avaliance, qui est une société dans sa propre base"],
+          b: 1,
+          v: "<b>Sur Avaliance.</b> Un besoin a toujours une société, y compris les vôtres.",
+          f: "Sans ça : des besoins flottants, hors de tout périmètre et de tout droit.",
+          s: "Interdit n° 11" },
+        { q: "Un projet a une mission en EUR et une en MAD. Ava affiche-t-il un total ?",
+          o: ["Oui, converti", "Non, une ligne par devise"],
+          b: 1,
+          v: "<b>Une ligne par devise.</b> Aucun taux n'est saisi : on n'invente pas un total.",
+          f: "Un chiffre faux affiché comme vrai est pire que pas de chiffre du tout.",
+          s: "Interdit n° 15" },
+        { q: "Le client d'Alpha a un besoin, mais on n'a aucun interlocuteur nommé. Bloqué ?",
+          o: ["Oui, il faut un contact", "Non : le besoin passe, le projet demandera un contact"],
+          b: 1,
+          v: "<b>Le besoin passe.</b> C'est au moment de créer le <b>projet</b> qu'Ava réclame un interlocuteur.",
+          f: "Un dossier client sans interlocuteur, ça ne tient pas. Une demande sans interlocuteur, si.",
+          s: "Histoire H11" }
+      ]
+    },
+    {
+      id: "m6", titre: "Ton logiciel, tes règles", sous: "Ava code le mécanisme ; la société choisit la politique. Change un réglage, rejoue le cas.",
+      reglages: true,
+      cas: [
+        { k: "surcharge", q: "Sara est à 100 %. On lui ajoute 10 %.",
+          opts: [["alerte", "Alerte, et ça passe"], ["refus", "Refusé"], ["silence", "Ça passe en silence"]],
+          def: "alerte",
+          res: { alerte: "Ava enregistre et signale 110 % sur les jours concernés. <b>C'est le choix d'Avaliance.</b>", refus: "Ava refuse la mission. Une société qui vend au forfait peut vouloir ça.", silence: "Ava enregistre sans rien dire. Personne ne saura que quelqu'un est à 110 %." },
+          s: "Réglage prestation.surcharge.mode" },
+        { k: "projet_auto", q: "Le client dit oui à une proposition.",
+          opts: [["explicite", "Quelqu'un crée le projet"], ["auto", "Le projet se crée tout seul"]],
+          def: "explicite",
+          res: { explicite: "Rien n'apparaît. Karim crée le projet en confirmant les informations. <b>C'est le choix d'Avaliance.</b>", auto: "Le projet apparaît immédiatement, avec les informations du besoin. Plus rapide — et personne ne les a relues." },
+          s: "Réglage projet.creation_depuis_besoin" },
+        { k: "contact_besoin", q: "Un besoin arrive sans interlocuteur nommé.",
+          opts: [["facultatif", "On peut l'enregistrer"], ["obligatoire", "Il faut un contact"]],
+          def: "facultatif",
+          res: { facultatif: "Le besoin s'enregistre. Le contact sera demandé au projet. <b>C'est le choix d'Avaliance.</b>", obligatoire: "Impossible d'enregistrer la demande tant qu'on n'a pas de nom. Plus propre — et on perd des demandes." },
+          s: "Réglage besoin.contact" },
+        { k: "pourvu", q: "Un besoin vise 2 postes. Une seule mission est signée.",
+          opts: [["tous", "Il reste en recherche"], ["une", "On peut le déclarer pourvu"]],
+          def: "tous",
+          res: { tous: "Il reste « en recherche » tant que les deux postes ne sont pas signés. <b>C'est le choix d'Avaliance.</b>", une: "Staffing peut le déclarer pourvu dès la première signature. Le tableau de bord verdit plus vite — et ment un peu." },
+          s: "Réglage besoin.pourvu.garde_minimale" },
+        { k: "doublon", q: "On crée quelqu'un dont le nom existe déjà.",
+          opts: [["avertir", "On prévient, on laisse faire"], ["bloquer", "On refuse"], ["ignorer", "On ne dit rien"]],
+          def: "avertir",
+          res: { avertir: "Un avertissement s'affiche ; c'est l'utilisateur qui tranche. <b>C'est le choix d'Avaliance.</b>", bloquer: "Création impossible. Deux homonymes réels deviennent un problème.", ignorer: "Les doublons s'accumulent en silence." },
+          s: "Réglage doublon.personne.mode" },
+        { k: "temps_cloture", q: "Quelqu'un corrige un temps sur une mission déjà clôturée.",
+          opts: [["ajustement", "Accepté, tracé comme ajustement"], ["refus", "Refusé"]],
+          def: "ajustement",
+          res: { ajustement: "La correction passe et se voit comme un ajustement daté. <b>La marge figée, elle, ne bouge pas.</b> C'est le choix d'Avaliance.", refus: "Plus aucune correction après clôture. Plus simple — et les erreurs restent." },
+          s: "Réglage temps.correction_apres_cloture" }
+      ]
+    }
+  ];
+
+  const QZ_KEY = "ava-quiz-v1";
+  let qzEtat = { manche: null, i: 0, rep: {}, faits: {} };
+  try { const raw = localStorage.getItem(QZ_KEY); if (raw) qzEtat = Object.assign(qzEtat, JSON.parse(raw)); } catch (x) {}
+  function qzSave() { try { localStorage.setItem(QZ_KEY, JSON.stringify(qzEtat)); } catch (x) {} }
+  function qzNbCas(m) { return m.cas.length; }
+  function qzScore(m) {
+    const r = qzEtat.faits[m.id] || {};
+    return Object.keys(r).filter((k) => r[k] === true).length;
+  }
+  function qzFini(m) { return Object.keys(qzEtat.faits[m.id] || {}).length >= qzNbCas(m); }
+  function qzTotal() { return QZ_MANCHES.reduce((a, m) => a + qzScore(m), 0); }
+  function qzTotalCas() { return QZ_MANCHES.reduce((a, m) => a + qzNbCas(m), 0); }
+
+  function qzAccueil() {
+    const t = qzTotal(), tc = qzTotalCas();
+    return `
+      <h2>Le quiz</h2>
+      <p class="lead">On n'explique pas le logiciel. On joue le métier — le cas d'Alpha, du premier appel à la marge — et Ava Manager apparaît derrière. Six manches, ${tc} situations. Aucune connaissance préalable.</p>
+      <div class="qz-prog"><div class="qz-bar"><i style="width:${tc ? Math.round((t / tc) * 100) : 0}%"></i></div><span>${t} / ${tc}</span></div>
+      <div class="qz-grid">
+        ${QZ_MANCHES.map((m, n) => {
+          const sc = qzScore(m), fin = qzFini(m);
+          return `<button type="button" class="qz-carte${fin ? " fait" : ""}" data-qz-manche="${m.id}">
+            <span class="qz-n">Manche ${n + 1}</span>
+            <b>${esc(m.titre)}</b>
+            <span class="qz-s">${esc(m.sous)}</span>
+            <span class="qz-etat">${fin ? `Terminée · ${sc} / ${qzNbCas(m)}` : (sc ? `En cours · ${sc} / ${qzNbCas(m)}` : `${qzNbCas(m)} situations`)}</span>
+          </button>`;
+        }).join("")}
+      </div>
+      <div class="qz-pied">
+        <button type="button" class="pill" data-qz-reset>Tout recommencer</button>
+        <button type="button" class="pill" data-go-view="ava-simulateur">Ouvrir le simulateur</button>
+      </div>`;
+  }
+
+  function qzCas(m, i) {
+    const c = m.cas[i];
+    const rep = (qzEtat.rep[m.id] || {})[i];
+    const done = rep !== undefined;
+    const dial = c.d && c.d[1] ? `<div class="qz-dial">${c.d[0] ? `<span class="qz-qui">${esc(c.d[0])}</span>` : ""}<p>« ${esc(c.d[1])} »</p></div>` : "";
+    const role = c.r ? `<div class="qz-role">${esc(c.r)}</div>` : "";
+
+    if (m.reglages) {
+      const val = done ? rep : c.def;
+      return `
+        ${qzTete(m, i)}
+        ${role}<h3>${esc(c.q)}</h3>
+        <p class="qz-sq">Choisis la règle, et regarde ce qui se passe.</p>
+        <div class="qz-opts reg">
+          ${c.opts.map(([k, lab]) => `<button type="button" class="qz-opt${val === k ? " sel" : ""}" data-qz-reg="${k}">${esc(lab)}${k === c.def ? '<span class="qz-def">choix actuel</span>' : ""}</button>`).join("")}
+        </div>
+        <div class="qz-rep ${val === c.def ? "ok" : "alt"}">
+          <p>${c.res[val]}</p>
+          <span class="qz-src">${esc(c.s)}</span>
+        </div>
+        ${qzPied(m, i, true)}`;
+    }
+
+    return `
+      ${qzTete(m, i)}
+      ${role}${dial}
+      <h3>${esc(c.q)}</h3>
+      <div class="qz-opts">
+        ${c.o.map((o, k) => {
+          let cl = "";
+          if (done) { if (k === c.b) cl = " bon"; else if (k === rep) cl = " faux"; }
+          return `<button type="button" class="qz-opt${cl}"${done ? " disabled" : ""} data-qz-rep="${k}">${esc(o)}</button>`;
+        }).join("")}
+      </div>
+      ${done ? `
+        <div class="qz-rep ${rep === c.b ? "ok" : "ko"}">
+          <span class="qz-verdict">${rep === c.b ? "Exact" : "Pas tout à fait"}</span>
+          <p>${c.v}</p>
+          <p class="qz-sinon"><b>Et sinon ?</b> ${c.f}</p>
+          <span class="qz-src">${esc(c.s)}</span>
+        </div>` : ""}
+      ${qzPied(m, i, done)}`;
+  }
+
+  function qzTete(m, i) {
+    return `<div class="qz-tete">
+      <button type="button" class="qz-retour" data-qz-home>← Les manches</button>
+      <span class="qz-fil">${esc(m.titre)}</span>
+      <span class="qz-cpt">${i + 1} / ${qzNbCas(m)}</span>
+    </div>
+    <div class="qz-bar mince"><i style="width:${Math.round(((i + (0)) / qzNbCas(m)) * 100)}%"></i></div>`;
+  }
+  function qzPied(m, i, done) {
+    const last = i >= qzNbCas(m) - 1;
+    return `<div class="qz-nav">
+      ${i > 0 ? '<button type="button" class="pill" data-qz-prec>← Précédent</button>' : "<span></span>"}
+      ${done ? (last ? '<button type="button" class="pill pri" data-qz-fin>Terminer la manche →</button>' : '<button type="button" class="pill pri" data-qz-suiv>Suivant →</button>') : '<span class="qz-attente">Choisis une réponse</span>'}
+    </div>`;
+  }
+
+  function qzBilan(m) {
+    const sc = qzScore(m), n = qzNbCas(m);
+    const mot = sc === n ? "Sans faute." : sc >= n - 1 ? "Presque parfait." : sc >= n / 2 ? "C'est acquis dans les grandes lignes." : "À refaire — et c'est normal la première fois.";
+    return `
+      <div class="qz-bilan">
+        <span class="qz-badge${sc === n ? " or" : ""}">${sc} / ${n}</span>
+        <h3>${esc(m.titre)} — ${esc(mot)}</h3>
+        <div class="qz-nav">
+          <button type="button" class="pill" data-qz-rejouer>Rejouer cette manche</button>
+          <button type="button" class="pill pri" data-qz-home>Les manches →</button>
+        </div>
+      </div>`;
+  }
+
+  function paintQuiz() {
+    const el = document.getElementById("view-ava-quiz");
+    if (!el) return;
+    if (!qzEtat.manche) { el.innerHTML = qzAccueil(); return; }
+    const m = QZ_MANCHES.find((x) => x.id === qzEtat.manche);
+    if (!m) { qzEtat.manche = null; paintQuiz(); return; }
+    if (qzEtat.i >= qzNbCas(m)) { el.innerHTML = qzBilan(m); return; }
+    el.innerHTML = `<div class="qz-scene">${qzCas(m, qzEtat.i)}</div>`;
+  }
+
+  function renderQuiz() {
+    const el = document.getElementById("view-ava-quiz");
+    if (!el) return;
+    paintQuiz();
+    el.onclick = (e) => {
+      const m = QZ_MANCHES.find((x) => x.id === qzEtat.manche);
+      const go = e.target.closest("[data-qz-manche]");
+      if (go) { qzEtat.manche = go.dataset.qzManche; qzEtat.i = 0; qzSave(); paintQuiz(); return; }
+      if (e.target.closest("[data-qz-home]")) { qzEtat.manche = null; qzSave(); paintQuiz(); return; }
+      if (e.target.closest("[data-qz-reset]")) { qzEtat = { manche: null, i: 0, rep: {}, faits: {} }; qzSave(); paintQuiz(); return; }
+      if (!m) return;
+      const r = e.target.closest("[data-qz-rep]");
+      if (r) {
+        const k = Number(r.dataset.qzRep);
+        qzEtat.rep[m.id] = qzEtat.rep[m.id] || {}; qzEtat.rep[m.id][qzEtat.i] = k;
+        qzEtat.faits[m.id] = qzEtat.faits[m.id] || {}; qzEtat.faits[m.id][qzEtat.i] = k === m.cas[qzEtat.i].b;
+        qzSave(); paintQuiz(); return;
+      }
+      const g = e.target.closest("[data-qz-reg]");
+      if (g) {
+        const k = g.dataset.qzReg;
+        qzEtat.rep[m.id] = qzEtat.rep[m.id] || {}; qzEtat.rep[m.id][qzEtat.i] = k;
+        qzEtat.faits[m.id] = qzEtat.faits[m.id] || {}; qzEtat.faits[m.id][qzEtat.i] = true;
+        qzSave(); paintQuiz(); return;
+      }
+      if (e.target.closest("[data-qz-suiv]")) { qzEtat.i++; qzSave(); paintQuiz(); return; }
+      if (e.target.closest("[data-qz-prec]")) { qzEtat.i = Math.max(0, qzEtat.i - 1); qzSave(); paintQuiz(); return; }
+      if (e.target.closest("[data-qz-fin]")) { qzEtat.i = qzNbCas(m); qzSave(); paintQuiz(); return; }
+      if (e.target.closest("[data-qz-rejouer]")) {
+        delete qzEtat.rep[m.id]; delete qzEtat.faits[m.id]; qzEtat.i = 0; qzSave(); paintQuiz(); return;
+      }
+    };
+    bindJump(el);
+  }
+
   function renderAvaMetier() {
     const el = document.getElementById("view-ava-metier");
     el.innerHTML = `
@@ -5511,399 +4969,6 @@ function showView(name){
     const el = document.getElementById("tri-caption");
     if (el) el.innerHTML = html;
   }
-  function disposeTri() {
-    if (!triWorld) return;
-    triWorld.alive = false;
-    window.removeEventListener("resize", triWorld.onResize);
-    if (triWorld.composer) triWorld.composer = null;
-    if (triWorld.renderer) {
-      triWorld.renderer.dispose();
-      if (triWorld.renderer.domElement && triWorld.renderer.domElement.parentNode) {
-        triWorld.renderer.domElement.parentNode.removeChild(triWorld.renderer.domElement);
-      }
-    }
-    if (triWorld.scene) {
-      triWorld.scene.traverse((obj) => {
-        if (obj.geometry) obj.geometry.dispose();
-        const mats = obj.material ? (Array.isArray(obj.material) ? obj.material : [obj.material]) : [];
-        mats.forEach((m) => {
-          if (m && m.map) m.map.dispose();
-          if (m) m.dispose();
-        });
-      });
-    }
-    triWorld = null;
-  }
-  function triVec(id) {
-    const n = TRI_NODES[id];
-    return new triWorld.THREE.Vector3((n.x - 390) * 0.016, 0.12, (n.y - 190) * 0.016);
-  }
-  function triArc(a, b) {
-    const THREE = triWorld.THREE;
-    const pa = triVec(a), pb = triVec(b);
-    const mid = pa.clone().lerp(pb, 0.5);
-    mid.y += Math.max(0.55, pa.distanceTo(pb) * 0.42);
-    return new THREE.QuadraticBezierCurve3(pa, mid, pb);
-  }
-  function triMakeLabel(text) {
-    const THREE = triWorld.THREE;
-    const c = document.createElement("canvas");
-    c.width = 512;
-    c.height = 128;
-    const ctx = c.getContext("2d");
-    ctx.clearRect(0, 0, 512, 128);
-    ctx.fillStyle = "#AEBF38";
-    ctx.beginPath();
-    const r = 28, x = 36, y = 28, w = 440, h = 72;
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w, y, x + w, y + h, r);
-    ctx.arcTo(x + w, y + h, x, y + h, r);
-    ctx.arcTo(x, y + h, x, y, r);
-    ctx.arcTo(x, y, x + w, y, r);
-    ctx.closePath();
-    ctx.fill();
-    ctx.fillStyle = "#430A4B";
-    ctx.font = "700 44px system-ui, sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(text, 256, 66);
-    const tex = new THREE.CanvasTexture(c);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    const spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
-    spr.scale.set(1.85, 0.46, 1);
-    return spr;
-  }
-  function triClearPlay() {
-    if (!triWorld) return;
-    (triWorld.spawned || []).forEach((s) => {
-      triWorld.scene.remove(s.mesh);
-      triWorld.scene.remove(s.glow);
-      triWorld.scene.remove(s.label);
-      if (s.light) triWorld.scene.remove(s.light);
-    });
-    (triWorld.beads || []).forEach((b) => triWorld.scene.remove(b));
-    if (triWorld.head) triWorld.scene.remove(triWorld.head);
-    if (triWorld.headLight) triWorld.scene.remove(triWorld.headLight);
-    triWorld.spawned = [];
-    triWorld.beads = [];
-    triWorld.head = null;
-    triWorld.headLight = null;
-    triWorld.play = null;
-  }
-  function triSpawnNode(id, color) {
-    const THREE = triWorld.THREE;
-    const p = triVec(id);
-    const mat = new THREE.MeshStandardMaterial({
-      color: 0x111111,
-      emissive: color,
-      emissiveIntensity: 0,
-      roughness: 0.25,
-      metalness: 0.15,
-      transparent: true,
-      opacity: 0
-    });
-    const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.22, 32, 24), mat);
-    mesh.position.copy(p);
-    mesh.scale.setScalar(0.01);
-    const glow = new THREE.Mesh(
-      new THREE.SphereGeometry(0.38, 16, 12),
-      new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 0, depthWrite: false })
-    );
-    glow.position.copy(p);
-    const label = triMakeLabel(TRI_NODES[id].label);
-    label.position.set(p.x, p.y + 0.52, p.z);
-    label.material.opacity = 0;
-    const light = new THREE.PointLight(color, 0, 4.5, 2);
-    light.position.copy(p);
-    triWorld.scene.add(mesh, glow, label, light);
-    const node = { id, mesh, glow, label, light, mat };
-    triWorld.spawned.push(node);
-    return node;
-  }
-  function triEnsureBeads(color) {
-    const THREE = triWorld.THREE;
-    if (triWorld.beads && triWorld.beads.length) {
-      triWorld.beads.forEach((b) => b.material.color.setHex(color));
-      if (triWorld.head) triWorld.head.material.color.setHex(color);
-      if (triWorld.headLight) triWorld.headLight.color.setHex(color);
-      return;
-    }
-    triWorld.beads = [];
-    for (let i = 0; i < 30; i++) {
-      const m = new THREE.Mesh(
-        new THREE.SphereGeometry(0.045, 10, 8),
-        new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 0, depthWrite: false })
-      );
-      triWorld.scene.add(m);
-      triWorld.beads.push(m);
-    }
-    triWorld.head = new THREE.Mesh(
-      new THREE.SphereGeometry(0.09, 16, 12),
-      new THREE.MeshBasicMaterial({ color: 0xAEBF38, transparent: true, opacity: 0, depthWrite: false })
-    );
-    triWorld.headLight = new THREE.PointLight(0xAEBF38, 0, 5, 2);
-    triWorld.scene.add(triWorld.head, triWorld.headLight);
-  }
-  function triSetNode(node, k) {
-    const live = Math.max(0, Math.min(1, k));
-    node.mat.opacity = 0.15 + 0.85 * live;
-    node.mat.emissiveIntensity = 0.4 + 2.2 * live;
-    node.mesh.scale.setScalar(0.35 + 0.65 * live);
-    node.glow.material.opacity = 0.22 * live;
-    node.glow.scale.setScalar(0.8 + 0.5 * live);
-    node.label.material.opacity = live;
-    node.light.intensity = 1.8 * live;
-  }
-  function triDrawCurve(curve, p, color) {
-    triEnsureBeads(color);
-    const u = Math.max(0, Math.min(1, p));
-    triWorld.beads.forEach((b, i) => {
-      const t = u * ((i + 1) / triWorld.beads.length);
-      const pos = curve.getPoint(t);
-      b.position.copy(pos);
-      const along = (i + 1) / triWorld.beads.length;
-      b.material.opacity = u <= 0 ? 0 : Math.pow(along, 1.35) * (0.25 + 0.75 * u);
-      b.scale.setScalar(0.45 + along * 1.1);
-    });
-    const hp = curve.getPoint(u);
-    triWorld.head.position.copy(hp);
-    triWorld.head.material.opacity = u > 0.04 ? 1 : 0;
-    triWorld.headLight.position.copy(hp);
-    triWorld.headLight.intensity = 2.4 * u;
-  }
-  function triStartPath(id) {
-    if (!triWorld) return;
-    triClearPlay();
-    const ids = TRI_PLAY[id];
-    if (!ids) return;
-    const color = triHex(AVA_COLORS[id]);
-    triWorld.play = {
-      ids: ids,
-      color: color,
-      chemin: id,
-      i: 0,
-      mode: "spawn",
-      t0: performance.now(),
-      curve: null
-    };
-    const c = AVA_CHEMINS.find((x) => x.id === id);
-    triCaption(`<strong>C${c.id} ${esc(c.nom)}</strong> · ${esc(c.verbe)}<br>${esc(c.caption)}`);
-  }
-  function triTick(now) {
-    const P = triWorld && triWorld.play;
-    if (!P) return;
-    const dt = (now - P.t0) / 1000;
-    const ids = P.ids;
-    const cur = triWorld.spawned[P.i];
-    if (P.mode === "spawn") {
-      if (!cur) triSpawnNode(ids[P.i], P.color);
-      const node = triWorld.spawned[P.i];
-      const k = Math.min(1, dt / 0.55);
-      triSetNode(node, k);
-      triWorld.controls.target.lerp(node.mesh.position, 0.08);
-      const n = TRI_NODES[ids[P.i]];
-      triCaption(`<strong>${esc(n.label)}</strong> — ${esc(TRI_BLURB[ids[P.i]])}<br><span class="note">C${P.chemin} ${esc(AVA_CHEMINS.find((x) => x.id === P.chemin).nom)}</span>`);
-      if (k >= 1) { P.t0 = now; P.mode = "rest"; }
-    } else if (P.mode === "draw") {
-      const k = Math.min(1, dt / 0.95);
-      triDrawCurve(P.curve, k, P.color);
-      const dest = triWorld.spawned[P.i];
-      triSetNode(dest, k);
-      triWorld.controls.target.lerp(P.curve.getPoint(k), 0.12);
-      if (k > 0.45) {
-        const n = TRI_NODES[ids[P.i]];
-        triCaption(`<strong>${esc(n.label)}</strong> — ${esc(TRI_BLURB[ids[P.i]])}<br><span class="note">C${P.chemin} ${esc(AVA_CHEMINS.find((x) => x.id === P.chemin).nom)}</span>`);
-      }
-      if (k >= 1) {
-        P.t0 = now;
-        P.mode = "rest";
-        const prev = triWorld.spawned[P.i - 1];
-        if (prev) prev._dim = true;
-      }
-    } else if (P.mode === "rest") {
-      triWorld.spawned.forEach((s, idx) => {
-        if (s._dim) triSetNode(s, Math.max(0.1, 0.78 - dt));
-        else if (idx === P.i) triSetNode(s, 0.84 + 0.16 * Math.sin(now * 0.006));
-      });
-      if (dt > 0.42) {
-        P.t0 = now;
-        if (P.i < ids.length - 1) {
-          P.i += 1;
-          P.mode = "draw";
-          P.curve = triArc(ids[P.i - 1], ids[P.i]);
-          triSpawnNode(ids[P.i], P.color);
-          triSetNode(triWorld.spawned[P.i], 0);
-        } else P.mode = "fade";
-      }
-    } else if (P.mode === "fade") {
-      const k = Math.min(1, dt / 1.05);
-      triWorld.spawned.forEach((s) => triSetNode(s, 1 - k));
-      (triWorld.beads || []).forEach((b) => { b.material.opacity *= 0.9; });
-      if (triWorld.head) triWorld.head.material.opacity = 1 - k;
-      if (triWorld.headLight) triWorld.headLight.intensity = 2.4 * (1 - k);
-      if (k >= 1) {
-        const next = triActive === 0 ? (P.chemin === 5 ? 1 : P.chemin + 1) : P.chemin;
-        triStartPath(next);
-        if (triActive === 0) {
-          const pills = document.getElementById("tri-pills");
-          if (pills) {
-            Array.from(pills.querySelectorAll("[data-tri-c]")).forEach((btn) => {
-              btn.setAttribute("aria-pressed", String(btn.dataset.triC === "0"));
-            });
-          }
-        }
-      }
-    }
-  }
-  function triFit() {
-    if (!triWorld || !triWorld.stage) return;
-    const w = triWorld.stage.clientWidth || 800;
-    const h = triWorld.stage.clientHeight || 560;
-    triWorld.camera.aspect = w / Math.max(h, 1);
-    triWorld.camera.updateProjectionMatrix();
-    triWorld.renderer.setSize(w, h, false);
-    if (triWorld.composer) triWorld.composer.setSize(w, h);
-    if (triWorld.bloom) triWorld.bloom.setSize(w, h);
-  }
-  async function bootTri() {
-    disposeTri();
-    const stage = document.getElementById("tri-stage");
-    if (!stage) return;
-    const THREE = await import("three");
-    const { OrbitControls } = await import("three/addons/controls/OrbitControls.js");
-    const { EffectComposer } = await import("three/addons/postprocessing/EffectComposer.js");
-    const { RenderPass } = await import("three/addons/postprocessing/RenderPass.js");
-    const { UnrealBloomPass } = await import("three/addons/postprocessing/UnrealBloomPass.js");
-    if (!document.getElementById("tri-stage")) return;
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setClearColor(0x08080a, 1);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    stage.appendChild(renderer.domElement);
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x08080a, 16, 32);
-    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 80);
-    camera.position.set(1.4, 5.8, 9.2);
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 0.35;
-    controls.target.set(0, 0.3, 0);
-    controls.minDistance = 5;
-    controls.maxDistance = 18;
-    controls.maxPolarAngle = Math.PI * 0.49;
-    scene.add(new THREE.AmbientLight(0x430A4B, 0.35));
-    const key = new THREE.DirectionalLight(0xffffff, 0.35);
-    key.position.set(3, 8, 4);
-    scene.add(key);
-    const composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-    const bloom = new UnrealBloomPass(new THREE.Vector2(800, 560), 0.78, 0.42, 0.22);
-    composer.addPass(bloom);
-    triWorld = {
-      THREE, alive: true, renderer, scene, camera, controls, stage, composer, bloom,
-      spawned: [], beads: [], play: null
-    };
-    triWorld.onResize = () => triFit();
-    window.addEventListener("resize", triWorld.onResize);
-    triFit();
-    triStartPath(triActive === 0 ? 1 : triActive);
-    const tick = (now) => {
-      if (!triWorld || !triWorld.alive) return;
-      triTick(now);
-      controls.update();
-      composer.render();
-      requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }
-  function renderAva3d() {
-    const el = document.getElementById("view-ava-3d");
-    if (!el) return;
-    el.innerHTML = `
-      <h2>Métiers en 3D</h2>
-      <p class="lead">Rien n’est posé d’avance. Un métier part d’un objet, le chemin s’allume, puis s’éteint.</p>
-      <div class="pills" id="tri-pills"></div>
-      <p id="tri-caption" class="lead"></p>
-      <div class="tri-stage" id="tri-stage"></div>
-      <p class="note">Glisser pour tourner. Tous = les cinq métiers, l’un après l’autre.</p>`;
-    const pills = document.getElementById("tri-pills");
-    pills.innerHTML = `<button class="pill" type="button" aria-pressed="${triActive===0}" data-tri-c="0">Tous</button>` +
-      AVA_CHEMINS.map((x) =>
-        `<button class="pill" type="button" aria-pressed="${x.id===triActive}" data-tri-c="${x.id}">
-          <span class="swatch" style="background:${AVA_COLORS[x.id]}"></span>C${x.id} ${x.nom}
-        </button>`
-      ).join("");
-    pills.onclick = (e) => {
-      const b = e.target.closest("[data-tri-c]");
-      if (!b) return;
-      triActive = +b.dataset.triC;
-      Array.from(pills.querySelectorAll("[data-tri-c]")).forEach((btn) => {
-        btn.setAttribute("aria-pressed", String(btn.dataset.triC === String(triActive)));
-      });
-      if (triWorld) triStartPath(triActive === 0 ? 1 : triActive);
-    };
-    bootTri();
-  }
-
-  const AVA_SIM_COLORS = { C1: "#4a90c8", C2: "#8b73c7", C3: "#2f9d6a", C4: "#d17a3a", C5: "#d45a8a" };
-  const AVA_SIM_META = {
-    C1: { label: "CRM", verbe: "Nourrir le client", path: "Société → Contact? → Besoin", first: "ava-societes" },
-    C2: { label: "Recrutement", verbe: "Faire le vivier", path: "Personne → Candidat → Positionnement", first: "ava-candidats" },
-    C3: { label: "Staffing", verbe: "Pourvoir le besoin", path: "Besoin → Positionnement → Projet", first: "ava-besoins" },
-    C4: { label: "Production", verbe: "Exécuter", path: "Projet → Prestation ← Ressource", first: "ava-projets" },
-    C5: { label: "Externe", verbe: "Fournisseur", path: "Société fournisseur → Ressource EXTERNAL", first: "ava-ressources" }
-  };
-  const AVA_SCREENS = {
-    "ava-dash": { label: "Tableau de bord", chemins: [] },
-    "ava-personnes": { label: "Personnes", chemins: ["C2","C4"] },
-    "ava-personne": { label: "Fiche personne", chemins: ["C2","C4"] },
-    "ava-candidats": { label: "Candidats", chemins: ["C2"] },
-    "ava-candidat": { label: "Fiche candidat", chemins: ["C2"] },
-    "ava-ressources": { label: "Ressources", chemins: ["C3","C4","C5"] },
-    "ava-ressource": { label: "Fiche ressource", chemins: ["C3","C4","C5"] },
-    "ava-societes": { label: "Sociétés", chemins: ["C1","C3","C5"] },
-    "ava-societe": { label: "Fiche société", chemins: ["C1","C3","C5"] },
-    "ava-contacts": { label: "Contacts", chemins: ["C1"] },
-    "ava-contact": { label: "Fiche contact", chemins: ["C1"] },
-    "ava-besoins": { label: "Besoins", chemins: ["C3"] },
-    "ava-besoin": { label: "Fiche besoin", chemins: ["C3"] },
-    "ava-pos": { label: "Positionnements", chemins: ["C2","C3"] },
-    "ava-pos-fiche": { label: "Fiche positionnement", chemins: ["C2","C3"] },
-    "ava-projets": { label: "Projets", chemins: ["C3","C4"] },
-    "ava-projet": { label: "Fiche projet", chemins: ["C3","C4"] },
-    "ava-prestas": { label: "Prestations", chemins: ["C4"] },
-    "ava-presta": { label: "Ligne prestation", chemins: ["C4"] }
-  };
-  const AVA_NAV = [
-    { title: "Pilotage", items: ["ava-dash"] },
-    { title: "Humains", items: ["ava-personnes","ava-candidats","ava-ressources"] },
-    { title: "CRM", items: ["ava-societes","ava-contacts"] },
-    { title: "Staffing", items: ["ava-besoins","ava-pos"] },
-    { title: "Production", items: ["ava-projets","ava-prestas"] }
-  ];
-  const AVA_CREATE = {
-    "ava-personne": [["Ouvrir Candidat","ava-candidat"],["Ouvrir Ressource","ava-ressource"]],
-    "ava-societe": [["+ Contact","ava-contact"],["+ Besoin","ava-besoin"],["+ Projet","ava-projet"]],
-    "ava-contact": [["+ Action","ava-dash"],["+ Besoin","ava-besoin"]],
-    "ava-candidat": [["+ Action","ava-dash"],["+ Positionnement","ava-pos-fiche"],["Convertir → Ressource","ava-ressource"]],
-    "ava-ressource": [["+ Positionnement","ava-pos-fiche"],["+ Prestation","ava-presta"]],
-    "ava-besoin": [["+ Positionnement","ava-pos-fiche"],["Créer Projet","ava-projet"]],
-    "ava-projet": [["+ Prestation","ava-presta"]],
-    "ava-presta": []
-  };
-  const AVA_LIST_PLUS = {
-    "ava-personnes": "ava-personne",
-    "ava-candidats": "ava-candidat",
-    "ava-ressources": "ava-ressource",
-    "ava-societes": "ava-societe",
-    "ava-contacts": "ava-contact",
-    "ava-besoins": "ava-besoin",
-    "ava-projets": "ava-projet"
-  };
-  let avaSimChemin = "C3";
-  let avaSimScreen = "ava-besoins";
-
   function avaBar(id) {
     const cs = AVA_SCREENS[id].chemins;
     const c = cs.includes(avaSimChemin) ? avaSimChemin : cs[0];
@@ -6065,10 +5130,8 @@ function showView(name){
 
   const RENDER = {
     "ava-metier": renderAvaMetier,
-    "ava-3d": renderAva3d,
     "ava-simulateur": renderAvaSimulateur,
-    "ava-guide": renderGuide,
-    "ava-rpg": renderRpg,
+    "ava-quiz": renderQuiz,
     "ava-cadrage": renderCadrage,
     "ava-parcours": renderParcours,
     "ava-decisions": renderDecisions,
@@ -6118,13 +5181,12 @@ function showView(name){
   }
 
   function showHubView(name) {
-    const aliases = { ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-guide", guide: "ava-guide", fil: "ava-guide", "ava-guides": "ava-guide", quiz: "ava-guide", rpg: "ava-rpg", role: "ava-rpg", jours: "ava-parcours", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-3d", trijs: "ava-3d", three: "ava-3d" };
+    const aliases = { ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-parcours", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
     if (aliases[name]) name = aliases[name];
     if (!ALL_VIEWS.includes(name)) name = "ava-metier";
     const product = productOf(name);
     const family = familyOf(product, name);
     if (family && family.children) nestedLast[family.id] = name;
-    if (name !== "ava-3d") disposeTri();
     ALL_VIEWS.forEach((id) => {
       const node = document.getElementById("view-" + id);
       if (node) node.hidden = id !== name;
