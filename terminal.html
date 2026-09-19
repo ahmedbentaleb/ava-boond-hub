@@ -29,7 +29,7 @@
   --sur-action:#000; --struct-op:.72; --tint:.06; --bande:3px;
   --police:'JetBrains Mono','Consolas',monospace;
   --action-encre:#AEBF38; --sel-encre:#AEBF38; --struct-encre:#B98BC4; --ce-encre:#AEBF38;
-  --texte-carte:#cfcfdb;
+  --texte-carte:#cfcfdb; --texte-col:#cfcfdb;
   --f-page:#000; --f-carte:#101017; --f-barre:#0a0a10; --f-col:#0a0a10;
   --survol:#191921; --selection:#AEBF38; --selection-f:#1a1d15; --sur-selection:#000;
   --r:0px; --r-grand:0px; --nav:214px; --dens:1; --trait:1px; --contour:2px;
@@ -239,12 +239,12 @@ svg{display:block;flex:none}
 .app[data-nav="icones"] .nav .chev{display:none}
 /* ─── ce qui n'est pas dans le lot : présent, nommé, éteint ─── */
 .nav a.hl{cursor:default}
-.nav a.hl>span,.nav a.hl>.ss{color:var(--t3)}
+.nav a.hl>span,.nav a.hl>.ss{color:var(--texte-col,var(--t2))}
 .nav a.hl>svg{opacity:.7}
 .nav a.hl:hover{background:transparent}
 /* ⭐ L'etiquette se pose toujours au meme endroit, chevron ou pas : sans ca
    les trois « hors lot » de la colonne ne sont jamais sur la meme verticale. */
-.nav .lot{font-style:normal;font-size:7px;letter-spacing:.8px;color:var(--t3);
+.nav .lot{font-style:normal;font-size:7px;letter-spacing:.8px;color:var(--texte-col,var(--t2));
   border:1px solid var(--bord);border-radius:var(--r);padding:1px 4px;
   margin-left:auto;flex:none;white-space:nowrap}
 .nav .lot ~ .chev{margin-left:7px}
@@ -323,7 +323,7 @@ a.kpi:hover{filter:brightness(1.18)}
   color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));
   background:color-mix(in srgb,var(--struct) calc(var(--tint)*70%),var(--f1));
   border-bottom:var(--t-carte) solid var(--bord);border-radius:var(--r-grand) var(--r-grand) 0 0}
-.pan>h2 em{font-style:normal;margin-left:auto;font-size:9px;letter-spacing:.5px;color:var(--t4);font-weight:400}
+.pan>h2 em{font-style:normal;margin-left:auto;font-size:9px;letter-spacing:.5px;color:inherit;opacity:.78;font-weight:400}
 .pan .in{padding:calc(12px*var(--dens)) 14px;min-width:0}
 .pan .foot{padding:7px 12px;border-top:var(--t-carte) solid var(--bord);max-width:118ch;font-size:9px;letter-spacing:.35px;color:var(--t2);line-height:1.6}
 .pan .foot b{color:var(--t2);font-weight:500}
@@ -534,8 +534,9 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 /* ─── charge ─── */
 .bars{display:flex;gap:1px;align-items:flex-end;height:29px}
 .bars i{flex:1 1 0;min-width:2px;display:block}
-.lg{display:inline-flex;align-items:center;gap:4px;font-size:8px;letter-spacing:.9px;color:var(--t4)}
-.lg i{width:8px;height:8px;display:block}
+.lg{display:inline-flex;align-items:center;gap:5px;font-size:8px;letter-spacing:.9px;color:var(--t2)}
+.pan>h2 .lg,.pan>h2 em .lg{color:inherit}
+.lg i{width:9px;height:9px;display:block;flex:none;border:1px solid currentColor;border-radius:2px}
 
 /* ─── journal ─── */
 .log{display:flex;gap:10px;padding:calc(7px*var(--dens)) 0;border-bottom:1px solid var(--f4);font-size:10.5px}
@@ -1366,6 +1367,7 @@ function applique(){
   const repliCarte = encre(t2, fCarte, t1);
   root.style.setProperty("--struct-encre", encre(sMix, fCarte, repliCarte));
   root.style.setProperty("--texte-carte", repliCarte);
+  root.style.setProperty("--texte-col", encre(t2, fCol, t1));
   /* Le SENS, relevé sur le fond des cartes — la pastille garde l'aplat. */
   NIVEAUX.forEach(([k]) => root.style.setProperty("--" + k + "-encre",
     remonte(lire("--" + k) || "#888", fCarte)));
@@ -2257,7 +2259,7 @@ function gListe(e){
   const lignes = MONDE[e.source] || [];
   const cols = colsDe(ECRAN);
   let h = entete(e);
-  h += `<div class="pan"><h2>${esc(e.nom.toUpperCase())}${e.note ? aide(e.note) : ""}<em>${lignes.length} LIGNES</em></h2>
+  h += `<div class="pan"><h2>${esc(e.nom.toUpperCase())}${e.note ? aide(e.note) : ""}<em>${lignes.length}</em></h2>
     ${barreFiltres(e, lignes.length)}
     <div class="in"><div class="tb"><table><thead><tr>
       <th class="ck"><input type="checkbox" id="ckTout" aria-label="Tout sélectionner"></th>${
@@ -2370,13 +2372,13 @@ function gGrille(e){
         <td><input class="saisie" type="number" step="0.1" min="0" max="1" value="0.6" style="width:62px" ${p.etat !== "signée" ? "disabled" : ""}></td>
         <td><button class="cta" type="button" ${p.etat !== "signée" ? `disabled title="Le temps se saisit sur une mission signée"` : ""}>SAISIR</button></td></tr>`).join("") +
       `</tbody></table></div></div><div class="foot">Cet écran ne peut montrer <b>que vos missions</b> : le compte est lié à une personne, la personne à ses prestations. Saisir sur la mission d'un collègue n'est pas interdit par l'écran — la base refuse la ligne (M-10).</div>${tablesDe(e)}</div>
-      <div class="pan" style="margin-top:9px"><h2>MES LIGNES<em>${MONDE.temps.filter(t => t.ressource === "Ressource R-0142").length} SAISIES</em></h2><div class="in"><div class="tb">
+      <div class="pan" style="margin-top:9px"><h2>MES LIGNES<em>${MONDE.temps.filter(t => t.ressource === "Ressource R-0142").length}</em></h2><div class="in"><div class="tb">
       <table><thead><tr><th>JOUR</th><th>MISSION</th><th>QUANTITÉ</th><th>NATURE</th></tr></thead><tbody>` +
       MONDE.temps.filter(t => t.ressource === "Ressource R-0142").map(t => `<tr><td><span class="num">${esc(t.jour)}</span></td>
         <td><span class="id">${esc(t.prestation)}</span></td><td><span class="num">${esc(t.qte)}</span></td>
         <td><span class="id">${esc(t.nature)}</span></td></tr>`).join("") + `</tbody></table></div></div></div>`;
   }
-  return entete(e) + `<div class="pan"><h2>MES ABSENCES<em>${MONDE.absence.length} ENREGISTRÉE</em></h2><div class="in"><div class="tb">
+  return entete(e) + `<div class="pan"><h2>MES ABSENCES<em>${MONDE.absence.length}</em></h2><div class="in"><div class="tb">
     <table><thead><tr><th>TYPE</th><th>DÉBUT</th><th>FIN</th><th>JOURS</th><th>STATUT</th></tr></thead><tbody>` +
     MONDE.absence.map(a => `<tr><td>${bd(a.type === "congé" ? "note" : a.type)}<span class="id"> ${esc(a.type)}</span></td>
       <td><span class="num">${esc(a.debut)}</span></td><td><span class="num">${esc(a.fin)}</span></td>
@@ -2399,7 +2401,7 @@ function gReglages(e){
       `<div class="pan"><div class="foot ko-f">⛔ Les 15 murs ne sont pas ici : ils ne se règlent pas. Un candidat ne portera jamais de mission, une marge figée ne sera jamais réécrite — ce ne sont pas des préférences, c'est ce qui rend les chiffres vrais.</div>${tablesDe(e)}</div>`;
   }
   if (e.mode === "ref"){
-    return entete(e) + `<div class="pan"><h2>RÉFÉRENTIELS<em>27 LISTES · EXTRAIT</em></h2><div class="in"><div class="tb">
+    return entete(e) + `<div class="pan"><h2>RÉFÉRENTIELS<em>27</em></h2><div class="in"><div class="tb">
       <table><thead><tr><th>RÉFÉRENTIEL</th><th>CODE</th><th>LIBELLÉ</th><th>CATÉGORIE</th><th>SYSTÈME</th><th>ACTIF</th></tr></thead><tbody>` +
       MONDE.ref.map(r => `<tr><td><code class="cle">${esc(r.ref)}</code></td><td><span class="num">${esc(r.code)}</span></td>
         <td><input class="saisie" value="${esc(r.libelle)}" style="width:130px"></td>
@@ -2411,7 +2413,7 @@ function gReglages(e){
   if (e.mode === "droits"){
     const G = ["ia","rh","rr","eval","staffing","dp","res","adm","sup"];
     const T = ["IA","RH","RR","ÉVAL","STAF","DP","RES","ADM","SUP"];
-    return entete(e) + `<div class="pan"><h2>MATRICE — COMMANDE × GROUPE<em>44 COMMANDES · EXTRAIT</em></h2><div class="in"><div class="tb">
+    return entete(e) + `<div class="pan"><h2>MATRICE — COMMANDE × GROUPE<em>44</em></h2><div class="in"><div class="tb">
       <table class="matrice"><thead><tr><th>COMMANDE</th>${T.map(t => `<th style="text-align:center">${t}</th>`).join("")}</tr></thead><tbody>` +
       MONDE.droit.map(d => `<tr class="${d.cle ? "cle-l" : ""}"><td><code class="cle">${esc(d.commande)}</code></td>` +
         G.map(g => { const v = d[g];
@@ -2524,12 +2526,12 @@ function gBord(){
     return `<${t} class="kpi"${e ? ` href="#" data-e="${e}" title="Ouvrir ${esc(ECRANS[e].nom)}"` : ""} data-m="${k.m}" data-mk="${k.mk || ""}"><div class="k">${k.k}</div><div class="v">${k.v}</div><div class="d">${k.d}</div></${t}>`;
   }).join("")}</div>
   <div class="row r-main" style="margin-top:9px">
-    <section class="pan"><h2>CE QUI VOUS ATTEND<em>${l.length} ÉLÉMENTS · PAR CE QUE ÇA COÛTE DE LAISSER PASSER</em></h2>
+    <section class="pan"><h2>CE QUI VOUS ATTEND<em>${l.length}</em></h2>
       <div class="in"><ul class="q">${l.map(i => `<li><span class="g" style="background:${G[i.g]}"></span>
         <span class="x"><b>${i.t}</b><span>${i.s}</span></span>
         <button class="cta" type="button" ${i.ok ? "" : `disabled title="${i.pq}"`}>${i.a}</button></li>`).join("")}</ul></div>
       <div class="foot">Un bouton visible n'est pas une autorisation : la commande vérifie le groupe <b>et</b> le périmètre, et le refus dit lequel a manqué.</div></section>
-    <section class="pan"><h2>CHIFFRE D'AFFAIRES<em>UNE LIGNE PAR DEVISE</em></h2>
+    <section class="pan"><h2>CHIFFRE D'AFFAIRES</h2>
       <div class="in"><div class="tb"><table><thead><tr><th>DEVISE</th><th>CA SIGNÉ</th><th>MARGE</th></tr></thead><tbody>
       ${calculeCA().map(([d,k,m]) => `<tr><td><span class="b s">${d}</span></td>
         <td><span class="num">[CA]</span><div class="id">${k} mission${k > 1 ? "s" : ""} signée${k > 1 ? "s" : ""}</div></td>
@@ -2545,7 +2547,7 @@ function gBord(){
         <td>${bd(b.etat)}</td><td><span class="b ${b.signees >= b.postes ? "ok" : "w"}">${b.signees} / ${b.postes}</span></td></tr>`).join("")}
       </tbody></table></div></div>
       <div class="foot">Un poste = <b>une prestation signée</b>. Le besoin reste en recherche tant que tous ses postes ne le sont pas.</div></section>
-    <section class="pan p-journal"><h2>JOURNAL MÉTIER<em>${MONDE.ev.length} DERNIERS · AJOUT SEUL</em></h2>
+    <section class="pan p-journal"><h2>JOURNAL MÉTIER<em>${MONDE.ev.length}</em></h2>
     <div class="in">${MONDE.ev.map(([h,t,d,p,ko]) => `<div class="log${ko ? " ko" : ""}"><span class="h">${h}</span>
       <span class="c"><b>${t}</b><span>${d}</span>${p ? `<em>${p}</em>` : ""}</span></div>`).join("")}</div>
     <div class="foot">Ajout seul : un événement ne se modifie ni ne s'efface. Chaque ligne porte <b>la règle sous laquelle le fait s'est produit</b>.</div></section>
