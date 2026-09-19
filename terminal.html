@@ -2660,11 +2660,11 @@ function peintMenu(){
     const met = def.e && ECRANS[def.e] ? ECRANS[def.e].metier : "c0";
     if (!def.sous) {
       const ec = def.e || "";
-      return `<a href="#" style="--ce:${couleurEntree(met, rang)}" ${ec ? `data-e="${ec}"` : 'data-off="1"'} title="${esc(nom)}"${def.horsLot ? ' class="hl"' : ""}>
+      return `<a href="#" style="--ce:${couleurEntree(met, rang, def.k)}" ${ec ? `data-e="${ec}"` : 'data-off="1"'} title="${esc(nom)}"${def.horsLot ? ' class="hl"' : ""}>
         ${marqueur(def.ic, met, rang, def.k)}<span>${esc(nom)}</span><em class="ss">${esc(nom)}</em>${def.horsLot ? '<em class="lot">hors lot</em>' : ""}</a>`;
     }
     const ouvert = S.deplies.includes(def.k);
-    return `<a href="#" style="--ce:${couleurEntree(met, rang)}" data-pli="${def.k}" aria-expanded="${ouvert}"${def.horsLot ? ' class="hl"' : ""}>
+    return `<a href="#" style="--ce:${couleurEntree(met, rang, def.k)}" data-pli="${def.k}" aria-expanded="${ouvert}"${def.horsLot ? ' class="hl"' : ""}>
         ${marqueur(def.ic, met, rang, def.k)}<span>${esc(nom)}</span><em class="ss">${esc(nom)}</em>${def.horsLot ? '<em class="lot">hors lot</em>' : ""}
         <b class="chev">›</b></a>
       <div class="sous"${ouvert ? "" : " hidden"}>${def.sous.map(([ic, k]) =>
