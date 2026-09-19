@@ -436,11 +436,28 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 .rd-p:hover{background:var(--action);color:var(--sur-action);filter:brightness(1.08)}
 .cpt{font-style:normal;font-weight:400;color:var(--t3);font-size:.78em}
 /* ─── S-9 : la barre de filtres, la même partout ─── */
-.rech-w{display:flex;align-items:center;gap:6px;color:var(--t4);flex:0 1 230px;min-width:120px}
-.rech-w[hidden]{display:none}
+.rech-w{display:flex;align-items:center;gap:6px;color:var(--t4);flex:0 1 300px;min-width:150px;
+  background:var(--f3);border:var(--trait) solid var(--bord);border-radius:var(--r);padding:0 10px;min-height:28px}
 .rech-w svg{width:13px;height:13px;flex:none}
 .rech-w .rech{flex:1;min-width:0}
 .filtre svg{width:12px;height:12px}
+/* ─── la coche, et la barre qui flotte quand on en a coché ─── */
+th.ck,td.ck{width:30px;padding-right:0}
+.ck input{width:14px;height:14px;accent-color:var(--action);cursor:pointer;margin:0}
+tbody tr:has(td.ck input:checked) td{background:color-mix(in srgb,var(--action) 9%,transparent)}
+.selbar{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:75;
+  display:flex;align-items:center;gap:6px;padding:7px 10px;
+  background:var(--f4);border:var(--trait) solid var(--bord);border-radius:var(--r);
+  box-shadow:0 8px 32px rgba(0,0,0,.42)}
+.selbar[hidden]{display:none}
+.selbar .n{font-size:11.5px;color:var(--t1);white-space:nowrap;padding:0 4px}
+.selbar .n b{color:var(--action-encre)}
+.selbar .sep-v{width:1px;align-self:stretch;background:var(--bord);margin:0 2px}
+.selbar button{display:inline-flex;align-items:center;gap:6px;min-height:28px;padding:0 10px;
+  border-radius:var(--r);color:var(--t2);font-size:11.5px;white-space:nowrap}
+.selbar button svg{width:14px;height:14px}
+.selbar button:hover{background:var(--f2);color:var(--action-encre)}
+.selbar .x{padding:0 8px;font-size:12px;color:var(--t4)}
 .vues{display:flex;gap:1px;background:var(--f4);border-radius:var(--r);padding:2px;flex:none}
 .vues button{width:26px;height:22px;display:grid;place-items:center;color:var(--t4);border-radius:var(--r)}
 .vues button svg{width:14px;height:14px}
@@ -1366,8 +1383,6 @@ function entete(e){
     <div><h1>${esc(e.nom)}${n !== null ? ` <em class="cpt">(${n})</em>` : ""}</h1>${
       e.note ? `<p class="eh-n">${e.note}</p>` : ""}</div>
     <div class="eh-a">
-      <button class="rd" type="button" data-loupe="1" title="Rechercher dans cet écran" aria-label="Rechercher dans cet écran">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg></button>
       ${e.creer ? `<button class="rd rd-p" type="button" title="${esc(e.creer)}" aria-label="${esc(e.creer)}">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></button>` : ""}
       <button class="rd" type="button" title="Exporter en PDF" aria-label="Exporter en PDF">
@@ -1388,10 +1403,11 @@ function barreFiltres(e, n){
   const dispo = e.vues || ["liste"];
   const active = e.vue || dispo[0];
   return `<div class="barre-f">
-    <span class="rech-w"${e.loupe ? "" : " hidden"}><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg>
-      <input class="rech" placeholder="Mots clefs" aria-label="Mots clefs"></span>
     ${(e.filtres || []).length ? `<button class="filtre" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 4h12M4 8h8M6.5 12h3"/></svg> Filtres</button>` : ""}
     ${(e.filtres || []).map(f => `<button class="filtre" type="button">${esc(f)} <b>▾</b></button>`).join("")}
+    <span class="grow"></span>
+    <span class="rech-w"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg>
+      <input class="rech" placeholder="Rechercher dans ${esc(e.nom.toLowerCase())}" aria-label="Rechercher"></span>
     <span class="grow"></span>
     <span class="pagin">1 – ${n} sur ${n}</span>
     <button class="filtre" type="button" title="Colonnes affichées" aria-label="Colonnes affichées">
@@ -1403,15 +1419,38 @@ function barreFiltres(e, n){
   </div>`;
 }
 
+/* ⛔ PAS DE CORBEILLE. M-8 : rien ne se supprime, tout s'archive. Une barre
+   d'actions groupées qui porterait une poubelle mentirait sur ce que fait le
+   bouton — et le premier qui s'en sert croirait avoir effacé. */
+const SEL = new Set();
+const ACTIONS_GROUPEES = [
+  {k:"action",  n:"Créer une action", i:'<path d="M3 2h7l3 3v9H3z"/><path d="M10 2v3h3M5.5 8h5M5.5 10.5h3"/>'},
+  {k:"export",  n:"Exporter",         i:'<path d="M8 2v8M5 7l3 3 3-3"/><path d="M3 12v2h10v-2"/>'},
+  {k:"archive", n:"Archiver",         i:'<path d="M2 4h12v3H2z"/><path d="M3.5 7v7h9V7M6.5 10h3"/>'}
+];
+function barreSelection(){
+  const n = SEL.size;
+  return `<div class="selbar"${n ? "" : " hidden"}>
+    <span class="n"><b>${n}</b> ${n > 1 ? "éléments sélectionnés" : "élément sélectionné"}</span>
+    <span class="sep-v"></span>
+    ${ACTIONS_GROUPEES.map(a => `<button type="button" data-ga="${a.k}" title="${a.n}">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${a.i}</svg>
+      <span>${a.n}</span></button>`).join("")}
+    <button type="button" data-ga="rien" class="x" title="Tout désélectionner" aria-label="Tout désélectionner">✕</button>
+  </div>`;
+}
+
 function gListe(e){
   const lignes = MONDE[e.source] || [];
   let h = entete(e);
   h += `<div class="pan"><h2>${esc(e.nom.toUpperCase())}<em>${lignes.length} LIGNES</em></h2>
     ${barreFiltres(e, lignes.length)}
-    <div class="in"><div class="tb"><table><thead><tr>${
+    <div class="in"><div class="tb"><table><thead><tr>
+      <th class="ck"><input type="checkbox" id="ckTout" aria-label="Tout sélectionner"></th>${
       e.cols.map(c => `<th>${esc(c.t)}</th>`).join("")}<th></th></tr></thead><tbody>`;
   lignes.forEach(l => {
-    h += "<tr>" + e.cols.map(c => {
+    h += `<tr><td class="ck"><input type="checkbox" data-ck="${esc(l.id || l.code || "")}"${
+      SEL.has(l.id || l.code) ? " checked" : ""} aria-label="Sélectionner"></td>` + e.cols.map(c => {
       const v = l[c.c];
       if (c.b) return `<td>${bd(v)}</td>`;
       if (c.liste) return `<td>${Array.isArray(v) && v.length ? v.map(x => `<span class="b s">${esc(x)}</span>`).join(" ") : '<span class="id">aucun</span>'}</td>`;
@@ -1426,7 +1465,7 @@ function gListe(e){
       return `<td>${esc(v)}</td>`;
     }).join("") + `<td><button class="lien" type="button">OUVRIR</button></td></tr>`;
   });
-  h += `</tbody></table></div></div>${tablesDe(e)}</div>`;
+  h += `</tbody></table></div></div>${tablesDe(e)}</div>` + barreSelection();
   return h;
 }
 
@@ -1784,6 +1823,7 @@ function rail(){
 /* ─────────────── LE ROUTEUR ─────────────── */
 let ECRAN = "bord";
 function peindre(){
+  SEL.clear();
   const e = ECRANS[ECRAN];
   $("#ecran").innerHTML = GABARITS[e.gabarit](e);
   document.querySelectorAll("[data-e]").forEach(a => {
@@ -1833,9 +1873,17 @@ document.addEventListener("click", e => {
   if (e.target.closest("[data-off]")){ e.preventDefault(); return; }
   const a = e.target.closest("[data-e]");
   if (a){ e.preventDefault(); ECRAN = a.dataset.e; window.scrollTo(0, 0); peindre(); return; }
-  const lp = e.target.closest("[data-loupe]");
-  if (lp){ e.preventDefault(); const E = ECRANS[ECRAN]; E.loupe = !E.loupe; peindre();
-    const c = $(".rech"); if (E.loupe && c) c.focus(); return; }
+  const ck = e.target.closest("[data-ck]");
+  if (ck){ const id = ck.dataset.ck;
+    if (ck.checked) SEL.add(id); else SEL.delete(id);
+    $(".selbar").outerHTML = barreSelection(); return; }
+  if (e.target.id === "ckTout"){
+    const tout = e.target.checked;
+    document.querySelectorAll("[data-ck]").forEach(b => { b.checked = tout;
+      if (tout) SEL.add(b.dataset.ck); else SEL.delete(b.dataset.ck); });
+    $(".selbar").outerHTML = barreSelection(); return; }
+  const ga = e.target.closest("[data-ga]");
+  if (ga){ e.preventDefault(); SEL.clear(); peindre(); return; }
   const v = e.target.closest("[data-vue]");
   if (v){ e.preventDefault(); ECRANS[ECRAN].vue = v.dataset.vue; peindre(); return; }
   const o = e.target.closest("[data-ong]");
