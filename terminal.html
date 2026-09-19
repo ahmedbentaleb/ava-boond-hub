@@ -916,7 +916,7 @@ function applique(){
 /* ⛔ Treize pastilles cote a cote, onze fois, c'etait un mur de couleurs.
    Un menu deroulant par chose a colorer : on voit ce qu'on a, on choisit. */
 const CHEMINS = [["c1","CRM"],["c2","Recrutement"],["c3","Staffing"],["c4","Production"],["c5","Externe"]];
-const NIVEAUX = [["ok","Bon"],["warn","À surveiller"],["ko","Critique"]];
+const NIVEAUX = [["ok","Bon"],["warn","Alerte"],["ko","Critique"]];
 let popCoul = null;
 
 function couleurDe(quoi, cle){
@@ -951,12 +951,12 @@ function choix(quoi, cle, libelle){
 function peintChoix(){
   const z = $("#rCouleurs"); if (!z) return;
   z.innerHTML =
-    `<div class="ch-gr">LES DEUX RÔLES</div>` +
-    choix("role", "action", "Ce sur quoi on clique") +
-    choix("role", "struct", "Titres et filets") +
-    `<div class="ch-gr">LES CINQ MÉTIERS</div>` +
+    `<div class="ch-gr">RÔLES</div>` +
+    choix("role", "action", "Action") +
+    choix("role", "struct", "Structure") +
+    `<div class="ch-gr">MÉTIERS</div>` +
     CHEMINS.map(([k, n]) => choix("metier", k, n)).join("") +
-    `<div class="ch-gr">LE SENS — ⛔ aucune palette ne le touche</div>` +
+    `<div class="ch-gr">SENS</div>` +
     NIVEAUX.map(([k, n]) => choix("sens", k, n)).join("");
 }
 
