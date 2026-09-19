@@ -88,7 +88,7 @@ svg{display:block;flex:none}
 .titre-h{font-size:14px;font-weight:600;letter-spacing:-.1px;color:var(--t1);
   white-space:nowrap;padding-left:12px;margin-left:4px;border-left:1px solid var(--bord)}
 /* ─── le chevron se pose SUR le filet, dans un petit cadre ─── */
-.pli-l{position:absolute;z-index:70;top:14px;width:20px;height:20px;
+.pli-l{position:absolute;z-index:70;top:8px;width:20px;height:20px;
   display:grid;place-items:center;border-radius:var(--r);
   background:var(--f1);border:1px solid var(--bord);color:var(--t3)}
 .pli-l svg{width:12px;height:12px}
@@ -350,7 +350,7 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 /* ⭐ Exactement la colonne de gauche, en miroir : repliee, il reste les icones.
    ⛔ Jamais un display:none — la panneau s'ecarte, il ne disparait pas. */
 [data-rail-plie="1"] .rail .vue{width:0;min-width:0;overflow:hidden;border:0}
-.rail .strip{width:42px;flex:none;display:flex;flex-direction:column;gap:2px;padding:10px 0 7px;
+.rail .strip{width:42px;flex:none;display:flex;flex-direction:column;gap:2px;padding:3px 0 7px;
   border-left:1px solid var(--bord);position:sticky;top:var(--h-top);height:calc(100vh - var(--h-top));align-items:center}
 [data-rail="gauche"] .rail .strip{order:2;border-left:1px solid var(--bord);border-right:0}
 .rail .strip button{width:30px;height:30px;display:grid;place-items:center;color:var(--t3);border-radius:var(--r)}
@@ -728,8 +728,8 @@ const DENSITES = [{k:"compact",n:"COMPACT",v:.72},{k:"normal",n:"NORMAL",v:1},{k
 const RAILS = [{k:"droite",n:"À DROITE"},{k:"gauche",n:"À GAUCHE"},{k:"masque",n:"MASQUÉE"}];
 /* Les outils de la colonne : un catalogue, pas une liste ecrite en dur */
 const OUTILS = [
-  { k:"notes",  n:"BLOC-NOTES", t:"Bloc-notes",   i:'<path d="M3 2h7l3 3v9H3z"/><path d="M10 2v3h3M5.5 8h5M5.5 10.5h3"/>' },
   { k:"alertes",n:"ALERTES",    t:"Alertes",      i:'<path d="M8 2a4 4 0 0 0-4 4v3l-1.5 2.5h11L12 9V6a4 4 0 0 0-4-4z"/><path d="M6.5 13.5a1.5 1.5 0 0 0 3 0"/>' },
+  { k:"notes",  n:"BLOC-NOTES", t:"Bloc-notes",   i:'<path d="M3 2h7l3 3v9H3z"/><path d="M10 2v3h3M5.5 8h5M5.5 10.5h3"/>' },
   { k:"ia",     n:"ASSISTANT",  t:"Assistant",    i:'<path d="M8 2 9.4 6.2 13.5 7.5 9.4 8.8 8 13l-1.4-4.2L2.5 7.5l4.1-1.3z"/><path d="M13 2.5v2M12 3.5h2"/>' },
   { k:"todo",   n:"À FAIRE",    t:"À faire",      i:'<path d="M2.5 4.5 4 6l2.5-2.5M8.5 5H14M2.5 9.5 4 11l2.5-2.5M8.5 10H14"/>' },
   { k:"indic",  n:"INDICATEURS",t:"Indicateurs",  i:'<path d="M2 13h12M4 13V9M7 13V5M10 13V7.5M13 13V3"/>' },
@@ -738,7 +738,7 @@ const OUTILS = [
 
 let S = { palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
           action:null, struct:null, angle:"carre", pastille:"contour", bouton:"contour", carte:"bande", coloration:"une",
-          rail:"droite", outils:["notes","alertes","ia","todo","indic","cal"], outilOuvert:"alertes", dernierOutil:"alertes", expert:false,
+          rail:"droite", outils:["alertes","notes","ia","todo","indic","cal"], outilOuvert:"alertes", dernierOutil:"alertes", expert:false,
           marqueur:"icone", notes:"masquees", menu:null, deplies:["crm","projets","planning"] };
 /* ⚠️ La cle porte un numero : un menu enregistre ne gagne pas les entrees
    ajoutees depuis. On change de cle quand le catalogue change. */
