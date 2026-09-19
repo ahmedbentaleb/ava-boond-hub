@@ -1044,7 +1044,7 @@ const teinte = (k, mode) => { const o = COULEURS.find(c => c.k === k) || COULEUR
    La palette reste un réglage à part, pour qui veut pousser plus loin. */
 const THEMES = [
   /* — MÉTIER — */
-  { k:"avaliance",     n:"AVALIANCE",       f:"metier",   a:"vert_avaliance",    s:"violet_avaliance",  po:"sora",       an:"carre",    pa:"point",        bo:"plein",      ca:"cadre", lb:"couleur",    mi:"mono", mp:"entree",   ep:"fin",     de:"normal",   ti:"oui", ec:"titre", im:"00_avaliance_volutes", vo:"leger", om:"mediane", tr:"nette", lg:"normale", co:"menu", sc:"entree", sel:"fond",     ft:"violet_avaliance",                  ff:"legere",     fz:"tout", fm:["clair"] },
+  { k:"avaliance",     n:"AVALIANCE",       f:"metier",   a:"vert_avaliance",    s:"violet_avaliance",  po:"sora",       an:"carre",    pa:"point",        bo:"plein",      ca:"cadre", lb:"couleur",    mi:"mono", mp:"entree",   ep:"fin",     de:"normal",   ti:"oui", ec:"titre", im:"00_avaliance_volutes", vo:"leger", om:"mediane", tr:"nette", trm:{clair:"extreme"}, lg:"normale", co:"menu", sc:"entree", sel:"fond",     ft:"violet_avaliance",                  ff:"legere",     fz:"tout", fm:["clair"] },
   { k:"encre",         n:"ENCRE",           f:"metier",   a:"violet_avaliance",  s:"gris",              po:"sora",       an:"carre",    pa:"carre_vide",   bo:"souligne",   ca:"gauche", lb:"couleur",   mi:"mono",     mp:"non",      ep:"fin",     de:"normal",   ti:"oui", ec:"aucun", im:"t_metier_graphite_voiles_violets", vo:"leger", om:"legere", tr:"nette", lg:"normale", co:"une", sc:"entree", sel:"barre",    ft:"violet_avaliance",    ff:"legere",     fz:"chrome" },
   { k:"ardoise",       n:"ARDOISE",         f:"metier",   a:"gris",              s:"gris",              po:"systeme",    an:"leger",    pa:"point",        bo:"souligne",   ca:"aucun", lb:"couleur",    mi:"mono",     mp:"non",      ep:"fin",     de:"normal",   ti:"oui", ec:"aucun", im:"06_aluminium_brosse", vo:"leger", om:"legere", tr:"forte", lg:"etroite", co:"une", sc:"action", sel:"contour",  ft:null,                  ff:"aucune",     fz:"chrome" },
   { k:"ardoise_fun",       n:"ARDOISE FUN",         f:"metier",   a:"gris",              s:"gris",              po:"systeme",    an:"leger",    pa:"point",        bo:"souligne",   ca:"haut",   lb:"neutre",    mi:"mono",        mp:"entree",      ep:"fin",     de:"normal",   ti:"oui", ec:"titre", im:"07_micro_grille_argent",      vo:"tres_leger",   om:"prononcee", tr:"tres_forte", lg:"etroite", co:"menu", sc:"entree", sel:"contour",  ft:null,                  ff:"aucune",     fz:"chrome" },
@@ -1094,7 +1094,7 @@ function poseTheme(k){
   /* ⭐ Le thème pose SON fond. ⛔ Sauf si une image à soi est déjà posée. */
   if (S.image !== "perso") S.image = t.im;
   S.voile = t.vo;
-  S.transparence = t.tr; S.ombre = t.om;
+  S.transparence = (t.trm && t.trm[S.mode]) || t.tr; S.ombre = t.om;
   /* Le theme dit s'il teinte le fond, avec quoi, et jusqu'ou :
      « chrome » = les barres et les colonnes · « tout » = les quatre surfaces. */
   S.fondForce = t.ff;
@@ -1216,7 +1216,7 @@ const OMBRES = [
 const OMBRE_A = { sombre:[.55,.40], gris:[.42,.30], clair:[.16,.11] };
 const TRANSP = [{k:"opaque",n:"OPAQUE",v:1},{k:"legere",n:"LÉGÈRE",v:.9},
                 {k:"nette",n:"NETTE",v:.76},{k:"forte",n:"FORTE",v:.58},
-                {k:"tres_forte",n:"TRÈS FORTE",v:.5}];
+                {k:"tres_forte",n:"TRÈS FORTE",v:.5},{k:"extreme",n:"EXTRÊME",v:.34}];
 /* ⭐ Trois logos, un par fond — c'est le fond qui decide, pas le theme.
    ⛔ Le logo n'obeit a rien : il ne se teinte pas, il se REMPLACE. */
 const LOGOS = {
@@ -1378,6 +1378,10 @@ function applique(){
   const kAction = S.action || P.a, kStruct = S.struct || P.s;
   const cA = teinte(kAction, S.mode), cS = teinte(kStruct, S.mode);
 
+  /* Le fond peut changer sans repasser par le theme : la transparence suit. */
+  { const th = THEMES.find(x => x.k === S.theme);
+    if (th && th.trm && th.trm[S.mode]) S.transparence = th.trm[S.mode];
+    else if (th) S.transparence = th.tr; }
   root.setAttribute("data-mode", S.mode);
   /* Le logo du fond courant. ⛔ Aucun filtre ne le retouche : on change l'image. */
   const lg = LOGOS[S.mode] || LOGOS.sombre;
@@ -1482,7 +1486,9 @@ function applique(){
      et `--t2` y tombe à 3,9:1. On descend alors d'un cran de plus. */
   const repliCarte = encre(t2, fCarte, t1);
   root.style.setProperty("--struct-encre", encre(sMix, fCarte, repliCarte));
-  root.style.setProperty("--texte-carte", repliCarte);
+  const opC = (TRANSP.find(t => t.k === (S.transp.carte || S.transparence)) || TRANSP[2]).v;
+  const traverse = S.image !== "aucune" && opC < .62;
+  root.style.setProperty("--texte-carte", traverse ? t1 : repliCarte);
   root.style.setProperty("--texte-col", encre(t2, fCol, t1));
   /* Le SENS, relevé sur le fond des cartes — la pastille garde l'aplat. */
   NIVEAUX.forEach(([k]) => root.style.setProperty("--" + k + "-encre",
