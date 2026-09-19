@@ -53,6 +53,31 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
+/* ═══ L'IMAGE DE FOND ═══
+   ⭐ Elle vit DERRIÈRE tout, en `fixed` : elle ne défile pas avec la page.
+   ⛔ Un voile la sépare du texte — sans lui, une donnée sur une nébuleuse
+   n'est plus une donnée. Le voile est la couleur du fond, à une opacité réglée. */
+#fondImg{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center;
+  background-repeat:no-repeat;pointer-events:none}
+#fondVoile{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:var(--f-page);opacity:var(--voile,.55)}
+[data-image="aucune"] #fondImg,[data-image="aucune"] #fondVoile{display:none}
+/* ⭐ Quand une image est posée, les surfaces laissent passer : sinon elle est
+   là et on ne la voit nulle part. ⛔ Le texte, lui, ne change pas d'opacité. */
+[data-image]:not([data-image="aucune"]) body{background:transparent}
+[data-image]:not([data-image="aucune"]) .pan,
+[data-image]:not([data-image="aucune"]) .kpi{
+  background:color-mix(in srgb,var(--f-carte) calc(var(--op-carte)*100%),transparent);
+  backdrop-filter:blur(calc((1 - var(--op-carte)) * 9px))}
+[data-image]:not([data-image="aucune"]) .nav,
+[data-image]:not([data-image="aucune"]) .rail,
+[data-image]:not([data-image="aucune"]) .rail .strip{
+  background:color-mix(in srgb,var(--f-col) calc(var(--op-carte)*100%),transparent);
+  backdrop-filter:blur(calc((1 - var(--op-carte)) * 9px))}
+[data-image]:not([data-image="aucune"]) .top,
+[data-image]:not([data-image="aucune"]) .bar{
+  background:color-mix(in srgb,var(--f-barre) calc(var(--op-carte)*100%),transparent);
+  backdrop-filter:blur(calc((1 - var(--op-carte)) * 9px))}
 body{background:var(--f-page);color:var(--t2);font-family:var(--police);font-size:12.5px;line-height:1.5;letter-spacing:.2px;-webkit-font-smoothing:antialiased}
 button,select{font:inherit;color:inherit;letter-spacing:inherit}
 button{cursor:pointer;background:none;border:0}
@@ -701,6 +726,7 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
 .sig{display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;font-size:8.5px;letter-spacing:.7px;color:var(--t3);padding-top:2px}
 </style>
 
+<div id="fondImg"></div><div id="fondVoile"></div>
 <div class="app" id="app" data-nav="ouvert" data-pastille="point" data-bouton="contour" data-carte="cadre">
 
 <header class="top">
@@ -749,6 +775,9 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
               <div class="reg"><span>INTENSITÉ</span><div class="opts" id="rIntensite"></div></div>
               <div id="rFond" class="choix-z"></div>
               <div class="reg"><span>FORCE DE LA TEINTE</span><div class="opts" id="rFondForce"></div></div>
+              <div class="reg"><span>IMAGE DE FOND</span><div class="opts" id="rImage"></div></div>
+              <div class="reg"><span>VOILE SUR L'IMAGE</span><div class="opts" id="rVoile"></div></div>
+              <div class="reg"><span>TRANSPARENCE DES SURFACES</span><div class="opts" id="rTransp"></div></div>
             </div>
           </section>
 
@@ -976,6 +1005,19 @@ const POLICES = [
      Aucune police web : rien a telecharger, aucun decalage au chargement. */
   { k:"systeme",   n:"SYSTÈME",     v:"-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif" }
 ];
+/* ⭐ Le catalogue des fonds. ⛔ `maillage` est DESSINÉ, pas téléchargé : il
+   prend la couleur de STRUCTURE du thème et pèse zéro octet. Les fichiers
+   d'Avaliance se déposent dans `fonds/` et s'ajoutent ici, une ligne chacun. */
+const IMAGES = [
+  { k:"aucune",   n:"AUCUNE",   src:null },
+  { k:"maillage", n:"MAILLAGE", src:"@dessin" }
+];
+/* Combien le voile cache l'image. ⛔ Au-delà de 75 %, autant ne rien mettre. */
+const VOILES = [{k:"leger",n:"LÉGER",v:.35},{k:"normal",n:"NORMAL",v:.55},
+                {k:"fort",n:"FORT",v:.72},{k:"tres_fort",n:"TRÈS FORT",v:.86}];
+/* Ce que les cartes laissent passer. `opaque` = comme avant l'image. */
+const TRANSP = [{k:"opaque",n:"OPAQUE",v:1},{k:"legere",n:"LÉGÈRE",v:.9},
+                {k:"nette",n:"NETTE",v:.76},{k:"forte",n:"FORTE",v:.58}];
 const MODES = [{k:"sombre",n:"SOMBRE"},{k:"gris",n:"INTERMÉDIAIRE"},{k:"clair",n:"CLAIR"}];
 /* ⭐ Les gris de base, les memes qu'en CSS. Il faut les avoir ICI pour pouvoir
    les teinter : on ne peut pas lire puis reecrire la meme variable. */
@@ -1050,6 +1092,8 @@ let S = { v:2, theme:"avaliance", palette:"avaliance", mode:"sombre", intensite:
           /* ⭐ Une clé PAR ÉCRAN — Hamada, 19/09. Le registre reste lisible, et
              un écran se règle sans toucher aux dix autres. Vide = le défaut. */
           cols:{}, onglets:{},
+          /* ⭐ « Neutre » ou « avec image », et de combien. Activable, désactivable. */
+          image:"aucune", voile:"normal", transparence:"nette",
           traits:{ carte:"theme", barre:"theme", col:"theme", champ:"theme" },
           metier:{ c1:null, c2:null, c3:null, c4:null, c5:null },
           sens:{ ok:null, warn:null, ko:null }, deplies:["crm","projets","planning"] };
@@ -1078,6 +1122,32 @@ if (VIEUX) setTimeout(() => { poseTheme(S.theme); applique(); }, 0);
    Un aplat n'est pas du texte : il porte le vrai hex de la charte, et l'encre
    dedans se calcule. Violet Avaliance = #430A4B, avec du blanc ecrit dessus. */
 function aplat(k){ const c = COULEURS.find(x => x.k === k); return c.v || c.d; }
+
+/* ⭐ Le maillage se DESSINE : une nappe de points reliés, dans la couleur de
+   STRUCTURE du thème. ⛔ Aucun fichier, aucun octet à télécharger, et il suit
+   le thème au lieu de lui résister. */
+let _maillage = "";
+function dessineMaillage(couleur, fond){
+  const cle = couleur + "|" + fond;
+  if (dessineMaillage.cle === cle) return _maillage;
+  const W = 1600, H = 900, c = document.createElement("canvas");
+  c.width = W; c.height = H;
+  const x = c.getContext("2d");
+  x.fillStyle = fond; x.fillRect(0, 0, W, H);
+  const pts = [];
+  for (let i = 0; i < 260; i++) pts.push([Math.random() * W, Math.random() * H]);
+  x.strokeStyle = couleur; x.fillStyle = couleur;
+  pts.forEach(([ax, ay], i) => {
+    pts.slice(i + 1).forEach(([bx, by]) => {
+      const d = Math.hypot(ax - bx, ay - by);
+      if (d < 155){ x.globalAlpha = (1 - d / 155) * .34; x.lineWidth = .8;
+        x.beginPath(); x.moveTo(ax, ay); x.lineTo(bx, by); x.stroke(); }
+    });
+    x.globalAlpha = .85; x.beginPath(); x.arc(ax, ay, 1.7, 0, 6.284); x.fill();
+  });
+  dessineMaillage.cle = cle;
+  return (_maillage = c.toDataURL("image/jpeg", .82));
+}
 
 function applique(){
   const P = PALETTES.find(p => p.k === S.palette) || PALETTES[0];
@@ -1127,6 +1197,9 @@ function applique(){
   app.setAttribute("data-titre", S.menuTitre);
   app.setAttribute("data-mcoul", S.menuIcone);
   app.setAttribute("data-cadre", S.ecranCadre);
+  root.setAttribute("data-image", S.image);
+  root.style.setProperty("--voile", (VOILES.find(v => v.k === S.voile) || VOILES[1]).v);
+  root.style.setProperty("--op-carte", (TRANSP.find(t => t.k === S.transparence) || TRANSP[2]).v);
   const rr = ANGLES.find(a => a.k === S.angle).v;
   root.style.setProperty("--r", rr);
   /* ⛔ Un rayon de 999 px sur une carte en fait un disque. Les grandes
@@ -1205,6 +1278,14 @@ function applique(){
     b.nextElementSibling.hidden = !o;
   });
   if ($("#rMenuOrdre")) $("#rMenuOrdre").innerHTML = ordonne("menu|");
+  /* L'image se pose APRÈS les fonds : le maillage lit la couleur calculée. */
+  const im = IMAGES.find(i => i.k === S.image);
+  const zf = $("#fondImg");
+  if (zf) zf.style.backgroundImage = !im || !im.src ? "none"
+    : `url("${im.src === "@dessin"
+        ? dessineMaillage(getComputedStyle(root).getPropertyValue("--struct").trim(),
+                          getComputedStyle(root).getPropertyValue("--f0").trim())
+        : im.src}")`;
   peintMenu();
   peintThemes();
   peintChoix();
@@ -1340,6 +1421,9 @@ boutons("#rMenuTitre", OUI_NON, "menuTitre", false);
 boutons("#rMenuPastille", PASTILLES_M, "menuPastille", false);
 boutons("#rNotes", NOTES, "notes", false);
 boutons("#rFondForce", TEINTES_FOND, "fondForce", false);
+boutons("#rImage", IMAGES, "image", false);
+boutons("#rVoile", VOILES, "voile", false);
+boutons("#rTransp", TRANSP, "transparence", false);
 boutons("#rRail", RAILS, "rail", false);
 $("#rOutils").innerHTML = OUTILS.map(o => `<button class="opt" type="button" data-o="${o.k}" aria-pressed="true">${o.n}</button>`).join("");
 
@@ -2131,7 +2215,7 @@ function gReglages(e){
   if (e.mode === "politiques"){
     const fam = {};
     MONDE.politique.forEach(p => (fam[p.famille] = fam[p.famille] || []).push(p));
-    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 144 ; en voici un extrait.</p>` +
+    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 147 ; en voici un extrait.</p>` +
       Object.keys(fam).map(f => `<div class="pan" style="margin-bottom:9px"><h2>${esc(f.toUpperCase())}</h2><div class="in"><div class="tb">
         <table><thead><tr><th>CLÉ</th><th>VALEUR</th><th>CE QUE ÇA CHANGE</th><th>SOURCE</th></tr></thead><tbody>` +
         fam[f].map(p => `<tr class="${p.rouge ? "rouge" : ""}"><td><code class="cle">${esc(p.cle)}</code></td>
