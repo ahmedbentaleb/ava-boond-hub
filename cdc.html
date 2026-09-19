@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Dossier Ava Manager : le point d'entree unique. Ce qui fait foi, dans quel ordre le lire, et ou on en est.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600&display=swap">
+</head><body>
+<title>Cahier des charges Ava Manager</title>
+<style>
+:root{
+  --page:#f4f2ee;--carte:#fff;--bord:#e0dcd4;--bord2:#cfc9be;
+  --t1:#1c1a17;--t2:#5f5a52;--t3:#8b857b;
+  --ok-f:#e3f2ec;--ok-b:#a9d6c6;--ok-t:#0c5943;--ok-t2:#2d7a63;
+  --go-f:#eeedfb;--go-b:#c3bff0;--go-t:#3b3287;--go-t2:#5b51b5;
+  --at-f:#fbeeda;--at-b:#e8cf9c;--at-t:#6b3d06;--at-t2:#8f5a0f;
+  --no-f:#fceaea;--no-b:#eeb9b9;--no-t:#7a1f1f;--no-t2:#a32d2d;
+  --om:0 1px 2px rgba(28,26,23,.05),0 6px 16px rgba(28,26,23,.06);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --page:#15140f;--carte:#1e1c17;--bord:#332f28;--bord2:#453f36;
+  --t1:#f2efe8;--t2:#a8a298;--t3:#78736a;
+  --ok-f:#0f2b23;--ok-b:#1f5445;--ok-t:#9fe1cb;--ok-t2:#5dcaa5;
+  --go-f:#1c1937;--go-b:#3b3480;--go-t:#cecbf6;--go-t2:#afa9ec;
+  --at-f:#2e2008;--at-b:#6b4d13;--at-t:#fac775;--at-t2:#ef9f27;
+  --no-f:#2c1111;--no-b:#6a2020;--no-t:#f7c1c1;--no-t2:#f09595;
+  --om:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --page:#15140f;--carte:#1e1c17;--bord:#332f28;--bord2:#453f36;
+  --t1:#f2efe8;--t2:#a8a298;--t3:#78736a;
+  --ok-f:#0f2b23;--ok-b:#1f5445;--ok-t:#9fe1cb;--ok-t2:#5dcaa5;
+  --go-f:#1c1937;--go-b:#3b3480;--go-t:#cecbf6;--go-t2:#afa9ec;
+  --at-f:#2e2008;--at-b:#6b4d13;--at-t:#fac775;--at-t2:#ef9f27;
+  --no-f:#2c1111;--no-b:#6a2020;--no-t:#f7c1c1;--no-t2:#f09595;
+  --om:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.35);
+}
+/* ⭐ Les balises : reelles pour `sed`, transparentes pour la mise en page. */
+quand_utiliser,procedure,interdits,etat,source{display:contents}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--t1);
+  font:15px/1.6 "Sora","Segoe UI",system-ui,sans-serif}
+.p{max-width:1080px;margin:0 auto;padding:16px;padding-block:30px 60px}
+a{color:inherit}
+h1{margin:0;font-size:28px;font-weight:600;letter-spacing:-.5px;text-wrap:balance}
+h2{margin:44px 0 4px;font-size:13px;font-weight:600;letter-spacing:1.6px;
+  text-transform:uppercase;color:var(--t3)}
+h2 .num{color:var(--bord2);margin-right:8px}
+.sub{margin:0 0 16px;color:var(--t2);font-size:14px;max-width:70ch}
+.hd{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.dt{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--t3)}
+.chapeau{margin:8px 0 6px;color:var(--t2);font-size:15px;max-width:72ch}
+
+.ch{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 4px}
+.ch div{background:var(--carte);border:1px solid var(--bord);border-radius:12px;
+  padding:11px 15px;box-shadow:var(--om);min-width:104px}
+.ch b{display:block;font-size:23px;font-weight:600;letter-spacing:-.5px;
+  font-variant-numeric:tabular-nums}
+.ch span{font-size:11px;letter-spacing:1.1px;text-transform:uppercase;color:var(--t3)}
+
+.g{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.c{border-radius:12px;padding:14px 15px;border:1px solid;box-shadow:var(--om);
+  display:block;text-decoration:none}
+.c .n{font-size:11px;letter-spacing:1.6px;font-weight:600}
+.c .t{font-size:16px;font-weight:600;margin:3px 0 6px;letter-spacing:-.2px}
+.c .d{font-size:13.5px;line-height:1.5}
+.ok{background:var(--ok-f);border-color:var(--ok-b);color:var(--ok-t)}
+.ok .d,.ok .n{color:var(--ok-t2)}
+.go{background:var(--go-f);border-color:var(--go-b);color:var(--go-t)}
+.go .d,.go .n{color:var(--go-t2)}
+.at{background:var(--at-f);border-color:var(--at-b);color:var(--at-t)}
+.at .d,.at .n{color:var(--at-t2)}
+
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:4px 0 8px}
+.tw{overflow-x:auto;border:1px solid var(--bord);border-radius:12px;
+  background:var(--carte);box-shadow:var(--om)}
+th{text-align:left;font-weight:600;font-size:11px;letter-spacing:1.2px;
+  text-transform:uppercase;color:var(--t3);padding:11px 14px;
+  border-bottom:1px solid var(--bord);white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid var(--bord);vertical-align:top;color:var(--t2)}
+tr:last-child td{border-bottom:0}
+td:first-child{color:var(--t1);white-space:nowrap}
+code{font-family:ui-monospace,"Cascadia Code",Consolas,monospace;font-size:12.5px;
+  background:var(--page);border:1px solid var(--bord);border-radius:5px;padding:1px 5px}
+.tw code{background:transparent;border:0;padding:0}
+
+.li{display:flex;flex-direction:column;gap:9px;margin:4px 0}
+.li a{background:var(--carte);border:1px solid var(--bord);border-radius:12px;
+  padding:12px 15px;text-decoration:none;box-shadow:var(--om);
+  display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.li a:hover{border-color:var(--bord2)}
+.li b{font-weight:600;font-size:15px}
+.li em{font-style:normal;color:var(--t3);font-size:12.5px;margin-left:auto;
+  font-family:ui-monospace,Consolas,monospace}
+.li span{color:var(--t2);font-size:13.5px}
+
+.no{background:var(--no-f);border:1px solid var(--no-b);color:var(--no-t);
+  border-radius:12px;padding:14px 16px;margin:10px 0;font-size:14px}
+.no b{font-weight:600}
+.note{color:var(--t3);font-size:13px;margin:10px 0 0;max-width:72ch}
+footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
+  color:var(--t3);font-size:12.5px}
+</style>
+<div class="p">
+<div class="hd"><h1>Le cahier des charges</h1><span class="dt">19/09/2026</span></div>
+<p class='chapeau'>Les <b>deux documents d&rsquo;Avaliance</b> &mdash; la commande du client. Tout le reste du dossier en est d&eacute;riv&eacute;.<br>&#9940; Ils ne se corrigent pas : quand ils se trompent, c&rsquo;est une ligne <b>BM-xx</b> dans le mod&egrave;le, pas une retouche du document.</p>
+<h2><span class='num'>01</span>Les documents d&rsquo;origine</h2>
+<p class='sub'>Tels qu&rsquo;Avaliance les a remis. Word &mdash; le navigateur les t&eacute;l&eacute;charge.</p>
+<div class="li">
+<a href="doc/AVA MANAGER-SPEC 1.docx" download><b>Ava Manager — SPEC 1</b><span>le document d&#x27;Avaliance · 1,6 Mo</span><em>.docx</em></a>
+<a href="doc/COCKPIT2-Cahier de charge-v0.1.docx" download><b>Cockpit 2 — cahier de charge v0.1</b><span>le second document d&#x27;Avaliance · 1,3 Mo</span><em>.docx</em></a>
+</div>
+<h2><span class='num'>02</span>Le texte, sans Word</h2>
+<p class='sub'>Les m&ecirc;mes, en texte brut &mdash; pour lire, chercher, citer sans rien ouvrir.</p>
+<div class="li">
+<a href="doc/AVA_MANAGER-SPEC_1_extract.txt"><b>SPEC 1 — le texte seul</b><span>407 lignes, lisibles dans le navigateur</span><em>.txt</em></a>
+<a href="doc/COCKPIT2-Cahier_de_charge-v0.1_extract.txt"><b>Cockpit 2 — le texte seul</b><span>387 lignes, lisibles dans le navigateur</span><em>.txt</em></a>
+</div>
+<h2><span class='num'>03</span>Ce qu&rsquo;on en a tir&eacute;</h2>
+<p class='sub'>La relecture m&eacute;tier, et le mod&egrave;le qui en sort.</p>
+<div class="li">
+<a href='cahier.html'><b>La relecture m&eacute;tier</b><span>question par question, avec les r&eacute;ponses d&rsquo;Ahmed</span><em>interactif</em></a>
+<a href='CAHIER_RELECTURE_METIER.pdf' download><b>La relecture, &agrave; imprimer</b><span>le m&ecirc;me, en PDF</span><em>.pdf</em></a>
+<a href='doc/MODELE_DONNEES_AVAMANAGER_V1.md'><b>Le mod&egrave;le de donn&eacute;es</b><span>ce que les deux documents deviennent, une fois r&eacute;concili&eacute;s</span><em>.md</em></a>
+</div>
+<div class='no'>&#9888;&#65039; <b>Deux erreurs de tableau, corrig&eacute;es dans le mod&egrave;le et pas ici.</b> La SPEC US1 d&eacute;clare &laquo;&nbsp;Adresse&nbsp;&raquo; de type e-mail et &laquo;&nbsp;Code postal&nbsp;&raquo; num&eacute;rique. Un code postal est <b>textuel</b> &mdash; z&eacute;ro initial, alphanum&eacute;rique ailleurs qu&rsquo;en France. C&rsquo;est la ligne <b>BM-58</b>.</div>
+<p class='note'>&#11088; <a href='dossier.html'>Revenir au dossier</a> &mdash; le point d&rsquo;entr&eacute;e.</p>
+</div>
+</body></html>

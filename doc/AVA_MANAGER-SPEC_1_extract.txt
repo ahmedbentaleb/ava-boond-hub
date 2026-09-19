@@ -1,0 +1,408 @@
+SPECIFICATIONS FONCTIONNELLES GENERALES 
+ 
+ 
+ 
+ 
+68926223880 
+Document de Spécifications Fonctionnelles de l'Application 
+AVA MANAGER  
+Version 0.1
+Octobre 2024 
+ 
+ 
+ 
+ 
+
+	 TOC \o "1-3" \h \z \u User story 1 : Saisir une ressource	 PAGEREF _Toc184908666 \h 3
+	User story 2 : Création d’une ressource depuis la fiche candidat	 PAGEREF _Toc184908667 \h 4
+	User Story 3 : Création d'un candidat depuis LinkedIn	 PAGEREF _Toc184908668 \h 5
+	User Story 4 : Création d'un contact depuis LinkedIn	 PAGEREF _Toc184908669 \h 7
+	User story 5 : Création d’une fiche projet manuellement	 PAGEREF _Toc184908670 \h 8
+	User Story 6 : Création d’une fiche projet à partir du besoin	 PAGEREF _Toc184908671 \h 10
+	User Story 7 : Envoyer un CV depuis un candidat	 PAGEREF _Toc184908672 \h 11
+	User Story 8 : Création d’un modèle d’email	 PAGEREF _Toc184908673 \h 13
+
+User story 1 : Saisir une ressource
+Description : En tant qu'utilisateur de l’application AVA-MANAGER,
+Je dois être en mesure créé une ressource à partir du bouton +.  
+
+Au clic sur le menu « Ressource » puis le bouton +, le formulaire de saisie des ressources doit compoter les champs suivants à renseigner : 
+
+Nom du Champ 
+Type 
+Règles de Gestion 
+Civilité
+Liste déroulante
+Obligatoire
+Monsieur 
+Madame
+Nom
+Texte
+Obligatoire 
+Prénom
+Texte
+Obligatoire, 
+Titre
+Texte
+Obligatoire 
+Type 
+Liste déroulante
+Obligatoire
+Date de naissance
+Date (JJ/MM/AAAA)
+
+Responsable Manager
+Lookup (Responsable)
+
+Responsable HR
+Lookup (HR)
+
+Agence
+Lookup (Agence)
+
+Email
+Email
+
+Téléphone
+Format Téléphone (10 Chiffre)
+
+Adresse
+Adresse email 
+
+Code postal
+Numérique
+
+Ville
+Liste déroulante
+
+Pays
+Liste déroulante
+
+Etat
+Liste déroulante
+(En cours, intercontrat, Sortie)
+TJM HT
+Taux journalier 
+
+Devise
+Liste déroulante
+EUR
+USD
+MAD
+Disponibilité
+Liste déroulante
+ASAP
+1 à 2 semaines
+1 à 3 mois 
+3 à 6 mois
+6 mois et plus
+Indifférent 
+Mobilité
+Liste déroulante
+
+Commentaire
+Texte libre
+
+User story 2 : Création d’une ressource depuis la fiche candidat
+Description : En tant qu'utilisateur de l’application AVA-MANAGER,Je veux qu'un pop-up s'affiche lorsque je positionne le statut d'un candidat à "Collaborateur Avaliance",Pour que je puisse confirmer ou annuler la conversion du candidat à une ressource.
+RG1 : Lorsque le statut d'un candidat est changé à "Collaborateur Avaliance", un pop-up s'affiche avec le message suivant : "Confirmez-vous la conversion du candidat en ressource ?".
+RG2 : Le pop-up doit comporter deux boutons : "Confirmer" et "Annuler"
+RG3 : Si l'utilisateur clique sur "Confirmer" :
+Le statut du candidat devient "Collaborateur Avaliance".
+Une nouvelle ressource est créée avec le statut "En cours".
+Les informations ci-dessous du candidat sont automatiquement transférées à la nouvelle ressource.
+Nom du Champ 
+Type 
+Règles de Gestion 
+Civilité
+Liste déroulante
+Obligatoire
+Monsieur 
+Madame
+Nom
+Texte
+Obligatoire 
+Prénom
+Texte
+Obligatoire, 
+Titre
+Texte
+Obligatoire 
+Type 
+Liste déroulante
+Obligatoire
+Date de naissance
+Date (JJ/MM/AAAA)
+
+Responsable Manager
+Lookup (Responsable)
+
+Responsable HR
+Lookup (HR)
+
+Agence
+Lookup (Agence)
+
+Email
+Email
+
+Téléphone
+Format Téléphone (10 Chiffre)
+
+Adresse
+Adresse email 
+
+Code postal
+Numérique
+
+Ville
+Liste déroulante
+
+Pays
+Liste déroulante
+
+Etat
+Liste déroulante
+(En cours, intercontrat, Sortie)
+TJM HT
+Taux journalier 
+
+Devise
+Liste déroulante
+EUR
+USD
+MAD
+Disponibilité
+Liste déroulante
+ASAP
+1 à 2 semaines
+1 à 3 mois 
+3 à 6 mois
+6 mois et plus
+Indifférent 
+Mobilité
+
+Commentaire
+Texte libre
+
+L'utilisateur est redirigé vers le formulaire de la ressource créée.
+
+RG4 : Si l'utilisateur clique sur "Annuler", la conversion est annulée et aucun changement n'est effectué sur le statut du candidat.
+User Story 3 : Création d'un candidat depuis LinkedIn
+Description : En tant qu'utilisateur de l'application AVA-MANAGER, Je souhaite pouvoir cliquer sur une extension depuis le profil LinkedIn d'un candidat, Afin de récupérer automatiquement ses informations et les préremplir dans un formulaire affiché à l'écran.
+RG1 : L'extension doit afficher un formulaire contenant les informations du candidat (Civilité, nom, prénom, Titre, Email, Téléphone, Ville, Pays, Etape, Disponibilité, Provenance, Précisez, Importer le DT, Importer le CV directement depuis LinkedIn. À détailler
+RG2 : L'utilisateur doit voir un bouton "Créer un nouveau candidat" sur le formulaire.
+RG3 : En cliquant sur "Créer un nouveau candidat", les informations doivent être transférées dans AVA-MANAGER, créant ainsi un profil candidat. (Voir le modèle ci-dessous):
+
+User Story 4 : Création d'un contact depuis LinkedIn
+Description : En tant qu'utilisateur de l'application AVA-MANAGER,Je souhaite pouvoir ajouter un profil LinkedIn en tant que contact dans le CRM,Afin d'intégrer ces informations directement dans la base de contacts d'AVA-MANAGER.
+RG1 : L'utilisateur doit voir un onglet "CRM" sur le formulaire de l'extension.
+RG2 : Les informations du contact doivent être pré-remplies automatiquement.
+RG3: L'extension doit afficher un formulaire contenant les informations du candidat (Civilité, nom, prénom, Fonction, Email, Téléphone, Etat, Provenance.
+RG4 : Un bouton "Créer un nouveau contact" doit permettre à l'utilisateur de transférer ces informations dans AVA-MANAGER en tant que nouveau contact. (Voir le modèle ci-dessous) 
+
+User story 5 : Création d’une fiche projet manuellement
+Description : En tant qu’utilisateur de l’application, 
+Je veux créer un projet depuis le bouton « + » depuis la fiche projet.
+Un pop-up s’affiche pour renseigner les informations suivantes :
+
+Nom du Champ 
+Type 
+Règles de Gestion 
+Titre du besoin
+
+Texte
+
+Obligatoire
+Agence
+
+Look-up (Agence)
+Obligatoire 
+Type de projet
+Liste déroulante
+Obligatoire, 
+Forfait, Régie 
+Contact
+Lookup(Contact)
+Obligatoire 
+Ressource
+Lookup (Ressource)
+Obligatoire
+
+En cliquant sur le bouton “Créer” le formulaire qui s’affiche doit contenir les onglets suivants :
+Informations 
+Actions
+Prestations
+Description
+Conditions particulières
+1 Informations :
+L’onglet « Informations » doit contenir trois sections
+Les sections doivent contenir les champs suivants à renseigner :
+Champ
+Valeur champ
+SECTION 1 : INFORMATIONS
+Référence
+Texte
+Date Début
+Date
+Date Fin
+Date
+Responsable Manager
+Lookup (Responsable)
+Agence
+ Lookup Agence 
+SECTION 2 : LIEU DE LA PRESTATION
+Adresse
+Texte
+Code postal
+Texte
+Ville
+Liste déroulante (Ville)
+Pays
+Liste déroulante (Pays)
+Commentaire
+Zone de texte
+SECTION 3 : INFORMATIONS COMPLEMENTAIRES
+Etat
+Liste déroulante (En cours, Archivé)
+Client
+Contact, Type = Client 
+Contact technique
+Contact 
+Intermediaire de facturation
+Contact
+Besoin
+Titre du besoin 
+Devise
+Lookup Devise
+2 Actions :
+L’onglet « Actions », l’utilisateur doit voir afficher un bouton + pour créer les Actions 
+En cliquant sur le bouton +, un formulaire d’actions s’affiche.
+RG1 : Un utilisateur peut créer une ou plusieurs actions.
+3 Prestations
+L’onglet « Prestations », l’utilisateur doit voir afficher un bouton + pour créer les prestations
+En cliquant sur le bouton + un formulaire s’affiche avec les informations suivantes à renseigner
+Champ
+Valeur champ
+Type 
+SECTION 1 : INFORMATIONS GENERALES
+
+Ressource
+Lookup (Ressource)
+Obligatoire
+Etat 
+Liste déroulante (Signée, Prévisionnelle
+Obligatoire
+Début
+Date
+Obligatoire
+Intitulé de la prestation
+Texte
+Facutltatif
+FIN
+Date
+Obligatoire
+Jour ouvré
+Calculé 
+Affichage, (RG)
+Tarif de vente journalier (HT)
+Entier
+Obligatoire
+Nombre de jours vendu
+Entier
+Obligatoire
+Taux d’occupation
+Pourcentage
+Obligatoire
+Contrat
+Texte
+
+CJM Contrat (HT/Jour)
+Entier
+
+SECTION 2 : CA et investissements additionnels
+
+Date
+Date
+
+Titre
+Texte
+
+Chiffre d’affaire HT
+Entier
+
+Invest.HT
+Entier
+
+SECTION 2 : Frais de la prestation
+
+Frais journalier (Net/jour)
+Entier
+
+Frais mensuels (Net/mois)
+Entier
+
+Nombre de jours ouvrés annuel
+Entier
+
+Activer le détail des frais
+
+SECTION 3 : INFORMATIONS COMPLEMENTAIRES
+
+Projet
+Référence 
+
+Type
+Liste déroulante (Forfait, Régie)
+Affichage 
+Responsable Manager
+Lookup depuis la table Manager
+
+Besoin
+Titre du besoin
+
+Client
+Contact
+
+Agence
+Agence
+
+Section 4 : Description
+Zone de texte
+
+Section 5 : Conditions particulières
+Zone de texte
+
+RG1 : Un utilisateur peut créer une ou plusieurs Prestations
+User Story 6 : Création d’une fiche projet à partir du besoin
+Description : En tant qu’utilisateur de l’application, 
+Je veux qu'un projet soit automatiquement créé avec les informations récupérées lorsque je sélectionne l’étape du besoin à "Gagnée",
+RG1 : Lorsqu'un besoin passe à l’étape "Gagnée", un projet est automatiquement créé dans le système.
+RG2 : Le projet créé doit contenir toutes les informations liées au besoin.
+
+User Story 7 : Envoyer un CV depuis un candidat
+Description : En tant qu'utilisateur, 
+
+Lorsque je consulte le profil d'un candidat, je veux voir l'option "Envoyer le CV" pour pouvoir envoyer le CV du candidat à plusieurs contacts par e-mail.
+RG1 : En cliquant sur le bouton « Envoyer le CV », je suis redirigé vers une interface de sélection des contacts ;
+
+RG2 : La liste des contacts doit être filtrable par agences, pôles et Managers.
+RG3 : Je peux sélectionner un ou plusierus contacts .
+
+RG4 : Après avoir sélectionné les contacts quand je clique sur le bouton « Continuer », je veux être redirigé vers une interface de rédaction d'e-mail.
+
+RG5 : L’interface de rédaction d’e-mail donne la possibilité à l’utilisateur de renseigner l'objet et le contenu de l'e-mail.
+RG6 : Un bouton "Sélectionner un modèle" est disponible lors de la rédaction de l'e-mail. (Voir la US suivante).
+RG7: Lorsque je sélectionne un modèle, le contenu de l'e-mail se remplit automatiquement.
+User Story 8 : Création d’un modèle d’email
+Description : En tant qu'utilisateur de l’application,
+Je souhaite créer des modèles d'e-mail depuis la rubrique Emailing
+RG1 : Dans la section e-mailing, une option "Créer un modèle" est disponible, en cliquant dessus, je peux saisir le nom du modèle, l'objet et le contenu.
+
+RG2 : Un bouton "Créer" permet d'enregistrer le modèle avec un message de confirmation.
+
+User Story 8 : Personnaliser l’email
+
+En tant qu'utilisateur, je souhaite avoir des variables personnalisables dans mes modèles, pour personnaliser les e-mails envoyés.
+RG1 : Des variables comme le nom de la société et le nom du contact sont disponibles dans les modèles.
+RG2: Ces variables peuvent être insérées facilement dans le contenu lors de la création du modèle.
