@@ -42,7 +42,7 @@
   color-scheme:dark;
 }
 :root[data-mode="clair"]{
-  --f0:#e7e5ea; --f1:#fff; --f2:#fbfafc; --f3:#f2f0f5; --f4:#dcd7e3; --bord:#a79fb6;
+  --f0:#ffffff; --f1:#ffffff; --f2:#ffffff; --f3:#f6f4f8; --f4:#eceaf0; --bord:#a79fb6;
   --t1:#120e16; --t2:#453f4f; --t3:#6d6679; --t4:#948da1;
   --ok:#15803d; --warn:#a16207; --ko:#b42318;
   color-scheme:light;
@@ -94,6 +94,27 @@ svg{display:block;flex:none}
 /* Replier se commande d'ou on regarde : en haut, a cote du titre. */
 /* Hors du carre : posee sur le filet, a hauteur du titre de l'ecran. Aucune
    ligne en plus dans la colonne — l'en-tete reste le logo et le nom. */
+/* ─── le marqueur du menu : icône, carré ou rond ─── */
+.nav .mq{width:14px;height:14px;flex:none;display:block;border-radius:2px}
+.nav .mq-f{border:1.6px solid;background:transparent}
+.nav .mq-p{border:0}
+.nav .mq-r{border-radius:50%}
+/* ─── les entrées dépliantes ─── */
+.nav .chev{margin-left:auto;font-style:normal;font-weight:400;font-size:13px;color:var(--t4);
+  transition:transform .15s ease;line-height:1}
+.nav a[aria-expanded="true"] .chev{transform:rotate(90deg)}
+.nav .sous{display:flex;flex-direction:column}
+.nav .sous[hidden]{display:none}
+.nav .sous a{padding-left:38px;font-size:11px;color:var(--t3);border-left:0}
+.nav .sous a[aria-current]{color:var(--action-encre);font-weight:600;background:transparent}
+.app[data-nav="icones"] .nav .sous{display:none}
+.app[data-nav="icones"] .nav .chev{display:none}
+/* ─── ce qui n'est pas dans le lot : présent, nommé, éteint ─── */
+.nav a.hl{opacity:.42;cursor:default}
+.nav a.hl:hover{background:transparent;color:var(--t2)}
+.nav .lot{font-style:normal;font-size:6.5px;letter-spacing:.8px;color:var(--t4);
+  border:1px solid var(--bord);padding:1px 3px;margin-left:auto;white-space:nowrap}
+.app[data-nav="icones"] .nav .lot{display:none}
 .nav .rep{position:absolute;z-index:55;top:12px;right:-26px;width:22px;height:22px;
   display:grid;place-items:center;color:var(--t3);background:var(--f1);
   border:var(--trait) solid var(--bord);border-radius:var(--r)}
@@ -346,6 +367,25 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 /* ─── ÉCRANS : en-tête, filtres, onglets, champs, matrice ─── */
 .eh{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;margin-bottom:9px}
 .eh h1{font-size:15px;font-weight:600;letter-spacing:.3px;color:var(--t1)}
+/* ─── S-8 : l'export et le `+`, toujours au même coin ─── */
+.eh-a{display:flex;align-items:center;gap:9px;flex:none}
+.rd{width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:50%;
+  border:var(--trait) solid var(--bord);background:var(--f2);color:var(--t2)}
+.rd svg{width:15px;height:15px}
+.rd:hover{border-color:var(--action);color:var(--action-encre)}
+.rd-p{background:var(--action);border-color:var(--action);color:var(--sur-action)}
+.rd-p:hover{background:var(--action);color:var(--sur-action);filter:brightness(1.08)}
+.cpt{font-style:normal;font-weight:400;color:var(--t3);font-size:.78em}
+/* ─── S-9 : la barre de filtres, la même partout ─── */
+.rech-w{display:flex;align-items:center;gap:6px;color:var(--t4);flex:0 1 230px;min-width:120px}
+.rech-w svg{width:13px;height:13px;flex:none}
+.rech-w .rech{flex:1;min-width:0}
+.filtre svg{width:12px;height:12px}
+.vues{display:flex;gap:1px;background:var(--f4);border-radius:var(--r);padding:2px;flex:none}
+.vues button{width:26px;height:22px;display:grid;place-items:center;color:var(--t4);border-radius:var(--r)}
+.vues button svg{width:14px;height:14px}
+.vues button[aria-pressed="true"]{background:var(--f1);color:var(--action-encre);
+  box-shadow:0 1px 2px rgba(0,0,0,.18)}
 .eh-n{font-size:10px;color:var(--t3);margin-top:3px;line-height:1.55;max-width:74ch}
 .eh-n.mono-s{letter-spacing:.5px}
 .eh-a{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
@@ -440,6 +480,7 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
             <div class="reg"><span>POLICE</span><div class="opts" id="rPolice"></div></div>
             <div class="reg"><span>DENSITÉ</span><div class="opts" id="rDensite"></div></div>
             <div class="reg"><span>ÉPAISSEUR DES TRAITS</span><div class="opts" id="rEpaisseur"></div></div>
+            <div class="reg"><span>MARQUEUR DU MENU</span><div class="opts" id="rMarqueur"></div></div>
             <div class="reg"><span>&nbsp;</span><div class="opts"><button class="opt" type="button" id="btnExpert">MODE EXPERT</button></div></div>
           </div>
           <div class="expert" id="expert" hidden>
@@ -511,6 +552,7 @@ const COULEURS = [
   { k:"orange",    n:"ORANGE",     d:"#FF8C00", c:"#B85C00" },
   { k:"ambre",     n:"AMBRE",      d:"#FFB000", c:"#8A5D00" },
   { k:"bleu",      n:"BLEU",       d:"#4EA8FF", c:"#0B63C4" },
+  { k:"bleu_roi",  n:"BLEU ROI",   d:"#2F6BE8", c:"#1E4FB5", v:"#2F6BE8" },
   { k:"cyan",      n:"CYAN",       d:"#00D4AA", c:"#00786A" },
   { k:"magenta",   n:"MAGENTA",    d:"#E879F9", c:"#A21CAF" },
   { k:"gris",      n:"ARGENT",     d:"#DCDCE6", c:"#5A5364" }
@@ -525,7 +567,9 @@ const PALETTES = [
   { k:"ambre",     n:"AMBRE",     a:"ambre",            s:"cyan" },
   { k:"glace",     n:"GLACE",     a:"bleu",             s:"cyan" },
   { k:"encre",     n:"ENCRE",     a:"gris",             s:"gris" },
-  { k:"phosphore", n:"PHOSPHORE", a:"vert_vif",         s:"ambre" }
+  { k:"phosphore", n:"PHOSPHORE", a:"vert_vif",         s:"ambre" },
+  /* Le theme des captures d'Avaliance : nuit bleutee, entree active en aplat plein. */
+  { k:"nuit",      n:"NUIT",      a:"bleu_roi",         s:"violet_avaliance" }
 ];
 /* INTENSITE : la vivacite de la couleur, rien d'autre. */
 const INTENSITES = [
@@ -558,6 +602,15 @@ const PASTILLES = [{k:"contour",n:"CONTOUR"},{k:"plein",n:"PLEIN"}];
 const BOUTONS = [{k:"contour",n:"CONTOUR"},{k:"plein",n:"PLEIN"},{k:"fantome",n:"FANTÔME"},{k:"souligne",n:"SOULIGNÉ"}];
 const CARTES = [{k:"bande",n:"BANDE"},{k:"contour",n:"CONTOUR"},{k:"plein",n:"PLEIN"}];
 const COLORATIONS = [{k:"une",n:"UNE COULEUR"},{k:"metier",n:"PAR MÉTIER"}];
+/* Ce qu'on voit devant chaque entree du menu. Six facons, aucune ecrite en dur. */
+const MARQUEURS = [
+  {k:"icone",         n:"ICÔNE"},
+  {k:"icone_mono",    n:"ICÔNE GRISE"},
+  {k:"icone_couleur", n:"ICÔNE COLORÉE"},
+  {k:"carre",         n:"CARRÉ"},
+  {k:"carre_couleur", n:"CARRÉ PLEIN"},
+  {k:"rond_couleur",  n:"ROND PLEIN"}
+];
 /* Les cinq chemins du cadrage */
 const METIERS = { vif:{c1:"#5CB4FF",c2:"#D9AEE8",c3:"#C3D442",c4:"#FF9E24",c5:"#1FE0BC"},
                   clair:{c1:"#0B63C4",c2:"#430A4B",c3:"#6E7A1E",c4:"#B85C00",c5:"#00786A"} };
@@ -576,7 +629,8 @@ const OUTILS = [
 
 let S = { palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
           action:null, struct:null, angle:"carre", pastille:"contour", bouton:"contour", carte:"bande", coloration:"une",
-          rail:"droite", outils:["notes","alertes","ia","todo","indic","cal"], outilOuvert:"alertes", expert:false };
+          rail:"droite", outils:["notes","alertes","ia","todo","indic","cal"], outilOuvert:"alertes", expert:false,
+          marqueur:"icone", menu:null, deplies:["crm","projets","planning"] };
 try { S = Object.assign(S, JSON.parse(localStorage.getItem("ava-term5") || "{}")); } catch(e){}
 
 /* L'APLAT. `teinte()` eclaircit sur fond sombre pour que le TEXTE reste lisible.
@@ -643,6 +697,7 @@ function applique(){
   document.querySelectorAll("[data-r]").forEach(b => b.setAttribute("aria-pressed", String(S[b.dataset.r] === b.dataset.v)));
   document.querySelectorAll("[data-r='action'] b,[data-r='struct'] b").forEach(b => { b.style.background = teinte(b.dataset.c, S.mode); });
   document.querySelectorAll("[data-o]").forEach(b => b.setAttribute("aria-pressed", String(S.outils.includes(b.dataset.o))));
+  peintMenu();
   rail();
   $("#expert").hidden = !S.expert;
   $("#btnExpert").setAttribute("aria-pressed", String(S.expert));
@@ -668,6 +723,7 @@ boutons("#rCarte", CARTES, "carte", false);
 boutons("#rColoration", COLORATIONS, "coloration", false);
 boutons("#rDensite", DENSITES, "densite", false);
 boutons("#rEpaisseur", EPAISSEURS, "epaisseur", false);
+boutons("#rMarqueur", MARQUEURS, "marqueur", false);
 boutons("#rRail", RAILS, "rail", false);
 $("#rOutils").innerHTML = OUTILS.map(o => `<button class="opt" type="button" data-o="${o.k}" aria-pressed="true">${o.n}</button>`).join("");
 
@@ -1038,40 +1094,40 @@ const ECRANS = {
   bord: { nom:"Tableau de bord", gabarit:"bord", metier:"c0", tables:["toutes, en lecture"] },
 
   /* ─────────────── LES 7 LISTES ─────────────── */
-  societes: { nom:"Sociétés", gabarit:"liste", metier:"c1", source:"societe", tables:["societe","societe_role","unite_organisation"],
+  societes: { nom:"Sociétés", gabarit:"liste", metier:"c1", source:"societe", tables:["societe","societe_role","unite_organisation"], vues:["liste","vignettes","graphe"],
     filtres:["Statut","Rôle","Ville"], creer:"Créer une société",
     cols:[ {c:"nom",t:"SOCIÉTÉ",fort:1,sous:"id"}, {c:"statut",t:"STATUT",b:1}, {c:"roles",t:"RÔLES",liste:1},
            {c:"secteur",t:"SECTEUR"}, {c:"ville",t:"VILLE"}, {c:"besoins",t:"BESOINS",n:1}, {c:"projets",t:"PROJETS",n:1} ] },
 
-  contacts: { nom:"Contacts", gabarit:"liste", metier:"c1", source:"contact", tables:["contact","societe","unite_organisation"],
+  contacts: { nom:"Contacts", gabarit:"liste", metier:"c1", source:"contact", tables:["contact","societe","unite_organisation"], vues:["liste","vignettes"],
     filtres:["Société","Fonction","Statut"], creer:"Créer un contact",
     cols:[ {c:"nom",t:"CONTACT",fort:1,sous:"id"}, {c:"fonction",t:"FONCTION"}, {c:"societe",t:"SOCIÉTÉ"},
            {c:"unite",t:"UNITÉ"}, {c:"statut",t:"STATUT",b:1}, {c:"mail",t:"E-MAIL"} ] },
 
-  candidats: { nom:"Candidats", gabarit:"liste", metier:"c2", source:"candidat", tables:["profil_candidat","personne","document"],
+  candidats: { nom:"Candidats", gabarit:"liste", metier:"c2", source:"candidat", tables:["profil_candidat","personne","document"], vues:["liste","kanban","vignettes"],
     filtres:["État","Disponibilité","Provenance"], creer:"Ouvrir un dossier",
     cols:[ {c:"nom",t:"CANDIDAT",fort:1,sous:"titre"}, {c:"etat",t:"ÉTAT",b:1}, {c:"dispo",t:"DISPONIBILITÉ"},
            {c:"provenance",t:"PROVENANCE"}, {c:"ville",t:"VILLE"}, {c:"ressource",t:"PROFIL RESSOURCE",b:1} ],
     note:"Un candidat n'a ni onglet Prestations ni onglet Temps — la table prestation n'a pas de colonne pour lui." },
 
-  ressources: { nom:"Ressources", gabarit:"liste", metier:"c3", source:"ressource", tables:["profil_ressource","personne","prestation"],
+  ressources: { nom:"Ressources", gabarit:"liste", metier:"c3", source:"ressource", tables:["profil_ressource","personne","prestation"], vues:["liste","kanban","vignettes","graphe"],
     filtres:["Type","État","Agence"], creer:"Créer une ressource",
     cols:[ {c:"nom",t:"RESSOURCE",fort:1,sous:"titre"}, {c:"type",t:"TYPE",b:1}, {c:"fournisseur",t:"FOURNISSEUR"},
            {c:"etat",t:"ÉTAT",b:1}, {c:"agence",t:"AGENCE"}, {c:"missions",t:"MISSIONS",n:1}, {c:"charge",t:"ENGAGÉ",pct:1} ] },
 
-  besoins: { nom:"Besoins", gabarit:"liste", metier:"c3", source:"besoin", tables:["besoin","besoin_competence","positionnement","societe"],
+  besoins: { nom:"Besoins", gabarit:"liste", metier:"c3", source:"besoin", tables:["besoin","besoin_competence","positionnement","societe"], vues:["liste","kanban","graphe"],
     filtres:["État","Priorité","Société","Agence"], creer:"Créer un besoin",
     cols:[ {c:"titre",t:"BESOIN",fort:1,sous:"id"}, {c:"societe",t:"SOCIÉTÉ"}, {c:"etat",t:"ÉTAT",b:1},
            {c:"prio",t:"PRIORITÉ",b:1}, {c:"postes",t:"POSTES",fraction:"signees"}, {c:"demarrage",t:"DÉMARRAGE"} ],
     note:"La priorité et l'état sont deux colonnes séparées. « Gagné » n'existe pas dans le cycle." },
 
-  projets: { nom:"Projets", gabarit:"liste", metier:"c4", source:"projet", tables:["projet","prestation","societe","contact"],
+  projets: { nom:"Projets", gabarit:"liste", metier:"c4", source:"projet", tables:["projet","prestation","societe","contact"], vues:["liste","kanban","graphe"],
     filtres:["État","Type","Société"], creer:"Créer un projet",
     cols:[ {c:"ref",t:"RÉF.",mono:1}, {c:"titre",t:"PROJET",fort:1}, {c:"societe",t:"SOCIÉTÉ"}, {c:"contact",t:"CONTACT"},
            {c:"type",t:"TYPE"}, {c:"etat",t:"ÉTAT",b:1}, {c:"prestations",t:"MISSIONS",n:1} ],
     note:"Aucune colonne « ressource » : les personnes d'un projet se lisent dans ses prestations." },
 
-  prestations: { nom:"Prestations", gabarit:"liste", metier:"c4", source:"prestation", tables:["prestation","profil_ressource","projet","snapshot_marge"],
+  prestations: { nom:"Prestations", gabarit:"liste", metier:"c4", source:"prestation", tables:["prestation","profil_ressource","projet","snapshot_marge"], vues:["liste","graphe"],
     filtres:["État","Projet","Ressource","Devise"], creer:"Créer une prestation",
     cols:[ {c:"ressource",t:"RESSOURCE",fort:1,sous:"id"}, {c:"projet",t:"PROJET"}, {c:"etat",t:"ÉTAT",b:1},
            {c:"debut",t:"DÉBUT"}, {c:"fin",t:"FIN"}, {c:"taux",t:"TAUX",pct:1}, {c:"tjm",t:"TJM",devise:"devise"}, {c:"marge",t:"MARGE",faible:1} ] },
@@ -1136,16 +1192,33 @@ const ECRANS = {
   agences: { nom:"Agences et calendrier", gabarit:"reglages", metier:"c5", mode:"agences", tables:["agence","calendrier_jour_non_ouvre"] }
 };
 
-const MENU = [
-  { g:"PILOTAGE",   i:[["bord","bord"]] },
-  { g:"CRM",        i:[["soc","societes"],["ct","contacts"]] },
-  { g:"RECRUTEMENT",i:[["cand","candidats"]] },
-  { g:"STAFFING",   i:[["res","ressources"],["bes","besoins"]] },
-  { g:"PRODUCTION", i:[["proj","projets"],["prest","prestations"],["charge","charge"],["temps","mesTemps"],["abs","mesAbsences"]] },
-  { g:"TRANSVERSE", i:[["act","actions"]] },
-  { g:"FICHES",     i:[["fs","fSociete"],["fc","fContact"],["fk","fCandidat"],["fr","fRessource"],["fb","fBesoin"],["fp","fProjet"],["fx","fPrestation"]] },
-  { g:"ADMIN",      i:[["regl","politiques"],["ref","referentiels"],["dr","droits"],["cpt","comptes"],["ag","agences"]] }
+/* ═══ LE MENU EST UN RÉGLAGE ═══
+   ⛔ Cette liste n'est pas LE menu : c'est le DÉFAUT d'une installation.
+   Chaque société compose le sien — POL `ui.menu.entrees`. Même patron que
+   `ui.rail.outils` pour la colonne de droite. Un menu n'est pas une
+   permission : masquer une entrée range, ça ne protège rien. */
+const MENU_DEFAUT = [
+  { k:"bord",           ic:"bord",  e:"bord" },
+  { k:"actions",        ic:"act",   e:"actions" },
+  { k:"candidats",      ic:"cand",  e:"candidats" },
+  { k:"ressources",     ic:"res",   e:"ressources" },
+  { k:"profils_types",  ic:"cand",  n:"Profils types", horsLot:1 },
+  { k:"produits",       ic:"ref",   n:"Produits",      horsLot:1 },
+  { k:"crm",            ic:"soc",   n:"CRM",       sous:[["soc","societes"],["ct","contacts"]] },
+  { k:"besoins",        ic:"bes",   e:"besoins" },
+  { k:"positionnements",ic:"bes",   n:"Positionnements", e:"fBesoin" },
+  { k:"projets",        ic:"proj",  n:"Projets",   sous:[["proj","projets"],["prest","prestations"]] },
+  { k:"achats",         ic:"ref",   n:"Achats", horsLot:1,
+    sous:[["ref","_achats"],["ref","_facturesF"],["ref","_paiements"]] },
+  { k:"planning",       ic:"charge",n:"Planning", sous:[["charge","charge"],["temps","mesTemps"],["abs","mesAbsences"]] },
+  { k:"reporting",      ic:"regl",  n:"Reporting",
+    sous:[["regl","politiques"],["ref","referentiels"],["dr","droits"],["cpt","comptes"],["ag","agences"]] }
 ];
+/* Les écrans hors menu restent atteignables : le ⊞ les montre tous. */
+const TOUS = ["fSociete","fContact","fCandidat","fRessource","fBesoin","fProjet","fPrestation"];
+const HORS_LOT = { _achats:"Achats", _facturesF:"Factures fournisseurs", _paiements:"Paiements" };
+/* Le menu par defaut ne se fige qu'ici : `S` naît avant ce catalogue. */
+if (!S.menu) S.menu = MENU_DEFAUT.map(d => ({ k:d.k }));
 
 /* ══════════════════════════════════════════════════════════════════════════
    CINQ GABARITS. 24 écrans. Aucun écran n'a de code à lui : il est déclaré.
@@ -1162,21 +1235,55 @@ const bd = (v) => v == null || v === "" ? '<span class="b n">prospect</span>' : 
 function tablesDe(e){
   return `<div class="tables">LIT : ${e.tables.map(t => `<code>${esc(t)}</code>`).join(" ")}</div>`;
 }
+/* ⛔ L'export puis le `+`, à l'extrême droite, sur les 24 écrans. Toujours.
+   C'est le seul moyen qu'un geste appris sur un écran serve sur les 23 autres.
+   La place vient de Boond (59 captures, hub) : on reprend la PLACE, pas les couleurs. */
 function entete(e){
-  return `<div class="eh"><div><h1>${esc(e.nom)}</h1>${e.note ? `<p class="eh-n">${e.note}</p>` : ""}</div>
-    <div class="eh-a">${e.creer ? `<button class="cta" type="button">${esc(e.creer)}</button>` : ""}</div></div>`;
+  const n = e.source && MONDE[e.source] ? MONDE[e.source].length : null;
+  return `<div class="eh">
+    <div><h1>${esc(e.nom)}${n !== null ? ` <em class="cpt">(${n})</em>` : ""}</h1>${
+      e.note ? `<p class="eh-n">${e.note}</p>` : ""}</div>
+    <div class="eh-a">
+      <button class="rd" type="button" title="Exporter en PDF" aria-label="Exporter en PDF">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h7l3 3v9H3z"/><path d="M10 2v3h3M6 9h4M6 11.5h4"/></svg></button>
+      ${e.creer ? `<button class="rd rd-p" type="button" title="${esc(e.creer)}" aria-label="${esc(e.creer)}">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></button>` : ""}
+    </div></div>`;
 }
 
 /* ─────────────── GABARIT 1 : LISTE ─────────────── */
+/* Quatre vues au catalogue. ⛔ Chaque écran DÉCLARE celles qu'il porte —
+   une liste de personnes n'a pas de graphe utile. Rien n'est écrit en dur. */
+const VUES = [
+  {k:"liste",     n:"Liste",     i:'<path d="M2 4h12M2 8h12M2 12h12"/>'},
+  {k:"kanban",    n:"Kanban",    i:'<rect x="2" y="3" width="3.5" height="10"/><rect x="6.5" y="3" width="3.5" height="7"/><rect x="11" y="3" width="3" height="11"/>'},
+  {k:"graphe",    n:"Graphe",    i:'<path d="M2 13h12M4 13V8M7.5 13V4M11 13V6"/>'},
+  {k:"vignettes", n:"Vignettes", i:'<rect x="2" y="2.5" width="5" height="5"/><rect x="9" y="2.5" width="5" height="5"/><rect x="2" y="9" width="5" height="4.5"/><rect x="9" y="9" width="5" height="4.5"/>'}
+];
+function barreFiltres(e, n){
+  const dispo = e.vues || ["liste"];
+  const active = e.vue || dispo[0];
+  return `<div class="barre-f">
+    <span class="rech-w"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg>
+      <input class="rech" placeholder="Mots clefs" aria-label="Mots clefs"></span>
+    ${(e.filtres || []).length ? `<button class="filtre" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 4h12M4 8h8M6.5 12h3"/></svg> Filtres</button>` : ""}
+    ${(e.filtres || []).map(f => `<button class="filtre" type="button">${esc(f)} <b>▾</b></button>`).join("")}
+    <span class="grow"></span>
+    <span class="pagin">1 – ${n} sur ${n}</span>
+    <button class="filtre" type="button" title="Colonnes affichées" aria-label="Colonnes affichées">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="2.2"/><path d="M8 1.6v2M8 12.4v2M1.6 8h2M12.4 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M12.5 3.5l-1.4 1.4M4.9 11.1l-1.4 1.4"/></svg></button>
+    ${dispo.length > 1 ? `<span class="vues">${dispo.map(k => { const v = VUES.find(x => x.k === k);
+      return `<button type="button" data-vue="${k}" aria-pressed="${k === active}" title="${v.n}" aria-label="${v.n}">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${v.i}</svg></button>`;
+      }).join("")}</span>` : ""}
+  </div>`;
+}
+
 function gListe(e){
   const lignes = MONDE[e.source] || [];
   let h = entete(e);
   h += `<div class="pan"><h2>${esc(e.nom.toUpperCase())}<em>${lignes.length} LIGNES</em></h2>
-    <div class="barre-f">
-      <input class="rech" placeholder="Rechercher…" aria-label="Rechercher">
-      ${(e.filtres || []).map(f => `<button class="filtre" type="button">${esc(f)} <b>▾</b></button>`).join("")}
-      <span class="grow"></span><span class="pagin">1 – ${lignes.length} sur ${lignes.length}</span>
-    </div>
+    ${barreFiltres(e, lignes.length)}
     <div class="in"><div class="tb"><table><thead><tr>${
       e.cols.map(c => `<th>${esc(c.t)}</th>`).join("")}<th></th></tr></thead><tbody>`;
   lignes.forEach(l => {
@@ -1550,13 +1657,51 @@ function peindre(){
     if (a.dataset.e === ECRAN) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
   applique();
 }
-$("#menu").innerHTML = MENU.map(s => `<div class="gr">${s.g}</div>` + s.i.map(([ic, k]) => `
-  <a href="#" data-e="${k}" title="${ECRANS[k].nom}">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[ic] || IC.bord}</svg>
-    <span>${ECRANS[k].nom}</span></a>`).join("")).join("");
+/* La couleur de métier d'un écran — la même échelle que les tuiles (C1→C5). */
+function couleurMetier(code){
+  const M = METIERS[S.mode === "clair" ? "clair" : "vif"];
+  return M[code] || getComputedStyle(root).getPropertyValue("--t3").trim();
+}
+/* Le marqueur : icône, carré ou rond, coloré ou non. Six façons, un réglage. */
+function marqueur(ic, metier){
+  const m = S.marqueur, c = couleurMetier(metier);
+  if (m === "carre")         return `<i class="mq mq-f" style="border-color:currentColor"></i>`;
+  if (m === "carre_couleur") return `<i class="mq mq-p" style="background:${c}"></i>`;
+  if (m === "rond_couleur")  return `<i class="mq mq-p mq-r" style="background:${c}"></i>`;
+  const st = m === "icone_couleur" ? ` style="color:${c}"` : (m === "icone_mono" ? ' style="color:var(--t4)"' : "");
+  return `<svg${st} viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[ic] || IC.bord}</svg>`;
+}
+function nomEcran(k){ return ECRANS[k] ? ECRANS[k].nom : (HORS_LOT[k] || k); }
+
+function peintMenu(){
+  $("#menu").innerHTML = S.menu.map(o => {
+    const def = MENU_DEFAUT.find(d => d.k === o.k); if (!def) return "";
+    const nom = def.n || nomEcran(def.e);
+    const met = def.e && ECRANS[def.e] ? ECRANS[def.e].metier : "c0";
+    if (!def.sous) {
+      const ec = def.e || "";
+      return `<a href="#" ${ec ? `data-e="${ec}"` : 'data-off="1"'} title="${esc(nom)}"${def.horsLot ? ' class="hl"' : ""}>
+        ${marqueur(def.ic, met)}<span>${esc(nom)}</span>${def.horsLot ? '<em class="lot">hors lot</em>' : ""}</a>`;
+    }
+    const ouvert = S.deplies.includes(def.k);
+    return `<a href="#" data-pli="${def.k}" aria-expanded="${ouvert}"${def.horsLot ? ' class="hl"' : ""}>
+        ${marqueur(def.ic, met)}<span>${esc(nom)}</span>${def.horsLot ? '<em class="lot">hors lot</em>' : ""}
+        <b class="chev">›</b></a>
+      <div class="sous"${ouvert ? "" : " hidden"}>${def.sous.map(([ic, k]) =>
+        `<a href="#" ${ECRANS[k] ? `data-e="${k}"` : 'data-off="1"'}><span>${esc(nomEcran(k))}</span></a>`).join("")}</div>`;
+  }).join("");
+}
+peintMenu();
 document.addEventListener("click", e => {
+  const pli = e.target.closest("[data-pli]");
+  if (pli){ e.preventDefault(); const k = pli.dataset.pli;
+    S.deplies = S.deplies.includes(k) ? S.deplies.filter(x => x !== k) : S.deplies.concat(k);
+    peintMenu(); applique(); return; }
+  if (e.target.closest("[data-off]")){ e.preventDefault(); return; }
   const a = e.target.closest("[data-e]");
   if (a){ e.preventDefault(); ECRAN = a.dataset.e; window.scrollTo(0, 0); peindre(); return; }
+  const v = e.target.closest("[data-vue]");
+  if (v){ e.preventDefault(); ECRANS[ECRAN].vue = v.dataset.vue; peindre(); return; }
   const o = e.target.closest("[data-ong]");
   if (o){ ECRANS[ECRAN].ouvert = o.dataset.ong; peindre(); }
 });
