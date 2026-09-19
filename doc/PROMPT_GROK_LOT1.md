@@ -3,7 +3,7 @@
 ⭐ **À coller dans Cursor, tel quel.** Grok lit le dépôt : on ne colle aucun fichier, on donne
 des chemins. Le prompt tient en trois écrans **parce que le dépôt porte le reste**.
 
-**5 sous-agents · 6 étapes · un audit interne entre chaque.**
+**5 sous-agents · 7 étapes · un audit interne entre chaque · un cliquet qui ne recule pas.**
 
 ---
 
@@ -69,11 +69,12 @@ fusionnes jamais deux rôles dans un même sous-agent.
    ⛔ Ne touche jamais /server, ni /db, ni /test.
    ⛔ Aucune règle métier. Voir l'encadré ci-dessus.
 
-3. BANC — il possède /test
-   Fait : écrire et tenir les tests.
+3. BANC — il possède /test. C'EST LE ROLE LE PLUS IMPORTANT.
+   Il n'écrit pas des tests : il pose un CLIQUET.
    ⛔ Ne code pas le produit. ⛔ Et NI 1 NI 2 n'écrivent dans
    /test : un test qu'on peut assouplir soi-même n'est pas un
    filet, c'est une décoration.
+   → son rite complet est décrit plus bas, section LE CLIQUET.
 
 4. AUDIT INTERNE — il possède /audit
    Fait : lire le code rendu à CHAQUE fin d'étape, coter,
@@ -83,13 +84,74 @@ fusionnes jamais deux rôles dans un même sous-agent.
    autres savent faire.
 
 5. GREFFE — il possède /journal
-   Fait : les ADR, le journal des bugs, le journal des étapes.
-   Un ADR dès qu'on peut se demander, dans six mois, pourquoi
-   c'est comme ça.
-   ⛔ Ne décide rien. Il enregistre.
+   Il tient QUATRE fichiers, et rien d'autre :
+   /journal/ETAPES.md    une ligne par étape : quoi, quand, quel
+                         commit, verdict de l'auditeur interne
+   /journal/BUGS.md      un bug par ligne, jamais deux. Numéro
+                         jamais réutilisé. Fermé avec un SHA de
+                         commit, jamais avec le mot « corrigé »
+   /journal/PORTES.md    LE REGISTRE DES PORTES — voir LE CLIQUET
+   /journal/adr/         un ADR par décision qu'on pourrait
+                         défaire dans six mois en croyant bien
+                         faire. Une page : contexte, décision,
+                         MOTIF, conséquences, ce qu'on a écarté
+                         et pourquoi
+   ⛔ Ne décide rien. Il enregistre. ⛔ Et il ne supprime jamais
+   une ligne : un bug fermé reste, barré. Une leçon effacée se
+   repaie en mars.
 
 ⚠️ Aucun sous-agent ne tient sa propre contrainte. C'est la seule
 règle d'organisation qui compte.
+
+╔═══════════════════════════════════════════════════════════════╗
+║  LE CLIQUET — la règle qui passe AVANT l'audit et la sécurité ║
+║                                                               ║
+║  ⭐ ON AVANCE, ON NE RECULE JAMAIS.                           ║
+║                                                               ║
+║  Dès qu'une fonctionnalité est approuvée, le sous-agent 3     ║
+║  fait CINQ gestes, dans cet ordre, avant qu'on passe à la     ║
+║  suite :                                                      ║
+║   1. il la NOTE          — numéro P-001, P-002…               ║
+║   2. il DÉCRIT ce qu'elle fait, en une phrase, en français    ║
+║   3. il POSE LA PORTE    — le test qui la verrouille          ║
+║   4. il la VOIT ROUGE    — il casse la fonctionnalité, la     ║
+║      porte doit tomber ; il la remet. Une porte jamais vue    ║
+║      rouge ne prouve rien                                     ║
+║   5. il la JOURNALISE dans /journal/PORTES.md                 ║
+║                                                               ║
+║  ⛔ LE NOMBRE DE PORTES NE DIMINUE JAMAIS.                    ║
+║  Une porte qui tombe se RÉPARE. Elle ne se supprime pas,      ║
+║  elle ne s'assouplit pas, on ne la met pas en commentaire     ║
+║  « le temps de livrer ». Retirer une porte exige un ADR       ║
+║  écrit par 5 et l'accord d'Hamada. Il n'y a pas d'autre       ║
+║  chemin.                                                      ║
+║                                                               ║
+║  LES QUATRE ESPÈCES DE PORTES — il faut les quatre :          ║
+║   A. BASE    les 22 assertions : les murs tiennent            ║
+║   B. CONTRAT pour un cas donné, la réponse du serveur est     ║
+║              figée. Un champ qui disparaît fait tomber la     ║
+║              porte                                            ║
+║   C. GESTE   le parcours cliqué de bout en bout : créer un    ║
+║              besoin, positionner, signer. Playwright          ║
+║   D. ÉCRAN   une capture par écran ET PAR THÈME, comparée.    ║
+║              Un bouton déplacé, une couleur changée, un       ║
+║              libellé perdu : la porte tombe                   ║
+║                                                               ║
+║  ⭐ D est celle qu'on oublie partout, et c'est le gros        ║
+║     problème du web : le serveur est vert, les tests sont     ║
+║     verts, et l'écran a bougé sans que personne le voie.      ║
+║                                                               ║
+║  ⚠️ LE PIÈGE DE D, ET COMMENT ON LE TIENT :                   ║
+║  une porte d'écran qui crie au loup sera désactivée par       ║
+║  quelqu'un, un soir — et le cliquet sera perdu. Donc :        ║
+║   - version de navigateur ÉPINGLÉE dans la CI                 ║
+║   - polices embarquées, jamais chargées du réseau             ║
+║   - animations coupées pendant la capture                     ║
+║   - un seuil de tolérance déclaré dans /journal/PORTES.md     ║
+║  ⛔ Si une porte d'écran devient instable, on la RÉPARE. On   ║
+║     ne la désactive pas. C'est la même règle que pour les     ║
+║     autres, et elle ne souffre pas d'exception.               ║
+╚═══════════════════════════════════════════════════════════════╝
 
 ═══ CE QUE TU LIS, DANS CET ORDRE ═══
 1. _ops/DOSSIER.html                le point d'entrée
@@ -112,7 +174,8 @@ copies pas : il est en JS d'un seul fichier, on passe à React.
 Base      PostgreSQL 16
 Serveur   Node 22 + TypeScript + Fastify + pg (driver brut)
 Écran     React 19 + Vite + TypeScript
-Tests     Node test runner + psql pour les assertions SQL
+Tests     Node test runner (contrat) + psql (assertions SQL)
+          + Playwright (geste et écran), navigateur épinglé
 
 ⛔ AUCUN ORM — ni Prisma, ni TypeORM, ni Drizzle, ni Sequelize,
 ni Knex. Un ORM redécrit le schéma à sa façon ; au premier
@@ -133,7 +196,7 @@ JAMAIS réécrits. Une erreur se corrige par une migration de plus.
 /.github/workflows/ la CI
 /Makefile           make up · make migrate · make test · make dev
 
-═══ LE LOT 1 — SIX ÉTAPES ═══
+═══ LE LOT 1 — SEPT ÉTAPES ═══
 Entre CHAQUE étape, l'auditeur interne passe et écrit sa fiche.
 ⛔ Une étape refusée se refait avant de passer à la suivante.
 
@@ -152,6 +215,10 @@ E5  La preuve que le banc mord : retire un trigger, montre que
 E6  Le squelette : /server qui répond, /web qui affiche une page
     servie par /server. Aucun métier. C'est un tuyau, pas une
     fonctionnalité — mais le tuyau prouve la séparation.
+E7  Le cliquet est armé : les quatre espèces de portes existent
+    et tournent dans la CI, même avec une seule porte chacune.
+    /journal/PORTES.md est ouvert. ⭐ Sans E7, tout ce qui suit
+    pourra régresser en silence.
 
 ═══ LES SIX INTERDITS — chacun est un refus ═══
 1. ⛔ Aucun `if` métier écrit en dur, ni serveur ni écran. Toute
@@ -194,11 +261,13 @@ Une branche `lot-1`, et dans le message de PR :
  - le résultat de E5 : quel trigger retiré, quelle assertion est
    tombée
  - les fiches de l'auditeur interne, étape par étape
+ - /journal/PORTES.md : combien de portes, de quelle espèce,
+   et laquelle tu as vue rouge
  - /journal/REMARQUES.md, ou « aucune »
  - ce que tu as décidé seul, en une liste
 
 Ne me demande pas de valider en cours de route. Va au bout des
-six étapes, rends, l'auditeur général passera.
+sept étapes, rends, l'auditeur général passera.
 ```
 
 ---

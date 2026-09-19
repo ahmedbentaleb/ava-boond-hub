@@ -3,7 +3,7 @@
 ⭐ **Écrite AVANT qu'il code.** Une grille écrite après le code vérifie ce qu'il a fait, pas ce
 qu'on voulait. Celle-ci ne discute pas.
 
-**25 contrôles · 5 familles.** Un seul 🔴 refuse le lot entier.
+**30 contrôles · 6 familles.** Un seul 🔴 refuse le lot entier.
 
 ⭐ **Je suis l'auditeur GÉNÉRAL** : je passe sur le lot rendu. L'auditeur **interne** (sous-agent 4) passe **entre chaque étape**. Deux mailles, pas deux chefs.
 
@@ -109,11 +109,33 @@ lis `/web/src` une fois, à l'œil, à chaque lot — c'est ce qu'aucun grep ne 
 
 ---
 
+## F · LE CLIQUET — 5 contrôles. ⛔⛔ Plus important que l'audit lui-même.
+
+> **Hamada :** « On ne doit plus faire marche arrière. On avance et on ne recule pas. »
+
+| # | Contrôle | Comment | Verdict si faux |
+|---|---|---|---|
+| **F1** | `/journal/PORTES.md` existe et est à jour | une ligne par porte : numéro, description, espèce, vue rouge quand | 🔴 |
+| **F2** | Les **quatre espèces** tournent | base · contrat · geste · **écran** | 🔴 — l'écran est celle qu'on oublie |
+| **F3** | **Le nombre de portes n'a pas baissé** | `wc -l` sur `PORTES.md` au lot précédent vs celui-ci | 🔴 **le contrôle du cliquet** |
+| **F4** | Aucune porte désactivée, commentée, ou en `skip` | `grep -rniE "skip\|todo\|xit\|\.only\|disabled" test/` | 🔴 |
+| **F5** | Chaque porte a été **vue rouge** | la colonne du journal est remplie, avec la date | 🟠 |
+
+⭐ **F3 est le seul contrôle qui mesure le cliquet.** Tout le reste dit si le code d'aujourd'hui
+est juste ; F3 dit si celui d'hier tient encore. ⛔ Une porte de moins qu'au lot précédent, sans
+ADR : refus, sans discussion.
+
+⚠️ **F4 attrape la désactivation polie.** Personne n'écrit « je retire cette porte » — on écrit
+`test.skip`, « le temps de livrer ». C'est ainsi que les cliquets se perdent, partout.
+
+---
+
 <procedure>
 
 **1.** Lancer la preuve (A1 → A5). ⛔ Si A1 ou A2 tombe : refus, on s'arrête là.
 
-**2.** Passer B, C, D, E **en entier**, même si quelque chose est déjà tombé.
+**2.** Passer **F en premier** — le cliquet prime. Puis B, C, D, E **en entier**, même si
+quelque chose est déjà tombé.
 
 **3.** Écrire chaque 🔴 et 🟠 dans [JOURNAL_BUGS.md](JOURNAL_BUGS.md), **une ligne par bug**, avec
 le numéro du contrôle.
