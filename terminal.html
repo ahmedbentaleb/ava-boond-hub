@@ -112,6 +112,10 @@ svg{display:block;flex:none}
 .qui{display:flex;align-items:center;gap:8px;padding:3px 8px 3px 3px;border-radius:var(--r);
   border:var(--trait) solid transparent;color:var(--t2)}
 .qui:hover,.qui[aria-expanded="true"]{background:var(--f3);border-color:var(--bord)}
+.role-b{padding:3px 8px}
+.role-b .nm b{font-weight:600;color:var(--t2)}
+.role-b .nm i{color:var(--t4)}
+.pop-moi a[aria-current]{color:var(--action-encre);font-weight:600}
 .ph{width:26px;height:26px;flex:none;display:grid;place-items:center;border-radius:50%;
   background:var(--struct-aplat);color:var(--sur-struct-aplat);font-size:9.5px;font-weight:700;letter-spacing:.4px}
 .nm{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15;min-width:0}
@@ -543,12 +547,12 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg>
     <input placeholder="Rechercher partout" aria-label="Rechercher partout"></label>
   <span class="grow"></span>
-  <span class="lab" title="Banc d'essai : change le rôle pour voir les refus changer">RÔLE</span>
-  <select id="role">
-    <option value="staffing">STAFFING</option><option value="dp">DIRECTEUR DE PROJET</option>
-    <option value="ia">INGÉNIEUR D'AFFAIRES</option><option value="rh">RESSOURCES HUMAINES</option>
-    <option value="ressource">RESSOURCE</option>
-  </select>
+  <div class="moi">
+    <button class="qui role-b" type="button" id="btnRole" aria-expanded="false"
+            title="Banc d'essai : change de rôle pour voir les refus changer">
+      <span class="nm"><b id="roleNom">Staffing</b><i>rôle</i></span><b class="chev-b">▾</b></button>
+    <div class="pop-moi" id="popRole" hidden></div>
+  </div>
   <div class="moi">
     <button class="qui" type="button" id="btnMoi" aria-expanded="false">
       <span class="ph" aria-hidden="true">AB</span>
@@ -807,6 +811,7 @@ function applique(){
   document.querySelectorAll("[data-o]").forEach(b => b.setAttribute("aria-pressed", String(S.outils.includes(b.dataset.o))));
   peintMenu();
   peintMoi();
+  peintRole();
   rail();
   $("#expert").hidden = !S.expert;
   $("#btnExpert").setAttribute("aria-pressed", String(S.expert));
@@ -1777,7 +1782,16 @@ const W = {
 $("#railReglages").appendChild($("#panApparence"));
 $("#panApparence").hidden = false;
 
-let popFondOuvert = false, popMoiOuvert = false;
+let popFondOuvert = false, popMoiOuvert = false, popRoleOuvert = false;
+const ROLES = [["staffing","Staffing"],["dp","Directeur de projet"],["ia","Ingénieur d'affaires"],
+               ["rh","Ressources humaines"],["ressource","Ressource"]];
+function peintRole(){
+  $("#roleNom").textContent = (ROLES.find(r => r[0] === ROLE) || ROLES[0])[1];
+  $("#popRole").innerHTML = `<div class="gr">VOIR L'ÉCRAN COMME</div>` +
+    ROLES.map(([k, n]) => `<a href="#" data-role="${k}"${k === ROLE ? ' aria-current="true"' : ""}>${n}</a>`).join("");
+  $("#popRole").hidden = !popRoleOuvert;
+  $("#btnRole").setAttribute("aria-expanded", String(popRoleOuvert));
+}
 function peintMoi(){
   $("#popMoi").innerHTML = `<div class="gr">MON COMPTE</div>
     <a href="#" data-off="1">Mon profil</a>
@@ -1902,6 +1916,10 @@ document.addEventListener("click", e => {
 });
 document.addEventListener("click", e => {
   if (e.target.closest("#btnMoi")){ popMoiOuvert = !popMoiOuvert; peintMoi(); return; }
+  if (e.target.closest("#btnRole")){ popRoleOuvert = !popRoleOuvert; peintRole(); return; }
+  const rl = e.target.closest("[data-role]");
+  if (rl){ e.preventDefault(); ROLE = rl.dataset.role; popRoleOuvert = false; peindre(); return; }
+  if (popRoleOuvert && !e.target.closest("#popRole")){ popRoleOuvert = false; peintRole(); }
   if (popMoiOuvert && !e.target.closest("#popMoi")){ popMoiOuvert = false; peintMoi(); }
   if (e.target.closest("#repRail")){
     S.rail = S.rail === "masque" ? "droite" : "masque"; applique(); return; }
@@ -1909,7 +1927,7 @@ document.addEventListener("click", e => {
   if (e.target.closest("[data-r='mode']")){ popFondOuvert = false; rail(); return; }
   if (popFondOuvert && !e.target.closest("#popFond")){ popFondOuvert = false; rail(); }
 });
-$("#role").addEventListener("change", e => { ROLE = e.target.value; if (ECRAN === "bord") peindre(); });
+
 
 peindre();
 
