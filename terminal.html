@@ -431,6 +431,23 @@ a.kpi:hover{filter:brightness(1.18)}
 .pop-ord .raz:hover{border-color:var(--action);color:var(--action-encre)}
 #rMenuOrdre .raz{margin-top:6px;width:100%;height:22px;font-size:8.5px;letter-spacing:1px;color:var(--t3);
   border:var(--t-champ) solid var(--bord);border-radius:var(--r)}
+/* ─── la bibliothèque d'icônes ─── */
+#rMenuIcones{display:flex;flex-direction:column;gap:2px}
+.ic-l{position:relative;display:flex;align-items:center;gap:8px;font-size:10px;color:var(--t2)}
+.ic-l.ouvert{z-index:97}
+.ic-l>span{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ic-b{width:26px;height:26px;flex:none;display:grid;place-items:center;border-radius:var(--r);
+  border:var(--t-champ) solid var(--bord);background:var(--f3);color:var(--t2)}
+.ic-b svg{width:15px;height:15px}
+.ic-b:hover,.ic-b[aria-expanded="true"]{border-color:var(--action);color:var(--action-encre)}
+.ic-p{position:absolute;left:0;top:calc(100% + 4px);z-index:96;width:236px;max-height:224px;overflow:auto;
+  display:grid;grid-template-columns:repeat(7,1fr);gap:2px;padding:6px;
+  background:var(--f2);border:var(--t-carte) solid var(--bord);border-radius:var(--r);
+  box-shadow:0 8px 28px rgba(0,0,0,.45)}
+.ic-p button{height:28px;display:grid;place-items:center;border-radius:var(--r);color:var(--t3)}
+.ic-p button svg{width:15px;height:15px}
+.ic-p button:hover{background:var(--survol);color:var(--t1)}
+.ic-p button[aria-current]{color:var(--action-encre);background:color-mix(in srgb,var(--action) 14%,transparent)}
 /* ─── réglages ─── */
 .reg-row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .reg{display:flex;flex-direction:column;gap:5px;min-width:0}
@@ -676,10 +693,16 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 .rd-p:hover{background:var(--action);color:var(--sur-action);filter:brightness(1.08)}
 .cpt{font-style:normal;font-weight:400;color:var(--t3);font-size:.78em}
 /* ─── S-9 : la barre de filtres, la même partout ─── */
-.rech-w{display:flex;align-items:center;gap:7px;color:var(--t4);flex:0 1 300px;min-width:150px;
-  background:var(--f3);border:var(--t-champ) solid var(--bord);border-radius:var(--r);padding:0 10px;
-  height:30px;transition:flex-basis .16s ease}
-.rech-w[hidden]{display:none}
+/* ⭐ UNE seule barre : fermee, c'est la loupe ; ouverte, elle s'allonge.
+   ⛔ Jamais un bouton PUIS une barre — c'est le meme objet. */
+.rech-w{display:flex;align-items:center;flex:none;color:var(--t4);overflow:hidden;
+  background:var(--f3);border:var(--t-champ) solid var(--bord);border-radius:var(--r);
+  height:30px;width:32px;transition:width .18s ease}
+.rech-w.ouverte{width:min(320px,42vw)}
+.rech-l{width:30px;height:28px;flex:none;display:grid;place-items:center;color:inherit}
+.rech-l svg{width:14px;height:14px}
+.rech-w:not(.ouverte):hover{border-color:var(--action);color:var(--action-encre)}
+.rech-w:not(.ouverte) .rech{width:0;padding:0;opacity:0}
 .rech-w svg{width:13px;height:13px;flex:none}
 .rech-w .rech{flex:1;min-width:0}
 .filtre svg{width:12px;height:12px}
@@ -726,7 +749,8 @@ th.ck,td.ck{width:30px;padding-right:0}
 .eh-a{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .barre-f{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:calc(10px*var(--dens)) 14px;
   border-bottom:1px solid var(--f4);background:transparent}
-.rech{flex:1;min-width:0;background:none;border:0;color:var(--t1);font:inherit;font-size:11.5px;outline:0;padding:0}
+.rech{flex:1;min-width:0;background:none;border:0;color:var(--t1);font:inherit;font-size:11.5px;
+  outline:0;padding:0 10px 0 0;transition:opacity .14s ease}
 .rech-w:focus-within{border-color:var(--action)}
 .filtre{display:inline-flex;align-items:center;gap:6px;flex:none;white-space:nowrap;
   background:var(--f3);border:var(--t-champ) solid var(--bord);min-height:28px;border-radius:var(--r);
@@ -884,6 +908,7 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
               <div class="reg"><span>INTENSITÉ DU FILET</span><div class="opts" id="rMenuIntens"></div></div>
               <div class="reg"><span>COULEUR DE LA SÉLECTION</span><div class="opts" id="rMenuSelCoul"></div></div>
               <div class="reg"><span>ENTRÉES DU MENU</span><div id="rMenuOrdre"></div></div>
+              <div class="reg"><span>ICÔNE DE CHAQUE ENTRÉE</span><div id="rMenuIcones"></div></div>
               <div id="rMenuCouls" class="choix-z"></div>
               <div class="reg"><span>TUILES DU TABLEAU DE BORD</span><div class="opts" id="rTuiles"></div></div>
               <div class="reg"><span>COLORATION</span><div class="opts" id="rColoration"></div></div>
@@ -1265,7 +1290,7 @@ let S = { v:3, theme:"avaliance", palette:"avaliance", mode:"sombre", intensite:
           /* ⭐ Vide = le cran que le thème pose. */
           ombre:"legere", ombres:{ tuile:null, carte:null, bouton:null },
           /* ⭐ Une couleur par entrée, et chacune se retouche. Vide = celle du rang. */
-          menuCouls:{}, menuCoulUne:null, menuIntensite:"plein", menuSelCouleur:"entree",
+          menuIcones:{}, menuCouls:{}, menuCoulUne:null, menuIntensite:"plein", menuSelCouleur:"entree",
           libCarte:"couleur",
           traits:{ carte:"theme", barre:"theme", col:"theme", champ:"theme" },
           metier:{ c1:null, c2:null, c3:null, c4:null, c5:null },
@@ -1487,6 +1512,7 @@ function applique(){
     b.nextElementSibling.hidden = !o;
   });
   if ($("#rMenuOrdre")) $("#rMenuOrdre").innerHTML = ordonne("menu|");
+  peintIcones();
   /* L'image se pose APRÈS les fonds : le maillage lit la couleur calculée. */
   /* La vôtre passe devant le catalogue : c'est la seule qui n'y est pas. */
   const im = S.image === "perso" ? { k:"perso", src:S.imagePerso }
@@ -1520,7 +1546,7 @@ function applique(){
    Un menu deroulant par chose a colorer : on voit ce qu'on a, on choisit. */
 const CHEMINS = [["c1","CRM"],["c2","Recrutement"],["c3","Staffing"],["c4","Production"],["c5","Externe"]];
 const NIVEAUX = [["ok","Bon"],["warn","Alerte"],["ko","Critique"]];
-let popCoul = null, popOrd = null;
+let popCoul = null, popOrd = null, popIcone = null;
 
 function couleurDe(quoi, cle){
   if (quoi === "fond")   return S.fonds[cle] || null;
@@ -1579,6 +1605,22 @@ function peintThemes(){
   z.innerHTML = FAMILLES.map(([f, n]) => `<span class="th-f">${n}</span>` +
     THEMES.filter(t => t.f === f).map(t => `<button class="opt th" type="button" data-theme="${t.k}"
       aria-pressed="${S.theme === t.k}"><u><b style="background:${aplat(t.a)}"></b><b style="background:${aplat(t.s)}"></b></u>${t.n}</button>`).join("")).join("");
+}
+/* ⭐ Une ligne par entrée : son icône actuelle, et la bibliothèque dessous. */
+function peintIcones(){
+  const z = $("#rMenuIcones"); if (!z) return;
+  const svg = (k) => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[k] || IC.bord}</svg>`;
+  z.innerHTML = S.menu.map(o => {
+    const d = MENU_DEFAUT.find(x => x.k === o.k); if (!d) return "";
+    const cour = S.menuIcones[o.k] || d.ic, ouvert = popIcone === o.k;
+    return `<div class="ic-l${ouvert ? " ouvert" : ""}">
+      <button class="ic-b" type="button" data-icone="${o.k}" aria-expanded="${ouvert}">${svg(cour)}</button>
+      <span>${esc(d.n || nomEcran(d.e))}</span>
+      ${ouvert ? `<div class="ic-p">${ICONES.map(i =>
+        `<button type="button" data-posei="${o.k}|${i.k}" title="${esc(i.n)}"${
+          i.k === cour ? ' aria-current="true"' : ""}>${svg(i.k)}</button>`).join("")}</div>` : ""}
+    </div>`;
+  }).join("");
 }
 function peintChoix(){
   /* ⭐ Une couleur par entrée du menu — le même menu déroulant que partout. */
@@ -1692,6 +1734,12 @@ boutons("#rRail", RAILS, "rail", false);
 $("#rOutils").innerHTML = OUTILS.map(o => `<button class="opt" type="button" data-o="${o.k}" aria-pressed="true">${o.n}</button>`).join("");
 
 document.addEventListener("click", e => {
+  const ib = e.target.closest("[data-icone]");
+  if (ib){ e.preventDefault(); popIcone = popIcone === ib.dataset.icone ? null : ib.dataset.icone; peintIcones(); return; }
+  const ip = e.target.closest("[data-posei]");
+  if (ip){ e.preventDefault(); const [k, i] = ip.dataset.posei.split("|");
+    S.menuIcones[k] = i; popIcone = null; applique(); return; }
+  if (popIcone && !e.target.closest(".ic-l")){ popIcone = null; peintIcones(); }
   const om = e.target.closest("[data-om]");
   if (om){ S.ombres[om.dataset.om] = om.dataset.v || null; applique(); return; }
   const tp = e.target.closest("[data-tp]");
@@ -1733,6 +1781,67 @@ document.addEventListener("click", e => {
 });
 
 /* ─── barre latérale ─── */
+/* ═══ LA BIBLIOTHÈQUE D'ICÔNES ═══
+   ⛔ Toutes au même tracé : 16×16, trait de 1,3, bouts ronds. Une icône qui
+   ne suit pas la grille se voit tout de suite au milieu des autres.
+   ⭐ Chaque entrée de menu choisit la sienne — POL `ui.menu.icones`. */
+const ICONES = [
+  { k:"p_une", n:"Une personne", d:'<circle cx="8" cy="5" r="2.6"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/>' },
+  { k:"p_deux", n:"Deux personnes", d:'<circle cx="5.5" cy="5" r="2.1"/><circle cx="11" cy="5.5" r="1.8"/><path d="M2 13.5c0-2 1.6-3.6 3.5-3.6S9 11.5 9 13.5M10 9.8c1.9 0 3 1.5 3 3.5"/>' },
+  { k:"p_groupe", n:"Un groupe", d:'<circle cx="8" cy="4.6" r="1.9"/><circle cx="3.4" cy="6.6" r="1.5"/><circle cx="12.6" cy="6.6" r="1.5"/><path d="M4.6 13c0-1.9 1.5-3.4 3.4-3.4s3.4 1.5 3.4 3.4M1 12.4c0-1.5 1-2.6 2.4-2.6M15 12.4c0-1.5-1-2.6-2.4-2.6"/>' },
+  { k:"p_plus", n:"Ajouter quelqu'un", d:'<circle cx="6.5" cy="5" r="2.4"/><path d="M2 14c0-2.6 2-4.6 4.5-4.6 1 0 1.9.3 2.6.8"/><path d="M12 8.5v5M9.5 11h5"/>' },
+  { k:"p_coche", n:"Personne validee", d:'<circle cx="6.5" cy="5" r="2.4"/><path d="M2 14c0-2.6 2-4.6 4.5-4.6.8 0 1.5.2 2.2.5"/><path d="M9.6 11.6 11.4 13.4 14.6 9.8"/>' },
+  { k:"p_carte", n:"Fiche personne", d:'<rect x="1.8" y="3" width="12.4" height="10" rx="1.2"/><circle cx="5.6" cy="7" r="1.6"/><path d="M3 11.4c0-1.4 1.2-2.4 2.6-2.4s2.6 1 2.6 2.4M10 6.6h3M10 9.2h3"/>' },
+  { k:"o_tour", n:"Societe", d:'<path d="M2 14V3l5-1v12M7 14V6l7-1v9M4 6h1M4 9h1M10 8h1M10 11h1"/>' },
+  { k:"o_immeuble", n:"Immeuble", d:'<rect x="3" y="2.5" width="10" height="11" rx="1"/><path d="M5.5 5h1.5M9 5h1.5M5.5 8h1.5M9 8h1.5M6.8 13.5v-2.6h2.4v2.6"/>' },
+  { k:"o_arbre", n:"Organigramme", d:'<rect x="6" y="1.8" width="4" height="3" rx=".6"/><rect x="1.6" y="11.2" width="4" height="3" rx=".6"/><rect x="10.4" y="11.2" width="4" height="3" rx=".6"/><path d="M8 4.8v3.4M3.6 11.2V8.2h8.8v3"/>' },
+  { k:"o_agence", n:"Agence", d:'<path d="M2 14V6l6-4 6 4v8"/><path d="M6 14V9.5h4V14"/>' },
+  { k:"o_globe", n:"International", d:'<circle cx="8" cy="8" r="6"/><path d="M2 8h12M8 2c1.8 2 2.6 4 2.6 6s-.8 4-2.6 6c-1.8-2-2.6-4-2.6-6S6.2 4 8 2z"/>' },
+  { k:"o_drapeau", n:"Pays", d:'<path d="M3.6 14V2.4M3.6 3h8.8l-1.8 3 1.8 3H3.6"/>' },
+  { k:"c_poignee", n:"Accord", d:'<path d="M1.6 8.4 4 6l2.4 1.4L8.8 6l2.4 1.6L14 5.6"/><path d="M4 6v4.4c0 .7.6 1.2 1.3 1.2h1.5M11.2 7.6v3.8c0 .7-.6 1.2-1.3 1.2H8.4"/>' },
+  { k:"c_cible", n:"Besoin", d:'<circle cx="8" cy="8" r="5.6"/><circle cx="8" cy="8" r="2.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/>' },
+  { k:"c_entonnoir", n:"Pipeline", d:'<path d="M1.8 3h12.4l-4.7 5.4V14L6.5 12.4V8.4z"/>' },
+  { k:"c_panier", n:"Achats", d:'<path d="M2 3h1.8l1.8 7.4h6.6L14 5.4H4.4"/><circle cx="6.4" cy="13" r="1"/><circle cx="11.6" cy="13" r="1"/>' },
+  { k:"c_etiquette", n:"Offre", d:'<path d="M8.2 1.8H14V7.6l-6.4 6.4a1 1 0 0 1-1.4 0L1.8 9.6a1 1 0 0 1 0-1.4z"/><circle cx="11.2" cy="4.6" r="1.1"/>' },
+  { k:"c_euro", n:"Montant", d:'<circle cx="8" cy="8" r="6"/><path d="M10.6 5.6a3.4 3.4 0 1 0 0 4.8M4.8 7.2h4M4.8 9h4"/>' },
+  { k:"d_dossier", n:"Projet", d:'<path d="M2 4.6A1.6 1.6 0 0 1 3.6 3h3L8 4.6h4.4A1.6 1.6 0 0 1 14 6.2v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>' },
+  { k:"d_fichier", n:"Document", d:'<path d="M3.6 2h6L13 5.4V14H3.6z"/><path d="M9 2v4h4M5.6 9h5M5.6 11.4h3"/>' },
+  { k:"d_mallette", n:"Mission", d:'<rect x="1.8" y="4.6" width="12.4" height="8.6" rx="1.2"/><path d="M5.6 4.6V3.2a1 1 0 0 1 1-1h2.8a1 1 0 0 1 1 1v1.4M1.8 8.4h12.4"/>' },
+  { k:"d_engrenage", n:"Parametres", d:'<circle cx="8" cy="8" r="2.1"/><path d="M8 1.5v2M8 12.5v2M14.5 8h-2M3.5 8h-2M12.6 3.4l-1.4 1.4M4.8 11.2l-1.4 1.4M12.6 12.6l-1.4-1.4M4.8 4.8 3.4 3.4"/>' },
+  { k:"d_cles", n:"Livrable", d:'<path d="M9.6 6.4a3 3 0 1 0-3.2 3l-.6.6H4.4v1.4H3v1.4H1.6v-1.8l4.2-4.2a3 3 0 0 0 3.8 0z"/><circle cx="10.6" cy="5.4" r="1"/>' },
+  { k:"d_boite", n:"Produit", d:'<path d="M8 1.8 14 5v6l-6 3.2L2 11V5z"/><path d="M2 5l6 3.2L14 5M8 8.2V14.2"/>' },
+  { k:"t_horloge", n:"Temps", d:'<circle cx="8" cy="8" r="6"/><path d="M8 4.4V8l2.6 1.6"/>' },
+  { k:"t_calendrier", n:"Calendrier", d:'<rect x="2.4" y="3.4" width="11.2" height="10.2" rx="1"/><path d="M2.4 6.6h11.2M5.4 2v3M10.6 2v3"/>' },
+  { k:"t_sablier", n:"Delai", d:'<path d="M4 2h8M4 14h8M5.2 2v2.6L8 8l2.8-3.4V2M5.2 14v-2.6L8 8l2.8 3.4V14"/>' },
+  { k:"t_planning", n:"Plan de charge", d:'<rect x="1.8" y="3.4" width="12.4" height="10.2" rx="1"/><path d="M1.8 6.6h12.4M4.6 9h3M4.6 11.4h6M9.4 9h2"/>' },
+  { k:"t_absence", n:"Absence", d:'<rect x="2.4" y="3.4" width="11.2" height="10.2" rx="1"/><path d="M2.4 6.6h11.2M5.4 2v3M10.6 2v3M6.2 10.4l3.6 0"/>' },
+  { k:"t_rythme", n:"Recurrence", d:'<path d="M2.6 7.2a5.4 5.4 0 0 1 9.2-3.2L14 6"/><path d="M13.4 8.8a5.4 5.4 0 0 1-9.2 3.2L2 10"/><path d="M14 2.6V6h-3.4M2 13.4V10h3.4"/>' },
+  { k:"m_barres", n:"Indicateurs", d:'<path d="M2 13.4h12M4.4 13.4V8.6M7.6 13.4V4.6M10.8 13.4V7M14 13.4V2.6" stroke-linecap="round"/>' },
+  { k:"m_courbe", n:"Tendance", d:'<path d="M2 12.4 6 7.6l3 2.6 5-6.6"/><path d="M14 3.6h-3.4M14 3.6V7"/>' },
+  { k:"m_secteur", n:"Repartition", d:'<circle cx="8" cy="8" r="5.8"/><path d="M8 2.2V8l4.6 3.4"/>' },
+  { k:"m_jauge", n:"Occupation", d:'<path d="M2.2 11.6a6 6 0 1 1 11.6 0"/><path d="M8 11.6 10.8 6.6"/><circle cx="8" cy="11.6" r=".9"/>' },
+  { k:"m_pile", n:"Volume", d:'<path d="M8 2 14 4.6 8 7.2 2 4.6z"/><path d="M2 8l6 2.6L14 8M2 11.4 8 14l6-2.6"/>' },
+  { k:"e_coche", n:"Valide", d:'<path d="M2.6 8.4 6 11.8 13.4 4.4"/>' },
+  { k:"e_croix", n:"Refuse", d:'<path d="M3.6 3.6l8.8 8.8M12.4 3.6l-8.8 8.8"/>' },
+  { k:"e_alerte", n:"Alerte", d:'<path d="M8 2.2 14.4 13H1.6z"/><path d="M8 6.4v3.2M8 11.4v.1"/>' },
+  { k:"e_cloche", n:"Notification", d:'<path d="M8 2a4 4 0 0 0-4 4v3l-1.5 2.5h11L12 9V6a4 4 0 0 0-4-4z"/><path d="M6.5 13.5a1.5 1.5 0 0 0 3 0"/>' },
+  { k:"e_info", n:"Information", d:'<circle cx="8" cy="8" r="6"/><path d="M8 7.2v4M8 4.9v.1"/>' },
+  { k:"e_cadenas", n:"Verrouille", d:'<rect x="3" y="7" width="10" height="7" rx="1.2"/><path d="M5.4 7V5a2.6 2.6 0 0 1 5.2 0v2"/>' },
+  { k:"e_bouclier", n:"Droits", d:'<path d="M8 1.8 13.5 4v4.2c0 3-2.3 5.3-5.5 6-3.2-.7-5.5-3-5.5-6V4z"/><path d="M5.8 8 7.4 9.6l3-3.4"/>' },
+  { k:"e_archive", n:"Archive", d:'<path d="M2 3.6h12v3H2z"/><path d="M3.4 6.6V13.6h9.2V6.6M6.4 9.4h3.2"/>' },
+  { k:"n_grille", n:"Tableau de bord", d:'<path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z"/>' },
+  { k:"n_liste", n:"Liste", d:'<path d="M2 4h12M2 8h12M2 12h12"/>' },
+  { k:"n_lignes", n:"Journal", d:'<path d="M3 3.6h10M3 8h10M3 12.4h6"/><circle cx="12" cy="12.4" r="1.5"/>' },
+  { k:"n_colonnes", n:"Kanban", d:'<rect x="2" y="3" width="3.4" height="10" rx=".6"/><rect x="6.3" y="3" width="3.4" height="7" rx=".6"/><rect x="10.6" y="3" width="3.4" height="11" rx=".6"/>' },
+  { k:"n_loupe", n:"Recherche", d:'<circle cx="7" cy="7" r="4.4"/><path d="M10.2 10.2 14 14"/>' },
+  { k:"n_filtre", n:"Filtre", d:'<path d="M2 4h12M4 8h8M6.4 12h3.2"/>' },
+  { k:"n_etoile", n:"Favori", d:'<path d="M8 1.8 9.9 5.9l4.5.5-3.3 3 .9 4.4L8 11.6l-4 2.2.9-4.4-3.3-3 4.5-.5z"/>' },
+  { k:"n_lien", n:"Lien", d:'<path d="M6.6 9.4a2.8 2.8 0 0 0 4 0l2.2-2.2a2.8 2.8 0 1 0-4-4l-1 1"/><path d="M9.4 6.6a2.8 2.8 0 0 0-4 0L3.2 8.8a2.8 2.8 0 1 0 4 4l1-1"/>' },
+  { k:"n_export", n:"Exporter", d:'<path d="M8 1.8v8M5 6.8l3 3 3-3"/><path d="M2.6 11.6v2.2h10.8v-2.2"/>' },
+  { k:"n_import", n:"Importer", d:'<path d="M8 9.8v-8M5 4.8l3-3 3 3"/><path d="M2.6 11.6v2.2h10.8v-2.2"/>' },
+  { k:"n_eclair", n:"Action rapide", d:'<path d="M9 1.6 3.4 9h4l-.4 5.4L12.6 7h-4z"/>' },
+];
+/* Le catalogue nourrit `IC` : un seul endroit, deux usages. */
 const IC = {
   ct:'<circle cx="8" cy="5.5" r="2.5"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/><path d="M12 3.5h2.5M13.2 2.3v2.4"/>',
   abs:'<rect x="2.5" y="3.5" width="11" height="10" rx="1"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"/><path d="M6 10l4 0"/>',
@@ -1756,6 +1865,7 @@ const IC = {
   temps:'<circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/>',
   regl:'<circle cx="8" cy="8" r="2"/><path d="M8 1.5v2M8 12.5v2M14.5 8h-2M3.5 8h-2M12.6 3.4l-1.4 1.4M4.8 11.2l-1.4 1.4M12.6 12.6l-1.4-1.4M4.8 4.8 3.4 3.4"/>'
 };
+ICONES.forEach(o => { IC[o.k] = o.d; });
 $("#rep").addEventListener("click", () => {
   app.dataset.nav = app.dataset.nav === "icones" ? "ouvert" : "icones";
   try { localStorage.setItem("ava-nav", app.dataset.nav); } catch(e){}
@@ -2304,10 +2414,9 @@ function barreFiltres(e, n){
   return `<div class="barre-f">
     ${(e.filtres || []).length ? `<button class="filtre" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 4h12M4 8h8M6.5 12h3"/></svg> Filtres</button>` : ""}
     ${(e.filtres || []).map(f => `<button class="filtre" type="button">${esc(f)} <b>▾</b></button>`).join("")}
-    <button class="filtre" type="button" id="btnRech" aria-expanded="${rechOuverte}"
-      title="Rechercher" aria-label="Rechercher"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg></button>
-    <span class="rech-w"${rechOuverte ? "" : " hidden"}>
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg>
+    <span class="rech-w${rechOuverte ? " ouverte" : ""}">
+      <button class="rech-l" type="button" id="btnRech" aria-expanded="${rechOuverte}"
+        title="Rechercher" aria-label="Rechercher"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg></button>
       <input class="rech" placeholder="Rechercher dans ${esc(e.nom.toLowerCase())}" aria-label="Rechercher"></span>
     <span class="grow"></span>
     <span class="pagin">1 – ${n} sur ${n}</span>
@@ -2487,7 +2596,7 @@ function gReglages(e){
   if (e.mode === "politiques"){
     const fam = {};
     MONDE.politique.forEach(p => (fam[p.famille] = fam[p.famille] || []).push(p));
-    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 160 ; en voici un extrait.</p>` +
+    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 161 ; en voici un extrait.</p>` +
       Object.keys(fam).map(f => `<div class="pan" style="margin-bottom:9px"><h2>${esc(f.toUpperCase())}</h2><div class="in"><div class="tb">
         <table><thead><tr><th>CLÉ</th><th>VALEUR</th><th>CE QUE ÇA CHANGE</th><th>SOURCE</th></tr></thead><tbody>` +
         fam[f].map(p => `<tr class="${p.rouge ? "rouge" : ""}"><td><code class="cle">${esc(p.cle)}</code></td>
@@ -2802,7 +2911,8 @@ function marqueur(ic, metier, rang, cle){
   if (S.menuPastille !== "non"){
     h += `<i class="mq-f" style="background:${couleurEntree(metier, rang, cle)}"></i>`;
   }
-  h += `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[ic] || IC.bord}</svg>`;
+  const ch = S.menuIcones[cle] || ic;
+  h += `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[ch] || IC.bord}</svg>`;
   return h;
 }
 /* Une entree de menu mene a son ecran, ou au premier de ses sous-ecrans. */
