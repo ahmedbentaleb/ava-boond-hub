@@ -1010,8 +1010,31 @@ const POLICES = [
    d'Avaliance se déposent dans `fonds/` et s'ajoutent ici, une ligne chacun. */
 const IMAGES = [
   { k:"aucune",   n:"AUCUNE",   src:null },
-  { k:"maillage", n:"MAILLAGE", src:"@dessin" }
+  { k:"maillage", n:"MAILLAGE", src:"@dessin" },
+  { k:"01_ville_reseau_argent", n:"VILLE RÉSEAU", src:"fonds/01_ville_reseau_argent.jpg" },
+  { k:"02_globe_connexions_argent", n:"GLOBE", src:"fonds/02_globe_connexions_argent.jpg" },
+  { k:"03_flux_vers_horizon", n:"FLUX", src:"fonds/03_flux_vers_horizon.jpg" },
+  { k:"04_modules_metier_connectes", n:"MODULES", src:"fonds/04_modules_metier_connectes.jpg" },
+  { k:"05_rubans_donnees_argent", n:"RUBANS", src:"fonds/05_rubans_donnees_argent.jpg" },
+  { k:"06_aluminium_brosse", n:"ALUMINIUM", src:"fonds/06_aluminium_brosse.jpg" },
+  { k:"07_micro_grille_argent", n:"MICRO-GRILLE", src:"fonds/07_micro_grille_argent.jpg" },
+  { k:"08_verre_metal_faconne", n:"VERRE", src:"fonds/08_verre_metal_faconne.jpg" },
+  { k:"09_alliage_graphite_argent", n:"GRAPHITE", src:"fonds/09_alliage_graphite_argent.jpg" },
+  { k:"10_maillage_donnees_neutre", n:"NAPPE", src:"fonds/10_maillage_donnees_neutre.jpg" },
+  { k:"11_colonne_ailettes_argent", n:"AILETTES", src:"fonds/11_colonne_ailettes_argent.jpg" },
+  { k:"12_colonne_particules_donnees", n:"PARTICULES", src:"fonds/12_colonne_particules_donnees.jpg" },
+  { k:"13_colonne_architecture_reseau", n:"ARCHITECTURE", src:"fonds/13_colonne_architecture_reseau.jpg" },
+  { k:"14_colonne_hierarchie_metallique", n:"HIÉRARCHIE", src:"fonds/14_colonne_hierarchie_metallique.jpg" },
+  { k:"15_colonne_arc_minimal", n:"ARC", src:"fonds/15_colonne_arc_minimal.jpg" },
+  { k:"16_horizon_argent_discret", n:"HORIZON", src:"fonds/16_horizon_argent_discret.jpg" },
+  { k:"17_paysage_donnees_neutre", n:"PAYSAGE", src:"fonds/17_paysage_donnees_neutre.jpg" },
+  { k:"18_reseau_business_satellite", n:"SATELLITE", src:"fonds/18_reseau_business_satellite.jpg" },
+  { k:"19_skyline_aluminium_minimal", n:"SKYLINE", src:"fonds/19_skyline_aluminium_minimal.jpg" },
+  { k:"20_orchestration_couches_argent", n:"COUCHES", src:"fonds/20_orchestration_couches_argent.jpg" }
 ];
+/* ⛔ Une image en fichier ne charge PAS dans l'artefact Claude : il bloque
+   toute image externe. Sur le hub elle charge ; ailleurs le fond reste nu et
+   `MAILLAGE`, qui se dessine, reste le seul qui marche aux deux endroits. */
 /* Combien le voile cache l'image. ⛔ Au-delà de 75 %, autant ne rien mettre. */
 const VOILES = [{k:"leger",n:"LÉGER",v:.35},{k:"normal",n:"NORMAL",v:.55},
                 {k:"fort",n:"FORT",v:.72},{k:"tres_fort",n:"TRÈS FORT",v:.86}];
