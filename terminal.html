@@ -258,9 +258,20 @@ select:hover{border-color:var(--t4)}
 .opt:hover{border-color:var(--t4);color:var(--t1)}
 .opt[aria-pressed="true"]{border-color:var(--action);color:var(--action-encre);background:color-mix(in srgb,var(--action) 11%,transparent)}
 .opt u{text-decoration:none;display:flex;gap:2px}
-.opt u b{width:8px;height:8px;display:block}
-.expert{margin-top:12px;padding-top:11px;border-top:1px dashed var(--bord)}
-.expert[hidden]{display:none}
+.opt u b{width:9px;height:9px;display:block;border-radius:50%}
+.opt .aa{font-style:normal;font-size:13px;line-height:1;width:20px;text-align:center;color:var(--t1)}
+.opt .fd{width:12px;height:12px;flex:none;border-radius:50%;border:1px solid var(--bord)}
+.fd-sombre{background:#0a0a10}
+.fd-gris{background:linear-gradient(90deg,#2a2a34 50%,#fff 50%)}
+.fd-clair{background:#fff}
+/* Le panneau se parcourt d'un coup d'oeil : des lignes serrées, des titres discrets. */
+#panApparence .reg-row{gap:9px}
+#panApparence .reg>span{font-size:8.5px;letter-spacing:.9px;color:var(--t4)}
+#panApparence .opt{font-size:9.5px;letter-spacing:.5px;padding:4px 8px;min-height:26px}
+#panApparence .in{padding:10px 12px}
+/* ⛔ Plus de mode expert : un seul panneau, tout dedans. Cacher la moitie
+   des reglages derriere un bouton, c'est pretendre qu'ils sont dangereux. */
+.expert{margin-top:11px;padding-top:11px;border-top:1px dashed var(--bord)}
 
 /* ─── KPI ─── */
 .kpi{border-radius:var(--r);padding:calc(9px*var(--dens)) 12px calc(10px*var(--dens));min-width:0;--c:var(--action);--c-encre:var(--action-encre)}
@@ -538,10 +549,6 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
   <span class="marque-h">
     <svg class="logo" viewBox="0 0 20 20" fill="none"><path d="M2 18 12 2h3L5 18z" fill="currentColor"/><path d="M9 18 18 4h-3L6 18z" fill="currentColor" opacity=".45"/></svg>
     <b>AVA MANAGER</b></span>
-  <span class="banc" title="Banc d'essai : les 26 écrans lisent le monde de démonstration sans recharger la page">
-    <span class="live">EN DIRECT</span>
-    <span class="chip" title="La date du monde de démonstration. Tout ce qui est « en retard » ou « dans 3 semaines » se compte par rapport à elle">MONDE <b>06/04/2027</b></span>
-  </span>
   <span class="grow"></span>
   <label class="cherche">
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg>
@@ -584,9 +591,8 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
             <div class="reg"><span>ÉPAISSEUR DES TRAITS</span><div class="opts" id="rEpaisseur"></div></div>
             <div class="reg"><span>MARQUEUR DU MENU</span><div class="opts" id="rMarqueur"></div></div>
             <div class="reg"><span>EXPLICATIONS</span><div class="opts" id="rNotes"></div></div>
-            <div class="reg"><span>&nbsp;</span><div class="opts"><button class="opt" type="button" id="btnExpert">MODE EXPERT</button></div></div>
           </div>
-          <div class="expert" id="expert" hidden>
+          <div class="expert" id="expert">
             <div class="reg-row">
               <div class="reg"><span>ACTION — CE SUR QUOI ON CLIQUE</span><div class="opts" id="rAction"></div></div>
               <div class="reg"><span>STRUCTURE — TITRES ET FILETS</span><div class="opts" id="rStruct"></div></div>
@@ -738,7 +744,7 @@ const OUTILS = [
 
 let S = { palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
           action:null, struct:null, angle:"carre", pastille:"contour", bouton:"contour", carte:"bande", coloration:"une",
-          rail:"droite", outils:["alertes","notes","ia","todo","indic","cal"], outilOuvert:"alertes", dernierOutil:"alertes", expert:false,
+          rail:"droite", outils:["alertes","notes","ia","todo","indic","cal"], outilOuvert:"alertes", dernierOutil:"alertes",
           marqueur:"icone", notes:"masquees", menu:null, deplies:["crm","projets","planning"] };
 /* ⚠️ La cle porte un numero : un menu enregistre ne gagne pas les entrees
    ajoutees depuis. On change de cle quand le catalogue change. */
@@ -808,29 +814,37 @@ function applique(){
       ? getComputedStyle(root).getPropertyValue("--t2").trim() : c);
   });
   document.querySelectorAll("[data-r]").forEach(b => b.setAttribute("aria-pressed", String(S[b.dataset.r] === b.dataset.v)));
-  document.querySelectorAll("[data-r='action'] b,[data-r='struct'] b").forEach(b => { b.style.background = teinte(b.dataset.c, S.mode); });
+  document.querySelectorAll("[data-r] b[data-c]").forEach(b => { b.style.background = aplat(b.dataset.c); });
   document.querySelectorAll("[data-o]").forEach(b => b.setAttribute("aria-pressed", String(S.outils.includes(b.dataset.o))));
   peintMenu();
   peintMoi();
   peintRole();
   rail();
-  $("#expert").hidden = !S.expert;
-  $("#btnExpert").setAttribute("aria-pressed", String(S.expert));
-  $("#btnExpert").textContent = S.expert ? "MASQUER L'EXPERT" : "MODE EXPERT";
-  if ($("#etat")) $("#etat").textContent = `${P.n} · ${S.mode.toUpperCase()} · ${I.n} · ${POLICES.find(p=>p.k===S.police).n} · TRAITS ${E.n} · ${S.outils.length} OUTILS`
-    + (S.action || S.struct ? " · RETOUCHÉE" : "") + (S.coloration === "metier" ? " · PAR MÉTIER" : "");
+  if ($("#etat")) $("#etat").textContent = `${P.n} · ${MODES.find(m=>m.k===S.mode).n}`
+    + (S.action || S.struct ? " · RETOUCHÉE" : "");
   try { localStorage.setItem("ava-term6", JSON.stringify(S)); } catch(e){}
 }
-function boutons(id, liste, champ, pastille){
-  $(id).innerHTML = liste.map(o => `<button class="opt" type="button" data-r="${champ}" data-v="${o.k}" aria-pressed="false">${
-    pastille ? `<u><b data-c="${o.k}"></b></u>` : ""}${o.n}</button>`).join("");
+/* ⭐ « On préfère voir que lire » — Hamada, 19/09.
+   Une palette montre ses deux couleurs, une police s'écrit dans sa police,
+   un fond montre son fond. Le nom reste, en second. */
+function boutons(id, liste, champ, quoi){
+  if (!$(id)) return;
+  $(id).innerHTML = liste.map(o => {
+    let dedans = "";
+    if (quoi === "couleur")      dedans = `<u><b data-c="${o.k}"></b></u>${o.n}`;
+    else if (quoi === "palette") dedans = `<u><b data-c="${o.a}"></b><b data-c="${o.s}"></b></u>${o.n}`;
+    else if (quoi === "police")  dedans = `<i class="aa" style="font-family:${o.v}">Aa</i>${o.n}`;
+    else if (quoi === "fond")    dedans = `<i class="fd fd-${o.k}"></i>${o.n}`;
+    else                          dedans = o.n;
+    return `<button class="opt" type="button" data-r="${champ}" data-v="${o.k}" aria-pressed="false">${dedans}</button>`;
+  }).join("");
 }
-boutons("#rPalette", PALETTES, "palette", false);
-boutons("#rMode", MODES, "mode", false);
+boutons("#rPalette", PALETTES, "palette", "palette");
+boutons("#rMode", MODES, "mode", "fond");
 boutons("#rIntensite", INTENSITES, "intensite", false);
-boutons("#rPolice", POLICES, "police", false);
-boutons("#rAction", COULEURS, "action", true);
-boutons("#rStruct", COULEURS, "struct", true);
+boutons("#rPolice", POLICES, "police", "police");
+boutons("#rAction", COULEURS, "action", "couleur");
+boutons("#rStruct", COULEURS, "struct", "couleur");
 boutons("#rAngle", ANGLES, "angle", false);
 boutons("#rPastille", PASTILLES, "pastille", false);
 boutons("#rBouton", BOUTONS, "bouton", false);
@@ -846,7 +860,6 @@ $("#rOutils").innerHTML = OUTILS.map(o => `<button class="opt" type="button" dat
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-r]");
   if (b){ S[b.dataset.r] = b.dataset.v; if (b.dataset.r === "palette"){ S.action = null; S.struct = null; } applique(); return; }
-  if (e.target.closest("#btnExpert")){ S.expert = !S.expert; applique(); return; }
   const o = e.target.closest("[data-o]");
   if (o){ const k = o.dataset.o;
     S.outils = S.outils.includes(k) ? S.outils.filter(x => x !== k) : [...S.outils, k];
