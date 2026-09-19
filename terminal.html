@@ -336,6 +336,30 @@ a.kpi:hover{filter:brightness(1.18)}
 .ch-p button:hover{background:var(--survol);color:var(--t1)}
 .ch-p button[aria-current]{color:var(--action-encre);font-weight:600}
 
+/* ═══ LE PATRON « CATALOGUE + SÉLECTION ORDONNÉE » ═══
+   Quatrième, cinquième et sixième fois : les entrées du menu, les colonnes
+   d'une liste, les onglets d'une fiche. ⛔ Une case pour voir ou ne pas voir,
+   deux flèches pour l'ordre. Rien de plus : c'est ce qui le rend réutilisable. */
+.ord-z{display:flex;flex-direction:column;gap:1px;max-height:290px;overflow:auto}
+.ord{display:flex;align-items:center;gap:4px;padding:1px 0;font-size:10px;color:var(--t2)}
+.ord.off{opacity:.4}
+.ord>span{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ord button{width:20px;height:20px;flex:none;display:grid;place-items:center;font-size:9px;
+  border-radius:var(--r);border:var(--t-champ) solid var(--bord);background:var(--f3);color:var(--t3)}
+.ord button:hover:not([disabled]){border-color:var(--action);color:var(--action-encre)}
+.ord button[disabled]{opacity:.28;cursor:not-allowed}
+.ord button[aria-pressed="true"]{color:var(--action-encre);border-color:var(--action)}
+.w-ord{position:relative}
+.pop-ord{position:absolute;right:0;top:calc(100% + 5px);z-index:95;width:228px;text-align:left;
+  background:var(--f2);border:var(--t-carte) solid var(--bord);border-radius:var(--r);padding:8px;
+  box-shadow:0 8px 28px rgba(0,0,0,.45)}
+.pop-ord[hidden]{display:none}
+.pop-ord>h4{font-size:8px;letter-spacing:1.2px;color:var(--t4);font-weight:600;padding-bottom:6px}
+.pop-ord .raz{margin-top:6px;width:100%;height:22px;font-size:8.5px;letter-spacing:1px;color:var(--t3);
+  border:var(--t-champ) solid var(--bord);border-radius:var(--r)}
+.pop-ord .raz:hover{border-color:var(--action);color:var(--action-encre)}
+#rMenuOrdre .raz{margin-top:6px;width:100%;height:22px;font-size:8.5px;letter-spacing:1px;color:var(--t3);
+  border:var(--t-champ) solid var(--bord);border-radius:var(--r)}
 /* ─── réglages ─── */
 .reg-row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .reg{display:flex;flex-direction:column;gap:5px;min-width:0}
@@ -767,6 +791,7 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
               <div class="reg"><span>CE QUI PREND LA COULEUR</span><div class="opts" id="rMenuIcone"></div></div>
               <div class="reg"><span>TITRES</span><div class="opts" id="rMenuTitre"></div></div>
               <div class="reg"><span>PASTILLES DE COULEUR</span><div class="opts" id="rMenuPastille"></div></div>
+              <div class="reg"><span>ENTRÉES DU MENU</span><div id="rMenuOrdre"></div></div>
               <div class="reg"><span>TUILES DU TABLEAU DE BORD</span><div class="opts" id="rTuiles"></div></div>
               <div class="reg"><span>COLORATION</span><div class="opts" id="rColoration"></div></div>
             </div>
@@ -1022,6 +1047,9 @@ let S = { v:2, theme:"avaliance", palette:"avaliance", mode:"sombre", intensite:
           /* Le survol et la selection sont des couleurs comme les autres. */
           survol:null, selection:null, selStyle:"fond",
           bordCouleur:null, navLargeur:"normale", tuileClic:"oui", ecranCadre:"aucun",
+          /* ⭐ Une clé PAR ÉCRAN — Hamada, 19/09. Le registre reste lisible, et
+             un écran se règle sans toucher aux dix autres. Vide = le défaut. */
+          cols:{}, onglets:{},
           traits:{ carte:"theme", barre:"theme", col:"theme", champ:"theme" },
           metier:{ c1:null, c2:null, c3:null, c4:null, c5:null },
           sens:{ ok:null, warn:null, ko:null }, deplies:["crm","projets","planning"] };
@@ -1176,6 +1204,7 @@ function applique(){
     b.setAttribute("aria-expanded", String(o));
     b.nextElementSibling.hidden = !o;
   });
+  if ($("#rMenuOrdre")) $("#rMenuOrdre").innerHTML = ordonne("menu|");
   peintMenu();
   peintThemes();
   peintChoix();
@@ -1198,7 +1227,7 @@ function applique(){
    Un menu deroulant par chose a colorer : on voit ce qu'on a, on choisit. */
 const CHEMINS = [["c1","CRM"],["c2","Recrutement"],["c3","Staffing"],["c4","Production"],["c5","Externe"]];
 const NIVEAUX = [["ok","Bon"],["warn","Alerte"],["ko","Critique"]];
-let popCoul = null;
+let popCoul = null, popOrd = null;
 
 function couleurDe(quoi, cle){
   if (quoi === "fond")   return S.fonds[cle] || null;
@@ -1315,6 +1344,23 @@ boutons("#rRail", RAILS, "rail", false);
 $("#rOutils").innerHTML = OUTILS.map(o => `<button class="opt" type="button" data-o="${o.k}" aria-pressed="true">${o.n}</button>`).join("");
 
 document.addEventListener("click", e => {
+  const pp = e.target.closest("[data-pop]");
+  if (pp){ e.preventDefault(); popOrd = popOrd === pp.dataset.pop ? null : pp.dataset.pop; peindre(); return; }
+  const od = e.target.closest("[data-ord]");
+  if (od){ e.preventDefault();
+    const i = od.dataset.ord.lastIndexOf("|"), sc = od.dataset.ord.slice(0, i), k = od.dataset.ord.slice(i + 1);
+    const cur = selDe(sc);
+    poseSel(sc, cur.includes(k) ? cur.filter(x => x !== k) : cur.concat(k));
+    peindre(); return; }
+  const mv = e.target.closest("[data-mv]");
+  if (mv){ e.preventDefault();
+    const pa = mv.dataset.mv.split("|"), d = +pa.pop(), k = pa.pop(), sc = pa.join("|");
+    const cur = selDe(sc).slice(), i = cur.indexOf(k);
+    if (i >= 0 && i + d >= 0 && i + d < cur.length){ cur.splice(i + d, 0, cur.splice(i, 1)[0]); poseSel(sc, cur); }
+    peindre(); return; }
+  const rz = e.target.closest("[data-raz]");
+  if (rz){ e.preventDefault(); poseSel(rz.dataset.raz, defautDe(rz.dataset.raz)); peindre(); return; }
+  if (popOrd && !e.target.closest(".w-ord")){ popOrd = null; peindre(); return; }
   const ts = e.target.closest("[data-ts]");
   if (ts){ S.traits[ts.dataset.ts] = ts.dataset.v; applique(); return; }
   const b = e.target.closest("[data-r]");
@@ -1909,8 +1955,11 @@ function barreFiltres(e, n){
       <input class="rech" placeholder="Rechercher dans ${esc(e.nom.toLowerCase())}" aria-label="Rechercher"></span>
     <span class="grow"></span>
     <span class="pagin">1 – ${n} sur ${n}</span>
-    <button class="filtre" type="button" title="Colonnes affichées" aria-label="Colonnes affichées">
+    ${e.cols ? `<span class="w-ord"><button class="filtre" type="button" data-pop="cols|${ECRAN}"
+      aria-expanded="${popOrd === "cols|" + ECRAN}" title="Colonnes affichées" aria-label="Colonnes affichées">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="2.2"/><path d="M8 1.6v2M8 12.4v2M1.6 8h2M12.4 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M12.5 3.5l-1.4 1.4M4.9 11.1l-1.4 1.4"/></svg></button>
+      <div class="pop-ord"${popOrd === "cols|" + ECRAN ? "" : " hidden"}><h4>COLONNES AFFICHÉES</h4>${
+        popOrd === "cols|" + ECRAN ? ordonne("cols|" + ECRAN) : ""}</div></span>` : ""}
     ${dispo.length > 1 ? `<span class="vues">${dispo.map(k => { const v = VUES.find(x => x.k === k);
       return `<button type="button" data-vue="${k}" aria-pressed="${k === active}" title="${v.n}" aria-label="${v.n}">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${v.i}</svg></button>`;
@@ -1941,17 +1990,23 @@ function barreSelection(){
   </div>`;
 }
 
+/* ⛔ Un écran ne lit plus SA déclaration : il lit le réglage de son écran. */
+const colsDe = (k) => { const o = {}; (ECRANS[k].cols || []).forEach(c => o[c.c] = c);
+  return selDe("cols|" + k).map(c => o[c]).filter(Boolean); };
+const ongletsDe = (k) => selDe("ong|" + k).filter(o => (ECRANS[k].onglets || []).includes(o));
+
 function gListe(e){
   const lignes = MONDE[e.source] || [];
+  const cols = colsDe(ECRAN);
   let h = entete(e);
   h += `<div class="pan"><h2>${esc(e.nom.toUpperCase())}${e.note ? aide(e.note) : ""}<em>${lignes.length} LIGNES</em></h2>
     ${barreFiltres(e, lignes.length)}
     <div class="in"><div class="tb"><table><thead><tr>
       <th class="ck"><input type="checkbox" id="ckTout" aria-label="Tout sélectionner"></th>${
-      e.cols.map(c => `<th>${esc(c.t)}</th>`).join("")}<th></th></tr></thead><tbody>`;
+      cols.map(c => `<th>${esc(c.t)}</th>`).join("")}<th></th></tr></thead><tbody>`;
   lignes.forEach(l => {
     h += `<tr><td class="ck"><input type="checkbox" data-ck="${esc(l.id || l.code || "")}"${
-      SEL.has(l.id || l.code) ? " checked" : ""} aria-label="Sélectionner"></td>` + e.cols.map(c => {
+      SEL.has(l.id || l.code) ? " checked" : ""} aria-label="Sélectionner"></td>` + cols.map(c => {
       const v = l[c.c];
       if (c.b) return `<td>${bd(v)}</td>`;
       if (c.liste) return `<td>${Array.isArray(v) && v.length ? v.map(x => `<span class="b s">${esc(x)}</span>`).join(" ") : '<span class="id">aucun</span>'}</td>`;
@@ -2004,8 +2059,14 @@ const CONTENU_ONGLET = {
     `</tbody></table><p class="note-i">Un temps porte <b>la même ressource que sa prestation</b> — c'est un trigger, pas une règle d'écran (M-10).</p>`
 };
 function gFiche(e){
-  const onglets = e.onglets.map(o => `<button class="ong" type="button" data-ong="${esc(o)}" aria-pressed="${o === e.ouvert}">${esc(o)}${
-    e.verrou === o ? ' <span class="cadenas">◼</span>' : ""}</button>`).join("");
+  const liste = ongletsDe(ECRAN);
+  if (!liste.includes(e.ouvert)) e.ouvert = liste[0];
+  const onglets = liste.map(o => `<button class="ong" type="button" data-ong="${esc(o)}" aria-pressed="${o === e.ouvert}">${esc(o)}${
+    e.verrou === o ? ' <span class="cadenas">◼</span>' : ""}</button>`).join("")
+    + `<span class="grow"></span><span class="w-ord"><button class="ong" type="button" data-pop="ong|${ECRAN}"
+      aria-expanded="${popOrd === "ong|" + ECRAN}" title="Onglets affichés" aria-label="Onglets affichés">&#9881;</button>
+      <div class="pop-ord"${popOrd === "ong|" + ECRAN ? "" : " hidden"}><h4>ONGLETS AFFICHÉS</h4>${
+        popOrd === "ong|" + ECRAN ? ordonne("ong|" + ECRAN) : ""}</div></span>`;
   const contenu = CONTENU_ONGLET[e.ouvert] ? CONTENU_ONGLET[e.ouvert]() :
     `<p class="note-i">Onglet <b>${esc(e.ouvert)}</b> — ses champs viennent des tables listées en bas de l'écran, et d'aucune autre.</p>`;
   return `<div class="eh"><div><h1>${esc(e.titre)}</h1><p class="eh-n mono-s">${esc(e.sous)}</p>
@@ -2070,7 +2131,7 @@ function gReglages(e){
   if (e.mode === "politiques"){
     const fam = {};
     MONDE.politique.forEach(p => (fam[p.famille] = fam[p.famille] || []).push(p));
-    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 126 ; en voici un extrait.</p>` +
+    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 144 ; en voici un extrait.</p>` +
       Object.keys(fam).map(f => `<div class="pan" style="margin-bottom:9px"><h2>${esc(f.toUpperCase())}</h2><div class="in"><div class="tb">
         <table><thead><tr><th>CLÉ</th><th>VALEUR</th><th>CE QUE ÇA CHANGE</th><th>SOURCE</th></tr></thead><tbody>` +
         fam[f].map(p => `<tr class="${p.rouge ? "rouge" : ""}"><td><code class="cle">${esc(p.cle)}</code></td>
@@ -2377,6 +2438,48 @@ function ecranDeMenu(k){
   const d = MENU_DEFAUT.find(x => x.k === k); if (!d) return null;
   const e = d.e || (d.sous && d.sous[0] && d.sous[0][1]);
   return e && ECRANS[e] ? e : null;
+}
+/* ⭐ Trois portées, un seul moteur. La portée s'écrit « quoi|écran ». */
+function catDe(sc){
+  const [t, e] = sc.split("|");
+  if (t === "menu") return MENU_DEFAUT.map(d => [d.k, d.n || nomEcran(d.e)]);
+  if (t === "cols") return (ECRANS[e].cols || []).map(c => [c.c, c.t]);
+  return (ECRANS[e].onglets || []).map(o => [o, o]);
+}
+function defautDe(sc){
+  const [t, e] = sc.split("|");
+  if (t === "menu") return MENU_DEFAUT.map(d => d.k);
+  if (t === "cols") return (ECRANS[e].cols || []).map(c => c.c);
+  return (ECRANS[e].onglets || []).slice();
+}
+function selDe(sc){
+  const [t, e] = sc.split("|");
+  if (t === "menu") return S.menu.map(o => o.k);
+  const d = t === "cols" ? S.cols[e] : S.onglets[e];
+  return d || defautDe(sc);
+}
+function poseSel(sc, arr){
+  const [t, e] = sc.split("|");
+  if (t === "menu") S.menu = arr.map(k => ({ k }));
+  else if (t === "cols") S.cols[e] = arr;
+  else S.onglets[e] = arr;
+}
+/* ⛔ Une liste sans colonne, une fiche sans onglet : on ne laisse pas faire.
+   Le dernier visible ne se décoche pas — sinon l'écran n'existe plus. */
+function ordonne(sc){
+  const cat = catDe(sc), vus = selDe(sc).filter(k => cat.some(c => c[0] === k));
+  const tout = vus.concat(cat.map(c => c[0]).filter(k => !vus.includes(k)));
+  return `<div class="ord-z">` + tout.map(k => {
+    const nom = (cat.find(c => c[0] === k) || [])[1] || k, i = vus.indexOf(k), on = i >= 0;
+    const seul = on && vus.length === 1;
+    return `<div class="ord${on ? "" : " off"}">
+      <button type="button" data-ord="${sc}|${k}" aria-pressed="${on}"${seul ? " disabled" : ""}
+        title="${seul ? "Le dernier ne se masque pas" : on ? "Masquer" : "Afficher"}">${on ? "◼" : "◻"}</button>
+      <span>${esc(nom)}</span>
+      <button type="button" data-mv="${sc}|${k}|-1"${on && i > 0 ? "" : " disabled"} title="Monter">&#8593;</button>
+      <button type="button" data-mv="${sc}|${k}|1"${on && i >= 0 && i < vus.length - 1 ? "" : " disabled"} title="Descendre">&#8595;</button>
+    </div>`;
+  }).join("") + `</div><button class="raz" type="button" data-raz="${sc}">REMETTRE LE DÉFAUT</button>`;
 }
 function nomEcran(k){ return ECRANS[k] ? ECRANS[k].nom : (HORS_LOT[k] || k); }
 
