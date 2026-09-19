@@ -95,9 +95,9 @@ svg{display:block;flex:none}
    flotte sur le filet : c'est ce qui cassait tout. La fleche s'inverse. */
 .pli-r{flex:none;height:30px;display:flex;align-items:center;justify-content:flex-end;
   padding:0 13px;color:var(--t4);border-radius:var(--r)}
-.pli-r svg{width:13px;height:13px}
+.pli-r svg{width:15px;height:15px}
 .pli-r:hover{color:var(--action-encre);background:var(--survol)}
-.pli-rd{width:100%;justify-content:center;padding:0;height:26px;margin-bottom:2px}
+.pli-rd{width:100%;justify-content:center;padding:0;height:30px;margin-bottom:1px}
 .app[data-nav="icones"] .nav .pli-r{justify-content:center;padding:0}
 .app[data-nav="icones"] .nav .pli-r svg{transform:rotate(180deg)}
 [data-rail-plie="1"] .rail .pli-rd svg{transform:rotate(180deg)}
@@ -450,7 +450,7 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 /* ⭐ Exactement la colonne de gauche, en miroir : repliee, il reste les icones.
    ⛔ Jamais un display:none — la panneau s'ecarte, il ne disparait pas. */
 [data-rail-plie="1"] .rail .vue{width:0;min-width:0;overflow:hidden;border:0}
-.rail .strip{width:42px;flex:none;display:flex;flex-direction:column;gap:2px;padding:8px 0 7px;
+.rail .strip{width:42px;flex:none;display:flex;flex-direction:column;gap:2px;padding:0 0 7px;
   border-left:1px solid var(--bord);position:sticky;top:var(--h-top);height:calc(100vh - var(--h-top));align-items:center}
 [data-rail="gauche"] .rail .strip{order:2;border-left:1px solid var(--bord);border-right:0}
 .rail .strip button{width:30px;height:30px;display:grid;place-items:center;color:var(--t3);border-radius:var(--r)}
