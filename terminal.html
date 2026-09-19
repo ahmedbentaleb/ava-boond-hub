@@ -158,9 +158,17 @@ svg{display:block;flex:none}
 /* ⭐ Le symbole et le mot sont DEUX images : le lockup d'origine les fige dans
    un rapport de taille, et ce rapport n'etait pas le bon a 26 px de haut.
    ⛔ Hauteurs en dur — un logo ne se redimensionne pas au theme. */
-.marque-h{display:flex;align-items:center;gap:9px;flex:none;padding-right:6px}
-.marque-h .logo-m{height:19px;width:auto;display:block;flex:none;box-shadow:none;filter:none}
-.marque-h .logo-w{height:17px;width:auto;display:block;flex:none}
+/* ⛔ LE LOGO N'OBÉIT À RIEN. Ni au thème, ni à l'ombre, ni au voile, ni à la
+   transparence, ni au fond. C'est la seule chose de l'écran qui ne se règle
+   pas — un logo qui change n'est plus un logo. */
+.marque-h{display:flex;align-items:center;gap:9px;flex:none;padding-right:6px;
+  filter:none!important;opacity:1!important;mix-blend-mode:normal!important}
+.marque-h .logo-m,.marque-h .logo-w{width:auto;display:block;flex:none;
+  box-shadow:none!important;filter:none!important;opacity:1!important;
+  backdrop-filter:none!important;mix-blend-mode:normal!important;
+  border:0!important;background:none!important;transform:none!important}
+.marque-h .logo-m{height:19px}
+.marque-h .logo-w{height:17px}
 .cherche{display:flex;align-items:center;gap:7px;flex:0 1 320px;min-width:110px;margin-left:12px;
   background:var(--f3);border:var(--t-champ) solid var(--bord);border-radius:var(--r);padding:0 10px;height:30px;color:var(--t4)}
 .cherche svg{width:13px;height:13px;flex:none}
