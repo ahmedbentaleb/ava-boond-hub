@@ -32,7 +32,7 @@
   --r:0px; --nav:214px; --dens:1; --trait:1px; --contour:2px;
   /* la hauteur du bandeau de marque : la ou commence « PILOTAGE ».
      La colonne d'outils de droite demarre sur cette meme ligne. */
-  --haut-menu:54px; --h-top:48px;
+  --haut-menu:10px; --h-top:48px;
   color-scheme:dark;
 }
 :root[data-mode="gris"]{
@@ -78,13 +78,25 @@ svg{display:block;flex:none}
   height:var(--h-top);display:flex;align-items:center;gap:10px;padding:0 10px;
   background:var(--f1);border-bottom:var(--trait) solid var(--bord)}
 .top .grow{flex:1 1 auto}
+/* ⭐ Le coin haut-gauche a la largeur du menu : le filet vertical ne s'interrompt
+   plus sous le bandeau, il court du haut de l'écran jusqu'au fond. */
+.coin{width:var(--nav);flex:none;display:flex;align-items:center;gap:8px;
+  height:var(--h-top);margin:0 0 0 -10px;padding:0 8px 0 14px;
+  border-right:var(--trait) solid var(--bord);transition:width .16s ease}
+.coin .marque-h{flex:1 1 auto;min-width:0;overflow:hidden}
+.coin .pli-h{margin-left:auto}
+.app[data-nav="icones"] .coin{width:50px;padding:0 4px}
+/* Replié, 50 px ne tiennent pas le logo ET le chevron : le chevron gagne. */
+.app[data-nav="icones"] .coin .marque-h{display:none}
+.app[data-nav="icones"] .coin .pli-h{margin:0 auto}
+.app[data-nav="icones"] .coin .pli-h svg{transform:rotate(180deg)}
 .pli-h{width:30px;height:30px;flex:none;display:grid;place-items:center;color:var(--t3);border-radius:var(--r)}
 .pli-h svg{width:16px;height:16px}
 .pli-h:hover{background:var(--f3);color:var(--action-encre)}
 .marque-h{display:flex;align-items:center;gap:8px;flex:none;padding-right:4px}
 .marque-h .logo{width:18px;height:18px;color:var(--action)}
 .marque-h b{font-size:11px;font-weight:700;letter-spacing:1.3px;color:var(--t1);white-space:nowrap}
-.cherche{display:flex;align-items:center;gap:7px;flex:0 1 320px;min-width:110px;margin-left:8px;
+.cherche{display:flex;align-items:center;gap:7px;flex:0 1 320px;min-width:110px;margin-left:12px;
   background:var(--f3);border:var(--trait) solid var(--bord);border-radius:var(--r);padding:0 10px;height:30px;color:var(--t4)}
 .cherche svg{width:13px;height:13px;flex:none}
 .cherche input{flex:1;min-width:0;background:none;border:0;color:var(--t1);font:inherit;font-size:11.5px;outline:0}
@@ -108,13 +120,14 @@ svg{display:block;flex:none}
   color:var(--t2);text-decoration:none;font-size:12px}
 .pop-moi a:hover{background:var(--f3);color:var(--t1)}
 .pop-moi hr{border:0;border-top:1px solid var(--bord);margin:5px 0}
-@media (max-width:900px){.cherche,.nm,.marque-h b{display:none}}
+@media (max-width:900px){.cherche,.nm,.marque-h b{display:none}
+  .coin{width:50px;padding:0 4px}}
 
 /* ─── barre latérale ─── */
 .nav{position:relative;z-index:60;width:var(--nav);flex:none;background:var(--f1);border-right:var(--trait) solid var(--bord);
   display:flex;flex-direction:column;position:sticky;top:var(--h-top);height:calc(100vh - var(--h-top));transition:width .16s ease}
 .app[data-nav="icones"] .nav{width:50px}
-.nav .marque{display:flex;align-items:center;gap:9px;padding:13px 14px;border-bottom:1px solid var(--bord);min-height:46px}
+.nav .marque{display:none}
 .nav .marque .logo{width:19px;height:19px;color:var(--action-encre)}
 .nav .marque .m{min-width:0;overflow:hidden;white-space:nowrap}
 .nav .marque b{display:block;font-size:11px;font-weight:700;letter-spacing:1.4px;color:var(--t1)}
@@ -486,12 +499,13 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
 <div class="app" id="app" data-nav="ouvert" data-pastille="contour" data-bouton="contour" data-carte="bande">
 
 <header class="top">
-  <button class="pli-h" type="button" id="rep" title="Replier la colonne de gauche" aria-label="Replier la colonne de gauche">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-      <path d="M2 3.5h12M2 8h6M2 12.5h12"/><path d="M13.6 5.9 10.7 8l2.9 2.1" stroke-linejoin="round"/></svg></button>
-  <span class="marque-h">
-    <svg class="logo" viewBox="0 0 20 20" fill="none"><path d="M2 18 12 2h3L5 18z" fill="currentColor"/><path d="M9 18 18 4h-3L6 18z" fill="currentColor" opacity=".45"/></svg>
-    <b>AVA MANAGER</b></span>
+  <span class="coin">
+    <span class="marque-h">
+      <svg class="logo" viewBox="0 0 20 20" fill="none"><path d="M2 18 12 2h3L5 18z" fill="currentColor"/><path d="M9 18 18 4h-3L6 18z" fill="currentColor" opacity=".45"/></svg>
+      <b>AVA MANAGER</b></span>
+    <button class="pli-h" type="button" id="rep" title="Replier la colonne de gauche" aria-label="Replier la colonne de gauche">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3.5 5.5 8l4.5 4.5"/></svg></button>
+  </span>
   <label class="cherche">
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg>
     <input placeholder="Rechercher partout" aria-label="Rechercher partout"></label>
@@ -510,8 +524,7 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
     <div class="pop-moi" id="popMoi" hidden></div>
   </div>
   <button class="pli-h" type="button" id="repRail" title="Replier la colonne de droite" aria-label="Replier la colonne de droite">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-      <path d="M2 3.5h12M8 8h6M2 12.5h12"/><path d="M2.4 5.9 5.3 8l-2.9 2.1" stroke-linejoin="round"/></svg></button>
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5 10.5 8 6 12.5"/></svg></button>
 </header>
 
 <div class="sous-top">
