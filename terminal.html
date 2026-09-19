@@ -250,6 +250,13 @@ select:hover{border-color:var(--t4)}
 @media (max-width:1080px){.r-main,.r-sub{grid-template-columns:1fr}}
 @media (max-width:760px){.nav{position:fixed;z-index:60;transform:translateX(-100%)}.app[data-nav="ouvert"] .nav{transform:none}.zone{padding:13px}}
 
+/* ⭐ L'ecran ouvert porte la couleur de son entree — la meme qu'a gauche et
+   la meme que sa tuile. On sait de quoi on parle avant d'avoir lu le titre. */
+[data-cadre="oui"] #ecran .pan{border-color:var(--ce-ecran)}
+[data-cadre="oui"] #ecran .pan>h2{border-bottom-color:var(--ce-ecran);color:var(--ce-ecran)}
+[data-cadre="oui"] #ecran .eh h1{border-left:var(--bande) solid var(--ce-ecran);padding-left:11px}
+a.kpi{text-decoration:none;cursor:pointer;transition:filter .12s ease}
+a.kpi:hover{filter:brightness(1.18)}
 /* ─── panneaux : STRUCTURE ─── */
 .pan{background:var(--f-carte);border:var(--t-carte) solid var(--bord);border-radius:var(--r-grand);display:flex;flex-direction:column;min-width:0}
 .pan[hidden]{display:none}
@@ -732,6 +739,8 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
               <div class="reg"><span>SÉLECTION</span><div class="opts" id="rSelStyle"></div></div>
               <div class="reg"><span>BOUTONS</span><div class="opts" id="rBouton"></div></div>
               <div class="reg"><span>CARTES</span><div class="opts" id="rCarte"></div></div>
+              <div class="reg"><span>TUILES CLIQUABLES</span><div class="opts" id="rTuileClic"></div></div>
+              <div class="reg"><span>CADRE DE L'ÉCRAN</span><div class="opts" id="rEcranCadre"></div></div>
             </div>
           </section>
 
@@ -982,7 +991,7 @@ const OUTILS = [
   { k:"cal",    n:"CALENDRIER", t:"Calendrier",   i:'<rect x="2.5" y="3.5" width="11" height="10" rx="1"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"/>' }
 ];
 
-let S = { theme:"avaliance", palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
+let S = { v:2, theme:"avaliance", palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
           action:null, struct:null, angle:"carre", pastille:"point", bouton:"contour", carte:"cadre", coloration:"menu",
           rail:"droite", outils:["alertes","notes","ia","todo","indic","cal"], outilOuvert:"alertes", dernierOutil:"alertes",
           menuIcone:"mono", menuTitre:"oui", menuPastille:"entree", notes:"infobulle", menu:null,
@@ -995,7 +1004,7 @@ let S = { theme:"avaliance", palette:"avaliance", mode:"sombre", intensite:"norm
           fonds:{ page:null, carte:null, barre:null, colonne:null }, fondForce:"aucune",
           /* Le survol et la selection sont des couleurs comme les autres. */
           survol:null, selection:null, selStyle:"fond",
-          bordCouleur:null, navLargeur:"normale",
+          bordCouleur:null, navLargeur:"normale", tuileClic:"oui", ecranCadre:"oui",
           traits:{ carte:"theme", barre:"theme", col:"theme", champ:"theme" },
           metier:{ c1:null, c2:null, c3:null, c4:null, c5:null },
           sens:{ ok:null, warn:null, ko:null }, deplies:["crm","projets","planning"] };
@@ -1008,8 +1017,17 @@ const litHash = () => { try {
   const m = location.hash.match(/t=([A-Za-z0-9+/=_-]+)/);
   return m ? JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g,"+").replace(/_/g,"/"))))) : null;
 } catch(e){ return null; } };
+const V = S.v;
 try { S = Object.assign(S, JSON.parse(localStorage.getItem("ava-term6") || "{}")); } catch(e){}
 try { const h = litHash(); if (h) S = Object.assign(S, h); } catch(e){}
+/* ⛔ Un `#t=` ecrit hier portait `epaisseur:"medium"` : le theme avait beau
+   changer dans le code, la page rechargee reposait l'ancienne valeur. Une
+   version dans l'etat, et ce que le THEME porte se rejoue quand elle bouge. */
+const VIEUX = S.v !== V;
+S.v = V;
+
+/* Un etat d'une version anterieure : le theme se repose, le reste survit. */
+if (VIEUX) setTimeout(() => { poseTheme(S.theme); applique(); }, 0);
 
 /* L'APLAT. `teinte()` eclaircit sur fond sombre pour que le TEXTE reste lisible.
    Un aplat n'est pas du texte : il porte le vrai hex de la charte, et l'encre
@@ -1059,6 +1077,7 @@ function applique(){
   app.setAttribute("data-notes", S.notes);
   app.setAttribute("data-titre", S.menuTitre);
   app.setAttribute("data-mcoul", S.menuIcone);
+  app.setAttribute("data-cadre", S.ecranCadre);
   const rr = ANGLES.find(a => a.k === S.angle).v;
   root.style.setProperty("--r", rr);
   /* ⛔ Un rayon de 999 px sur une carte en fait un disque. Les grandes
@@ -1106,6 +1125,11 @@ function applique(){
   NIVEAUX.forEach(([k]) => { if (S.sens[k]) root.style.setProperty("--" + k, aplat(S.sens[k])); });
   const M0 = METIERS[S.mode === "clair" ? "clair" : "vif"];
   const M = {}; CHEMINS.forEach(([k]) => { M[k] = S.metier[k] ? aplat(S.metier[k]) : M0[k]; });
+  /* La couleur de l'ecran ouvert : celle de l'entree de menu qui y mene. */
+  const rE = S.menu.findIndex(x => ecranDeMenu(x.k) === ECRAN);
+  root.style.setProperty("--ce-ecran", rE >= 0
+    ? aplat(COUL_ENTREE[rE % COUL_ENTREE.length])
+    : (S.coloration === "metier" ? (M[(ECRANS[ECRAN] || {}).metier] || aplat(kAction)) : aplat(kAction)));
   document.querySelectorAll(".kpi").forEach(el => {
     let c;
     if (S.coloration === "menu" && el.dataset.mk){
@@ -1196,6 +1220,9 @@ const TRAITS_S = [{k:"theme",n:"DU THÈME",v:null},{k:"aucun",n:"AUCUN",v:"0px"}
 const SURF_TRAIT = [["carte","CARTES"],["barre","BARRES"],["col","COLONNES"],["champ","CHAMPS"]];
 /* La colonne de gauche a trois largeurs, et c'est le theme qui la pose. */
 const LARGEURS = [{k:"etroite",n:"ÉTROITE",v:"178px"},{k:"normale",n:"NORMALE",v:"214px"},{k:"large",n:"LARGE",v:"252px"}];
+/* ⭐ « Cliquable, ca mene vers leur fenetre. » Une tuile qui compte les
+   societes ouvre l'ecran des societes — mais qui n'en veut pas l'eteint. */
+const OUI_NON_C = [{k:"oui",n:"OUI"},{k:"non",n:"NON"}];
 const SEL_STYLES = [{k:"fond",n:"FOND"},{k:"plein",n:"PLEIN"},{k:"barre",n:"BARRE À GAUCHE"},{k:"contour",n:"CONTOUR"}];
 function peintThemes(){
   const z = $("#rTheme"); if (!z) return;
@@ -1242,6 +1269,8 @@ boutons("#rPastille", PASTILLES, "pastille", false);
 boutons("#rSelStyle", SEL_STYLES, "selStyle", false);
 boutons("#rBouton", BOUTONS, "bouton", false);
 boutons("#rCarte", CARTES, "carte", false);
+boutons("#rTuileClic", OUI_NON_C, "tuileClic", false);
+boutons("#rEcranCadre", OUI_NON_C, "ecranCadre", false);
 boutons("#rColoration", COLORATIONS, "coloration", false);
 boutons("#rDensite", DENSITES, "densite", false);
 boutons("#rEpaisseur", EPAISSEURS, "epaisseur", false);
@@ -2016,7 +2045,7 @@ function gReglages(e){
   if (e.mode === "politiques"){
     const fam = {};
     MONDE.politique.forEach(p => (fam[p.famille] = fam[p.famille] || []).push(p));
-    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 124 ; en voici un extrait.</p>` +
+    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 126 ; en voici un extrait.</p>` +
       Object.keys(fam).map(f => `<div class="pan" style="margin-bottom:9px"><h2>${esc(f.toUpperCase())}</h2><div class="in"><div class="tb">
         <table><thead><tr><th>CLÉ</th><th>VALEUR</th><th>CE QUE ÇA CHANGE</th><th>SOURCE</th></tr></thead><tbody>` +
         fam[f].map(p => `<tr class="${p.rouge ? "rouge" : ""}"><td><code class="cle">${esc(p.cle)}</code></td>
@@ -2138,7 +2167,11 @@ function calculeCA(){
 let ROLE = "staffing";
 function gBord(){
   const l = FILES[ROLE];
-  return `<div class="row r-kpi">${calculeKPI().filter(k => S.tuiles.includes(k.id)).map(k => `<div class="kpi" data-m="${k.m}" data-mk="${k.mk || ""}"><div class="k">${k.k}</div><div class="v">${k.v}</div><div class="d">${k.d}</div></div>`).join("")}</div>
+  return `<div class="row r-kpi">${calculeKPI().filter(k => S.tuiles.includes(k.id)).map(k => {
+    const e = S.tuileClic === "oui" ? ecranDeMenu(k.mk) : null;
+    const t = e ? "a" : "div";
+    return `<${t} class="kpi"${e ? ` href="#" data-e="${e}" title="Ouvrir ${esc(ECRANS[e].nom)}"` : ""} data-m="${k.m}" data-mk="${k.mk || ""}"><div class="k">${k.k}</div><div class="v">${k.v}</div><div class="d">${k.d}</div></${t}>`;
+  }).join("")}</div>
   <div class="row r-main" style="margin-top:9px">
     <section class="pan"><h2>CE QUI VOUS ATTEND<em>${l.length} ÉLÉMENTS · PAR CE QUE ÇA COÛTE DE LAISSER PASSER</em></h2>
       <div class="in"><ul class="q">${l.map(i => `<li><span class="g" style="background:${G[i.g]}"></span>
@@ -2315,6 +2348,12 @@ function marqueur(ic, metier, rang){
   }
   h += `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[ic] || IC.bord}</svg>`;
   return h;
+}
+/* Une entree de menu mene a son ecran, ou au premier de ses sous-ecrans. */
+function ecranDeMenu(k){
+  const d = MENU_DEFAUT.find(x => x.k === k); if (!d) return null;
+  const e = d.e || (d.sous && d.sous[0] && d.sous[0][1]);
+  return e && ECRANS[e] ? e : null;
 }
 function nomEcran(k){ return ECRANS[k] ? ECRANS[k].nom : (HORS_LOT[k] || k); }
 
