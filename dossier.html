@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Dossier Ava Manager : le point d'entree unique. Ce qui fait foi, dans quel ordre le lire, et ou on en est.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600&display=swap">
+</head><body>
+<title>Dossier Ava Manager</title>
+<style>
+:root{
+  --page:#f4f2ee;--carte:#fff;--bord:#e0dcd4;--bord2:#cfc9be;
+  --t1:#1c1a17;--t2:#5f5a52;--t3:#8b857b;
+  --ok-f:#e3f2ec;--ok-b:#a9d6c6;--ok-t:#0c5943;--ok-t2:#2d7a63;
+  --go-f:#eeedfb;--go-b:#c3bff0;--go-t:#3b3287;--go-t2:#5b51b5;
+  --at-f:#fbeeda;--at-b:#e8cf9c;--at-t:#6b3d06;--at-t2:#8f5a0f;
+  --no-f:#fceaea;--no-b:#eeb9b9;--no-t:#7a1f1f;--no-t2:#a32d2d;
+  --om:0 1px 2px rgba(28,26,23,.05),0 6px 16px rgba(28,26,23,.06);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --page:#15140f;--carte:#1e1c17;--bord:#332f28;--bord2:#453f36;
+  --t1:#f2efe8;--t2:#a8a298;--t3:#78736a;
+  --ok-f:#0f2b23;--ok-b:#1f5445;--ok-t:#9fe1cb;--ok-t2:#5dcaa5;
+  --go-f:#1c1937;--go-b:#3b3480;--go-t:#cecbf6;--go-t2:#afa9ec;
+  --at-f:#2e2008;--at-b:#6b4d13;--at-t:#fac775;--at-t2:#ef9f27;
+  --no-f:#2c1111;--no-b:#6a2020;--no-t:#f7c1c1;--no-t2:#f09595;
+  --om:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --page:#15140f;--carte:#1e1c17;--bord:#332f28;--bord2:#453f36;
+  --t1:#f2efe8;--t2:#a8a298;--t3:#78736a;
+  --ok-f:#0f2b23;--ok-b:#1f5445;--ok-t:#9fe1cb;--ok-t2:#5dcaa5;
+  --go-f:#1c1937;--go-b:#3b3480;--go-t:#cecbf6;--go-t2:#afa9ec;
+  --at-f:#2e2008;--at-b:#6b4d13;--at-t:#fac775;--at-t2:#ef9f27;
+  --no-f:#2c1111;--no-b:#6a2020;--no-t:#f7c1c1;--no-t2:#f09595;
+  --om:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.35);
+}
+/* ⭐ Les balises : reelles pour `sed`, transparentes pour la mise en page. */
+quand_utiliser,procedure,interdits,etat,source{display:contents}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--t1);
+  font:15px/1.6 "Sora","Segoe UI",system-ui,sans-serif}
+.p{max-width:1080px;margin:0 auto;padding:16px;padding-block:30px 60px}
+a{color:inherit}
+h1{margin:0;font-size:28px;font-weight:600;letter-spacing:-.5px;text-wrap:balance}
+h2{margin:44px 0 4px;font-size:13px;font-weight:600;letter-spacing:1.6px;
+  text-transform:uppercase;color:var(--t3)}
+h2 .num{color:var(--bord2);margin-right:8px}
+.sub{margin:0 0 16px;color:var(--t2);font-size:14px;max-width:70ch}
+.hd{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.dt{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--t3)}
+.chapeau{margin:8px 0 6px;color:var(--t2);font-size:15px;max-width:72ch}
+
+.ch{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 4px}
+.ch div{background:var(--carte);border:1px solid var(--bord);border-radius:12px;
+  padding:11px 15px;box-shadow:var(--om);min-width:104px}
+.ch b{display:block;font-size:23px;font-weight:600;letter-spacing:-.5px;
+  font-variant-numeric:tabular-nums}
+.ch span{font-size:11px;letter-spacing:1.1px;text-transform:uppercase;color:var(--t3)}
+
+.g{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.c{border-radius:12px;padding:14px 15px;border:1px solid;box-shadow:var(--om);
+  display:block;text-decoration:none}
+.c .n{font-size:11px;letter-spacing:1.6px;font-weight:600}
+.c .t{font-size:16px;font-weight:600;margin:3px 0 6px;letter-spacing:-.2px}
+.c .d{font-size:13.5px;line-height:1.5}
+.ok{background:var(--ok-f);border-color:var(--ok-b);color:var(--ok-t)}
+.ok .d,.ok .n{color:var(--ok-t2)}
+.go{background:var(--go-f);border-color:var(--go-b);color:var(--go-t)}
+.go .d,.go .n{color:var(--go-t2)}
+.at{background:var(--at-f);border-color:var(--at-b);color:var(--at-t)}
+.at .d,.at .n{color:var(--at-t2)}
+
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:4px 0 8px}
+.tw{overflow-x:auto;border:1px solid var(--bord);border-radius:12px;
+  background:var(--carte);box-shadow:var(--om)}
+th{text-align:left;font-weight:600;font-size:11px;letter-spacing:1.2px;
+  text-transform:uppercase;color:var(--t3);padding:11px 14px;
+  border-bottom:1px solid var(--bord);white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid var(--bord);vertical-align:top;color:var(--t2)}
+tr:last-child td{border-bottom:0}
+td:first-child{color:var(--t1);white-space:nowrap}
+code{font-family:ui-monospace,"Cascadia Code",Consolas,monospace;font-size:12.5px;
+  background:var(--page);border:1px solid var(--bord);border-radius:5px;padding:1px 5px}
+.tw code{background:transparent;border:0;padding:0}
+
+.li{display:flex;flex-direction:column;gap:9px;margin:4px 0}
+.li a{background:var(--carte);border:1px solid var(--bord);border-radius:12px;
+  padding:12px 15px;text-decoration:none;box-shadow:var(--om);
+  display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.li a:hover{border-color:var(--bord2)}
+.li b{font-weight:600;font-size:15px}
+.li em{font-style:normal;color:var(--t3);font-size:12.5px;margin-left:auto;
+  font-family:ui-monospace,Consolas,monospace}
+.li span{color:var(--t2);font-size:13.5px}
+
+.no{background:var(--no-f);border:1px solid var(--no-b);color:var(--no-t);
+  border-radius:12px;padding:14px 16px;margin:10px 0;font-size:14px}
+.no b{font-weight:600}
+.note{color:var(--t3);font-size:13px;margin:10px 0 0;max-width:72ch}
+footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
+  color:var(--t3);font-size:12.5px}
+</style>
+
+<div class="p">
+<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">19/09/2026 · e325d44</span></div>
+<p class="chapeau">Le point d'entrée unique. Une autre IA écrit le code, je l'audite. Tout ce qui fait foi est listé ici — et rien n'y est recopié : ce document <b>mesure</b> et <b>pointe</b>.</p>
+<div class="ch">
+<div><b>37</b><span>tables</span></div>
+<div><b>34</b><span>référentiels</span></div>
+<div><b>167</b><span>politiques</span></div>
+<div><b>15</b><span>murs</span></div>
+<div><b>22</b><span>assertions</span></div>
+<div><b>26</b><span>écrans</span></div>
+<div><b>7</b><span>ADR</span></div>
+<div><b>49</b><span>documents</span></div>
+</div>
+<p class="note">⭐ Tous ces chiffres sont <b>mesurés</b> à la génération, jamais saisis. Un compte écrit à deux endroits diverge à la passe suivante.</p>
+<quand_utiliser>
+<h2><span class="num">01</span>Qui lit quoi</h2>
+<p class="sub">Quatre lecteurs, quatre portes. Personne n'a besoin des 49 documents.</p>
+<div class="tw"><table><tr><th>Vous êtes</th><th>Vous lisez</th><th>Vous ne lisez pas</th></tr>
+<tr><td>L&#x27;IA qui code</td><td>le prompt, puis le SQL et les assertions</td><td>les relectures, les plans, l&#x27;historique — c&#x27;est du chemin parcouru</td></tr>
+<tr><td>Moi, l&#x27;auditeur</td><td>les assertions, le registre §E, le journal des bugs</td><td>rien — mais je mesure avant de citer</td></tr>
+<tr><td>Hamada</td><td>ce dossier et le mock. Rien d&#x27;autre.</td><td>le SQL — il n&#x27;a pas à le lire pour décider</td></tr>
+<tr><td>Quelqu&#x27;un qui reprend</td><td>ce dossier, puis les ADR dans l&#x27;ordre</td><td>le code avant les ADR : il ne comprendrait pas les refus</td></tr>
+</table></div>
+</quand_utiliser>
+<procedure>
+<h2><span class="num">02</span>L'ordre de lecture</h2>
+<p class="sub">Dans cet ordre, et pas un autre : chacun s'appuie sur le précédent.</p>
+<div class="li">
+<a href="doc/SPEC_SQL_LISEZ-MOI.md"><b>Par où entrer dans le SQL</b><span>une page, balisée</span><em>SPEC_SQL_LISEZ-MOI.md</em></a>
+<a href="doc/SPEC_SQL_AVAMANAGER_V1.sql"><b>L3 — le schéma</b><span>1599 lignes · 37 tables</span><em>SPEC_SQL_AVAMANAGER_V1.sql</em></a>
+<a href="doc/SPEC_ASSERTIONS_L7.sql"><b>L7 — les assertions</b><span>22 tests, un par mur</span><em>SPEC_ASSERTIONS_L7.sql</em></a>
+<a href="doc/MODELE_DONNEES_AVAMANAGER_V1.md"><b>Le modèle de données</b><span>le canon dont le SQL est tiré</span><em>MODELE_DONNEES_AVAMANAGER_V1.md</em></a>
+<a href="doc/REGISTRE_POLITIQUES_v1.md"><b>Le registre</b><span>167 politiques · §E fait foi</span><em>REGISTRE_POLITIQUES_v1.md</em></a>
+<a href="doc/MATRICE_DROITS_v1.md"><b>La matrice des droits</b><span>rôle × commande × périmètre</span><em>MATRICE_DROITS_v1.md</em></a>
+<a href="doc/MACHINES_ETAT_V1.md"><b>Les machines d&#x27;état</b><span>6 cycles fermés</span><em>MACHINES_ETAT_V1.md</em></a>
+<a href="doc/THEMES_v1.md"><b>Les thèmes</b><span>les 4 rôles de couleur</span><em>THEMES_v1.md</em></a>
+<a href="doc/JOURNAL_BUGS.md"><b>Le journal des bugs</b><span>vide — le code n&#x27;existe pas</span><em>JOURNAL_BUGS.md</em></a>
+<a href="doc/PLAN_2026-09-19.md"><b>Le plan du jour</b><span>ce qui reste, en haut</span><em>PLAN_2026-09-19.md</em></a>
+</div>
+<p class="note">⛔ Un <code>.sql</code> reste un <code>.sql</code> : Grok l'exécute, git le diffe, <code>psql -f</code> le charge. Noyé dans une page, aucun des trois ne marche. <b>Ce dossier est la porte, pas le coffre.</b></p>
+</procedure>
+<h2><span class="num">03</span>Les sept livrables</h2>
+<p class="sub">Deux faits, quatre à moi, un avec Hamada.</p>
+<div class="g">
+<div class="c ok"><div class="n">L3</div><div class="t">Le schéma en SQL</div><div class="d">1599 lignes · 37 tables · 22 triggers · les 15 murs</div></div>
+<div class="c ok"><div class="n">L6</div><div class="t">Les 26 écrans</div><div class="d">le mock fait foi — jouable, mesuré, publié</div></div>
+<div class="c ok"><div class="n">L7</div><div class="t">Les assertions</div><div class="d">22 tests, un par mur, plus 1 contre-test. ⚠️ écrits, jamais exécutés</div></div>
+<div class="c go"><div class="n">L2</div><div class="t">Le prompt et la grille d&#x27;audit</div><div class="d">ce qu&#x27;on charge dans l&#x27;IA codeuse, et ce qu&#x27;on vérifie à chaque retour</div></div>
+<div class="c go"><div class="n">L4</div><div class="t">Les 44 commandes</div><div class="d">entrée, sortie, refus, événement, politique lue, mur touché</div></div>
+<div class="c go"><div class="n">L5</div><div class="t">Les deux seeds</div><div class="d">167 politiques et 34 référentiels — mécanique, ça part chez Grok</div></div>
+<div class="c at"><div class="n">L1</div><div class="t">Le relevé Boond</div><div class="d">la grille existe, aucune ligne remplie. Hamada ouvre, je regarde et j&#x27;écris</div></div>
+</div>
+<h2><span class="num">04</span>Les 15 murs</h2>
+<p class="sub">Ce qu'aucune politique ne franchit. Sept ne sont pas des CHECK : un CHECK ne peut pas dire « cette colonne ne change jamais ».</p>
+<div class="tw"><table><tr><th>Mur</th><th>Ce qu'il interdit</th><th>Sa forme</th></tr>
+<tr><td>M-1</td><td>un candidat qui produit</td><td>une colonne qui n'existe pas</td></tr>
+<tr><td>M-2</td><td>un positionnement des deux côtés</td><td>CHECK <code>ck_m2_xor</code></td></tr>
+<tr><td>M-3</td><td>deux profils du même type</td><td>UNIQUE</td></tr>
+<tr><td>M-4</td><td>changer la ressource d'une mission</td><td>trigger</td></tr>
+<tr><td>M-5</td><td>une ressource posée sur le projet</td><td>une colonne qui n'existe pas</td></tr>
+<tr><td>M-6</td><td>recalculer un snapshot</td><td>trigger + <code>REVOKE UPDATE</code></td></tr>
+<tr><td>M-7</td><td>réécrire l'historique</td><td>trigger + <code>REVOKE UPDATE</code></td></tr>
+<tr><td>M-8</td><td>supprimer quoi que ce soit</td><td><code>REVOKE DELETE</code> + <code>archive_le</code></td></tr>
+<tr><td>M-9</td><td>une action à deux porteurs</td><td>CHECK de somme = 1</td></tr>
+<tr><td>M-10</td><td>un temps d'une autre ressource</td><td>trigger d'égalité</td></tr>
+<tr><td>M-11</td><td>un besoin sans société</td><td>NOT NULL</td></tr>
+<tr><td>M-12</td><td>un contact d'une autre société, un arbre qui boucle</td><td>triggers</td></tr>
+<tr><td>M-13</td><td>un droit sans périmètre</td><td>PK à trois colonnes</td></tr>
+<tr><td>M-14</td><td>réécrire une mission signée</td><td>trigger</td></tr>
+<tr><td>M-15</td><td>un montant sans devise, un agrégat multi-devises</td><td>CHECK + 4 vues + les GRANT</td></tr>
+</table></div>
+<h2><span class="num">05</span>Les décisions d'architecture</h2>
+<p class="sub">Pourquoi c'est comme ça, et pas autrement. À lire avant le code — sinon on ne comprend pas les refus.</p>
+<div class="li">
+<a href="doc/adr/ADR-000-mono-tenant.md"><b>ADR-000 — Mono-tenant : une base, une société</b><em>ADR-000-mono-tenant.md</em></a>
+<a href="doc/adr/ADR-001-zip-jenspark-ecarte.md"><b>ADR-001 — Le prototype « CRM Vision 360 » (zip Jenspark) est écarté</b><em>ADR-001-zip-jenspark-ecarte.md</em></a>
+<a href="doc/adr/ADR-002-personne-et-profils.md"><b>ADR-002 — Une Personne, deux profils : Candidat et Ressource</b><em>ADR-002-personne-et-profils.md</em></a>
+<a href="doc/adr/ADR-003-projet-prestation-ressource.md"><b>ADR-003 — Le Projet ne porte pas de ressource : la Prestation est l&#x27;affectation</b><em>ADR-003-projet-prestation-ressource.md</em></a>
+<a href="doc/adr/ADR-004-evenements-et-archivage.md"><b>ADR-004 — Événements métier en ajout seul, archivage transverse, jamais de DELETE</b><em>ADR-004-evenements-et-archivage.md</em></a>
+<a href="doc/adr/ADR-005-politiques-parametrables-vs-invariants.md"><b>ADR-005 — Toute bifurcation est une politique ; seuls les invariants sont des murs</b><em>ADR-005-politiques-parametrables-vs-invariants.md</em></a>
+<a href="doc/adr/ADR-006-avenant-version-datee.md"><b>ADR-006 — L&#x27;avenant est une version datée, pas une mission de plus</b><em>ADR-006-avenant-version-datee.md</em></a>
+</div>
+<interdits>
+<h2><span class="num">06</span>Ce qui ne se négocie pas</h2>
+<p class="sub">Les six règles que l'audit cherche en premier dans le code rendu.</p>
+<div class="tw"><table><tr><th>⛔ Jamais</th><th>Le problème que ça évite</th></tr>
+<tr><td>Un <code>if</code> métier écrit en dur</td><td>c'est LA faute que fait une IA qui code, parce que 99 % du code du monde la fait. Toute bifurcation a une clé au registre §C</td></tr>
+<tr><td>Une colonne <code>tenant_id</code></td><td>ADR-000 : une base = une société. L'isolation est la base, pas un WHERE qu'on oublie une fois</td></tr>
+<tr><td>Un CHECK sur le <b>code</b> d'un référentiel</td><td>Boond a 14 états de candidat : ils entrent comme codes dans une catégorie, sans migration</td></tr>
+<tr><td>Une icône de corbeille dans un écran</td><td>M-8 : l'UI ne propose pas un geste que la base refuse</td></tr>
+<tr><td>Additionner des montants hors des 4 vues</td><td>M-15 et la règle R-1 — le rôle d'agrégation n'a même pas les lignes</td></tr>
+<tr><td>Un compte recopié d'un document à l'autre</td><td>il diverge à la passe suivante. Le registre §E est la seule source</td></tr>
+</table></div>
+</interdits>
+<h2><span class="num">07</span>Le journal des bugs</h2>
+<p class="sub">0 ouvert(s), 0 fermé(s). Une assertion qui tombe ouvre une ligne 🔴, sans discussion.</p>
+<div class="li"><a href="doc/JOURNAL_BUGS.md"><b>Ouvrir le journal</b><span>format, gravités, règles de fermeture</span><em>JOURNAL_BUGS.md</em></a></div>
+<p class="note">Vide, et c'est normal : le code n'a pas encore été écrit.</p>
+<etat>
+<h2><span class="num">08</span>Où on en est</h2>
+<div class="tw"><table><tr><th>Étape</th><th>Qui</th><th>État</th></tr>
+<tr><td>L7 — les assertions</td><td>moi</td><td>✅ fait</td></tr>
+<tr><td>L2 — le prompt et la grille d&#x27;audit</td><td>moi</td><td>⏳ le prochain</td></tr>
+<tr><td>Lot 1 — dépôt, migrations, seeds, CI</td><td>Grok, dans Cursor</td><td>⬜ dès que le prompt est prêt</td></tr>
+<tr><td>Le relevé Boond</td><td>Hamada + moi</td><td>⬜ pendant qu&#x27;il code</td></tr>
+<tr><td>L4 — les 44 commandes</td><td>moi</td><td>⬜ son lot 2</td></tr>
+<tr><td>L&#x27;audit du lot 1</td><td>moi</td><td>⬜ la boucle commence</td></tr>
+</table></div>
+<div class="no">⛔ <b>La porte.</b> Rien ne s'exécute en base tant que <code>VALIDATION_MODELE_V1_&lt;date&gt;.md</code> n'existe pas, de la main d'Ahmed, avec ses réserves numérotées (G15).</div>
+</etat>
+<source>
+<h2><span class="num">09</span>D'où ça vient</h2>
+<p class="sub">49 documents dans <code>_ops/</code>. Les 10 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
+<p class="note">Ce fichier est <b>généré</b> par <code>python _ops/outils/dossier.py</code>. ⛔ Ne pas l'éditer à la main : la prochaine génération écraserait la correction, et on ne saurait pas laquelle était juste.<br>Pour en extraire une section sans tout lire :<br><code>sed -n '/&lt;etat&gt;/,/&lt;\/etat&gt;/p' _ops/DOSSIER.html</code></p>
+</source>
+<footer>Ava Manager · dossier généré le 19/09/2026 · commit e325d44 · 37 tables · 167 politiques · 15 murs · 22 assertions</footer>
+</div>
+</body></html>
