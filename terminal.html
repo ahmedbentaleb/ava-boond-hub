@@ -80,16 +80,17 @@ svg{display:block;flex:none}
 .top .grow{flex:1 1 auto}
 /* ⭐ Le coin haut-gauche a la largeur du menu : le filet vertical ne s'interrompt
    plus sous le bandeau, il court du haut de l'écran jusqu'au fond. */
-.coin{width:var(--nav);flex:none;display:flex;align-items:center;gap:8px;
-  height:var(--h-top);margin:0 0 0 -10px;padding:0 8px 0 14px;
-  border-right:var(--trait) solid var(--bord);transition:width .16s ease}
-.coin .marque-h{flex:1 1 auto;min-width:0;overflow:hidden}
-.coin .pli-h{margin-left:auto}
-.app[data-nav="icones"] .coin{width:50px;padding:0 4px}
-/* Replié, 50 px ne tiennent pas le logo ET le chevron : le chevron gagne. */
-.app[data-nav="icones"] .coin .marque-h{display:none}
-.app[data-nav="icones"] .coin .pli-h{margin:0 auto}
-.app[data-nav="icones"] .coin .pli-h svg{transform:rotate(180deg)}
+/* ⛔ Le bandeau NE BOUGE PAS. Ni quand on replie à gauche, ni à droite.
+   C'est le seul repère qui reste fixe : il n'a pas à suivre les colonnes. */
+.coin{flex:none;display:flex;align-items:center;height:var(--h-top);
+  margin:0 0 0 -10px;padding:0 16px 0 14px;border-right:var(--trait) solid var(--bord)}
+/* ─── la bande de repli : entre le bandeau et l'écran, une par colonne ─── */
+.bande{height:44px;flex:none;display:flex;align-items:center;padding:0 9px;
+  border-bottom:var(--trait) solid var(--bord)}
+.bande-d{justify-content:center;padding:0;width:100%;border-bottom:0;border-top:0}
+.app[data-nav="icones"] .nav .bande{justify-content:center;padding:0}
+.app[data-nav="icones"] .nav .bande .pli-h svg{transform:rotate(180deg)}
+[data-rail="masque"] .rail .bande-d .pli-h svg{transform:rotate(180deg)}
 .pli-h{width:30px;height:30px;flex:none;display:grid;place-items:center;color:var(--t3);border-radius:var(--r)}
 .pli-h svg{width:16px;height:16px}
 .pli-h:hover{background:var(--f3);color:var(--action-encre)}
@@ -120,8 +121,7 @@ svg{display:block;flex:none}
   color:var(--t2);text-decoration:none;font-size:12px}
 .pop-moi a:hover{background:var(--f3);color:var(--t1)}
 .pop-moi hr{border:0;border-top:1px solid var(--bord);margin:5px 0}
-@media (max-width:900px){.cherche,.nm,.marque-h b{display:none}
-  .coin{width:50px;padding:0 4px}}
+@media (max-width:900px){.cherche,.nm,.marque-h b{display:none}}
 
 /* ─── barre latérale ─── */
 .nav{position:relative;z-index:60;width:var(--nav);flex:none;background:var(--f1);border-right:var(--trait) solid var(--bord);
@@ -336,10 +336,11 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
        sont des réglages — rien n'est écrit en dur. ─── */
 .rail{flex:none;display:flex;background:var(--f1);border-left:1px solid var(--bord)}
 [data-rail="gauche"] .rail{order:-1;border-left:0;border-right:1px solid var(--bord)}
-[data-rail="masque"] .rail .vue{display:none}
+/* ⭐ La même cinématique qu'à gauche : elle s'écarte, elle ne surgit pas. */
+[data-rail="masque"] .rail .vue{width:0;min-width:0;overflow:hidden;border:0}
 [data-rail="masque"] .rail .strip button[data-w]:not([data-w="reglages"]){display:none}
 [data-rail="masque"] .rail .strip .sep{display:none}
-.rail .strip{width:42px;flex:none;display:flex;flex-direction:column;gap:2px;padding:var(--haut-menu) 0 7px;
+.rail .strip{width:42px;flex:none;display:flex;flex-direction:column;gap:2px;padding:0 0 7px;
   border-left:1px solid var(--bord);position:sticky;top:var(--h-top);height:calc(100vh - var(--h-top));align-items:center}
 [data-rail="gauche"] .rail .strip{order:2;border-left:1px solid var(--bord);border-right:0}
 .rail .strip button{width:30px;height:30px;display:grid;place-items:center;color:var(--t3);border-radius:var(--r)}
@@ -376,9 +377,10 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 #panApparence .in{padding:10px 12px}
 #panApparence .foot{font-size:9px;line-height:1.55}
 #panApparence .reg-row{gap:11px}
-.rail .vue{width:260px;flex:none;display:flex;flex-direction:column;position:sticky;top:var(--h-top);height:calc(100vh - var(--h-top));overflow:auto}
-.rail .vue[hidden]{display:none}
-.rail .vue>h3{font-size:8px;letter-spacing:1.6px;font-weight:600;padding:9px 12px;min-height:46px;display:flex;align-items:center;gap:8px;
+.rail .vue{width:260px;flex:none;display:flex;flex-direction:column;position:sticky;top:var(--h-top);
+  height:calc(100vh - var(--h-top));overflow:auto;transition:width .16s ease}
+.rail .vue[hidden]{width:0;min-width:0;overflow:hidden}
+.rail .vue>h3{min-height:44px;font-size:8px;letter-spacing:1.6px;font-weight:600;padding:9px 12px;min-height:46px;display:flex;align-items:center;gap:8px;
   color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));border-bottom:1px solid var(--bord)}
 .rail .vue>h3 em{font-style:normal;margin-left:auto;font-size:8px;color:var(--t4);font-weight:400;letter-spacing:.8px}
 .rail .corpsw{padding:10px 12px;display:flex;flex-direction:column;gap:9px;font-size:10.5px}
@@ -503,8 +505,6 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
     <span class="marque-h">
       <svg class="logo" viewBox="0 0 20 20" fill="none"><path d="M2 18 12 2h3L5 18z" fill="currentColor"/><path d="M9 18 18 4h-3L6 18z" fill="currentColor" opacity=".45"/></svg>
       <b>AVA MANAGER</b></span>
-    <button class="pli-h" type="button" id="rep" title="Replier la colonne de gauche" aria-label="Replier la colonne de gauche">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3.5 5.5 8l4.5 4.5"/></svg></button>
   </span>
   <label class="cherche">
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg>
@@ -523,12 +523,14 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
       <b class="chev-b">▾</b></button>
     <div class="pop-moi" id="popMoi" hidden></div>
   </div>
-  <button class="pli-h" type="button" id="repRail" title="Replier la colonne de droite" aria-label="Replier la colonne de droite">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5 10.5 8 6 12.5"/></svg></button>
 </header>
 
 <div class="sous-top">
   <nav class="nav">
+    <div class="bande">
+      <button class="pli-h" type="button" id="rep" title="Replier la colonne" aria-label="Replier la colonne">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3.5 5.5 8l4.5 4.5"/></svg></button>
+    </div>
     <div id="menu"></div>
   </nav>
 
@@ -1737,7 +1739,10 @@ const ICONE_FOND = { sombre:'<path d="M13 9.6A5.6 5.6 0 0 1 6.4 3 5.6 5.6 0 1 0 
 
 function rail(){
   const actifs = OUTILS.filter(o => S.outils.includes(o.k));
-  $("#railStrip").innerHTML = actifs.map(o => `<button type="button" data-w="${o.k}" title="${o.t}" aria-pressed="${S.outilOuvert === o.k}">
+  $("#railStrip").innerHTML = `<div class="bande bande-d">
+      <button class="pli-h" type="button" id="repRail" title="Replier la colonne" aria-label="Replier la colonne">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5 10.5 8 6 12.5"/></svg></button>
+    </div>` + actifs.map(o => `<button type="button" data-w="${o.k}" title="${o.t}" aria-pressed="${S.outilOuvert === o.k}">
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${o.i}</svg></button>`).join("");
   const svg = (d) => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
   $("#railStrip").insertAdjacentHTML("beforeend",
