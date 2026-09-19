@@ -134,7 +134,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <a href="simulateur.html">Banc d’essai</a>
 </div></div></div></div>
 <div class="p">
-<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">19/09/2026 · 58dcc0a</span></div>
+<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">19/09/2026 · 6a53a3f</span></div>
 <p class="chapeau">Le point d'entrée unique. Une autre IA écrit le code, je l'audite. Tout ce qui fait foi est listé ici — et rien n'y est recopié : ce document <b>mesure</b> et <b>pointe</b>.</p>
 <div class="ch">
 <div><b>37</b><span>tables</span></div>
@@ -143,13 +143,13 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <div><b>15</b><span>murs</span></div>
 <div><b>22</b><span>assertions</span></div>
 <div><b>26</b><span>écrans</span></div>
-<div><b>7</b><span>ADR</span></div>
-<div><b>51</b><span>documents</span></div>
+<div><b>8</b><span>ADR</span></div>
+<div><b>54</b><span>documents</span></div>
 </div>
 <p class="note">⭐ Tous ces chiffres sont <b>mesurés</b> à la génération, jamais saisis. Un compte écrit à deux endroits diverge à la passe suivante.</p>
 <quand_utiliser>
 <h2><span class="num">01</span>Qui lit quoi</h2>
-<p class="sub">Quatre lecteurs, quatre portes. Personne n'a besoin des 51 documents.</p>
+<p class="sub">Quatre lecteurs, quatre portes. Personne n'a besoin des 54 documents.</p>
 <div class="tw"><table><tr><th>Vous êtes</th><th>Vous lisez</th><th>Vous ne lisez pas</th></tr>
 <tr><td>L&#x27;IA qui code</td><td>le prompt, puis le SQL et les assertions</td><td>les relectures, les plans, l&#x27;historique — c&#x27;est du chemin parcouru</td></tr>
 <tr><td>Moi, l&#x27;auditeur</td><td>les assertions, le registre §E, le journal des bugs</td><td>rien — mais je mesure avant de citer</td></tr>
@@ -216,6 +216,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <a href="doc/adr/ADR-004-evenements-et-archivage.md"><b>ADR-004 — Événements métier en ajout seul, archivage transverse, jamais de DELETE</b><em>ADR-004-evenements-et-archivage.md</em></a>
 <a href="doc/adr/ADR-005-politiques-parametrables-vs-invariants.md"><b>ADR-005 — Toute bifurcation est une politique ; seuls les invariants sont des murs</b><em>ADR-005-politiques-parametrables-vs-invariants.md</em></a>
 <a href="doc/adr/ADR-006-avenant-version-datee.md"><b>ADR-006 — L&#x27;avenant est une version datée, pas une mission de plus</b><em>ADR-006-avenant-version-datee.md</em></a>
+<a href="doc/adr/ADR-007-filiales-pas-maintenant.md"><b>ADR-007 — Les filiales : par où on passera, le jour où</b><em>ADR-007-filiales-pas-maintenant.md</em></a>
 </div>
 <interdits>
 <h2><span class="num">06</span>Ce qui ne se négocie pas</h2>
@@ -247,9 +248,9 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 </etat>
 <source>
 <h2><span class="num">09</span>D'où ça vient</h2>
-<p class="sub">51 documents dans <code>_ops/</code>. Les 12 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
+<p class="sub">54 documents dans <code>_ops/</code>. Les 12 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
 <p class="note">Ce fichier est <b>généré</b> par <code>python _ops/outils/dossier.py</code>. ⛔ Ne pas l'éditer à la main : la prochaine génération écraserait la correction, et on ne saurait pas laquelle était juste.<br>Pour en extraire une section sans tout lire :<br><code>sed -n '/&lt;etat&gt;/,/&lt;\/etat&gt;/p' _ops/DOSSIER.html</code></p>
 </source>
-<footer>Ava Manager · dossier généré le 19/09/2026 · commit 58dcc0a · 37 tables · 167 politiques · 15 murs · 22 assertions</footer>
+<footer>Ava Manager · dossier généré le 19/09/2026 · commit 6a53a3f · 37 tables · 167 politiques · 15 murs · 22 assertions</footer>
 </div>
 </body></html>
