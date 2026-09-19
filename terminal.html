@@ -3,8 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>*{box-sizing:border-box}html,body{margin:0;height:100%}img{max-width:100%}[hidden]{display:none!important}</style>
-</head>
-<body>
+</head><body>
 <meta charset="utf-8">
 <title>Ava Manager — Terminal</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,6 +31,9 @@
   --f-page:#000; --f-carte:#101017; --f-barre:#0a0a10; --f-col:#0a0a10;
   --survol:#191921; --selection:#AEBF38; --selection-f:#1a1d15; --sur-selection:#000;
   --r:0px; --r-grand:0px; --nav:214px; --dens:1; --trait:1px; --contour:2px;
+  /* ⭐ Le filet d'une carte, d'une barre, d'une colonne et d'un champ ne sont
+     pas la meme chose. Quatre epaisseurs, chacune « du theme » par defaut. */
+  --t-carte:1px; --t-barre:1px; --t-col:1px; --t-champ:1px;
   /* la hauteur du bandeau de marque : la ou commence « PILOTAGE ».
      La colonne d'outils de droite demarre sur cette meme ligne. */
   --haut-menu:10px; --h-top:48px;
@@ -78,7 +80,7 @@ svg{display:block;flex:none}
    la personne, avec son administration. */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:80;flex:none;
   height:var(--h-top);display:flex;align-items:center;gap:10px;padding:0 10px;
-  background:var(--f-barre);border-bottom:var(--trait) solid var(--bord)}
+  background:var(--f-barre);border-bottom:var(--t-barre) solid var(--bord)}
 .top .grow{flex:1 1 auto}
 /* ⭐ Le coin haut-gauche a la largeur du menu : le filet vertical ne s'interrompt
    plus sous le bandeau, il court du haut de l'écran jusqu'au fond. */
@@ -97,7 +99,8 @@ svg{display:block;flex:none}
   padding:0 13px;color:var(--t4);border-radius:var(--r)}
 .pli-r svg{width:15px;height:15px}
 .pli-r:hover{color:var(--action-encre);background:var(--survol)}
-.pli-rd{width:100%;justify-content:center;padding:0;height:30px;margin-bottom:1px}
+.pli-rd{width:100%;justify-content:center;padding:0;height:30px;margin-bottom:1px;cursor:pointer}
+.pli-rd:hover{background:var(--survol);color:var(--action-encre)}
 .app[data-nav="icones"] .nav .pli-r{justify-content:center;padding:0}
 .app[data-nav="icones"] .nav .pli-r svg{transform:rotate(180deg)}
 [data-rail-plie="1"] .rail .pli-rd svg{transform:rotate(180deg)}
@@ -108,13 +111,13 @@ svg{display:block;flex:none}
 .marque-h .logo{width:18px;height:18px;color:var(--action)}
 .marque-h b{font-size:11px;font-weight:700;letter-spacing:1.3px;color:var(--t1);white-space:nowrap}
 .cherche{display:flex;align-items:center;gap:7px;flex:0 1 320px;min-width:110px;margin-left:12px;
-  background:var(--f3);border:var(--trait) solid var(--bord);border-radius:var(--r);padding:0 10px;height:30px;color:var(--t4)}
+  background:var(--f3);border:var(--t-champ) solid var(--bord);border-radius:var(--r);padding:0 10px;height:30px;color:var(--t4)}
 .cherche svg{width:13px;height:13px;flex:none}
 .cherche input{flex:1;min-width:0;background:none;border:0;color:var(--t1);font:inherit;font-size:11.5px;outline:0}
 /* ─── la personne, et ce qu'elle administre ─── */
 .moi{position:relative;flex:none}
 .qui{display:flex;align-items:center;gap:8px;padding:3px 8px 3px 3px;border-radius:var(--r);
-  border:var(--trait) solid transparent;color:var(--t2)}
+  border:var(--t-champ) solid transparent;color:var(--t2)}
 .qui:hover,.qui[aria-expanded="true"]{background:var(--f3);border-color:var(--bord)}
 .role-b{padding:3px 8px}
 .role-b .nm b{font-weight:600;color:var(--t2)}
@@ -127,7 +130,7 @@ svg{display:block;flex:none}
 .nm i{font-style:normal;font-size:9px;color:var(--t4);letter-spacing:.4px}
 .chev-b{font-style:normal;font-size:9px;color:var(--t4)}
 .pop-moi{position:absolute;right:0;top:calc(100% + 6px);z-index:90;min-width:238px;
-  background:var(--f2);border:var(--trait) solid var(--bord);border-radius:var(--r);padding:5px;
+  background:var(--f2);border:var(--t-carte) solid var(--bord);border-radius:var(--r);padding:5px;
   box-shadow:0 6px 28px rgba(0,0,0,.34)}
 .pop-moi[hidden]{display:none}
 .pop-moi .gr{padding:9px 10px 5px;font-size:9px;letter-spacing:.8px;color:var(--t4);font-weight:600}
@@ -138,7 +141,7 @@ svg{display:block;flex:none}
 @media (max-width:900px){.cherche,.nm,.marque-h b{display:none}}
 
 /* ─── barre latérale ─── */
-.nav{position:relative;z-index:60;width:var(--nav);flex:none;background:var(--f-col);border-right:var(--trait) solid var(--bord);
+.nav{position:relative;z-index:60;width:var(--nav);flex:none;background:var(--f-col);border-right:var(--t-col) solid var(--bord);
   display:flex;flex-direction:column;position:sticky;top:var(--h-top);height:calc(100vh - var(--h-top));transition:width .16s ease}
 .app[data-nav="icones"] .nav{width:50px}
 .nav .marque{display:none}
@@ -177,7 +180,15 @@ svg{display:block;flex:none}
    ligne en plus dans la colonne — l'en-tete reste le logo et le nom. */
 /* ─── le marqueur : un filet de couleur, puis l'icône ─── */
 .nav a{position:relative}
-.nav .mq-f{position:absolute;left:0;top:6px;bottom:6px;width:3px;flex:none;border-radius:0 2px 2px 0}
+/* ⭐ Le filet suit l'angle du theme : carre sous Avaliance, arrondi ailleurs.
+   ⛔ Plafonne a 2 px — sur 3 px de large, au-dela c'est une gelule. */
+.nav .mq-f{position:absolute;left:0;top:6px;bottom:6px;width:3px;flex:none;
+  border-radius:0 min(var(--r),2px) min(var(--r),2px) 0}
+/* ⭐ Une seule couleur par entrée, et quatre façons de la répartir. */
+[data-mcoul="icone"]   .nav>#menu>a>svg,
+[data-mcoul="couleur"] .nav>#menu>a>svg{color:var(--ce)}
+[data-mcoul="titre"]   .nav>#menu>a>span,[data-mcoul="titre"]   .nav>#menu>a>.ss,
+[data-mcoul="couleur"] .nav>#menu>a>span,[data-mcoul="couleur"] .nav>#menu>a>.ss{color:var(--ce)}
 /* ─── les entrées dépliantes ─── */
 .nav .chev{margin-left:auto;font-style:normal;font-weight:400;font-size:13px;color:var(--t4);
   transition:transform .15s ease;line-height:1}
@@ -196,7 +207,7 @@ svg{display:block;flex:none}
 .app[data-nav="icones"] .nav .lot{display:none}
 .nav .rep{position:absolute;z-index:55;top:12px;right:-26px;width:22px;height:22px;
   display:grid;place-items:center;color:var(--t3);background:var(--f1);
-  border:var(--trait) solid var(--bord);border-radius:var(--r)}
+  border:var(--t-champ) solid var(--bord);border-radius:var(--r)}
 .nav .rep svg{width:15px;height:15px}
 .nav .rep:hover{background:var(--f3);color:var(--action-encre);border-color:var(--action)}
 .app[data-nav="icones"] .nav .marque{justify-content:center;padding:13px 0}
@@ -204,7 +215,7 @@ svg{display:block;flex:none}
 
 /* ─── haut ─── */
 .corps{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
-.bar{position:sticky;top:var(--h-top);z-index:40;background:var(--f-barre);border-bottom:var(--trait) solid var(--bord);
+.bar{position:sticky;top:var(--h-top);z-index:40;background:var(--f-barre);border-bottom:var(--t-barre) solid var(--bord);
   display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 22px;min-height:44px}
 .bar h1{font-size:12.5px;font-weight:600;letter-spacing:.5px;color:var(--t1);white-space:nowrap}
 .bar .grow{flex:1 1 auto}
@@ -240,15 +251,15 @@ select:hover{border-color:var(--t4)}
 @media (max-width:760px){.nav{position:fixed;z-index:60;transform:translateX(-100%)}.app[data-nav="ouvert"] .nav{transform:none}.zone{padding:13px}}
 
 /* ─── panneaux : STRUCTURE ─── */
-.pan{background:var(--f-carte);border:var(--trait) solid var(--bord);border-radius:var(--r-grand);display:flex;flex-direction:column;min-width:0}
+.pan{background:var(--f-carte);border:var(--t-carte) solid var(--bord);border-radius:var(--r-grand);display:flex;flex-direction:column;min-width:0}
 .pan[hidden]{display:none}
 .pan>h2{font-size:9.5px;font-weight:600;letter-spacing:.9px;padding:calc(9px*var(--dens)) 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
   color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));
   background:color-mix(in srgb,var(--struct) calc(var(--tint)*70%),var(--f1));
-  border-bottom:var(--trait) solid var(--bord);border-radius:var(--r-grand) var(--r-grand) 0 0}
+  border-bottom:var(--t-carte) solid var(--bord);border-radius:var(--r-grand) var(--r-grand) 0 0}
 .pan>h2 em{font-style:normal;margin-left:auto;font-size:9px;letter-spacing:.5px;color:var(--t4);font-weight:400}
 .pan .in{padding:calc(12px*var(--dens)) 14px;min-width:0}
-.pan .foot{padding:7px 12px;border-top:var(--trait) solid var(--bord);max-width:118ch;font-size:9px;letter-spacing:.35px;color:var(--t2);line-height:1.6}
+.pan .foot{padding:7px 12px;border-top:var(--t-carte) solid var(--bord);max-width:118ch;font-size:9px;letter-spacing:.35px;color:var(--t2);line-height:1.6}
 .pan .foot b{color:var(--t2);font-weight:500}
 
 /* ─── INTENSITÉ : c'est la couleur qui bouge, pas les traits ─── */
@@ -285,14 +296,14 @@ select:hover{border-color:var(--t4)}
 .ch[data-ouvert]{z-index:96}
 .ch-l{flex:1 1 auto;font-size:10.5px;color:var(--t3);min-width:0}
 .ch-b{flex:none;display:flex;align-items:center;gap:7px;min-width:126px;min-height:26px;
-  padding:3px 8px;background:var(--f3);border:var(--trait) solid var(--bord);border-radius:var(--r);
+  padding:3px 8px;background:var(--f3);border:var(--t-champ) solid var(--bord);border-radius:var(--r);
   font-size:9.5px;letter-spacing:.5px;color:var(--t2)}
 .ch-b b{width:11px;height:11px;flex:none;border-radius:50%}
 .ch-b span{flex:1 1 auto;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ch-b i{font-style:normal;font-size:9px;color:var(--t4)}
 .ch-b:hover,.ch-b[aria-expanded="true"]{border-color:var(--action);color:var(--t1)}
 .ch-p{position:absolute;right:0;top:calc(100% + 4px);z-index:95;width:176px;max-height:236px;overflow:auto;
-  background:var(--f2);border:var(--trait) solid var(--bord);border-radius:var(--r);padding:4px;
+  background:var(--f2);border:var(--t-carte) solid var(--bord);border-radius:var(--r);padding:4px;
   box-shadow:0 8px 28px rgba(0,0,0,.4)}
 .ch-p[hidden]{display:none}
 .ch-p button{width:100%;display:flex;align-items:center;gap:8px;padding:5px 7px;min-height:28px;
@@ -338,7 +349,7 @@ select:hover{border-color:var(--t4)}
 .kpi .d{font-size:10.5px;margin-top:6px;line-height:1.5;color:var(--t3)}
 .kpi .d em{font-style:normal;font-weight:600;color:var(--warn)}
 /* ⭐ Le trait d'une carte se pose ou on veut. Pourquoi seulement a gauche ? */
-.kpi{background:var(--f-carte);border:var(--trait) solid var(--bord)}
+.kpi{background:var(--f-carte);border:var(--t-carte) solid var(--bord)}
 [data-carte="cadre"]  .kpi{border:var(--bande) solid var(--c)}
 [data-carte="gauche"] .kpi{border-left:var(--bande) solid var(--c)}
 [data-carte="droite"] .kpi{border-right:var(--bande) solid var(--c)}
@@ -357,7 +368,7 @@ select:hover{border-color:var(--t4)}
 .tb{width:100%;overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:12.5px}
 th{text-align:left;font-size:9px;letter-spacing:.8px;font-weight:600;padding:0 14px 9px 0;white-space:nowrap;
-  color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*80%),var(--t3));border-bottom:var(--trait) solid var(--bord)}
+  color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*80%),var(--t3));border-bottom:var(--t-carte) solid var(--bord)}
 td{padding:calc(9px*var(--dens)) 14px calc(9px*var(--dens)) 0;border-bottom:1px solid var(--f4);vertical-align:middle;color:var(--t2)}
 th:last-child,td:last-child{padding-right:0}
 tr:last-child td{border-bottom:0}
@@ -444,15 +455,15 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 
 /* ─── RAIL : la colonne d'outils. Sa position, ses outils et celui qui s'ouvre
        sont des réglages — rien n'est écrit en dur. ─── */
-.rail{position:relative;flex:none;display:flex;background:var(--f-col);border-left:var(--trait) solid var(--bord)}
+.rail{position:relative;flex:none;display:flex;background:var(--f-col);border-left:var(--t-col) solid var(--bord)}
 [data-rail="gauche"] .rail{order:-1;border-left:0;border-right:1px solid var(--bord)}
 /* ⭐ La même cinématique qu'à gauche : elle s'écarte, elle ne surgit pas. */
 /* ⭐ Exactement la colonne de gauche, en miroir : repliee, il reste les icones.
    ⛔ Jamais un display:none — la panneau s'ecarte, il ne disparait pas. */
 [data-rail-plie="1"] .rail .vue{width:0;min-width:0;overflow:hidden;border:0}
 .rail .strip{width:42px;flex:none;display:flex;flex-direction:column;gap:2px;padding:0 0 7px;
-  border-left:1px solid var(--bord);position:sticky;top:var(--h-top);height:calc(100vh - var(--h-top));align-items:center}
-[data-rail="gauche"] .rail .strip{order:2;border-left:1px solid var(--bord);border-right:0}
+  border-left:var(--t-col) solid var(--bord);position:sticky;top:var(--h-top);height:calc(100vh - var(--h-top));align-items:center}
+[data-rail="gauche"] .rail .strip{order:2;border-left:var(--t-col) solid var(--bord);border-right:0}
 .rail .strip button{width:30px;height:30px;display:grid;place-items:center;color:var(--t3);border-radius:var(--r)}
 .rail .strip button:hover{background:var(--f3);color:var(--t1)}
 .rail .strip button[aria-pressed="true"]{background:color-mix(in srgb,var(--action) calc(var(--tint)*140%),var(--f3));color:var(--action-encre)}
@@ -471,12 +482,12 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 .rail .strip>button[data-w="reglages"][aria-pressed="true"]{background:var(--plaque-action);
   border-color:var(--action-aplat);color:var(--sur-plaque-action)}
 .rail .strip .pop{position:absolute;right:calc(100% + 7px);bottom:0;display:flex;gap:3px;padding:4px;
-  background:var(--f2);border:var(--trait) solid var(--bord);border-radius:var(--r);white-space:nowrap;z-index:60;
+  background:var(--f2);border:var(--t-carte) solid var(--bord);border-radius:var(--r);white-space:nowrap;z-index:60;
   box-shadow:0 2px 14px rgba(0,0,0,.34)}
 [data-rail="gauche"] .rail .strip .pop{right:auto;left:calc(100% + 7px)}
 .rail .strip .pop[hidden]{display:none}
 .rail .strip .pop button{width:auto;height:26px;padding:0 9px;font-size:8.5px;letter-spacing:1.1px;
-  border:var(--trait) solid var(--bord);background:var(--f3);display:inline-flex;align-items:center;gap:5px}
+  border:var(--t-champ) solid var(--bord);background:var(--f3);display:inline-flex;align-items:center;gap:5px}
 .rail .strip .pop button[aria-pressed="true"]{border-color:var(--action);color:var(--action-encre);
   background:color-mix(in srgb,var(--action) 12%,transparent)}
 .rail .strip .sep{width:20px;height:1px;background:var(--bord);margin:4px 0;flex:none}
@@ -491,7 +502,7 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
   height:calc(100vh - var(--h-top));overflow:auto;transition:width .16s ease}
 .rail .vue[hidden]{width:0;min-width:0;overflow:hidden;border:0}
 .rail .vue>h3{background:var(--f-col);min-height:44px;font-size:9px;letter-spacing:1.6px;font-weight:600;padding:9px 12px;min-height:46px;display:flex;align-items:center;gap:8px;
-  color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));border-bottom:1px solid var(--bord)}
+  color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));border-bottom:var(--t-col) solid var(--bord)}
 .rail .vue>h3 em{font-style:normal;margin-left:auto;font-size:8px;color:var(--t4);font-weight:400;letter-spacing:.8px}
 .rail .corpsw{padding:10px 12px;display:flex;flex-direction:column;gap:9px;font-size:10.5px}
 .rail .corpsw[hidden]{display:none}
@@ -536,7 +547,7 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 /* ─── S-8 : l'export et le `+`, toujours au même coin ─── */
 .eh-a{display:flex;align-items:center;gap:9px;flex:none}
 .rd{width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:50%;
-  border:var(--trait) solid var(--bord);background:var(--f2);color:var(--t2)}
+  border:var(--t-champ) solid var(--bord);background:var(--f2);color:var(--t2)}
 .rd svg{width:15px;height:15px}
 .rd:hover{border-color:var(--action);color:var(--action-encre)}
 .rd-p{background:var(--action);border-color:var(--action);color:var(--sur-action)}
@@ -544,7 +555,7 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 .cpt{font-style:normal;font-weight:400;color:var(--t3);font-size:.78em}
 /* ─── S-9 : la barre de filtres, la même partout ─── */
 .rech-w{display:flex;align-items:center;gap:6px;color:var(--t4);flex:0 1 300px;min-width:150px;
-  background:var(--f3);border:var(--trait) solid var(--bord);border-radius:var(--r);padding:0 10px;min-height:28px}
+  background:var(--f3);border:var(--t-champ) solid var(--bord);border-radius:var(--r);padding:0 10px;min-height:28px}
 .rech-w svg{width:13px;height:13px;flex:none}
 .rech-w .rech{flex:1;min-width:0}
 .filtre svg{width:12px;height:12px}
@@ -553,7 +564,7 @@ th.ck,td.ck{width:30px;padding-right:0}
 .ck input{width:14px;height:14px;accent-color:var(--action);cursor:pointer;margin:0}
 .selbar{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:75;
   display:flex;align-items:center;gap:6px;padding:7px 10px;
-  background:var(--f4);border:var(--trait) solid var(--bord);border-radius:var(--r);
+  background:var(--f4);border:var(--t-carte) solid var(--bord);border-radius:var(--r);
   box-shadow:0 8px 32px rgba(0,0,0,.42)}
 .selbar[hidden]{display:none}
 .selbar .n{font-size:11.5px;color:var(--t1);white-space:nowrap;padding:0 4px}
@@ -594,7 +605,7 @@ th.ck,td.ck{width:30px;padding-right:0}
 .rech{flex:1 1 180px;min-width:120px;background:var(--f2);border:1px solid var(--bord);border-radius:var(--r);
   color:var(--t1);font:inherit;font-size:10.5px;padding:5px 8px}
 .rech:focus{outline:0;border-color:var(--action)}
-.filtre{background:var(--f3);border:var(--trait) solid var(--bord);min-height:28px;border-radius:var(--r);padding:5px 9px;
+.filtre{background:var(--f3);border:var(--t-champ) solid var(--bord);min-height:28px;border-radius:var(--r);padding:5px 9px;
   font-size:9px;letter-spacing:1.1px;color:var(--t2)}
 .filtre:hover{border-color:var(--action);color:var(--action-encre)}
 .filtre b{color:var(--t4);font-weight:400}
@@ -603,9 +614,9 @@ th.ck,td.ck{width:30px;padding-right:0}
 .lien{font-size:9px;letter-spacing:1.2px;font-weight:700;color:var(--action-encre);padding:3px 6px;border-radius:var(--r);white-space:nowrap}
 .lien:hover{background:color-mix(in srgb,var(--action) 16%,transparent)}
 .lien[disabled]{color:var(--t4);cursor:not-allowed}
-.tables{padding:6px 12px;border-top:var(--trait) solid var(--bord);font-size:8.5px;letter-spacing:.9px;color:var(--t4);background:var(--f1)}
+.tables{padding:6px 12px;border-top:var(--t-barre) solid var(--bord);font-size:8.5px;letter-spacing:.9px;color:var(--t4);background:var(--f1)}
 .tables code{color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));font-size:8.5px;margin-right:5px}
-.ongs{display:flex;gap:2px;flex-wrap:wrap;padding:0 8px;border-bottom:var(--trait) solid var(--bord);background:var(--f1)}
+.ongs{display:flex;gap:2px;flex-wrap:wrap;padding:0 8px;border-bottom:var(--t-barre) solid var(--bord);background:var(--f1)}
 .ong{padding:9px 11px;font-size:9.5px;letter-spacing:1.1px;color:var(--t3);border-bottom:var(--contour) solid transparent;white-space:nowrap}
 .ong:hover{color:var(--t1)}
 .ong[aria-pressed="true"]{color:var(--action-encre);border-bottom-color:var(--action)}
@@ -714,6 +725,8 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
             <button class="chap-t" type="button" data-chapitre="formes" aria-expanded="false">Traits et formes<i>▾</i></button>
             <div class="chap-c">
               <div class="reg"><span>TRAITS</span><div class="opts" id="rEpaisseur"></div></div>
+              <div id="rTraits" class="reg-row"></div>
+              <div class="reg"><span>LARGEUR DU MENU</span><div class="opts" id="rNavLargeur"></div></div>
               <div class="reg"><span>ANGLES</span><div class="opts" id="rAngle"></div></div>
               <div class="reg"><span>PASTILLES</span><div class="opts" id="rPastille"></div></div>
               <div class="reg"><span>SÉLECTION</span><div class="opts" id="rSelStyle"></div></div>
@@ -725,7 +738,7 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
           <section class="chap" data-chap="menu">
             <button class="chap-t" type="button" data-chapitre="menu" aria-expanded="false">Menu<i>▾</i></button>
             <div class="chap-c">
-              <div class="reg"><span>ICÔNES</span><div class="opts" id="rMenuIcone"></div></div>
+              <div class="reg"><span>CE QUI PREND LA COULEUR</span><div class="opts" id="rMenuIcone"></div></div>
               <div class="reg"><span>TITRES</span><div class="opts" id="rMenuTitre"></div></div>
               <div class="reg"><span>PASTILLES DE COULEUR</span><div class="opts" id="rMenuPastille"></div></div>
               <div class="reg"><span>TUILES DU TABLEAU DE BORD</span><div class="opts" id="rTuiles"></div></div>
@@ -777,6 +790,11 @@ const lum = (h) => { const v = [1,3,5].map(i => parseInt(h.substr(i,2),16)/255)
 /* 0.179, c'est le point exact ou le noir et le blanc contrastent pareil.
    A .36 on ecrivait en blanc sur des mauves clairs : 3:1, illisible. */
 const sur = (h) => lum(hex6(h)) > .179 ? "#000" : "#fff";
+/* ⭐ Le meme test que le WCAG. Un libelle de tuile ne prend sa couleur que
+   s'il atteint 4,5:1 sur le fond de sa carte — sinon il redevient du texte.
+   ⛔ C'est ce qui ecrivait « BESOINS » en #430A4B sur du noir : 0,99:1. */
+const contraste = (a, b) => { const x = lum(hex6(a)), y = lum(hex6(b));
+  return (Math.max(x,y) + .05) / (Math.min(x,y) + .05); };
 /* Un aplat a 50 %, c'est la couleur melangee au fond — puis l'encre se recalcule
    DESSUS. C'est la seule facon d'avoir du blanc a 100 % et du noir a 20 % sans
    ecrire nulle part quelle encre va ou. */
@@ -813,40 +831,40 @@ const teinte = (k, mode) => { const o = COULEURS.find(c => c.k === k) || COULEUR
    La palette reste un réglage à part, pour qui veut pousser plus loin. */
 const THEMES = [
   /* — MÉTIER — */
-  { k:"avaliance",     n:"AVALIANCE",       f:"metier",   a:"vert_avaliance",    s:"violet_avaliance",  po:"sora",       an:"carre",    pa:"point",        bo:"contour",    ca:"cadre",    mi:"mono", mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", co:"menu", sel:"fond",     ft:"violet_avaliance",                  ff:"legere",     fz:"tout", fm:["clair"] },
-  { k:"encre",         n:"ENCRE",           f:"metier",   a:"violet_avaliance",  s:"gris",              po:"sora",       an:"carre",    pa:"carre_vide",   bo:"souligne",   ca:"gauche",   mi:"mono",     mp:"non",      ep:"fin",     de:"normal",   ti:"oui", co:"une", sel:"barre",    ft:"violet_avaliance",    ff:"legere",     fz:"chrome" },
-  { k:"ardoise",       n:"ARDOISE",         f:"metier",   a:"gris",              s:"gris",              po:"systeme",    an:"leger",    pa:"point",        bo:"souligne",   ca:"aucun",    mi:"mono",     mp:"non",      ep:"fin",     de:"normal",   ti:"non", co:"une", sel:"contour",  ft:null,                  ff:"aucune",     fz:"chrome" },
-  { k:"acier",         n:"ACIER",           f:"metier",   a:"bleu_roi",          s:"gris",              po:"systeme",    an:"leger",    pa:"rond_vide",    bo:"contour",    ca:"haut",     mi:"mono",     mp:"entree",   ep:"fin",     de:"normal",   ti:"oui", co:"une", sel:"fond",     ft:"bleu_roi",            ff:"legere",     fz:"chrome" },
-  { k:"foret",         n:"FORÊT",           f:"metier",   a:"vert_normal",       s:"vert_clair",        po:"systeme",    an:"leger",    pa:"point",        bo:"contour",    ca:"gauche",   mi:"mono",     mp:"metier",   ep:"medium",  de:"normal",   ti:"oui", co:"une", sel:"barre",    ft:"vert_normal",         ff:"legere",     fz:"chrome" },
-  { k:"olive",         n:"OLIVE",           f:"metier",   a:"vert_clair",        s:"vert_normal",       po:"sora",       an:"leger",    pa:"carre_vide",   bo:"fantome",    ca:"bas",      mi:"couleur",  mp:"non",      ep:"medium",  de:"normal",   ti:"oui", co:"menu", sel:"fond",     ft:null,                  ff:"aucune",     fz:"chrome" },
+  { k:"avaliance",     n:"AVALIANCE",       f:"metier",   a:"vert_avaliance",    s:"violet_avaliance",  po:"sora",       an:"carre",    pa:"point",        bo:"plein",      ca:"cadre",    mi:"mono", mp:"entree",   ep:"fin",     de:"normal",   ti:"oui", lg:"normale", co:"menu", sel:"fond",     ft:"violet_avaliance",                  ff:"legere",     fz:"tout", fm:["clair"] },
+  { k:"encre",         n:"ENCRE",           f:"metier",   a:"violet_avaliance",  s:"gris",              po:"sora",       an:"carre",    pa:"carre_vide",   bo:"souligne",   ca:"gauche",   mi:"mono",     mp:"non",      ep:"fin",     de:"normal",   ti:"oui", lg:"normale", co:"une", sel:"barre",    ft:"violet_avaliance",    ff:"legere",     fz:"chrome" },
+  { k:"ardoise",       n:"ARDOISE",         f:"metier",   a:"gris",              s:"gris",              po:"systeme",    an:"leger",    pa:"point",        bo:"souligne",   ca:"aucun",    mi:"mono",     mp:"non",      ep:"fin",     de:"normal",   ti:"non", lg:"etroite", co:"une", sel:"contour",  ft:null,                  ff:"aucune",     fz:"chrome" },
+  { k:"acier",         n:"ACIER",           f:"metier",   a:"bleu_roi",          s:"gris",              po:"systeme",    an:"leger",    pa:"rond_vide",    bo:"contour",    ca:"haut",     mi:"mono",     mp:"entree",   ep:"fin",     de:"normal",   ti:"oui", lg:"normale", co:"une", sel:"fond",     ft:"bleu_roi",            ff:"legere",     fz:"chrome" },
+  { k:"foret",         n:"FORÊT",           f:"metier",   a:"vert_normal",       s:"vert_clair",        po:"systeme",    an:"leger",    pa:"point",        bo:"contour",    ca:"gauche",   mi:"mono",     mp:"metier",   ep:"medium",  de:"normal",   ti:"oui", lg:"normale", co:"une", sel:"barre",    ft:"vert_normal",         ff:"legere",     fz:"chrome" },
+  { k:"olive",         n:"OLIVE",           f:"metier",   a:"vert_clair",        s:"vert_normal",       po:"sora",       an:"leger",    pa:"carre_vide",   bo:"fantome",    ca:"bas",      mi:"couleur",  mp:"non",      ep:"medium",  de:"normal",   ti:"oui", lg:"normale", co:"menu", sel:"fond",     ft:null,                  ff:"aucune",     fz:"chrome" },
   /* — TERMINAL — */
-  { k:"terminal",      n:"TERMINAL",        f:"terminal", a:"ambre",             s:"gris",              po:"jetbrains",  an:"carre",    pa:"carre_plein",  bo:"plein",      ca:"cadre",    mi:"mono",        mp:"entree",   ep:"fin",     de:"compact",  ti:"non", co:"une", sel:"plein",     ft:null,                  ff:"aucune",     fz:"chrome" },
-  { k:"bloom",         n:"BLOOM",           f:"terminal", a:"orange",            s:"gris",              po:"plex",       an:"carre",    pa:"carre_plein",  bo:"plein",      ca:"gauche",   mi:"mono",        mp:"entree",   ep:"fin",     de:"compact",  ti:"non", co:"une", sel:"barre",    ft:null,                  ff:"aucune",     fz:"chrome" },
-  { k:"phosphore",     n:"PHOSPHORE",       f:"terminal", a:"vert_vif",          s:"ambre",             po:"space",      an:"carre",    pa:"carre_plein",  bo:"plein",      ca:"haut",     mi:"mono",     mp:"entree",   ep:"fin",     de:"compact",  ti:"non", co:"menu", sel:"plein",     ft:null,                  ff:"aucune",     fz:"chrome" },
-  { k:"mural",         n:"MURAL",           f:"terminal", a:"vert_vif",          s:"orange",            po:"space",      an:"leger",    pa:"carre_plein",  bo:"plein",      ca:"cadre",    mi:"couleur",  mp:"entree",   ep:"large",   de:"confort",  ti:"oui", co:"menu", sel:"plein",     ft:null,                  ff:"aucune",     fz:"chrome" },
+  { k:"terminal",      n:"TERMINAL",        f:"terminal", a:"ambre",             s:"gris",              po:"jetbrains",  an:"carre",    pa:"carre_plein",  bo:"plein",      ca:"cadre",    mi:"mono",        mp:"entree",   ep:"fin",     de:"compact",  ti:"non", lg:"etroite", co:"une", sel:"plein",     ft:null,                  ff:"aucune",     fz:"chrome" },
+  { k:"bloom",         n:"BLOOM",           f:"terminal", a:"orange",            s:"gris",              po:"plex",       an:"carre",    pa:"carre_plein",  bo:"plein",      ca:"gauche",   mi:"mono",        mp:"entree",   ep:"fin",     de:"compact",  ti:"non", lg:"etroite", co:"une", sel:"barre",    ft:null,                  ff:"aucune",     fz:"chrome" },
+  { k:"phosphore",     n:"PHOSPHORE",       f:"terminal", a:"vert_vif",          s:"ambre",             po:"space",      an:"carre",    pa:"carre_plein",  bo:"plein",      ca:"haut",     mi:"mono",     mp:"entree",   ep:"fin",     de:"compact",  ti:"non", lg:"etroite", co:"menu", sel:"plein",     ft:null,                  ff:"aucune",     fz:"chrome" },
+  { k:"mural",         n:"MURAL",           f:"terminal", a:"vert_vif",          s:"orange",            po:"space",      an:"leger",    pa:"carre_plein",  bo:"plein",      ca:"cadre",    mi:"couleur",  mp:"entree",   ep:"large",   de:"confort",  ti:"oui", lg:"large", co:"menu", sel:"plein",     ft:null,                  ff:"aucune",     fz:"chrome" },
   /* — FROID — */
-  { k:"nuit",          n:"NUIT",            f:"froid",    a:"bleu_roi",          s:"violet_avaliance",  po:"inter",      an:"arrondi",  pa:"rond_plein",   bo:"plein",      ca:"gauche",   mi:"mono",     mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", co:"une", sel:"fond",     ft:"bleu_roi",            ff:"nette",      fz:"chrome" },
-  { k:"ocean",         n:"OCÉAN",           f:"froid",    a:"bleu",              s:"cyan",              po:"inter",      an:"arrondi",  pa:"rond_vide",    bo:"contour",    ca:"cadre",    mi:"couleur",  mp:"non",      ep:"medium",  de:"normal",   ti:"oui", co:"menu", sel:"contour",  ft:"bleu",                ff:"legere",     fz:"tout" },
-  { k:"lagon",         n:"LAGON",           f:"froid",    a:"cyan",              s:"bleu_roi",          po:"systeme",    an:"arrondi",  pa:"point",        bo:"contour",    ca:"bas",      mi:"mono",     mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", co:"une", sel:"barre",    ft:"cyan",                ff:"legere",     fz:"chrome" },
-  { k:"glace",         n:"GLACE",           f:"froid",    a:"cyan",              s:"gris",              po:"inter",      an:"tres",     pa:"rond_vide",    bo:"fantome",    ca:"aucun",    mi:"mono",     mp:"non",      ep:"fin",     de:"confort",  ti:"non", co:"une", sel:"fond",     ft:"cyan",                ff:"legere",     fz:"tout" },
-  { k:"emeraude",      n:"ÉMERAUDE",        f:"froid",    a:"vert_vif",          s:"cyan",              po:"inter",      an:"arrondi",  pa:"rond_plein",   bo:"plein",      ca:"droite",   mi:"couleur",  mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", co:"menu", sel:"plein",     ft:"vert_vif",            ff:"legere",     fz:"chrome" },
+  { k:"nuit",          n:"NUIT",            f:"froid",    a:"bleu_roi",          s:"violet_avaliance",  po:"inter",      an:"arrondi",  pa:"rond_plein",   bo:"plein",      ca:"gauche",   mi:"mono",     mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", lg:"normale", co:"une", sel:"fond",     ft:"bleu_roi",            ff:"nette",      fz:"chrome" },
+  { k:"ocean",         n:"OCÉAN",           f:"froid",    a:"bleu",              s:"cyan",              po:"inter",      an:"arrondi",  pa:"rond_vide",    bo:"contour",    ca:"cadre",    mi:"couleur",  mp:"non",      ep:"medium",  de:"normal",   ti:"oui", lg:"normale", co:"menu", sel:"contour",  ft:"bleu",                ff:"legere",     fz:"tout" },
+  { k:"lagon",         n:"LAGON",           f:"froid",    a:"cyan",              s:"bleu_roi",          po:"systeme",    an:"arrondi",  pa:"point",        bo:"contour",    ca:"bas",      mi:"mono",     mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", lg:"normale", co:"une", sel:"barre",    ft:"cyan",                ff:"legere",     fz:"chrome" },
+  { k:"glace",         n:"GLACE",           f:"froid",    a:"cyan",              s:"gris",              po:"inter",      an:"tres",     pa:"rond_vide",    bo:"fantome",    ca:"aucun",    mi:"mono",     mp:"non",      ep:"fin",     de:"confort",  ti:"non", lg:"large", co:"une", sel:"fond",     ft:"cyan",                ff:"legere",     fz:"tout" },
+  { k:"emeraude",      n:"ÉMERAUDE",        f:"froid",    a:"vert_vif",          s:"cyan",              po:"inter",      an:"arrondi",  pa:"rond_plein",   bo:"plein",      ca:"droite",   mi:"couleur",  mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", lg:"normale", co:"menu", sel:"plein",     ft:"vert_vif",            ff:"legere",     fz:"chrome" },
   /* — CHAUD — */
-  { k:"sable",         n:"SABLE",           f:"chaud",    a:"ambre",             s:"orange",            po:"sora",       an:"arrondi",  pa:"point",        bo:"contour",    ca:"bas",      mi:"mono",     mp:"non",      ep:"medium",  de:"confort",  ti:"oui", co:"une", sel:"fond",     ft:"ambre",               ff:"legere",     fz:"tout" },
-  { k:"cuivre",        n:"CUIVRE",          f:"chaud",    a:"orange",            s:"vert_clair",        po:"plex",       an:"leger",    pa:"carre_plein",  bo:"plein",      ca:"gauche",   mi:"mono",     mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", co:"une", sel:"barre",    ft:"orange",              ff:"legere",     fz:"chrome" },
-  { k:"brique",        n:"BRIQUE",          f:"chaud",    a:"rouge",             s:"ambre",             po:"systeme",    an:"leger",    pa:"carre_vide",   bo:"contour",    ca:"cadre",    mi:"mono",     mp:"non",      ep:"medium",  de:"normal",   ti:"oui", co:"une", sel:"contour",  ft:"rouge",               ff:"legere",     fz:"chrome" },
-  { k:"corail",        n:"CORAIL",          f:"chaud",    a:"rouge",             s:"magenta",           po:"sora",       an:"pilule",   pa:"rond_plein",   bo:"plein",      ca:"haut",     mi:"couleur",  mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", co:"menu", sel:"plein",     ft:"rouge",               ff:"nette",      fz:"chrome" },
-  { k:"prune",         n:"PRUNE",           f:"chaud",    a:"magenta",           s:"violet_avaliance",  po:"sora",       an:"tres",     pa:"rond_plein",   bo:"plein",      ca:"droite",   mi:"couleur",  mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", co:"menu", sel:"fond",     ft:"magenta",             ff:"nette",      fz:"tout" },
+  { k:"sable",         n:"SABLE",           f:"chaud",    a:"ambre",             s:"orange",            po:"sora",       an:"arrondi",  pa:"point",        bo:"contour",    ca:"bas",      mi:"mono",     mp:"non",      ep:"medium",  de:"confort",  ti:"oui", lg:"large", co:"une", sel:"fond",     ft:"ambre",               ff:"legere",     fz:"tout" },
+  { k:"cuivre",        n:"CUIVRE",          f:"chaud",    a:"orange",            s:"vert_clair",        po:"plex",       an:"leger",    pa:"carre_plein",  bo:"plein",      ca:"gauche",   mi:"mono",     mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", lg:"normale", co:"une", sel:"barre",    ft:"orange",              ff:"legere",     fz:"chrome" },
+  { k:"brique",        n:"BRIQUE",          f:"chaud",    a:"rouge",             s:"ambre",             po:"systeme",    an:"leger",    pa:"carre_vide",   bo:"contour",    ca:"cadre",    mi:"mono",     mp:"non",      ep:"medium",  de:"normal",   ti:"oui", lg:"normale", co:"une", sel:"contour",  ft:"rouge",               ff:"legere",     fz:"chrome" },
+  { k:"corail",        n:"CORAIL",          f:"chaud",    a:"rouge",             s:"magenta",           po:"sora",       an:"pilule",   pa:"rond_plein",   bo:"plein",      ca:"haut",     mi:"couleur",  mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", lg:"normale", co:"menu", sel:"plein",     ft:"rouge",               ff:"nette",      fz:"chrome" },
+  { k:"prune",         n:"PRUNE",           f:"chaud",    a:"magenta",           s:"violet_avaliance",  po:"sora",       an:"tres",     pa:"rond_plein",   bo:"plein",      ca:"droite",   mi:"couleur",  mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", lg:"normale", co:"menu", sel:"fond",     ft:"magenta",             ff:"nette",      fz:"tout" },
   /* — FLASHY — */
-  { k:"fluo",          n:"FLUO",            f:"flashy",   a:"jaune_fluo",        s:"magenta",           po:"space",      an:"carre",    pa:"carre_plein",  bo:"plein",      ca:"cadre",    mi:"mono",        mp:"entree",   ep:"large",   de:"normal",   ti:"non", co:"menu", sel:"plein",     ft:"magenta",             ff:"nette",      fz:"chrome" },
-  { k:"neon",          n:"NÉON",            f:"flashy",   a:"magenta",           s:"cyan",              po:"space",      an:"pilule",   pa:"rond_plein",   bo:"plein",      ca:"plein",    mi:"couleur",  mp:"entree",   ep:"large",   de:"normal",   ti:"non", co:"menu", sel:"plein",     ft:"magenta",             ff:"forte",      fz:"chrome" },
-  { k:"citron",        n:"CITRON",          f:"flashy",   a:"jaune_fluo",        s:"vert_normal",       po:"inter",      an:"arrondi",  pa:"point",        bo:"plein",      ca:"haut",     mi:"couleur",  mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", co:"menu", sel:"barre",    ft:"vert_normal",         ff:"legere",     fz:"chrome" },
+  { k:"fluo",          n:"FLUO",            f:"flashy",   a:"jaune_fluo",        s:"magenta",           po:"space",      an:"carre",    pa:"carre_plein",  bo:"plein",      ca:"cadre",    mi:"mono",        mp:"entree",   ep:"large",   de:"normal",   ti:"non", lg:"etroite", co:"menu", sel:"plein",     ft:"magenta",             ff:"nette",      fz:"chrome" },
+  { k:"neon",          n:"NÉON",            f:"flashy",   a:"magenta",           s:"cyan",              po:"space",      an:"pilule",   pa:"rond_plein",   bo:"plein",      ca:"plein",    mi:"couleur",  mp:"entree",   ep:"large",   de:"normal",   ti:"non", lg:"etroite", co:"menu", sel:"plein",     ft:"magenta",             ff:"forte",      fz:"chrome" },
+  { k:"citron",        n:"CITRON",          f:"flashy",   a:"jaune_fluo",        s:"vert_normal",       po:"inter",      an:"arrondi",  pa:"point",        bo:"plein",      ca:"haut",     mi:"couleur",  mp:"entree",   ep:"medium",  de:"normal",   ti:"oui", lg:"normale", co:"menu", sel:"barre",    ft:"vert_normal",         ff:"legere",     fz:"chrome" },
   /* — SEXY — */
-  { k:"rouge_levres",  n:"ROUGE À LÈVRES",  f:"sexy",     a:"rose",              s:"violet_avaliance",  po:"sora",       an:"pilule",   pa:"rond_plein",   bo:"plein",      ca:"plein",    mi:"couleur",  mp:"entree",   ep:"medium",  de:"confort",  ti:"oui", co:"menu", sel:"plein",     ft:"rose",                ff:"nette",      fz:"tout" },
-  { k:"velours",       n:"VELOURS",         f:"sexy",     a:"violet_avaliance",  s:"rose",              po:"sora",       an:"tres",     pa:"rond_plein",   bo:"plein",      ca:"gauche",   mi:"mono",     mp:"entree",   ep:"medium",  de:"confort",  ti:"oui", co:"une", sel:"barre",    ft:"violet_avaliance",    ff:"forte",      fz:"tout" },
-  { k:"lavande",       n:"LAVANDE",         f:"sexy",     a:"lavande",           s:"violet_avaliance",  po:"inter",      an:"tres",     pa:"rond_vide",    bo:"fantome",    ca:"droite",   mi:"mono",     mp:"non",      ep:"fin",     de:"confort",  ti:"non", co:"une", sel:"fond",     ft:"lavande",             ff:"legere",     fz:"tout" },
+  { k:"rouge_levres",  n:"ROUGE À LÈVRES",  f:"sexy",     a:"rose",              s:"violet_avaliance",  po:"sora",       an:"pilule",   pa:"rond_plein",   bo:"plein",      ca:"plein",    mi:"couleur",  mp:"entree",   ep:"medium",  de:"confort",  ti:"oui", lg:"large", co:"menu", sel:"plein",     ft:"rose",                ff:"nette",      fz:"tout" },
+  { k:"velours",       n:"VELOURS",         f:"sexy",     a:"violet_avaliance",  s:"rose",              po:"sora",       an:"tres",     pa:"rond_plein",   bo:"plein",      ca:"gauche",   mi:"mono",     mp:"entree",   ep:"medium",  de:"confort",  ti:"oui", lg:"large", co:"une", sel:"barre",    ft:"violet_avaliance",    ff:"forte",      fz:"tout" },
+  { k:"lavande",       n:"LAVANDE",         f:"sexy",     a:"lavande",           s:"violet_avaliance",  po:"inter",      an:"tres",     pa:"rond_vide",    bo:"fantome",    ca:"droite",   mi:"mono",     mp:"non",      ep:"fin",     de:"confort",  ti:"non", lg:"large", co:"une", sel:"fond",     ft:"lavande",             ff:"legere",     fz:"tout" },
   /* — SOBRE — */
-  { k:"craie",         n:"CRAIE",           f:"sobre",    a:"gris",              s:"bleu",              po:"systeme",    an:"carre",    pa:"point",        bo:"souligne",   ca:"aucun",    mi:"mono",     mp:"non",      ep:"fin",     de:"normal",   ti:"non", co:"une", sel:"contour",  ft:null,                  ff:"aucune",     fz:"chrome" },
-  { k:"lin",           n:"LIN",             f:"sobre",    a:"gris",              s:"vert_clair",        po:"systeme",    an:"leger",    pa:"point",        bo:"souligne",   ca:"bas",      mi:"mono",     mp:"non",      ep:"fin",     de:"confort",  ti:"oui", co:"une", sel:"contour",  ft:null,                  ff:"aucune",     fz:"chrome" }
+  { k:"craie",         n:"CRAIE",           f:"sobre",    a:"gris",              s:"bleu",              po:"systeme",    an:"carre",    pa:"point",        bo:"souligne",   ca:"aucun",    mi:"mono",     mp:"non",      ep:"fin",     de:"normal",   ti:"non", lg:"etroite", co:"une", sel:"contour",  ft:null,                  ff:"aucune",     fz:"chrome" },
+  { k:"lin",           n:"LIN",             f:"sobre",    a:"gris",              s:"vert_clair",        po:"systeme",    an:"leger",    pa:"point",        bo:"souligne",   ca:"bas",      mi:"mono",     mp:"non",      ep:"fin",     de:"confort",  ti:"oui", lg:"large", co:"une", sel:"contour",  ft:null,                  ff:"aucune",     fz:"chrome" }
 ];
 const FAMILLES = [["metier","MÉTIER"],["terminal","TERMINAL"],["froid","FROID"],
                   ["chaud","CHAUD"],["flashy","FLASHY"],["sexy","SEXY"],["sobre","SOBRE"]];
@@ -858,7 +876,7 @@ function poseTheme(k){
   S.theme = k;
   S.action = t.a; S.struct = t.s; S.police = t.po; S.angle = t.an;
   S.pastille = t.pa; S.bouton = t.bo; S.carte = t.ca;
-  S.menuIcone = t.mi; S.menuPastille = t.mp; S.selStyle = t.sel; S.coloration = t.co; S.menuTitre = t.ti;
+  S.menuIcone = t.mi; S.menuPastille = t.mp; S.selStyle = t.sel; S.coloration = t.co; S.menuTitre = t.ti; S.navLargeur = t.lg;
   /* Le theme dit s'il teinte le fond, avec quoi, et jusqu'ou :
      « chrome » = les barres et les colonnes · « tout » = les quatre surfaces. */
   S.fondForce = t.ff;
@@ -939,12 +957,15 @@ const NOTES = [{k:"infobulle",n:"AU SURVOL"},{k:"sous_le_titre",n:"SOUS LE TITRE
 const OUI_NON   = [{k:"oui",n:"OUI"},{k:"non",n:"NON"}];
 /* ⛔ L'icone est obligatoire : sans elle, une colonne repliee ne dit rien.
    Il reste deux facons de la porter, et deux interrupteurs a cote. */
-const ICONES_M  = [{k:"mono",n:"MONOCHROMES"},{k:"couleur",n:"COLORÉES"}];
+/* ⭐ « On peut colorer l'icone, le titre, l'icone tout seul ou le titre tout
+   seul. C'est a nous de choisir. » — Hamada, 19/09. Quatre portees. */
+const ICONES_M  = [{k:"mono",n:"AUCUNE"},{k:"icone",n:"ICÔNE"},
+                   {k:"titre",n:"TITRE"},{k:"couleur",n:"LES DEUX"}];
 const PASTILLES_M = [{k:"non",n:"AUCUNE"},{k:"entree",n:"UNE PAR ENTRÉE"},{k:"metier",n:"PAR MÉTIER"}];
 /* ⭐ Une couleur par entree. Treize entrees qui se partagent cinq couleurs
    ne disent rien : c'est ce qui rendait la colonne repliee illisible. */
 const COUL_ENTREE = ["vert_avaliance","bleu","magenta","vert_clair","ambre","orange","cyan",
-                     "violet_avaliance","rose","bleu_roi","lavande","vert_vif","rouge","jaune_fluo"];
+                     "lavande","rose","bleu_roi","gris","vert_vif","rouge","jaune_fluo"];
 /* Les cinq chemins du cadrage */
 const METIERS = { vif:{c1:"#5CB4FF",c2:"#D9AEE8",c3:"#C3D442",c4:"#FF9E24",c5:"#1FE0BC"},
                   clair:{c1:"#0B63C4",c2:"#430A4B",c3:"#6E7A1E",c4:"#B85C00",c5:"#00786A"} };
@@ -974,6 +995,8 @@ let S = { theme:"avaliance", palette:"avaliance", mode:"sombre", intensite:"norm
           fonds:{ page:null, carte:null, barre:null, colonne:null }, fondForce:"aucune",
           /* Le survol et la selection sont des couleurs comme les autres. */
           survol:null, selection:null, selStyle:"fond",
+          bordCouleur:null, navLargeur:"normale",
+          traits:{ carte:"theme", barre:"theme", col:"theme", champ:"theme" },
           metier:{ c1:null, c2:null, c3:null, c4:null, c5:null },
           sens:{ ok:null, warn:null, ko:null }, deplies:["crm","projets","planning"] };
 /* ⚠️ La cle porte un numero : un menu enregistre ne gagne pas les entrees
@@ -1035,6 +1058,7 @@ function applique(){
   app.setAttribute("data-intensite", S.intensite);
   app.setAttribute("data-notes", S.notes);
   app.setAttribute("data-titre", S.menuTitre);
+  app.setAttribute("data-mcoul", S.menuIcone);
   const rr = ANGLES.find(a => a.k === S.angle).v;
   root.style.setProperty("--r", rr);
   /* ⛔ Un rayon de 999 px sur une carte en fait un disque. Les grandes
@@ -1064,6 +1088,14 @@ function applique(){
   /* les nuances internes d'une carte suivent sa teinte */
   root.style.setProperty("--f3", tein("carte", base.f3));
   root.style.setProperty("--f4", tein("carte", base.f4));
+  /* ⭐ Le filet a sa couleur et sa largeur — la largeur suit l'epaisseur des traits. */
+  root.style.setProperty("--bord", melange(aplat(S.bordCouleur || S.struct), base.bord,
+                                           S.bordCouleur ? .55 : .20));
+  root.style.setProperty("--nav", (LARGEURS.find(l => l.k === S.navLargeur) || LARGEURS[1]).v);
+  SURF_TRAIT.forEach(([k]) => {
+    const c = TRAITS_S.find(t => t.k === (S.traits[k] || "theme"));
+    root.style.setProperty("--t-" + k, (c && c.v) || E.t);
+  });
   /* Le survol et la selection : une couleur choisie, ou un gris du fond. */
   root.style.setProperty("--survol", S.survol ? melange(aplat(S.survol), base.f2, .22) : base.f3);
   const cSel = S.selection ? aplat(S.selection) : aplat(kAction);
@@ -1084,11 +1116,14 @@ function applique(){
     el.style.setProperty("--c", c);
     el.style.setProperty("--sur-c", sur(c));
     /* le libelle ne s'ecrit en couleur que si cette couleur se lit sur le fond */
-    el.style.setProperty("--c-encre", S.mode === "clair" && lum(hex6(c)) > .30
-      ? getComputedStyle(root).getPropertyValue("--t2").trim() : c);
+    const fc = getComputedStyle(root).getPropertyValue("--f-carte").trim() || "#101017";
+    el.style.setProperty("--c-encre", contraste(c, fc) >= 4.5
+      ? c : getComputedStyle(root).getPropertyValue("--t2").trim());
   });
   document.querySelectorAll("[data-r]").forEach(b => b.setAttribute("aria-pressed", String(S[b.dataset.r] === b.dataset.v)));
   document.querySelectorAll("[data-r] b[data-c]").forEach(b => { b.style.background = aplat(b.dataset.c); });
+  document.querySelectorAll("[data-ts]").forEach(b =>
+    b.setAttribute("aria-pressed", String((S.traits[b.dataset.ts] || "theme") === b.dataset.v)));
   document.querySelectorAll("[data-o]").forEach(b => b.setAttribute("aria-pressed", String(S.outils.includes(b.dataset.o))));
   document.querySelectorAll("[data-t]").forEach(b => b.setAttribute("aria-pressed", String(S.tuiles.includes(b.dataset.t))));
   document.querySelectorAll("[data-chapitre]").forEach(b => {
@@ -1131,6 +1166,7 @@ function hexDe(quoi, cle){
   const k = couleurDe(quoi, cle);
   if (quoi === "fond") return k ? aplat(k) : (FONDS[S.mode] || FONDS.sombre)[cle === "page" ? "f0" : cle === "carte" ? "f2" : "f1"];
   if (k) return aplat(k);
+  if (cle === "bordCouleur") return getComputedStyle(root).getPropertyValue("--bord").trim();
   if (quoi === "metier") return METIERS[S.mode === "clair" ? "clair" : "vif"][cle];
   if (quoi === "sens")   return getComputedStyle(root).getPropertyValue("--" + cle).trim();
   const P = PALETTES.find(x => x.k === S.palette) || PALETTES[0];
@@ -1153,6 +1189,13 @@ function choix(quoi, cle, libelle){
     </div></div>`;
 }
 const SURFACES = [["page","Hors carte"],["carte","Cartes"],["barre","Barres"],["colonne","Colonnes"]];
+/* ⭐ Quatre filets, quatre epaisseurs. « Du theme » suit `ui.epaisseur` ;
+   les quatre autres crans s'imposent a cette surface-la, et a elle seule. */
+const TRAITS_S = [{k:"theme",n:"DU THÈME",v:null},{k:"aucun",n:"AUCUN",v:"0px"},
+                  {k:"fin",n:"FIN",v:"1px"},{k:"moyen",n:"MOYEN",v:"2px"},{k:"gros",n:"GROS",v:"3px"}];
+const SURF_TRAIT = [["carte","CARTES"],["barre","BARRES"],["col","COLONNES"],["champ","CHAMPS"]];
+/* La colonne de gauche a trois largeurs, et c'est le theme qui la pose. */
+const LARGEURS = [{k:"etroite",n:"ÉTROITE",v:"178px"},{k:"normale",n:"NORMALE",v:"214px"},{k:"large",n:"LARGE",v:"252px"}];
 const SEL_STYLES = [{k:"fond",n:"FOND"},{k:"plein",n:"PLEIN"},{k:"barre",n:"BARRE À GAUCHE"},{k:"contour",n:"CONTOUR"}];
 function peintThemes(){
   const z = $("#rTheme"); if (!z) return;
@@ -1173,6 +1216,7 @@ function peintChoix(){
     `<div class="ch-gr">INTERACTION</div>` +
     choix("inter", "survol", "Survol") +
     choix("inter", "selection", "Sélection") +
+    choix("inter", "bordCouleur", "Filets") +
     `<div class="ch-gr">SENS</div>` +
     NIVEAUX.map(([k, n]) => choix("sens", k, n)).join("");
 }
@@ -1201,6 +1245,13 @@ boutons("#rCarte", CARTES, "carte", false);
 boutons("#rColoration", COLORATIONS, "coloration", false);
 boutons("#rDensite", DENSITES, "densite", false);
 boutons("#rEpaisseur", EPAISSEURS, "epaisseur", false);
+boutons("#rNavLargeur", LARGEURS, "navLargeur", false);
+/* ⛔ `boutons()` ecrit dans `S[champ]` : un reglage range dans un objet a besoin
+   de sa propre marque. `data-ts` porte la surface, `data-v` le cran. */
+$("#rTraits").innerHTML = SURF_TRAIT.map(([k, n]) =>
+  `<div class="reg"><span>FILET — ${n}</span><div class="opts">` +
+  TRAITS_S.map(t => `<button class="opt" type="button" data-ts="${k}" data-v="${t.k}"
+    aria-pressed="false">${t.n}</button>`).join("") + `</div></div>`).join("");
 boutons("#rMenuIcone", ICONES_M, "menuIcone", false);
 boutons("#rMenuTitre", OUI_NON, "menuTitre", false);
 boutons("#rMenuPastille", PASTILLES_M, "menuPastille", false);
@@ -1210,6 +1261,8 @@ boutons("#rRail", RAILS, "rail", false);
 $("#rOutils").innerHTML = OUTILS.map(o => `<button class="opt" type="button" data-o="${o.k}" aria-pressed="true">${o.n}</button>`).join("");
 
 document.addEventListener("click", e => {
+  const ts = e.target.closest("[data-ts]");
+  if (ts){ S.traits[ts.dataset.ts] = ts.dataset.v; applique(); return; }
   const b = e.target.closest("[data-r]");
   if (b){ S[b.dataset.r] = b.dataset.v; if (b.dataset.r === "palette"){ S.action = null; S.struct = null; } applique(); return; }
   const o = e.target.closest("[data-o]");
@@ -1963,7 +2016,7 @@ function gReglages(e){
   if (e.mode === "politiques"){
     const fam = {};
     MONDE.politique.forEach(p => (fam[p.famille] = fam[p.famille] || []).push(p));
-    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 79 ; en voici un extrait.</p>` +
+    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 124 ; en voici un extrait.</p>` +
       Object.keys(fam).map(f => `<div class="pan" style="margin-bottom:9px"><h2>${esc(f.toUpperCase())}</h2><div class="in"><div class="tb">
         <table><thead><tr><th>CLÉ</th><th>VALEUR</th><th>CE QUE ÇA CHANGE</th><th>SOURCE</th></tr></thead><tbody>` +
         fam[f].map(p => `<tr class="${p.rouge ? "rouge" : ""}"><td><code class="cle">${esc(p.cle)}</code></td>
@@ -2250,16 +2303,17 @@ function couleurMetier(code){
 }
 /* Le marqueur : icône, carré ou rond, coloré ou non. Six façons, un réglage. */
 /* La pastille est un FILET de 3 px au bord de l'entree, pas un gros carre. */
+/* La couleur d'une entree : celle de son rang, ou celle de son metier. */
+function couleurEntree(metier, rang){
+  return S.menuPastille === "metier" ? couleurMetier(metier)
+                                     : aplat(COUL_ENTREE[rang % COUL_ENTREE.length]);
+}
 function marqueur(ic, metier, rang){
   let h = "";
   if (S.menuPastille !== "non"){
-    const c = S.menuPastille === "entree" ? aplat(COUL_ENTREE[rang % COUL_ENTREE.length])
-                                          : couleurMetier(metier);
-    h += `<i class="mq-f" style="background:${c}"></i>`;
+    h += `<i class="mq-f" style="background:${couleurEntree(metier, rang)}"></i>`;
   }
-  const st = S.menuIcone === "couleur"
-    ? ` style="color:${S.menuPastille === "metier" ? couleurMetier(metier) : aplat(COUL_ENTREE[rang % COUL_ENTREE.length])}"` : "";
-  h += `<svg${st} viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[ic] || IC.bord}</svg>`;
+  h += `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[ic] || IC.bord}</svg>`;
   return h;
 }
 function nomEcran(k){ return ECRANS[k] ? ECRANS[k].nom : (HORS_LOT[k] || k); }
@@ -2271,11 +2325,11 @@ function peintMenu(){
     const met = def.e && ECRANS[def.e] ? ECRANS[def.e].metier : "c0";
     if (!def.sous) {
       const ec = def.e || "";
-      return `<a href="#" ${ec ? `data-e="${ec}"` : 'data-off="1"'} title="${esc(nom)}"${def.horsLot ? ' class="hl"' : ""}>
+      return `<a href="#" style="--ce:${couleurEntree(met, rang)}" ${ec ? `data-e="${ec}"` : 'data-off="1"'} title="${esc(nom)}"${def.horsLot ? ' class="hl"' : ""}>
         ${marqueur(def.ic, met, rang)}<span>${esc(nom)}</span><em class="ss">${esc(nom)}</em>${def.horsLot ? '<em class="lot">hors lot</em>' : ""}</a>`;
     }
     const ouvert = S.deplies.includes(def.k);
-    return `<a href="#" data-pli="${def.k}" aria-expanded="${ouvert}"${def.horsLot ? ' class="hl"' : ""}>
+    return `<a href="#" style="--ce:${couleurEntree(met, rang)}" data-pli="${def.k}" aria-expanded="${ouvert}"${def.horsLot ? ' class="hl"' : ""}>
         ${marqueur(def.ic, met, rang)}<span>${esc(nom)}</span><em class="ss">${esc(nom)}</em>${def.horsLot ? '<em class="lot">hors lot</em>' : ""}
         <b class="chev">›</b></a>
       <div class="sous"${ouvert ? "" : " hidden"}>${def.sous.map(([ic, k]) =>
