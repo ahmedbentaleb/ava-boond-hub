@@ -3,7 +3,9 @@
 ⭐ **Écrite AVANT qu'il code.** Une grille écrite après le code vérifie ce qu'il a fait, pas ce
 qu'on voulait. Celle-ci ne discute pas.
 
-**18 contrôles · 4 familles.** Un seul 🔴 refuse le lot entier.
+**25 contrôles · 5 familles.** Un seul 🔴 refuse le lot entier.
+
+⭐ **Je suis l'auditeur GÉNÉRAL** : je passe sur le lot rendu. L'auditeur **interne** (sous-agent 4) passe **entre chaque étape**. Deux mailles, pas deux chefs.
 
 ---
 
@@ -21,7 +23,7 @@ coûte dix allers-retours ; renvoyer la liste complète en coûte un.
 
 ---
 
-## A · LA PREUVE — 4 contrôles. ⛔ Si A tombe, on ne lit pas la suite.
+## A · LA PREUVE — 5 contrôles. ⛔ Si A tombe, on ne lit pas la suite.
 
 | # | Contrôle | Comment | Verdict si faux |
 |---|---|---|---|
@@ -29,6 +31,7 @@ coûte dix allers-retours ; renvoyer la liste complète en coûte un.
 | **A2** | Elles **tombent** quand on casse un mur | retirer `tg_m10`, relancer : l'assertion M-10 doit lever | 🔴 — sinon elles ne testent rien |
 | **A3** | La CI fait la même chose que moi | lire `.github/workflows/db.yml` | 🟠 |
 | **A4** | Le compte correspond au registre §E | `python _ops/outils/dossier.py` ne crie pas | 🟠 |
+| **A5** | Les fiches de l'auditeur interne existent | une par étape, 5 pour le lot 1, dans `/audit/` | 🟠 |
 
 ⭐ **A2 est le contrôle que personne ne fait.** Une suite de tests verte qui reste verte quand on
 casse le code est pire qu'aucune suite : elle donne confiance sans rien prouver.
@@ -70,25 +73,47 @@ WHERE grantee = 'ava_app' AND privilege_type = 'DELETE';
 
 ---
 
-## D · LE DÉPÔT — 4 contrôles.
+## D · LE DÉPÔT — 5 contrôles.
 
 | # | Contrôle | Comment | Verdict si faux |
 |---|---|---|---|
 | **D1** | `_ops/` n'a pas bougé | `git diff --stat main -- _ops/` → vide | 🔴 le canon commande, il ne suit pas |
-| **D2** | Aucun ORM | `grep -rniE "prisma\|typeorm\|sequelize\|drizzle\|knex" .` | 🔴 |
+| **D2** | Aucun ORM | `grep -rniE "prisma\|typeorm\|sequelize\|drizzle\|knex" package.json */package.json` | 🔴 |
 | **D3** | Les migrations sont numérotées et jamais réécrites | `git log --diff-filter=M -- db/migrations/` → vide | 🟠 |
 | **D4** | `REMARQUES.md` existe, même vide | il doit dire « aucune » plutôt que manquer | 🟡 |
+| **D5** | Chaque dossier n'a qu'un seul auteur | l'historique git : personne n'écrit dans `/test` sauf le sous-agent 3 | 🟠 |
 
 ⭐ **D1 est le contrôle le plus important de la grille.** Le jour où le canon commence à suivre le
 code, plus rien ne commande — et on ne s'en aperçoit que trois mois après.
 
 ---
 
+## E · L'ÉCRAN — 5 contrôles. ⛔⛔ La règle qui ne bouge jamais.
+
+> **Hamada :** « Jamais patcher le front. Jamais, jamais, jamais, jamais. »
+
+| # | Contrôle | Comment | Verdict si faux |
+|---|---|---|---|
+| **E1** | Aucun `if` sur un état métier dans `/web` | `grep -rnE "(etat\|statut\|categorie)[a-zA-Z_]* *[=!]==" web/src/` | 🔴 chaque occurrence |
+| **E2** | Aucun calcul d'argent dans `/web` | `grep -rnE "marge\|tjm *\*\|cjm\|\* *jours\|/ *100" web/src/` | 🔴 |
+| **E3** | Aucun libellé d'état écrit en dur | `grep -rn "Signée\|Prévisionnelle\|À pourvoir" web/src/` → vide | 🟠 le serveur envoie le libellé |
+| **E4** | `/web` n'importe rien de `/server` ni de `/db` | `grep -rn "from .*\.\./server\|/db/" web/src/` → vide | 🔴 |
+| **E5** | Aucun ORM ni SQL dans `/web` | `grep -rniE "SELECT \|INSERT \|pg" web/src/` → vide | 🔴 |
+
+⭐ **E1 et E2 attrapent la même faute par deux bouts.** Un agent Écran bloqué écrira
+`if (etat === 'signee')` pour débloquer l'affichage — c'est le `if` métier en dur, déplacé de
+l'autre côté du fil. ⛔ **Et la correction n'est jamais dans l'écran** : on renvoie au serveur.
+
+⚠️ **Ce que E3 n'attrape pas** : un libellé traduit dans un objet `const LABELS = {...}`. ⭐ Je
+lis `/web/src` une fois, à l'œil, à chaque lot — c'est ce qu'aucun grep ne remplace.
+
+---
+
 <procedure>
 
-**1.** Lancer la preuve (A1 → A4). ⛔ Si A1 ou A2 tombe : refus, on s'arrête là.
+**1.** Lancer la preuve (A1 → A5). ⛔ Si A1 ou A2 tombe : refus, on s'arrête là.
 
-**2.** Passer B, C, D **en entier**, même si quelque chose est déjà tombé.
+**2.** Passer B, C, D, E **en entier**, même si quelque chose est déjà tombé.
 
 **3.** Écrire chaque 🔴 et 🟠 dans [JOURNAL_BUGS.md](JOURNAL_BUGS.md), **une ligne par bug**, avec
 le numéro du contrôle.
@@ -131,7 +156,7 @@ du prompt.
 Le prompt qu'elle juge : [PROMPT_GROK_LOT1.md](PROMPT_GROK_LOT1.md).
 Le journal qu'elle alimente : [JOURNAL_BUGS.md](JOURNAL_BUGS.md) — 0 ligne.
 
-⏳ **Elle grandira.** Le lot 2 (les 44 commandes) ajoutera une famille **E — les contrats** :
+⏳ **Elle grandira.** Le lot 2 (les 44 commandes) ajoutera une famille **F — les contrats** :
 un contrôle par commande, tirés de L4.
 
 </etat>
