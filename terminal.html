@@ -36,6 +36,7 @@
   /* ⭐ Le filet d'une carte, d'une barre, d'une colonne et d'un champ ne sont
      pas la meme chose. Quatre epaisseurs, chacune « du theme » par defaut. */
   --t-carte:1px; --t-barre:1px; --t-col:1px; --t-champ:1px;
+  --op-carte:1; --op-col:1; --op-barre:1;
   /* la hauteur du bandeau de marque : la ou commence « PILOTAGE ».
      La colonne d'outils de droite demarre sur cette meme ligne. */
   --haut-menu:10px; --h-top:48px;
@@ -82,15 +83,20 @@ html,body{height:100%}
 [data-image]:not([data-image="aucune"]) .kpi{
   background:color-mix(in srgb,var(--f-carte) calc(var(--op-carte)*100%),transparent);
   backdrop-filter:blur(calc((1 - var(--op-carte)) * 9px))}
+/* ⭐ « La barre laterale gauche et droite, il faut la regler toute seule. »
+   Quatrieme fois le meme decoupage : ce qui a sa couleur et son filet a
+   aussi sa transparence. ⛔ Les deux colonnes vont ensemble — c'est une
+   seule surface, vue de deux cotes. */
 [data-image]:not([data-image="aucune"]) .nav,
 [data-image]:not([data-image="aucune"]) .rail,
-[data-image]:not([data-image="aucune"]) .rail .strip{
-  background:color-mix(in srgb,var(--f-col) calc(var(--op-carte)*100%),transparent);
-  backdrop-filter:blur(calc((1 - var(--op-carte)) * 9px))}
+[data-image]:not([data-image="aucune"]) .rail .strip,
+[data-image]:not([data-image="aucune"]) .rail .vue>h3{
+  background:color-mix(in srgb,var(--f-col) calc(var(--op-col)*100%),transparent);
+  backdrop-filter:blur(calc((1 - var(--op-col)) * 9px))}
 [data-image]:not([data-image="aucune"]) .top,
 [data-image]:not([data-image="aucune"]) .bar{
-  background:color-mix(in srgb,var(--f-barre) calc(var(--op-carte)*100%),transparent);
-  backdrop-filter:blur(calc((1 - var(--op-carte)) * 9px))}
+  background:color-mix(in srgb,var(--f-barre) calc(var(--op-barre)*100%),transparent);
+  backdrop-filter:blur(calc((1 - var(--op-barre)) * 9px))}
 body{background:var(--f-page);color:var(--t2);font-family:var(--police);font-size:12.5px;line-height:1.5;letter-spacing:.2px;-webkit-font-smoothing:antialiased}
 button,select{font:inherit;color:inherit;letter-spacing:inherit}
 button{cursor:pointer;background:none;border:0}
@@ -812,7 +818,10 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
                 <input id="fImg" type="file" accept="image/*" hidden>
                 <button class="opt" type="button" id="fImgX">RETIRER</button></div></div>
               <div class="reg"><span>VOILE SUR L'IMAGE</span><div class="opts" id="rVoile"></div></div>
-              <div class="reg"><span>TRANSPARENCE DES SURFACES</span><div class="opts" id="rTransp"></div></div>
+              <div class="reg"><span>TRANSPARENCE — TOUT</span><div class="opts" id="rTransp"></div></div>
+              <div class="reg"><span>TRANSPARENCE — CARTES</span><div class="opts" id="rTrCarte"></div></div>
+              <div class="reg"><span>TRANSPARENCE — COLONNES</span><div class="opts" id="rTrCol"></div></div>
+              <div class="reg"><span>TRANSPARENCE — BARRES</span><div class="opts" id="rTrBarre"></div></div>
             </div>
           </section>
 
@@ -1221,6 +1230,8 @@ let S = { v:3, theme:"avaliance", palette:"avaliance", mode:"sombre", intensite:
           cols:{}, onglets:{},
           /* ⭐ « Neutre » ou « avec image », et de combien. Activable, désactivable. */
           image:"aucune", voile:"normal", transparence:"nette", imagePerso:null,
+          /* ⭐ Vide = celle que le thème pose. Chacune se retouche seule. */
+          transp:{ carte:null, colonne:null, barre:null },
           /* ⭐ Une couleur par entrée, et chacune se retouche. Vide = celle du rang. */
           menuCouls:{}, menuCoulUne:null, menuIntensite:"plein", menuSelCouleur:"entree",
           libCarte:"couleur",
@@ -1333,7 +1344,11 @@ function applique(){
   app.setAttribute("data-cadre", S.ecranCadre);
   root.setAttribute("data-image", S.image);
   root.style.setProperty("--voile", (VOILES.find(v => v.k === S.voile) || VOILES[1]).v);
-  root.style.setProperty("--op-carte", (TRANSP.find(t => t.k === S.transparence) || TRANSP[2]).v);
+  /* Celle du thème, puis la retouche de chaque surface si elle existe. */
+  const opDe = (sf) => (TRANSP.find(t => t.k === (S.transp[sf] || S.transparence)) || TRANSP[2]).v;
+  root.style.setProperty("--op-carte",  opDe("carte"));
+  root.style.setProperty("--op-col",    opDe("colonne"));
+  root.style.setProperty("--op-barre",  opDe("barre"));
   const rr = ANGLES.find(a => a.k === S.angle).v;
   root.style.setProperty("--r", rr);
   /* ⛔ Un rayon de 999 px sur une carte en fait un disque. Les grandes
@@ -1416,6 +1431,8 @@ function applique(){
   });
   document.querySelectorAll("[data-r]").forEach(b => b.setAttribute("aria-pressed", String(S[b.dataset.r] === b.dataset.v)));
   document.querySelectorAll("[data-r] b[data-c]").forEach(b => { b.style.background = aplat(b.dataset.c); });
+  document.querySelectorAll("[data-tp]").forEach(b =>
+    b.setAttribute("aria-pressed", String((S.transp[b.dataset.tp] || "") === b.dataset.v)));
   document.querySelectorAll("[data-ts]").forEach(b =>
     b.setAttribute("aria-pressed", String((S.traits[b.dataset.ts] || "theme") === b.dataset.v)));
   document.querySelectorAll("[data-o]").forEach(b => b.setAttribute("aria-pressed", String(S.outils.includes(b.dataset.o))));
@@ -1608,6 +1625,12 @@ if ($("#fImgX")) $("#fImgX").addEventListener("click", () => {
 });
 boutons("#rVoile", VOILES, "voile", false);
 boutons("#rTransp", TRANSP, "transparence", false);
+/* ⛔ `boutons()` ecrit dans `S[champ]` : ces trois-la vivent dans un objet,
+   elles ont leur propre marque — `data-tp` porte la surface. */
+const SURF_TP = [["carte","#rTrCarte"],["colonne","#rTrCol"],["barre","#rTrBarre"]];
+SURF_TP.forEach(([k, id]) => { if ($(id)) $(id).innerHTML =
+  `<button class="opt" type="button" data-tp="${k}" data-v="" aria-pressed="false">DU THÈME</button>` +
+  TRANSP.map(t => `<button class="opt" type="button" data-tp="${k}" data-v="${t.k}" aria-pressed="false">${t.n}</button>`).join(""); });
 /* Le bouton de la vôtre ne s'allume que si elle existe. */
 function peintPerso(){
   const b = $("#fImgX"); if (!b) return;
@@ -1619,6 +1642,8 @@ boutons("#rRail", RAILS, "rail", false);
 $("#rOutils").innerHTML = OUTILS.map(o => `<button class="opt" type="button" data-o="${o.k}" aria-pressed="true">${o.n}</button>`).join("");
 
 document.addEventListener("click", e => {
+  const tp = e.target.closest("[data-tp]");
+  if (tp){ S.transp[tp.dataset.tp] = tp.dataset.v || null; applique(); return; }
   const pp = e.target.closest("[data-pop]");
   if (pp){ e.preventDefault(); popOrd = popOrd === pp.dataset.pop ? null : pp.dataset.pop; peindre(); return; }
   const od = e.target.closest("[data-ord]");
@@ -2406,7 +2431,7 @@ function gReglages(e){
   if (e.mode === "politiques"){
     const fam = {};
     MONDE.politique.forEach(p => (fam[p.famille] = fam[p.famille] || []).push(p));
-    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 153 ; en voici un extrait.</p>` +
+    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 156 ; en voici un extrait.</p>` +
       Object.keys(fam).map(f => `<div class="pan" style="margin-bottom:9px"><h2>${esc(f.toUpperCase())}</h2><div class="in"><div class="tb">
         <table><thead><tr><th>CLÉ</th><th>VALEUR</th><th>CE QUE ÇA CHANGE</th><th>SOURCE</th></tr></thead><tbody>` +
         fam[f].map(p => `<tr class="${p.rouge ? "rouge" : ""}"><td><code class="cle">${esc(p.cle)}</code></td>
