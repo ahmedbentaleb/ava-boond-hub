@@ -448,6 +448,11 @@ a.kpi:hover{filter:brightness(1.18)}
 .ic-p button svg{width:15px;height:15px}
 .ic-p button:hover{background:var(--survol);color:var(--t1)}
 .ic-p button[aria-current]{color:var(--action-encre);background:color-mix(in srgb,var(--action) 14%,transparent)}
+/* Les siennes portent un point : on sait ce qui vient du modele. */
+.ic-p button[data-posei*="|perso_"]{position:relative}
+.ic-p button[data-posei*="|perso_"]::after{content:"";position:absolute;right:3px;top:3px;
+  width:4px;height:4px;border-radius:50%;background:var(--action)}
+.ic-n{font-size:9px;letter-spacing:.6px;color:var(--t3);align-self:center;padding-left:2px}
 /* ─── réglages ─── */
 .reg-row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .reg{display:flex;flex-direction:column;gap:5px;min-width:0}
@@ -909,6 +914,11 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
               <div class="reg"><span>COULEUR DE LA SÉLECTION</span><div class="opts" id="rMenuSelCoul"></div></div>
               <div class="reg"><span>ENTRÉES DU MENU</span><div id="rMenuOrdre"></div></div>
               <div class="reg"><span>ICÔNE DE CHAQUE ENTRÉE</span><div id="rMenuIcones"></div></div>
+              <div class="reg"><span>VOTRE BIBLIOTHÈQUE</span><div class="opts">
+                <label class="opt" for="fIco">IMPORTER DES .SVG…</label>
+                <input id="fIco" type="file" accept=".svg,image/svg+xml" multiple hidden>
+                <button class="opt" type="button" id="fIcoX">TOUT RETIRER</button>
+                <span class="ic-n" id="icoN"></span></div></div>
               <div id="rMenuCouls" class="choix-z"></div>
               <div class="reg"><span>TUILES DU TABLEAU DE BORD</span><div class="opts" id="rTuiles"></div></div>
               <div class="reg"><span>COLORATION</span><div class="opts" id="rColoration"></div></div>
@@ -1290,7 +1300,7 @@ let S = { v:3, theme:"avaliance", palette:"avaliance", mode:"sombre", intensite:
           /* ⭐ Vide = le cran que le thème pose. */
           ombre:"legere", ombres:{ tuile:null, carte:null, bouton:null },
           /* ⭐ Une couleur par entrée, et chacune se retouche. Vide = celle du rang. */
-          menuIcones:{}, menuCouls:{}, menuCoulUne:null, menuIntensite:"plein", menuSelCouleur:"entree",
+          menuIcones:{}, menuCouls:{}, menuCoulUne:null, iconesPerso:{}, menuIntensite:"plein", menuSelCouleur:"entree",
           libCarte:"couleur",
           traits:{ carte:"theme", barre:"theme", col:"theme", champ:"theme" },
           metier:{ c1:null, c2:null, c3:null, c4:null, c5:null },
@@ -1524,6 +1534,9 @@ function applique(){
                           getComputedStyle(root).getPropertyValue("--f0").trim())
         : im.src}")`;
   peintPerso();
+  if ($("#icoN")){ const n = Object.keys(S.iconesPerso).length;
+    $("#icoN").textContent = n ? n + (n > 1 ? " icônes à vous" : " icône à vous") : "aucune";
+    const b = $("#fIcoX"); if (b){ b.disabled = !n; b.style.opacity = n ? "" : ".4"; } }
   peintMenu();
   peintThemes();
   peintChoix();
@@ -1607,16 +1620,61 @@ function peintThemes(){
       aria-pressed="${S.theme === t.k}"><u><b style="background:${aplat(t.a)}"></b><b style="background:${aplat(t.s)}"></b></u>${t.n}</button>`).join("")).join("");
 }
 /* ⭐ Une ligne par entrée : son icône actuelle, et la bibliothèque dessous. */
+/* ═══ IMPORTER SA BIBLIOTHÈQUE ═══
+   ⛔ Un SVG téléversé est du CODE, pas une image : il peut porter un
+   `<script>`, un `onload=`, un `<foreignObject>` ou un appel réseau. Il est
+   NETTOYÉ avant d'entrer — et ce qu'on garde est une liste blanche, jamais
+   une liste noire : ce qu'on n'a pas prévu ne passe pas. */
+const BALISES_OK = new Set(["path","circle","ellipse","rect","line","polyline",
+                            "polygon","g","defs","clippath","title","desc"]);
+const ATTRS_OK = new Set(["d","cx","cy","r","rx","ry","x","y","x1","y1","x2","y2",
+                          "width","height","points","transform","fill-rule","clip-rule",
+                          "stroke-linecap","stroke-linejoin","stroke-width","opacity"]);
+function nettoieSVG(txt){
+  const doc = new DOMParser().parseFromString(txt, "image/svg+xml");
+  const racine = doc.querySelector("svg");
+  if (!racine || doc.querySelector("parsererror")) return null;
+  const vb = (racine.getAttribute("viewBox") || "0 0 24 24").trim().split(/[\s,]+/).map(Number);
+  if (vb.length !== 4 || vb.some(n => !isFinite(n)) || !vb[2] || !vb[3]) return null;
+  const garde = (n) => {
+    [...n.children].forEach(c => {
+      if (!BALISES_OK.has(c.tagName.toLowerCase())){ c.remove(); return; }
+      [...c.attributes].forEach(a => {
+        const nom = a.name.toLowerCase();
+        /* ⛔ Tout `on…`, tout `href`, tout `style` : dehors. */
+        if (!ATTRS_OK.has(nom)) c.removeAttribute(a.name);
+      });
+      garde(c);
+    });
+  };
+  garde(racine);
+  const dedans = racine.innerHTML.trim();
+  if (!dedans || dedans.length > 24000) return null;
+  /* ⭐ Remise a l'echelle 16x16 : la bibliotheque a une grille, une icone
+     importee s'y plie — sinon elle sort du rang au milieu des autres. */
+  const e = 16 / Math.max(vb[2], vb[3]);
+  const dx = (16 - vb[2] * e) / 2 - vb[0] * e, dy = (16 - vb[3] * e) / 2 - vb[1] * e;
+  return `<g transform="translate(${dx.toFixed(3)} ${dy.toFixed(3)}) scale(${e.toFixed(4)})">${dedans}</g>`;
+}
+const CLE_ICONES = "ava-icones-perso";
+try { S.iconesPerso = JSON.parse(localStorage.getItem(CLE_ICONES) || "{}"); } catch(e){}
+function rangeIcones(){ try { localStorage.setItem(CLE_ICONES, JSON.stringify(S.iconesPerso)); } catch(e){
+  alert("Le navigateur a refusé de les garder : elles tiendront jusqu'au rechargement."); } }
+/* Ce qu'on propose : la bibliotheque, puis les siennes. */
+const iconesToutes = () => ICONES.concat(Object.entries(S.iconesPerso)
+  .map(([k, o]) => ({ k, n: o.n, d: o.d, perso: 1 })));
+
 function peintIcones(){
   const z = $("#rMenuIcones"); if (!z) return;
   const svg = (k) => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[k] || IC.bord}</svg>`;
+  iconesToutes().forEach(i => { if (i.perso) IC[i.k] = i.d; });
   z.innerHTML = S.menu.map(o => {
     const d = MENU_DEFAUT.find(x => x.k === o.k); if (!d) return "";
     const cour = S.menuIcones[o.k] || d.ic, ouvert = popIcone === o.k;
     return `<div class="ic-l${ouvert ? " ouvert" : ""}">
       <button class="ic-b" type="button" data-icone="${o.k}" aria-expanded="${ouvert}">${svg(cour)}</button>
       <span>${esc(d.n || nomEcran(d.e))}</span>
-      ${ouvert ? `<div class="ic-p">${ICONES.map(i =>
+      ${ouvert ? `<div class="ic-p">${iconesToutes().map(i =>
         `<button type="button" data-posei="${o.k}|${i.k}" title="${esc(i.n)}"${
           i.k === cour ? ' aria-current="true"' : ""}>${svg(i.k)}</button>`).join("")}</div>` : ""}
     </div>`;
@@ -1671,6 +1729,29 @@ boutons("#rSelStyle", SEL_STYLES, "selStyle", false);
 boutons("#rBouton", BOUTONS, "bouton", false);
 boutons("#rCarte", CARTES, "carte", false);
 boutons("#rOmbre", OMBRES, "ombre", false);
+if ($("#fIco")) $("#fIco").addEventListener("change", async ev => {
+  const fs = [...(ev.target.files || [])]; if (!fs.length) return;
+  let ok = 0, ko = [];
+  for (const f of fs){
+    if (f.size > 512 * 1024){ ko.push(f.name + " (trop lourd)"); continue; }
+    const d = nettoieSVG(await f.text());
+    if (!d){ ko.push(f.name); continue; }
+    const cle = "perso_" + f.name.replace(/\.svg$/i, "").toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 28);
+    S.iconesPerso[cle] = { n: f.name.replace(/\.svg$/i, ""), d };
+    ok++;
+  }
+  rangeIcones(); ev.target.value = "";
+  if (ko.length) alert(ok + " importée(s).\n⛔ Refusée(s) : " + ko.join(", ")
+    + "\n\nUn SVG doit porter un viewBox et des formes — pas de script, pas d'image liée.");
+  applique();
+});
+if ($("#fIcoX")) $("#fIcoX").addEventListener("click", () => {
+  /* ⛔ On ne retire pas sous les pieds d'une entree : elle reprend son icone. */
+  Object.keys(S.menuIcones).forEach(k => {
+    if (S.menuIcones[k] && S.menuIcones[k].startsWith("perso_")) delete S.menuIcones[k]; });
+  S.iconesPerso = {}; rangeIcones(); applique();
+});
 boutons("#rLibCarte", LIB_CARTE, "libCarte", false);
 /* ⛔ Ces trois-la vivent dans un objet : `data-om` porte la surface. */
 const SURF_OM = [["tuile","#rOmTuile"],["carte","#rOmCarte"],["bouton","#rOmBouton"]];
@@ -2596,7 +2677,7 @@ function gReglages(e){
   if (e.mode === "politiques"){
     const fam = {};
     MONDE.politique.forEach(p => (fam[p.famille] = fam[p.famille] || []).push(p));
-    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 161 ; en voici un extrait.</p>` +
+    return entete(e) + `<p class="note-i" style="margin:0 0 9px">Chaque ligne est une décision qu'une autre société prendrait autrement. Le défaut est celui d'Avaliance. Changez-en une, refaites la même manipulation : <b>le produit se comporte autrement, sans une ligne de code</b>. Le registre en porte 162 ; en voici un extrait.</p>` +
       Object.keys(fam).map(f => `<div class="pan" style="margin-bottom:9px"><h2>${esc(f.toUpperCase())}</h2><div class="in"><div class="tb">
         <table><thead><tr><th>CLÉ</th><th>VALEUR</th><th>CE QUE ÇA CHANGE</th><th>SOURCE</th></tr></thead><tbody>` +
         fam[f].map(p => `<tr class="${p.rouge ? "rouge" : ""}"><td><code class="cle">${esc(p.cle)}</code></td>
