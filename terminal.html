@@ -155,25 +155,27 @@ svg{display:block;flex:none}
 .nav a[aria-current]{background:color-mix(in srgb,var(--action) calc(var(--tint)*100%),var(--f3));color:var(--action-encre);border-left-color:var(--action)}
 .nav a[aria-current] svg{color:var(--action-encre)}
 .app[data-nav="icones"] .nav a{justify-content:center;padding:9px 0;gap:0}
+[data-titre="non"] .nav a span,[data-titre="non"] .nav .sous a span{display:none}
+[data-titre="non"] .nav .gr{display:none}
 .app[data-nav="icones"] .nav a span{display:none}
 /* ⭐ Repliee, une pastille muette ne dit rien. Sous un carre ou un rond, le
    titre s'ecrit dessous, en tout petit. */
 .nav a .ss{display:none}
 .app[data-nav="icones"] .nav{width:66px}
 .app[data-nav="icones"] .nav a{flex-direction:column;gap:3px;padding:7px 2px;min-height:auto}
-.app[data-nav="icones"] .nav a .ss{font-style:normal;font-size:7px;letter-spacing:.2px;
-  line-height:1.15;text-align:center;color:var(--t4);max-width:60px;overflow:hidden;
+.app[data-nav="icones"] .nav a .ss{font-style:normal;font-size:7.5px;letter-spacing:.1px;
+  line-height:1.2;text-align:center;color:var(--t3);max-width:60px;overflow:hidden;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+[data-titre="non"].app[data-nav="icones"] .nav a .ss{display:none}
+.app[data-nav="icones"] .nav .mq-f{top:4px;bottom:4px}
 .app[data-nav="icones"] .nav a[aria-current] .ss{color:var(--action-encre)}
 .app[data-nav="icones"] .coin{width:66px}
 /* Replier se commande d'ou on regarde : en haut, a cote du titre. */
 /* Hors du carre : posee sur le filet, a hauteur du titre de l'ecran. Aucune
    ligne en plus dans la colonne — l'en-tete reste le logo et le nom. */
-/* ─── le marqueur du menu : icône, carré ou rond ─── */
-.nav .mq{width:14px;height:14px;flex:none;display:block;border-radius:2px}
-.nav .mq-f{border:1.6px solid;background:transparent}
-.nav .mq-p{border:0}
-.nav .mq-r{border-radius:50%}
+/* ─── le marqueur : un filet de couleur, puis l'icône ─── */
+.nav a{position:relative}
+.nav .mq-f{position:absolute;left:0;top:6px;bottom:6px;width:3px;flex:none;border-radius:0 2px 2px 0}
 /* ─── les entrées dépliantes ─── */
 .nav .chev{margin-left:auto;font-style:normal;font-weight:400;font-size:13px;color:var(--t4);
   transition:transform .15s ease;line-height:1}
@@ -333,9 +335,16 @@ select:hover{border-color:var(--t4)}
 .kpi .v{font-size:30px;font-weight:600;line-height:1.1;margin-top:4px;letter-spacing:-.5px;color:var(--t1);font-variant-numeric:tabular-nums}
 .kpi .d{font-size:10.5px;margin-top:6px;line-height:1.5;color:var(--t3)}
 .kpi .d em{font-style:normal;font-weight:600;color:var(--warn)}
-[data-carte="bande"] .kpi{background:var(--f-carte);border:var(--trait) solid var(--bord);border-left:var(--bande) solid var(--c)}
-[data-carte="contour"] .kpi{background:transparent;border:var(--contour) solid var(--c)}
-[data-carte="contour"] .kpi .k{color:var(--c-encre)}
+/* ⭐ Le trait d'une carte se pose ou on veut. Pourquoi seulement a gauche ? */
+.kpi{background:var(--f-carte);border:var(--trait) solid var(--bord)}
+[data-carte="cadre"]  .kpi{border:var(--bande) solid var(--c)}
+[data-carte="gauche"] .kpi{border-left:var(--bande) solid var(--c)}
+[data-carte="droite"] .kpi{border-right:var(--bande) solid var(--c)}
+[data-carte="haut"]   .kpi{border-top:var(--bande) solid var(--c)}
+[data-carte="bas"]    .kpi{border-bottom:var(--bande) solid var(--c)}
+[data-carte="aucun"]  .kpi{border-color:var(--bord)}
+[data-carte="cadre"] .kpi .k,[data-carte="gauche"] .kpi .k,[data-carte="droite"] .kpi .k,
+[data-carte="haut"] .kpi .k,[data-carte="bas"] .kpi .k{color:var(--c-encre)}
 [data-carte="plein"] .kpi{background:var(--c);border:1px solid var(--c)}
 [data-carte="plein"] .kpi .k{color:var(--sur-c);opacity:.68}
 [data-carte="plein"] .kpi .v{color:var(--sur-c)}
@@ -625,7 +634,7 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
 .sig{display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;font-size:8.5px;letter-spacing:.7px;color:var(--t3);padding-top:2px}
 </style>
 
-<div class="app" id="app" data-nav="ouvert" data-pastille="point" data-bouton="contour" data-carte="bande">
+<div class="app" id="app" data-nav="ouvert" data-pastille="point" data-bouton="contour" data-carte="cadre">
 
 <header class="top">
   <span class="marque-h">
@@ -708,7 +717,9 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
           <section class="chap" data-chap="menu">
             <button class="chap-t" type="button" data-chapitre="menu" aria-expanded="false">Menu<i>▾</i></button>
             <div class="chap-c">
-              <div class="reg"><span>MARQUEUR</span><div class="opts" id="rMarqueur"></div></div>
+              <div class="reg"><span>ICÔNES</span><div class="opts" id="rMenuIcone"></div></div>
+              <div class="reg"><span>TITRES</span><div class="opts" id="rMenuTitre"></div></div>
+              <div class="reg"><span>PASTILLES DE COULEUR</span><div class="opts" id="rMenuPastille"></div></div>
               <div class="reg"><span>COLORATION</span><div class="opts" id="rColoration"></div></div>
             </div>
           </section>
@@ -795,40 +806,40 @@ const teinte = (k, mode) => { const o = COULEURS.find(c => c.k === k) || COULEUR
    La palette reste un réglage à part, pour qui veut pousser plus loin. */
 const THEMES = [
   /* — MÉTIER — */
-  { k:"avaliance", n:"AVALIANCE", f:"metier", a:"vert_avaliance", s:"violet_avaliance", po:"jetbrains", an:"carre",  pa:"point",       bo:"contour",  ca:"bande",   mq:"icone",         ep:"medium", de:"normal" },
-  { k:"encre",     n:"ENCRE",     f:"metier", a:"violet_avaliance", s:"gris",          po:"systeme",   an:"carre",  pa:"point",       bo:"contour",  ca:"bande",   mq:"icone",         ep:"fin",    de:"normal" },
-  { k:"ardoise",   n:"ARDOISE",   f:"metier", a:"gris",           s:"gris",            po:"systeme",   an:"leger",  pa:"point",       bo:"souligne", ca:"contour", mq:"icone_mono",    ep:"fin",    de:"normal" },
-  { k:"acier",     n:"ACIER",     f:"metier", a:"bleu_roi",       s:"gris",            po:"systeme",   an:"leger",  pa:"point",       bo:"contour",  ca:"bande",   mq:"icone",         ep:"fin",    de:"normal" },
-  { k:"foret",     n:"FORÊT",     f:"metier", a:"vert_normal",    s:"vert_clair",      po:"systeme",   an:"leger",  pa:"point",       bo:"contour",  ca:"bande",   mq:"icone",         ep:"medium", de:"normal" },
-  { k:"olive",     n:"OLIVE",     f:"metier", a:"vert_clair",     s:"vert_normal",     po:"sora",      an:"leger",  pa:"carre_vide",  bo:"contour",  ca:"contour", mq:"icone",         ep:"medium", de:"normal" },
+  { k:"avaliance", n:"AVALIANCE", f:"metier", a:"vert_avaliance", s:"violet_avaliance", po:"jetbrains", an:"carre",  pa:"point",       bo:"contour",  ca:"cadre"  ,   mi:"encre",   mp:"non",         ep:"medium", de:"normal" },
+  { k:"encre",     n:"ENCRE",     f:"metier", a:"violet_avaliance", s:"gris",          po:"systeme",   an:"carre",  pa:"point",       bo:"contour",  ca:"gauche",   mi:"encre",   mp:"non",         ep:"fin",    de:"normal" },
+  { k:"ardoise",   n:"ARDOISE",   f:"metier", a:"gris",           s:"gris",            po:"systeme",   an:"leger",  pa:"point",       bo:"souligne", ca:"cadre", mi:"grise",   mp:"non",    ep:"fin",    de:"normal" },
+  { k:"acier",     n:"ACIER",     f:"metier", a:"bleu_roi",       s:"gris",            po:"systeme",   an:"leger",  pa:"point",       bo:"contour",  ca:"gauche",   mi:"encre",   mp:"non",         ep:"fin",    de:"normal" },
+  { k:"foret",     n:"FORÊT",     f:"metier", a:"vert_normal",    s:"vert_clair",      po:"systeme",   an:"leger",  pa:"point",       bo:"contour",  ca:"gauche",   mi:"encre",   mp:"non",         ep:"medium", de:"normal" },
+  { k:"olive",     n:"OLIVE",     f:"metier", a:"vert_clair",     s:"vert_normal",     po:"sora",      an:"leger",  pa:"carre_vide",  bo:"contour",  ca:"cadre", mi:"encre",   mp:"non",         ep:"medium", de:"normal" },
   /* — TERMINAL — ⛔ orange, gris, noir. Aucun bleu. */
-  { k:"terminal",  n:"TERMINAL",  f:"terminal", a:"ambre",        s:"gris",            po:"jetbrains", an:"carre",  pa:"carre_plein", bo:"plein",    ca:"contour", mq:"carre",         ep:"fin",    de:"compact" },
-  { k:"bloom",     n:"BLOOM",     f:"terminal", a:"orange",       s:"gris",            po:"plex",      an:"carre",  pa:"carre_plein", bo:"plein",    ca:"contour", mq:"carre",         ep:"fin",    de:"compact" },
-  { k:"phosphore", n:"PHOSPHORE", f:"terminal", a:"vert_vif",     s:"ambre",           po:"space",     an:"carre",  pa:"carre_plein", bo:"plein",    ca:"contour", mq:"carre_couleur", ep:"fin",    de:"compact" },
-  { k:"mural",     n:"MURAL",     f:"terminal", a:"vert_vif",     s:"orange",          po:"space",     an:"leger",  pa:"carre_plein", bo:"plein",    ca:"bande",   mq:"icone_couleur", ep:"large",  de:"confort" },
+  { k:"terminal",  n:"TERMINAL",  f:"terminal", a:"ambre",        s:"gris",            po:"jetbrains", an:"carre",  pa:"carre_plein", bo:"plein",    ca:"cadre", mi:"non",     mp:"entree",         ep:"fin",    de:"compact" },
+  { k:"bloom",     n:"BLOOM",     f:"terminal", a:"orange",       s:"gris",            po:"plex",      an:"carre",  pa:"carre_plein", bo:"plein",    ca:"cadre", mi:"non",     mp:"entree",         ep:"fin",    de:"compact" },
+  { k:"phosphore", n:"PHOSPHORE", f:"terminal", a:"vert_vif",     s:"ambre",           po:"space",     an:"carre",  pa:"carre_plein", bo:"plein",    ca:"cadre", mi:"non",     mp:"entree", ep:"fin",    de:"compact" },
+  { k:"mural",     n:"MURAL",     f:"terminal", a:"vert_vif",     s:"orange",          po:"space",     an:"leger",  pa:"carre_plein", bo:"plein",    ca:"gauche",   mi:"couleur", mp:"entree", ep:"large",  de:"confort" },
   /* — FROID — */
-  { k:"nuit",      n:"NUIT",      f:"froid", a:"bleu_roi",        s:"violet_avaliance",po:"inter",     an:"arrondi",pa:"rond_plein",  bo:"plein",    ca:"bande",   mq:"icone",         ep:"medium", de:"normal" },
-  { k:"ocean",     n:"OCÉAN",     f:"froid", a:"bleu",            s:"cyan",            po:"inter",     an:"arrondi",pa:"rond_vide",   bo:"contour",  ca:"bande",   mq:"icone_couleur", ep:"medium", de:"normal" },
-  { k:"lagon",     n:"LAGON",     f:"froid", a:"cyan",            s:"bleu_roi",        po:"systeme",   an:"arrondi",pa:"point",       bo:"contour",  ca:"bande",   mq:"icone",         ep:"medium", de:"normal" },
-  { k:"glace",     n:"GLACE",     f:"froid", a:"cyan",            s:"gris",            po:"inter",     an:"tres",   pa:"rond_vide",   bo:"fantome",  ca:"contour", mq:"icone_mono",    ep:"fin",    de:"confort" },
-  { k:"emeraude",  n:"ÉMERAUDE",  f:"froid", a:"vert_vif",        s:"cyan",            po:"inter",     an:"arrondi",pa:"rond_plein",  bo:"plein",    ca:"bande",   mq:"icone_couleur", ep:"medium", de:"normal" },
+  { k:"nuit",      n:"NUIT",      f:"froid", a:"bleu_roi",        s:"violet_avaliance",po:"inter",     an:"arrondi",pa:"rond_plein",  bo:"plein",    ca:"gauche",   mi:"encre",   mp:"non",         ep:"medium", de:"normal" },
+  { k:"ocean",     n:"OCÉAN",     f:"froid", a:"bleu",            s:"cyan",            po:"inter",     an:"arrondi",pa:"rond_vide",   bo:"contour",  ca:"gauche",   mi:"couleur", mp:"entree", ep:"medium", de:"normal" },
+  { k:"lagon",     n:"LAGON",     f:"froid", a:"cyan",            s:"bleu_roi",        po:"systeme",   an:"arrondi",pa:"point",       bo:"contour",  ca:"gauche",   mi:"encre",   mp:"non",         ep:"medium", de:"normal" },
+  { k:"glace",     n:"GLACE",     f:"froid", a:"cyan",            s:"gris",            po:"inter",     an:"tres",   pa:"rond_vide",   bo:"fantome",  ca:"cadre", mi:"grise",   mp:"non",    ep:"fin",    de:"confort" },
+  { k:"emeraude",  n:"ÉMERAUDE",  f:"froid", a:"vert_vif",        s:"cyan",            po:"inter",     an:"arrondi",pa:"rond_plein",  bo:"plein",    ca:"gauche",   mi:"couleur", mp:"entree", ep:"medium", de:"normal" },
   /* — CHAUD — */
-  { k:"sable",     n:"SABLE",     f:"chaud", a:"ambre",           s:"orange",          po:"sora",      an:"arrondi",pa:"point",       bo:"contour",  ca:"bande",   mq:"icone",         ep:"medium", de:"confort" },
-  { k:"cuivre",    n:"CUIVRE",    f:"chaud", a:"orange",          s:"vert_clair",      po:"plex",      an:"leger",  pa:"carre_plein", bo:"plein",    ca:"bande",   mq:"icone",         ep:"medium", de:"normal" },
-  { k:"brique",    n:"BRIQUE",    f:"chaud", a:"rouge",           s:"ambre",           po:"systeme",   an:"leger",  pa:"carre_vide",  bo:"contour",  ca:"contour", mq:"icone",         ep:"medium", de:"normal" },
-  { k:"corail",    n:"CORAIL",    f:"chaud", a:"rouge",           s:"magenta",         po:"sora",      an:"pilule", pa:"rond_plein",  bo:"plein",    ca:"plein",   mq:"rond_couleur",  ep:"medium", de:"normal" },
-  { k:"prune",     n:"PRUNE",     f:"chaud", a:"magenta",         s:"violet_avaliance",po:"sora",      an:"tres",   pa:"rond_plein",  bo:"plein",    ca:"bande",   mq:"icone_couleur", ep:"medium", de:"normal" },
+  { k:"sable",     n:"SABLE",     f:"chaud", a:"ambre",           s:"orange",          po:"sora",      an:"arrondi",pa:"point",       bo:"contour",  ca:"gauche",   mi:"encre",   mp:"non",         ep:"medium", de:"confort" },
+  { k:"cuivre",    n:"CUIVRE",    f:"chaud", a:"orange",          s:"vert_clair",      po:"plex",      an:"leger",  pa:"carre_plein", bo:"plein",    ca:"gauche",   mi:"encre",   mp:"non",         ep:"medium", de:"normal" },
+  { k:"brique",    n:"BRIQUE",    f:"chaud", a:"rouge",           s:"ambre",           po:"systeme",   an:"leger",  pa:"carre_vide",  bo:"contour",  ca:"cadre", mi:"encre",   mp:"non",         ep:"medium", de:"normal" },
+  { k:"corail",    n:"CORAIL",    f:"chaud", a:"rouge",           s:"magenta",         po:"sora",      an:"pilule", pa:"rond_plein",  bo:"plein",    ca:"plein",   mi:"non",     mp:"entree",  ep:"medium", de:"normal" },
+  { k:"prune",     n:"PRUNE",     f:"chaud", a:"magenta",         s:"violet_avaliance",po:"sora",      an:"tres",   pa:"rond_plein",  bo:"plein",    ca:"gauche",   mi:"couleur", mp:"entree", ep:"medium", de:"normal" },
   /* — FLASHY — */
-  { k:"fluo",      n:"FLUO",      f:"flashy", a:"jaune_fluo",     s:"magenta",         po:"space",     an:"carre",  pa:"carre_plein", bo:"plein",    ca:"plein",   mq:"carre_couleur", ep:"large",  de:"normal" },
-  { k:"neon",      n:"NÉON",      f:"flashy", a:"magenta",        s:"cyan",            po:"space",     an:"pilule", pa:"rond_plein",  bo:"plein",    ca:"plein",   mq:"rond_couleur",  ep:"large",  de:"normal" },
-  { k:"citron",    n:"CITRON",    f:"flashy", a:"jaune_fluo",     s:"vert_normal",     po:"inter",     an:"arrondi",pa:"point",       bo:"plein",    ca:"bande",   mq:"icone_couleur", ep:"medium", de:"normal" },
+  { k:"fluo",      n:"FLUO",      f:"flashy", a:"jaune_fluo",     s:"magenta",         po:"space",     an:"carre",  pa:"carre_plein", bo:"plein",    ca:"plein",   mi:"non",     mp:"entree", ep:"large",  de:"normal" },
+  { k:"neon",      n:"NÉON",      f:"flashy", a:"magenta",        s:"cyan",            po:"space",     an:"pilule", pa:"rond_plein",  bo:"plein",    ca:"plein",   mi:"non",     mp:"entree",  ep:"large",  de:"normal" },
+  { k:"citron",    n:"CITRON",    f:"flashy", a:"jaune_fluo",     s:"vert_normal",     po:"inter",     an:"arrondi",pa:"point",       bo:"plein",    ca:"gauche",   mi:"couleur", mp:"entree", ep:"medium", de:"normal" },
   /* — SEXY — */
-  { k:"rouge_levres", n:"ROUGE À LÈVRES", f:"sexy", a:"rose",     s:"violet_avaliance",po:"sora",      an:"pilule", pa:"rond_plein",  bo:"plein",    ca:"plein",   mq:"rond_couleur",  ep:"medium", de:"confort" },
-  { k:"velours",   n:"VELOURS",   f:"sexy", a:"violet_avaliance", s:"rose",            po:"sora",      an:"tres",   pa:"rond_plein",  bo:"plein",    ca:"bande",   mq:"icone_couleur", ep:"medium", de:"confort" },
-  { k:"lavande",   n:"LAVANDE",   f:"sexy", a:"lavande",          s:"violet_avaliance",po:"inter",     an:"tres",   pa:"rond_vide",   bo:"fantome",  ca:"contour", mq:"icone",         ep:"fin",    de:"confort" },
+  { k:"rouge_levres", n:"ROUGE À LÈVRES", f:"sexy", a:"rose",     s:"violet_avaliance",po:"sora",      an:"pilule", pa:"rond_plein",  bo:"plein",    ca:"plein",   mi:"non",     mp:"entree",  ep:"medium", de:"confort" },
+  { k:"velours",   n:"VELOURS",   f:"sexy", a:"violet_avaliance", s:"rose",            po:"sora",      an:"tres",   pa:"rond_plein",  bo:"plein",    ca:"gauche",   mi:"couleur", mp:"entree", ep:"medium", de:"confort" },
+  { k:"lavande",   n:"LAVANDE",   f:"sexy", a:"lavande",          s:"violet_avaliance",po:"inter",     an:"tres",   pa:"rond_vide",   bo:"fantome",  ca:"cadre", mi:"encre",   mp:"non",         ep:"fin",    de:"confort" },
   /* — SOBRE — */
-  { k:"craie",     n:"CRAIE",     f:"sobre", a:"gris",            s:"bleu",            po:"systeme",   an:"carre",  pa:"point",       bo:"souligne", ca:"contour", mq:"icone_mono",    ep:"fin",    de:"normal" },
-  { k:"lin",       n:"LIN",       f:"sobre", a:"gris",            s:"vert_clair",      po:"systeme",   an:"leger",  pa:"point",       bo:"souligne", ca:"contour", mq:"icone_mono",    ep:"fin",    de:"confort" }
+  { k:"craie",     n:"CRAIE",     f:"sobre", a:"gris",            s:"bleu",            po:"systeme",   an:"carre",  pa:"point",       bo:"souligne", ca:"cadre", mi:"grise",   mp:"non",    ep:"fin",    de:"normal" },
+  { k:"lin",       n:"LIN",       f:"sobre", a:"gris",            s:"vert_clair",      po:"systeme",   an:"leger",  pa:"point",       bo:"souligne", ca:"cadre", mi:"grise",   mp:"non",    ep:"fin",    de:"confort" }
 ];
 const FAMILLES = [["metier","MÉTIER"],["terminal","TERMINAL"],["froid","FROID"],
                   ["chaud","CHAUD"],["flashy","FLASHY"],["sexy","SEXY"],["sobre","SOBRE"]];
@@ -839,7 +850,8 @@ function poseTheme(k){
   const t = THEMES.find(x => x.k === k); if (!t) return;
   S.theme = k;
   S.action = t.a; S.struct = t.s; S.police = t.po; S.angle = t.an;
-  S.pastille = t.pa; S.bouton = t.bo; S.carte = t.ca; S.marqueur = t.mq;
+  S.pastille = t.pa; S.bouton = t.bo; S.carte = t.ca;
+  S.menuIcone = t.mi; S.menuPastille = t.mp;
   S.epaisseur = t.ep; S.densite = t.de;
 }
 
@@ -897,20 +909,22 @@ const ANGLES = [{k:"carre",n:"CARRÉ",v:"0px"},{k:"leger",n:"LÉGER",v:"3px"},{k
 const PASTILLES = [{k:"point",n:"POINT"},{k:"carre_vide",n:"CARRÉ VIDE"},{k:"carre_plein",n:"CARRÉ PLEIN"},
                    {k:"rond_vide",n:"ROND VIDE"},{k:"rond_plein",n:"ROND PLEIN"}];
 const BOUTONS = [{k:"contour",n:"CONTOUR"},{k:"plein",n:"PLEIN"},{k:"fantome",n:"FANTÔME"},{k:"souligne",n:"SOULIGNÉ"}];
-const CARTES = [{k:"bande",n:"BANDE"},{k:"contour",n:"CONTOUR"},{k:"plein",n:"PLEIN"}];
+const CARTES = [{k:"cadre",n:"CADRE"},{k:"gauche",n:"À GAUCHE"},{k:"droite",n:"À DROITE"},
+                {k:"haut",n:"EN HAUT"},{k:"bas",n:"EN BAS"},{k:"plein",n:"PLEIN"},{k:"aucun",n:"AUCUN"}];
 const COLORATIONS = [{k:"une",n:"UNE COULEUR"},{k:"metier",n:"PAR MÉTIER"}];
 /* Ce qu'on voit devant chaque entree du menu. Six facons, aucune ecrite en dur. */
 /* ⛔ On parle a des professionnels : ils savent ce qu'est un candidat.
    Les notes pedagogiques sont MASQUEES par defaut, et se rallument au besoin. */
 const NOTES = [{k:"infobulle",n:"AU SURVOL"},{k:"sous_le_titre",n:"SOUS LE TITRE"},{k:"aucune",n:"AUCUNE"}];
-const MARQUEURS = [
-  {k:"icone",         n:"ICÔNE"},
-  {k:"icone_mono",    n:"ICÔNE GRISE"},
-  {k:"icone_couleur", n:"ICÔNE COLORÉE"},
-  {k:"carre",         n:"CARRÉ"},
-  {k:"carre_couleur", n:"CARRÉ PLEIN"},
-  {k:"rond_couleur",  n:"ROND PLEIN"}
-];
+/* ⛔ Un seul choix ne suffisait pas : on veut l'icone OU pas, le titre OU pas,
+   et une pastille de couleur EN PLUS. Trois interrupteurs, pas une liste. */
+const OUI_NON   = [{k:"oui",n:"OUI"},{k:"non",n:"NON"}];
+const ICONES_M  = [{k:"encre",n:"ENCRE"},{k:"grise",n:"GRISE"},{k:"couleur",n:"COLORÉE"},{k:"non",n:"AUCUNE"}];
+const PASTILLES_M = [{k:"non",n:"AUCUNE"},{k:"entree",n:"UNE PAR ENTRÉE"},{k:"metier",n:"PAR MÉTIER"}];
+/* ⭐ Une couleur par entree. Treize entrees qui se partagent cinq couleurs
+   ne disent rien : c'est ce qui rendait la colonne repliee illisible. */
+const COUL_ENTREE = ["vert_avaliance","bleu","magenta","vert_clair","ambre","orange","cyan",
+                     "violet_avaliance","rose","bleu_roi","lavande","vert_vif","rouge","jaune_fluo"];
 /* Les cinq chemins du cadrage */
 const METIERS = { vif:{c1:"#5CB4FF",c2:"#D9AEE8",c3:"#C3D442",c4:"#FF9E24",c5:"#1FE0BC"},
                   clair:{c1:"#0B63C4",c2:"#430A4B",c3:"#6E7A1E",c4:"#B85C00",c5:"#00786A"} };
@@ -928,9 +942,9 @@ const OUTILS = [
 ];
 
 let S = { theme:"avaliance", palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
-          action:null, struct:null, angle:"carre", pastille:"point", bouton:"contour", carte:"bande", coloration:"une",
+          action:null, struct:null, angle:"carre", pastille:"point", bouton:"contour", carte:"cadre", coloration:"une",
           rail:"droite", outils:["alertes","notes","ia","todo","indic","cal"], outilOuvert:"alertes", dernierOutil:"alertes",
-          marqueur:"icone", notes:"infobulle", menu:null,
+          menuIcone:"encre", menuTitre:"oui", menuPastille:"entree", notes:"infobulle", menu:null,
           /* ⭐ Aucune couleur n'est imposee. Chaque metier et chaque niveau de
              sens a la sienne, et null veut dire « celle d'origine ». */
           chapitres:["theme","couleurs"],
@@ -999,6 +1013,7 @@ function applique(){
   root.style.setProperty("--sur-plaque-struct", sur(plS));
   app.setAttribute("data-intensite", S.intensite);
   app.setAttribute("data-notes", S.notes);
+  app.setAttribute("data-titre", S.menuTitre);
   const rr = ANGLES.find(a => a.k === S.angle).v;
   root.style.setProperty("--r", rr);
   /* ⛔ Un rayon de 999 px sur une carte en fait un disque. Les grandes
@@ -1158,7 +1173,9 @@ boutons("#rCarte", CARTES, "carte", false);
 boutons("#rColoration", COLORATIONS, "coloration", false);
 boutons("#rDensite", DENSITES, "densite", false);
 boutons("#rEpaisseur", EPAISSEURS, "epaisseur", false);
-boutons("#rMarqueur", MARQUEURS, "marqueur", false);
+boutons("#rMenuIcone", ICONES_M, "menuIcone", false);
+boutons("#rMenuTitre", OUI_NON, "menuTitre", false);
+boutons("#rMenuPastille", PASTILLES_M, "menuPastille", false);
 boutons("#rNotes", NOTES, "notes", false);
 boutons("#rFondForce", TEINTES_FOND, "fondForce", false);
 boutons("#rRail", RAILS, "rail", false);
@@ -2191,29 +2208,37 @@ function couleurMetier(code){
   return M_MENU()[code] || getComputedStyle(root).getPropertyValue("--t3").trim();
 }
 /* Le marqueur : icône, carré ou rond, coloré ou non. Six façons, un réglage. */
-function marqueur(ic, metier){
-  const m = S.marqueur, c = couleurMetier(metier);
-  if (m === "carre")         return `<i class="mq mq-f" style="border-color:currentColor"></i>`;
-  if (m === "carre_couleur") return `<i class="mq mq-p" style="background:${c}"></i>`;
-  if (m === "rond_couleur")  return `<i class="mq mq-p mq-r" style="background:${c}"></i>`;
-  const st = m === "icone_couleur" ? ` style="color:${c}"` : (m === "icone_mono" ? ' style="color:var(--t4)"' : "");
-  return `<svg${st} viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[ic] || IC.bord}</svg>`;
+/* La pastille est un FILET de 3 px au bord de l'entree, pas un gros carre. */
+function marqueur(ic, metier, rang){
+  let h = "";
+  if (S.menuPastille !== "non"){
+    const c = S.menuPastille === "entree" ? aplat(COUL_ENTREE[rang % COUL_ENTREE.length])
+                                          : couleurMetier(metier);
+    h += `<i class="mq-f" style="background:${c}"></i>`;
+  }
+  if (S.menuIcone !== "non"){
+    const st = S.menuIcone === "couleur"
+      ? ` style="color:${S.menuPastille === "entree" ? aplat(COUL_ENTREE[rang % COUL_ENTREE.length]) : couleurMetier(metier)}"`
+      : (S.menuIcone === "grise" ? ' style="color:var(--t4)"' : "");
+    h += `<svg${st} viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${IC[ic] || IC.bord}</svg>`;
+  }
+  return h;
 }
 function nomEcran(k){ return ECRANS[k] ? ECRANS[k].nom : (HORS_LOT[k] || k); }
 
 function peintMenu(){
-  $("#menu").innerHTML = S.menu.map(o => {
+  $("#menu").innerHTML = S.menu.map((o, rang) => {
     const def = MENU_DEFAUT.find(d => d.k === o.k); if (!def) return "";
     const nom = def.n || nomEcran(def.e);
     const met = def.e && ECRANS[def.e] ? ECRANS[def.e].metier : "c0";
     if (!def.sous) {
       const ec = def.e || "";
       return `<a href="#" ${ec ? `data-e="${ec}"` : 'data-off="1"'} title="${esc(nom)}"${def.horsLot ? ' class="hl"' : ""}>
-        ${marqueur(def.ic, met)}<span>${esc(nom)}</span>${def.horsLot ? '<em class="lot">hors lot</em>' : ""}</a>`;
+        ${marqueur(def.ic, met, rang)}<span>${esc(nom)}</span>${def.horsLot ? '<em class="lot">hors lot</em>' : ""}</a>`;
     }
     const ouvert = S.deplies.includes(def.k);
     return `<a href="#" data-pli="${def.k}" aria-expanded="${ouvert}"${def.horsLot ? ' class="hl"' : ""}>
-        ${marqueur(def.ic, met)}<span>${esc(nom)}</span><em class="ss">${esc(nom)}</em>${def.horsLot ? '<em class="lot">hors lot</em>' : ""}
+        ${marqueur(def.ic, met, rang)}<span>${esc(nom)}</span><em class="ss">${esc(nom)}</em>${def.horsLot ? '<em class="lot">hors lot</em>' : ""}
         <b class="chev">›</b></a>
       <div class="sous"${ouvert ? "" : " hidden"}>${def.sous.map(([ic, k]) =>
         `<a href="#" ${ECRANS[k] ? `data-e="${k}"` : 'data-off="1"'}><span>${esc(nomEcran(k))}</span></a>`).join("")}</div>`;
