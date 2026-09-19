@@ -248,6 +248,44 @@ select:hover{border-color:var(--t4)}
 [data-intensite="fort"] .tables{background:color-mix(in srgb,var(--plaque-struct) 26%,var(--f1))}
 [data-intensite="fort"] .barre-f{background:color-mix(in srgb,var(--plaque-struct) 20%,var(--f1))}
 
+/* ═══ LE PANNEAU SE RANGE PAR CHAPITRES ═══
+   Trente réglages à plat, c'est un mur. Six chapitres, deux ouverts. */
+.chap{border-bottom:1px solid var(--bord)}
+.chap:last-child{border-bottom:0}
+.chap-t{width:100%;display:flex;align-items:center;gap:8px;padding:10px 2px;
+  font-size:11px;font-weight:600;letter-spacing:.3px;color:var(--t1);text-align:left}
+.chap-t i{margin-left:auto;font-style:normal;font-size:10px;color:var(--t4);transition:transform .15s ease}
+.chap-t[aria-expanded="true"] i{transform:rotate(180deg)}
+.chap-t:hover{color:var(--action-encre)}
+.chap-c{display:flex;flex-direction:column;gap:11px;padding:2px 0 13px}
+.chap-c[hidden]{display:none}
+
+/* ─── un menu déroulant par couleur à choisir ─── */
+.choix-z{display:flex;flex-direction:column;gap:7px}
+.ch-gr{font-size:8px;letter-spacing:1px;color:var(--t4);margin-top:5px}
+.ch-gr:first-child{margin-top:0}
+.ch{position:relative;z-index:1;display:flex;align-items:center;gap:8px}
+/* La ligne ouverte passe devant les suivantes : sans ça le menu se fait recouvrir. */
+.ch[data-ouvert]{z-index:96}
+.ch-l{flex:1 1 auto;font-size:10.5px;color:var(--t3);min-width:0}
+.ch-b{flex:none;display:flex;align-items:center;gap:7px;min-width:126px;min-height:26px;
+  padding:3px 8px;background:var(--f3);border:var(--trait) solid var(--bord);border-radius:var(--r);
+  font-size:9.5px;letter-spacing:.5px;color:var(--t2)}
+.ch-b b{width:11px;height:11px;flex:none;border-radius:50%}
+.ch-b span{flex:1 1 auto;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ch-b i{font-style:normal;font-size:9px;color:var(--t4)}
+.ch-b:hover,.ch-b[aria-expanded="true"]{border-color:var(--action);color:var(--t1)}
+.ch-p{position:absolute;right:0;top:calc(100% + 4px);z-index:95;width:176px;max-height:236px;overflow:auto;
+  background:var(--f2);border:var(--trait) solid var(--bord);border-radius:var(--r);padding:4px;
+  box-shadow:0 8px 28px rgba(0,0,0,.4)}
+.ch-p[hidden]{display:none}
+.ch-p button{width:100%;display:flex;align-items:center;gap:8px;padding:5px 7px;min-height:28px;
+  border-radius:var(--r);font-size:10px;letter-spacing:.4px;color:var(--t2);text-align:left}
+.ch-p button b{width:11px;height:11px;flex:none;border-radius:50%;border:1px solid var(--bord)}
+.ch-p button b.vide{background:repeating-linear-gradient(45deg,var(--t4),var(--t4) 2px,transparent 2px,transparent 4px)}
+.ch-p button:hover{background:var(--f3);color:var(--t1)}
+.ch-p button[aria-current]{color:var(--action-encre);font-weight:600}
+
 /* ─── réglages ─── */
 .reg-row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
 .reg{display:flex;flex-direction:column;gap:5px;min-width:0}
@@ -582,33 +620,57 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
       <section class="pan" id="panApparence">
         <h2>APPARENCE<em></em></h2>
         <div class="in">
-          <div class="reg-row">
-            <div class="reg"><span>PALETTE</span><div class="opts" id="rPalette"></div></div>
-            <div class="reg"><span>MODE</span><div class="opts" id="rMode"></div></div>
-            <div class="reg"><span>INTENSITÉ</span><div class="opts" id="rIntensite"></div></div>
-            <div class="reg"><span>POLICE</span><div class="opts" id="rPolice"></div></div>
-            <div class="reg"><span>DENSITÉ</span><div class="opts" id="rDensite"></div></div>
-            <div class="reg"><span>ÉPAISSEUR DES TRAITS</span><div class="opts" id="rEpaisseur"></div></div>
-            <div class="reg"><span>MARQUEUR DU MENU</span><div class="opts" id="rMarqueur"></div></div>
-            <div class="reg"><span>EXPLICATIONS</span><div class="opts" id="rNotes"></div></div>
-          </div>
-          <div class="expert" id="expert">
-            <div class="reg-row">
-              <div class="reg"><span>ACTION — CE SUR QUOI ON CLIQUE</span><div class="opts" id="rAction"></div></div>
-              <div class="reg"><span>STRUCTURE — TITRES ET FILETS</span><div class="opts" id="rStruct"></div></div>
+
+          <section class="chap" data-chap="theme">
+            <button class="chap-t" type="button" data-chapitre="theme" aria-expanded="true">Thème<i>▾</i></button>
+            <div class="chap-c">
+              <div class="reg"><span>PALETTE</span><div class="opts" id="rPalette"></div></div>
+              <div class="reg"><span>FOND</span><div class="opts" id="rMode"></div></div>
+              <div class="reg"><span>INTENSITÉ DE LA COULEUR</span><div class="opts" id="rIntensite"></div></div>
             </div>
-            <div class="reg-row" style="margin-top:11px">
-              <div class="reg"><span>COLONNE D'OUTILS</span><div class="opts" id="rRail"></div></div>
-              <div class="reg"><span>OUTILS AFFICHÉS</span><div class="opts" id="rOutils"></div></div>
+          </section>
+
+          <section class="chap" data-chap="couleurs">
+            <button class="chap-t" type="button" data-chapitre="couleurs" aria-expanded="true">Couleurs<i>▾</i></button>
+            <div class="chap-c"><div id="rCouleurs" class="choix-z"></div></div>
+          </section>
+
+          <section class="chap" data-chap="texte">
+            <button class="chap-t" type="button" data-chapitre="texte" aria-expanded="false">Texte<i>▾</i></button>
+            <div class="chap-c">
+              <div class="reg"><span>POLICE</span><div class="opts" id="rPolice"></div></div>
+              <div class="reg"><span>DENSITÉ</span><div class="opts" id="rDensite"></div></div>
+              <div class="reg"><span>EXPLICATIONS SOUS LES TITRES</span><div class="opts" id="rNotes"></div></div>
             </div>
-            <div class="reg-row" style="margin-top:11px">
+          </section>
+
+          <section class="chap" data-chap="formes">
+            <button class="chap-t" type="button" data-chapitre="formes" aria-expanded="false">Traits et formes<i>▾</i></button>
+            <div class="chap-c">
+              <div class="reg"><span>ÉPAISSEUR DES TRAITS</span><div class="opts" id="rEpaisseur"></div></div>
               <div class="reg"><span>ANGLES</span><div class="opts" id="rAngle"></div></div>
-              <div class="reg"><span>PASTILLES</span><div class="opts" id="rPastille"></div></div>
-              <div class="reg"><span>BOUTONS</span><div class="opts" id="rBouton"></div></div>
-              <div class="reg"><span>CARTES</span><div class="opts" id="rCarte"></div></div>
+              <div class="reg"><span>PASTILLES D'ÉTAT</span><div class="opts" id="rPastille"></div></div>
+              <div class="reg"><span>BOUTONS D'ACTION</span><div class="opts" id="rBouton"></div></div>
+              <div class="reg"><span>BLOCS DE CHIFFRES</span><div class="opts" id="rCarte"></div></div>
+            </div>
+          </section>
+
+          <section class="chap" data-chap="menu">
+            <button class="chap-t" type="button" data-chapitre="menu" aria-expanded="false">Menu<i>▾</i></button>
+            <div class="chap-c">
+              <div class="reg"><span>MARQUEUR DEVANT CHAQUE ENTRÉE</span><div class="opts" id="rMarqueur"></div></div>
               <div class="reg"><span>COLORATION</span><div class="opts" id="rColoration"></div></div>
             </div>
-          </div>
+          </section>
+
+          <section class="chap" data-chap="outils">
+            <button class="chap-t" type="button" data-chapitre="outils" aria-expanded="false">Colonne d'outils<i>▾</i></button>
+            <div class="chap-c">
+              <div class="reg"><span>POSITION</span><div class="opts" id="rRail"></div></div>
+              <div class="reg"><span>OUTILS AFFICHÉS</span><div class="opts" id="rOutils"></div></div>
+            </div>
+          </section>
+
         </div>
         <div class="foot"><b>Quatre rôles, pas quatre couleurs.</b> ACTION ne colore que ce sur quoi on clique. STRUCTURE porte les titres et les filets. Les <b>données restent neutres</b>. Le SENS a son échelle : <b>aucune palette ne la touche</b>.</div>
       </section>
@@ -745,7 +807,12 @@ const OUTILS = [
 let S = { palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
           action:null, struct:null, angle:"carre", pastille:"contour", bouton:"contour", carte:"bande", coloration:"une",
           rail:"droite", outils:["alertes","notes","ia","todo","indic","cal"], outilOuvert:"alertes", dernierOutil:"alertes",
-          marqueur:"icone", notes:"masquees", menu:null, deplies:["crm","projets","planning"] };
+          marqueur:"icone", notes:"masquees", menu:null,
+          /* ⭐ Aucune couleur n'est imposee. Chaque metier et chaque niveau de
+             sens a la sienne, et null veut dire « celle d'origine ». */
+          chapitres:["theme","couleurs"],
+          metier:{ c1:null, c2:null, c3:null, c4:null, c5:null },
+          sens:{ ok:null, warn:null, ko:null }, deplies:["crm","projets","planning"] };
 /* ⚠️ La cle porte un numero : un menu enregistre ne gagne pas les entrees
    ajoutees depuis. On change de cle quand le catalogue change. */
 try { S = Object.assign(S, JSON.parse(localStorage.getItem("ava-term6") || "{}")); } catch(e){}
@@ -804,7 +871,9 @@ function applique(){
 
   /* ⛔ `cA` est la teinte de TEXTE : sur fond clair c'est la variante sombre,
      et la tuile portait donc un second vert. Elle prend l'aplat de la charte. */
-  const M = METIERS[S.mode === "clair" ? "clair" : "vif"];
+  NIVEAUX.forEach(([k]) => { if (S.sens[k]) root.style.setProperty("--" + k, aplat(S.sens[k])); });
+  const M0 = METIERS[S.mode === "clair" ? "clair" : "vif"];
+  const M = {}; CHEMINS.forEach(([k]) => { M[k] = S.metier[k] ? aplat(S.metier[k]) : M0[k]; });
   document.querySelectorAll(".kpi").forEach(el => {
     const c = S.coloration === "metier" ? M[el.dataset.m] : aplat(kAction);
     el.style.setProperty("--c", c);
@@ -816,7 +885,13 @@ function applique(){
   document.querySelectorAll("[data-r]").forEach(b => b.setAttribute("aria-pressed", String(S[b.dataset.r] === b.dataset.v)));
   document.querySelectorAll("[data-r] b[data-c]").forEach(b => { b.style.background = aplat(b.dataset.c); });
   document.querySelectorAll("[data-o]").forEach(b => b.setAttribute("aria-pressed", String(S.outils.includes(b.dataset.o))));
+  document.querySelectorAll("[data-chapitre]").forEach(b => {
+    const o = S.chapitres.includes(b.dataset.chapitre);
+    b.setAttribute("aria-expanded", String(o));
+    b.nextElementSibling.hidden = !o;
+  });
   peintMenu();
+  peintChoix();
   peintMoi();
   peintRole();
   rail();
@@ -827,6 +902,53 @@ function applique(){
 /* ⭐ « On préfère voir que lire » — Hamada, 19/09.
    Une palette montre ses deux couleurs, une police s'écrit dans sa police,
    un fond montre son fond. Le nom reste, en second. */
+/* ⛔ Treize pastilles cote a cote, onze fois, c'etait un mur de couleurs.
+   Un menu deroulant par chose a colorer : on voit ce qu'on a, on choisit. */
+const CHEMINS = [["c1","CRM"],["c2","Recrutement"],["c3","Staffing"],["c4","Production"],["c5","Externe"]];
+const NIVEAUX = [["ok","Bon"],["warn","À surveiller"],["ko","Critique"]];
+let popCoul = null;
+
+function couleurDe(quoi, cle){
+  if (quoi === "metier") return S.metier[cle] || null;
+  if (quoi === "sens")   return S.sens[cle]   || null;
+  return S[cle] || null;
+}
+function hexDe(quoi, cle){
+  const k = couleurDe(quoi, cle);
+  if (k) return aplat(k);
+  if (quoi === "metier") return METIERS[S.mode === "clair" ? "clair" : "vif"][cle];
+  if (quoi === "sens")   return getComputedStyle(root).getPropertyValue("--" + cle).trim();
+  const P = PALETTES.find(x => x.k === S.palette) || PALETTES[0];
+  return aplat(cle === "action" ? P.a : P.s);
+}
+function nomDe(quoi, cle){
+  const k = couleurDe(quoi, cle);
+  return k ? (COULEURS.find(c => c.k === k) || {}).n : "D'ORIGINE";
+}
+function choix(quoi, cle, libelle){
+  const id = quoi + ":" + cle, ouvert = popCoul === id;
+  return `<div class="ch" data-ch="${id}"${ouvert ? ' data-ouvert="1"' : ""}>
+    <span class="ch-l">${libelle}</span>
+    <button class="ch-b" type="button" data-choix="${id}" aria-expanded="${ouvert}">
+      <b style="background:${hexDe(quoi, cle)}"></b><span>${nomDe(quoi, cle)}</span><i>▾</i></button>
+    <div class="ch-p"${ouvert ? "" : " hidden"}>
+      <button type="button" data-pose="${id}" data-k=""><b class="vide"></b>D'ORIGINE</button>
+      ${COULEURS.map(c => `<button type="button" data-pose="${id}" data-k="${c.k}"${
+        couleurDe(quoi, cle) === c.k ? ' aria-current="true"' : ""}><b style="background:${aplat(c.k)}"></b>${c.n}</button>`).join("")}
+    </div></div>`;
+}
+function peintChoix(){
+  const z = $("#rCouleurs"); if (!z) return;
+  z.innerHTML =
+    `<div class="ch-gr">LES DEUX RÔLES</div>` +
+    choix("role", "action", "Ce sur quoi on clique") +
+    choix("role", "struct", "Titres et filets") +
+    `<div class="ch-gr">LES CINQ MÉTIERS</div>` +
+    CHEMINS.map(([k, n]) => choix("metier", k, n)).join("") +
+    `<div class="ch-gr">LE SENS — ⛔ aucune palette ne le touche</div>` +
+    NIVEAUX.map(([k, n]) => choix("sens", k, n)).join("");
+}
+
 function boutons(id, liste, champ, quoi){
   if (!$(id)) return;
   $(id).innerHTML = liste.map(o => {
@@ -843,8 +965,6 @@ boutons("#rPalette", PALETTES, "palette", "palette");
 boutons("#rMode", MODES, "mode", "fond");
 boutons("#rIntensite", INTENSITES, "intensite", false);
 boutons("#rPolice", POLICES, "police", "police");
-boutons("#rAction", COULEURS, "action", "couleur");
-boutons("#rStruct", COULEURS, "struct", "couleur");
 boutons("#rAngle", ANGLES, "angle", false);
 boutons("#rPastille", PASTILLES, "pastille", false);
 boutons("#rBouton", BOUTONS, "bouton", false);
@@ -1872,9 +1992,10 @@ function peindre(){
   applique();
 }
 /* La couleur de métier d'un écran — la même échelle que les tuiles (C1→C5). */
+const M_MENU = () => { const M0 = METIERS[S.mode === "clair" ? "clair" : "vif"], M = {};
+  CHEMINS.forEach(([k]) => { M[k] = S.metier[k] ? aplat(S.metier[k]) : M0[k]; }); return M; };
 function couleurMetier(code){
-  const M = METIERS[S.mode === "clair" ? "clair" : "vif"];
-  return M[code] || getComputedStyle(root).getPropertyValue("--t3").trim();
+  return M_MENU()[code] || getComputedStyle(root).getPropertyValue("--t3").trim();
 }
 /* Le marqueur : icône, carré ou rond, coloré ou non. Six façons, un réglage. */
 function marqueur(ic, metier){
@@ -1933,6 +2054,20 @@ document.addEventListener("click", e => {
 document.addEventListener("click", e => {
   if (e.target.closest("#btnMoi")){ popMoiOuvert = !popMoiOuvert; peintMoi(); return; }
   if (e.target.closest("#btnRole")){ popRoleOuvert = !popRoleOuvert; peintRole(); return; }
+  const cp = e.target.closest("[data-chapitre]");
+  if (cp){ e.preventDefault(); const k = cp.dataset.chapitre;
+    S.chapitres = S.chapitres.includes(k) ? S.chapitres.filter(x => x !== k) : S.chapitres.concat(k);
+    applique(); return; }
+  const cb = e.target.closest("[data-choix]");
+  if (cb){ e.preventDefault(); popCoul = popCoul === cb.dataset.choix ? null : cb.dataset.choix; peintChoix(); return; }
+  const po = e.target.closest("[data-pose]");
+  if (po){ e.preventDefault();
+    const [quoi, cle] = po.dataset.pose.split(":"), k = po.dataset.k || null;
+    if (quoi === "metier") S.metier[cle] = k;
+    else if (quoi === "sens") S.sens[cle] = k;
+    else S[cle] = k;
+    popCoul = null; applique(); return; }
+  if (popCoul && !e.target.closest("[data-ch]")){ popCoul = null; peintChoix(); }
   const rl = e.target.closest("[data-role]");
   if (rl){ e.preventDefault(); ROLE = rl.dataset.role; popRoleOuvert = false; peindre(); return; }
   if (popRoleOuvert && !e.target.closest("#popRole")){ popRoleOuvert = false; peintRole(); }
