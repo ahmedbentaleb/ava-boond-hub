@@ -262,7 +262,9 @@ select:hover{border-color:var(--t4)}
 /* ⭐ « Enleve juste le cadre, mais sur le TITRE mets une barre a gauche. »
    `titre` ne touche AUCUN panneau : il ne pose qu'un filet devant le titre
    de l'ecran. Les cinq suivants bordent les panneaux, comme une carte. */
-[data-cadre="titre"]    #ecran>.eh h1{border-left:var(--bande) solid var(--ce-ecran);padding-left:11px}
+/* Le filet du titre est plus epais que celui d'une carte : il porte un mot
+   de 19 px, pas un chiffre de 30 dans un cadre. */
+[data-cadre="titre"]    #ecran>.eh h1{border-left:calc(var(--bande) + 3px) solid var(--ce-ecran);padding-left:13px}
 [data-cadre="souligne"] #ecran>.eh h1{border-bottom:var(--bande) solid var(--ce-ecran);padding-bottom:5px}
 [data-cadre="cadre"]  #ecran>.pan,[data-cadre="cadre"]  #ecran .row>.pan{border:var(--bande) solid var(--ce-ecran)}
 [data-cadre="gauche"] #ecran>.pan,[data-cadre="gauche"] #ecran .row>.pan{border-left:var(--bande) solid var(--ce-ecran)}
