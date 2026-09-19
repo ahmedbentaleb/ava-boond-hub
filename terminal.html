@@ -96,7 +96,7 @@ svg{display:block;flex:none}
 .nav .pli-l{right:-10px}
 .rail .pli-d{left:-10px}
 .app[data-nav="icones"] .nav .pli-l svg{transform:rotate(180deg)}
-[data-rail="masque"] .rail .pli-d svg{transform:rotate(180deg)}
+[data-rail-plie="1"] .rail .pli-d svg{transform:rotate(180deg)}
 .pli-h{width:30px;height:30px;flex:none;display:grid;place-items:center;color:var(--t3);border-radius:var(--r)}
 .pli-h svg{width:16px;height:16px}
 .pli-h:hover{background:var(--f3);color:var(--action-encre)}
@@ -347,9 +347,9 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 .rail{position:relative;flex:none;display:flex;background:var(--f1);border-left:var(--trait) solid var(--bord)}
 [data-rail="gauche"] .rail{order:-1;border-left:0;border-right:1px solid var(--bord)}
 /* ⭐ La même cinématique qu'à gauche : elle s'écarte, elle ne surgit pas. */
-[data-rail="masque"] .rail .vue{width:0;min-width:0;overflow:hidden;border:0}
-[data-rail="masque"] .rail .strip button[data-w]:not([data-w="reglages"]){display:none}
-[data-rail="masque"] .rail .strip .sep{display:none}
+/* ⭐ Exactement la colonne de gauche, en miroir : repliee, il reste les icones.
+   ⛔ Jamais un display:none — la panneau s'ecarte, il ne disparait pas. */
+[data-rail-plie="1"] .rail .vue{width:0;min-width:0;overflow:hidden;border:0}
 .rail .strip{width:42px;flex:none;display:flex;flex-direction:column;gap:2px;padding:10px 0 7px;
   border-left:1px solid var(--bord);position:sticky;top:var(--h-top);height:calc(100vh - var(--h-top));align-items:center}
 [data-rail="gauche"] .rail .strip{order:2;border-left:1px solid var(--bord);border-right:0}
@@ -389,7 +389,7 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 #panApparence .reg-row{gap:11px}
 .rail .vue{width:260px;flex:none;display:flex;flex-direction:column;position:sticky;top:var(--h-top);
   height:calc(100vh - var(--h-top));overflow:auto;transition:width .16s ease}
-.rail .vue[hidden]{width:0;min-width:0;overflow:hidden}
+.rail .vue[hidden]{width:0;min-width:0;overflow:hidden;border:0}
 .rail .vue>h3{min-height:44px;font-size:9px;letter-spacing:1.6px;font-weight:600;padding:9px 12px;min-height:46px;display:flex;align-items:center;gap:8px;
   color:color-mix(in srgb,var(--struct) calc(var(--struct-op)*100%),var(--t2));border-bottom:1px solid var(--bord)}
 .rail .vue>h3 em{font-style:normal;margin-left:auto;font-size:8px;color:var(--t4);font-weight:400;letter-spacing:.8px}
@@ -738,7 +738,7 @@ const OUTILS = [
 
 let S = { palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
           action:null, struct:null, angle:"carre", pastille:"contour", bouton:"contour", carte:"bande", coloration:"une",
-          rail:"droite", outils:["notes","alertes","ia","todo","indic","cal"], outilOuvert:"alertes", expert:false,
+          rail:"droite", outils:["notes","alertes","ia","todo","indic","cal"], outilOuvert:"alertes", dernierOutil:"alertes", expert:false,
           marqueur:"icone", notes:"masquees", menu:null, deplies:["crm","projets","planning"] };
 /* ⚠️ La cle porte un numero : un menu enregistre ne gagne pas les entrees
    ajoutees depuis. On change de cle quand le catalogue change. */
@@ -794,6 +794,7 @@ function applique(){
   root.style.setProperty("--police", POLICES.find(p => p.k === S.police).v);
   root.style.setProperty("--dens", DENSITES.find(d => d.k === S.densite).v);
   app.setAttribute("data-rail", S.rail);
+  app.setAttribute("data-rail-plie", S.outilOuvert ? "0" : "1");
 
   /* ⛔ `cA` est la teinte de TEXTE : sur fond clair c'est la variante sombre,
      et la tuile portait donc un second vert. Elle prend l'aplat de la charte. */
@@ -852,7 +853,9 @@ document.addEventListener("click", e => {
     if (!S.outils.includes(S.outilOuvert)) S.outilOuvert = S.outils[0] || null;
     applique(); return; }
   const w = e.target.closest("[data-w]");
-  if (w){ S.outilOuvert = S.outilOuvert === w.dataset.w ? null : w.dataset.w; applique(); }
+  if (w){ if (S.outilOuvert === w.dataset.w){ S.dernierOutil = S.outilOuvert; S.outilOuvert = null; }
+          else S.outilOuvert = w.dataset.w;
+          applique(); }
 });
 
 /* ─── barre latérale ─── */
@@ -1827,7 +1830,7 @@ function rail(){
 
   const reglages = S.outilOuvert === "reglages";
   const ouvert = reglages ? null : actifs.find(o => o.k === S.outilOuvert);
-  $("#railVue").hidden = !ouvert && !reglages;
+  $("#railVue").hidden = false;
   $("#railReglages").hidden = !reglages;
   $("#railCorps").hidden = reglages;
   if (reglages){
@@ -1836,7 +1839,7 @@ function rail(){
     return;
   }
   $("#railVue").removeAttribute("data-large");
-  if (!ouvert) return;
+  if (!ouvert){ $("#railCorps").innerHTML = ""; $("#railTitre").innerHTML = ""; return; }
   $("#railTitre").innerHTML = `${ouvert.n}<em>${S.rail === "gauche" ? "À GAUCHE" : "À DROITE"}</em>`;
   $("#railCorps").innerHTML = W[ouvert.k]();
   const n = $("#notes");
@@ -1922,7 +1925,11 @@ document.addEventListener("click", e => {
   if (popRoleOuvert && !e.target.closest("#popRole")){ popRoleOuvert = false; peintRole(); }
   if (popMoiOuvert && !e.target.closest("#popMoi")){ popMoiOuvert = false; peintMoi(); }
   if (e.target.closest("#repRail")){
-    S.rail = S.rail === "masque" ? "droite" : "masque"; applique(); return; }
+    /* Plier, c'est fermer l'outil ouvert. Deplier, c'est rouvrir le dernier —
+       le meme geste qu'a gauche, ou replier laisse les icones en place. */
+    if (S.outilOuvert){ S.dernierOutil = S.outilOuvert; S.outilOuvert = null; }
+    else S.outilOuvert = S.dernierOutil || S.outils[0] || "reglages";
+    applique(); return; }
   if (e.target.closest("#btnFond")){ popFondOuvert = !popFondOuvert; rail(); return; }
   if (e.target.closest("[data-r='mode']")){ popFondOuvert = false; rail(); return; }
   if (popFondOuvert && !e.target.closest("#popFond")){ popFondOuvert = false; rail(); }
