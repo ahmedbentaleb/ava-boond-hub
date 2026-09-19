@@ -728,6 +728,7 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
               <div class="reg"><span>ICÔNES</span><div class="opts" id="rMenuIcone"></div></div>
               <div class="reg"><span>TITRES</span><div class="opts" id="rMenuTitre"></div></div>
               <div class="reg"><span>PASTILLES DE COULEUR</span><div class="opts" id="rMenuPastille"></div></div>
+              <div class="reg"><span>TUILES DU TABLEAU DE BORD</span><div class="opts" id="rTuiles"></div></div>
               <div class="reg"><span>COLORATION</span><div class="opts" id="rColoration"></div></div>
             </div>
           </section>
@@ -928,7 +929,9 @@ const PASTILLES = [{k:"point",n:"POINT"},{k:"carre_vide",n:"CARRÉ VIDE"},{k:"ca
 const BOUTONS = [{k:"contour",n:"CONTOUR"},{k:"plein",n:"PLEIN"},{k:"fantome",n:"FANTÔME"},{k:"souligne",n:"SOULIGNÉ"}];
 const CARTES = [{k:"cadre",n:"CADRE"},{k:"gauche",n:"À GAUCHE"},{k:"droite",n:"À DROITE"},
                 {k:"haut",n:"EN HAUT"},{k:"bas",n:"EN BAS"},{k:"plein",n:"PLEIN"},{k:"aucun",n:"AUCUN"}];
-const COLORATIONS = [{k:"une",n:"UNE COULEUR"},{k:"metier",n:"PAR MÉTIER"}];
+/* ⭐ « Ce que tu as en haut doit suivre les couleurs a gauche. » Une carte
+   prend la couleur de l'entree de menu a laquelle elle repond. */
+const COLORATIONS = [{k:"menu",n:"COMME LE MENU"},{k:"metier",n:"PAR MÉTIER"},{k:"une",n:"UNE COULEUR"}];
 /* Ce qu'on voit devant chaque entree du menu. Six facons, aucune ecrite en dur. */
 /* ⛔ On parle a des professionnels : ils savent ce qu'est un candidat.
    Les notes pedagogiques sont MASQUEES par defaut, et se rallument au besoin. */
@@ -959,12 +962,13 @@ const OUTILS = [
 ];
 
 let S = { theme:"avaliance", palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
-          action:null, struct:null, angle:"carre", pastille:"point", bouton:"contour", carte:"cadre", coloration:"une",
+          action:null, struct:null, angle:"carre", pastille:"point", bouton:"contour", carte:"cadre", coloration:"menu",
           rail:"droite", outils:["alertes","notes","ia","todo","indic","cal"], outilOuvert:"alertes", dernierOutil:"alertes",
           menuIcone:"encre", menuTitre:"oui", menuPastille:"entree", notes:"infobulle", menu:null,
           /* ⭐ Aucune couleur n'est imposee. Chaque metier et chaque niveau de
              sens a la sienne, et null veut dire « celle d'origine ». */
           chapitres:["theme","couleurs"],
+          tuiles:["societes","candidats","ressources","besoins","positionnements","projets","prestations","jours"],
           /* ⭐ Quatre surfaces, quatre couleurs. Le fond HORS carte, les cartes,
              les barres et les colonnes ne sont pas la meme chose. */
           fonds:{ page:null, carte:null, barre:null, colonne:null }, fondForce:"aucune",
@@ -1071,7 +1075,12 @@ function applique(){
   const M0 = METIERS[S.mode === "clair" ? "clair" : "vif"];
   const M = {}; CHEMINS.forEach(([k]) => { M[k] = S.metier[k] ? aplat(S.metier[k]) : M0[k]; });
   document.querySelectorAll(".kpi").forEach(el => {
-    const c = S.coloration === "metier" ? M[el.dataset.m] : aplat(kAction);
+    let c;
+    if (S.coloration === "menu" && el.dataset.mk){
+      const r = S.menu.findIndex(x => x.k === el.dataset.mk);
+      c = r >= 0 ? aplat(COUL_ENTREE[r % COUL_ENTREE.length]) : aplat(kAction);
+    } else if (S.coloration === "metier") c = M[el.dataset.m];
+    else c = aplat(kAction);
     el.style.setProperty("--c", c);
     el.style.setProperty("--sur-c", sur(c));
     /* le libelle ne s'ecrit en couleur que si cette couleur se lit sur le fond */
@@ -1081,6 +1090,7 @@ function applique(){
   document.querySelectorAll("[data-r]").forEach(b => b.setAttribute("aria-pressed", String(S[b.dataset.r] === b.dataset.v)));
   document.querySelectorAll("[data-r] b[data-c]").forEach(b => { b.style.background = aplat(b.dataset.c); });
   document.querySelectorAll("[data-o]").forEach(b => b.setAttribute("aria-pressed", String(S.outils.includes(b.dataset.o))));
+  document.querySelectorAll("[data-t]").forEach(b => b.setAttribute("aria-pressed", String(S.tuiles.includes(b.dataset.t))));
   document.querySelectorAll("[data-chapitre]").forEach(b => {
     const o = S.chapitres.includes(b.dataset.chapitre);
     b.setAttribute("aria-expanded", String(o));
@@ -1207,6 +1217,10 @@ document.addEventListener("click", e => {
     S.outils = S.outils.includes(k) ? S.outils.filter(x => x !== k) : [...S.outils, k];
     if (!S.outils.includes(S.outilOuvert)) S.outilOuvert = S.outils[0] || null;
     applique(); return; }
+  const tu = e.target.closest("[data-t]");
+  if (tu){ const k = tu.dataset.t;
+    S.tuiles = S.tuiles.includes(k) ? S.tuiles.filter(x => x !== k) : S.tuiles.concat(k);
+    peindre(); return; }
   const w = e.target.closest("[data-w]");
   if (w){ if (S.outilOuvert === w.dataset.w){ S.dernierOutil = S.outilOuvert; S.outilOuvert = null; }
           else S.outilOuvert = w.dataset.w;
@@ -2029,25 +2043,32 @@ const G = { ko:"var(--ko)", warn:"var(--warn)", struct:"var(--struct)", t4:"var(
 /* Une tuile ne porte jamais un chiffre ecrit a la main : elle compte le monde.
    Un compte saisi deux fois diverge — c'est ce qui a coute trois relectures. */
 const n = (t, f) => t.filter(f).length;
+/* ⭐ Le catalogue des tuiles. Ce qu'on affiche en haut est un reglage, comme
+   le menu et la colonne d'outils : meme patron, troisieme fois. */
+const TUILES = [{k:"societes",n:"SOCIÉTÉS"},{k:"candidats",n:"CANDIDATS"},{k:"ressources",n:"RESSOURCES"},
+                {k:"besoins",n:"BESOINS"},{k:"positionnements",n:"POSITIONNEMENTS"},{k:"projets",n:"PROJETS"},
+                {k:"prestations",n:"PRESTATIONS"},{k:"jours",n:"JOURS SAISIS"}];
+/* Le catalogue existe ici : c'est donc ici qu'on peint ses boutons. */
+$("#rTuiles").innerHTML = TUILES.map(t => `<button class="opt" type="button" data-t="${t.k}" aria-pressed="true">${t.n}</button>`).join("");
 function calculeKPI(){
   const M = MONDE, pr = M.prestation, tp = M.temps;
   const jours = tp.reduce((a, t) => a + parseFloat(t.qte), 0);
   return [
-    { k:"SOCIÉTÉS", v:M.societe.length, m:"c1",
+    { id:"societes", k:"SOCIÉTÉS", v:M.societe.length, mk:"crm", m:"c1",
       d:`${n(M.societe, s => s.statut === "client")} clientes · ${n(M.societe, s => s.roles.includes("fournisseur"))} fournisseurs · ${n(M.societe, s => s.roles.includes("interne"))} interne` },
-    { k:"CANDIDATS", v:M.candidat.length, m:"c2",
+    { id:"candidats", k:"CANDIDATS", v:M.candidat.length, mk:"candidats", m:"c2",
       d:`${n(M.candidat, c => c.etat === "complété")} complétés · <em>${n(M.candidat, c => c.etat === "brouillon")} brouillons</em>` },
-    { k:"RESSOURCES", v:M.ressource.length, m:"c3",
+    { id:"ressources", k:"RESSOURCES", v:M.ressource.length, mk:"ressources", m:"c3",
       d:`${n(M.ressource, r => r.type === "interne")} internes · ${n(M.ressource, r => r.type === "externe")} externes` },
-    { k:"BESOINS", v:M.besoin.length, m:"c3",
+    { id:"besoins", k:"BESOINS", v:M.besoin.length, mk:"besoins", m:"c3",
       d:`<em>${n(M.besoin, b => b.etat === "en recherche")} en recherche</em> · ${n(M.besoin, b => b.etat === "à pourvoir")} à pourvoir` },
-    { k:"POSITIONNEMENTS", v:M.positionnement.length, m:"c3",
+    { id:"positionnements", k:"POSITIONNEMENTS", v:M.positionnement.length, mk:"positionnements", m:"c3",
       d:`${n(M.positionnement, o => o.etat === "retenu")} retenus · ${n(M.positionnement, o => o.etat === "présenté")} présentés` },
-    { k:"PROJETS", v:M.projet.length, m:"c4",
+    { id:"projets", k:"PROJETS", v:M.projet.length, mk:"projets", m:"c4",
       d:`${n(M.projet, j => j.etat === "ouvert")} ouverts · ${n(M.projet, j => j.etat === "clos")} clos` },
-    { k:"PRESTATIONS", v:pr.length, m:"c4",
+    { id:"prestations", k:"PRESTATIONS", v:pr.length, mk:"projets", m:"c4",
       d:`${n(pr, x => x.etat === "signée")} signées · ${n(pr, x => x.etat === "prévisionnelle")} prév. · ${n(pr, x => x.etat === "clôturée")} closes` },
-    { k:"JOURS SAISIS", v:jours.toFixed(1).replace(".", ","), m:"c4",
+    { id:"jours", k:"JOURS SAISIS", v:jours.toFixed(1).replace(".", ","), mk:"planning", m:"c4",
       d:`sur ${new Set(tp.map(t => t.prestation)).size} missions` }
   ];
 }
@@ -2064,7 +2085,7 @@ function calculeCA(){
 let ROLE = "staffing";
 function gBord(){
   const l = FILES[ROLE];
-  return `<div class="row r-kpi">${calculeKPI().map(k => `<div class="kpi" data-m="${k.m}"><div class="k">${k.k}</div><div class="v">${k.v}</div><div class="d">${k.d}</div></div>`).join("")}</div>
+  return `<div class="row r-kpi">${calculeKPI().filter(k => S.tuiles.includes(k.id)).map(k => `<div class="kpi" data-m="${k.m}" data-mk="${k.mk || ""}"><div class="k">${k.k}</div><div class="v">${k.v}</div><div class="d">${k.d}</div></div>`).join("")}</div>
   <div class="row r-main" style="margin-top:9px">
     <section class="pan"><h2>CE QUI VOUS ATTEND<em>${l.length} ÉLÉMENTS · PAR CE QUE ÇA COÛTE DE LAISSER PASSER</em></h2>
       <div class="in"><ul class="q">${l.map(i => `<li><span class="g" style="background:${G[i.g]}"></span>
