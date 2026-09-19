@@ -445,6 +445,10 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 .vues button svg{width:14px;height:14px}
 .vues button[aria-pressed="true"]{background:var(--f1);color:var(--action-encre);
   box-shadow:0 1px 2px rgba(0,0,0,.18)}
+/* Les explications se rallument par le réglage, jamais par défaut. */
+[data-notes="masquees"] .eh-n,
+[data-notes="masquees"] .pan>.foot,
+[data-notes="masquees"] .note-i{display:none}
 .eh-n{font-size:10px;color:var(--t3);margin-top:3px;line-height:1.55;max-width:74ch}
 .eh-n.mono-s{letter-spacing:.5px}
 .eh-a{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
@@ -552,6 +556,7 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
             <div class="reg"><span>DENSITÉ</span><div class="opts" id="rDensite"></div></div>
             <div class="reg"><span>ÉPAISSEUR DES TRAITS</span><div class="opts" id="rEpaisseur"></div></div>
             <div class="reg"><span>MARQUEUR DU MENU</span><div class="opts" id="rMarqueur"></div></div>
+            <div class="reg"><span>EXPLICATIONS</span><div class="opts" id="rNotes"></div></div>
             <div class="reg"><span>&nbsp;</span><div class="opts"><button class="opt" type="button" id="btnExpert">MODE EXPERT</button></div></div>
           </div>
           <div class="expert" id="expert" hidden>
@@ -677,6 +682,9 @@ const BOUTONS = [{k:"contour",n:"CONTOUR"},{k:"plein",n:"PLEIN"},{k:"fantome",n:
 const CARTES = [{k:"bande",n:"BANDE"},{k:"contour",n:"CONTOUR"},{k:"plein",n:"PLEIN"}];
 const COLORATIONS = [{k:"une",n:"UNE COULEUR"},{k:"metier",n:"PAR MÉTIER"}];
 /* Ce qu'on voit devant chaque entree du menu. Six facons, aucune ecrite en dur. */
+/* ⛔ On parle a des professionnels : ils savent ce qu'est un candidat.
+   Les notes pedagogiques sont MASQUEES par defaut, et se rallument au besoin. */
+const NOTES = [{k:"masquees",n:"MASQUÉES"},{k:"affichees",n:"AFFICHÉES"}];
 const MARQUEURS = [
   {k:"icone",         n:"ICÔNE"},
   {k:"icone_mono",    n:"ICÔNE GRISE"},
@@ -704,7 +712,7 @@ const OUTILS = [
 let S = { palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
           action:null, struct:null, angle:"carre", pastille:"contour", bouton:"contour", carte:"bande", coloration:"une",
           rail:"droite", outils:["notes","alertes","ia","todo","indic","cal"], outilOuvert:"alertes", expert:false,
-          marqueur:"icone", menu:null, deplies:["crm","projets","planning"] };
+          marqueur:"icone", notes:"masquees", menu:null, deplies:["crm","projets","planning"] };
 /* ⚠️ La cle porte un numero : un menu enregistre ne gagne pas les entrees
    ajoutees depuis. On change de cle quand le catalogue change. */
 try { S = Object.assign(S, JSON.parse(localStorage.getItem("ava-term6") || "{}")); } catch(e){}
@@ -754,6 +762,7 @@ function applique(){
   root.style.setProperty("--sur-plaque-action", sur(plA));
   root.style.setProperty("--sur-plaque-struct", sur(plS));
   app.setAttribute("data-intensite", S.intensite);
+  app.setAttribute("data-notes", S.notes);
   root.style.setProperty("--r", ANGLES.find(a => a.k === S.angle).v);
   root.style.setProperty("--police", POLICES.find(p => p.k === S.police).v);
   root.style.setProperty("--dens", DENSITES.find(d => d.k === S.densite).v);
@@ -801,6 +810,7 @@ boutons("#rColoration", COLORATIONS, "coloration", false);
 boutons("#rDensite", DENSITES, "densite", false);
 boutons("#rEpaisseur", EPAISSEURS, "epaisseur", false);
 boutons("#rMarqueur", MARQUEURS, "marqueur", false);
+boutons("#rNotes", NOTES, "notes", false);
 boutons("#rRail", RAILS, "rail", false);
 $("#rOutils").innerHTML = OUTILS.map(o => `<button class="opt" type="button" data-o="${o.k}" aria-pressed="true">${o.n}</button>`).join("");
 
