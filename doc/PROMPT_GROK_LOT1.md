@@ -3,7 +3,7 @@
 ⭐ **À coller dans Cursor, tel quel.** Grok lit le dépôt : on ne colle aucun fichier, on donne
 des chemins. Le prompt tient en trois écrans **parce que le dépôt porte le reste**.
 
-**5 sous-agents · 7 étapes · un cliquet qui ne recule pas · un hook qui mesure les 7 cases.**
+**5 sous-agents · 7 étapes, en boucle, sans s'arrêter · un cliquet · un hook qui mesure 7 cases.**
 
 ---
 
@@ -88,13 +88,17 @@ tiendra pas la nuit. D'où le hook, plus bas.
    autres savent faire.
 
 5. GREFFE — il possède /journal
-   Il tient QUATRE fichiers, et rien d'autre :
+   Il tient SIX fichiers, et rien d'autre :
    /journal/ETAPES.md    une ligne par étape : quoi, quand, quel
                          commit, verdict de l'auditeur interne
    /journal/BUGS.md      un bug par ligne, jamais deux. Numéro
                          jamais réutilisé. Fermé avec un SHA de
                          commit, jamais avec le mot « corrigé »
    /journal/PORTES.md    LE REGISTRE DES PORTES — voir LE CLIQUET
+   /journal/QUESTIONS.md ce qui attend Hamada, numéroté, avec le
+                         choix pris en attendant
+   /journal/DECISIONS.md une ligne par choix technique tranché
+                         seul
    /journal/adr/         un ADR par décision qu'on pourrait
                          défaire dans six mois en croyant bien
                          faire. Une page : contexte, décision,
@@ -284,6 +288,58 @@ E7  Le cliquet est armé ET branché :
     ⛔ E7 est la dernière étape du lot 1 et la condition de
        toutes les suivantes. Aucun lot 2 sans elle.
 
+╔═══════════════════════════════════════════════════════════════╗
+║  TU NE T'ARRÊTES PAS. C'est une boucle, pas une conversation. ║
+║                                                               ║
+║  ⭐ Tant que les sept étapes ne sont pas finies, tu tournes :  ║
+║     1. prends la PREMIÈRE étape non cochée                    ║
+║     2. fais-la                                                ║
+║     3. lance /outils/cliquet.sh — répare jusqu'à ce qu'il     ║
+║        sorte en 0                                             ║
+║     4. fais passer l'auditeur interne                         ║
+║     5. le greffier journalise                                 ║
+║     6. coche, et reprends au 1                                ║
+║                                                               ║
+║  ⛔ TU NE RENDS LA MAIN QU'À LA FIN DES SEPT ÉTAPES.          ║
+║     Pas pour demander un avis. Pas pour montrer un bout. Pas  ║
+║     pour dire que ça avance.                                  ║
+║                                                               ║
+║  QUAND TU AS UNE QUESTION — et tu en auras :                  ║
+║   1. tu l'écris dans /journal/QUESTIONS.md, numérotée, avec   ║
+║      le choix que tu as fait EN ATTENDANT et pourquoi         ║
+║   2. tu CONTINUES                                             ║
+║  ⛔ Tu n'attends jamais de réponse. Un agent qui attend une   ║
+║     réponse est un agent mort : personne ne le regarde, et    ║
+║     la nuit passe.                                            ║
+║                                                               ║
+║  QUAND TU ES VRAIMENT BLOQUÉ sur un point :                   ║
+║   1. `BLOQUÉ: <raison en une ligne>` dans /journal/ETAPES.md  ║
+║   2. tu prends un AUTRE point de la même étape, ou l'étape    ║
+║      suivante si elle n'en dépend pas                         ║
+║   3. tu y reviens plus tard                                   ║
+║                                                               ║
+║  ⚠️ TROIS ÉCHECS SUR LE MÊME POINT = STOP SUR CE POINT.       ║
+║  Tu écris quelle HYPOTHÈSE s'est révélée fausse — pas ce que  ║
+║  tu as essayé, ce que tu croyais qui n'était pas vrai — et tu ║
+║  passes au suivant. S'acharner une quatrième fois ne marche   ║
+║  jamais : c'est le modèle du problème qui est faux, pas le    ║
+║  code.                                                        ║
+║                                                               ║
+║  CE QUE TU TRANCHES SEUL, SANS DEMANDER :                     ║
+║   - tout choix technique ordinaire → une ligne dans           ║
+║     /journal/DECISIONS.md, et tu continues                    ║
+║   - tout choix d'ARCHITECTURE → un ADR, et tu continues       ║
+║  CE QUE TU DÉPOSES SANS ATTENDRE :                            ║
+║   - argent, client, données réelles, sécurité                 ║
+║     → /journal/QUESTIONS.md, tu choisis l'option la plus      ║
+║       prudente en attendant, et tu continues                  ║
+║                                                               ║
+║  ⭐ La seule chose qui t'arrête vraiment : le cliquet qu'on   ║
+║     ne peut pas satisfaire. Là, tu rends la main, et tu dis   ║
+║     laquelle des sept cases ne peut pas se remplir, et        ║
+║     pourquoi.                                                 ║
+╚═══════════════════════════════════════════════════════════════╝
+
 ═══ LES SIX INTERDITS — chacun est un refus ═══
 1. ⛔ Aucun `if` métier écrit en dur, ni serveur ni écran. Toute
    bifurcation a une clé dans la table `politique`, lue par
@@ -325,14 +381,16 @@ Une branche `lot-1`, et dans le message de PR :
  - le résultat de E5 : quel trigger retiré, quelle assertion est
    tombée
  - les fiches de l'auditeur interne, étape par étape
+ - /journal/QUESTIONS.md et /journal/DECISIONS.md, entiers
  - /journal/PORTES.md : combien de portes, de quelle espèce,
    et laquelle tu as vue rouge
  - la sortie complète de /outils/cliquet.sh, les sept lignes
  - /journal/REMARQUES.md, ou « aucune »
  - ce que tu as décidé seul, en une liste
 
-Ne me demande pas de valider en cours de route. Va au bout des
-sept étapes, rends, l'auditeur général passera.
+⛔ Ne me demande pas de valider en cours de route, et ne t'arrête
+pas pour montrer. Va au bout des sept étapes, en boucle, puis
+rends. L'auditeur général passera à ce moment-là, et pas avant.
 ```
 
 ---
