@@ -66,7 +66,7 @@ Le motif ligne par ligne, et les cas contestés : [annexes/MATRICE_DROITS_MOTIFS
 
 ---
 
-# La grille — 44 commandes × 9 groupes
+# La grille — 48 lignes, 55 commandes × 9 groupes
 
 ## CRM — sociétés, unités, contacts
 
@@ -154,7 +154,7 @@ Le motif ligne par ligne, et les cas contestés : [annexes/MATRICE_DROITS_MOTIFS
 | ⛔ Jamais | Le problème que ça évite |
 |---|---|
 | **ADM n'obtient aucun droit métier par sa qualité d'admin** (F14) — tous ses `D` sont des délégations écrites, une par une | l'administrateur qui « corrige » une prestation un vendredi soir |
-| **SUP ne mute rien** (F13) — la colonne est vide sur 44 lignes | l'assistance qui répare en cassant, sans trace |
+| **SUP ne mute rien** (F13) — la colonne est vide sur les 48 lignes | l'assistance qui répare en cassant, sans trace |
 | **Aucune impersonation** — SUP ne devient jamais quelqu'un d'autre | un acte attribué à la mauvaise personne dans le journal |
 | Une permission **sans périmètre** | **MUR M-13** — la table de jointure porte les trois colonnes |
 | Un `✓` obtenu par **union** de deux lectures | S14 : lire sur B + écrire sur A ≠ écrire sur B |
@@ -169,7 +169,7 @@ Le motif ligne par ligne, et les cas contestés : [annexes/MATRICE_DROITS_MOTIFS
 
 | | |
 |---|---|
-| Commandes couvertes | **44** — toutes celles des machines d'état §1–§7, plus les 4 d'administration |
+| Commandes couvertes | ⛔ **corrigé le 20/09 : 55 commandes distinctes, sur 48 lignes de permission.** Le « 44 » comptait mal — sept lignes en groupent deux (`CreateUnit · UpdateUnit`…). ⭐ Mesuré, pas retenu : voir la commande dans [SPEC_COMMANDES_L4.md](SPEC_COMMANDES_L4.md) |
 | Groupes | **9** — plus « Commercial », nom d'affichage d'IA, et « Candidat portail », hors V1 |
 | Cases `✓` | attribuées au seed |
 | Cases `D` | **rien au seed** : l'admin les ajoute une par une, et ça se voit dans le journal |

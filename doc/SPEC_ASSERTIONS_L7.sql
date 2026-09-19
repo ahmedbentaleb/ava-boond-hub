@@ -253,10 +253,15 @@ $s$, 'M-7');
 -- ⚠️ On vérifie sur TOUTES les tables, pas sur un échantillon : un DELETE
 --    oublié sur une seule table suffit à perdre une donnée.
 SELECT t.doit_etre('`ava_app` n''a DELETE sur aucune table', 'M-8',
+  -- ⚠️ `OFFSET 0` est une BARRIÈRE DE PLAN, pas une coquetterie : sans elle,
+  --    PostgreSQL peut évaluer `has_table_privilege` avant le filtre sur le
+  --    schéma, et lever sur une table système. ⭐ Trouvé par le codeur du
+  --    lot 1 — son `004` et sa copie de `/test` avaient raison.
   NOT EXISTS (
-    SELECT 1 FROM pg_tables
-    WHERE schemaname = 'ava'
-      AND has_table_privilege('ava_app', 'ava.' || quote_ident(tablename), 'DELETE')));
+    SELECT 1 FROM (
+      SELECT tablename FROM pg_tables WHERE schemaname = 'ava' OFFSET 0
+    ) AS n
+    WHERE has_table_privilege('ava_app', 'ava.' || quote_ident(tablename), 'DELETE')));
 
 -- ── M-9 · une action a exactement un porteur ──────────────────────────────
 SELECT t.doit_refuser('une action sans porteur', 'M-9', $s$
@@ -354,11 +359,20 @@ $s$, 'm15');
 -- ⭐ La seconde moitié de M-15 : la SURFACE DE LECTURE. Le rôle d'agrégation
 --    n'a pas les lignes — il ne PEUT pas additionner des euros et des
 --    dirhams, même en essayant.
-SELECT t.doit_etre('`ava_lecture_agregats` ne voit ni prestation, ni temps, ni snapshot', 'M-15',
-  NOT t.droit('ava_lecture_agregats','prestation','SELECT')
-  AND NOT t.droit('ava_lecture_agregats','temps','SELECT')
-  AND NOT t.droit('ava_lecture_agregats','snapshot_marge','SELECT')
-  AND t.droit('ava_lecture_agregats','v_marge_par_devise','SELECT'));
+-- ⛔⛔ CORRIGÉ LE 20/09 — cette assertion ÉNUMÉRAIT trois tables. Elle passait
+--    au vert pendant que le rôle lisait `v_conditions_du_jour`, qui expose
+--    `tjm_vendu` et `cjm_contrat` ligne par ligne. **Le mur était percé et le
+--    test disait OK.**
+-- ⭐ LA LEÇON, et elle vaut pour toutes les autres : **un mur se teste par ce
+--    qu'on peut ATTEINDRE, pas par une liste qu'on a écrite.** On n'énumère
+--    plus ce qui est interdit — on exige que le permis soit EXACTEMENT les
+--    quatre vues par devise, plus ce dont elles ont besoin pour se lire.
+SELECT t.doit_etre('`ava_lecture_agregats` n''atteint QUE les 4 vues par devise', 'M-15',
+  (SELECT count(*) FROM information_schema.role_table_grants
+    WHERE grantee = 'ava_lecture_agregats'
+      AND table_name NOT IN ('ref_devise','ref_pays','politique')) = 4
+  AND t.droit('ava_lecture_agregats','v_marge_par_devise','SELECT')
+  AND NOT t.droit('ava_lecture_agregats','v_conditions_du_jour','SELECT'));
 
 
 -- ═══════════════════════════════════════════════════════════════════════════

@@ -736,7 +736,12 @@ CREATE TABLE positionnement (
   --    en UNE jointure — « un positionnement terminal_positif dont la
   --    personne a un profil ressource actif » — sans savoir si le
   --    positionnement était candidat ou ressource.
-  personne_id UUID NOT NULL REFERENCES personne(id),
+  -- ⛔ B-004, 20/09 — PAS de NOT NULL, et c'est un piège qu'il faut nommer.
+  --    `tg_pers` écrit cette colonne depuis le profil ; quand aucun profil
+  --    n'est donné, il écrit NULL — et PostgreSQL lève le NOT NULL AVANT
+  --    d'évaluer `ck_m2_xor`. Le refus venait du mauvais mur, avec le mauvais
+  --    message. ⭐ Trouvé par le codeur du lot 1, pas par moi.
+  personne_id UUID REFERENCES personne(id),
   etat_code      TEXT NOT NULL REFERENCES ref_etat_positionnement(code),
   etat_categorie TEXT NOT NULL,
   tjm_propose    NUMERIC(14,2),
@@ -1542,6 +1547,21 @@ GRANT SELECT ON ALL TABLES IN SCHEMA ava TO ava_lecture_agregats;
 REVOKE SELECT ON prestation, temps, snapshot_marge, prestation_ligne_ca,
                  profil_ressource, positionnement
   FROM ava_lecture_agregats;
+
+-- ⛔⛔ B-001, 20/09 — `ALL TABLES` INCLUT LES VUES, et c'est par là que M-15
+--    était percé. `v_conditions_du_jour` expose `tjm_vendu` et `cjm_contrat`
+--    ligne par ligne : le rôle d'agrégats n'était pas censé avoir les lignes,
+--    il les avait par la vue.
+-- ⭐ On ne retire donc pas six vues par leur nom — on retire TOUT, puis on
+--    redonne les quatre. ⚠️ Une liste de noms ne couvre que ces noms ; la
+--    septième vue écrite dans six mois se serait ouverte toute seule.
+REVOKE SELECT ON ALL TABLES IN SCHEMA ava FROM ava_lecture_agregats;
+GRANT SELECT ON ref_devise, ref_pays, politique TO ava_lecture_agregats;
+GRANT SELECT ON v_ca_realise_par_devise,
+                v_ca_provisoire_par_devise,
+                v_marge_par_devise,
+                v_occupation_valorisee_par_devise
+  TO ava_lecture_agregats;
 
 
 -- ═══════════════════════════════════════════════════════════════════════════
