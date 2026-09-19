@@ -134,7 +134,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <a href="simulateur.html">Banc d’essai</a>
 </div></div></div></div>
 <div class="p">
-<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">19/09/2026 · 781a8b6</span></div>
+<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">19/09/2026 · f79acae</span></div>
 <p class="chapeau">Le point d'entrée unique. Une autre IA écrit le code, je l'audite. Tout ce qui fait foi est listé ici — et rien n'y est recopié : ce document <b>mesure</b> et <b>pointe</b>.</p>
 <div class="ch">
 <div><b>37</b><span>tables</span></div>
@@ -144,12 +144,12 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <div><b>22</b><span>assertions</span></div>
 <div><b>26</b><span>écrans</span></div>
 <div><b>7</b><span>ADR</span></div>
-<div><b>49</b><span>documents</span></div>
+<div><b>51</b><span>documents</span></div>
 </div>
 <p class="note">⭐ Tous ces chiffres sont <b>mesurés</b> à la génération, jamais saisis. Un compte écrit à deux endroits diverge à la passe suivante.</p>
 <quand_utiliser>
 <h2><span class="num">01</span>Qui lit quoi</h2>
-<p class="sub">Quatre lecteurs, quatre portes. Personne n'a besoin des 49 documents.</p>
+<p class="sub">Quatre lecteurs, quatre portes. Personne n'a besoin des 51 documents.</p>
 <div class="tw"><table><tr><th>Vous êtes</th><th>Vous lisez</th><th>Vous ne lisez pas</th></tr>
 <tr><td>L&#x27;IA qui code</td><td>le prompt, puis le SQL et les assertions</td><td>les relectures, les plans, l&#x27;historique — c&#x27;est du chemin parcouru</td></tr>
 <tr><td>Moi, l&#x27;auditeur</td><td>les assertions, le registre §E, le journal des bugs</td><td>rien — mais je mesure avant de citer</td></tr>
@@ -170,6 +170,8 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <a href="doc/MACHINES_ETAT_V1.md"><b>Les machines d&#x27;état</b><span>6 cycles fermés</span><em>MACHINES_ETAT_V1.md</em></a>
 <a href="doc/THEMES_v1.md"><b>Les thèmes</b><span>les 4 rôles de couleur</span><em>THEMES_v1.md</em></a>
 <a href="doc/JOURNAL_BUGS.md"><b>Le journal des bugs</b><span>vide — le code n&#x27;existe pas</span><em>JOURNAL_BUGS.md</em></a>
+<a href="doc/PROMPT_GROK_LOT1.md"><b>L2a — le prompt du lot 1</b><span>à coller dans Cursor, tel quel</span><em>PROMPT_GROK_LOT1.md</em></a>
+<a href="doc/GRILLE_AUDIT.md"><b>L2b — la grille d&#x27;audit</b><span>18 contrôles · un 🔴 refuse le lot</span><em>GRILLE_AUDIT.md</em></a>
 <a href="doc/PLAN_2026-09-19.md"><b>Le plan du jour</b><span>ce qui reste, en haut</span><em>PLAN_2026-09-19.md</em></a>
 </div>
 <p class="note">⛔ Un <code>.sql</code> reste un <code>.sql</code> : Grok l'exécute, git le diffe, <code>psql -f</code> le charge. Noyé dans une page, aucun des trois ne marche. <b>Ce dossier est la porte, pas le coffre.</b></p>
@@ -180,7 +182,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <div class="c ok"><div class="n">L3</div><div class="t">Le schéma en SQL</div><div class="d">1599 lignes · 37 tables · 22 triggers · les 15 murs</div></div>
 <div class="c ok"><div class="n">L6</div><div class="t">Les 26 écrans</div><div class="d">le mock fait foi — jouable, mesuré, publié</div></div>
 <div class="c ok"><div class="n">L7</div><div class="t">Les assertions</div><div class="d">22 tests, un par mur, plus 1 contre-test. ⚠️ écrits, jamais exécutés</div></div>
-<div class="c go"><div class="n">L2</div><div class="t">Le prompt et la grille d&#x27;audit</div><div class="d">ce qu&#x27;on charge dans l&#x27;IA codeuse, et ce qu&#x27;on vérifie à chaque retour</div></div>
+<div class="c ok"><div class="n">L2</div><div class="t">Le prompt et la grille</div><div class="d">à coller dans Cursor · 18 contrôles au retour</div></div>
 <div class="c go"><div class="n">L4</div><div class="t">Les 44 commandes</div><div class="d">entrée, sortie, refus, événement, politique lue, mur touché</div></div>
 <div class="c go"><div class="n">L5</div><div class="t">Les deux seeds</div><div class="d">167 politiques et 34 référentiels — mécanique, ça part chez Grok</div></div>
 <div class="c at"><div class="n">L1</div><div class="t">Le relevé Boond</div><div class="d">la grille existe, aucune ligne remplie. Hamada ouvre, je regarde et j&#x27;écris</div></div>
@@ -235,7 +237,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <h2><span class="num">08</span>Où on en est</h2>
 <div class="tw"><table><tr><th>Étape</th><th>Qui</th><th>État</th></tr>
 <tr><td>L7 — les assertions</td><td>moi</td><td>✅ fait</td></tr>
-<tr><td>L2 — le prompt et la grille d&#x27;audit</td><td>moi</td><td>⏳ le prochain</td></tr>
+<tr><td>L2 — le prompt et la grille d&#x27;audit</td><td>moi</td><td>✅ fait</td></tr>
 <tr><td>Lot 1 — dépôt, migrations, seeds, CI</td><td>Grok, dans Cursor</td><td>⬜ dès que le prompt est prêt</td></tr>
 <tr><td>Le relevé Boond</td><td>Hamada + moi</td><td>⬜ pendant qu&#x27;il code</td></tr>
 <tr><td>L4 — les 44 commandes</td><td>moi</td><td>⬜ son lot 2</td></tr>
@@ -245,9 +247,9 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 </etat>
 <source>
 <h2><span class="num">09</span>D'où ça vient</h2>
-<p class="sub">49 documents dans <code>_ops/</code>. Les 10 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
+<p class="sub">51 documents dans <code>_ops/</code>. Les 12 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
 <p class="note">Ce fichier est <b>généré</b> par <code>python _ops/outils/dossier.py</code>. ⛔ Ne pas l'éditer à la main : la prochaine génération écraserait la correction, et on ne saurait pas laquelle était juste.<br>Pour en extraire une section sans tout lire :<br><code>sed -n '/&lt;etat&gt;/,/&lt;\/etat&gt;/p' _ops/DOSSIER.html</code></p>
 </source>
-<footer>Ava Manager · dossier généré le 19/09/2026 · commit 781a8b6 · 37 tables · 167 politiques · 15 murs · 22 assertions</footer>
+<footer>Ava Manager · dossier généré le 19/09/2026 · commit f79acae · 37 tables · 167 politiques · 15 murs · 22 assertions</footer>
 </div>
 </body></html>
