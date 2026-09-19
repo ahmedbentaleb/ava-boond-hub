@@ -437,6 +437,7 @@ th:last-child,td:last-child{padding-right:0;text-align:right}
 .cpt{font-style:normal;font-weight:400;color:var(--t3);font-size:.78em}
 /* ─── S-9 : la barre de filtres, la même partout ─── */
 .rech-w{display:flex;align-items:center;gap:6px;color:var(--t4);flex:0 1 230px;min-width:120px}
+.rech-w[hidden]{display:none}
 .rech-w svg{width:13px;height:13px;flex:none}
 .rech-w .rech{flex:1;min-width:0}
 .filtre svg{width:12px;height:12px}
@@ -511,21 +512,17 @@ tr.cle-l td{background:color-mix(in srgb,var(--warn) 7%,transparent)}
   <span class="marque-h">
     <svg class="logo" viewBox="0 0 20 20" fill="none"><path d="M2 18 12 2h3L5 18z" fill="currentColor"/><path d="M9 18 18 4h-3L6 18z" fill="currentColor" opacity=".45"/></svg>
     <b>AVA MANAGER</b></span>
-  <h1 class="titre-h" id="titreEcran">Tableau de bord</h1>
-  <span class="live">EN DIRECT</span>
   <span class="grow"></span>
   <label class="cherche">
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg>
     <input placeholder="Rechercher partout" aria-label="Rechercher partout"></label>
   <span class="grow"></span>
-  <span class="chip">MONDE <b>06/04/2027</b></span>
-  <span class="lab">RÔLE</span>
+  <span class="lab" title="Banc d'essai : change le rôle pour voir les refus changer">RÔLE</span>
   <select id="role">
     <option value="staffing">STAFFING</option><option value="dp">DIRECTEUR DE PROJET</option>
     <option value="ia">INGÉNIEUR D'AFFAIRES</option><option value="rh">RESSOURCES HUMAINES</option>
     <option value="ressource">RESSOURCE</option>
   </select>
-  <span class="lab">PÉRIMÈTRE</span><span class="chip"><b>AGENCE A</b></span>
   <div class="moi">
     <button class="qui" type="button" id="btnMoi" aria-expanded="false">
       <span class="ph" aria-hidden="true">AB</span>
@@ -1369,10 +1366,12 @@ function entete(e){
     <div><h1>${esc(e.nom)}${n !== null ? ` <em class="cpt">(${n})</em>` : ""}</h1>${
       e.note ? `<p class="eh-n">${e.note}</p>` : ""}</div>
     <div class="eh-a">
-      <button class="rd" type="button" title="Exporter en PDF" aria-label="Exporter en PDF">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h7l3 3v9H3z"/><path d="M10 2v3h3M6 9h4M6 11.5h4"/></svg></button>
+      <button class="rd" type="button" data-loupe="1" title="Rechercher dans cet écran" aria-label="Rechercher dans cet écran">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg></button>
       ${e.creer ? `<button class="rd rd-p" type="button" title="${esc(e.creer)}" aria-label="${esc(e.creer)}">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></button>` : ""}
+      <button class="rd" type="button" title="Exporter en PDF" aria-label="Exporter en PDF">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h7l3 3v9H3z"/><path d="M10 2v3h3M6 9h4M6 11.5h4"/></svg></button>
     </div></div>`;
 }
 
@@ -1389,7 +1388,7 @@ function barreFiltres(e, n){
   const dispo = e.vues || ["liste"];
   const active = e.vue || dispo[0];
   return `<div class="barre-f">
-    <span class="rech-w"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg>
+    <span class="rech-w"${e.loupe ? "" : " hidden"}><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="4.2"/><path d="M10.2 10.2 14 14"/></svg>
       <input class="rech" placeholder="Mots clefs" aria-label="Mots clefs"></span>
     ${(e.filtres || []).length ? `<button class="filtre" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 4h12M4 8h8M6.5 12h3"/></svg> Filtres</button>` : ""}
     ${(e.filtres || []).map(f => `<button class="filtre" type="button">${esc(f)} <b>▾</b></button>`).join("")}
@@ -1786,7 +1785,6 @@ function rail(){
 let ECRAN = "bord";
 function peindre(){
   const e = ECRANS[ECRAN];
-  $("#titreEcran").textContent = e.nom;
   $("#ecran").innerHTML = GABARITS[e.gabarit](e);
   document.querySelectorAll("[data-e]").forEach(a => {
     if (a.dataset.e === ECRAN) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
@@ -1835,6 +1833,9 @@ document.addEventListener("click", e => {
   if (e.target.closest("[data-off]")){ e.preventDefault(); return; }
   const a = e.target.closest("[data-e]");
   if (a){ e.preventDefault(); ECRAN = a.dataset.e; window.scrollTo(0, 0); peindre(); return; }
+  const lp = e.target.closest("[data-loupe]");
+  if (lp){ e.preventDefault(); const E = ECRANS[ECRAN]; E.loupe = !E.loupe; peindre();
+    const c = $(".rech"); if (E.loupe && c) c.focus(); return; }
   const v = e.target.closest("[data-vue]");
   if (v){ e.preventDefault(); ECRANS[ECRAN].vue = v.dataset.vue; peindre(); return; }
   const o = e.target.closest("[data-ong]");
