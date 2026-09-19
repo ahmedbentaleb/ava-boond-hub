@@ -228,7 +228,7 @@ svg{display:block;flex:none}
 [data-mcoul] .nav>#menu>a[aria-current]>span,
 [data-mcoul] .nav>#menu>a[aria-current]>.ss{color:var(--sur-pl-sel,var(--sel-encre))}
 /* ─── les entrées dépliantes ─── */
-.nav .chev{margin-left:auto;font-style:normal;font-weight:400;font-size:13px;color:var(--t4);
+.nav .chev{margin-left:auto;font-style:normal;font-weight:400;font-size:13px;color:var(--t3);
   transition:transform .15s ease;line-height:1}
 .nav a[aria-expanded="true"] .chev{transform:rotate(90deg)}
 .nav .sous{display:flex;flex-direction:column}
@@ -238,10 +238,20 @@ svg{display:block;flex:none}
 .app[data-nav="icones"] .nav .sous{display:none}
 .app[data-nav="icones"] .nav .chev{display:none}
 /* ─── ce qui n'est pas dans le lot : présent, nommé, éteint ─── */
-.nav a.hl{opacity:.42;cursor:default}
-.nav a.hl:hover{background:transparent;color:var(--t2)}
-.nav .lot{font-style:normal;font-size:6.5px;letter-spacing:.8px;color:var(--t4);
-  border:1px solid var(--bord);padding:1px 3px;margin-left:auto;white-space:nowrap}
+.nav a.hl{cursor:default}
+.nav a.hl>span,.nav a.hl>.ss{color:var(--t3)}
+.nav a.hl>svg{opacity:.7}
+.nav a.hl:hover{background:transparent}
+/* ⭐ L'etiquette se pose toujours au meme endroit, chevron ou pas : sans ca
+   les trois « hors lot » de la colonne ne sont jamais sur la meme verticale. */
+.nav .lot{font-style:normal;font-size:7px;letter-spacing:.8px;color:var(--t3);
+  border:1px solid var(--bord);border-radius:var(--r);padding:1px 4px;
+  margin-left:auto;flex:none;white-space:nowrap}
+.nav .lot ~ .chev{margin-left:7px}
+/* ⛔ Achats porte un chevron, Profils types non : les trois etiquettes
+   tombaient a 160, 160 et 137 px. L'entree sans chevron en reserve la place. */
+.nav .chev{width:13px;text-align:right;flex:none}
+.nav>#menu>a:not([data-pli])::after{content:"";width:20px;flex:none}
 .app[data-nav="icones"] .nav .lot{display:none}
 .nav .rep{position:absolute;z-index:55;top:12px;right:-26px;width:22px;height:22px;
   display:grid;place-items:center;color:var(--t3);background:var(--f1);
