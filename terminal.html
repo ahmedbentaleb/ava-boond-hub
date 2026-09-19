@@ -2,10 +2,10 @@
 <html lang="fr"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Ava Manager — Terminal</title>
 <style>*{box-sizing:border-box}html,body{margin:0;height:100%}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
+<meta charset="utf-8">
 <title>Ava Manager — Terminal</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Roboto+Mono:wght@400;500;700&family=Source+Code+Pro:wght@400;500;700&family=Fira+Code:wght@400;500;700&family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
@@ -632,8 +632,10 @@ const OUTILS = [
 let S = { palette:"avaliance", mode:"sombre", intensite:"normal", police:"jetbrains", densite:"normal", epaisseur:"medium",
           action:null, struct:null, angle:"carre", pastille:"contour", bouton:"contour", carte:"bande", coloration:"une",
           rail:"droite", outils:["notes","alertes","ia","todo","indic","cal"], outilOuvert:"alertes", expert:false,
-          marqueur:"icone", menu:null, deplies:["crm","projets","planning"] };
-try { S = Object.assign(S, JSON.parse(localStorage.getItem("ava-term5") || "{}")); } catch(e){}
+          marqueur:"icone", menu:null, deplies:["crm","projets","planning","administration"] };
+/* ⚠️ La cle porte un numero : un menu enregistre ne gagne pas les entrees
+   ajoutees depuis. On change de cle quand le catalogue change. */
+try { S = Object.assign(S, JSON.parse(localStorage.getItem("ava-term6") || "{}")); } catch(e){}
 
 /* L'APLAT. `teinte()` eclaircit sur fond sombre pour que le TEXTE reste lisible.
    Un aplat n'est pas du texte : il porte le vrai hex de la charte, et l'encre
@@ -706,7 +708,7 @@ function applique(){
   $("#btnExpert").textContent = S.expert ? "MASQUER L'EXPERT" : "MODE EXPERT";
   if ($("#etat")) $("#etat").textContent = `${P.n} · ${S.mode.toUpperCase()} · ${I.n} · ${POLICES.find(p=>p.k===S.police).n} · TRAITS ${E.n} · ${S.outils.length} OUTILS`
     + (S.action || S.struct ? " · RETOUCHÉE" : "") + (S.coloration === "metier" ? " · PAR MÉTIER" : "");
-  try { localStorage.setItem("ava-term5", JSON.stringify(S)); } catch(e){}
+  try { localStorage.setItem("ava-term6", JSON.stringify(S)); } catch(e){}
 }
 function boutons(id, liste, champ, pastille){
   $(id).innerHTML = liste.map(o => `<button class="opt" type="button" data-r="${champ}" data-v="${o.k}" aria-pressed="false">${
@@ -1040,6 +1042,29 @@ const MONDE = {
     { id:"AGENCE-0001", nom:"Agence A", code:"A", pays:"Maroc",  ressources:3, nonOuvres:114 },
     { id:"AGENCE-0002", nom:"Agence B", code:"B", pays:"France", ressources:0, nonOuvres:116 }
   ],
+  modele: [
+    { id:"MOD-0001", nom:"Relance client J+7",        type:"action",      portee:"agence",       proprietaire:"—",                partage:"oui", ordre:1 },
+    { id:"MOD-0002", nom:"Compte rendu d'entretien",  type:"action",      portee:"installation", proprietaire:"—",                partage:"oui", ordre:2 },
+    { id:"MOD-0003", nom:"Mes besoins P1 ouverts",    type:"recherche",   portee:"personnelle",  proprietaire:"karim@avaliance.com", partage:"non", ordre:1 },
+    { id:"MOD-0004", nom:"Ressources en intercontrat",type:"recherche",   portee:"agence",       proprietaire:"—",                partage:"oui", ordre:2 },
+    { id:"MOD-0005", nom:"Sorties du trimestre",      type:"recherche",   portee:"installation", proprietaire:"—",                partage:"oui", ordre:3 },
+    { id:"MOD-0006", nom:"Onboarding d'une ressource",type:"liste_taches",portee:"installation", proprietaire:"—",                partage:"oui", ordre:1 },
+    { id:"MOD-0007", nom:"Clôture de mission",        type:"liste_taches",portee:"agence",       proprietaire:"—",                partage:"oui", ordre:2 },
+    { id:"MOD-0008", nom:"Fiche candidat — champs RH",type:"formulaire",  portee:"installation", proprietaire:"—",                partage:"non", ordre:1 },
+    { id:"MOD-0009", nom:"Envoi de CV au client",     type:"email",       portee:"agence",       proprietaire:"—",                partage:"oui", ordre:1 }
+  ],
+  alerteRegle: [
+    { id:"besoin_non_pourvu",    libelle:"Un besoin ne peut pas passer « pourvu »", objet:"besoin",        gravite:"elevee",   actif:"oui", portee:"installation", politique:"besoin.pourvu.garde_minimale" },
+    { id:"cv_sans_reponse",      libelle:"Un candidat attend une décision client",  objet:"positionnement",gravite:"moyenne",  actif:"oui", portee:"installation", politique:"positionnement.cv_partage_obligatoire" },
+    { id:"mission_a_signer",     libelle:"Une mission commence dans 3 semaines",    objet:"prestation",    gravite:"moyenne",  actif:"oui", portee:"installation", politique:"—" },
+    { id:"marge_impossible",     libelle:"Une mission close porte une marge « — »", objet:"prestation",    gravite:"critique", actif:"oui", portee:"installation", politique:"change.mode" },
+    { id:"surcharge",            libelle:"Une personne dépasse son seuil de charge",objet:"prestation",    gravite:"elevee",   actif:"oui", portee:"agence",       politique:"prestation.surcharge.seuil_pct" },
+    { id:"temps_manquant",       libelle:"Jours ouvrés sans temps saisi",           objet:"temps",         gravite:"moyenne",  actif:"oui", portee:"installation", politique:"temps.periode" },
+    { id:"plafond_jour",         libelle:"Plus d'une journée saisie le même jour",  objet:"temps",         gravite:"elevee",   actif:"oui", portee:"installation", politique:"temps.plafond_jour" },
+    { id:"candidat_brouillon",   libelle:"Un dossier candidat reste en brouillon",  objet:"candidat",      gravite:"moyenne",  actif:"oui", portee:"installation", politique:"candidat.complete.champs_requis" },
+    { id:"projet_sans_contact",  libelle:"Un projet n'a pas de contact",            objet:"projet",        gravite:"bonne",    actif:"non", portee:"installation", politique:"projet.contact" },
+    { id:"plafond_contractuel",  libelle:"La consommation approche du plafond",     objet:"projet",        gravite:"elevee",   actif:"non", portee:"agence",       politique:"projet.plafond.mode" }
+  ],
   ev: [
     ["10:24","PrestationClosed","Analyste métier — marge figée, 1,0 jour saisi","change.mode",0],
     ["10:19","Refus","« Pourvu » refusé : 1 prestation signée pour 2 postes visés","besoin.pourvu.garde_minimale",1],
@@ -1184,6 +1209,18 @@ const ECRANS = {
 
   /* ─────────────── LES 5 ÉCRANS D'ADMINISTRATION ─────────────── */
   politiques: { nom:"Politiques", gabarit:"reglages", metier:"c5", mode:"politiques", tables:["politique"] },
+  modeles: { nom:"Modèles", gabarit:"liste", metier:"c0", source:"modele", tables:["modele","ref_type_modele","ref_portee_modele"],
+    filtres:["Type","Portée","Partagé"], creer:"Créer un modèle", vues:["liste","vignettes"],
+    note:"Ce qu'on ne réécrit pas deux fois : modèles d'actions, recherches enregistrées, listes de tâches, formulaires, e-mails. La portée dit qui le voit.",
+    cols:[ {c:"nom",t:"MODÈLE",fort:1,sous:"id"}, {c:"type",t:"TYPE",b:1}, {c:"portee",t:"PORTÉE",b:1},
+           {c:"proprietaire",t:"PROPRIÉTAIRE"}, {c:"partage",t:"PARTAGÉ",b:1}, {c:"ordre",t:"ORDRE",n:1} ] },
+
+  alertes: { nom:"Alertes", gabarit:"liste", metier:"c0", source:"alerteRegle", tables:["alerte_regle","ref_gravite_alerte"],
+    filtres:["Objet","Gravité","Actif"], creer:"Créer une alerte", vues:["liste"],
+    note:"⛔ Les alertes ne sont plus écrites dans le code. Chacune nomme un objet, une politique et un seuil — jamais du SQL libre, qui serait une porte dérobée dans les murs et les droits.",
+    cols:[ {c:"libelle",t:"ALERTE",fort:1,sous:"id"}, {c:"objet",t:"OBJET",b:1}, {c:"gravite",t:"GRAVITÉ",b:1},
+           {c:"politique",t:"LA RÈGLE QU'ELLE LIT",mono:1}, {c:"portee",t:"PORTÉE",b:1}, {c:"actif",t:"ACTIF",b:1} ] },
+
   referentiels: { nom:"Référentiels", gabarit:"reglages", metier:"c5", mode:"ref", tables:["ref_*"] },
   droits: { nom:"Groupes et droits", gabarit:"reglages", metier:"c5", mode:"droits", tables:["groupe","permission","perimetre","groupe_permission_perimetre","compte_surcharge"] },
   comptes: { nom:"Comptes", gabarit:"liste", metier:"c5", source:"compte", tables:["compte","compte_groupe","personne"],
@@ -1213,8 +1250,10 @@ const MENU_DEFAUT = [
   { k:"achats",         ic:"ref",   n:"Achats", horsLot:1,
     sous:[["ref","_achats"],["ref","_facturesF"],["ref","_paiements"]] },
   { k:"planning",       ic:"charge",n:"Planning", sous:[["charge","charge"],["temps","mesTemps"],["abs","mesAbsences"]] },
-  { k:"reporting",      ic:"regl",  n:"Reporting",
-    sous:[["regl","politiques"],["ref","referentiels"],["dr","droits"],["cpt","comptes"],["ag","agences"]] }
+  { k:"reporting",      ic:"regl",  n:"Reporting", sous:[["bord","bord"],["proj","projets"],["res","ressources"],["soc","societes"]] },
+  { k:"administration", ic:"ref",   n:"Administration",
+    sous:[["regl","politiques"],["ref","referentiels"],["ref","modeles"],["bes","alertes"],
+          ["dr","droits"],["cpt","comptes"],["ag","agences"]] }
 ];
 /* Les écrans hors menu restent atteignables : le ⊞ les montre tous. */
 const TOUS = ["fSociete","fContact","fCandidat","fRessource","fBesoin","fProjet","fPrestation"];
