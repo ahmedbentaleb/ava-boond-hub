@@ -65,7 +65,10 @@ Le **code** est stable, le **libellé** se renomme, une valeur s'**ajoute** dans
 | `ref_motif_avenant` | — | prolongation, changement_tarif, changement_charge, changement_frais, autre — **système** | B-2, relecture externe 19/09 |
 | `ref_couleur` | `marque` · `vert` · `chaud` · `froid` · `neutre` · `flashy` | **16 valeurs**, chacune avec sa version sombre et sa version claire — **système**. `jaune_fluo`, `rose` et `lavande` ajoutées le 19/09. ⭐ **Mesurées le 20/09 dans le mock** : `vert_avaliance` · `violet_avaliance` · `vert_vif` · `vert_normal` · `vert_clair` · `rouge` · `orange` · `ambre` · `bleu` · **`bleu_roi`** · `cyan` · `magenta` · `gris` · `jaune_fluo` · `rose` · `lavande`. ⚠️ La « 16e sans nom » du lot 1 est **`bleu_roi`** | Hamada 18/09. [THEMES_v1.md](THEMES_v1.md) |
 | `ref_police` | `chasse_fixe` · `proportionnelle` | 9 valeurs, dont 6 à chasse fixe — **système**. ⭐ **Mesurées le 20/09** : `jetbrains` · `plex` · `space` · `roboto` · `source` · `fira` · `sora` · `inter` · **`systeme`** (la pile du système, aucune police web). ⚠️ La 9e que le lot 1 ne trouvait pas est **`systeme`** | idem |
-| `ref_outil` | — | notes, alertes, assistant, todo, indicateurs, calendrier — **système** | Hamada 18/09 : la colonne d'outils |
+| `ref_outil` | — | notes, alertes, assistant, todo, indicateurs, calendrier — **système**. ⚠️ C'est la colonne d'outils de **l'INTERFACE** | Hamada 18/09 |
+| `ref_provenance` | — | candidature, cooptation, jobboard, linkedin, reseau, appel_entrant, autre | ⭐ relevé Boond 20/09 |
+| `ref_outil_technique` | — | ⬜ **vide au seed** — comme `ref_competence`. ⛔ Ne pas confondre avec `ref_outil` | ⭐ relevé Boond 20/09 |
+| `ref_domaine` | — | banque, assurance, industrie, sante, secteur_public, telecoms, energie, autre. ⚠️ Distinct du **secteur** d'une société | ⭐ relevé Boond 20/09 |
 
 ---
 
@@ -136,6 +139,10 @@ Clé · options (**défaut**) · source de la bifurcation · effet quand on chan
 | `contact.transfert.objets_actifs` | **reaffectation_obligatoire** · conserver_liens | BM-14 | `TransferContact` |
 | `societe.archivage.garde` | **aucun_objet_actif** · libre | ⭐ L4, 20/09 | `ArchiveCompany` refuse s'il reste des objets actifs |
 | `absence.chevauchement` | **refus** · alerte · libre | ⭐ L4, 20/09 | `RecordAbsence` : deux absences qui se chevauchent |
+| `personne.coordonnees.multiples` | **oui** · une_par_type · non | ⭐ relevé Boond, 20/09 | plusieurs e-mails et téléphones par personne |
+| `societe.groupe.propagation_statut` | **aucune** · vers_les_filles · vers_la_mere · les_deux | ⭐ relevé Boond, 20/09 · D-2 | ⛔ défaut **aucune** : une filiale cliente ne rend pas le groupe client |
+| `societe.donnees_legales.requises` | **[]** · liste parmi statut_juridique, tva_intracom, siret, rcs, code_ape, numero_fournisseur | ⭐ relevé Boond, 20/09 | ⚠️ un SIRET n'existe pas au Maroc : le format se vérifie **dans la commande**, selon le pays |
+| `candidat.note.echelle` | **1_5** · 1_10 · 1_100 · aucune | ⭐ relevé Boond, 20/09 | ⛔ pas un CHECK figé : un trigger lit la politique |
 | `service.archivage.garde` | **aucun_besoin_ni_projet_actif** · libre | BM-17 | `ArchiveService` |
 | `doublon.personne.mode` | **avertir** · bloquer · ignorer | F20 | à `CreatePerson` |
 | `doublon.personne.cles` | **[email, nom+prenom+naissance]** (liste) · `score_pondere` (relecture externe 19/09 : e-mail + téléphone normalisé + nom/prénom + naissance, avec un seuil) | F20 | champs comparés |
@@ -317,8 +324,8 @@ Les autres documents **ne réécrivent pas ces chiffres** : ils renvoient ici (�
 | Quoi | Compte | Détail |
 |---|---|---|
 | Murs | **15** | M-1 → M-15, §A ; **+ 1 règle de code** R-1, hors des quinze |
-| Référentiels | **34** | ⭐ **27 métier** (§B, un par ligne — ⛔ *`ref_theme` était cité ici par erreur : il n'y a pas de table `ref_theme`, un thème est un **code texte** porté par `ui.theme`. Retiré le 20/09, signalé par le lot 1* ; `ref_unite_couverture`, `ref_motif_avenant`, `ref_motif_interruption`, `ref_motif_fin_emploi`, `ref_type_modele`, `ref_portee_modele` et `ref_gravite_alerte` le 19/09) **+ 7 techniques** : `ref_civilite`, `ref_pays`, `ref_type_unite`, `ref_type_contact`, `ref_type_mission`, `ref_type_document`, `ref_disponibilite` |
-| Politiques | **169** | §C — **168 en tableau + 1 déclarée en prose**. ⭐ **+2 le 20/09, annoncés comme l'exige le gel** :
+| Référentiels | ⭐ **37 au 20/09** | ⭐ **27 métier** (§B, un par ligne — ⛔ *`ref_theme` était cité ici par erreur : il n'y a pas de table `ref_theme`, un thème est un **code texte** porté par `ui.theme`. Retiré le 20/09, signalé par le lot 1* ; `ref_unite_couverture`, `ref_motif_avenant`, `ref_motif_interruption`, `ref_motif_fin_emploi`, `ref_type_modele`, `ref_portee_modele` et `ref_gravite_alerte` le 19/09) **+ 7 techniques** : `ref_civilite`, `ref_pays`, `ref_type_unite`, `ref_type_contact`, `ref_type_mission`, `ref_type_document`, `ref_disponibilite` |
+| Politiques | ⭐ **173 au 20/09** | §C — **168 en tableau + 1 déclarée en prose**. ⭐ **+2 le 20/09, annoncés comme l'exige le gel** :
 `societe.archivage.garde` et `absence.chevauchement`, toutes deux **citées dans L4** et
 **absentes du registre** — trou de ma spécification, comblé par le codeur du lot 2, qui a écrit
 leur source dans la table (`L4 L82`, `L4 L163`). ⭐ **C'est exactement ce qu'on attend de lui** (`ui.theme.personnalise`). **79 métier · 2 installation · 86 apparence.** ⭐ **+5 le 19/09** : les **quatre encres**, avec le garde-fou — une encre choisie qui ne passe pas 4,5:1 sur sa surface est **relevée**, jamais posée telle quelle — et le rôle du banc d'essai |

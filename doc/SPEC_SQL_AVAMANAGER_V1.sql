@@ -64,17 +64,30 @@ SET search_path = ava, public;
 --     un mur qui repose sur un GRANT tient même contre une console ouverte.
 -- ═══════════════════════════════════════════════════════════════════════════
 
+-- ⛔ A-008, 20/09 — LES RÔLES SONT GLOBAUX AU CLUSTER, pas à la base.
+--    `CREATE ROLE ava_app;` lève « le rôle existe déjà » dès qu'une SECONDE
+--    base est montée sur le même PostgreSQL — et la migration entière tombe.
+-- ⭐ Trouvé en montant la base locale à côté de celle de Docker. ⚠️ Ça se
+--    serait vu en production le jour d'une base de recette.
+CREATE OR REPLACE FUNCTION public.ava_role(nom TEXT) RETURNS VOID
+LANGUAGE plpgsql AS $r$
+BEGIN
+  EXECUTE format('CREATE ROLE %I NOLOGIN', nom);
+EXCEPTION WHEN duplicate_object THEN
+  NULL;   -- il existe déjà : c'est exactement ce qu'on veut
+END $r$;
+
 -- Le rôle de l'application : il écrit le métier.
-CREATE ROLE ava_app NOLOGIN;
+SELECT public.ava_role('ava_app');
 
 -- Le rôle des agrégats : il ne voit QUE les vues par devise (§12, M-15).
 -- ⛔ Il n'a pas accès à `prestation`, `temps`, `snapshot_marge`. C'est ce qui
 --    empêche un service d'additionner deux devises lui-même (règle R-1).
-CREATE ROLE ava_lecture_agregats NOLOGIN;
+SELECT public.ava_role('ava_lecture_agregats');
 
 -- Le rôle de migration : il a tout, il ne sert QUE pendant une migration.
 -- ⚠️ Aucun service applicatif ne se connecte avec celui-là. Jamais.
-CREATE ROLE ava_migration NOLOGIN;
+SELECT public.ava_role('ava_migration');
 
 GRANT USAGE ON SCHEMA ava TO ava_app, ava_lecture_agregats;
 GRANT ALL   ON SCHEMA ava TO ava_migration;
@@ -1595,6 +1608,35 @@ GRANT SELECT ON v_ca_realise_par_devise,
 --     dans l'écran ».
 -- ═══════════════════════════════════════════════════════════════════════════
 
+
+-- ═══════════════════════════════════════════════════════════════════════════
+--  §16 bis — ⭐ LE SCHÉMA CIBLE = CE FICHIER + LA MIGRATION 006
+--
+--  ⛔ JE NE RECOPIE PAS 006 ICI, ET C'EST VOULU.
+--  Ce fichier décrit le schéma **du lot 1**. La migration `006` ajoute les
+--  9 champs relevés chez Boond le 20/09. ⭐ Recopier 006 ici créerait une
+--  SECONDE description du même schéma — et c'est exactement le défaut qu'on
+--  a passé la journée à traquer ailleurs.
+--
+--    db/migrations/006_releve_boond.sql
+--
+--  CE QU'ELLE AJOUTE, en une ligne chacun :
+--  · `ref_provenance` · `ref_outil_technique` · `ref_domaine`   (34 → 37)
+--  · `personne_coordonnee` — plusieurs e-mails, plusieurs téléphones
+--  · `besoin_domaine` · `besoin_outil` · `candidat_domaine` · `candidat_outil`
+--  · `societe` : mère, 6 données légales, effectif, provenance, pôle
+--  · `besoin` : secteur, lieu, provenance, RH, pôle, 2 dates, visibilité
+--  · `profil_candidat` : note globale, pôle
+--  · `contact` : provenance, pôle
+--  · 4 politiques                                            (169 → 173)
+--
+--  ⭐ `personne.email` et `.telephone` RESTENT : ils deviennent le PRINCIPAL.
+--  ⛔ Aucun mur ne bouge. Les 22 assertions passent après 006 — mesuré.
+--
+--  ⚠️ LA RÈGLE, pour la suite : **une migration ne se recopie jamais dans la
+--     spec.** La spec décrit un état, les migrations disent comment on y va.
+--     Le jour où les deux divergent, c'est la BASE qui a raison.
+-- ═══════════════════════════════════════════════════════════════════════════
 
 -- ═══════════════════════════════════════════════════════════════════════════
 --  §16 — CE QUE CE FICHIER NE CONTIENT PAS, ET OÙ C'EST
