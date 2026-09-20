@@ -682,6 +682,88 @@ et quiconque ouvre cette page la voit. ⭐ **À vérifier : qui a accès à cet 
 
 ---
 
+## 27 · LE KANBAN COMPLET — les 9 colonnes, et le vrai taux de succès
+
+| Colonne | Compte | Part |
+|---|---|---|
+| **Proposé** | **1 572** | 35 % |
+| NO GO interne | **719** | 16 % |
+| GO interne | **188** | 4 % |
+| CV envoyé | **661** | 15 % |
+| Présenté Client | **123** | 3 % |
+| **Rejeté** | **507** | 11 % |
+| **Désistement** | **440** | 10 % |
+| Validé | **80** | 2 % |
+| **Gagné** | **198** | **4,4 %** |
+
+⭐ **La somme fait exactement 4 488.** Le compte tient.
+
+⛔⛔ **198 gagnés sur 4 488 : 4,4 %.** ⭐ Un positionnement sur vingt-trois aboutit. ⚠️ **C'est le
+chiffre qui devrait être en haut du tableau de bord** — pas le nombre de candidats.
+
+⚠️ **Deux anomalies qui se voient d'un coup d'œil, et qui n'en sont peut-être pas :**
+
+| Ce qu'on lit | Ce que ça suggère |
+|---|---|
+| **GO interne 188**, mais **CV envoyé 661** | ⭐ le CV part **sans passer par le GO interne** dans la majorité des cas. L'étape existe, elle n'est pas tenue |
+| **Gagné 198** > **Validé 80** | ⭐ « Validé » n'est pas une étape **avant** « Gagné » : ce sont deux issues positives **parallèles** |
+
+⭐⭐ **Ça répond en partie à A-2** — `Validé` et `Gagné` ne se suivent pas, ils coexistent. ⛔ Mais
+ça ne dit toujours pas **lequel déclenche la prestation**. La question tient.
+
+---
+
+## 28 · LA PRESTATION A UNE PAGE — et elle porte plus que la nôtre
+
+⭐ **`MIS239`** — préfixe `MIS`, pas `MRD` comme je l'avais lu dans une colonne. Fil d'Ariane :
+**Projets › fiche projet › fiche prestation**. Route : `/deliveries/<id>`.
+
+⚠️ **Je ne conclus plus d'un lien absent** : la liste d'un projet pointe la ressource, mais la
+prestation a bien sa page — comme le positionnement. ⭐ **Deux fois la même erreur évitée.**
+
+### Ce qu'elle porte, et les TROIS écarts avec notre modèle
+
+| Bloc | Champs | Chez nous |
+|---|---|---|
+| En-tête | **CA HT · Coût HT · Marge HT · Rentabilité**, ligne « Signé » | ✅ `snapshot_marge` |
+| ⭐ | **CJM Prestation** *(541 €)* **ET CJM Contrat** | ⛔ **un seul** : `cjm_contrat` |
+| Général | État · intitulé · début · fin · **64 jours ouvrés** calculés | ✅ |
+| | Tarif de vente · jours vendus · *Ajouter des jours gratuits* · taux d'occupation | ⬜ **jours gratuits** absent |
+| ⭐ | **Contrat** : « Aucun · Modifier » | ⭐ le lien vers le **contrat RH** — notre `periode_emploi` |
+| ⭐ | **« Modifier le calendrier de la prestation »** | ⛔ **notre calendrier est par AGENCE** |
+| Frais | journaliers · mensuels · **jours ouvrés annuels** · *Activer le détail des frais* | ✅ sauf le détail |
+| Complémentaires | Ressource · Projet · Type · Responsable · **Besoin** · Client · ⭐ **Agence** | ⛔ **l'agence est sur le projet**, pas sur la prestation |
+
+### ⛔⛔ L'écart qui compte : DEUX coûts journaliers
+
+Boond distingue **CJM Contrat** — ce qu'on paie la personne, qui vient du contrat RH — et
+**CJM Prestation** — le coût imputé à **cette mission**.
+
+⭐ **Notre M-14 fige `cjm_contrat` dès la signature**, et c'est juste. ⚠️ **Mais s'il y a deux
+coûts, lequel est figé, et lequel entre dans la marge ?**
+
+| Lecture possible | Conséquence |
+|---|---|
+| Le **CJM Prestation** est le coût chargé — salaire + frais + structure | ⭐ c'est **lui** que la marge doit lire, pas le contrat |
+| C'est une simple recopie modifiable | ⬜ alors un seul suffit, et on ne change rien |
+
+⛔ **Je ne tranche pas.** ⭐ **Nouvelle question, rang A** — elle touche **ATL-12** et **M-14**.
+
+---
+
+## 29 · LA PAGE TRADUCTIONS EST CASSÉE
+
+`/administrator/translations` rend **« ERREUR INTERNE — Boond ne peut pas traiter votre
+requête »**. ⚠️ **Reproduit deux fois, dans deux sessions différentes.** Ce n'est pas un hasard.
+
+⭐ **Ce que ça veut dire pour nous** : la seule page qui permettait de **renommer** un libellé de
+référentiel **ne fonctionne pas** chez Avaliance. ⛔ Donc aujourd'hui, personne chez Avaliance ne
+peut renommer quoi que ce soit — ni ajouter, ni renommer.
+
+⭐⭐ **Le trou qu'ADR-005 comble est encore plus large qu'on ne le croyait.**
+
+---
+
 <etat>
 
 **19/09/2026 — première passe. Ce qui reste à cliquer :**
@@ -704,11 +786,11 @@ et quiconque ouvre cette page la voit. ⭐ **À vérifier : qui a accès à cet 
 | ✅ | **Configuration du compte** | §24 — nos `ui.*` existent déjà |
 | ✅ | **Kanban** | §25 — 4 488 positionnements |
 | ✅ | **Webhooks, API, apps** | §26 |
-| ⬜ | **Traductions** | ⛔ erreur interne — à retenter |
-| ⬜ | Le reste du **Kanban** | les 6 colonnes non lues |
-| ⬜ | Une **fiche prestation** a-t-elle une page ? | ⚠️ je ne conclus plus d'un lien absent |
+| ✅ | **Traductions** | §29 — ⛔ la page est **cassée**, reproduit deux fois |
+| ✅ | Le **Kanban** complet | §27 — les 9 colonnes · **4,4 % de gagnés** |
+| ✅ | La **fiche prestation** | §28 — elle existe, et elle porte **deux CJM** |
 
-⭐ **Le relevé est CLOS pour l'essentiel.** ⛔ **Et il a produit DEUX corrections de ma part** —
+⭐⭐ **LE RELEVÉ EST CLOS.** 29 sections. ⛔ **Et il a produit DEUX corrections de ma part** —
 voir §7 et §11. Un relevé qui ne se corrige jamais est un relevé qu'on n'a pas relu.
 
 ❓ **Cinq questions pour Hamada**, nées du relevé :

@@ -20,16 +20,17 @@ qu'on invente à la place d'une réponse coûte une migration.
 
 ---
 
-## RANG A — ⛔ LA RÉPONSE CHANGE L'ARCHITECTURE. 4 questions.
+## RANG A — ⛔ LA RÉPONSE CHANGE L'ARCHITECTURE. 5 questions.
 
 ⭐ **A-1 est descendue en B-5 le 19/09 au soir** : mesuré, Portaliance porte 2 candidats et 0 ressource.
 Elle ne bloque plus le montage de la base.
 
 | # | La question | Ce qui est bloqué | Ce qu'on fait sans réponse |
 |---|---|---|---|
-| **A-2** | **`Validé`** et **`Gagné`** sont tous deux des états positifs de positionnement. **Lequel déclenche la prestation ?** | la garde **G1** et la commande `WinPositioning` | ⛔ on devine, et la mauvaise moitié des missions ne se crée pas |
+| **A-2** | **`Validé`** et **`Gagné`** sont tous deux des états positifs. **Lequel déclenche la prestation ?** ⭐ **Mesuré le 20/09** : Gagné **198**, Validé **80** — ce ne sont pas deux étapes qui se suivent, mais **deux issues parallèles** | la garde **G1** et la commande `WinPositioning` | ⛔ on devine, et la mauvaise moitié des missions ne se crée pas |
 | **A-3** | **Les temps ne sont pas saisis dans Boond** — le module est fermé (403), il n'y a pas d'entrée au menu. **On les introduit en V1 ?** | **DEC-02, F32, ATL-08** et tout le CA **produit** | ⚠️ on code un module que personne n'utilisera, ou on coupe le calcul de marge réel |
 | **A-4** | Boond sait refuser **un champ** (« tu modifies la fiche, pas la colonne manager »). **On reprend ce niveau de finesse ?** | **M-13** et la taille de la matrice des droits | ⚠️ on livre moins fin que l'existant — ou on multiplie la matrice par le nombre de colonnes, et elle devient illisible donc fausse |
+| **A-6** | ⭐ **NOUVEAU, 20/09** — Boond porte **DEUX coûts journaliers** sur une prestation : **CJM Contrat** (ce qu'on paie la personne) et **CJM Prestation** (le coût imputé à cette mission). Nous n'en avons qu'un. **Lequel entre dans la marge ?** | **ATL-12** et **M-14** : c'est `cjm_contrat` qui est figé à la signature. S'il y en a deux, on fige le mauvais | ⚠️ la marge lit un coût qui n'est pas le bon, et personne ne le voit — un écart de quelques euros par jour sur 170 prestations |
 | **A-5** | **204 ressources actives, 9 prestations en cours, et tous les TJM à `0,00 €`.** Le module Production est-il **abandonné**, ou Avaliance porte-t-elle un **intercontrat massif** ? | l'ordre des lots, et ce que le tableau de bord montre en premier | ⚠️ on construit un outil de production pour une maison qui n'en saisit pas — ou on rate le sujet n° 1 |
 
 ⭐ **Il ne reste plus rien qui bloque Grok.** A-1 est tombée à la mesure ; A-2 à A-5 se posent
@@ -110,7 +111,7 @@ sur une image floue n'est pas un chiffre.
 
 | Rang | Combien | État |
 |---|---|---|
-| **A** — change l'architecture | **4** | ✅ **plus rien ne bloque Grok** |
+| **A** — change l'architecture | **5** | ✅ **plus rien ne bloque Grok** |
 | **B** — change la reprise | **5** | ⏳ avant la reprise, pas avant le code |
 | **C** — confirme une coupe | 3 | ✅ **la mesure a répondu aux trois** |
 | **D** — à vérifier par moi | 3 | ✅ **levés** — deux d'eux-mêmes, le troisième remonte en A-5 |
