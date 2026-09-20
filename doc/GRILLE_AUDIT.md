@@ -3,7 +3,7 @@
 ⭐ **Écrite AVANT qu'il code.** Une grille écrite après le code vérifie ce qu'il a fait, pas ce
 qu'on voulait. Celle-ci ne discute pas.
 
-**34 contrôles · 6 familles.** Un seul 🔴 refuse le lot entier.
+**36 contrôles · 6 familles.** Un seul 🔴 refuse le lot entier.
 
 ⭐ **Je suis l'auditeur GÉNÉRAL** : je passe sur le lot rendu. L'auditeur **interne** (sous-agent 4) passe **entre chaque étape**. Deux mailles, pas deux chefs.
 
@@ -117,13 +117,19 @@ lis `/web/src` une fois, à l'œil, à chaque lot — c'est ce qu'aucun grep ne 
 |---|---|---|---|
 | **F1** | `/journal/PORTES.md` existe et est à jour | une ligne par porte : numéro, description, espèce, vue rouge quand | 🔴 |
 | **F2** | Les **quatre espèces** tournent | base · contrat · geste · **écran** | 🔴 — l'écran est celle qu'on oublie |
-| **F3** | **Le nombre de portes n'a pas baissé** | `wc -l` sur `PORTES.md` au lot précédent vs celui-ci | 🔴 **le contrôle du cliquet** |
+| **F3** | ⭐ **Les portes SERVIES n'ont pas baissé** | compter les lignes `✅` de `PORTES.md`, ici et sur `main` | 🔴 **le contrôle du cliquet** |
+| **F10** | ⛔ **Aucune porte n'est passée de ✅ à ⏳** | numéro par numéro, pas par compte | 🔴 — c'est le `skip` avec un joli symbole |
+| **F11** | Aucune **⏳** au-delà de son **lot cible** | chaque `⏳` porte le lot où elle doit passer ✅ | 🟠 une ⏳ sans échéance est un parking |
 | **F4** | Aucune porte désactivée, commentée, ou en `skip` | `grep -rniE "skip\|todo\|xit\|\.only\|disabled" test/` | 🔴 |
 | **F5** | Chaque porte a été **vue rouge** | la colonne du journal est remplie, avec la date | 🟠 |
 | **F6** | `/outils/cliquet.sh` existe et **mesure** | le lire : aucune case ne se déclare, toutes se calculent | 🔴 |
 | **F7** | Il est branché en **pre-push** | `git config core.hooksPath` vaut `.githooks` | 🟠 |
 | **F8** | La CI relance **le même** script | `.github/workflows/` appelle `cliquet.sh`, pas une copie | 🔴 — deux copies divergent |
 | **F9** | Le script ne s'arrête pas à la première case | il imprime les 7 lignes même après un échec | 🟠 |
+
+⭐⭐ **F3 compte les portes SERVIES, pas le total** — voir [PORTES_EN_ATTENTE.md](PORTES_EN_ATTENTE.md).
+⚠️ Une porte **⏳** est posée et vue rouge, mais le code ne la sert pas encore : **elle ne
+protège rien**, et la compter serait se mentir sur ce qui est verrouillé.
 
 ⭐ **F3 est le seul contrôle qui mesure le cliquet.** Tout le reste dit si le code d'aujourd'hui
 est juste ; F3 dit si celui d'hier tient encore. ⛔ Une porte de moins qu'au lot précédent, sans
