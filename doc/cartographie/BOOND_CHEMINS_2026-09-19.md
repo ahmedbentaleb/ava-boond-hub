@@ -764,6 +764,106 @@ peut renommer quoi que ce soit — ni ajouter, ni renommer.
 
 ---
 
+## 30 · LA REPASSE LONGUE — les ÉCRANS DE CRÉATION, et ce que j'avais raté
+
+⛔ **J'avais relevé les onglets et les chemins, jamais les CHAMPS.** Or c'est là que vit le
+métier : un écran de création dit exactement ce que la maison saisit.
+
+### 30.1 ⛔ CORRECTION — Boond A des services clients
+
+J'avais écrit au §5 : *« Aucun onglet Services ou Unités sur la société. Boond n'a pas d'arbre
+d'organisation client. »* ⛔ **C'est faux.** Le bouton **« Ajouter un service »** est dans la
+fiche société, sous *Coordonnées*, et le contact porte un champ **Service**.
+
+⚠️ **Troisième correction de mes propres constats.** ⭐ Le motif est toujours le même : **j'avais
+regardé les onglets, pas l'intérieur des pages.**
+
+### 30.2 Nouveau BESOIN — 9 champs qu'on n'a pas
+
+| Champ Boond | Chez nous |
+|---|---|
+| Titre · Type · Référence · Description · État · Client | ✅ |
+| **Critères requis · Outils · Domaines** | ⚠️ on n'a que `besoin_competence` |
+| **Secteur** · **Lieu** | ⛔ absents |
+| **Provenance** + *Précisez* | ⛔ absente du besoin |
+| **Responsable RH** | ⛔ absent du besoin |
+| **Pôle** | ⛔ absent |
+| Devise · Budget · Pondération | ✅ |
+| **CA envisagé** · **CA pondéré** | ⭐ calculés, pas stockés — c'est **ATL-11** |
+| **Durée** · **Date de réponse** · **Date de clôture** | ⛔ absentes |
+| **Visible uniquement de vous** | ⛔ absent du besoin *(on l'a sur le candidat)* |
+
+### 30.3 Nouveau CANDIDAT — et deux manques qui font mal
+
+| Champ Boond | Chez nous |
+|---|---|
+| ⭐⭐ **« Pré-remplir la fiche à partir d'un CV »** | ⛔ **rien** — parsing de CV |
+| ⭐⭐ **Ajouter un email** · **Ajouter un téléphone** *(pluriel)* | ⛔ **un seul de chaque** |
+| **Ajouter les réseaux sociaux** *(pluriel)* | ⚠️ on n'a que `linkedin_url` |
+| ⭐ **Évaluation globale** + *Ajouter une évaluation* | ⛔ absent |
+| **Type** · **Pôle** | ⛔ absents |
+| Civilité, nom, prénom, titre, naissance, adresse, pays | ✅ |
+| Étape · Provenance · Disponibilité · Mobilité · manager · RH · agence · visible | ✅ |
+
+⛔⛔ **Un seul email et un seul téléphone, c'est un vrai défaut de notre modèle.** Un candidat a
+un mail personnel et un mail professionnel ; un consultant en mission a deux numéros. ⚠️ **On ne
+s'en aperçoit qu'au moment de la reprise**, quand il faut en jeter un.
+
+### 30.4 Nouvelle SOCIÉTÉ — la plus pauvre de nos tables
+
+| Champ Boond | Chez nous |
+|---|---|
+| ⭐⭐ **Ajouter une société mère** | ⛔ **rien** — pas de groupe client |
+| ⭐ **Ajouter un service** | ✅ `unite_organisation` *(je l'avais raté, §30.1)* |
+| **Effectif** · **Provenance** · **Influenceurs** · **Pôle** | ⛔ absents |
+| ⭐⭐ **Données légales** : statut juridique · **TVA IC** · **SIRET** · **RCS** · **Code APE** · **n° fournisseur** | ⛔ **on n'a que `siren`** |
+| Nom · état · secteur · manager · agence · coordonnées · site web | ✅ |
+
+### 30.5 Nouveau CONTACT
+
+| Champ Boond | Chez nous |
+|---|---|
+| **Service** · Type · État · Fonction | ✅ |
+| ⭐⭐ **Périmètre technique (nuage de mots-clés)** · **Périmètre fonctionnel** · **Domaines** · **Outils** | ⛔ **rien** — le contact porte un périmètre de compétences |
+| **Provenance** · **Influenceurs** · **Pôle** | ⛔ absents |
+| Emails et téléphones **multiples** | ⛔ un seul |
+
+---
+
+## 31 · ⭐ CE QU'ON EN FAIT — tranché, avec le motif
+
+> **Hamada, 20/09 :** « Ce n'est rien de ce que fait Avaliance. Tout, on doit le deviner. Arrête
+> de me poser cette question. »
+
+⭐ **Donc je tranche.** Chaque ligne porte son motif, et se conteste avec une source.
+
+| # | L'écart | Décision | Motif |
+|---|---|---|---|
+| 1 | **Emails et téléphones multiples** | ⭐ **ON PREND** — table `personne_coordonnee(personne_id, type, valeur, principal)` | un mail perso **et** un mail pro, c'est le quotidien du recrutement. ⛔ Sans ça, la reprise en jette un, et on ne sait pas lequel |
+| 2 | **Société mère** | ⭐ **ON PREND** — `societe.societe_mere_id` + trigger anti-cycle | SODEXO France et SODEXO Maroc sont deux sociétés d'un même groupe. Sans le lien, on suit deux clients sans voir le groupe |
+| 3 | **Données légales** — TVA IC, SIRET, RCS, APE, n° fournisseur | ⭐ **ON PREND** — 5 colonnes nullables | ⛔ Elles coûtent **zéro** aujourd'hui et **une migration** le jour de la facturation. Et on ne facture pas sans numéro de TVA |
+| 4 | **Évaluation globale du candidat** | ⭐ **ON PREND** — une colonne `note_globale` | c'est ce qui trie un vivier de **20 744**. Sans note, la liste est un annuaire |
+| 5 | **Pôle** sur besoin, candidat, société, contact | ⭐ **ON PREND** — `unite_organisation_id` interne | l'arbre existe déjà (D-1). C'est **une FK**, pas une table |
+| 6 | **Lieu** du besoin · **dates de réponse et de clôture** | ⭐ **ON PREND** | le lieu décide qui peut postuler ; les dates sont le cycle commercial |
+| 7 | **Responsable RH** et **Visible uniquement de vous** sur le besoin | ⭐ **ON PREND** — on les a déjà ailleurs | une colonne qui existe sur un objet et manque sur l'autre est une incohérence qu'on paiera |
+| 8 | **Effectif** de la société · **Secteur** du besoin | ⭐ **ON PREND** — deux colonnes | |
+| 9 | **Provenance** partout | ⭐ **ON PREND** — on l'a sur le candidat, on l'étend | savoir d'où vient une affaire est la base du commercial |
+| 10 | **Outils** et **Domaines** | ⚠️ **ON PREND**, mais ⛔ **`ref_outil` existe déjà** et porte la colonne d'outils de l'interface. ⭐ Le nouveau s'appellera **`ref_outil_technique`** | une collision de nom de référentiel est une heure perdue chaque fois qu'on l'ouvre |
+| 11 | **Durée** du besoin | ⛔ **ON ÉCARTE** | elle se **calcule** — fin moins début. Une colonne calculée diverge |
+| 12 | **CA envisagé** et **CA pondéré** | ⛔ **ON ÉCARTE en colonne** | **ATL-11** les calcule. ⭐ Les stocker, c'est créer un second chiffre qui se périme |
+| 13 | **Parsing de CV** | ⛔ **HORS V1, nommé** | c'est un service externe et un budget. ⚠️ Mais `document` porte déjà le CV : le jour où on branche un parseur, rien à changer |
+| 14 | **Périmètre technique d'un contact** | ⛔ **HORS V1, nommé** | c'est du CRM avancé. Avaliance a **28 contacts** sur son plus gros client : on n'indexe pas 28 personnes par compétence |
+| 15 | **Influenceurs** | ⛔ **ON ÉCARTE** | ⚠️ rien dans le relevé ne dit à quoi ça sert. ⛔ **On ne modélise pas un champ dont on ignore le sens** |
+
+⭐⭐ **Neuf ajouts, trois écarts, deux hors V1.** ⛔ Et aucun n'est une préférence : chacun se
+conteste avec une source.
+
+⚠️ **Ce que ça coûte** : `personne_coordonnee` est une **table de plus** — 37 → 38. `societe`
+gagne 7 colonnes, `besoin` 6, `profil_candidat` 2. ⭐ **Aucun mur ne bouge**, et c'est ce qui rend
+ces ajouts peu coûteux : ils sont tous **en périphérie**.
+
+---
+
 <etat>
 
 **19/09/2026 — première passe. Ce qui reste à cliquer :**
@@ -790,7 +890,11 @@ peut renommer quoi que ce soit — ni ajouter, ni renommer.
 | ✅ | Le **Kanban** complet | §27 — les 9 colonnes · **4,4 % de gagnés** |
 | ✅ | La **fiche prestation** | §28 — elle existe, et elle porte **deux CJM** |
 
-⭐⭐ **LE RELEVÉ EST CLOS.** 29 sections. ⛔ **Et il a produit DEUX corrections de ma part** —
+| ✅ | **Les écrans de création** | §30 — les champs, enfin · §31 — ce qu'on en fait |
+
+⭐⭐ **LE RELEVÉ EST CLOS.** 31 sections, **trois corrections de mes propres constats**.
+⚠️ La dernière est la plus instructive : j'avais relevé les **onglets** et conclu que Boond
+n'avait pas de services clients. ⛔ **Le bouton était dans la page, pas dans un onglet.** ⛔ **Et il a produit DEUX corrections de ma part** —
 voir §7 et §11. Un relevé qui ne se corrige jamais est un relevé qu'on n'a pas relu.
 
 ❓ **Cinq questions pour Hamada**, nées du relevé :
