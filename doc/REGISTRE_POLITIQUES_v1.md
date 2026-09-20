@@ -134,6 +134,8 @@ Clé · options (**défaut**) · source de la bifurcation · effet quand on chan
 | `societe.retour_prospect` | **manuel** · auto_fin_dernier_contrat · auto_apres_delai · `jamais_ancien_client` (relecture externe 19/09 : un client ne redevient pas prospect, il devient **ancien client** — ajoute la valeur `ancien_client` à `ref_statut_commercial`) | F23, CdC « 6 mois ? » | déclencheur du retour |
 | `societe.retour_prospect.delai_mois` | **6** (entier, lu seulement si `auto_apres_delai`) | CdC | — |
 | `contact.transfert.objets_actifs` | **reaffectation_obligatoire** · conserver_liens | BM-14 | `TransferContact` |
+| `societe.archivage.garde` | **aucun_objet_actif** · libre | ⭐ L4, 20/09 | `ArchiveCompany` refuse s'il reste des objets actifs |
+| `absence.chevauchement` | **refus** · alerte · libre | ⭐ L4, 20/09 | `RecordAbsence` : deux absences qui se chevauchent |
 | `service.archivage.garde` | **aucun_besoin_ni_projet_actif** · libre | BM-17 | `ArchiveService` |
 | `doublon.personne.mode` | **avertir** · bloquer · ignorer | F20 | à `CreatePerson` |
 | `doublon.personne.cles` | **[email, nom+prenom+naissance]** (liste) · `score_pondere` (relecture externe 19/09 : e-mail + téléphone normalisé + nom/prénom + naissance, avec un seuil) | F20 | champs comparés |
@@ -316,7 +318,10 @@ Les autres documents **ne réécrivent pas ces chiffres** : ils renvoient ici (�
 |---|---|---|
 | Murs | **15** | M-1 → M-15, §A ; **+ 1 règle de code** R-1, hors des quinze |
 | Référentiels | **34** | ⭐ **27 métier** (§B, un par ligne — ⛔ *`ref_theme` était cité ici par erreur : il n'y a pas de table `ref_theme`, un thème est un **code texte** porté par `ui.theme`. Retiré le 20/09, signalé par le lot 1* ; `ref_unite_couverture`, `ref_motif_avenant`, `ref_motif_interruption`, `ref_motif_fin_emploi`, `ref_type_modele`, `ref_portee_modele` et `ref_gravite_alerte` le 19/09) **+ 7 techniques** : `ref_civilite`, `ref_pays`, `ref_type_unite`, `ref_type_contact`, `ref_type_mission`, `ref_type_document`, `ref_disponibilite` |
-| Politiques | **167** | §C — **166 en tableau + 1 déclarée en prose** (`ui.theme.personnalise`). **79 métier · 2 installation · 86 apparence.** ⭐ **+5 le 19/09** : les **quatre encres**, avec le garde-fou — une encre choisie qui ne passe pas 4,5:1 sur sa surface est **relevée**, jamais posée telle quelle — et le rôle du banc d'essai |
+| Politiques | **169** | §C — **168 en tableau + 1 déclarée en prose**. ⭐ **+2 le 20/09, annoncés comme l'exige le gel** :
+`societe.archivage.garde` et `absence.chevauchement`, toutes deux **citées dans L4** et
+**absentes du registre** — trou de ma spécification, comblé par le codeur du lot 2, qui a écrit
+leur source dans la table (`L4 L82`, `L4 L163`). ⭐ **C'est exactement ce qu'on attend de lui** (`ui.theme.personnalise`). **79 métier · 2 installation · 86 apparence.** ⭐ **+5 le 19/09** : les **quatre encres**, avec le garde-fou — une encre choisie qui ne passe pas 4,5:1 sur sa surface est **relevée**, jamais posée telle quelle — et le rôle du banc d'essai |
 | Tables du livrable 5 | **36** + `reprise_boond` | `prestation_version` (B-2) et `periode_emploi` (M15) ajoutées le 19/09 —  carte au livrable §1 |
 
 ⭐ **Portée de « seule source »** : les comptes **qui bougent** — tables, référentiels, politiques. « **15 murs** » et « 6 cycles » sont des **décisions** (P3, machines), pas des comptes : ils s'écrivent partout où on en a besoin.

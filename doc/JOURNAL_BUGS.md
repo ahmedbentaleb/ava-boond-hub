@@ -1,4 +1,17 @@
-# Journal des bugs — Ava Manager
+# Journal des bugs — Ava Manager · **audit général**
+
+⛔⛔ **CORRIGÉ LE 20/09 — il y avait DEUX journaux, et c'était ma faute.**
+`/journal/BUGS.md` (le greffier, dans le code) et celui-ci numérotaient tous les deux à partir de
+`B-001`. ⭐ **Deux bugs différents sous le même numéro** — exactement ce que la section
+`<interdits>` de ce fichier interdit.
+
+| Journal | Préfixe | Qui écrit |
+|---|---|---|
+| **`/journal/BUGS.md`** | `B-` | le **greffier**, pendant le lot |
+| **ce fichier** | ⭐ **`A-`** | l'**auditeur général**, entre les lots |
+
+⭐ **Deux journaux, deux préfixes, aucune collision.** Les anciens `B-001` à `B-005` de ce fichier
+sont renumérotés `A-001` à `A-005` ci-dessous.
 
 ⭐ **Un bug par ligne, jamais deux.** Une ligne qui en porte deux ne se ferme jamais : on corrige
 l'un, on oublie l'autre, et la ligne reste rouge pour une raison que personne ne retrouve.
@@ -46,11 +59,13 @@ fermé. Une ligne effacée est une leçon perdue.
 
 | # | Gravité | Ce qui se passe | Où | Mur / règle | Ouvert le |
 |---|---|---|---|---|---|
-| ~~B-001~~ | ~~🔴~~ | `ava_lecture_agregats` a `SELECT` sur **`v_conditions_du_jour`**, qui expose `tjm_vendu` et `cjm_contrat` **ligne par ligne, par jour**. Le rôle d'agrégats n'est pas censé avoir les lignes : il les a, par la vue | `_ops/SPEC_SQL_AVAMANAGER_V1.sql` §14 | **M-15** | 20/09 |
-| **B-002** | 🟠 élevée | ⛔ **chez le codeur, pas chez moi** — la **case 7** du cliquet mesure `git diff HEAD -- _ops/` : elle ne voit que le **non commité**. ⛔ Un commit qui touche `_ops/` la passerait | `outils/cliquet.sh` | **D1** de la grille | 20/09 |
-| ~~B-003~~ | ~~🟡~~ | `ava_lecture_agregats` voit aussi `v_droits_effectifs` et `v_besoin_couverture` — sans danger, mais hors de son objet | `_ops/SPEC_SQL_AVAMANAGER_V1.sql` §14 | — | 20/09 |
+| ~~A-001~~ | ~~🔴~~ | `ava_lecture_agregats` a `SELECT` sur **`v_conditions_du_jour`**, qui expose `tjm_vendu` et `cjm_contrat` **ligne par ligne, par jour**. Le rôle d'agrégats n'est pas censé avoir les lignes : il les a, par la vue | `_ops/SPEC_SQL_AVAMANAGER_V1.sql` §14 | **M-15** | 20/09 |
+| **A-002** | 🟠 élevée | ⛔ **chez le codeur** — la **case 7** du cliquet mesure `git diff HEAD -- _ops/` : elle ne voit que le **non commité**. Un commit qui touche `_ops/` la passerait | `outils/cliquet.sh` | **D1** de la grille | 20/09 |
+| **A-006** | 🔴 **critique** | ⛔⛔ **`make test` ne tourne pas sous Git Bash / Windows.** `make.sh` passe `-f /workspace/test/…` à `psql` ; MSYS réécrit tout argument commençant par `/` en chemin Windows → `C:/Program Files/Git/workspace/…`. **Le cliquet sort en 1 sur la machine d'Hamada.** ⭐ Prouvé : `MSYS_NO_PATHCONV=1` devant la commande → **23 OK** | `outils/make.sh` L87 | ⛔ **porte de la famille A inexécutable** | 20/09 |
+| **A-007** | 🟠 élevée | **Collision de numéro d'ADR** : `_ops/adr/ADR-007-filiales-pas-maintenant.md` (conception, le mien) et `journal/adr/ADR-007-port-postgres-hote.md` (réalisation, le sien). ⭐ Deux décisions différentes sous le même numéro | les deux dossiers `adr/` | — | 20/09 |
+| ~~A-003~~ | ~~🟡~~ | `ava_lecture_agregats` voit aussi `v_droits_effectifs` et `v_besoin_couverture` — sans danger, mais hors de son objet | `_ops/SPEC_SQL_AVAMANAGER_V1.sql` §14 | — | 20/09 |
 
-⭐⭐ **B-001 et B-003 sont MES défauts, pas les siens.** Mon SQL écrit `GRANT SELECT ON ALL
+⭐⭐ **A-001 et A-003 sont MES défauts, pas les siens.** Mon SQL écrit `GRANT SELECT ON ALL
 TABLES` puis `REVOKE` sur six tables — en oubliant que « ALL TABLES » **inclut les vues**. Grok
 l'a implémenté fidèlement.
 
@@ -65,10 +80,10 @@ ces noms. ⭐ **Un mur se teste par ce qu'on peut ATTEINDRE, pas par une liste q
 
 | # | Gravité | Ce qui se passait | Fermé le | Commit |
 |---|---|---|---|---|
-| **B-001** | 🔴 | M-15 percé : le rôle d'agrégats lisait `v_conditions_du_jour`. ⭐ Corrigé par un `REVOKE ON ALL` suivi d'un `GRANT` des **quatre** vues — on n'énumère plus ce qui est interdit | 20/09 | *ce commit* |
-| **B-003** | 🟡 | Deux vues de trop, fermé par la même correction | 20/09 | *ce commit* |
-| **B-004** | 🟠 | `positionnement.personne_id NOT NULL` levait **avant** `ck_m2_xor` : le refus venait du mauvais mur. ⭐ **Trouvé par le codeur du lot 1** | 20/09 | *ce commit* |
-| **B-005** | 🟡 | L'assertion M-8 évaluait `has_table_privilege` sans barrière de plan et levait sur une table système. ⭐ **Trouvé par le codeur du lot 1** | 20/09 | *ce commit* |
+| **A-001** | 🔴 | M-15 percé : le rôle d'agrégats lisait `v_conditions_du_jour`. ⭐ Corrigé par un `REVOKE ON ALL` suivi d'un `GRANT` des **quatre** vues — on n'énumère plus ce qui est interdit | 20/09 | *ce commit* |
+| **A-003** | 🟡 | Deux vues de trop, fermé par la même correction | 20/09 | *ce commit* |
+| **A-004** | 🟠 | `positionnement.personne_id NOT NULL` levait **avant** `ck_m2_xor` : le refus venait du mauvais mur. ⭐ **Trouvé par le codeur du lot 1** | 20/09 | *ce commit* |
+| **A-005** | 🟡 | L'assertion M-8 évaluait `has_table_privilege` sans barrière de plan et levait sur une table système. ⭐ **Trouvé par le codeur du lot 1** | 20/09 | *ce commit* |
 
 ⭐⭐ **Vérifié, pas déclaré** : le SQL corrigé rejoué sur une base **neuve** donne **23 OK**, le
 rôle d'agrégats n'atteint plus que **4 vues + 3 référentiels**, et — le seul test qui compte —
