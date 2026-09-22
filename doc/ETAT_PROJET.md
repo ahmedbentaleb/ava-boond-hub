@@ -37,7 +37,7 @@ Mis à jour le 22/09/2026. Les anciens numéros de lot sont entre parenthèses.
 
 | # | Étape | État | Documents |
 |---|---|---|---|
-| 1.1 | Les captures d'écran de Boond — 64 | ✅ 15/09, complétées le 22/09 — ⬜ reste 5 captures bloquées par Chrome (ressource, société, alertes, paramètres globaux, rôles et agences) | hub › Boond › Audit complet · [audit des écrans](cartographie/AUDIT_ECRANS.md) |
+| 1.1 | Les captures d'écran de Boond — 79 | ✅ 15/09, complétées le 22/09 (administration, référentiels, plans de charge) | hub › Boond › Audit complet · [audit des écrans](cartographie/AUDIT_ECRANS.md) |
 | 1.2 | Comprendre comment Boond fonctionne | ✅ 15/09 | [fonctionnement](cartographie/FONCTIONNEMENT_BOOND.md) · [diagnostic métier](cartographie/DIAGNOSTIC_METIER.md) |
 | 1.3 | Le relevé des chemins et des volumes (31 sections) | ✅ 19/09, complété le 22/09 | [relevé Boond](cartographie/BOOND_CHEMINS_2026-09-19.md) · [écrans du 22/09](cartographie/BOOND_ECRANS_2026-09-22.md) · [grille d'inventaire](GRILLE_INVENTAIRE_BOOND_2026-09-17.md) |
 | 1.4 | Les questions que seul Avaliance peut trancher | ⏳ réunion du 23/09 | hub › [Questions Avaliance](../#reunion) · [questions Boond](QUESTIONS_BOOND_2026-09-19.md) |

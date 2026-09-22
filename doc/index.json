@@ -151,7 +151,7 @@
   "titre": "Boond — les écrans manquants, relevés le 22/09/2026",
   "categorie": "Étude de Boond",
   "date": "22/09/2026",
-  "ko": 6
+  "ko": 7
  },
  {
   "chemin": "cartographie/DIAGNOSTIC_METIER.md",
@@ -473,7 +473,7 @@
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "22/09/2026",
-  "ko": 12
+  "ko": 13
  },
  {
   "chemin": "journal/DECISIONS.md",

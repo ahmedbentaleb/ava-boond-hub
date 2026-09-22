@@ -256,3 +256,5 @@ Le second audit a refusé `7e3f78c`. Une ligne par V- repris. ROUGE = porte vue 
 | V-049 | C3 portes d'accès : K3 compte inactif, 40 réussites | P-007–P-054, P-198 | `not ok` — serveur INTROUVABLE : CreateCompany `sabotage` ; compte inactif `ok:true` CompanyCreated | `ok` — 40 réussites relues ; compte inactif DROIT | `e140b07` |
 | V-006 | C5 SetPolicy rend les commandes affectées | P-199 | `not ok` — sortie sans `commandes_affectees` | `ok` — liste contient CreateCompany, valeur relue | `93dbb98` |
 | V-054 | E3 décision inconnue → GARDE | P-200 | `not ok` — `Retenu` écrit `refuse_client` | `ok` — GARDE, etat_code inchangé | `6c83213` |
+| V-055 | E4 ManageRefs gardes | P-201 | `not ok` — désactiver `ouvert` `ok:true` actif false | `ok` — GARDE, catégorie inventée non écrite, renommage garde actif | `5b1e1a4` |
+| V-056 | E5 cascade clôture | P-202 | `not ok` — `ETAT` « CloseProject hors cycle » | `ok` — prestation et projet `clos`, les deux événements | `ec41489` |

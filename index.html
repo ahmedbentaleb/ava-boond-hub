@@ -1271,8 +1271,8 @@ Projet  (0..1 Besoin ; CreateProject US5 sans besoin)
   </section>
 
   <section class="view" id="view-audit" hidden>
-    <h2>Captures — 64 écrans (listes + fiches + Kanban + modales + self-service)</h2>
-  <p>Clic sur une image pour l’agrandir. 01–16 = hall (menu). 17–33 = onglets/+ des fiches C2-C3-C4. 34–59 = contact complet, Kanban, C4/C5, reporting, self-service, admin. 60–64 = relevé du 22/09 : prestation, positionnement, journal, Kanban complet, création d'un candidat.</p>
+    <h2>Captures — 79 écrans (listes + fiches + Kanban + modales + self-service)</h2>
+  <p>Clic sur une image pour l’agrandir. 01–16 = hall (menu). 17–33 = onglets/+ des fiches C2-C3-C4. 34–59 = contact complet, Kanban, C4/C5, reporting, self-service, admin. 60–81 = relevé du 22/09 : prestation, positionnement, journal, Kanban complet, écrans de création, et toute l'administration (alertes, référentiels, comptes, rôles, agences, plans de charge).</p>
   <p>Hors preuve (voir « Limites » en bas) : les 9 apps internes et les sous-pages Administration, sans URL directe.</p>
 
   <article class="screen" id="e01">
@@ -2200,6 +2200,202 @@ Projet  (0..1 Besoin ; CreateProject US5 sans besoin)
     <img src="ecrans/64-creer-candidat.png" alt="Créer un candidat" loading="lazy">
   </article>
 
+  <article class="screen" id="e65">
+    <h3>65 — Créer une ressource</h3>
+    <p class="kicker">C4 — /resources/0/information. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Type « Consultant AVA Interne », TJM HT, devise, disponibilité, mobilité</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Une ressource se crée avec son tarif et sa devise dès la première saisie : chez nous le coût de référence est séparé et protégé.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Champs : civilité, nom, prénom, titre, type, naissance, responsable manager, responsable RH, agence, pôle, état, e-mails et téléphones multiples, réseaux sociaux.</p></div>
+    </div>
+    <img src="ecrans/65-creer-ressource.png" alt="Créer une ressource" loading="lazy">
+  </article>
+
+  <article class="screen" id="e66">
+    <h3>66 — Créer une société</h3>
+    <p class="kicker">C1 — /companies/0/information. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>État Prospect, secteur, effectif, société mère, influenceurs, numéro fournisseur</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Le bouton « Ajouter un service » est ici : l'arbre d'organisation du client existe bien chez Boond, contrairement à ce que le relevé disait d'abord.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Données légales : statut juridique, TVA intracommunautaire, SIRET, RCS, code APE. Nous n'en portons aucune.</p></div>
+    </div>
+    <img src="ecrans/66-creer-societe.png" alt="Créer une société" loading="lazy">
+  </article>
+
+  <article class="screen" id="e69">
+    <h3>69 — Administration — les 23 alertes</h3>
+    <p class="kicker">Admin — /administrator/alerts. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>23 alertes réglables, plus l'heure et les jours d'envoi des rapports</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Chaque alerte a son périmètre, son type, son seuil et les rapports où elle entre. Nos politiques d'alerte existent, mais pas les horaires d'envoi.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Réglage vu : rapports quotidiens du lundi au vendredi à 08:00, rapport hebdomadaire le lundi à 08:00.</p></div>
+    </div>
+    <img src="ecrans/69-admin-alertes.png" alt="Administration — les 23 alertes" loading="lazy">
+  </article>
+
+  <article class="screen" id="e70">
+    <h3>70 — Administration — paramètres globaux</h3>
+    <p class="kicker">Admin — huit onglets de référentiels. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>« Personnalisez l'ensemble des référentiels de l'interface »</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>C'est notre écran Administration › Référentiels. Boond prévient : opération sensible, sauvegarder avant de modifier.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Les huit onglets : Actions/états · Données RH · Divers · Besoins/Projets · Évaluations · Facturation · Partager · Activité/frais.</p></div>
+    </div>
+    <img src="ecrans/70-admin-parametres-globaux.png" alt="Administration — paramètres globaux" loading="lazy">
+  </article>
+
+  <article class="screen" id="e71">
+    <h3>71 — Administration — les 35 comptes</h3>
+    <p class="kicker">Admin — /administrator/users-management/accounts. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>35 comptes : ressource, état, rôle, agence, pôle, manager</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Un compte est rattaché à une ressource, comme chez nous. Le rôle porte l'agence dans son nom : « IA RH CASA », « Business Developer Paris ».</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Cinq comptes sont marqués « Ex-Avaliance » : Boond garde les partants au lieu de les supprimer.</p></div>
+    </div>
+    <img src="ecrans/71-admin-managers.png" alt="Administration — les 35 comptes" loading="lazy">
+  </article>
+
+  <article class="screen" id="e72">
+    <h3>72 — Administration — les 5 agences</h3>
+    <p class="kicker">Admin — /administrator/agencies. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>AVALIANCE FR · NEARSHORE MA · MA · PORTALIANCE · US</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>PORTALIANCE est une agence juridique de la même installation, pas une autre société. C'est la réponse à la question R6 de la réunion.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Chaque agence porte sa devise (€, MAD, $), son calendrier, ses jours ouvrés (218 ou 230) et un coefficient de charge (1,5 ou 1,7) que notre modèle n'a pas.</p></div>
+    </div>
+    <img src="ecrans/72-admin-agences.png" alt="Administration — les 5 agences" loading="lazy">
+  </article>
+
+  <article class="screen" id="e73">
+    <h3>73 — Administration — les 16 rôles</h3>
+    <p class="kicker">Admin — /administrator/users-management/roles. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>16 rôles pour 35 comptes, dont 3 rôles « Intranet »</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Notre matrice a 9 groupes. L'écart vient des rôles déclinés par agence et par direction, pas de droits vraiment différents.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Neuf rôles n'ont qu'un seul compte : Directeur Paris, Directeur Maroc, Managing Partner USA…</p></div>
+    </div>
+    <img src="ecrans/73-admin-roles.png" alt="Administration — les 16 rôles" loading="lazy">
+  </article>
+
+  <article class="screen" id="e74">
+    <h3>74 — Paramètres — Données RH</h3>
+    <p class="kicker">Admin — onglet Données RH. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Les référentiels du personnel : contrats, statuts, motifs</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>C'est là que se règlent les listes que nos ref_* doivent porter côté RH.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Relevé sans modification : aucun réglage touché.</p></div>
+    </div>
+    <img src="ecrans/74-parametres-donnees-rh.png" alt="Paramètres — Données RH" loading="lazy">
+  </article>
+
+  <article class="screen" id="e75">
+    <h3>75 — Paramètres — Besoins et projets</h3>
+    <p class="kicker">Admin — onglet Besoins / Projets. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Les états des besoins, des positionnements, des projets et des missions</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Nos machines d'état se règlent ici chez Boond : ce sont des listes administrables, pas du code.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>À comparer avec nos ref_etat_besoin, ref_etat_positionnement et ref_etat_prestation.</p></div>
+    </div>
+    <img src="ecrans/75-parametres-besoins-projets.png" alt="Paramètres — Besoins et projets" loading="lazy">
+  </article>
+
+  <article class="screen" id="e76">
+    <h3>76 — Paramètres — Activité et frais</h3>
+    <p class="kicker">Admin — onglet Activité / frais. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Les types d'activité, les congés et les natures de frais</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Le module des temps est fermé chez Avaliance, mais ses référentiels existent déjà.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Utile au lot des temps : les catégories y sont nommées.</p></div>
+    </div>
+    <img src="ecrans/76-parametres-activite-frais.png" alt="Paramètres — Activité et frais" loading="lazy">
+  </article>
+
+  <article class="screen" id="e77">
+    <h3>77 — Paramètres — Divers</h3>
+    <p class="kicker">Admin — onglet Divers. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Les listes transverses : provenances, civilités, langues, documents</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Ce sont les référentiels techniques de notre registre §B.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Relevé pour la reprise : chaque valeur devra trouver son équivalent chez nous.</p></div>
+    </div>
+    <img src="ecrans/77-parametres-divers.png" alt="Paramètres — Divers" loading="lazy">
+  </article>
+
+  <article class="screen" id="e78">
+    <h3>78 — Paramètres — Évaluations</h3>
+    <p class="kicker">Admin — onglet Évaluations RH et commerciales. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Les grilles d'évaluation d'un candidat et d'un client</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Notre modèle a une note de candidat réglable (candidat.note.echelle) ; Boond a des grilles entières.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Hors périmètre de la V1, relevé pour mémoire.</p></div>
+    </div>
+    <img src="ecrans/78-parametres-evaluations.png" alt="Paramètres — Évaluations" loading="lazy">
+  </article>
+
+  <article class="screen" id="e79">
+    <h3>79 — Paramètres — Facturation</h3>
+    <p class="kicker">Admin — onglet Facturation. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Les règles de facturation, taxes et échéances</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>La facturation est hors V1 chez nous. Cet écran dit ce qu'il faudra couvrir le jour où on l'ouvrira.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>C'est le plus gros des huit onglets.</p></div>
+    </div>
+    <img src="ecrans/79-parametres-facturation.png" alt="Paramètres — Facturation" loading="lazy">
+  </article>
+
+  <article class="screen" id="e80">
+    <h3>80 — Paramètres — Partager</h3>
+    <p class="kicker">Admin — onglet Partager. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Ce qui se partage hors de l'outil : profils, listes, liens</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>À rapprocher de notre portail candidat, écarté de la V1.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Relevé pour mémoire.</p></div>
+    </div>
+    <img src="ecrans/80-parametres-partager.png" alt="Paramètres — Partager" loading="lazy">
+  </article>
+
+  <article class="screen" id="e81">
+    <h3>81 — Planning — plans de charge</h3>
+    <p class="kicker">C4 — /planning. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>229 ressources, mois par mois (M9 2026 → M2 2027)</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Ce n'est pas un agenda : c'est un plan de charge par mois, celui que notre écran « Plan de charge » doit rendre.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Filtres : types de ressources, tri, période. La période en cours est mise en avant.</p></div>
+    </div>
+    <img src="ecrans/81-planning.png" alt="Planning — plans de charge" loading="lazy">
+  </article>
+
+
 
   
     <h2>Limites de cette passe</h2>
@@ -2826,7 +3022,7 @@ function showView(name){
       { v: "metier", label: "Métier" },
       { v: "simulateur", label: "Simulateur" },
       { v: "spec", label: "Spécification" },
-      { v: "audit", label: "Les 59 captures" } ] }
+      { v: "audit", label: "Les captures" } ] }
   ];
   const itemKey = (it) => it.v || (it.docs ? "docs:" + it.docs : it.href);
   let DOC_CAT = "";

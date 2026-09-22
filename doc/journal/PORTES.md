@@ -209,3 +209,5 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-198 | B CONTRAT | K3 : un compte désactivé → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-199 | B CONTRAT | SetPolicy rend la liste des commandes affectées. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-200 | B CONTRAT | Une décision client inconnue est GARDE, l'état ne change pas. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-201 | B CONTRAT | ManageRefs : catégorie inconnue GARDE, valeur système protégée, renommage sans actif. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-202 | B CONTRAT | CloseProject en cascade clôture les prestations puis le projet. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
