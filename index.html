@@ -5186,7 +5186,12 @@ function showView(name){
       q: "Le contrat de travail du consultant (le document, ses renouvellements) doit-il être dans le nouvel outil dès le départ ?",
       pourquoi: "On garde déjà les dates d'emploi. Le document lui-même est un module de plus.",
       options: ["Oui, dès le départ", "Plus tard", "Non, il reste ailleurs"],
-      defaut: "Plus tard : on garde seulement les dates d'emploi." }
+      defaut: "Plus tard : on garde seulement les dates d'emploi." },
+    { id: "R10", sujet: "Appel d'offres sans contact",
+      q: "Quand on gagne un appel d'offres, y a-t-il quand même un interlocuteur côté client (acheteur, chef de projet) ? Ou parfois personne ?",
+      pourquoi: "En régie, le besoin passe par un contact. En appel d'offres, souvent non. Aujourd'hui, le projet exige un contact : un appel d'offres gagné sans contact serait bloqué. On veut que la règle dépende de l'origine du besoin.",
+      options: ["Toujours un interlocuteur, même en appel d'offres", "Parfois personne", "Jamais de contact nommé en appel d'offres"],
+      defaut: "Contact obligatoire en régie, facultatif en appel d'offres — deux réglages, un par origine." }
   ];
 
   function reunionLoad() {
