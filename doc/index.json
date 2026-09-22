@@ -1,12 +1,5 @@
 [
  {
-  "chemin": "A_FAIRE.md",
-  "titre": "À FAIRE — Ava Manager",
-  "categorie": "État et plans",
-  "date": "18/09/2026",
-  "ko": 5
- },
- {
   "chemin": "adr/ADR-000-mono-tenant.md",
   "titre": "ADR-000 — Mono-tenant : une base, une société",
   "categorie": "Décisions d'architecture (ADR)",
@@ -110,13 +103,6 @@
   "categorie": "Prompts et briefs",
   "date": "17/09/2026",
   "ko": 8
- },
- {
-  "chemin": "BRIEF_OPUS_SIMULATEUR_2026-09-17.md",
-  "titre": "Brief Opus — corriger le simulateur métier — 17 septembre 2026",
-  "categorie": "Prompts et briefs",
-  "date": "17/09/2026",
-  "ko": 12
  },
  {
   "chemin": "BRIEF_OPUS_SIMULATEUR_v6_2026-09-18.md",
@@ -266,60 +252,11 @@
   "ko": 6
  },
  {
-  "chemin": "PLAN_2026-09-15.md",
-  "titre": "Plan — Ava Manager (Boond miniature)",
-  "categorie": "État et plans",
-  "date": "15/09/2026",
-  "ko": 2
- },
- {
-  "chemin": "PLAN_2026-09-16.md",
-  "titre": "Plan cadrage — 16 septembre 2026 (soir)",
-  "categorie": "État et plans",
-  "date": "22/09/2026",
-  "ko": 1
- },
- {
-  "chemin": "PLAN_2026-09-17.md",
-  "titre": "Plan — 17 septembre 2026 (version du soir, réparée)",
-  "categorie": "État et plans",
-  "date": "18/09/2026",
-  "ko": 21
- },
- {
-  "chemin": "PLAN_2026-09-18.md",
-  "titre": "Plan — 18 septembre 2026",
-  "categorie": "État et plans",
-  "date": "18/09/2026",
-  "ko": 10
- },
- {
-  "chemin": "PLAN_2026-09-19.md",
-  "titre": "Plan — 19 septembre 2026",
-  "categorie": "État et plans",
-  "date": "20/09/2026",
-  "ko": 48
- },
- {
-  "chemin": "PLAN_2026-09-20.md",
-  "titre": "Plan — 20 septembre 2026",
-  "categorie": "État et plans",
-  "date": "20/09/2026",
-  "ko": 6
- },
- {
-  "chemin": "PLAN_2026-09-21.md",
-  "titre": "Plan du 21/09/2026 — trois agents séparés",
-  "categorie": "État et plans",
-  "date": "21/09/2026",
-  "ko": 4
- },
- {
   "chemin": "PLAN_2026-09-22.md",
   "titre": "Plan du 22/09/2026 — le hub remis en ordre",
   "categorie": "État et plans",
   "date": "22/09/2026",
-  "ko": 3
+  "ko": 4
  },
  {
   "chemin": "PORTES_EN_ATTENTE.md",
@@ -418,41 +355,6 @@
   "categorie": "Audits",
   "date": "17/09/2026",
   "ko": 9
- },
- {
-  "chemin": "RELECTURE_5_TIERS_DIFF2_2026-09-17.md",
-  "titre": "RELECTURE_5_TIERS_DIFF2_2026-09-17.md",
-  "categorie": "Audits",
-  "date": "17/09/2026",
-  "ko": 8
- },
- {
-  "chemin": "RELECTURE_5_TIERS_DIFF3_2026-09-17.md",
-  "titre": "RELECTURE_5_TIERS_DIFF3_2026-09-17.md",
-  "categorie": "Audits",
-  "date": "17/09/2026",
-  "ko": 7
- },
- {
-  "chemin": "RELECTURE_5_TIERS_DIFF4_2026-09-17.md",
-  "titre": "RELECTURE_5_TIERS_DIFF4_2026-09-17.md",
-  "categorie": "Audits",
-  "date": "17/09/2026",
-  "ko": 1
- },
- {
-  "chemin": "RELECTURE_5_TIERS_DIFF5_2026-09-17.md",
-  "titre": "RELECTURE_5_TIERS_DIFF5_2026-09-17.md",
-  "categorie": "Audits",
-  "date": "17/09/2026",
-  "ko": 2
- },
- {
-  "chemin": "RELECTURE_5_TIERS_DIFF_2026-09-17.md",
-  "titre": "RELECTURE_5_TIERS_DIFF_2026-09-17.md",
-  "categorie": "Audits",
-  "date": "17/09/2026",
-  "ko": 7
  },
  {
   "chemin": "RELECTURE_5b_SIMULATEUR_2026-09-17.md",

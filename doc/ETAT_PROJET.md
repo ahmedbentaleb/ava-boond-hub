@@ -31,7 +31,7 @@ Mis à jour le 22/09/2026. Les anciens numéros de lot sont entre parenthèses.
 |---|---|---|---|
 | 0.1 | Lire la commande d'Avaliance : les deux cahiers des charges | ✅ 15/09 | [SPEC 1](AVA_MANAGER-SPEC_1_extract.txt) · [Cockpit 2](COCKPIT2-Cahier_de_charge-v0.1_extract.txt) · [cahier des charges](../cdc.html) |
 | 0.2 | Écarter la démo Jenspark (un prototype, pas une base) | ✅ 16/09 | [ADR-001](adr/ADR-001-zip-jenspark-ecarte.md) |
-| 0.3 | Dépôt GitHub privé, sauvegarde, règles de travail | ✅ 17/09 | [audit du projet 17/09](AUDIT_PROJET_2026-09-17.md) · [plan du 17](PLAN_2026-09-17.md) |
+| 0.3 | Dépôt GitHub privé, sauvegarde, règles de travail | ✅ 17/09 | [audit du projet 17/09](AUDIT_PROJET_2026-09-17.md) |
 
 ### 1 · Étude de Boond Manager — l'existant
 
@@ -72,7 +72,7 @@ Mis à jour le 22/09/2026. Les anciens numéros de lot sont entre parenthèses.
 
 | # | Étape | État | Documents |
 |---|---|---|---|
-| 4.1 | Trois agents séparés : BRAIN, CODE (Grok), AUDIT | ✅ 21/09 | [plan du 21](PLAN_2026-09-21.md) · [brief exécutant](BRIEF_EXECUTANT_2026-09-17.md) |
+| 4.1 | Trois agents séparés : BRAIN, CODE (Grok), AUDIT | ✅ 21/09 | [brief exécutant](BRIEF_EXECUTANT_2026-09-17.md) |
 | 4.2 | La grille d'audit : 36 contrôles | ✅ 19/09 | [grille d'audit](GRILLE_AUDIT.md) |
 | 4.3 | Le cliquet et les portes (les tests qui bloquent) | ✅ 20/09 | [portes du code](journal/PORTES.md) · [portes en attente](PORTES_EN_ATTENTE.md) |
 | 4.4 | Les journaux de bugs | ⏳ tenus en continu | [bugs du BRAIN](JOURNAL_BUGS.md) · [bugs du code](journal/BUGS.md) · [correctifs](journal/CORRECTIFS.md) |
@@ -88,7 +88,7 @@ Mis à jour le 22/09/2026. Les anciens numéros de lot sont entre parenthèses.
 | 5.5 | Second audit | ⬜ quand Grok écrit « prêt » | [prompt second audit](prompt-audit-2.txt) |
 | 5.6 | Connexion par compte Microsoft (lot 2c) | ⬜ attend R4 de la réunion | [décisions techniques T2](DECISIONS_TECHNIQUES_v1.md) · [arbitrage D-2](ARBITRAGE_AUDIT_2026-09-21.md) |
 | 5.7 | Les 26 écrans (lot 3) | ⬜ après le 5.5 accepté | [les 26 écrans](../terminal.html) · [prompt écrans](PROMPT_CHATGPT_ECRANS.md) |
-| — | CRM, staffing, production (anciens lots 4, 5, 6) | ↪ fusionnés dans 5.2 et 5.7 | [plan du 20](PLAN_2026-09-20.md) |
+| — | CRM, staffing, production (anciens lots 4, 5, 6) | ↪ fusionnés dans 5.2 et 5.7 | — |
 
 ### 6 · Reprise et recette — avec les vraies données
 
@@ -114,7 +114,7 @@ Mis à jour le 22/09/2026. Les anciens numéros de lot sont entre parenthèses.
 
 | # | Étape | État | Documents |
 |---|---|---|---|
-| 8.1 | Connecteur pour Claude, lecture seule d'abord (lot 8) | ⬜ | [plan du 20, lot 8](PLAN_2026-09-20.md) |
+| 8.1 | Connecteur pour Claude, lecture seule d'abord (lot 8) | ⬜ | détail au canon : `PLAN_2026-09-20.md` |
 
 </etat>
 

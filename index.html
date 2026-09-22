@@ -551,6 +551,24 @@
     }
     a.pill { color: var(--text); text-decoration: none; }
     .nav2 a { color: var(--muted); }
+
+    /* ═══ 22/09 : le vert du directeur, le lecteur, la page intégrée ═══ */
+    .nav1 button.star::before { content: ""; display: inline-block; width: 7px; height: 7px; background: #AEBF38; border-radius: 50%; margin-right: 7px; vertical-align: 1px; }
+    .nav2 button.star { border-color: #AEBF38; color: #CDD749; }
+    .nav2 button.star[aria-pressed="true"] { background: #AEBF38; color: #430A4B; }
+    .nav-legende { margin-left: auto; align-self: center; font-size: 11.5px; color: var(--muted); white-space: nowrap; padding: 0 4px; }
+    .nav-legende i { display: inline-block; width: 7px; height: 7px; background: #AEBF38; border-radius: 50%; margin-right: 5px; }
+    .lire-barre { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 4px 0 14px; }
+    .lire-barre code { color: var(--muted); font-size: 12px; }
+    .lire-barre a.pill:last-child { margin-left: auto; }
+    .lire-corps { max-width: 900px; line-height: 1.6; }
+    .lire-corps table { border-collapse: collapse; width: 100%; margin: 10px 0 18px; font-size: 13.5px; display: block; overflow-x: auto; }
+    .lire-corps th, .lire-corps td { border: 1px solid var(--line); padding: 6px 9px; text-align: left; vertical-align: top; }
+    .lire-corps th { background: rgba(255,255,255,.04); }
+    .lire-corps pre, .lire-brut { background: #141414; border: 1px solid var(--line); padding: 12px; overflow-x: auto; font-size: 12.5px; white-space: pre; }
+    .lire-corps code { font-size: 12.5px; }
+    .lire-corps h1 { font-size: 24px; } .lire-corps h2 { font-size: 19px; margin-top: 28px; } .lire-corps h3 { font-size: 16px; }
+    .page-cadre { width: 100%; height: calc(100vh - 150px); min-height: 520px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
 </style>
 <script type="importmap">
 {
@@ -558,6 +576,7 @@
   }
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 </head>
 <body>
 <main>
@@ -573,6 +592,8 @@
   <section class="view" id="view-ava-etat" hidden></section>
   <section class="view" id="view-ava-reunion" hidden></section>
   <section class="view" id="view-ava-documents" hidden></section>
+  <section class="view" id="view-lire" hidden></section>
+  <section class="view" id="view-page" hidden></section>
   <section class="view" id="view-ava-metier" hidden></section>
   <section class="view" id="view-ava-quiz" hidden></section>
   <section class="view" id="view-ava-simulateur" hidden></section>
@@ -2710,19 +2731,19 @@ function showView(name){
      Une page est une vue du hub (v), une page à part (href), ou une famille de documents (docs). */
   const MENU = [
     { id: "projet", label: "Projet", items: [
-      { v: "ava-etat", label: "État du projet" },
-      { v: "ava-reunion", label: "❓ Questions Avaliance" },
-      { href: "dossier.html", label: "Dossier ↗" } ] },
+      { v: "ava-etat", label: "État du projet", star: 1 },
+      { v: "ava-reunion", label: "❓ Questions Avaliance", star: 1 },
+      { v: "page:dossier.html", label: "Dossier" } ] },
     { id: "metier", label: "Le métier", items: [
-      { v: "ava-metier", label: "Vue d'ensemble" },
+      { v: "ava-metier", label: "Vue d'ensemble", star: 1 },
       { v: "ava-quiz", label: "Quiz" },
       { v: "ava-sim-rules", label: "Règles" },
       { v: "ava-commands", label: "Qui décide" } ] },
     { id: "conception", label: "Conception", items: [
-      { v: "ava-decisions", label: "Décisions" },
-      { v: "ava-cadrage", label: "Contrats" },
-      { href: "terminal.html", label: "Les 26 écrans ↗" },
-      { href: "simulateur.html", label: "Banc d'essai ↗" } ] },
+      { v: "page:terminal.html", label: "Les 26 écrans", star: 1 },
+      { v: "page:simulateur.html", label: "Banc d'essai", star: 1 },
+      { v: "ava-decisions", label: "Décisions", star: 1 },
+      { v: "ava-cadrage", label: "Contrats" } ] },
     { id: "controle", label: "Audits et journaux", items: [
       { docs: "Audits", label: "Audits et rapports" },
       { docs: "Journaux du code (portes, bugs, étapes)", label: "Journaux : portes, bugs, étapes" },
@@ -2731,7 +2752,7 @@ function showView(name){
     { id: "documents", label: "Documents", items: [
       { v: "ava-documents", label: "Tous les documents" },
       { docs: "Cadrage et commande du client", label: "Commande du client" },
-      { href: "cdc.html", label: "Cahier des charges ↗" },
+      { v: "page:cdc.html", label: "Cahier des charges" },
       { docs: "Conception et contrat", label: "Conception et contrat" },
       { docs: "Étude de Boond", label: "Étude de Boond" },
       { docs: "Prompts et briefs", label: "Prompts et briefs" } ] },
@@ -5351,8 +5372,11 @@ function showView(name){
       .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
       .replace(/`([^`]+)`/g, "<code>$1</code>")
       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, txt, href) => {
-        const h = href.startsWith("../") ? href.slice(3) || "./" : "doc/" + href;
-        return `<a href="${h}" target="${href.startsWith("../") ? "_self" : "_blank"}" rel="noopener">${txt}</a>`;
+        let h;
+        if (href.startsWith("../#")) h = href.slice(3);
+        else if (href.startsWith("../")) h = "#page:" + href.slice(3);
+        else h = "#lire:" + encodeURI(href);
+        return `<a href="${h}">${txt}</a>`;
       });
   }
   function etatParse(md) {
@@ -5374,7 +5398,7 @@ function showView(name){
   function renderEtat() {
     const el = document.getElementById("view-ava-etat");
     el.innerHTML = `<h2>État du projet — du premier jour à la livraison</h2>
-      <p class="lead">Chaque étape, son état et ses documents. L'état est tenu par le BRAIN dans <a href="doc/ETAT_PROJET.md" target="_blank" rel="noopener">ETAT_PROJET.md</a>. Vous pouvez cocher une case : elle reste dans ce navigateur, et <strong>Copier mes coches</strong> l'envoie au BRAIN.</p>
+      <p class="lead">Chaque étape, son état et ses documents. L'état est tenu par le BRAIN dans <a href="#lire:ETAT_PROJET.md">ETAT_PROJET.md</a>. Vous pouvez cocher une case : elle reste dans ce navigateur, et <strong>Copier mes coches</strong> l'envoie au BRAIN.</p>
       <div id="etat-corps"><p class="note">Chargement…</p></div>`;
     fetch("doc/ETAT_PROJET.md", { cache: "no-store" }).then((r) => r.ok ? r.text() : Promise.reject(r.status))
       .then((md) => {
@@ -5426,6 +5450,39 @@ function showView(name){
     };
   }
 
+  /* ═══════════ LE LECTEUR — un document du projet, affiché dans le hub ═══════════ */
+  let LIRE = "", PAGE = "";
+  function resoudre(base, rel) {
+    const parts = base.split("/").slice(0, -1);
+    rel.split("/").forEach((x) => { if (x === "..") parts.pop(); else if (x !== ".") parts.push(x); });
+    return parts.join("/");
+  }
+  function renderLire() {
+    const el = document.getElementById("view-lire");
+    el.innerHTML = `<div class="lire-barre"><button type="button" class="pill" id="lire-retour">← Retour</button>
+      <code>${esc(LIRE)}</code><a class="pill" href="doc/${encodeURI(LIRE)}" download>Télécharger</a></div>
+      <article class="lire-corps" id="lire-corps"><p class="note">Chargement…</p></article>`;
+    document.getElementById("lire-retour").onclick = () => history.back();
+    fetch("doc/" + encodeURI(LIRE), { cache: "no-store" }).then((r) => r.ok ? r.text() : Promise.reject(r.status)).then((t) => {
+      const c = document.getElementById("lire-corps");
+      if (/\.md$/i.test(LIRE) && window.marked) {
+        c.innerHTML = marked.parse(t.replace(/^<\/?(quand_utiliser|procedure|interdits|etat|source)>$/gm, ""));
+        c.querySelectorAll("a[href]").forEach((a) => {
+          const h = a.getAttribute("href");
+          if (/^(https?:|mailto:|#)/.test(h)) { if (/^https?:/.test(h)) a.target = "_blank"; return; }
+          const cible = resoudre(LIRE, h.split("#")[0]);
+          if (/\.(md|txt|sql)$/i.test(cible)) a.setAttribute("href", "#lire:" + encodeURI(cible));
+          else if (/\.html$/i.test(h)) a.setAttribute("href", "#page:" + h.split("/").pop());
+          else a.setAttribute("href", "doc/" + cible);
+        });
+      } else c.innerHTML = `<pre class="lire-brut">${esc(t)}</pre>`;
+    }).catch(() => { document.getElementById("lire-corps").innerHTML = '<p class="note">Document introuvable.</p>'; });
+  }
+  function renderPage() {
+    const el = document.getElementById("view-page");
+    el.innerHTML = `<iframe class="page-cadre" src="${esc(PAGE)}" title="${esc(PAGE)}"></iframe>`;
+  }
+
   /* ═══════════ DOCUMENTS — tout le projet, lu dans doc/index.json (généré par dossier.py) ═══════════ */
   function renderDocuments() {
     const el = document.getElementById("view-ava-documents");
@@ -5443,7 +5500,7 @@ function showView(name){
           const l = f.filter((x) => x.categorie === cat && (!DOC_CAT || cat === DOC_CAT));
           if (!l.length) return "";
           return `<details class="etat-phase" open><summary><span class="etat-ph">${esc(cat)}</span><span class="tag">${l.length}</span></summary>
-            <ul class="etat-liste">${l.map((x) => `<li><a href="doc/${encodeURI(x.chemin)}" target="_blank" rel="noopener">${esc(x.titre)}</a>
+            <ul class="etat-liste">${l.map((x) => `<li><a href="#lire:${encodeURI(x.chemin)}">${esc(x.titre)}</a>
               <span class="etat-e"><code>${esc(x.chemin)}</code> · ${esc(x.date)} · ${x.ko} Ko</span></li>`).join("")}</ul></details>`;
         }).join("") || '<p class="note">Aucun document ne correspond.</p>';
       };
@@ -5483,36 +5540,43 @@ function showView(name){
     return nestedLast[v.id] || v.children[0].id;
   }
 
+  let SEC_COURANTE = "projet";
   function sectionOf(key) {
-    return MENU.find((m) => m.items.some((it) => itemKey(it) === key)) || MENU[0];
+    const m = MENU.find((x) => x.items.some((it) => itemKey(it) === key));
+    if (m) SEC_COURANTE = m.id;
+    return m || MENU.find((x) => x.id === SEC_COURANTE) || MENU[0];
   }
   function paintNav(key) {
     const sec = sectionOf(key);
     document.getElementById("hub-sub").innerHTML = MENU.map((m) =>
-      `<button type="button" data-sec="${m.id}" aria-pressed="${m.id === sec.id}">${m.label}</button>`).join("");
-    document.getElementById("hub-nested").innerHTML = sec.items.map((it) => it.href
-      ? `<a href="${it.href}" target="_blank" rel="noopener">${it.label}</a>`
-      : `<button type="button" data-item="${esc(itemKey(it))}" aria-pressed="${itemKey(it) === key}">${it.label}</button>`).join("");
+      `<button type="button" data-sec="${m.id}" aria-pressed="${m.id === sec.id}"${m.items.some((i) => i.star) ? ' class="star"' : ""}>${m.label}</button>`).join("") +
+      '<span class="nav-legende"><i></i> à montrer au directeur</span>';
+    document.getElementById("hub-nested").innerHTML = sec.items.map((it) =>
+      `<button type="button" data-item="${esc(itemKey(it))}" aria-pressed="${itemKey(it) === key}"${it.star ? ' class="star"' : ""}>${it.label}</button>`).join("");
   }
 
   function showHubView(name) {
     const aliases = { documents: "ava-documents", docs: "ava-documents", etat: "ava-etat", "etat-projet": "ava-etat", reunion: "ava-reunion", avaliance: "ava-reunion", questions: "ava-reunion", "ava-simulateur": "ava-sim-rules", "ava-parcours": "ava-quiz", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-quiz", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
     if (aliases[name]) name = aliases[name];
     let key = name;
-    if (name.startsWith("docs:")) { DOC_CAT = decodeURIComponent(name.slice(5)); key = "docs:" + DOC_CAT; name = "ava-documents"; }
+    if (name.startsWith("lire:")) { LIRE = decodeURIComponent(name.slice(5)); key = "lire:" + LIRE; name = "lire"; }
+    else if (name.startsWith("page:")) { PAGE = decodeURIComponent(name.slice(5)); key = "page:" + PAGE; name = "page"; }
+    else if (name.startsWith("docs:")) { DOC_CAT = decodeURIComponent(name.slice(5)); key = "docs:" + DOC_CAT; name = "ava-documents"; }
     else if (name === "ava-documents") DOC_CAT = "";
-    if (!ALL_VIEWS.includes(name)) { name = "ava-etat"; key = name; }
-    ALL_VIEWS.forEach((id) => {
+    if (!ALL_VIEWS.includes(name) && name !== "lire" && name !== "page") { name = "ava-etat"; key = name; }
+    ALL_VIEWS.concat(["lire", "page"]).forEach((id) => {
       const node = document.getElementById("view-" + id);
       if (node) node.hidden = id !== name;
     });
+    if (name === "lire") renderLire();
+    if (name === "page") renderPage();
     paintNav(key);
     if (RENDER[name]) RENDER[name]();
     if (name === "metier" && typeof draw === "function") draw();
     if (name === "simulateur") { renderScenarios(); renderSim(); }
     if (name === "spec") bindSpecToc();
     if (name === "questions") { bindQuestions(); renderQuestions(); }
-    const h = key.startsWith("docs:") ? "docs:" + encodeURIComponent(DOC_CAT) : key;
+    const h = key.startsWith("docs:") ? "docs:" + encodeURIComponent(DOC_CAT) : key.startsWith("lire:") ? "lire:" + encodeURI(LIRE) : key;
     if (location.hash.slice(1) !== h) history.replaceState(null, "", "#" + h);
     window.scrollTo(0, 0);
   }
@@ -5532,10 +5596,18 @@ function showView(name){
 
   bindSim();
   window.addEventListener("hashchange", () => {
-    const h = (location.hash || "#ava-etat").slice(1);
+    const h = decodeURI((location.hash || "#ava-etat").slice(1));
     showHubView(h);
   });
-  const start = (location.hash || "#ava-etat").slice(1);
+  /* ⭐ Tout reste dans le hub : un lien vers doc/ s'ouvre dans le lecteur, une page du hub dans le cadre. */
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a[href]"); if (!a || e.ctrlKey || e.metaKey) return;
+    const h = a.getAttribute("href");
+    if (/^(https?:|mailto:|#)/.test(h)) return;
+    if (/^doc\/.+\.(md|txt|sql)(#.*)?$/i.test(h)) { e.preventDefault(); showHubView("lire:" + decodeURI(h.slice(4).split("#")[0])); return; }
+    if (/^[a-z0-9_-]+\.html(\?.*)?$/i.test(h) && !/^index\.html/.test(h)) { e.preventDefault(); showHubView("page:" + h.split("?")[0]); }
+  });
+  const start = decodeURI((location.hash || "#ava-etat").slice(1));
   showHubView(start);
 })();
 
