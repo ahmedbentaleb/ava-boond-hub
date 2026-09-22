@@ -533,6 +533,7 @@
     <div class="hub-nested" id="hub-nested"></div>
   </div>
 
+  <section class="view" id="view-ava-reunion" hidden></section>
   <section class="view" id="view-ava-metier" hidden></section>
   <section class="view" id="view-ava-quiz" hidden></section>
   <section class="view" id="view-ava-simulateur" hidden></section>
@@ -2643,6 +2644,7 @@ function showView(name){
       label: "Ava Manager",
       hint: "Builder",
       views: [
+        { id: "ava-reunion", label: "❓ Questions Avaliance" },
         { id: "ava-metier", label: "Métier" },
         { id: "ava-quiz", label: "Quiz" },
         { id: "ava-simulateur", label: "Simulateur" },
@@ -5136,7 +5138,129 @@ function showView(name){
     };
   }
 
+
+  /* ═══════════ QUESTIONS POUR AVALIANCE — la réunion avec la direction ═══════════ */
+  const REUNION_KEY = "ava-reunion-v1";
+  const REUNION = [
+    { id: "R1", sujet: "Validé ou Gagné",
+      q: "Dans Boond, quand un consultant passe « Validé », est-ce qu'il commence à travailler chez le client — comme « Gagné » ?",
+      pourquoi: "Boond compte 198 Gagné et 80 Validé, en parallèle. Chez nous, un seul état lance la mission. Si on se trompe, on crée 80 missions qui n'existent pas.",
+      options: ["Oui, Validé = il commence aussi", "Non, Validé = oui du client, mais rien de signé", "Ça dépend du commercial"],
+      defaut: "Gagné lance la mission ; Validé reste un « oui » sans mission." },
+    { id: "R2", sujet: "Les missions en cours",
+      q: "Qui a la liste des missions en cours aujourd'hui, avec le client, le consultant et le tarif journalier ?",
+      pourquoi: "Boond connaît 9 missions pour 204 consultants actifs, et tous les tarifs sont à 0 €. Les vraies missions ne sont pas dans Boond : il faudra les ressaisir.",
+      options: ["La direction", "Les commerciaux, chacun les siennes", "La comptabilité / la facturation"],
+      defaut: "On ne peut pas reprendre les missions : Ava Manager démarre sans chiffre d'affaires." },
+    { id: "R3", sujet: "L'export de Boond",
+      q: "Peut-on sortir un export Excel de Boond : candidats, consultants, sociétés, contacts, besoins ? Qui a les droits pour le faire ?",
+      pourquoi: "La carte de Boond est finie. Il manque les données elles-mêmes pour préparer la reprise.",
+      options: ["Oui, je peux le faire", "Oui, une autre personne (nom en note)", "Non, il faut demander à Boond"],
+      defaut: "La reprise ne peut pas commencer." },
+    { id: "R4", sujet: "La connexion Microsoft",
+      q: "Tout le monde a une adresse Microsoft 365 Avaliance ? Qui gère Microsoft chez vous (l'informatique) ?",
+      pourquoi: "On se connecte à Ava Manager avec son compte Microsoft, sans mot de passe à créer. Il faut une personne qui a les droits d'administrateur Microsoft pour autoriser l'application.",
+      options: ["Oui, tout le monde, et l'admin est… (nom en note)", "Pas tout le monde (qui en note)", "On passe par un prestataire informatique"],
+      defaut: "La connexion Microsoft ne peut pas être branchée." },
+    { id: "R5", sujet: "Les deux coûts d'un consultant",
+      q: "Boond a deux coûts par jour sur une mission : ce qu'on paie le consultant (coût du contrat) et le coût imputé à la mission. Lequel sert à calculer la marge ?",
+      pourquoi: "La marge est figée à la signature. Si on fige le mauvais coût, la marge est fausse sur toutes les missions, et personne ne le voit.",
+      options: ["Le coût du contrat", "Le coût imputé à la mission", "Les deux, pour deux marges différentes"],
+      defaut: "On prend le coût du contrat." },
+    { id: "R6", sujet: "PORTALIANCE",
+      q: "PORTALIANCE, c'est une agence d'Avaliance, ou une autre société ?",
+      pourquoi: "Une agence partage la base d'Avaliance. Une autre société aurait sa propre base, séparée.",
+      options: ["Une agence d'Avaliance", "Une autre société", "Elle n'existe plus"],
+      defaut: "On la traite comme une agence d'Avaliance." },
+    { id: "R7", sujet: "Les candidats blacklistés",
+      q: "Un candidat blacklisté peut-il un jour revenir, ou c'est définitif ?",
+      pourquoi: "S'il peut revenir, on met un drapeau qu'on enlève en gardant la trace. Si c'est définitif, c'est un état de fin.",
+      options: ["Il peut revenir", "C'est définitif"],
+      defaut: "Un drapeau qu'on peut retirer, avec l'historique." },
+    { id: "R8", sujet: "Les données RH sensibles",
+      q: "Boond contient des n° de sécurité sociale, la situation familiale, la nationalité, le lieu de naissance. Vous en avez besoin dans le nouvel outil ?",
+      pourquoi: "Ces données ne servent ni au staffing ni à la marge. Les garder, c'est un risque juridique sans contrepartie.",
+      options: ["Non, on ne les reprend pas", "Oui, certaines (lesquelles en note)"],
+      defaut: "On ne les reprend pas." },
+    { id: "R9", sujet: "Le contrat de travail",
+      q: "Le contrat de travail du consultant (le document, ses renouvellements) doit-il être dans le nouvel outil dès le départ ?",
+      pourquoi: "On garde déjà les dates d'emploi. Le document lui-même est un module de plus.",
+      options: ["Oui, dès le départ", "Plus tard", "Non, il reste ailleurs"],
+      defaut: "Plus tard : on garde seulement les dates d'emploi." }
+  ];
+
+  function reunionLoad() {
+    try { return JSON.parse(localStorage.getItem(REUNION_KEY)) || {}; } catch (e) { return {}; }
+  }
+  function reunionSave(r) {
+    try { localStorage.setItem(REUNION_KEY, JSON.stringify(r)); } catch (e) {}
+  }
+  function reunionTexte(r) {
+    return "Réponses de la direction d'Avaliance — réunion du " + new Date().toLocaleDateString("fr-FR") + "\n\n" +
+      REUNION.map((x) => {
+        const a = r[x.id] || {};
+        return x.id + " — " + x.sujet + "\n  Réponse : " + (a.choix || "(pas de réponse)") +
+          (a.note ? "\n  Note : " + a.note : "");
+      }).join("\n\n");
+  }
+
+  function renderReunion() {
+    const el = document.getElementById("view-ava-reunion");
+    const r = reunionLoad();
+    const faites = REUNION.filter((x) => r[x.id] && r[x.id].choix).length;
+    el.innerHTML = `<h2>Questions pour Avaliance</h2>
+      <p class="lead">Réunion avec la direction. <strong>${REUNION.length} questions</strong>, dans l'ordre d'importance. Touchez une réponse ; ajoutez une note si besoin. Tout reste dans ce navigateur. À la fin : <strong>Copier les réponses</strong>, et collez-les au BRAIN.</p>
+      <div class="rowbtns" style="margin-bottom:12px">
+        <button type="button" class="create-btn primary" id="rn-copy">Copier les réponses</button>
+        <button type="button" id="rn-print">Imprimer la liste</button>
+        <button type="button" id="rn-reset">Tout effacer</button>
+        <span class="note" style="margin-left:8px">${faites} / ${REUNION.length} répondues</span>
+      </div>
+      <p class="note" id="rn-flash" hidden></p>
+      ${REUNION.map((x) => {
+        const a = r[x.id] || {};
+        return `<article class="q-card">
+          <h3>${x.id} — ${esc(x.sujet)} ${a.choix ? '<span class="tag ok">RÉPONDU</span>' : '<span class="tag warn">À POSER</span>'}</h3>
+          <p style="font-size:16px;margin:0 0 8px"><strong>${esc(x.q)}</strong></p>
+          <p class="q-meta">Pourquoi on le demande : ${esc(x.pourquoi)}</p>
+          <div class="filters" style="margin:10px 0">
+            ${x.options.map((o) => `<button type="button" class="pill" data-rn-q="${x.id}" data-rn-o="${esc(o)}" aria-pressed="${a.choix === o}">${esc(o)}</button>`).join("")}
+          </div>
+          <textarea data-rn-note="${x.id}" placeholder="Note (un nom, une précision…)" style="min-height:52px">${esc(a.note || "")}</textarea>
+          <p class="q-meta" style="margin-top:6px">Sans réponse : ${esc(x.defaut)}</p>
+        </article>`;
+      }).join("")}`;
+
+    el.onclick = (e) => {
+      const b = e.target.closest("[data-rn-q]");
+      if (b) {
+        const cur = reunionLoad(), id = b.dataset.rnQ;
+        cur[id] = cur[id] || {};
+        cur[id].choix = cur[id].choix === b.dataset.rnO ? "" : b.dataset.rnO;
+        reunionSave(cur); renderReunion(); return;
+      }
+      if (e.target.id === "rn-copy") {
+        const t = reunionTexte(reunionLoad()), f = document.getElementById("rn-flash");
+        const ok = () => { f.hidden = false; f.textContent = "Copié. Collez-le dans la session BRAIN."; };
+        if (navigator.clipboard) navigator.clipboard.writeText(t).then(ok, () => { f.hidden = false; f.textContent = t; });
+        else { f.hidden = false; f.textContent = t; }
+        return;
+      }
+      if (e.target.id === "rn-print") { window.print(); return; }
+      if (e.target.id === "rn-reset" && confirm("Effacer toutes les réponses de ce navigateur ?")) {
+        reunionSave({}); renderReunion();
+      }
+    };
+    el.oninput = (e) => {
+      const t = e.target.closest("[data-rn-note]");
+      if (!t) return;
+      const cur = reunionLoad(), id = t.dataset.rnNote;
+      cur[id] = cur[id] || {}; cur[id].note = t.value; reunionSave(cur);
+    };
+  }
+
   const RENDER = {
+    "ava-reunion": renderReunion,
     "ava-metier": renderAvaMetier,
     "ava-simulateur": renderAvaSimulateur,
     "ava-quiz": renderQuiz,
@@ -5189,7 +5313,7 @@ function showView(name){
   }
 
   function showHubView(name) {
-    const aliases = { ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-parcours", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
+    const aliases = { reunion: "ava-reunion", avaliance: "ava-reunion", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-parcours", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
     if (aliases[name]) name = aliases[name];
     if (!ALL_VIEWS.includes(name)) name = "ava-metier";
     const product = productOf(name);

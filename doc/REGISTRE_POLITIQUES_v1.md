@@ -69,6 +69,9 @@ Le **code** est stable, le **libellé** se renomme, une valeur s'**ajoute** dans
 | `ref_provenance` | — | candidature, cooptation, jobboard, linkedin, reseau, appel_entrant, autre | ⭐ relevé Boond 20/09 |
 | `ref_outil_technique` | — | ⬜ **vide au seed** — comme `ref_competence`. ⛔ Ne pas confondre avec `ref_outil` | ⭐ relevé Boond 20/09 |
 | `ref_domaine` | — | banque, assurance, industrie, sante, secteur_public, telecoms, energie, autre. ⚠️ Distinct du **secteur** d'une société | ⭐ relevé Boond 20/09 |
+| `ref_statut_contact` | `actif` · `parti` | actif, parti — **système** | ⭐ **D-9, 21/09** (V-021) : était un CHECK sur `contact.statut_code` ; migration 007 |
+| `ref_type_coordonnee` | `email` · `telephone` · `reseau_social` | email, telephone, reseau_social — **système** (la contrainte « un réseau social porte son réseau » raisonne sur `reseau_social`) | ⭐ **D-9, 21/09** (V-021) : était un CHECK sur `personne_coordonnee.type_code` ; migration 007 |
+| `ref_usage_coordonnee` | — | personnel, professionnel, mobile, fixe, autre (**système** : valeur par défaut) | ⭐ **D-9, 21/09** (V-021) : était un CHECK sur `personne_coordonnee.usage_code` ; migration 007. ⛔ `perimetre.type_code` **reste** un CHECK : mécanique des droits, pas une liste métier |
 
 ---
 
@@ -146,8 +149,6 @@ Clé · options (**défaut**) · source de la bifurcation · effet quand on chan
 | `service.archivage.garde` | **aucun_besoin_ni_projet_actif** · libre | BM-17 | `ArchiveService` |
 | `doublon.personne.mode` | **avertir** · bloquer · ignorer | F20 | à `CreatePerson` |
 | `doublon.personne.cles` | **[email, nom+prenom+naissance]** (liste) · `score_pondere` (relecture externe 19/09 : e-mail + téléphone normalisé + nom/prénom + naissance, avec un seuil) | F20 | champs comparés |
-| `doublon.contact.mode` · `doublon.contact.cles` | **avertir** · **[email, nom+prenom+societe]** | F20 | idem |
-| `doublon.societe.mode` · `doublon.societe.cles` | **avertir** · **[nom_normalise, siren]** | F20 | idem |
 | `doublon.contact.mode` | **avertir** · bloquer · ignorer | CdC · cahier ligne 36 | ⚠️ **Ajoutée le 18/09** : le cahier des directeurs la promettait depuis le 17/09, le registre ne l'avait pas. Trouvée en réconciliant les deux |
 | `doublon.contact.cles` | **[email, nom+prenom+societe]** (liste) · `[email_ou_telephone, nom+prenom+societe]` (relecture externe 19/09) | cahier ligne 37 | sur quoi on repère un contact déjà connu |
 | `doublon.societe.mode` | **avertir** · bloquer · ignorer | cahier ligne 38 | idem pour une société |
@@ -324,8 +325,8 @@ Les autres documents **ne réécrivent pas ces chiffres** : ils renvoient ici (�
 | Quoi | Compte | Détail |
 |---|---|---|
 | Murs | **15** | M-1 → M-15, §A ; **+ 1 règle de code** R-1, hors des quinze |
-| Référentiels | ⭐ **37 au 20/09** | ⭐ **27 métier** (§B, un par ligne — ⛔ *`ref_theme` était cité ici par erreur : il n'y a pas de table `ref_theme`, un thème est un **code texte** porté par `ui.theme`. Retiré le 20/09, signalé par le lot 1* ; `ref_unite_couverture`, `ref_motif_avenant`, `ref_motif_interruption`, `ref_motif_fin_emploi`, `ref_type_modele`, `ref_portee_modele` et `ref_gravite_alerte` le 19/09) **+ 7 techniques** : `ref_civilite`, `ref_pays`, `ref_type_unite`, `ref_type_contact`, `ref_type_mission`, `ref_type_document`, `ref_disponibilite` |
-| Politiques | ⭐ **173 au 20/09** | §C — **168 en tableau + 1 déclarée en prose**. ⭐ **+2 le 20/09, annoncés comme l'exige le gel** :
+| Référentiels | ⭐ **40 au 21/09** | ⭐ **+3 le 21/09 (D-9, migration 007)** : `ref_statut_contact`, `ref_type_coordonnee`, `ref_usage_coordonnee` — trois listes figées en CHECK (V-021). ⭐ **33 lignes en §B** (métier) **+ 7 techniques** ; mesuré en base : `select count(*) from pg_tables where schemaname='ava' and tablename like 'ref\_%'` = 40. Avant : **37 au 20/09**, ⭐ **27 métier** (§B, un par ligne — ⛔ *`ref_theme` était cité ici par erreur : il n'y a pas de table `ref_theme`, un thème est un **code texte** porté par `ui.theme`. Retiré le 20/09, signalé par le lot 1* ; `ref_unite_couverture`, `ref_motif_avenant`, `ref_motif_interruption`, `ref_motif_fin_emploi`, `ref_type_modele`, `ref_portee_modele` et `ref_gravite_alerte` le 19/09) **+ 7 techniques** : `ref_civilite`, `ref_pays`, `ref_type_unite`, `ref_type_contact`, `ref_type_mission`, `ref_type_document`, `ref_disponibilite` |
+| Politiques | ⭐ **173 au 20/09** | §C — **172 en tableau + 1 déclarée en prose** (mesuré le 21/09, V-029 — le « 168 » précédent était un compte retenu). ⭐ **+2 le 20/09, annoncés comme l'exige le gel** :
 `societe.archivage.garde` et `absence.chevauchement`, toutes deux **citées dans L4** et
 **absentes du registre** — trou de ma spécification, comblé par le codeur du lot 2, qui a écrit
 leur source dans la table (`L4 L82`, `L4 L163`). ⭐ **C'est exactement ce qu'on attend de lui** (`ui.theme.personnalise`). **79 métier · 2 installation · 86 apparence.** ⭐ **+5 le 19/09** : les **quatre encres**, avec le garde-fou — une encre choisie qui ne passe pas 4,5:1 sur sa surface est **relevée**, jamais posée telle quelle — et le rôle du banc d'essai |
@@ -338,5 +339,11 @@ leur source dans la table (`L4 L82`, `L4 L163`). ⭐ **C'est exactement ce qu'on
 ⭐ **Ce que le 18/09 a appris** — le compte a bougé trois fois dans la journée : 79 annoncé, 77 mesuré, 78 avec `ui.epaisseur`, **82** après réconciliation avec le cahier des directeurs. Les quatre dernières (`doublon.contact.*`, `doublon.societe.*`) **existaient depuis le 17/09 dans le cahier** et nulle part ici. ⚠️ **Un compte ne se retient pas, il se mesure** — et il se mesure **contre l'autre document**, pas contre le souvenir qu'on en a :
 
 ```bash
-grep -cE '^\| `[a-z0-9_.]+` \|' _ops/REGISTRE_POLITIQUES_v1.md
+# ⛔ V-029, 21/09 — l'ancienne commande (`grep -cE '^\| `…` \|'`) comptait
+#    aussi les 33 référentiels du §B et ratait les lignes à deux clés : elle
+#    rendait 202, pas 173. Celle-ci ne lit que la PREMIÈRE colonne du §C.
+awk -F'|' '/^## C\./{c=1} /^## D\./{c=0} c && /^\| `/ {print $2}' _ops/REGISTRE_POLITIQUES_v1.md \
+  | tr -d '\r' | grep -oE '`[a-z0-9_.]+`' | sort -u | wc -l     # 172 en tableau, + 1 en prose (ui.theme.personnalise) = 173
+# ⭐ Et contre la base — la seule mesure qui départage :
+psql -h 127.0.0.1 -U postgres -d ava -Atc "select count(*) from ava.politique"   # 173
 ```

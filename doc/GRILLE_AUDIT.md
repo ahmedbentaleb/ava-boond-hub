@@ -27,9 +27,9 @@ coûte dix allers-retours ; renvoyer la liste complète en coûte un.
 
 | # | Contrôle | Comment | Verdict si faux |
 |---|---|---|---|
-| **A1** | Les 22 assertions passent | `make up && make migrate && make test`, sortie 0 | 🔴 |
+| **A1** | Toutes les assertions passent | `make up && make migrate && make test`, sortie 0 ; autant de lignes `OK   M-` que `bash outils/plancher_assertions.sh _ops/SPEC_ASSERTIONS_L7.sql` en compte, et `test/` = `_ops/` (`cmp`) *(V-012, 21/09 : le nombre ne s'écrit plus, il se compte)* | 🔴 |
 | **A2** | Elles **tombent** quand on casse un mur | retirer `tg_m10`, relancer : l'assertion M-10 doit lever | 🔴 — sinon elles ne testent rien |
-| **A3** | La CI fait la même chose que moi | lire `.github/workflows/db.yml` | 🟠 |
+| **A3** | La CI fait la même chose que moi | lire `.github/workflows/ci.yml` : `fetch-depth: 0`, `main` en local, puis `bash outils/cliquet.sh` *(V-023 : `db.yml` n'existe pas)* | 🟠 |
 | **A4** | Le compte correspond au registre §E | `python _ops/outils/dossier.py` ne crie pas | 🟠 |
 | **A5** | Les fiches de l'auditeur interne existent | une par étape, 5 pour le lot 1, dans `/audit/` | 🟠 |
 
@@ -42,10 +42,10 @@ casse le code est pire qu'aucune suite : elle donne confiance sans rien prouver.
 
 | # | Contrôle | Comment | Verdict si faux |
 |---|---|---|---|
-| **B1** | Aucun `if` métier en dur | `grep -rnE "if .*(etat_code\|type_code\|categorie) *[=!]=" db/` | 🟠 chaque occurrence |
-| **B2** | Les 167 politiques sont chargées | `SELECT count(*) FROM politique` = 167 | 🟠 |
+| **B1** | Aucun `if` métier en dur | `grep -rnE "(etat_code\|type_code\|statut_code\|categorie\|_code) *(===?\|!==?) *['\"\`]" server/src web/src` puis `grep -rnE "if .*(etat_code\|type_code\|categorie) *[=!]=" db/` *(V-023 : les `if` sont dans `server/` et `web/`, pas dans `db/`)* | 🟠 chaque occurrence |
+| **B2** | Toutes les politiques sont chargées | `SELECT count(*) FROM politique` = le compte du **registre §E** — ⛔ ne pas recopier le chiffre ici | 🟠 |
 | **B3** | `valeur` = `valeur_defaut` au seed | `WHERE valeur <> valeur_defaut` → 0 ligne | 🟠 |
-| **B4** | Les 34 référentiels existent | `\dt ava.ref_*` en compte 34 | 🟠 |
+| **B4** | Tous les référentiels existent | `\dt ava.ref_*` = le compte du **registre §E** — ⛔ ne pas recopier le chiffre ici | 🟠 |
 | **B5** | Aucun CHECK sur un **code** de référentiel | `grep -n "CHECK (code" db/migrations/` → vide | 🔴 |
 
 ⚠️ **B1 attrape aussi les faux positifs** — un `if` sur un état dans un outil de migration n'est
@@ -59,16 +59,30 @@ finit par faire refuser du code juste.
 | # | Contrôle | Comment | Verdict si faux |
 |---|---|---|---|
 | **C1** | Aucune colonne `tenant_id` | `grep -rn "tenant" db/` → vide | 🔴 ADR-000 |
-| **C2** | Le rôle applicatif n'a aucun DELETE | la requête ci-dessous → 0 ligne | 🔴 M-8 |
+| **C2** | Le rôle applicatif n'a ni DELETE ni TRUNCATE, et le serveur se connecte en `ava_serveur` (pas en superutilisateur) | la requête ci-dessous → 0 ligne ; `pg_stat_activity` du serveur = `ava_serveur` | 🔴 M-8, V-002 |
 | **C3** | `evenement_metier` et `snapshot_marge` sans UPDATE | idem | 🔴 M-6, M-7 |
-| **C4** | Le rôle d'agrégats ne voit pas `prestation`, `temps`, `snapshot_marge` | idem | 🔴 M-15 |
+| **C4** | Le rôle d'agrégats n'atteint QUE les 4 vues par devise + `ref_devise`, `ref_pays`, `politique` | mesuré sur **toutes les relations** du schéma (requête ci-dessous) — ⛔ jamais une liste de noms interdits *(V-001 : le mur fuyait par `v_conditions_du_jour`)* | 🔴 M-15 |
 | **C5** | Les 7 murs-triggers existent | `\dft ava.*` : M-4, M-6, M-7, M-10, M-12, M-14 + `ajout_seul` | 🔴 |
 
 ```sql
--- Ce que le rôle applicatif a le droit de faire. ⛔ Aucune ligne DELETE.
-SELECT table_name, privilege_type
-FROM information_schema.role_table_grants
-WHERE grantee = 'ava_app' AND privilege_type = 'DELETE';
+-- ⭐ Par ce qu'on ATTEINT (has_table_privilege), pas par ce qu'on a écrit :
+--    information_schema ne voit ni l'héritage, ni PUBLIC, ni les colonnes.
+-- C2 / C3 — ⛔ aucune ligne.
+SELECT c.relname, p.priv
+FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace,
+     unnest(ARRAY['DELETE','TRUNCATE']) AS p(priv)
+WHERE n.nspname = 'ava' AND c.relkind IN ('r','v','m','p','f')
+  AND has_table_privilege('ava_app', c.oid, p.priv)
+UNION ALL
+SELECT c.relname, 'UPDATE' FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+WHERE n.nspname = 'ava' AND c.relname IN ('evenement_metier','snapshot_marge','prestation_version')
+  AND has_table_privilege('ava_app', c.oid, 'UPDATE');
+
+-- C4 — ⛔ exactement 7 lignes : politique, ref_devise, ref_pays et les 4 vues v_*_par_devise.
+SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+WHERE n.nspname = 'ava' AND c.relkind IN ('r','v','m','p','f')
+  AND has_any_column_privilege('ava_lecture_agregats', c.oid, 'SELECT')
+ORDER BY 1;
 ```
 
 ---
@@ -109,7 +123,7 @@ lis `/web/src` une fois, à l'œil, à chaque lot — c'est ce qu'aucun grep ne 
 
 ---
 
-## F · LE CLIQUET — 5 contrôles. ⛔⛔ Plus important que l'audit lui-même.
+## F · LE CLIQUET — 11 contrôles (F1 → F11). ⛔⛔ Plus important que l'audit lui-même.
 
 > **Hamada :** « On ne doit plus faire marche arrière. On avance et on ne recule pas. »
 
@@ -117,12 +131,12 @@ lis `/web/src` une fois, à l'œil, à chaque lot — c'est ce qu'aucun grep ne 
 |---|---|---|---|
 | **F1** | `/journal/PORTES.md` existe et est à jour | une ligne par porte : numéro, description, espèce, vue rouge quand | 🔴 |
 | **F2** | Les **quatre espèces** tournent | base · contrat · geste · **écran** | 🔴 — l'écran est celle qu'on oublie |
-| **F3** | ⭐ **Les portes SERVIES n'ont pas baissé** | compter les lignes `✅` de `PORTES.md`, ici et sur `main` | 🔴 **le contrôle du cliquet** |
+| **F3** | ⭐ **Les portes SERVIES n'ont pas baissé** | **numéro par numéro** : chaque porte servie sur `main` existe dans HEAD — l'état se lit dans la colonne « État » trouvée par son en-tête ; sans cette colonne, toute porte de `main` est servie *(V-009 : un compte de `main` sans colonne valait 0)* | 🔴 **le contrôle du cliquet** |
 | **F10** | ⛔ **Aucune porte n'est passée de ✅ à ⏳** | numéro par numéro, pas par compte | 🔴 — c'est le `skip` avec un joli symbole |
 | **F11** | Aucune **⏳** au-delà de son **lot cible** | chaque `⏳` porte le lot où elle doit passer ✅ | 🟠 une ⏳ sans échéance est un parking |
 | **F4** | Aucune porte désactivée, commentée, ou en `skip` | `grep -rniE "skip\|todo\|xit\|\.only\|disabled" test/` | 🔴 |
 | **F5** | Chaque porte a été **vue rouge** | la colonne du journal est remplie, avec la date | 🟠 |
-| **F6** | `/outils/cliquet.sh` existe et **mesure** | le lire : aucune case ne se déclare, toutes se calculent | 🔴 |
+| **F6** | `/outils/cliquet.sh` existe et **mesure** | le lire : aucune case ne se déclare, toutes se calculent ; ⭐ la case 1 exige `make_rc = 0` **et** que chaque porte ✅ ait été **exécutée** (un serveur mort ne produit aucune ligne d'échec — V-008) | 🔴 |
 | **F7** | Il est branché en **pre-push** | `git config core.hooksPath` vaut `.githooks` | 🟠 |
 | **F8** | La CI relance **le même** script | `.github/workflows/` appelle `cliquet.sh`, pas une copie | 🔴 — deux copies divergent |
 | **F9** | Le script ne s'arrête pas à la première case | il imprime les 7 lignes même après un échec | 🟠 |

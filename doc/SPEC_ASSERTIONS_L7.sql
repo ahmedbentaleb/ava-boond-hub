@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════════════════════
---  AVA MANAGER — LIVRABLE L7 : LES 22 ASSERTIONS
+--  AVA MANAGER — LIVRABLE L7 : LES ASSERTIONS DES 15 MURS
 --  Un test par mur. PostgreSQL 16+ · 19/09/2026
 --  Se lance CONTRE une base montée par `SPEC_SQL_AVAMANAGER_V1.sql`.
 -- ═══════════════════════════════════════════════════════════════════════════
@@ -21,7 +21,7 @@
 --
 --  ⭐ COMMENT ON LES LIT
 --  Une assertion qui PASSE affiche `OK`. Une assertion qui ÉCHOUE lève, et
---  la transaction entière tombe. ⛔ Pas de « 21 sur 22 » : un mur percé est
+--  la transaction entière tombe. ⛔ Pas de « 29 sur 30 » : un mur percé est
 --  un mur percé.
 --
 --  LANCER :
@@ -88,7 +88,7 @@ $$;
 
 -- ═══════════════════════════════════════════════════════════════════════════
 --  §1 — LE JEU D'ESSAI
---  ⚠️ Le MINIMUM pour que les 22 assertions aient de quoi mordre. Rien de
+--  ⚠️ Le MINIMUM pour que les assertions aient de quoi mordre. Rien de
 --     plus : un jeu d'essai qui grossit finit par cacher ce qu'il teste.
 --  ⭐ Tout est préfixé `t.` et tout est jeté au §4 : la base repart propre.
 -- ═══════════════════════════════════════════════════════════════════════════
@@ -183,7 +183,7 @@ SELECT t.monte();
 
 
 -- ═══════════════════════════════════════════════════════════════════════════
---  §2 — LES 22 ASSERTIONS
+--  §2 — LES ASSERTIONS, MUR PAR MUR
 -- ═══════════════════════════════════════════════════════════════════════════
 
 -- ── M-1 · un candidat ne produit pas ──────────────────────────────────────
@@ -235,8 +235,15 @@ SELECT t.doit_refuser('recalculer un snapshot', 'M-6', $s$
 $s$, 'M-6');
 
 -- ⭐ Et le droit, pas seulement le trigger : un trigger se désactive.
+-- ⛔ V-012, 21/09 — UNE ASSERTION PAR PRIVILÈGE. Un mur « trigger + GRANT »
+--    tient par ses deux moitiés : si le GRANT revient, seul le trigger reste,
+--    et il se désactive. L'assertion qui ne regarde que le trigger est verte
+--    pendant que la moitié GRANT est tombée — l'audit l'a mesuré.
 SELECT t.doit_etre('`ava_app` n''a pas UPDATE sur `snapshot_marge`', 'M-6',
   NOT t.droit('ava_app','snapshot_marge','UPDATE'));
+
+SELECT t.doit_etre('`ava_app` n''a pas DELETE sur `snapshot_marge`', 'M-6',
+  NOT t.droit('ava_app','snapshot_marge','DELETE'));
 
 -- ── M-7 · l'historique est en ajout seul ──────────────────────────────────
 SELECT t.doit_refuser('réécrire un événement', 'M-7', $s$
@@ -247,21 +254,51 @@ SELECT t.doit_refuser('effacer un événement', 'M-7', $s$
   DELETE FROM evenement_metier WHERE type = 'PrestationSigned'
 $s$, 'M-7');
 
+-- ⭐ Les deux refus ci-dessus sont ceux du TRIGGER : ils jouent en
+--    superutilisateur. Le droit se constate à part (V-012).
+SELECT t.doit_etre('`ava_app` n''a pas UPDATE sur `evenement_metier`', 'M-7',
+  NOT t.droit('ava_app','evenement_metier','UPDATE'));
+
+SELECT t.doit_etre('`ava_app` n''a pas DELETE sur `evenement_metier`', 'M-7',
+  NOT t.droit('ava_app','evenement_metier','DELETE'));
+
+-- ⭐ L'avenant daté suit la même règle (SPEC_SQL §14) : ajout seul.
+SELECT t.doit_etre('`ava_app` n''a pas UPDATE sur `prestation_version`', 'M-7',
+  NOT t.droit('ava_app','prestation_version','UPDATE'));
+
 -- ── M-8 · rien ne se supprime, tout s'archive ─────────────────────────────
 -- ⭐ C'est CE mur qui explique pourquoi il n'y a aucune icône de corbeille
 --    dans les 24 écrans : l'UI ne propose pas un geste que la base refuse.
 -- ⚠️ On vérifie sur TOUTES les tables, pas sur un échantillon : un DELETE
 --    oublié sur une seule table suffit à perdre une donnée.
-SELECT t.doit_etre('`ava_app` n''a DELETE sur aucune table', 'M-8',
-  -- ⚠️ `OFFSET 0` est une BARRIÈRE DE PLAN, pas une coquetterie : sans elle,
-  --    PostgreSQL peut évaluer `has_table_privilege` avant le filtre sur le
-  --    schéma, et lever sur une table système. ⭐ Trouvé par le codeur du
-  --    lot 1 — son `004` et sa copie de `/test` avaient raison.
+-- ⭐ V-012, 21/09 — mesuré sur TOUTES les relations du schéma (tables, vues,
+--    vues matérialisées, tables partitionnées, tables étrangères) et plus
+--    seulement sur `pg_tables` : une vue modifiable accepte un DELETE.
+-- ⚠️ `OFFSET 0` est une BARRIÈRE DE PLAN, pas une coquetterie : sans elle,
+--    PostgreSQL peut évaluer `has_table_privilege` avant le filtre sur le
+--    schéma, et lever sur une table système. ⭐ Trouvé par le codeur du
+--    lot 1 — son `004` et sa copie de `/test` avaient raison.
+SELECT t.doit_etre('`ava_app` n''a DELETE sur aucune relation', 'M-8',
   NOT EXISTS (
     SELECT 1 FROM (
-      SELECT tablename FROM pg_tables WHERE schemaname = 'ava' OFFSET 0
-    ) AS n
-    WHERE has_table_privilege('ava_app', 'ava.' || quote_ident(tablename), 'DELETE')));
+      SELECT c.oid FROM pg_catalog.pg_class c
+      JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+      WHERE n.nspname = 'ava' AND c.relkind IN ('r','v','m','p','f')
+      OFFSET 0
+    ) AS r
+    WHERE has_table_privilege('ava_app', r.oid, 'DELETE')));
+
+-- ⛔ TRUNCATE est un autre privilège que DELETE, et il vide une table d'un
+--    coup, SANS déclencher les triggers ligne. Le mur M-8 le couvre aussi.
+SELECT t.doit_etre('`ava_app` n''a TRUNCATE sur aucune relation', 'M-8',
+  NOT EXISTS (
+    SELECT 1 FROM (
+      SELECT c.oid FROM pg_catalog.pg_class c
+      JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+      WHERE n.nspname = 'ava' AND c.relkind IN ('r','v','m','p','f')
+      OFFSET 0
+    ) AS r
+    WHERE has_table_privilege('ava_app', r.oid, 'TRUNCATE')));
 
 -- ── M-9 · une action a exactement un porteur ──────────────────────────────
 SELECT t.doit_refuser('une action sans porteur', 'M-9', $s$
@@ -367,30 +404,59 @@ $s$, 'm15');
 --    qu'on peut ATTEINDRE, pas par une liste qu'on a écrite.** On n'énumère
 --    plus ce qui est interdit — on exige que le permis soit EXACTEMENT les
 --    quatre vues par devise, plus ce dont elles ont besoin pour se lire.
-SELECT t.doit_etre('`ava_lecture_agregats` n''atteint QUE les 4 vues par devise', 'M-15',
-  (SELECT count(*) FROM information_schema.role_table_grants
-    WHERE grantee = 'ava_lecture_agregats'
-      AND table_name NOT IN ('ref_devise','ref_pays','politique')) = 4
-  AND t.droit('ava_lecture_agregats','v_marge_par_devise','SELECT')
-  AND NOT t.droit('ava_lecture_agregats','v_conditions_du_jour','SELECT'));
+-- ⛔⛔ V-001, 21/09 — et la version du 20/09 comptait encore dans
+--    `information_schema.role_table_grants`, qui ne voit ni les droits hérités
+--    d'un autre rôle, ni ceux donnés à PUBLIC, ni les droits par colonne.
+-- ⭐ On mesure donc ce que le rôle ATTEINT, relation par relation, sur TOUT le
+--    schéma : l'ensemble lisible doit être EXACTEMENT celui de SPEC_SQL §14.
+--    Une huitième vue écrite dans six mois tombe ici le jour où elle s'ouvre.
+SELECT t.doit_etre('`ava_lecture_agregats` n''atteint QUE les 4 vues par devise + 3 référentiels', 'M-15',
+  (SELECT coalesce(array_agg(r.relname::text ORDER BY r.relname), '{}') FROM (
+     SELECT c.oid, c.relname FROM pg_catalog.pg_class c
+     JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+     WHERE n.nspname = 'ava' AND c.relkind IN ('r','v','m','p','f')
+     OFFSET 0
+   ) AS r
+   WHERE has_any_column_privilege('ava_lecture_agregats', r.oid, 'SELECT'))
+  = ARRAY['politique','ref_devise','ref_pays',
+          'v_ca_provisoire_par_devise','v_ca_realise_par_devise',
+          'v_marge_par_devise','v_occupation_valorisee_par_devise']);
+
+-- ⭐ Et il n'écrit NULLE PART : un rôle de lecture qui écrit n'en est pas un.
+SELECT t.doit_etre('`ava_lecture_agregats` n''écrit sur aucune relation', 'M-15',
+  NOT EXISTS (
+    SELECT 1 FROM (
+      SELECT c.oid FROM pg_catalog.pg_class c
+      JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+      WHERE n.nspname = 'ava' AND c.relkind IN ('r','v','m','p','f')
+      OFFSET 0
+    ) AS r
+    WHERE has_table_privilege('ava_lecture_agregats', r.oid, 'INSERT')
+       OR has_table_privilege('ava_lecture_agregats', r.oid, 'UPDATE')
+       OR has_table_privilege('ava_lecture_agregats', r.oid, 'DELETE')
+       OR has_table_privilege('ava_lecture_agregats', r.oid, 'TRUNCATE')));
 
 
 -- ═══════════════════════════════════════════════════════════════════════════
 --  §3 — LE COMPTE
---  ⛔ 22, et 22 exactement. Si ce nombre bouge, c'est qu'un mur a été ajouté
---     ou retiré — et ça ne se fait pas en silence : P3 a fixé quinze murs.
+--  ⛔ Le nombre n'est plus écrit nulle part en dur (V-012, 21/09). Le banc le
+--     COMPTE dans ce fichier : une ligne `SELECT t.doit_…` ou un
+--     `RAISE NOTICE 'OK   M-…` = une ligne OK attendue
+--     (`outils/plancher_assertions.sh`). Ajouter une assertion relève le
+--     plancher tout seul ; en retirer une le baisse — et ça se voit au diff.
+--  ⭐ P3 a fixé quinze murs : ce qui bouge, c'est le nombre de preuves par mur.
 -- ═══════════════════════════════════════════════════════════════════════════
 
 DO $$
 BEGIN
-  RAISE NOTICE E'\n  ⭐ 22 assertions passées, plus 1 contre-test sur M-14. Les 15 murs tiennent DANS LA BASE.\n';
+  RAISE NOTICE E'\n  ⭐ Toutes les assertions sont passées, plus le contre-test sur M-14. Les 15 murs tiennent DANS LA BASE.\n';
 END $$;
 
 ROLLBACK;
 
 
 -- ═══════════════════════════════════════════════════════════════════════════
---  §4 — CE QUE CES 22 ASSERTIONS NE COUVRENT PAS, ET OÙ ÇA SE VÉRIFIE
+--  §4 — CE QUE CES ASSERTIONS NE COUVRENT PAS, ET OÙ ÇA SE VÉRIFIE
 --
 --  | Non couvert                    | Où ça se vérifie                      |
 --  |--------------------------------|---------------------------------------|

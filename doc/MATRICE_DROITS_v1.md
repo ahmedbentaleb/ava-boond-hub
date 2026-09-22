@@ -154,7 +154,7 @@ Le motif ligne par ligne, et les cas contestés : [annexes/MATRICE_DROITS_MOTIFS
 | ⛔ Jamais | Le problème que ça évite |
 |---|---|
 | **ADM n'obtient aucun droit métier par sa qualité d'admin** (F14) — tous ses `D` sont des délégations écrites, une par une | l'administrateur qui « corrige » une prestation un vendredi soir |
-| **SUP ne mute rien** (F13) — la colonne est vide sur les 48 lignes | l'assistance qui répare en cassant, sans trace |
+| **SUP ne mute rien de MÉTIER** (F13) — sa colonne est vide sur 47 lignes sur 48. ⭐ *D-7, 21/09* : la 48e, `SetOwnTheme`, est **son propre** thème — une préférence de lecteur, pas une mutation métier. Il ne touche jamais le thème ni la fiche d'un autre | l'assistance qui répare en cassant, sans trace |
 | **Aucune impersonation** — SUP ne devient jamais quelqu'un d'autre | un acte attribué à la mauvaise personne dans le journal |
 | Une permission **sans périmètre** | **MUR M-13** — la table de jointure porte les trois colonnes |
 | Un `✓` obtenu par **union** de deux lectures | S14 : lire sur B + écrire sur A ≠ écrire sur B |

@@ -1,285 +1,191 @@
-# Le prompt du LOT 2 — une session, six sous-agents
+AVA MANAGER — SUITE DU LOT 2, PUIS LOT 3
+========================================
+Mise à jour du 20/09/2026, après vérification de ta livraison par
+l'auditeur général. Lis ce prompt en entier avant d'écrire une ligne.
 
-⭐ **Une seule session Cursor, une seule branche, un seul cliquet.**
 
-**6 sous-agents · branche `lot-2` · une huitième case qui garde la frontière.**
+0. LA MACHINE — POSTGRESQL EST DÉJÀ INSTALLÉ, PLUS BESOIN DE DOCKER
+───────────────────────────────────────────────────────────────────
+PostgreSQL 16.15 tourne en SERVICE WINDOWS sur 127.0.0.1:5432.
+Vérifié le 20/09 : « pg_isready » répond « acceptation des connexions ».
 
-⚠️ **Corrigé le 20/09** : j'avais proposé deux sessions. Hamada a tranché pour des sous-agents,
-et il a raison — deux branches faisaient perdre au cliquet exactement ce qu'il protège.
+  binaires   C:\Program Files\PostgreSQL\16\bin
+  base       ava
+  URL        postgres://postgres@127.0.0.1:5432/ava
 
----
+⛔ NE LANCE PAS DOCKER. Il est tombé deux fois en une heure le 20/09 et
+   t'a bloqué. « outils/make.sh » détecte le service local tout seul et
+   l'annonce en première ligne : « moteur : local (...) ».
+   Docker ne reste qu'en secours, forcé par AVA_MOTEUR=docker.
+⛔ JAMAIS LES DEUX À LA FOIS : deux bases, c'est deux vérités, et on
+   teste dans l'une en codant contre l'autre. C'est déjà arrivé.
 
-<quand_utiliser>
+  bash outils/make.sh migrate    joue les migrations non encore jouées
+  bash outils/make.sh test       migrate + assertions + contrat + geste
+  bash outils/make.sh reset      refait la base à neuf, puis migrate
+  bash outils/cliquet.sh         les 10 cases du cliquet
 
-| ✅ On s'en sert | ⛔ On ne s'en sert pas |
-|---|---|
-| Ouvrir le **lot 2** : les 55 commandes et les écrans | avant que le lot 1 soit **accepté** — il l'est |
-| Rouvrir après un lot 2 refusé | pour le lot 3 : il aura son prompt, daté |
+Si « make test » te dit « moteur : docker », c'est que le service est
+arrêté : relance-le dans les services Windows, ne contourne pas.
 
-⛔ **Le lot 1 doit être fusionné sur `main` AVANT de lancer le lot 2.** Sinon le cliquet compare
-contre une branche qui n'a pas les 5 portes, et la case 3 ment.
 
-</quand_utiliser>
+1. CE QUI EST ACQUIS — MESURÉ PAR MOI, PAS DÉCLARÉ PAR TOI
+──────────────────────────────────────────────────────────
+  cliquet        10 cases sur 10          ✅ relancé, confirmé
+  assertions     23 OK sur 23             ✅
+  portes ✅      64                       ✅
+  contrat        0 échec sur 55           ✅
+  seul rouge     P-061 (geste), ⏳ lot 3  ✅ légitime
 
----
+La parade ⏳ est posée et elle tient. Les cases 9 et 10 existent.
+Le lot 2 est ACCEPTÉ sur la forme.
 
-## ⬇️ LE TEXTE À COLLER
 
-```text
-Tu écris le LOT 2 d'Ava Manager. Le lot 1 est accepté : la base
-tient, les 15 murs sont dans PostgreSQL, 22 assertions passent et
-tombent quand on casse un mur.
+2. ⛔ CE QUI NE VA PAS — À CORRIGER AVANT TOUT AUTRE TRAVAIL
+────────────────────────────────────────────────────────────
+Sur tes 55 portes de contrat, voici ce qu'elles vérifient réellement :
 
-Une seule branche : `lot-2`. Six sous-agents. Tu les orchestres.
+  40  « refuse INTROUVABLE »
+  10  « refuse DROIT »
+   2  « refuse GARDE »
+   3  « rend l'objet créé »       ← les seules qui prouvent quelque chose
 
-╔═══════════════════════════════════════════════════════════════╗
-║  LA RÈGLE QUI NE BOUGE JAMAIS                                 ║
-║                                                               ║
-║  ⛔ ON NE PATCHE JAMAIS LE FRONT. JAMAIS.                     ║
-║                                                               ║
-║  Quand un écran affiche faux, on corrige LE SERVEUR.          ║
-║  Un correctif dans l'écran crée une SECONDE vérité. Deux       ║
-║  vérités divergent toujours, et c'est celle qu'on a oubliée   ║
-║  qui finit par s'afficher au client.                          ║
-║                                                               ║
-║  L'écran ne calcule jamais une marge, ne décide jamais qu'un  ║
-║  bouton est grisé, ne traduit jamais un code d'état, n'écrit  ║
-║  jamais `if (etat === '...')`.                                ║
-║  Le serveur envoie : le nombre déjà calculé avec sa devise,   ║
-║  la liste des actions permises déjà filtrée, le libellé déjà  ║
-║  résolu depuis le référentiel.                                ║
-╚═══════════════════════════════════════════════════════════════╝
+⭐⭐ AUTREMENT DIT : UN SERVEUR QUI REFUSE TOUT PASSERAIT 52 DE TES 55
+    PORTES. Tu as écrit 1 897 lignes de commandes, et rien ne prouve
+    qu'elles ÉCRIVENT quoi que ce soit.
 
-═══ LES SIX SOUS-AGENTS ═══
-⛔ Tu n'en fusionnes JAMAIS deux, même « juste pour ce point ».
+⛔ Une porte qui ne peut pas distinguer un serveur juste d'un serveur
+   qui refuse tout ne mesure rien. C'est le même défaut que l'assertion
+   A-001 du lot 1 : elle était verte pendant qu'un mur était percé.
 
-1. SERVEUR — possède /server et /db.
-   ⛔ Ne touche jamais /web, ni /test.
-2. ÉCRAN — possède /web.
-   ⛔ Ne touche jamais /server, ni /db, ni /test.
-3. BANC — possède /test.
-   ⛔ NI 1 NI 2 n'y écrivent. Un test qu'on peut assouplir soi-même
-   n'est pas un filet, c'est une décoration.
-4. AUDIT INTERNE — possède /audit. Passe à chaque fin d'étape.
-   ⛔ Ne code pas, ne corrige rien : il renvoie à 1, 2 ou 3.
-5. GREFFE — possède /journal.
-6. INTÉGRATEUR — ⭐ NOUVEAU, il n'existe que dans ce lot.
-   Il ne code pas. Il relit _ops/SPEC_COMMANDES_L4.md et vérifie
-   que ce que 1 produit est bien ce que 2 consomme.
-   Son livrable : /journal/CONTRAT.md, qui dit pour chaque commande
-   « conforme » ou « écart », avec le numéro de ligne de L4.
+TA TÂCHE 1, BLOQUANTE — LE CHEMIN QUI PASSE
+Pour CHACUNE des 55 commandes, ajoute une porte « chemin nominal » :
 
-⚠️ Aucun sous-agent ne tient sa propre contrainte. C'est la seule
-règle d'organisation qui compte.
+  - elle crée ce dont elle a besoin (société, personne, besoin...)
+  - elle appelle la commande avec des entrées VALIDES
+  - elle vérifie la ressource rendue, champ par champ
+  - elle vérifie que l'ÉVÉNEMENT a bien été écrit dans
+    « evenement_metier » : un type, un acteur, une date
+  - elle vérifie que l'écriture a bien eu lieu, en relisant
 
-╔═══════════════════════════════════════════════════════════════╗
-║  ⛔⛔ LA FRONTIÈRE — et la case qui la garde                   ║
-║                                                               ║
-║  Les sous-agents 1 et 2 écrivent dans le MÊME dépôt, sur la   ║
-║  MÊME branche. Rien ne les sépare physiquement : seule ton    ║
-║  orchestration les tient. ⚠️ C'est le point faible de ce mode,║
-║  on ne le cache pas — on le MESURE.                           ║
-║                                                               ║
-║  ⭐ HUITIÈME CASE DU CLIQUET, à ajouter :                     ║
-║                                                               ║
-║    Aucun commit ne touche /web ET /server à la fois.          ║
-║                                                               ║
-║    git log --format=%H origin/main..HEAD | while read c; do   ║
-║      f="$(git show --name-only --format= "$c")"               ║
-║      if grep -q '^web/' <<<"$f" && grep -q '^server/' <<<"$f" ║
-║        then echo "FRONTIERE FRANCHIE: $c"; fi                 ║
-║    done                                                       ║
-║    Vide = OK.                                                 ║
-║                                                               ║
-║  ⭐ Un commit qui traverse la frontière EST la preuve qu'un    ║
-║     sous-agent a fait les deux métiers. Ce n'est pas une      ║
-║     question de style : c'est la seule trace qui reste que la ║
-║     séparation a tenu.                                        ║
-║                                                               ║
-║  ⛔ Un commit par sous-agent, son nom dans le message :       ║
-║     `[serveur] …`  `[ecran] …`  `[banc] …`  `[greffe] …`      ║
-╚═══════════════════════════════════════════════════════════════╝
+Numérote-les à la suite (P-066 et suivantes), espèce B CONTRAT, lot
+cible 2. Rite habituel : posée, VUE ROUGE, journalisée, puis servie.
 
-═══ CE QUE TU LIS, DANS CET ORDRE ═══
-1. _ops/DOSSIER.html                le point d'entrée
-2. _ops/SPEC_COMMANDES_L4.md        ⭐ LE CONTRAT. 55 commandes.
-                                    C'est LUI qui fait foi pour ce lot
-3. _ops/MATRICE_DROITS_v1.md        qui a le droit de quoi
-4. _ops/MACHINES_ETAT_V1.md         les transitions permises
-5. _ops/SPEC_SQL_AVAMANAGER_V1.sql  le schéma, déjà en base
-6. _ops/REGISTRE_POLITIQUES_v1.md   §C : les clés à lire
-7. _ops/share-hub/terminal.html     ⭐ la cible visuelle de l'écran
-8. _ops/THEMES_v1.md                ⭐ 16 couleurs, 9 polices
+⛔ Tu ne touches à rien d'autre tant que ces 55 portes ne sont pas ✅.
 
-⛔ NE LIS PAS le reste de _ops/. C'est le chemin parcouru, pas le
-canon. Le lire te ferait suivre une version périmée.
 
-═══ CE QUE FAIT LE SOUS-AGENT SERVEUR ═══
-Les 55 commandes de L4, dans l'ordre des familles :
-  I   CRM                     11 commandes
-  II  Identité, recrutement   13
-  III Besoin, positionnement  14
-  IV  Projet, production      11
-  V   Transverse, admin        6
-Pour CHACUNE, et sans exception :
- - l'entrée et la sortie exactement comme L4 les décrit
- - les refus, avec leur CODE : DROIT · ETAT · GARDE · MUR ·
-   INTROUVABLE
- - l'événement émis, DANS LA MÊME TRANSACTION que la mutation
- - liens.politiques rempli avec les clés lues ET leur valeur
- - ⛔ aucune politique lue autrement que par pol()
+3. TA TÂCHE 2 — LES REFUS DOIVENT ÊTRE LES BONS
+───────────────────────────────────────────────
+Tes portes vérifient qu'il y a un refus. Elles ne vérifient pas que
+c'est LE BON refus, ni qu'il arrive au BON MOMENT.
 
-⭐ Tu produis aussi /server/contrat/<Commande>.json — le schéma
-d'entrée et de sortie. C'est ce que l'écran consomme.
+Pour chaque commande, une porte de plus qui vérifie que :
+  - un utilisateur sans le droit reçoit DROIT, et RIEN n'a été écrit
+  - un objet dans le mauvais état reçoit ETAT, et RIEN n'a été écrit
+  - la transaction a bien été annulée : relis, la base est intacte
 
-═══ CE QUE FAIT LE SOUS-AGENT ÉCRAN ═══
-Les écrans du mock, contre un SERVEUR BOUCHONNÉ qui rend les
-sorties figées de /server/contrat/*.json.
-⭐ Il n'attend PAS que le serveur soit fini. Si un schéma manque,
-il l'écrit dans /web/bouchon/<Commande>.json d'après L4, et le
-signale dans QUESTIONS.md.
-⛔ Il LIT /server/contrat/*.json. Il n'écrit JAMAIS dans /server —
-   pas même « pour corriger un petit truc ».
-⚠️ Si tu n'arrives pas à te servir du contrat, LE CONTRAT EST FAUX.
-   Dis-le. C'est la meilleure relecture qu'on aura.
+⛔⛔ ET LE POINT QUI COMPTE LE PLUS : UN REFUS « MUR » VU PAR UN
+    UTILISATEUR EST TOUJOURS UN BUG DE LA COMMANDE. Le mur est le
+    dernier filet, pas le contrôle. Écris une porte qui vérifie
+    qu'AUCUNE des 55 commandes ne rend jamais le code MUR sur une
+    entrée simplement invalide. Si elle est rouge, corrige la commande,
+    pas la porte.
 
-Ordre : d'abord la liste et la fiche d'UN objet (le besoin), de bout
-en bout, avec ses portes d'écran. Ensuite les autres.
-⛔ Pas quinze écrans à moitié. Un écran fini vaut mieux.
 
-═══ LE CLIQUET — une case corrigée, une case en plus ═══
-/outils/cliquet.sh tourne en fin de tour ET en pre-push. La CI
-relance le même script. Les HUIT cases se MESURENT : aucune ne se
-déclare, toutes se calculent.
+4. TA TÂCHE 3 — LES POLITIQUES SONT-ELLES VRAIMENT LUES ?
+─────────────────────────────────────────────────────────
+Le principe qui commande tout le projet :
 
-⭐ UNE CORRECTION ET UN AJOUT, demandés par l'auditeur général :
- - case 7 : ⛔ `git diff HEAD -- _ops/` ne voit que le NON COMMITÉ.
-   Un commit qui touche _ops/ la passerait. Mesure plutôt :
-     git log --format=%H origin/main..HEAD -- _ops/
-   Vide = OK. C'est le bug B-002 du journal.
- - case 8 : la frontière /web contre /server — voir l'encadré.
- - ⭐ le cliquet affiche donc HUIT lignes, et il ne s'arrête
-   toujours pas à la première.
+  ⭐ TOUT DOIT ÊTRE PARAMÉTRABLE.
 
-═══ LES QUATRE ESPÈCES DE PORTES — il faut les quatre ═══
- A BASE    les assertions : les murs tiennent
- B CONTRAT ⭐ UNE PAR COMMANDE TOUCHÉE. La réponse figée pour un cas
-           donné. Un champ qui disparaît fait tomber la porte
- C GESTE   le parcours cliqué, Playwright
- D ÉCRAN   une capture par écran ET PAR THÈME
+173 politiques en base. Une commande qui ne lit pas sa politique et
+décide en dur est un REFUS D'AUDIT — pas une remarque, un refus.
 
-Le rite, dès qu'une fonctionnalité est approuvée : la NOTER, la
-DÉCRIRE en français, POSER la porte, LA VOIR ROUGE, la JOURNALISER.
-⛔ Une porte jamais vue rouge ne prouve rien.
-⛔ LE NOMBRE DE PORTES NE DIMINUE JAMAIS. En retirer une exige un
-   ADR et l'accord d'Hamada.
+Écris une porte par politique que tes commandes sont censées lire
+(colonne « politique lue » de « _ops/SPEC_COMMANDES_L4.md ») :
 
-═══ TU NE T'ARRÊTES PAS ═══
-Boucle : prends la première commande (ou le premier écran) non
-cochée · fais-la · lance le cliquet jusqu'à 0 · audit interne ·
-greffe · coche · reprends.
-⛔ Tu ne rends la main qu'à la fin des DEUX moitiés.
-Une question : tu l'écris dans QUESTIONS.md avec le choix pris EN
-ATTENDANT, et tu continues. Un agent qui attend une réponse est un
-agent mort.
-Trois échecs sur le même point : tu écris quelle HYPOTHÈSE était
-fausse — pas ce que tu as essayé — et tu passes.
+  1. lis le comportement avec la valeur par défaut
+  2. change la politique avec SetPolicy
+  3. relance la même commande
+  4. VÉRIFIE QUE LE COMPORTEMENT A CHANGÉ
+  5. remets la valeur par défaut
 
-═══ LES SEPT INTERDITS ═══
-1. ⛔ Aucun `if` métier en dur, ni serveur ni écran. Toute
-   bifurcation a une clé, lue par pol().
-2. ⛔ Aucun `if` sur un RÔLE. C'est la matrice qui répond, jamais
-   `if role === "dp"`.
-3. ⛔ Aucune commande qui mute sans émettre son événement.
-4. ⛔ Aucun événement émis hors de la transaction.
-5. ⛔ Aucune liste renvoyée que l'écran devrait filtrer — le filtre
-   finirait dans /web, et ce serait une règle métier.
-6. ⛔ Aucun motif en colonne d'objet : les motifs vivent dans
-   evenement_metier.motif.
-7. ⛔ Tu ne modifies AUCUN fichier de _ops/. Une remarque va dans
-   /journal/<ton domaine>/REMARQUES.md, avec le numéro de ligne.
+⛔ Si le comportement ne change pas, la politique n'est pas lue : la
+   valeur est en dur quelque part. Ouvre une ligne dans journal/BUGS.md
+   et corrige LA COMMANDE.
 
-⭐ Le lot 1 a produit six remarques sur le canon, et DEUX étaient
-   de vrais bugs qu'on a corrigés. Continue : c'est utile.
 
-═══ COMMENT TU SAIS QUE C'EST FINI ═══
-  make up && make migrate && make test   → 0
-et, en plus :
- - les 55 commandes ont leur porte de contrat
- - l'objet choisi est fini de bout en bout côté écran, avec ses
-   portes de geste et d'écran dans les deux thèmes
- - le cliquet sort en 0 sur ses HUIT cases
+5. ENSUITE SEULEMENT — LE LOT 3 : LES ÉCRANS
+────────────────────────────────────────────
+P-061 est ⏳ lot cible 3. Le lot 3, c'est les 26 écrans, servis par le
+serveur du lot 2.
 
-⛔ « 54 sur 55 » n'existe pas.
+⛔⛔ JAMAIS PATCHER LE FRONT. JAMAIS. Si un écran affiche faux, la
+    correction est DANS LE SERVEUR. Tout vient du serveur : les
+    libellés, les états, les actions offertes, le thème.
+⛔ AUCUNE ICÔNE CORBEILLE NULLE PART. M-8 : rien ne se supprime, tout
+   s'archive, et « ava_app » n'a pas le droit DELETE.
+⛔ Chaque écran a DEUX portes D : thème sombre ET thème clair.
 
-═══ CE QUE TU RENDS ═══
-La branche `lot-2`, et dans le message :
- - la sortie complète du cliquet, les HUIT lignes
- - combien de portes, de quelle espèce, laquelle tu as vue rouge
- - /journal/CONTRAT.md — conforme ou écart, par commande
- - REMARQUES.md, QUESTIONS.md, DECISIONS.md, entiers
- - ce que tu as décidé seul
 
-Ne demande pas de valider en cours de route. Va au bout, rends,
-l'auditeur général passera.
-```
+6. LES INVARIANTS — INCHANGÉS DEPUIS LE PREMIER JOUR
+────────────────────────────────────────────────────
+  ⛔ Aucun « if » métier en dur : politique · mur · référentiel.
+  ⛔ Pas d'ORM. Du SQL, avec « pg », à la main.
+  ⛔ Aucun commit ne touche /web ET /server à la fois (case 8).
+     Préfixe : [serveur]  [ecran]  [banc]  [greffe]
+  ⛔ Tu n'écris JAMAIS dans « _ops/ » — c'est le canon (case 7).
+  ⛔ Tu ne touches pas à « db/migrations/ ». Si une migration te gêne,
+     tu ouvres une ligne dans journal/BUGS.md et tu t'arrêtes.
+  ⛔ N'assouplis jamais une case du cliquet parce qu'elle te gêne. On
+     corrige ce qu'elle mesure. C'est arrivé le 20/09 sur la case 7.
+  ⛔ Ne pousse jamais avec --no-verify.
+  ⛔ Une porte ✅ ne redevient JAMAIS ⏳ (case 9).
+  ⛔ Une ⏳ sans lot cible est refusée (case 10).
 
----
+Les cinq codes de refus, et il n'y en a pas d'autres :
+  DROIT · ETAT · GARDE · MUR · INTROUVABLE
 
-<interdits>
 
-| ⛔ Jamais dans ce lot | Le problème que ça évite |
-|---|---|
-| **Deux branches** pour deux moitiés | ⭐ le cliquet ne sait pas comparer trois branches — et il se perdrait là où on le croit le plus solide |
-| Fusionner le sous-agent **Écran** avec le sous-agent **Serveur** | le `if` métier passe d'un côté à l'autre sans qu'on le voie |
-| Laisser 1 ou 2 écrire dans `/test` | un test qu'on peut assouplir soi-même n'est pas un filet |
-| Un commit qui touche `/web` **et** `/server` | ⭐ **c'est la seule trace mesurable que la séparation a tenu** |
-| Laisser l'écran **attendre** le serveur | il code contre le contrat, avec un bouchon |
-| Lancer le lot 2 **avant** de fusionner le lot 1 | la case 3 compare contre une branche sans portes, et ment |
+7. LES SIX SOUS-AGENTS — DANS TA SESSION, PAS SIX SESSIONS
+──────────────────────────────────────────────────────────
+  SERVEUR        écrit /server. Ne touche jamais /web.
+  ÉCRAN          écrit /web. Ne touche jamais /server.
+  BANC           écrit /test. Pose les portes, les voit rouges,
+                 les journalise. C'est lui qui tient le cliquet.
+  AUDIT INTERNE  passe entre chaque étape. Ne code pas.
+  GREFFE         tient journal/ : PORTES, ETAPES, BUGS, DECISIONS, ADR.
+  INTÉGRATEUR    ne code pas. Vérifie la conformité à L4, commande
+                 par commande, avant de rendre la main.
 
-</interdits>
 
----
+8. CE QUE TU ÉCRIS EN AVANÇANT
+──────────────────────────────
+  journal/PORTES.md      une ligne par porte, avec sa date de vue rouge
+  journal/ETAPES.md      une ligne par étape finie
+  journal/BUGS.md        tes bugs, numérotés B-001, B-002, ...
+                         (les miens sont A-, ne les mélange pas)
+  journal/DECISIONS.md   toute décision technique, avec son motif
+  journal/QUESTIONS.md   ce que tu ne peux pas trancher seul
+  journal/adr/           une ADR par décision structurante
 
-<etat>
 
-**20/09/2026 — écrit, pas lancé.**
+9. TU NE T'ARRÊTES PAS
+──────────────────────
+Ordre de passage, et pas un autre :
+  1. les 55 portes « chemin nominal »          ← bloquant
+  2. les portes de refus juste et d'annulation
+  3. les portes de politique
+  4. le lot 3, les écrans
 
-| Avant de lancer | |
-|---|---|
-| **1** | ⛔ **fusionner `lot-1` sur `main`** — sinon la case 3 ment |
-| **2** | créer `lot-2` depuis `main` |
-| **3** | coller `prompt-lot2.txt`, en entier |
+⛔ TU NE RENDS PAS LA MAIN TANT QUE LE CLIQUET N'EST PAS AU VERT.
+⛔ Si tu es bloqué trois tours de suite sur la même erreur : tu
+   t'arrêtes, tu nommes l'hypothèse qui était fausse, et tu poses UNE
+   question dans journal/QUESTIONS.md.
 
-⭐ **Ce que l'auditeur général fait, et que personne d'autre ne fait** : relire `/web` **à
-l'œil**. La case 8 prouve qu'aucun commit n'a traversé la frontière ; elle ne prouve pas qu'un
-libellé d'état ne s'est pas glissé dans un objet `const LABELS = {…}`. ⚠️ **Aucun grep ne
-remplace ça.**
-
-⏳ **Le jeu synthétique** viendra après : il sert aux portes d'écran quand il faudra des listes
-longues, pas au premier écran.
-
-</etat>
-
----
-
-<source>
-
-Écrit le 20/09/2026, après l'acceptation du lot 1 et l'écriture de L4.
-
-⭐ **Deux nouveautés par rapport au lot 1**, et les deux viennent de ce que l'audit a trouvé :
-
-| Nouveauté | Pourquoi |
-|---|---|
-| **L'intégrateur** — un sixième sous-agent qui ne code pas | ce que le serveur produit et ce que l'écran consomme divergent en silence ; il compare les deux à L4, ligne par ligne |
-| **La huitième case** — la frontière `/web` ⟂ `/server` | ⭐ avec des sous-agents, la séparation n'est plus physique. Ce qui n'est plus garanti par la structure doit être **mesuré**, sinon il n'est plus garanti du tout |
-
-⚠️ **Ce qu'on perd en passant de deux sessions à des sous-agents, dit franchement** : la
-séparation devient une discipline au lieu d'être un fait. ⭐ **Ce qu'on gagne est plus grand** :
-une seule branche, un seul cliquet, aucune fusion à auditer — et la fusion était précisément le
-moment où le cliquet pouvait se perdre.
-
-⚠️ **Et la case 7 est corrigée** : `git diff HEAD` ne voyait que le non commité. C'est le bug
-**B-002**, trouvé en auditant le cliquet lui-même. ⭐ **Le contrôleur avait besoin d'un contrôle.**
-
-</source>
+Les fichiers qui font foi, dans l'ordre où tu les lis :
+  _ops/SPEC_COMMANDES_L4.md         le contrat des 55 commandes
+  _ops/PORTES_EN_ATTENTE.md         la parade ⏳
+  _ops/SPEC_SQL_AVAMANAGER_V1.sql   le schéma commenté, avec les motifs
+  _ops/REGISTRE_POLITIQUES_v1.md    les 173 politiques
+  _ops/GRILLE_AUDIT.md              les 36 contrôles sur lesquels je t'audite

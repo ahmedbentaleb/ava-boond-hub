@@ -76,7 +76,7 @@ rempart, pas le premier. ⚠️ Si l'utilisateur le voit, c'est que la garde ne 
 
 | Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
 |---|---|---|---|---|---|---|
-| `CreateCompany` | nom, secteur, pays, manager | la société | `GARDE` doublon si politique = `refus` | `CompanyCreated` | `doublon.societe.*` (défaut **avertir**) | — |
+| `CreateCompany` | nom, secteur, pays, manager | la société | `GARDE` doublon si politique = `bloquer` *(D-6, 21/09 : valeurs `avertir · bloquer · ignorer`, registre)* | `CompanyCreated` | `doublon.societe.*` (défaut **avertir**) | — |
 | `UpdateCompany` | id + champs | la société | `INTROUVABLE` si archivée | `CompanyUpdated` | — | — |
 | `RequalifyCompany` | id, statut visé | la société | `ETAT` hors cycle | `CompanyStatusChanged` | `societe.retour_prospect` (défaut **manuel**) | — |
 | `ArchiveCompany` | id, motif | — | `GARDE` si objets actifs | `CompanyArchived` | `societe.archivage.garde` | **M-8** |
@@ -97,11 +97,11 @@ pas de cycle. ⭐ **La garde doit les distinguer** : trois messages, pas un « M
 
 | Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
 |---|---|---|---|---|---|---|
-| `CreatePerson` | nom, prénom, coordonnées | la personne | `GARDE` doublon si politique = `refus` | `PersonCreated` | `doublon.personne.*` (défaut **avertir**) | — |
+| `CreatePerson` | nom, prénom, coordonnées | la personne | `GARDE` doublon si politique = `bloquer` *(D-6)* | `PersonCreated` | `doublon.personne.*` (défaut **avertir**) | — |
 | `CreateCandidate` | personne_id, titre, provenance | le profil | `MUR` si un profil candidat existe déjà | `CandidateCreated` | — | **M-3** |
 | `UpdateCandidate` | id + champs | le profil | `INTROUVABLE` si archivé | `CandidateUpdated` | — | — |
 | `CompleteCandidate` | id | le profil, état `complete` | `GARDE` **champ requis manquant** — la liste vient de la politique | `CandidateCompleted` | ⭐ `candidat.complete.champs_requis` (**liste de colonnes**) | — |
-| `ExitCandidate` | id, motif | le profil | `ETAT` hors cycle | `CandidateExited` | — | — |
+| `ExitCandidate` | id, motif | le profil | `ETAT` hors cycle · `GARDE` aucun code actif de catégorie `sorti` | `CandidateExited` | — | ⛔ *D-8, 21/09* : la commande **n'écrit jamais** `ref_etat_candidat` — le code `sorti` est au seed (005) |
 | `ReactivateCandidate` | id | le profil | `ETAT` hors cycle | `CandidateReactivated` | — | — |
 | **`ConvertCandidateToResource`** | profil_candidat_id, type, agence, fournisseur | le profil ressource | voir le bloc **§C-1** | `CandidateConverted` | `candidat.conversion.acteur` · `ressource.externe.societe_fournisseur` | **M-3** |
 | `CreateResource` | personne_id, type, titre, agence | le profil | `MUR` si un profil ressource existe · `GARDE` externe sans fournisseur | `ResourceCreated` | `ressource.externe.societe_fournisseur` (défaut **obligatoire**) | **M-3** |
@@ -174,7 +174,7 @@ même pas l'`UPDATE`. ⚠️ **Un chiffre montré à un client ne se recalcule p
 |---|---|---|---|---|---|---|
 | `CreateAction` | **un seul** porteur, type, date, contenu | l'action | `GARDE` zéro ou deux porteurs | `ActionCreated` | — | **M-9** |
 | `ArchiveObject` | type, id, motif | — | `GARDE` selon l'objet | `ObjectArchived` | — | **M-8** — ⛔ jamais de `DELETE` |
-| ⛔ **`SetPolicy`** | clé, valeur | la politique | `DROIT` **ADM seul** · `GARDE` valeur hors `valeurs_possibles` · ⭐ **`GARDE` si `mur_touche` l'interdit** | `PolicyChanged` | — | ⭐ **la colonne `mur_touche`** |
+| ⛔ **`SetPolicy`** | clé, valeur | la politique | `DROIT` **ADM seul** · `GARDE` valeur hors `valeurs_possibles` | `PolicyChanged` | — | `mur_touche` est **indicatif** : il s'affiche, il ne garde rien *(D-3, 21/09)* |
 | ⛔ `ManageRefs` | référentiel, code, libellé, catégorie | la valeur | `GARDE` catégorie inconnue · valeur **système** · valeur **utilisée** | `RefChanged` | — | CHECK **catégorie** |
 | ⛔ `ManageGroups` | groupe, permission, **périmètre** | la paire | `GARDE` permission sans périmètre | `GroupPermissionChanged` | — | ⭐ **M-13** |
 | `SetOwnTheme` | les réglages d'apparence | `compte.theme_json` | `GARDE` si `ui.theme.choix_utilisateur` = non | `ThemeChanged` | `ui.theme.choix_utilisateur` | — |
@@ -275,7 +275,7 @@ SORTIE    la politique · ⭐ et la LISTE des commandes dont le comportement cha
 |---|---|
 | Le groupe n'est pas ADM | `DROIT` |
 | La valeur n'est pas dans `valeurs_possibles` | `GARDE` |
-| ⭐ La valeur franchirait le mur de `mur_touche` | `GARDE` — **et le message NOMME le mur** |
+| ~~La valeur franchirait le mur de `mur_touche`~~ | ⛔ **Retiré le 21/09 (D-3, V-029).** `mur_touche` est **indicatif pour l'écran, jamais pour la garde** (SPEC_SQL §3) : un mur est dans la base, pas dans une politique. L'écran d'administration **affiche** le mur voisin ; aucune garde ne le lit |
 
 ⭐⭐ **La sortie liste ce qui change.** Un admin qui bascule `droits.surcharge_restrictive` vers
 `union_gagne` doit **voir** qu'il affaiblit toutes les restrictions nominatives d'un coup.

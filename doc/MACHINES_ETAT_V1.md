@@ -20,16 +20,16 @@ ouvert ──(1er positionnement)──▶ staffing ──(DeclareNeedFilled)─
 
 | De | Vers | Commande | Acteur | Garde | Événement |
 |---|---|---|---|---|---|
-| a_pourvoir | en_recherche | selon `besoin.staffing.declencheur` : **effet du premier `Position*`** (défaut) · `TakeNeedInCharge` · effet du retenu | IA, RH, Staffing | `[G3]` | `NeedStateChanged` |
-| en_recherche | pourvu | selon `besoin.pourvu.mode` : **`DeclareNeedFilled` manuel** (défaut) · automatique à `SignPrestation` | Staffing | garde `besoin.pourvu.garde_minimale` (défaut : **`count(prestations engage du besoin) ≥ nb_postes_vises`**, F3 — *T-1 tranché 17/09 soir* ; options : ≥ 1 · aucune) `[G4]` ; l'écran montre *n prestations signées / m postes visés*, et à part le nombre de personnes distinctes | `NeedStateChanged` |
-| ouvert, staffing, pourvu | suspendu | `SuspendNeed` | IA, Staffing | motif obligatoire | `NeedStateChanged` |
-| suspendu | état précédent | `ResumeNeed` | IA, Staffing | l'état d'origine est mémorisé dans l'événement | `NeedStateChanged` |
-| ouvert, staffing, pourvu, suspendu | fermé | `CloseNeed` | IA | motif ; **ne touche pas** les projets | `NeedStateChanged` |
-| fermé | ouvert (ou staffing s'il a des positionnements actifs) | `ReopenNeed` | IA | commande dédiée (F6) | `NeedStateChanged` |
+| a_pourvoir | en_recherche | selon `besoin.staffing.declencheur` : **effet du premier `Position*`** (défaut) · `TakeNeedInCharge` · effet du retenu | IA, RH, Staffing | `[G3]` | `NeedTakenInCharge` (commande) · `NeedStateChanged` (effet d'un `Position*` ou du retenu) *(D-4, 21/09 : L4 fait foi)* |
+| en_recherche | pourvu | selon `besoin.pourvu.mode` : **`DeclareNeedFilled` manuel** (défaut) · automatique à `SignPrestation` | Staffing | garde `besoin.pourvu.garde_minimale` (défaut : **`count(prestations engage du besoin) ≥ nb_postes_vises`**, F3 — *T-1 tranché 17/09 soir* ; options : ≥ 1 · aucune) `[G4]` ; l'écran montre *n prestations signées / m postes visés*, et à part le nombre de personnes distinctes | `NeedFilled` (manuel ; automatique : même événement, `auto: true`) *(D-4)* |
+| ouvert, staffing, pourvu | suspendu | `SuspendNeed` | IA, Staffing | motif obligatoire | `NeedSuspended` *(D-4)* |
+| suspendu | état précédent | `ResumeNeed` | IA, Staffing | l'état d'origine est mémorisé dans l'événement | `NeedResumed` *(D-4)* |
+| ouvert, staffing, pourvu, suspendu | fermé | `CloseNeed` | IA | motif ; **ne touche pas** les projets | `NeedClosed` *(D-4)* |
+| fermé | ouvert (ou staffing s'il a des positionnements actifs) | `ReopenNeed` | IA | commande dédiée (F6) | `NeedReopened` *(D-4)* |
 
 Positionner sur `pourvu`, `suspendu`, `ferme` : selon `positionnement.sur_besoin_inactif` — **refus** (défaut, F5) · alerte · libre. La priorité P1–P3 est une colonne indépendante, sans machine.
 
-## 2. Candidat — 3 catégories (F19) · codes système : draft (brouillon) · complete (actif) · *sorti : aucun code par défaut, l'admin en ajoute (Boond : « A supprimer », « Vivier »…)*
+## 2. Candidat — 3 catégories (F19) · codes système : draft (brouillon) · complete (actif) · **sorti** (semé par la migration 005 — *D-8, 21/09 : la base avait raison*) · l'admin en ajoute d'autres (Boond : « A supprimer », « Vivier »…). ⛔ **Une commande n'écrit jamais un référentiel** : `ExitCandidate` sans code de catégorie `sorti` actif = refus `GARDE`
 
 ```
 draft ──(CompleteCandidate)──▶ complete
@@ -50,7 +50,7 @@ en_cours ◀──▶ intercontrat ──▶ sortie
 
 | De | Vers | Commande | Garde |
 |---|---|---|---|
-| en_mission ↔ disponible | `SetResourceState` | RH ou DP habilité | selon `ressource.etat.mode` : **manuel** (défaut, F26) · dérivé des prestations `engage` couvrant aujourd'hui |
+| en_mission ↔ disponible | `SetResourceState` | RH, Staffing *(D-5, 21/09 : la MATRICE fait foi)* | selon `ressource.etat.mode` : **manuel** (défaut, F26) · dérivé des prestations `engage` couvrant aujourd'hui |
 | en_cours, intercontrat | sortie | `SetResourceState` | alerte (pas refus) si une prestation est encore `signee` non clôturée |
 | sortie | en_cours | `SetResourceState` | retour possible (réembauche), tracé |
 
@@ -65,11 +65,11 @@ propose ──(DeclareCVShared)──▶ presente ──(RecordClientDecision: r
 
 | De | Vers | Commande | Acteur | Garde | Événement |
 |---|---|---|---|---|---|
-| — | propose | `PositionCandidate` / `PositionResource` | IA, RH, Staffing | besoin `a_pourvoir` / `en_recherche` (`positionnement.sur_besoin_inactif`) ; unicité selon `positionnement.unicite` (défaut : pas de positionnement actif de la même personne) `[G7]` | `PositioningCreated` |
-| propose | presente | `DeclareCVShared` (ou effet de `SendCV` si le lot email est retenu) | contributeur | document CV présent | `CVShareDeclared` |
-| presente | retenu | `RecordClientDecision(retenu)` | IA | — | `ClientDecisionRecorded`, `PositioningStateChanged` |
+| — | propose | `PositionCandidate` / `PositionResource` | IA, RH, Staffing | besoin `a_pourvoir` / `en_recherche` (`positionnement.sur_besoin_inactif`) ; unicité selon `positionnement.unicite` (défaut : pas de positionnement actif de la même personne) `[G7]` | `CandidatePositioned` / `ResourcePositioned` *(D-4)* |
+| propose | presente | `DeclareCVShared` (ou effet de `SendCV` si le lot email est retenu) | contributeur | document CV présent | `CVShared` *(D-4)* |
+| presente | retenu | `RecordClientDecision(retenu)` | IA | — | `ClientDecisionRecorded` *(D-4 : un seul événement, la décision porte l'état)* |
 | presente | refuse_client | `RecordClientDecision(refusé)` | IA | motif | idem |
-| propose, presente | retire | `WithdrawPositioning` | IA, RH, Staffing | motif dans {désistement, no_go_interne, autre} | `PositioningStateChanged` |
+| propose, presente | retire | `WithdrawPositioning` | IA, RH, Staffing | motif dans {désistement, no_go_interne, autre} | `PositioningWithdrawn` *(D-4)* |
 
 Terminaux : `retenu`, `refuse_client`, `retire`. **Aucune** transition sortant de `retenu` : la suite est `CreateProjectFromNeed` (garde G1) puis `CreatePrestation` (F2), qui **ne modifient pas** le positionnement. Entretiens et qualifications sont des **événements / objets**, pas des états (CdC IV.E). « Gagné » n'existe pas (DEC-13).
 
@@ -86,7 +86,7 @@ previsionnelle ──(SignPrestation)──▶ signee ──(ClosePrestation)─
 | De | Vers | Commande | Acteur | Garde | Événement |
 |---|---|---|---|---|---|
 | — | previsionnelle **ou** signee | `CreatePrestation` | Staffing, DP — **en `signee` : permission `SignPrestation` requise** (O-2) | projet existant ; ressource existante ; `debut ≤ fin` ; conditions obligatoires US5 ; selon `prestation.surcharge.mode` : **alerte** (défaut, DEC-10) · refus · silencieux, seuil `prestation.surcharge.seuil_pct` (100), sur l'occupation `engage` d'un jour commun (ATL-02) | `PrestationCreated` ; **si l'état initial est `engage` : + tous les effets de `SignPrestation`** (`PrestationSigned`, `ClientStatusDerived`, pourvu auto) — O-2, G8 : le résultat ne dépend pas de la commande d'entrée |
-| previsionnel | engage | `SignPrestation` | DP | `tjm_vendu`, `jours_vendus`, `taux_occupation` renseignés | `PrestationSigned` ; **+ `ClientStatusDerived`** selon `societe.passage_client.declencheur` (défaut : première `engage` de la société) `[G8]` ; **+ `NeedStateChanged` → pourvu** si `besoin.pourvu.mode` est automatique |
+| previsionnel | engage | `SignPrestation` | DP | `tjm_vendu`, `jours_vendus`, `taux_occupation` renseignés | `PrestationSigned` ; **+ `ClientStatusDerived`** selon `societe.passage_client.declencheur` (défaut : première `engage` de la société) `[G8]` ; **+ `NeedFilled` (`auto: true`) → pourvu** *(D-4)* si `besoin.pourvu.mode` est automatique |
 | signee | cloturee | `ClosePrestation` | DP | date de clôture ≤ `fin` ou = `fin` ; écrit **`snapshot_marge`** (ATL-15) dans la même transaction | `PrestationClosed` |
 | previsionnel, engage | annule | `CancelPrestation` | DP | selon `prestation.annulation.garde` : **aucun temps saisi** (défaut) · libre | `PrestationCancelled` |
 
@@ -100,7 +100,7 @@ ouvert ──(CloseProject)──▶ clos
 
 | De | Vers | Commande | Acteur | Garde | Événement |
 |---|---|---|---|---|---|
-| — | ouvert | `CreateProject` (US5) ou `CreateProjectFromNeed` — ou effet de `RecordClientDecision(retenu)` si `projet.creation_depuis_besoin = automatique_au_retenu` | DP ; Staffing par délégation | contact selon `projet.contact` (défaut obligatoire, F4). **Depuis besoin** : besoin non `ferme` ; garde `projet.depuis_besoin.garde` (défaut : retenu requis, F1) lue selon `projet.depuis_besoin.garde_profil` (défaut : positionnement `terminal_positif` dont la **personne** a un profil Ressource actif) `[G1]` ; `besoin.projets_max` | `ProjectCreated` |
+| — | ouvert | `CreateProject` (US5) ou `CreateProjectFromNeed` — ou effet de `RecordClientDecision(retenu)` si `projet.creation_depuis_besoin = automatique_au_retenu` | Staffing, DP *(D-5 : la MATRICE fait foi — les deux ✓, aucune délégation)* | contact selon `projet.contact` (défaut obligatoire, F4). **Depuis besoin** : besoin non `ferme` ; garde `projet.depuis_besoin.garde` (défaut : retenu requis, F1) lue selon `projet.depuis_besoin.garde_profil` (défaut : positionnement `terminal_positif` dont la **personne** a un profil Ressource actif) `[G1]` ; `besoin.projets_max` | `ProjectCreated` |
 | ouvert | clos | `CloseProject` | DP | selon `projet.cloture.garde` : **toutes les prestations `clos` ou `annule`** (défaut, F7) · cascade (clôture les `engage` restantes avec snapshot, même transaction) ; un projet sans prestation se clôt | `ProjectClosed` |
 
 Terminal : `clos`. Archivage possible depuis `clos` seulement. `ReopenProject` : hors V1 — rouvrir un projet clos rouvrirait des snapshots ; si le besoin revient, c'est un nouveau projet sur le même besoin (DEC-05).
