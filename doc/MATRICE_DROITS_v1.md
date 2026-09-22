@@ -3,7 +3,7 @@
 Date : 18/09/2026 · Statut : **tranchée par Brain sur délégation** — se conteste avec une source, comme les DEC.
 Source de forme : `CADRAGE_METIER_RECONCILIE` §Matrice (configuration retenue **F8–F14**), `MACHINES_ETAT_V1` (les commandes), `MODELE_DONNEES` §7 (les tables), `REGISTRE_POLITIQUES_v1` (ce qui reste réglable).
 
-**C'est le lot 8 du brief exécutant.** Sans elle, la moitié des services n'a pas de garde.
+**C'est le lot « Droits » du brief exécutant** (⚠️ pas le lot 8 du plan, qui est le connecteur MCP). Sans elle, la moitié des services n'a pas de garde.
 
 Le motif ligne par ligne, et les cas contestés : [annexes/MATRICE_DROITS_MOTIFS_2026-09-18.md](annexes/MATRICE_DROITS_MOTIFS_2026-09-18.md)
 
@@ -12,7 +12,7 @@ Le motif ligne par ligne, et les cas contestés : [annexes/MATRICE_DROITS_MOTIFS
 | ✅ On l'ouvre | ⛔ On ne l'ouvre pas |
 |---|---|
 | Écrire la garde `droit()` d'une commande | Pour savoir **ce que** fait une commande — c'est `MACHINES_ETAT_V1` |
-| Peupler `groupe_permission_perimetre` (lot 8) | Pour savoir si une règle est réglable — c'est le registre |
+| Peupler `groupe_permission_perimetre` (lot « Droits » du brief) | Pour savoir si une règle est réglable — c'est le registre |
 | Répondre à « qui peut faire ça ? » | Pour la lecture des **objets** — c'est BM-45, pas cette grille |
 
 ⚠️ **Cette matrice porte les commandes, pas la lecture.** « Lire CreateCompany » n'est pas une permission cohérente (BM-45). Qui voit quoi se règle par le périmètre, objet par objet.
@@ -176,7 +176,7 @@ Le motif ligne par ligne, et les cas contestés : [annexes/MATRICE_DROITS_MOTIFS
 | Ce qui reste réglable | `droits.surcharge_restrictive`, `candidat.conversion.acteur`, `droits.support.mutation` — registre §C |
 | ⬜ Ce qui n'est **pas** ici | la lecture des objets (BM-45), les champs sensibles onglet par onglet, le portail candidat (hors V1) |
 
-**Le test du lot 8**, une ligne par case non vide : la commande **passe** dans le périmètre, **refuse** hors périmètre, **refuse** sans le groupe. Les `—` ont leur test de refus.
+**Le test du lot « Droits »**, une ligne par case non vide : la commande **passe** dans le périmètre, **refuse** hors périmètre, **refuse** sans le groupe. Les `—` ont leur test de refus.
 
 </etat>
 

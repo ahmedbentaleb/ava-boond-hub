@@ -1479,7 +1479,7 @@ function applique(){
   root.style.setProperty("--f3", tein("carte", base.f3));
   root.style.setProperty("--f4", tein("carte", base.f4));
   /* ⭐ Le filet a sa couleur et sa largeur — la largeur suit l'epaisseur des traits. */
-  root.style.setProperty("--bord", melange(aplat(S.bordCouleur || S.struct), base.bord,
+  root.style.setProperty("--bord", melange(aplat(S.bordCouleur || kStruct), base.bord,
                                            S.bordCouleur ? .55 : .20));
   root.style.setProperty("--nav", (LARGEURS.find(l => l.k === S.navLargeur) || LARGEURS[1]).v);
   SURF_TRAIT.forEach(([k]) => {

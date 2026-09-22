@@ -134,7 +134,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <a href="simulateur.html">Banc d’essai</a>
 </div></div></div></div>
 <div class="p">
-<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">22/09/2026 · 5872285</span></div>
+<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">22/09/2026 · 5875d45</span></div>
 <p class="chapeau">Le point d'entrée unique. Une autre IA écrit le code, je l'audite. Tout ce qui fait foi est listé ici — et rien n'y est recopié : ce document <b>mesure</b> et <b>pointe</b>.</p>
 <div class="ch">
 <div><b>37</b><span>tables</span></div>
@@ -144,12 +144,12 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <div><b>28</b><span>assertions</span></div>
 <div><b>26</b><span>écrans</span></div>
 <div><b>8</b><span>ADR</span></div>
-<div><b>60</b><span>documents</span></div>
+<div><b>62</b><span>documents</span></div>
 </div>
 <p class="note">⭐ Tous ces chiffres sont <b>mesurés</b> à la génération, jamais saisis. Un compte écrit à deux endroits diverge à la passe suivante.</p>
 <quand_utiliser>
 <h2><span class="num">01</span>Qui lit quoi</h2>
-<p class="sub">Quatre lecteurs, quatre portes. Personne n'a besoin des 60 documents.</p>
+<p class="sub">Quatre lecteurs, quatre portes. Personne n'a besoin des 62 documents.</p>
 <div class="tw"><table><tr><th>Vous êtes</th><th>Vous lisez</th><th>Vous ne lisez pas</th></tr>
 <tr><td>L&#x27;IA qui code</td><td>le prompt, puis le SQL et les assertions</td><td>les relectures, les plans, l&#x27;historique — c&#x27;est du chemin parcouru</td></tr>
 <tr><td>Moi, l&#x27;auditeur</td><td>les assertions, le registre §E, le journal des bugs</td><td>rien — mais je mesure avant de citer</td></tr>
@@ -161,6 +161,9 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <h2><span class="num">02</span>L'ordre de lecture</h2>
 <p class="sub">Dans cet ordre, et pas un autre : chacun s'appuie sur le précédent.</p>
 <div class="li">
+<a href="doc/ETAT_PROJET.md"><b>L&#x27;état du projet</b><span>les lots, ce qui bloque — la seule source</span><em>ETAT_PROJET.md</em></a>
+<a href="doc/ARBITRAGE_AUDIT_2026-09-21.md"><b>L&#x27;audit du 21/09 et son arbitrage</b><span>47 constats, les décisions D-1 → D-9</span><em>ARBITRAGE_AUDIT_2026-09-21.md</em></a>
+<a href="doc/DECISIONS_TECHNIQUES_v1.md"><b>Les décisions techniques</b><span>T1 → T10 : pile, connexion, hébergement, sauvegardes</span><em>DECISIONS_TECHNIQUES_v1.md</em></a>
 <a href="doc/SPEC_SQL_LISEZ-MOI.md"><b>Par où entrer dans le SQL</b><span>une page, balisée</span><em>SPEC_SQL_LISEZ-MOI.md</em></a>
 <a href="doc/SPEC_SQL_AVAMANAGER_V1.sql"><b>L3 — le schéma</b><span>1661 lignes · 37 tables</span><em>SPEC_SQL_AVAMANAGER_V1.sql</em></a>
 <a href="doc/SPEC_ASSERTIONS_L7.sql"><b>L7 — les assertions</b><span>28 tests, un par mur</span><em>SPEC_ASSERTIONS_L7.sql</em></a>
@@ -170,14 +173,14 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <a href="doc/MATRICE_DROITS_v1.md"><b>La matrice des droits</b><span>rôle × commande × périmètre</span><em>MATRICE_DROITS_v1.md</em></a>
 <a href="doc/MACHINES_ETAT_V1.md"><b>Les machines d&#x27;état</b><span>6 cycles fermés</span><em>MACHINES_ETAT_V1.md</em></a>
 <a href="doc/THEMES_v1.md"><b>Les thèmes</b><span>les 4 rôles de couleur</span><em>THEMES_v1.md</em></a>
-<a href="doc/JOURNAL_BUGS.md"><b>Le journal des bugs</b><span>vide — le code n&#x27;existe pas</span><em>JOURNAL_BUGS.md</em></a>
-<a href="doc/cartographie/BOOND_CHEMINS_2026-09-19.md"><b>Le relevé Boond</b><span>22 sections · les états, les chemins, les volumes</span><em>cartographie/BOOND_CHEMINS_2026-09-19.md</em></a>
-<a href="doc/QUESTIONS_BOOND_2026-09-19.md"><b>Les questions ouvertes</b><span>15, classées par ce qu&#x27;elles bloquent</span><em>QUESTIONS_BOOND_2026-09-19.md</em></a>
+<a href="doc/JOURNAL_BUGS.md"><b>Le journal des bugs</b><span>les défauts A- du BRAIN, ouverts et fermés</span><em>JOURNAL_BUGS.md</em></a>
+<a href="doc/cartographie/BOOND_CHEMINS_2026-09-19.md"><b>Le relevé Boond</b><span>32 sections · clos le 19/09 · les états, les chemins, les volumes</span><em>cartographie/BOOND_CHEMINS_2026-09-19.md</em></a>
+<a href="doc/QUESTIONS_BOOND_2026-09-19.md"><b>Les questions ouvertes</b><span>classées par ce qu&#x27;elles bloquent · les 10 de la réunion sont au hub</span><em>QUESTIONS_BOOND_2026-09-19.md</em></a>
 <a href="doc/PROMPT_GROK_LOT1.md"><b>L2a — le prompt du lot 1</b><span>à coller dans Cursor, tel quel</span><em>PROMPT_GROK_LOT1.md</em></a>
 <a href="doc/PROMPT_GROK_LOT2.md"><b>Le prompt du lot 2</b><span>deux sessions · un seul banc · l&#x27;intégrateur</span><em>PROMPT_GROK_LOT2.md</em></a>
 <a href="doc/GRILLE_AUDIT.md"><b>L2b — la grille d&#x27;audit</b><span>36 contrôles · un 🔴 refuse le lot</span><em>GRILLE_AUDIT.md</em></a>
 <a href="doc/PORTES_EN_ATTENTE.md"><b>La parade ⏳</b><span>une porte posée avant d&#x27;être servie</span><em>PORTES_EN_ATTENTE.md</em></a>
-<a href="doc/PLAN_2026-09-19.md"><b>Le plan du jour</b><span>ce qui reste, en haut</span><em>PLAN_2026-09-19.md</em></a>
+<a href="doc/PLAN_2026-09-22.md"><b>Le plan du jour</b><span>ce qui reste, en haut</span><em>PLAN_2026-09-22.md</em></a>
 </div>
 <p class="note">⛔ Un <code>.sql</code> reste un <code>.sql</code> : Grok l'exécute, git le diffe, <code>psql -f</code> le charge. Noyé dans une page, aucun des trois ne marche. <b>Ce dossier est la porte, pas le coffre.</b></p>
 </procedure>
@@ -186,11 +189,11 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <div class="g">
 <div class="c ok"><div class="n">L3</div><div class="t">Le schéma en SQL</div><div class="d">1661 lignes · 37 tables · 22 triggers · les 15 murs</div></div>
 <div class="c ok"><div class="n">L6</div><div class="t">Les 26 écrans</div><div class="d">le mock fait foi — jouable, mesuré, publié</div></div>
-<div class="c ok"><div class="n">L7</div><div class="t">Les assertions</div><div class="d">28 tests, un par mur, plus 1 contre-test. ⚠️ écrits, jamais exécutés</div></div>
+<div class="c ok"><div class="n">L7</div><div class="t">Les assertions</div><div class="d">28 tests, un par mur, plus 1 contre-test. joués à chaque make test</div></div>
 <div class="c ok"><div class="n">L2</div><div class="t">Le prompt et la grille</div><div class="d">à coller dans Cursor · 18 contrôles au retour</div></div>
-<div class="c go"><div class="n">L4</div><div class="t">Les 44 commandes</div><div class="d">entrée, sortie, refus, événement, politique lue, mur touché</div></div>
+<div class="c ok"><div class="n">L4</div><div class="t">Les 55 commandes</div><div class="d">entrée, sortie, refus, événement, politique lue, mur touché</div></div>
 <div class="c go"><div class="n">L5</div><div class="t">Les deux seeds</div><div class="d">173 politiques et 40 référentiels — mécanique, ça part chez Grok</div></div>
-<div class="c at"><div class="n">L1</div><div class="t">Le relevé Boond</div><div class="d">la grille existe, aucune ligne remplie. Hamada ouvre, je regarde et j&#x27;écris</div></div>
+<div class="c ok"><div class="n">L1</div><div class="t">Le relevé Boond</div><div class="d">clos le 19/09 · 32 sections</div></div>
 </div>
 <h2><span class="num">04</span>Les 15 murs</h2>
 <p class="sub">Ce qu'aucune politique ne franchit. Sept ne sont pas des CHECK : un CHECK ne peut pas dire « cette colonne ne change jamais ».</p>
@@ -241,21 +244,27 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <p class="note">Vide, et c'est normal : le code n'a pas encore été écrit.</p>
 <etat>
 <h2><span class="num">08</span>Où on en est</h2>
-<div class="tw"><table><tr><th>Étape</th><th>Qui</th><th>État</th></tr>
-<tr><td>L7 — les assertions</td><td>moi</td><td>✅ fait</td></tr>
-<tr><td>L2 — le prompt et la grille d&#x27;audit</td><td>moi</td><td>✅ fait</td></tr>
-<tr><td>Lot 1 — dépôt, migrations, seeds, CI</td><td>Grok, dans Cursor</td><td>⬜ dès que le prompt est prêt</td></tr>
-<tr><td>Le relevé Boond</td><td>Hamada + moi</td><td>⬜ pendant qu&#x27;il code</td></tr>
-<tr><td>L4 — les 44 commandes</td><td>moi</td><td>⬜ son lot 2</td></tr>
-<tr><td>L&#x27;audit du lot 1</td><td>moi</td><td>⬜ la boucle commence</td></tr>
+<p class="sub">Mis à jour le 22/09/2026.</p>
+<div class="tw"><table><tr><th>Lot</th><th>Contenu</th><th>État</th></tr>
+<tr><td>1</td><td>Fondations : dépôt, base, 15 murs, seeds, CI</td><td>✅ accepté — 69 min</td></tr>
+<tr><td>2</td><td>Serveur : les 55 commandes</td><td>⏳ refusé par l&#x27;audit du 21/09 (47 constats) — critiques C1 → C7 corrigés, élevés et moyens en cours</td></tr>
+<tr><td>2c</td><td>Connexion par compte Microsoft</td><td>⬜ décidé (T2, D-2) — attend la réponse R4 de la réunion</td></tr>
+<tr><td>3</td><td>Les 26 écrans</td><td>⬜ après le lot 2 accepté</td></tr>
+<tr><td>7</td><td>Reprise Boond et recette</td><td>⬜ attend l&#x27;export Boond (R3) et la liste des missions (R2)</td></tr>
+<tr><td>8</td><td>Connecteur MCP pour Claude, lecture seule d&#x27;abord</td><td>⬜ en dernier</td></tr>
 </table></div>
-<div class="no">⛔ <b>La porte.</b> Rien ne s'exécute en base tant que <code>VALIDATION_MODELE_V1_&lt;date&gt;.md</code> n'existe pas, de la main d'Ahmed, avec ses réserves numérotées (G15).</div>
+<div class="tw"><table><tr><th>Aujourd&#x27;hui</th><th>État</th></tr>
+<tr><td>Second audit du lot 2</td><td>⬜ quand Grok écrit « prêt pour le second audit »</td></tr>
+<tr><td>Réunion avec la direction d&#x27;Avaliance</td><td>⬜ 23/09 — 10 questions, hub `#reunion`</td></tr>
+<tr><td>Relevé Boond</td><td>✅ clos le 19/09</td></tr>
+</table></div>
+<p class="note">Source : <a href="doc/ETAT_PROJET.md">ETAT_PROJET.md</a> — la seule, mise à jour après chaque rapport de session.</p>
 </etat>
 <source>
 <h2><span class="num">09</span>D'où ça vient</h2>
-<p class="sub">60 documents dans <code>_ops/</code>. Les 17 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
+<p class="sub">62 documents dans <code>_ops/</code>. Les 20 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
 <p class="note">Ce fichier est <b>généré</b> par <code>python _ops/outils/dossier.py</code>. ⛔ Ne pas l'éditer à la main : la prochaine génération écraserait la correction, et on ne saurait pas laquelle était juste.<br>Pour en extraire une section sans tout lire :<br><code>sed -n '/&lt;etat&gt;/,/&lt;\/etat&gt;/p' _ops/DOSSIER.html</code></p>
 </source>
-<footer>Ava Manager · dossier généré le 22/09/2026 · commit 5872285 · 37 tables · 173 politiques · 15 murs · 28 assertions</footer>
+<footer>Ava Manager · dossier généré le 22/09/2026 · commit 5875d45 · 37 tables · 173 politiques · 15 murs · 28 assertions</footer>
 </div>
 </body></html>

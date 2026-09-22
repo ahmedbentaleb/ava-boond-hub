@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Audit Ava Manager — Boond interactif</title>
+  <title>Ava Manager — le hub</title>
   <meta name="description" content="Ava Manager (builder) et Boond Manager (reverse engineering). Un seul hub.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ahmedbentaleb.github.io/ava-boond-hub/">
@@ -496,6 +496,17 @@
 .qz-bilan .qz-nav{justify-content:center}
 @media (max-width:640px){.qz-scene h3{font-size:17px}.qz-dial p{font-size:15px}}
 
+
+    /* ═══ 22/09 : bandeau court, liens lisibles, tableaux d'état, mobile ═══ */
+    .hub-bandeau { border-left: 3px solid #AEBF38; padding-left: 12px; margin: 14px 0 18px; }
+    main a:not(.pri):not(.pill):not(.create-btn) { color: #CDD749; }
+    .etat-t { width: 100%; border-collapse: collapse; margin: 0 0 18px; font-size: 14px; }
+    .etat-t th, .etat-t td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .etat-t th { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+    @media (max-width: 720px) {
+      .hub-wrap { position: static; }
+      .hub-bandeau { font-size: 13px; }
+    }
 </style>
 <script type="importmap">
 {
@@ -507,16 +518,11 @@
 <body>
 <main>
   <h1>Ava Manager</h1>
-  <p class="lead" style="border-left:3px solid #AEBF38;padding-left:12px;margin:14px 0 18px">
-  <strong>Relevé Boond du 19/09/2026</strong> — les 59 captures ci-dessous montrent les
-  <em>écrans</em>. Le relevé, lui, dit les <em>chemins</em> : les états mesurés (14 étapes
-  candidat, 9 états de positionnement, 11 entrées de besoin dont P1/P2/P3 mélangés), les
-  volumes (20&nbsp;744 candidats, 4&nbsp;488 positionnements, 9 prestations en cours), et les
-  modules qui ne servent plus — Temps fermé, 1 seul achat, 0 coordonnée de facturation.
-  <strong>Le relevé est clos</strong> : 26 sections, et il a produit deux corrections de mes
-  propres constats. <a href="doc/cartographie/BOOND_CHEMINS_2026-09-19.md">Ouvrir le
-  relevé</a> · <a href="doc/QUESTIONS_BOOND_2026-09-19.md">les 15 questions</a> ·
-  <a href="dossier.html">le dossier</a>.
+  <p class="lead hub-bandeau">
+  <strong>Où on en est</strong> : lot 1 accepté · lot 2 en correction après l'audit du 21/09 ·
+  réunion avec la direction le 23/09. Le détail, toujours à jour :
+  <a href="#ava-etat">État du projet</a> · <a href="#reunion">Questions Avaliance</a> ·
+  <a href="dossier.html">le dossier</a> · <a href="doc/cartographie/BOOND_CHEMINS_2026-09-19.md">le relevé Boond</a>.
 </p>
 <p class="lead"><strong>Le dossier</strong> est le point d'entrée : ce qui fait foi, dans quel ordre le lire, où on en est. <strong>Le terminal</strong> montre les écrans.<br>Un lien, deux produits. Ava Manager = builder du métier cible. Boond Manager = reverse engineering de l’existant.</p>
   <div class="hub-wrap" id="hub">
@@ -533,6 +539,7 @@
     <div class="hub-nested" id="hub-nested"></div>
   </div>
 
+  <section class="view" id="view-ava-etat" hidden></section>
   <section class="view" id="view-ava-reunion" hidden></section>
   <section class="view" id="view-ava-metier" hidden></section>
   <section class="view" id="view-ava-quiz" hidden></section>
@@ -2644,15 +2651,14 @@ function showView(name){
       label: "Ava Manager",
       hint: "Builder",
       views: [
+        { id: "ava-etat", label: "État du projet" },
         { id: "ava-reunion", label: "❓ Questions Avaliance" },
         { id: "ava-metier", label: "Métier" },
         { id: "ava-quiz", label: "Quiz" },
-        { id: "ava-simulateur", label: "Simulateur" },
-        { id: "ava-sim-rules", label: "Simulateur de règles" },
+        { id: "ava-sim-rules", label: "Règles" },
+        { id: "ava-decisions", label: "Décisions" },
         { id: "ava-cadrage", label: "Contrats" },
-        { id: "ava-parcours", label: "15 parcours" },
-        { id: "ava-commands", label: "Qui décide" },
-        { id: "ava-decisions", label: "Décisions" }
+        { id: "ava-commands", label: "Qui décide" }
       ]
     },
     boond: {
@@ -2662,7 +2668,6 @@ function showView(name){
         { id: "metier", label: "Métier" },
         { id: "simulateur", label: "Simulateur" },
         { id: "spec", label: "Spécification" },
-        { id: "questions", label: "Questions" },
         { id: "audit", label: "Audit complet" }
       ]
     }
@@ -3990,7 +3995,7 @@ function showView(name){
         <div class="stat"><b>${nQ}</b><span>Questions</span></div>
         <div class="stat"><b>15</b><span>Jours de parcours</span></div>
       </div>
-      <p class="note">DEC-01 à DEC-18 + F1–F36 + ATL. Le simulateur HTML n’est pas la preuve. Suite : <button type="button" class="pill" data-go-view="ava-parcours">les 15 parcours</button></p>
+      <p class="note">DEC-01 à DEC-18 + F1–F36 + ATL. Le simulateur HTML n’est pas la preuve. Suite : <button type="button" class="pill" data-go-view="ava-quiz">le quiz</button></p>
       ${storyNav(toc)}
       ${CHAPTERS.map((ch) => `
         <article class="spec-sec" id="${ch.id}">
@@ -4005,7 +4010,7 @@ function showView(name){
       <article class="spec-sec open-box panel">
         <h2>Ensuite, dans ce même HTML</h2>
         <ol>
-          <li><button type="button" class="pill" data-go-view="ava-parcours">15 parcours</button> — le plateau avance d’un jour à l’autre, sans reset.</li>
+          <li><button type="button" class="pill" data-go-view="ava-quiz">Quiz</button> — les cas du métier, un par un.</li>
           <li><button type="button" class="pill" data-go-view="ava-commands">Qui décide</button> — la matrice de ce bureau, proposée, pas une DEC.</li>
           <li><button type="button" class="pill" data-go-view="ava-decisions">Décisions</button> — les 18 DEC, dites comme au métier.</li>
         </ol>
@@ -5264,7 +5269,38 @@ function showView(name){
     };
   }
 
+  /* ═══════════ ÉTAT DU PROJET — lu dans doc/ETAT_PROJET.md, jamais recopié ici ═══════════ */
+  function etatTables(md) {
+    const NL = String.fromCharCode(10);
+    const i = md.indexOf(NL + "<etat>" + NL), j = md.indexOf(NL + "</etat>", i + 1);
+    const bloc = i < 0 ? "" : md.slice(i + 8, j < 0 ? md.length : j);
+    const inl = (t) => esc(t).replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>").replace(/`([^`]+)`/g, "<code>$1</code>");
+    return bloc.trim().split(/\n\s*\n/).map((b) => {
+      const l = b.split(NL).filter((x) => x.startsWith("|"));
+      if (l.length < 3) return `<p class="note">${inl(b.trim())}</p>`;
+      const cel = (x) => x.trim().replace(/^\||\|$/g, "").split("|").map((c) => c.trim());
+      return `<div style="overflow-x:auto"><table class="etat-t"><tr>${cel(l[0]).map((c) => `<th>${inl(c)}</th>`).join("")}</tr>` +
+        l.slice(2).map((r) => `<tr>${cel(r).map((c) => `<td>${inl(c)}</td>`).join("")}</tr>`).join("") + `</table></div>`;
+    }).join("");
+  }
+  function renderEtat() {
+    const el = document.getElementById("view-ava-etat");
+    el.innerHTML = `<h2>État du projet</h2>
+      <p class="lead">Les lots, ce qui est fini, ce qui bloque. Lu dans <a href="doc/ETAT_PROJET.md">ETAT_PROJET.md</a>, la seule source.</p>
+      <div id="etat-corps"><p class="note">Chargement…</p></div>
+      <div class="rowbtns" style="margin-top:16px">
+        <a class="pill" href="#reunion">❓ Questions pour la réunion</a>
+        <a class="pill" href="doc/ARBITRAGE_AUDIT_2026-09-21.md">L'audit du 21/09</a>
+        <a class="pill" href="doc/DECISIONS_TECHNIQUES_v1.md">Décisions techniques T1–T10</a>
+        <a class="pill" href="dossier.html">Le dossier complet</a>
+      </div>`;
+    fetch("doc/ETAT_PROJET.md", { cache: "no-store" }).then((r) => r.ok ? r.text() : Promise.reject(r.status))
+      .then((md) => { document.getElementById("etat-corps").innerHTML = etatTables(md); })
+      .catch(() => { document.getElementById("etat-corps").innerHTML = '<p class="note">État indisponible hors ligne. Ouvrir <a href="doc/ETAT_PROJET.md">ETAT_PROJET.md</a>.</p>'; });
+  }
+
   const RENDER = {
+    "ava-etat": renderEtat,
     "ava-reunion": renderReunion,
     "ava-metier": renderAvaMetier,
     "ava-simulateur": renderAvaSimulateur,
@@ -5318,7 +5354,7 @@ function showView(name){
   }
 
   function showHubView(name) {
-    const aliases = { reunion: "ava-reunion", avaliance: "ava-reunion", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-parcours", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
+    const aliases = { etat: "ava-etat", "etat-projet": "ava-etat", reunion: "ava-reunion", avaliance: "ava-reunion", questions: "ava-reunion", "ava-simulateur": "ava-sim-rules", "ava-parcours": "ava-quiz", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-quiz", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
     if (aliases[name]) name = aliases[name];
     if (!ALL_VIEWS.includes(name)) name = "ava-metier";
     const product = productOf(name);
@@ -5354,10 +5390,10 @@ function showView(name){
 
   bindSim();
   window.addEventListener("hashchange", () => {
-    const h = (location.hash || "#ava-metier").slice(1);
+    const h = (location.hash || "#ava-etat").slice(1);
     showHubView(h);
   });
-  const start = (location.hash || "#ava-metier").slice(1);
+  const start = (location.hash || "#ava-etat").slice(1);
   showHubView(start);
 })();
 
