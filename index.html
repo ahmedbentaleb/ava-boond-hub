@@ -1271,8 +1271,8 @@ Projet  (0..1 Besoin ; CreateProject US5 sans besoin)
   </section>
 
   <section class="view" id="view-audit" hidden>
-    <h2>Captures — 59 écrans (listes + fiches + Kanban + modales + self-service)</h2>
-  <p>Clic sur une image pour l’agrandir. 01–16 = hall (menu). 17–33 = onglets/+ des fiches C2-C3-C4. 34–59 = contact complet, Kanban, C4/C5, reporting, self-service, admin.</p>
+    <h2>Captures — 64 écrans (listes + fiches + Kanban + modales + self-service)</h2>
+  <p>Clic sur une image pour l’agrandir. 01–16 = hall (menu). 17–33 = onglets/+ des fiches C2-C3-C4. 34–59 = contact complet, Kanban, C4/C5, reporting, self-service, admin. 60–64 = relevé du 22/09 : prestation, positionnement, journal, Kanban complet, création d'un candidat.</p>
   <p>Hors preuve (voir « Limites » en bas) : les 9 apps internes et les sous-pages Administration, sans URL directe.</p>
 
   <article class="screen" id="e01">
@@ -2134,6 +2134,72 @@ Projet  (0..1 Besoin ; CreateProject US5 sans besoin)
     </div>
     <img src="ecrans/59-fiche-ressource-formulaires.png" alt="Fiche ressource Formulaires">
   </article>
+
+  <article class="screen" id="e60">
+    <h3>60 — Fiche prestation — MIS239</h3>
+    <p class="kicker">C4 — Projets › fiche projet › fiche prestation. Route /deliveries/&lt;id&gt;. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>CA HT · Coût HT · Marge HT · Rentabilité en en-tête (50 560 € / 34 624 € / 15 936 € / 31,52 %)</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Elle porte DEUX coûts journaliers : CJM Contrat (ce qu'on paie la personne) et CJM Prestation (ce qu'on impute à la mission). Nous n'en avons qu'un — c'est la question R5 de la réunion.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Aussi : jours ouvrés calculés, jours gratuits, frais journaliers et mensuels, calendrier propre à la prestation, contrat rattaché. Quatre choses que notre modèle n'a pas.</p></div>
+    </div>
+    <img src="ecrans/60-fiche-prestation.png" alt="Fiche prestation — MIS239" loading="lazy">
+  </article>
+
+  <article class="screen" id="e61">
+    <h3>61 — Fiche positionnement — POS4634</h3>
+    <p class="kicker">C2-C3 — Besoins › fiche besoin › fiche positionnement. On y arrive par le Kanban. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>État CV envoyé ; CA, coût, marge, rentabilité à zéro tant que rien n'est vendu</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Chez Boond, le positionnement porte déjà du chiffre d'affaires et un coût journalier. Chez nous, l'argent commence à la prestation.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Liens : candidat, besoin, type, client, responsable du besoin. Même squelette que la prestation.</p></div>
+    </div>
+    <img src="ecrans/61-fiche-positionnement.png" alt="Fiche positionnement — POS4634" loading="lazy">
+  </article>
+
+  <article class="screen" id="e62">
+    <h3>62 — Journal d'activité — 338 495 entrées</h3>
+    <p class="kicker">Transverse — route /logs. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Chaque ligne : objet, auteur, date, et le détail avant/après</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>C'est notre evenement_metier. Boond y écrit aussi les changements de configuration, jusqu'au JSON des droits d'un compte.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Il se filtre par mots-clés, et se déplie ligne par ligne.</p></div>
+    </div>
+    <img src="ecrans/62-journal-activite.png" alt="Journal d'activité — 338 495 entrées" loading="lazy">
+  </article>
+
+  <article class="screen" id="e63">
+    <h3>63 — Kanban des positionnements — les 8 colonnes</h3>
+    <p class="kicker">C3 — l'écran de travail du staffing. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Proposé 1 049 · NO GO interne 719 · GO interne 187 · CV envoyé 667 · Présenté Client 123 · Désistement 441 · Validé 80 · Rejeté 507</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Deux colonnes positives coexistent : Validé (80) et Gagné. C'est la question R1 de la réunion — laquelle déclenche la mission.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>On déplace une carte d'une colonne à l'autre : le changement d'état est un glissement, pas un formulaire.</p></div>
+    </div>
+    <img src="ecrans/63-kanban-positionnements-complet.png" alt="Kanban des positionnements — les 8 colonnes" loading="lazy">
+  </article>
+
+  <article class="screen" id="e64">
+    <h3>64 — Créer un candidat</h3>
+    <p class="kicker">C2 — route /candidates/0/information, ouverte par le + de la liste. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Pré-remplissage de la fiche à partir d'un CV (PDF, Word, image, 15 Mo)</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Le CV déposé remplit la fiche : c'est ce que les recruteurs attendent d'abord. Notre écran de création ne le prévoit pas.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Champs : civilité, nom, prénom, titre, type, naissance, e-mails et téléphones multiples, ville, pays, réseaux sociaux ; côté RH : étape, provenance, disponibilité, mobilité, responsable manager, responsable RH, agence, pôle, visibilité.</p></div>
+    </div>
+    <img src="ecrans/64-creer-candidat.png" alt="Créer un candidat" loading="lazy">
+  </article>
+
 
   
     <h2>Limites de cette passe</h2>

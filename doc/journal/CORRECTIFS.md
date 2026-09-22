@@ -243,3 +243,16 @@ ok 1 - P-136 C2 démarrage en postgres superutilisateur → le serveur s'arrête
 ```
 
 Contrôle positif : `postgres://ava_serveur@127.0.0.1:5432/ava` sert `/sante` ; `current_user=ava_serveur`, `rolsuper=f`.
+
+# Correctifs lot 2 — second audit · 22/09/2026
+
+Le second audit a refusé `7e3f78c`. Une ligne par V- repris. ROUGE = porte vue sur le défaut, y compris remis une fois.
+
+| V- | Point | Porte | ROUGE avant | VERTE après | Commit |
+|---|---|---|---|---|---|
+| V-048 | C1 D-10 serveur fermé hors banc | P-066 | `not ok` — ManageRefs HTTP 200, `RefChanged`, `ref_pays` ZZ | `ok` — 401 « authentification non livrée (lot 2c) », ZZ et politique inchangés, refus tracé ×2 | `4b13752` |
+| V-003 | C1 même porte (la session n'est plus l'UUID) | P-066 | idem V-048 | idem V-048 | `4b13752` |
+| V-004 | C2 périmètre sur l'objet | P-157–P-197 | `not ok` — WithdrawPositioning, UploadDocument, RecordQualification, CreateAction, ArchiveObject `ok:true` sur un objet CAS | `ok` — DROIT, événement inchangé | `4e818fb` |
+| V-049 | C3 portes d'accès : K3 compte inactif, 40 réussites | P-007–P-054, P-198 | `not ok` — serveur INTROUVABLE : CreateCompany `sabotage` ; compte inactif `ok:true` CompanyCreated | `ok` — 40 réussites relues ; compte inactif DROIT | `e140b07` |
+| V-006 | C5 SetPolicy rend les commandes affectées | P-199 | `not ok` — sortie sans `commandes_affectees` | `ok` — liste contient CreateCompany, valeur relue | `93dbb98` |
+| V-054 | E3 décision inconnue → GARDE | P-200 | `not ok` — `Retenu` écrit `refuse_client` | `ok` — GARDE, etat_code inchangé | `6c83213` |

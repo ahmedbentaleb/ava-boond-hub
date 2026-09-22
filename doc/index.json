@@ -147,6 +147,13 @@
   "ko": 46
  },
  {
+  "chemin": "cartographie/BOOND_ECRANS_2026-09-22.md",
+  "titre": "Boond — les écrans manquants, relevés le 22/09/2026",
+  "categorie": "Étude de Boond",
+  "date": "22/09/2026",
+  "ko": 6
+ },
+ {
   "chemin": "cartographie/DIAGNOSTIC_METIER.md",
   "titre": "Diagnostic Boond Manager",
   "categorie": "Étude de Boond",
@@ -466,7 +473,7 @@
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "22/09/2026",
-  "ko": 11
+  "ko": 12
  },
  {
   "chemin": "journal/DECISIONS.md",
@@ -514,8 +521,8 @@
   "chemin": "journal/PORTES.md",
   "titre": "Portes — le cliquet. Une porte ✅ ne redevient jamais ⏳.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "21/09/2026",
-  "ko": 21
+  "date": "22/09/2026",
+  "ko": 28
  },
  {
   "chemin": "journal/QUESTIONS.md",

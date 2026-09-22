@@ -15,54 +15,54 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-004 | D ÉCRAN | Capture du tuyau, thème sombre, comparée au golden. | `test/ecran/tuyau.spec.ts` sombre | 2026-09-19 | ✅ | 1 | 1 % pixels |
 | P-005 | D ÉCRAN | Capture du tuyau, thème clair, comparée au golden. | `test/ecran/tuyau.spec.ts` clair | 2026-09-19 | ✅ | 1 | 1 % pixels |
 | P-006 | B CONTRAT | CreateCompany rend la société créée. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | égalité stricte |
-| P-007 | B CONTRAT | UpdateCompany refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-008 | B CONTRAT | RequalifyCompany refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-007 | B CONTRAT | UpdateCompany réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-008 | B CONTRAT | RequalifyCompany réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
 | P-009 | B CONTRAT | ArchiveCompany refuse DROIT. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-010 | B CONTRAT | CreateUnit refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-011 | B CONTRAT | UpdateUnit refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-010 | B CONTRAT | CreateUnit réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-011 | B CONTRAT | UpdateUnit réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
 | P-012 | B CONTRAT | ArchiveService refuse DROIT. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-013 | B CONTRAT | CreateContact refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-014 | B CONTRAT | UpdateContact refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-015 | B CONTRAT | TransferContact refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-013 | B CONTRAT | CreateContact réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-014 | B CONTRAT | UpdateContact réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-015 | B CONTRAT | TransferContact réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
 | P-016 | B CONTRAT | ArchiveContact refuse DROIT. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
 | P-017 | B CONTRAT | CreatePerson rend la personne créée. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | égalité stricte |
-| P-018 | B CONTRAT | CreateCandidate refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-019 | B CONTRAT | UpdateCandidate refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-020 | B CONTRAT | CompleteCandidate refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-021 | B CONTRAT | ExitCandidate refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-022 | B CONTRAT | ReactivateCandidate refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-023 | B CONTRAT | ConvertCandidateToResource refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-024 | B CONTRAT | CreateResource refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-025 | B CONTRAT | UpdateResource refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-026 | B CONTRAT | SetResourceState refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-018 | B CONTRAT | CreateCandidate réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-019 | B CONTRAT | UpdateCandidate réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-020 | B CONTRAT | CompleteCandidate réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-021 | B CONTRAT | ExitCandidate réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-022 | B CONTRAT | ReactivateCandidate réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-023 | B CONTRAT | ConvertCandidateToResource réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-024 | B CONTRAT | CreateResource réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-025 | B CONTRAT | UpdateResource réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-026 | B CONTRAT | SetResourceState réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
 | P-027 | B CONTRAT | UpdateResourceCost refuse DROIT. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
 | P-028 | B CONTRAT | UploadDocument refuse GARDE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-029 | B CONTRAT | RecordQualification refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-030 | B CONTRAT | CreateNeed refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-031 | B CONTRAT | UpdateNeed refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-032 | B CONTRAT | SetNeedPriority refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-033 | B CONTRAT | TakeNeedInCharge refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-034 | B CONTRAT | DeclareNeedFilled refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-035 | B CONTRAT | SuspendNeed refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-036 | B CONTRAT | ResumeNeed refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-037 | B CONTRAT | CloseNeed refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-038 | B CONTRAT | ReopenNeed refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-039 | B CONTRAT | PositionCandidate refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-040 | B CONTRAT | PositionResource refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-041 | B CONTRAT | DeclareCVShared refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-029 | B CONTRAT | RecordQualification réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-030 | B CONTRAT | CreateNeed réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-031 | B CONTRAT | UpdateNeed réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-032 | B CONTRAT | SetNeedPriority réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-033 | B CONTRAT | TakeNeedInCharge réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-034 | B CONTRAT | DeclareNeedFilled réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-035 | B CONTRAT | SuspendNeed réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-036 | B CONTRAT | ResumeNeed réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-037 | B CONTRAT | CloseNeed réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-038 | B CONTRAT | ReopenNeed réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-039 | B CONTRAT | PositionCandidate réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-040 | B CONTRAT | PositionResource réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-041 | B CONTRAT | DeclareCVShared réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
 | P-042 | B CONTRAT | RecordClientDecision refuse DROIT. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-043 | B CONTRAT | WithdrawPositioning refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-044 | B CONTRAT | CreateProject refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-045 | B CONTRAT | CreateProjectFromNeed refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-046 | B CONTRAT | UpdateProject refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-047 | B CONTRAT | CloseProject refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-048 | B CONTRAT | CreatePrestation refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-043 | B CONTRAT | WithdrawPositioning réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-044 | B CONTRAT | CreateProject réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-045 | B CONTRAT | CreateProjectFromNeed réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-046 | B CONTRAT | UpdateProject réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-047 | B CONTRAT | CloseProject réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-048 | B CONTRAT | CreatePrestation réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
 | P-049 | B CONTRAT | SignPrestation refuse DROIT. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-050 | B CONTRAT | ClosePrestation refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-051 | B CONTRAT | CancelPrestation refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-052 | B CONTRAT | RecordTimesheet refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-053 | B CONTRAT | AdjustTimesheetAfterClose refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
-| P-054 | B CONTRAT | RecordAbsence refuse INTROUVABLE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-050 | B CONTRAT | ClosePrestation réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-051 | B CONTRAT | CancelPrestation réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-052 | B CONTRAT | RecordTimesheet réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-053 | B CONTRAT | AdjustTimesheetAfterClose réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
+| P-054 | B CONTRAT | RecordAbsence réussit, base relue. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
 | P-055 | B CONTRAT | CreateAction refuse GARDE. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
 | P-056 | B CONTRAT | ArchiveObject refuse DROIT. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
 | P-057 | B CONTRAT | SetPolicy refuse DROIT. | `test/contrat/commandes.test.ts` | 2026-09-20 | ✅ | 2 | — |
@@ -74,7 +74,7 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-063 | D ÉCRAN | Capture liste besoins, thème clair. | `test/ecran/besoin.spec.ts` liste clair | 2026-09-20 | ⏳ | 3 | 1 % pixels |
 | P-064 | D ÉCRAN | Capture fiche besoin, thème sombre. | `test/ecran/besoin.spec.ts` fiche sombre | 2026-09-20 | ⏳ | 3 | 1 % pixels |
 | P-065 | D ÉCRAN | Capture fiche besoin, thème clair. | `test/ecran/besoin.spec.ts` fiche clair | 2026-09-20 | ⏳ | 3 | 1 % pixels |
-| P-066 | B CONTRAT | Hors banc, x-ava-groupe ADM → 401, rien d'écrit. | `test/contrat/correctifs.test.ts` | 2026-09-21 | ✅ | 2 | — |
+| P-066 | B CONTRAT | Hors banc, sans AVA_MODE, x-ava-session = UUID ADM : ManageRefs et SetPolicy → 401, rien d'écrit, refus tracé. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-067 | B CONTRAT | IA de PAR sur un besoin de CAS → DROIT, rien d'écrit. | `test/contrat/correctifs.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-068 | B CONTRAT | L'événement rendu est celui de la transaction. | `test/contrat/correctifs.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-069 | B CONTRAT | Un temps saisi DANS les dates est écrit. | `test/contrat/correctifs.test.ts` | 2026-09-21 | ✅ | 2 | — |
@@ -165,3 +165,47 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-154 | B CONTRAT | ArchiveObject délègue à la garde de la société. | `test/contrat/correctifs.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-155 | B CONTRAT | Le compte RES de banc est relié à une personne ressource. | `test/contrat/correctifs.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-156 | B CONTRAT | Les captures Linux du tuyau sont versionnées pour la CI. | `test/contrat/correctifs.test.ts` | 2026-09-21 | ✅ | 2 | — |
+| P-157 | B CONTRAT | CreateNeed hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-158 | B CONTRAT | UpdateNeed hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-159 | B CONTRAT | SetNeedPriority hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-160 | B CONTRAT | TakeNeedInCharge hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-161 | B CONTRAT | DeclareNeedFilled hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-162 | B CONTRAT | SuspendNeed hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-163 | B CONTRAT | ResumeNeed hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-164 | B CONTRAT | CloseNeed hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-165 | B CONTRAT | ReopenNeed hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-166 | B CONTRAT | PositionCandidate hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-167 | B CONTRAT | PositionResource hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-168 | B CONTRAT | DeclareCVShared hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-169 | B CONTRAT | RecordClientDecision hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-170 | B CONTRAT | WithdrawPositioning hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-171 | B CONTRAT | CreateProject hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-172 | B CONTRAT | CreateProjectFromNeed hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-173 | B CONTRAT | UpdateProject hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-174 | B CONTRAT | CloseProject hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-175 | B CONTRAT | CreatePrestation hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-176 | B CONTRAT | SignPrestation hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-177 | B CONTRAT | ClosePrestation hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-178 | B CONTRAT | CancelPrestation hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-179 | B CONTRAT | RecordTimesheet hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-180 | B CONTRAT | RecordAbsence hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-181 | B CONTRAT | UpdateCandidate hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-182 | B CONTRAT | CompleteCandidate hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-183 | B CONTRAT | ExitCandidate hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-184 | B CONTRAT | ReactivateCandidate hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-185 | B CONTRAT | ConvertCandidateToResource hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-186 | B CONTRAT | CreateResource hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-187 | B CONTRAT | UpdateResource hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-188 | B CONTRAT | SetResourceState hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-189 | B CONTRAT | UpdateResourceCost hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-190 | B CONTRAT | UploadDocument hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-191 | B CONTRAT | RecordQualification hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-192 | B CONTRAT | CreateAction hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-193 | B CONTRAT | UploadDocument ressource et candidat CAS → DROIT. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-194 | B CONTRAT | CreateAction projet et ressource CAS → DROIT. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-195 | B CONTRAT | ArchiveObject projet, ressource et besoin CAS → DROIT. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-196 | B CONTRAT | CreateCandidate agence CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-197 | B CONTRAT | AdjustTimesheetAfterClose hors périmètre CAS → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-198 | B CONTRAT | K3 : un compte désactivé → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-199 | B CONTRAT | SetPolicy rend la liste des commandes affectées. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-200 | B CONTRAT | Une décision client inconnue est GARDE, l'état ne change pas. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |

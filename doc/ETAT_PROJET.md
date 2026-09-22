@@ -37,9 +37,9 @@ Mis à jour le 22/09/2026. Les anciens numéros de lot sont entre parenthèses.
 
 | # | Étape | État | Documents |
 |---|---|---|---|
-| 1.1 | Les 59 captures d'écran de Boond | ✅ 15/09 — ⬜ **à compléter plus tard** : alertes, Kanban complet, fiche mission, écrans de création, réglages du compte (vus au relevé du 19/09, sans capture) | hub › Boond › Audit complet · [audit des écrans](cartographie/AUDIT_ECRANS.md) |
+| 1.1 | Les captures d'écran de Boond — 64 | ✅ 15/09, complétées le 22/09 — ⬜ reste 5 captures bloquées par Chrome (ressource, société, alertes, paramètres globaux, rôles et agences) | hub › Boond › Audit complet · [audit des écrans](cartographie/AUDIT_ECRANS.md) |
 | 1.2 | Comprendre comment Boond fonctionne | ✅ 15/09 | [fonctionnement](cartographie/FONCTIONNEMENT_BOOND.md) · [diagnostic métier](cartographie/DIAGNOSTIC_METIER.md) |
-| 1.3 | Le relevé des chemins et des volumes (31 sections) | ✅ 19/09 | [relevé Boond](cartographie/BOOND_CHEMINS_2026-09-19.md) · [grille d'inventaire](GRILLE_INVENTAIRE_BOOND_2026-09-17.md) |
+| 1.3 | Le relevé des chemins et des volumes (31 sections) | ✅ 19/09, complété le 22/09 | [relevé Boond](cartographie/BOOND_CHEMINS_2026-09-19.md) · [écrans du 22/09](cartographie/BOOND_ECRANS_2026-09-22.md) · [grille d'inventaire](GRILLE_INVENTAIRE_BOOND_2026-09-17.md) |
 | 1.4 | Les questions que seul Avaliance peut trancher | ⏳ réunion du 23/09 | hub › [Questions Avaliance](../#reunion) · [questions Boond](QUESTIONS_BOOND_2026-09-19.md) |
 
 ### 2 · Cadrage métier — ce que le logiciel doit faire
