@@ -1271,8 +1271,8 @@ Projet  (0..1 Besoin ; CreateProject US5 sans besoin)
   </section>
 
   <section class="view" id="view-audit" hidden>
-    <h2>Captures — 79 écrans (listes + fiches + Kanban + modales + self-service)</h2>
-  <p>Clic sur une image pour l’agrandir. 01–16 = hall (menu). 17–33 = onglets/+ des fiches C2-C3-C4. 34–59 = contact complet, Kanban, C4/C5, reporting, self-service, admin. 60–81 = relevé du 22/09 : prestation, positionnement, journal, Kanban complet, écrans de création, et toute l'administration (alertes, référentiels, comptes, rôles, agences, plans de charge).</p>
+    <h2>Captures — 89 écrans (listes + fiches + Kanban + modales + self-service)</h2>
+  <p>Clic sur une image pour l’agrandir. 01–16 = hall (menu). 17–33 = onglets/+ des fiches C2-C3-C4. 34–59 = contact complet, Kanban, C4/C5, reporting, self-service, admin. 60–91 = relevé du 22/09 : prestation, positionnement, journal, Kanban complet, écrans de création, et toute l'administration (alertes, référentiels, comptes, rôles, agences, plans de charge).</p>
   <p>Hors preuve (voir « Limites » en bas) : les 9 apps internes et les sous-pages Administration, sans URL directe.</p>
 
   <article class="screen" id="e01">
@@ -2394,6 +2394,137 @@ Projet  (0..1 Besoin ; CreateProject US5 sans besoin)
     </div>
     <img src="ecrans/81-planning.png" alt="Planning — plans de charge" loading="lazy">
   </article>
+
+  <article class="screen" id="e82">
+    <h3>82 — Administration — business units</h3>
+    <p class="kicker">Admin — /administrator/business-units. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>0 business unit</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Le niveau « business unit » existe chez Boond mais n'est pas utilisé : Avaliance s'arrête aux agences et aux pôles.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Notre modèle a des unités clientes et des agences ; rien à reprendre ici.</p></div>
+    </div>
+    <img src="ecrans/82-admin-business-units.png" alt="Administration — business units" loading="lazy">
+  </article>
+
+  <article class="screen" id="e83">
+    <h3>83 — Administration — les 2 pôles</h3>
+    <p class="kicker">Admin — /administrator/poles. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>POLE RH · POLE SALES</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Deux pôles seulement, portés par les comptes et les fiches. C'est la seule subdivision interne réelle sous l'agence.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Chaque pôle a un état : visible ou archivé. Comme nos référentiels.</p></div>
+    </div>
+    <img src="ecrans/83-admin-poles.png" alt="Administration — les 2 pôles" loading="lazy">
+  </article>
+
+  <article class="screen" id="e84">
+    <h3>84 — Administration — webhooks</h3>
+    <p class="kicker">Admin — /administrator/webhooks. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>0 webhook</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Rien n'est branché sur Boond aujourd'hui : aucune intégration à reprendre au moment de la bascule.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>L'écran existe : nom, URL, description, dates, créateur.</p></div>
+    </div>
+    <img src="ecrans/84-admin-webhooks.png" alt="Administration — webhooks" loading="lazy">
+  </article>
+
+  <article class="screen" id="e85">
+    <h3>85 — Administration — importer vos données</h3>
+    <p class="kicker">Admin — /administrator/import-data. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Import CSV en 4 étapes, plus un ZIP de CV</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Boond sait importer des candidats par fichier CSV (4 Mo) avec les CV en ZIP. C'est utile dans l'autre sens aussi : le même format nous servira de repère pour la reprise.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Étapes : configurer · qualifier le fichier · confirmation · importer.</p></div>
+    </div>
+    <img src="ecrans/85-admin-import-donnees.png" alt="Administration — importer vos données" loading="lazy">
+  </article>
+
+  <article class="screen" id="e86">
+    <h3>86 — Configuration d'un compte — 9 onglets</h3>
+    <p class="kicker">Admin — /resources/&lt;id&gt;/settings. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>Intranet · Tableau de bord · Partage · Modèles d'action · Objectifs · Reporting · Notifications · Suggestions de profils · Configuration générale</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>C'est l'équivalent de nos réglages ui.* : chaque compte choisit ses entrées de menu, son tableau de bord, ses notifications.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>On y voit aussi « Autoriser l'appel aux API REST » compte par compte, et l'état du compte.</p></div>
+    </div>
+    <img src="ecrans/86-configuration-compte.png" alt="Configuration d'un compte — 9 onglets" loading="lazy">
+  </article>
+
+  <article class="screen" id="e87">
+    <h3>87 — Achats — la liste complète</h3>
+    <p class="kicker">C5 — /purchases. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>1 seul achat : LINKEDIN, 10 350 € HT, validé, mars 2024</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Le module Achats est vide en pratique. Il confirme la coupe : hors V1.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Colonnes : date, titre, projet, fournisseur, état, total, paiements engagés, delta, manager.</p></div>
+    </div>
+    <img src="ecrans/87-achats.png" alt="Achats — la liste complète" loading="lazy">
+  </article>
+
+  <article class="screen" id="e88">
+    <h3>88 — Reporting — plans de production</h3>
+    <p class="kicker">Reporting — /reporting-production-plans. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>263 ressources, six mois glissants</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Le même tableau que le Planning, mais sur un périmètre plus large : 263 lignes contre 229.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>L'écart entre les deux écrans vient du filtre par défaut, pas des données.</p></div>
+    </div>
+    <img src="ecrans/88-reporting-plans-production.png" alt="Reporting — plans de production" loading="lazy">
+  </article>
+
+  <article class="screen" id="e89">
+    <h3>89 — Mes temps — 403</h3>
+    <p class="kicker">C4 — /resources/&lt;id&gt;/times-reports. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>« Vous ne passerez pas » — erreur 403</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Le module des temps est fermé même pour un super-utilisateur : personne ne saisit de temps dans Boond. C'est l'origine du trou entre 204 consultants actifs et 9 missions.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Deuxième preuve, après la page Mes temps du menu.</p></div>
+    </div>
+    <img src="ecrans/89-fiche-ressource-temps.png" alt="Mes temps — 403" loading="lazy">
+  </article>
+
+  <article class="screen" id="e90">
+    <h3>90 — Créer un contact</h3>
+    <p class="kicker">C1 — depuis une société. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>État Prospect, fonction, service, type, réseau, provenance, influenceurs</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Un contact ne se crée que depuis une société : la société est obligatoire, jamais l'inverse. Notre modèle dit la même chose.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>Il porte aussi un périmètre technique et fonctionnel (nuage de mots-clés, domaines, outils) que nous n'avons pas.</p></div>
+    </div>
+    <img src="ecrans/90-creer-contact.png" alt="Créer un contact" loading="lazy">
+  </article>
+
+  <article class="screen" id="e91">
+    <h3>91 — Fiche besoin — onglet Positionnements</h3>
+    <p class="kicker">C3 — /opportunities/&lt;id&gt;/positionings. Relevé du 22/09.</p>
+    <dl class="cols">
+      <dt>État vu</dt><dd>6 positionnements, avec charge, tarif et rentabilité par ligne</dd>
+    </dl>
+    <div class="reads">
+      <div class="box-read cp"><strong>Chef de projet</strong><p>Le besoin affiche l'argent de chaque positionnement avant toute mission. C'est l'écran que le staffing regarde pour décider.</p></div>
+      <div class="box-read aud"><strong>Auditeur</strong><p>En-tête : CA envisagé, coût, marge, rentabilité, et le bouton « Remplacer le CA envisagé par le CA total ».</p></div>
+    </div>
+    <img src="ecrans/91-fiche-besoin-positionnements.png" alt="Fiche besoin — onglet Positionnements" loading="lazy">
+  </article>
+
 
 
 

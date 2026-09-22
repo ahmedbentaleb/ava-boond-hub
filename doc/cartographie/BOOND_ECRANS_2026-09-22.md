@@ -2,7 +2,7 @@
 
 Complément au relevé du 19/09 (`BOOND_CHEMINS_2026-09-19.md`). ⭐ **Cliqué dans l'instance
 Avaliance, en lecture seule** : aucune création, aucun enregistrement, aucun réglage touché.
-Les captures nouvelles sont au hub, `ecrans/60-*` → `ecrans/81-*` — **79 captures** en tout.
+Les captures nouvelles sont au hub, `ecrans/60-*` → `ecrans/91-*` — **89 captures** en tout.
 
 <quand_utiliser>
 
@@ -33,6 +33,18 @@ Les captures nouvelles sont au hub, `ecrans/60-*` → `ecrans/81-*` — **79 cap
 | 74 → 80 | **Paramètres globaux, les 7 autres onglets** | ✅ | Données RH · Divers · Besoins/Projets · Évaluations · Facturation · Partager · Activité/frais. ⭐ Toutes les listes de valeurs de Boond sont là : c'est le miroir de notre registre §B |
 | 81 | **Plans de charge** `/planning` | ✅ | **229 ressources**, mois par mois (M9 2026 → M2 2027), filtrables par type. ⭐ Un plan de charge mensuel, pas un agenda |
 
+| 82 → 84 | **Business units (0) · Pôles (2) · Webhooks (0)** | ✅ | ⭐ Deux pôles seulement — POLE RH, POLE SALES — sous les agences. Aucune business unit, aucun webhook : rien à reprendre |
+| 85 | **Importer vos données** `/administrator/import-data` | ✅ | Import **CSV** en 4 étapes (4 Mo) + un **ZIP de CV**. ⭐ Le format d'import dit le format d'export : repère direct pour la reprise (question R3) |
+| 86 | **Configuration d'un compte** `/resources/<id>/settings` | ✅ | **9 onglets** : Intranet · Tableau de bord · Partage · Modèles d'action · Objectifs · Reporting · Notifications · Suggestions de profils · Configuration générale. ⭐ Nos `ui.*`, plus « autoriser l'API REST » **par compte** |
+| 87 | **Achats** `/purchases` | ✅ | **1 seul achat** : LINKEDIN, 10 350 € HT, validé, mars 2024. ⭐ Confirme la coupe : hors V1 |
+| 88 | **Reporting — plans de production** | ✅ | **263 ressources** sur six mois, contre 229 au Planning : l'écart vient du filtre par défaut |
+| 89 | **Temps d'une ressource** `/resources/<id>/times-reports` | ✅ | ⛔ **403 « Vous ne passerez pas »**, même en super-utilisateur. Deuxième preuve que le module des temps est fermé |
+| 90 | **Créer un contact** (depuis une société) | ✅ | Fonction, **service**, type, réseau, provenance, influenceurs, **périmètre technique et fonctionnel** (mots-clés, domaines, outils). ⭐ Un contact ne se crée **que** depuis une société |
+| 91 | **Fiche besoin — Positionnements** | ✅ | 6 positionnements avec **charge, tarif et rentabilité par ligne**, et un CA envisagé en en-tête. ⭐ L'écran de décision du staffing |
+
+⛔ **Deux routes n'existent pas** : `/projects/0/…` et `/opportunities/0/…` rendent 404 ou 422 — un
+projet se crée **depuis un besoin** (capture 28), un besoin depuis la liste (capture 56).
+
 ⚠️ **Pourquoi les captures ont été difficiles** : Chrome bloque les téléchargements répétés déclenchés
 par une page (« téléchargements automatiques ») — le premier passe, les suivants sont refusés en
 silence, et un clic simulé ne lève pas le blocage. ⭐ **La parade retenue** : la page range l'image
@@ -41,8 +53,8 @@ disque. Aucun téléchargement, donc aucun blocage — et rien n'est envoyé hor
 
 ⛔ **Non capturé, volontairement** : `Mon compte` (adresses IP des sessions ouvertes) et
 `Espace développeur` (⚠️ **la clé d'API y est affichée en clair** — signalé le 19/09, toujours vrai).
-⬜ **Reste à faire** : `Créer un contact` et `Créer un projet` (ils ne s'ouvrent que depuis une
-société ou un besoin), les sous-écrans d'Achats, et les onglets de configuration d'un compte.
+✅ **Plus rien en attente** : les écrans de création, l'administration complète, les achats, le
+planning, le reporting et la configuration d'un compte sont relevés.
 
 </etat>
 
