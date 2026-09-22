@@ -127,6 +127,9 @@ permission sensible se contourne par la commande ordinaire.
 | `UpdateNeed` | id + champs | le besoin | idem | `NeedUpdated` | — | **M-12** |
 | `SetNeedPriority` | id, priorité | le besoin | `INTROUVABLE` | `NeedPriorityChanged` | — | — |
 | `TakeNeedInCharge` | id | le besoin | `ETAT` hors cycle | `NeedTakenInCharge` | — | — |
+
+⭐ **Événement d'effet (V-064, 22/09)** : quand un `Position*` ou un retenu fait passer le besoin de `a_pourvoir` à `en_recherche`, la transaction émet **`NeedStateChanged`** `{de, vers}` — les états **lus en catégorie**, jamais écrits en dur.
+
 | **`DeclareNeedFilled`** | id | le besoin | voir le bloc **§C-2** | `NeedFilled` | ⭐ `besoin.pourvu.garde_minimale` × `unite_couverture_code` | — |
 | `SuspendNeed` | id, **motif** | le besoin | `ETAT` hors cycle | `NeedSuspended` | — | ⭐ le motif va dans l'**événement** |
 | `ResumeNeed` | id | le besoin | `ETAT` hors cycle | `NeedResumed` | — | — |

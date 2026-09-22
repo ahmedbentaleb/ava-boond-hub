@@ -1,0 +1,82 @@
+AVA MANAGER — SESSION BRAIN CODE, SECOND TOUR
+=============================================
+22/09/2026. Tu es la main du BRAIN : tu écris ce que le second audit a
+mis à la charge du BRAIN, et rien d'autre. Grok travaille EN MÊME TEMPS
+sur le serveur, les écrans et les tests. Lis tout avant d'écrire.
+
+Le mot d'Ahmed est donné pour ce qui suit. Pour rien d'autre.
+
+
+0. À LIRE D'ABORD — ET SEULEMENT ÇA
+───────────────────────────────────
+  _ops/ARBITRAGE_AUDIT_2026-09-22.md          D-10 → D-13, qui fait quoi
+  Desktop/ava-audit-2/rapport/CONSTATS.md     V-050 V-051 V-053 V-058 V-060 V-070
+  Desktop/ava-audit-2/rapport/SUIVI_V.md      V-039 (la CI), V-040
+  _ops/JOURNAL_BUGS.md, A-008 et A-010        rôles globaux · single-transaction
+
+
+1. TON POSTE — LE MÊME QU'AU PREMIER TOUR
+────────────────────────────────────────
+  cd /c/Users/Hamada/Desktop/ava-brain
+  git fetch "/c/Users/Hamada/Desktop/Ava Manager" lot-2
+  git checkout lot-2-brain && git merge FETCH_HEAD
+Base : ava_brain (refais-la à neuf). ⛔ Ni la base « ava », ni le port
+3000, ni le dossier « Ava Manager ». Chaque commit porte « Role: brain ».
+
+
+2. CE QUE TU FAIS — UN COMMIT PAR POINT, TÉMOIN ROUGE PUIS VERT
+───────────────────────────────────────────────────────────────
+Rejoue le script de l'audit qui l'avait trouvé
+(Desktop/ava-audit-2/rapport/preuves/scripts/), pointé sur ava_brain.
+
+B1  V-050   CLIQUET, CASE F12
+    Une porte ✅ du PORTES.md du commit précédent (HEAD~1) ou de main
+    qui manque dans HEAD → KO. Une porte EXÉCUTÉE absente du tableau →
+    signalée. Témoin : P-150 → P-153 retirées → KO (aujourd'hui 10/10).
+
+B2  V-060 · D-13   LE CROCHET POSÉ PAR SCRIPT
+    outils/installer.sh : git config core.hooksPath .githooks, idempotent.
+    .githooks/commit-msg : un commit qui touche test/ exige « Role: banc »
+    (brain et integrateur admis pour les fusions). Une case du cliquet
+    vérifie core.hooksPath. Témoin : clone neuf → case KO, puis
+    installer.sh → OK.
+
+B3  V-053 · V-058 · D-11 · D-12   MIGRATION 008, jouée en --single-transaction
+    - UPDATE compte SET actif = false WHERE email LIKE '%@ava.test'
+    - perimetre.type_code : le CHECK accepte « soi » ; les cases « S » de
+      la matrice deviennent des lignes groupe_permission_perimetre en
+      périmètre « soi » (la matrice fait foi, 0 écart après)
+    - db/fixtures/banc.sql : réactive les comptes de banc et relie RES à
+      une personne ressource ; chargée par « make test » seulement
+    Témoins : base neuve migrée sans fixture → 0 compte actif @ava.test ;
+    avec la fixture → les portes passent. 008 jouée deux fois → ne lève pas.
+
+B4  V-070   ASSERTIONS M-12 sur contact ET projet, dans _ops/ puis copie
+    exacte dans test/. Témoin : DISABLE TRIGGER tg_m12 sur chacune → rc≠0.
+
+B5  V-051   outils/make.sh exporte DATABASE_URL (la base choisie) pour
+    les portes ET pour le serveur. Témoin : AVA_DB=ava_brain, P-066
+    compte ses événements dans ava_brain, pas dans ava.
+
+B6  V-039   .github/workflows/ci.yml : un service postgres:16, les
+    variables d'environnement hors dépôt (secrets GitHub), installer.sh,
+    puis cliquet.sh. Témoin : lire le fichier suffit, l'exécution se voit
+    au premier push.
+
+
+3. CE QUE TU NE FAIS JAMAIS
+───────────────────────────
+⛔ server/  web/  test/ (sauf la copie du fichier d'assertions et la
+   fixture) : c'est à Grok.
+⛔ Réécrire une migration publiée (001 → 007).
+⛔ Toucher « ava », le port 3000, le dossier « Ava Manager ».
+⛔ Fusionner dans lot-2 ou main, pousser.
+⛔ Assouplir un contrôle parce qu'il gêne (A-011).
+
+
+4. CE QUE TU RENDS
+──────────────────
+Une ligne par point dans _ops/JOURNAL_BUGS.md : V-xxx · commit · témoin
+ROUGE → VERT. Puis, 15 lignes au plus : le commit, le tableau des 6
+points, et la phrase exacte à donner à Grok :
+  « lot-2-brain est prêt : git merge lot-2-brain, puis E7. »

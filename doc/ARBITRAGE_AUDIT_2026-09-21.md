@@ -80,7 +80,7 @@ Rien. Tout ce qui suit se déduit du canon (T2, ADR-005, MATRICE, registre).
 | 040 | 🔁 partiel | moyenne | CODE | un seul humain, un seul compte : un **trailer** `Role:` par commit suffit ; crochet posé par script |
 | 041 → 047 | ✅ bonnes | bonne | — | à garder ; V-041 et V-046 n'ont **aucune porte** (V-011) |
 
-**Compte : 42 retenus · 5 requalifiés ou partiels · 0 rejeté.**
+**Compte : 41 retenus · 6 requalifiés ou partiels · 0 rejeté.** *(corrigé le 22/09 — V-067 : le tableau marque 🔁 003, 006, 016, 021, 022, 040)*
 
 <source>
 

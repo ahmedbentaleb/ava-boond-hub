@@ -329,7 +329,7 @@ Les autres documents **ne réécrivent pas ces chiffres** : ils renvoient ici (�
 | Politiques | ⭐ **173 au 20/09** | §C — **172 en tableau + 1 déclarée en prose** (mesuré le 21/09, V-029 — le « 168 » précédent était un compte retenu). ⭐ **+2 le 20/09, annoncés comme l'exige le gel** :
 `societe.archivage.garde` et `absence.chevauchement`, toutes deux **citées dans L4** et
 **absentes du registre** — trou de ma spécification, comblé par le codeur du lot 2, qui a écrit
-leur source dans la table (`L4 L82`, `L4 L163`). ⭐ **C'est exactement ce qu'on attend de lui** (`ui.theme.personnalise`). **79 métier · 2 installation · 86 apparence.** ⭐ **+5 le 19/09** : les **quatre encres**, avec le garde-fou — une encre choisie qui ne passe pas 4,5:1 sur sa surface est **relevée**, jamais posée telle quelle — et le rôle du banc d'essai |
+leur source dans la table (`L4 L82`, `L4 L163`). ⭐ **C'est exactement ce qu'on attend de lui** (`ui.theme.personnalise`). ⚠️ *La répartition « 79 métier · 2 installation · 86 apparence » (= 167) date d'avant le 20/09 et ne tient plus (V-062, 22/09) : **seul le total 173 est mesuré**, en base et par la commande ci-dessous.* ⭐ **+5 le 19/09** : les **quatre encres**, avec le garde-fou — une encre choisie qui ne passe pas 4,5:1 sur sa surface est **relevée**, jamais posée telle quelle — et le rôle du banc d'essai |
 | Tables du livrable 5 | **36** + `reprise_boond` | `prestation_version` (B-2) et `periode_emploi` (M15) ajoutées le 19/09 —  carte au livrable §1 |
 
 ⭐ **Portée de « seule source »** : les comptes **qui bougent** — tables, référentiels, politiques. « **15 murs** » et « 6 cycles » sont des **décisions** (P3, machines), pas des comptes : ils s'écrivent partout où on en a besoin.

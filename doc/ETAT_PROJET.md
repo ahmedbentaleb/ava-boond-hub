@@ -37,7 +37,7 @@ Mis à jour le 22/09/2026. Les anciens numéros de lot sont entre parenthèses.
 
 | # | Étape | État | Documents |
 |---|---|---|---|
-| 1.1 | Les 59 captures d'écran de Boond | ✅ 15/09 | hub › Boond › Audit complet · [audit des écrans](cartographie/AUDIT_ECRANS.md) |
+| 1.1 | Les 59 captures d'écran de Boond | ✅ 15/09 — ⬜ **à compléter plus tard** : alertes, Kanban complet, fiche mission, écrans de création, réglages du compte (vus au relevé du 19/09, sans capture) | hub › Boond › Audit complet · [audit des écrans](cartographie/AUDIT_ECRANS.md) |
 | 1.2 | Comprendre comment Boond fonctionne | ✅ 15/09 | [fonctionnement](cartographie/FONCTIONNEMENT_BOOND.md) · [diagnostic métier](cartographie/DIAGNOSTIC_METIER.md) |
 | 1.3 | Le relevé des chemins et des volumes (31 sections) | ✅ 19/09 | [relevé Boond](cartographie/BOOND_CHEMINS_2026-09-19.md) · [grille d'inventaire](GRILLE_INVENTAIRE_BOOND_2026-09-17.md) |
 | 1.4 | Les questions que seul Avaliance peut trancher | ⏳ réunion du 23/09 | hub › [Questions Avaliance](../#reunion) · [questions Boond](QUESTIONS_BOOND_2026-09-19.md) |
@@ -82,10 +82,12 @@ Mis à jour le 22/09/2026. Les anciens numéros de lot sont entre parenthèses.
 | # | Étape | État | Documents |
 |---|---|---|---|
 | 5.1 | Fondations : dépôt, base, 15 murs, données de départ (lot 1) | ✅ 20/09 — 69 min | [prompt lot 1](PROMPT_GROK_LOT1.md) · [étapes du code](journal/ETAPES.md) · [base](db/README.md) |
-| 5.2 | Le serveur : les 55 commandes (lot 2) | ⏳ correctifs en cours | [prompt lot 2](PROMPT_GROK_LOT2.md) · [prompt correctifs](prompt-lot2-correctifs.txt) · [décisions du code](journal/DECISIONS.md) |
+| 5.2 | Le serveur : les 55 commandes (lot 2) | ⏳ second tour de correctifs (après le second audit) | [prompt lot 2](PROMPT_GROK_LOT2.md) · [prompt correctifs](prompt-lot2-correctifs.txt) · [décisions du code](journal/DECISIONS.md) |
 | 5.3 | Premier audit indépendant | ✅ 21/09 — refusé, 47 constats | [synthèse](audit-2026-09-21/SYNTHESE.md) · [constats](audit-2026-09-21/CONSTATS.md) · [mutations](audit-2026-09-21/MUTATIONS.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-21.md) |
-| 5.4 | Corrections du BRAIN : base, tests des murs, cliquet | ✅ 21/09 | [prompt brain code](prompt-brain-code.txt) |
-| 5.5 | Second audit | ⬜ quand Grok écrit « prêt » | [prompt second audit](prompt-audit-2.txt) |
+| 5.4 | Corrections du BRAIN : base, tests des murs, cliquet | ✅ 21/09 — validées par le second audit | [prompt brain code](prompt-brain-code.txt) |
+| 5.5 | Second audit | ✅ 22/09 — refusé, 27 constats neufs, accès non gardé | [synthèse](audit-2026-09-22/SYNTHESE.md) · [constats](audit-2026-09-22/CONSTATS.md) · [contestation](audit-2026-09-22/CONTESTATION.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-22.md) |
+| 5.5b | Corrections du second tour : BRAIN CODE puis Grok | ⏳ | [prompt brain code 2](prompt-brain-code-2.txt) · [prompt correctifs 2](prompt-lot2-correctifs-2.txt) |
+| 5.5c | Troisième audit | ⬜ quand Grok écrit « prêt pour le troisième audit » | [prompt d'audit](prompt-audit-2.txt) |
 | 5.6 | Connexion par compte Microsoft (lot 2c) | ⬜ attend R4 de la réunion | [décisions techniques T2](DECISIONS_TECHNIQUES_v1.md) · [arbitrage D-2](ARBITRAGE_AUDIT_2026-09-21.md) |
 | 5.7 | Les 26 écrans (lot 3) | ⬜ après le 5.5 accepté | [les 26 écrans](../terminal.html) · [prompt écrans](PROMPT_CHATGPT_ECRANS.md) |
 | — | CRM, staffing, production (anciens lots 4, 5, 6) | ↪ fusionnés dans 5.2 et 5.7 | — |

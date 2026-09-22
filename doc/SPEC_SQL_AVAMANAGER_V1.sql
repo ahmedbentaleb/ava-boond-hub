@@ -5,8 +5,11 @@
 --
 --  ⭐ CE QUE CE FICHIER EST
 --  La spécification du schéma, écrite dans la seule langue qui ne se
---  paraphrase pas. Un développeur l'exécute, et il a les 37 tables, les 34
---  référentiels, les 167 politiques et — surtout — LES 15 MURS.
+--  paraphrase pas. Un développeur l'exécute, et il a le schéma du lot 1 et —
+--  surtout — LES 15 MURS.
+--  ⚠️ V-063, 22/09 : CE FICHIER EST L'ÉTAT DU LOT 1. La base réelle, ce sont les
+--     migrations 001 → 00n (005 droits, 006 relevé Boond, 007 correctifs) : quand
+--     les deux divergent, LA BASE A RAISON. Les comptes vivent au registre §E.
 --
 --  ⛔ CE QUE CE FICHIER N'EST PAS
 --  Le produit. Aucune commande, aucun écran, aucune formule ATL n'est ici.

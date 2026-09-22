@@ -3,7 +3,7 @@
 ⭐ **Écrite AVANT qu'il code.** Une grille écrite après le code vérifie ce qu'il a fait, pas ce
 qu'on voulait. Celle-ci ne discute pas.
 
-**36 contrôles · 6 familles.** Un seul 🔴 refuse le lot entier.
+**42 contrôles · 7 familles** (A → F, et K l'accès depuis le 22/09). Un seul 🔴 refuse le lot entier.
 
 ⭐ **Je suis l'auditeur GÉNÉRAL** : je passe sur le lot rendu. L'auditeur **interne** (sous-agent 4) passe **entre chaque étape**. Deux mailles, pas deux chefs.
 
@@ -30,7 +30,7 @@ coûte dix allers-retours ; renvoyer la liste complète en coûte un.
 | **A1** | Toutes les assertions passent | `make up && make migrate && make test`, sortie 0 ; autant de lignes `OK   M-` que `bash outils/plancher_assertions.sh _ops/SPEC_ASSERTIONS_L7.sql` en compte, et `test/` = `_ops/` (`cmp`) *(V-012, 21/09 : le nombre ne s'écrit plus, il se compte)* | 🔴 |
 | **A2** | Elles **tombent** quand on casse un mur | retirer `tg_m10`, relancer : l'assertion M-10 doit lever | 🔴 — sinon elles ne testent rien |
 | **A3** | La CI fait la même chose que moi | lire `.github/workflows/ci.yml` : `fetch-depth: 0`, `main` en local, puis `bash outils/cliquet.sh` *(V-023 : `db.yml` n'existe pas)* | 🟠 |
-| **A4** | Le compte correspond au registre §E | `python _ops/outils/dossier.py` ne crie pas | 🟠 |
+| **A4** | Le compte correspond au registre §E | `python _ops/outils/dossier.py` ne crie pas — ⚠️ **dans le clone de l'audit seulement** : il réécrit `_ops/DOSSIER.html` *(V-065)* | 🟠 |
 | **A5** | Les fiches de l'auditeur interne existent | une par étape, 5 pour le lot 1, dans `/audit/` | 🟠 |
 
 ⭐ **A2 est le contrôle que personne ne fait.** Une suite de tests verte qui reste verte quand on
@@ -46,7 +46,7 @@ casse le code est pire qu'aucune suite : elle donne confiance sans rien prouver.
 | **B2** | Toutes les politiques sont chargées | `SELECT count(*) FROM politique` = le compte du **registre §E** — ⛔ ne pas recopier le chiffre ici | 🟠 |
 | **B3** | `valeur` = `valeur_defaut` au seed | `WHERE valeur <> valeur_defaut` → 0 ligne | 🟠 |
 | **B4** | Tous les référentiels existent | `\dt ava.ref_*` = le compte du **registre §E** — ⛔ ne pas recopier le chiffre ici | 🟠 |
-| **B5** | Aucun CHECK sur un **code** de référentiel | `grep -n "CHECK (code" db/migrations/` → vide | 🔴 |
+| **B5** | Aucun CHECK qui fige une **liste de codes** métier | `grep -niE "CHECK *\(.*_code *(IN\|=)" db/migrations/*.sql` — chaque ligne doit être justifiée au registre (ex. `perimetre.type_code`, D-9) *(V-065 : l'ancien grep donnait un faux 🔴)* | 🔴 non justifiée |
 
 ⚠️ **B1 attrape aussi les faux positifs** — un `if` sur un état dans un outil de migration n'est
 pas du métier. ⭐ **Je lis chaque occurrence, je ne compte pas.** Un grep qui décide tout seul
@@ -87,6 +87,16 @@ ORDER BY 1;
 
 ---
 
+## K · L'ACCÈS — 5 contrôles. ⛔ Ajoutée le 22/09 (V-059) : l'accès peut casser sans qu'aucune autre famille ne rougisse.
+
+| # | Contrôle | Comment | Si ça échoue |
+|---|---|---|---|
+| **K1** | Hors `AVA_MODE=banc`, **aucun** appel n'écrit tant que le lot 2c n'est pas livré | serveur sans `AVA_MODE` : toute commande → refus, 0 ligne écrite | 🔴 V-048 |
+| **K2** | Une session n'est jamais l'identifiant d'un compte | envoyer l'UUID d'un compte comme session → refus ; le jeton est aléatoire, haché, expirant (D-10) | 🔴 |
+| **K3** | Un compte désactivé ne fait rien | sa session → refus, 0 écriture | 🔴 |
+| **K4** | Le périmètre se juge **sur l'objet visé** | pour chaque commande qui vise un objet : un cas hors agence → `DROIT`, 0 écriture | 🔴 V-004 |
+| **K5** | La base n'accepte personne sans mot de passe hors poste de dev | `pg_hba_file_rules` : 0 `trust` sur un serveur | 🔴 V-022 (T3) |
+
 ## D · LE DÉPÔT — 5 contrôles.
 
 | # | Contrôle | Comment | Verdict si faux |
@@ -95,7 +105,7 @@ ORDER BY 1;
 | **D2** | Aucun ORM | `grep -rniE "prisma\|typeorm\|sequelize\|drizzle\|knex" package.json */package.json` | 🔴 |
 | **D3** | Les migrations sont numérotées et jamais réécrites | `git log --diff-filter=M -- db/migrations/` → vide | 🟠 |
 | **D4** | `REMARQUES.md` existe, même vide | il doit dire « aucune » plutôt que manquer | 🟡 |
-| **D5** | Chaque dossier n'a qu'un seul auteur | l'historique git : personne n'écrit dans `/test` sauf le sous-agent 3 | 🟠 |
+| **D5** | Chaque dossier n'a qu'un seul auteur | chaque commit porte un trailer `Role:` ; un commit qui touche `test/` porte `Role: banc`, et le crochet le refuse sinon *(V-060, 22/09 : un seul compte git, c'est le trailer qui mesure)* | 🟠 |
 
 ⭐ **D1 est le contrôle le plus important de la grille.** Le jour où le canon commence à suivre le
 code, plus rien ne commande — et on ne s'en aperçoit que trois mois après.
@@ -137,9 +147,10 @@ lis `/web/src` une fois, à l'œil, à chaque lot — c'est ce qu'aucun grep ne 
 | **F4** | Aucune porte désactivée, commentée, ou en `skip` | `grep -rniE "skip\|todo\|xit\|\.only\|disabled" test/` | 🔴 |
 | **F5** | Chaque porte a été **vue rouge** | la colonne du journal est remplie, avec la date | 🟠 |
 | **F6** | `/outils/cliquet.sh` existe et **mesure** | le lire : aucune case ne se déclare, toutes se calculent ; ⭐ la case 1 exige `make_rc = 0` **et** que chaque porte ✅ ait été **exécutée** (un serveur mort ne produit aucune ligne d'échec — V-008) | 🔴 |
-| **F7** | Il est branché en **pre-push** | `git config core.hooksPath` vaut `.githooks` | 🟠 |
+| **F7** | Il est branché en **pre-push** | `git config core.hooksPath` vaut `.githooks` — posé par `bash outils/installer.sh`, et la case du cliquet le vérifie *(V-060)* | 🟠 |
 | **F8** | La CI relance **le même** script | `.github/workflows/` appelle `cliquet.sh`, pas une copie | 🔴 — deux copies divergent |
-| **F9** | Le script ne s'arrête pas à la première case | il imprime les 7 lignes même après un échec | 🟠 |
+| **F9** | Le script ne s'arrête pas à la première case | il imprime **toutes** ses cases même après un échec *(V-065)* | 🟠 |
+| **F12** | ⭐ Une porte ✅ **de la branche** ne disparaît pas | le `PORTES.md` de HEAD contient toutes les ✅ du commit précédent **et** de `main` ; une porte exécutée absente du tableau est signalée *(V-050)* | 🔴 |
 
 ⭐⭐ **F3 compte les portes SERVIES, pas le total** — voir [PORTES_EN_ATTENTE.md](PORTES_EN_ATTENTE.md).
 ⚠️ Une porte **⏳** est posée et vue rouge, mais le code ne la sert pas encore : **elle ne

@@ -77,6 +77,13 @@
   "ko": 7
  },
  {
+  "chemin": "ARBITRAGE_AUDIT_2026-09-22.md",
+  "titre": "Arbitrage du second audit — 22/09/2026",
+  "categorie": "Audits",
+  "date": "22/09/2026",
+  "ko": 6
+ },
+ {
   "chemin": "AUDIT_PROJET_2026-09-17.md",
   "titre": "Audit du projet Ava Manager — 17 septembre 2026",
   "categorie": "Audits",
@@ -164,7 +171,7 @@
   "chemin": "DECISIONS_TECHNIQUES_v1.md",
   "titre": "Décisions techniques Ava Manager v1",
   "categorie": "Conception et contrat",
-  "date": "18/09/2026",
+  "date": "22/09/2026",
   "ko": 10
  },
  {
@@ -172,7 +179,7 @@
   "titre": "État du projet Ava Manager — du premier jour à la livraison",
   "categorie": "État et plans",
   "date": "22/09/2026",
-  "ko": 9
+  "ko": 10
  },
  {
   "chemin": "FEUILLE_F1-F36_AHMED_2026-09-16.md",
@@ -192,8 +199,8 @@
   "chemin": "GRILLE_AUDIT.md",
   "titre": "L2b — la grille d'audit",
   "categorie": "Audits",
-  "date": "21/09/2026",
-  "ko": 13
+  "date": "22/09/2026",
+  "ko": 14
  },
  {
   "chemin": "GRILLE_INVENTAIRE_BOOND_2026-09-17.md",
@@ -220,7 +227,7 @@
   "chemin": "MACHINES_ETAT_V1.md",
   "titre": "Machines d'état Ava Manager v1",
   "categorie": "Conception et contrat",
-  "date": "21/09/2026",
+  "date": "22/09/2026",
   "ko": 13
  },
  {
@@ -280,6 +287,13 @@
   "ko": 14
  },
  {
+  "chemin": "prompt-brain-code-2.txt",
+  "titre": "prompt-brain-code-2.txt",
+  "categorie": "Prompts et briefs",
+  "date": "22/09/2026",
+  "ko": 4
+ },
+ {
   "chemin": "prompt-brain-code.txt",
   "titre": "prompt-brain-code.txt",
   "categorie": "Prompts et briefs",
@@ -292,6 +306,13 @@
   "categorie": "Prompts et briefs",
   "date": "19/09/2026",
   "ko": 22
+ },
+ {
+  "chemin": "prompt-lot2-correctifs-2.txt",
+  "titre": "prompt-lot2-correctifs-2.txt",
+  "categorie": "Prompts et briefs",
+  "date": "22/09/2026",
+  "ko": 6
  },
  {
   "chemin": "prompt-lot2-correctifs.txt",
@@ -339,8 +360,8 @@
   "chemin": "REGISTRE_POLITIQUES_v1.md",
   "titre": "Registre des politiques Ava Manager v1",
   "categorie": "Conception et contrat",
-  "date": "21/09/2026",
-  "ko": 46
+  "date": "22/09/2026",
+  "ko": 45
  },
  {
   "chemin": "RELECTURE_5_MODELE_DONNEES_2026-09-17.md",
@@ -381,15 +402,15 @@
   "chemin": "SPEC_COMMANDES_L4.md",
   "titre": "L4 — le contrat des commandes",
   "categorie": "Conception et contrat",
-  "date": "21/09/2026",
+  "date": "22/09/2026",
   "ko": 22
  },
  {
   "chemin": "SPEC_SQL_AVAMANAGER_V1.sql",
   "titre": "SPEC_SQL_AVAMANAGER_V1.sql",
   "categorie": "Conception et contrat",
-  "date": "20/09/2026",
-  "ko": 91
+  "date": "22/09/2026",
+  "ko": 89
  },
  {
   "chemin": "SPEC_SQL_LISEZ-MOI.md",
@@ -571,6 +592,69 @@
   "titre": "SYNTHESE.md",
   "categorie": "Audits",
   "date": "21/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "audit-2026-09-22/CANON.md",
+  "titre": "Famille J — le canon face à la base, commit `7e3f78c`",
+  "categorie": "Audits",
+  "date": "22/09/2026",
+  "ko": 19
+ },
+ {
+  "chemin": "audit-2026-09-22/CONFORMITE.md",
+  "titre": "CONFORMITÉ H — les 55 commandes contre `_ops/SPEC_COMMANDES_L4.md`",
+  "categorie": "Audits",
+  "date": "22/09/2026",
+  "ko": 17
+ },
+ {
+  "chemin": "audit-2026-09-22/CONSTATS.md",
+  "titre": "Constats du second audit — commit `7e3f78c` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "22/09/2026",
+  "ko": 12
+ },
+ {
+  "chemin": "audit-2026-09-22/CONTESTATION.md",
+  "titre": "Contestation de l'arbitrage du BRAIN — second audit, commit `7e3f78c`",
+  "categorie": "Audits",
+  "date": "22/09/2026",
+  "ko": 11
+ },
+ {
+  "chemin": "audit-2026-09-22/GRILLE.md",
+  "titre": "GRILLE — second audit, auditeur B · lot 2 · commit 7e3f78c",
+  "categorie": "Audits",
+  "date": "22/09/2026",
+  "ko": 12
+ },
+ {
+  "chemin": "audit-2026-09-22/MUTATIONS.md",
+  "titre": "Mutations — les tests des tests (famille G), second audit",
+  "categorie": "Audits",
+  "date": "22/09/2026",
+  "ko": 8
+ },
+ {
+  "chemin": "audit-2026-09-22/SECURITE.md",
+  "titre": "SÉCURITÉ I — lot 2, commit 7e3f78c · auditeur B",
+  "categorie": "Audits",
+  "date": "22/09/2026",
+  "ko": 13
+ },
+ {
+  "chemin": "audit-2026-09-22/SUIVI_V.md",
+  "titre": "Suivi des 47 constats V- du premier audit — commit `7e3f78c`",
+  "categorie": "Audits",
+  "date": "22/09/2026",
+  "ko": 20
+ },
+ {
+  "chemin": "audit-2026-09-22/SYNTHESE.md",
+  "titre": "SYNTHESE.md",
+  "categorie": "Audits",
+  "date": "22/09/2026",
   "ko": 2
  }
 ]

@@ -1,0 +1,128 @@
+AVA MANAGER — LOT 2, CORRECTIFS APRÈS LE SECOND AUDIT
+======================================================
+22/09/2026. Le second audit a REFUSÉ le lot 2 au commit 7e3f78c.
+Lis ce prompt en entier avant d'écrire une ligne. Il REMPLACE
+prompt-lot2-correctifs.txt pour tout ce qui n'y est pas encore fermé.
+
+Rapport de l'audit (lecture libre, il fait foi pour les preuves) :
+  C:\Users\Hamada\Desktop\ava-audit-2\rapport\CONSTATS.md
+  C:\Users\Hamada\Desktop\ava-audit-2\rapport\SUIVI_V.md
+Arbitrage du BRAIN : _ops/ARBITRAGE_AUDIT_2026-09-22.md
+
+
+0. CE QUE L'AUDIT A MESURÉ
+──────────────────────────
+  ✅ tient    007, M-15, ava_serveur, les assertions (13/13 sabotages SQL
+              tombent), le refus de démarrer en superutilisateur,
+              x-ava-groupe refusé hors banc, 135 refus sans écriture.
+  ⛔ tombe    hors banc, la « session » est l'UUID du compte : n'importe qui
+              écrit en ADM en 9 essais (V-048).
+  ⛔ tombe    5 commandes écrivent dans une autre agence (V-004).
+  ⛔ tombe    45 portes sur 151 restent vertes sous un sabotage qui les vise.
+              40 sont encore les « refuse INTROUVABLE » du premier audit.
+
+⭐ Ce n'est pas un reproche sur V-048 : le BRAIN avait écrit « le compte
+   vient d'une session » sans dire ce qu'est une session. C'est corrigé
+   (décision D-10). Tu appliques D-10, pas autre chose.
+
+
+1. LA RÈGLE — INCHANGÉE
+───────────────────────
+Pour chaque point : la porte d'abord, vue ROUGE sur le code actuel, puis
+le correctif, puis VERTE, puis le défaut remis une fois et la porte revue
+rouge. Toute porte de contrat RELIT LA BASE. Un commit par point, avec
+Role: dans le message. Un commit qui touche test/ porte « Role: banc ».
+
+
+2. CRITIQUE — DANS CET ORDRE
+────────────────────────────
+C1  V-048 · V-003 · D-10   LE SERVEUR FERMÉ HORS BANC
+    - hors AVA_MODE=banc, TOUTE commande → 401
+      « authentification non livrée (lot 2c) », 0 écriture, refus tracé
+    - l'en-tête x-ava-session est RETIRÉ, compteDeSession aussi
+    - aucune session factice, aucun jeton de test hors banc
+    Portes : serveur sans AVA_MODE → ManageRefs et SetPolicy avec
+    x-ava-session = UUID du compte ADM → 401, base relue : rien d'écrit.
+
+C2  V-004   LE PÉRIMÈTRE SUR L'OBJET — les 5 qui fuient encore
+    WithdrawPositioning, RecordQualification, UploadDocument, CreateAction,
+    ArchiveObject : l'agence de l'objet visé passe à exigeDroit AVANT
+    l'écriture. Puis une porte « hors périmètre » par commande qui vise un
+    objet (pas seulement ces 5).
+
+C3  V-049   LES PORTES D'ACCÈS (grille, famille K)
+    K3 : en banc, un compte désactivé → DROIT, 0 écriture.
+    K4 : une porte hors agence par commande qui vise un objet (C2).
+    Les 40 portes « refuse INTROUVABLE » : chacune devient un cas qui
+    RÉUSSIT, base relue. Une porte qui ne distingue pas un serveur juste
+    d'un serveur qui refuse tout ne compte plus.
+
+C4  V-011   LES DROITS ET LES POLITIQUES — ce qui survit encore
+    Voir SUIVI_V.md ligne V-011 : « Survivent 120/120 ». Pour chaque
+    ligne de la matrice, un cas qui passe, un hors périmètre, un sans le
+    groupe. Pour chaque politique lue, deux valeurs, deux résultats.
+
+C5  V-006   SetPolicy rend la LISTE des commandes affectées : sortieDe ne
+    doit plus la jeter (executer.ts:42-46).
+
+
+3. ÉLEVÉ
+────────
+E1  V-051   test/contrat/db.ts lève si DATABASE_URL manque ;
+            correctifs.test.ts lit l'URL de l'environnement, plus « ava »
+            en dur ; plus de ports fixes 3010/3011.
+E2  V-052   P-133 saisit 1,5 j sous « alerte » (écrit + alerte) puis sous
+            « refus » (GARDE, rien d'écrit).
+E3  V-054   RecordClientDecision : une décision inconnue → GARDE, jamais
+            un refus client.
+E4  V-055   ManageRefs : les deux gardes du contrat, une catégorie
+            inventée → GARDE (pas MUR), un renommage ne réactive rien.
+E5  V-056   projet.cloture.garde = cascade_cloture_prestations : CloseProject
+            clôture les prestations puis le projet, dans la transaction.
+E6  V-057   liens.politiques porte TOUTES les clés lues (SignPrestation,
+            RecordClientDecision).
+E7  V-058 · D-12   plus de groupes.includes(GROUPE.RES) : la règle S se lit
+            dans le périmètre « soi » (migration 008 du BRAIN). Attends
+            008 pour ce point.
+E8  Reprises du premier audit encore partielles (SUIVI_V.md) :
+            V-014 doublon.personne.cles · V-015 statut commercial sur les
+            codes · V-017 ManageRefs · V-018 le bouchon encore lu par
+            web/src/contrat.ts · V-019 titres en dur dans le CSS.
+
+
+4. MOYEN
+────────
+M1 V-061 tracerRefus trace aussi « session inconnue » (plus de '' dans un
+   uuid). M2 V-068 SetPolicy valide la valeur contre son type et ses
+   valeurs possibles. M3 V-069 assurerBancRes recrée le profil ressource.
+M4 V-071 SetOwnTheme n'accepte que les clés ui.* connues.
+M5 V-072 les aides de test passent leurs valeurs en $n.
+M6 V-073 et reprises V-030 (entrée mal typée → GARDE, pas 500),
+   V-032 (sortie d'ArchiveObject), V-036 (renommage), V-037 (ArchiveObject
+   sur projet, ressource, besoin : garde et périmètre).
+
+
+5. CE QUE LE BRAIN FAIT — TU N'Y TOUCHES PAS
+────────────────────────────────────────────
+Branche lot-2-brain, session Brain Code :
+  migration 008   comptes de banc désactivés (D-11), périmètre « soi » (D-12)
+  fixture         db/fixtures/banc.sql, chargée par make test seulement
+  cliquet         case F12 : une porte ✅ de la branche ne disparaît pas
+  crochet         outils/installer.sh pose core.hooksPath ; Role: banc exigé sur test/
+  assertions      M-12 sur contact et projet
+  make.sh · CI    DATABASE_URL exportée ; la CI a un service Postgres
+Quand Ahmed te dit « lot-2-brain est prêt » :
+  git merge lot-2-brain
+  bash outils/make.sh test
+puis E7. Le cliquet devient plus dur : un rouge après la fusion est une
+porte qui mentait.
+
+
+6. CE QUE TU RENDS
+──────────────────
+Une ligne par V- dans journal/ : V-xxx · commit · porte · sortie ROUGE
+avant, VERTE après. journal/PORTES.md à jour. Puis :
+« prêt pour le troisième audit » — seulement si make test = 0, cliquet
+vert, et toutes les lignes fermées.
+
+⛔ Pas de fusion sur main.

@@ -20,7 +20,7 @@ ouvert ──(1er positionnement)──▶ staffing ──(DeclareNeedFilled)─
 
 | De | Vers | Commande | Acteur | Garde | Événement |
 |---|---|---|---|---|---|
-| a_pourvoir | en_recherche | selon `besoin.staffing.declencheur` : **effet du premier `Position*`** (défaut) · `TakeNeedInCharge` · effet du retenu | IA, RH, Staffing | `[G3]` | `NeedTakenInCharge` (commande) · `NeedStateChanged` (effet d'un `Position*` ou du retenu) *(D-4, 21/09 : L4 fait foi)* |
+| a_pourvoir | en_recherche | selon `besoin.staffing.declencheur` : **effet du premier `Position*`** (défaut) · `TakeNeedInCharge` · effet du retenu | IA, RH, Staffing | `[G3]` | `NeedTakenInCharge` (commande) · `NeedStateChanged` (effet d'un `Position*` ou du retenu) *(D-4 ; ⭐ V-064, 22/09 : L4 le porte désormais comme événement d'effet)* |
 | en_recherche | pourvu | selon `besoin.pourvu.mode` : **`DeclareNeedFilled` manuel** (défaut) · automatique à `SignPrestation` | Staffing | garde `besoin.pourvu.garde_minimale` (défaut : **`count(prestations engage du besoin) ≥ nb_postes_vises`**, F3 — *T-1 tranché 17/09 soir* ; options : ≥ 1 · aucune) `[G4]` ; l'écran montre *n prestations signées / m postes visés*, et à part le nombre de personnes distinctes | `NeedFilled` (manuel ; automatique : même événement, `auto: true`) *(D-4)* |
 | ouvert, staffing, pourvu | suspendu | `SuspendNeed` | IA, Staffing | motif obligatoire | `NeedSuspended` *(D-4)* |
 | suspendu | état précédent | `ResumeNeed` | IA, Staffing | l'état d'origine est mémorisé dans l'événement | `NeedResumed` *(D-4)* |
@@ -29,7 +29,7 @@ ouvert ──(1er positionnement)──▶ staffing ──(DeclareNeedFilled)─
 
 Positionner sur `pourvu`, `suspendu`, `ferme` : selon `positionnement.sur_besoin_inactif` — **refus** (défaut, F5) · alerte · libre. La priorité P1–P3 est une colonne indépendante, sans machine.
 
-## 2. Candidat — 3 catégories (F19) · codes système : draft (brouillon) · complete (actif) · **sorti** (semé par la migration 005 — *D-8, 21/09 : la base avait raison*) · l'admin en ajoute d'autres (Boond : « A supprimer », « Vivier »…). ⛔ **Une commande n'écrit jamais un référentiel** : `ExitCandidate` sans code de catégorie `sorti` actif = refus `GARDE`
+## 2. Candidat — 3 catégories (F19) · codes système : draft (brouillon) · complete (actif) · **sorti** — ⚠️ **code semé, NON système** (`systeme = false`, migration 005) : l'admin peut le désactiver, et `ExitCandidate` répond alors `GARDE` *(D-8 ; V-064, 22/09)* · l'admin en ajoute d'autres (Boond : « A supprimer », « Vivier »…). ⛔ **Une commande n'écrit jamais un référentiel** : `ExitCandidate` sans code de catégorie `sorti` actif = refus `GARDE`
 
 ```
 draft ──(CompleteCandidate)──▶ complete
@@ -88,7 +88,7 @@ previsionnelle ──(SignPrestation)──▶ signee ──(ClosePrestation)─
 | — | previsionnelle **ou** signee | `CreatePrestation` | Staffing, DP — **en `signee` : permission `SignPrestation` requise** (O-2) | projet existant ; ressource existante ; `debut ≤ fin` ; conditions obligatoires US5 ; selon `prestation.surcharge.mode` : **alerte** (défaut, DEC-10) · refus · silencieux, seuil `prestation.surcharge.seuil_pct` (100), sur l'occupation `engage` d'un jour commun (ATL-02) | `PrestationCreated` ; **si l'état initial est `engage` : + tous les effets de `SignPrestation`** (`PrestationSigned`, `ClientStatusDerived`, pourvu auto) — O-2, G8 : le résultat ne dépend pas de la commande d'entrée |
 | previsionnel | engage | `SignPrestation` | DP | `tjm_vendu`, `jours_vendus`, `taux_occupation` renseignés | `PrestationSigned` ; **+ `ClientStatusDerived`** selon `societe.passage_client.declencheur` (défaut : première `engage` de la société) `[G8]` ; **+ `NeedFilled` (`auto: true`) → pourvu** *(D-4)* si `besoin.pourvu.mode` est automatique |
 | signee | cloturee | `ClosePrestation` | DP | date de clôture ≤ `fin` ou = `fin` ; écrit **`snapshot_marge`** (ATL-15) dans la même transaction | `PrestationClosed` |
-| previsionnel, engage | annule | `CancelPrestation` | DP | selon `prestation.annulation.garde` : **aucun temps saisi** (défaut) · libre | `PrestationCancelled` |
+| previsionnel, engage | annule | `CancelPrestation` | DP, Staffing *(V-064 : la MATRICE et la base font foi)* | selon `prestation.annulation.garde` : **aucun temps saisi** (défaut) · libre | `PrestationCancelled` |
 
 Terminaux : `cloturee`, `annulee`. Temps saisissable : catégorie `engage` uniquement, période selon `temps.periode` (défaut : `[debut, fin]`) `[G9]`. Après `clos` : `AdjustTimesheetAfterClose` selon `temps.correction_apres_cloture` (défaut : ajustement tracé, `temps.ajustement = true`) ; le snapshot **ne bouge pas** — mur M-6 (F34, DEC-09). Remplacement de ressource = `ClosePrestation` + `CreatePrestation` (DEC-11, ATL-18). ATL-02 compte `previsionnelle` **et** `signee` dans l'occupation, distinguées ; ATL-07 : `previsionnelle` seule dans le CA prévisionnel.
 
