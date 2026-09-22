@@ -29,6 +29,7 @@ Mis à jour le 22/09/2026.
 | 2 | Serveur : les 55 commandes | ⏳ refusé par l'audit du 21/09 (47 constats) — critiques C1 → C7 corrigés, élevés et moyens en cours |
 | 2c | Connexion par compte Microsoft | ⬜ décidé (T2, D-2) — attend la réponse R4 de la réunion |
 | 3 | Les 26 écrans | ⬜ après le lot 2 accepté |
+| 4 · 5 · 6 | Prévus le 20/09 : CRM et recrutement · staffing · production, temps, marge | ↪ **fusionnés** : leurs commandes sont dans le lot 2, leurs écrans dans le lot 3. Numéros gardés vides pour ne pas renuméroter le 7 et le 8 |
 | 7 | Reprise Boond et recette | ⬜ attend l'export Boond (R3) et la liste des missions (R2) |
 | 8 | Connecteur MCP pour Claude, lecture seule d'abord | ⬜ en dernier |
 
