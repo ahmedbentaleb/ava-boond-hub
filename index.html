@@ -526,6 +526,31 @@
     .etat-cours .etat-n { color: #E6A758; }
     .etat-fusion { opacity: .55; }
     .etat-moi .etat-t { color: #CDD749; }
+
+    /* ═══ 22/09 : le menu à deux étages ═══ */
+    .tete { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; margin: 6px 0 10px; }
+    .tete h1 { margin: 0; font-size: 22px; }
+    .tete-etat { margin: 0; font-size: 13px; color: var(--muted); }
+    .tete-etat strong { color: var(--text); }
+    .hub-wrap { padding: 0; }
+    .nav1 { display: flex; gap: 0; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+    .nav1 button { background: none; border: 0; border-bottom: 3px solid transparent; color: var(--muted);
+      padding: 11px 16px 9px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .nav1 button:hover { color: var(--text); }
+    .nav1 button[aria-pressed="true"] { color: var(--text); border-bottom-color: #AEBF38; }
+    .nav2 { display: flex; gap: 6px; flex-wrap: wrap; padding: 10px 0 12px; }
+    .nav2 button, .nav2 a { background: transparent; border: 1px solid var(--line); color: var(--muted); border-radius: 4px;
+      padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer; text-decoration: none; }
+    .nav2 button:hover, .nav2 a:hover { border-color: #AEBF38; color: var(--text); }
+    .nav2 button[aria-pressed="true"] { background: #AEBF38; border-color: #AEBF38; color: #430A4B; font-weight: 600; }
+    @media (max-width: 720px) {
+      .tete { display: block; }
+      .nav1 button { padding: 10px 12px 8px; font-size: 13px; }
+      .nav2 { flex-wrap: nowrap; overflow-x: auto; }
+      .nav2 button, .nav2 a { white-space: nowrap; }
+    }
+    a.pill { color: var(--text); text-decoration: none; }
+    .nav2 a { color: var(--muted); }
 </style>
 <script type="importmap">
 {
@@ -536,26 +561,13 @@
 </head>
 <body>
 <main>
-  <h1>Ava Manager</h1>
-  <p class="lead hub-bandeau">
-  <strong>Où on en est</strong> : fondations faites (5.1) · serveur en correction après l'audit du 21/09 (5.2) ·
-  réunion avec la direction le 23/09. Le détail, toujours à jour :
-  <a href="#ava-etat">État du projet</a> · <a href="#reunion">Questions Avaliance</a> ·
-  <a href="dossier.html">le dossier</a> · <a href="doc/cartographie/BOOND_CHEMINS_2026-09-19.md">le relevé Boond</a>.
-</p>
-<p class="lead"><strong>Le dossier</strong> est le point d'entrée : ce qui fait foi, dans quel ordre le lire, où on en est. <strong>Le terminal</strong> montre les écrans.<br>Un lien, deux produits. Ava Manager = builder du métier cible. Boond Manager = reverse engineering de l’existant.</p>
+  <header class="tete">
+    <h1>Ava Manager</h1>
+    <p class="tete-etat"><strong>Où on en est</strong> — fondations faites (5.1) · serveur en correction après l'audit du 21/09 (5.2) · réunion avec la direction le 23/09.</p>
+  </header>
   <div class="hub-wrap" id="hub">
-    <div class="hub-row">
-      <div class="hub-product" id="hub-product"></div>
-      <div class="hub-doc">
-        <a class="pri" href="dossier.html">Dossier</a>
-        <a class="pri" href="terminal.html?v=b10fc6c">Les 26 &eacute;crans</a>
-        <a class="pri" href="cdc.html">Cahier des charges</a>
-        <a class="pri" href="simulateur.html">Banc d&rsquo;essai</a>
-      </div>
-    </div>
-    <div class="hub-sub" id="hub-sub"></div>
-    <div class="hub-nested" id="hub-nested"></div>
+    <nav class="nav1" id="hub-sub" aria-label="Sections"></nav>
+    <nav class="nav2" id="hub-nested" aria-label="Pages de la section"></nav>
   </div>
 
   <section class="view" id="view-ava-etat" hidden></section>
@@ -2693,6 +2705,44 @@ function showView(name){
       ]
     }
   };
+
+  /* ⭐ 22/09 — LE MENU. Deux étages : la section, puis ses pages.
+     Une page est une vue du hub (v), une page à part (href), ou une famille de documents (docs). */
+  const MENU = [
+    { id: "projet", label: "Projet", items: [
+      { v: "ava-etat", label: "État du projet" },
+      { v: "ava-reunion", label: "❓ Questions Avaliance" },
+      { href: "dossier.html", label: "Dossier ↗" } ] },
+    { id: "metier", label: "Le métier", items: [
+      { v: "ava-metier", label: "Vue d'ensemble" },
+      { v: "ava-quiz", label: "Quiz" },
+      { v: "ava-sim-rules", label: "Règles" },
+      { v: "ava-commands", label: "Qui décide" } ] },
+    { id: "conception", label: "Conception", items: [
+      { v: "ava-decisions", label: "Décisions" },
+      { v: "ava-cadrage", label: "Contrats" },
+      { href: "terminal.html", label: "Les 26 écrans ↗" },
+      { href: "simulateur.html", label: "Banc d'essai ↗" } ] },
+    { id: "controle", label: "Audits et journaux", items: [
+      { docs: "Audits", label: "Audits et rapports" },
+      { docs: "Journaux du code (portes, bugs, étapes)", label: "Journaux : portes, bugs, étapes" },
+      { docs: "Décisions d'architecture (ADR)", label: "ADR" },
+      { docs: "État et plans", label: "Plans datés" } ] },
+    { id: "documents", label: "Documents", items: [
+      { v: "ava-documents", label: "Tous les documents" },
+      { docs: "Cadrage et commande du client", label: "Commande du client" },
+      { href: "cdc.html", label: "Cahier des charges ↗" },
+      { docs: "Conception et contrat", label: "Conception et contrat" },
+      { docs: "Étude de Boond", label: "Étude de Boond" },
+      { docs: "Prompts et briefs", label: "Prompts et briefs" } ] },
+    { id: "boond", label: "Boond — l'existant", items: [
+      { v: "metier", label: "Métier" },
+      { v: "simulateur", label: "Simulateur" },
+      { v: "spec", label: "Spécification" },
+      { v: "audit", label: "Les 59 captures" } ] }
+  ];
+  const itemKey = (it) => it.v || (it.docs ? "docs:" + it.docs : it.href);
+  let DOC_CAT = "";
 
   const flattenViews = (views) =>
     views.flatMap((v) => (v.children && v.children.length ? v.children : [v]));
@@ -5379,8 +5429,8 @@ function showView(name){
   /* ═══════════ DOCUMENTS — tout le projet, lu dans doc/index.json (généré par dossier.py) ═══════════ */
   function renderDocuments() {
     const el = document.getElementById("view-ava-documents");
-    el.innerHTML = `<h2>Tous les documents</h2>
-      <p class="lead">Chaque document du projet, rangé par famille. Généré par <code>dossier.py</code> : rien n'est écrit à la main.</p>
+    el.innerHTML = `<h2>${DOC_CAT ? esc(DOC_CAT) : "Tous les documents"}</h2>
+      <p class="lead">${DOC_CAT ? "Les documents de cette famille. " : "Chaque document du projet, rangé par famille. "}Généré par <code>dossier.py</code> : rien n'est écrit à la main.</p>
       <input type="search" id="docs-q" placeholder="Chercher un document…" style="width:100%;max-width:420px;padding:9px 12px;margin:0 0 16px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:6px">
       <div id="docs-corps"><p class="note">Chargement…</p></div>`;
     fetch("doc/index.json", { cache: "no-store" }).then((r) => r.json()).then((d) => {
@@ -5390,7 +5440,7 @@ function showView(name){
         q = (q || "").toLowerCase();
         const f = d.filter((x) => !q || (x.titre + " " + x.chemin).toLowerCase().includes(q));
         document.getElementById("docs-corps").innerHTML = ORDRE.map((cat) => {
-          const l = f.filter((x) => x.categorie === cat);
+          const l = f.filter((x) => x.categorie === cat && (!DOC_CAT || cat === DOC_CAT));
           if (!l.length) return "";
           return `<details class="etat-phase" open><summary><span class="etat-ph">${esc(cat)}</span><span class="tag">${l.length}</span></summary>
             <ul class="etat-liste">${l.map((x) => `<li><a href="doc/${encodeURI(x.chemin)}" target="_blank" rel="noopener">${esc(x.titre)}</a>
@@ -5433,48 +5483,38 @@ function showView(name){
     return nestedLast[v.id] || v.children[0].id;
   }
 
-  function paintNav(product, view) {
-    const family = familyOf(product, view);
-    document.getElementById("hub-product").innerHTML = Object.keys(PRODUCTS).map((id) =>
-      `<button type="button" data-product="${id}" aria-pressed="${id === product}">
-        <strong>${PRODUCTS[id].label}</strong>
-        <span>${PRODUCTS[id].hint}</span>
-      </button>`
-    ).join("");
-    document.getElementById("hub-sub").innerHTML = PRODUCTS[product].views.map((v) => {
-      const on = family && family.id === v.id;
-      return `<button type="button" data-view="${entryView(v)}" aria-pressed="${!!on}">${v.label}</button>`;
-    }).join("");
-    const nested = document.getElementById("hub-nested");
-    if (family && family.children) {
-      nested.className = "hub-nested on";
-      nested.innerHTML = family.children.map((c) =>
-        `<button type="button" data-view="${c.id}" aria-pressed="${c.id === view}">${c.label}</button>`
-      ).join("");
-    } else {
-      nested.className = "hub-nested";
-      nested.innerHTML = "";
-    }
+  function sectionOf(key) {
+    return MENU.find((m) => m.items.some((it) => itemKey(it) === key)) || MENU[0];
+  }
+  function paintNav(key) {
+    const sec = sectionOf(key);
+    document.getElementById("hub-sub").innerHTML = MENU.map((m) =>
+      `<button type="button" data-sec="${m.id}" aria-pressed="${m.id === sec.id}">${m.label}</button>`).join("");
+    document.getElementById("hub-nested").innerHTML = sec.items.map((it) => it.href
+      ? `<a href="${it.href}" target="_blank" rel="noopener">${it.label}</a>`
+      : `<button type="button" data-item="${esc(itemKey(it))}" aria-pressed="${itemKey(it) === key}">${it.label}</button>`).join("");
   }
 
   function showHubView(name) {
     const aliases = { documents: "ava-documents", docs: "ava-documents", etat: "ava-etat", "etat-projet": "ava-etat", reunion: "ava-reunion", avaliance: "ava-reunion", questions: "ava-reunion", "ava-simulateur": "ava-sim-rules", "ava-parcours": "ava-quiz", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-quiz", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
     if (aliases[name]) name = aliases[name];
-    if (!ALL_VIEWS.includes(name)) name = "ava-metier";
-    const product = productOf(name);
-    const family = familyOf(product, name);
-    if (family && family.children) nestedLast[family.id] = name;
+    let key = name;
+    if (name.startsWith("docs:")) { DOC_CAT = decodeURIComponent(name.slice(5)); key = "docs:" + DOC_CAT; name = "ava-documents"; }
+    else if (name === "ava-documents") DOC_CAT = "";
+    if (!ALL_VIEWS.includes(name)) { name = "ava-etat"; key = name; }
     ALL_VIEWS.forEach((id) => {
       const node = document.getElementById("view-" + id);
       if (node) node.hidden = id !== name;
     });
-    paintNav(product, name);
+    paintNav(key);
     if (RENDER[name]) RENDER[name]();
     if (name === "metier" && typeof draw === "function") draw();
     if (name === "simulateur") { renderScenarios(); renderSim(); }
     if (name === "spec") bindSpecToc();
     if (name === "questions") { bindQuestions(); renderQuestions(); }
-    location.hash = name;
+    const h = key.startsWith("docs:") ? "docs:" + encodeURIComponent(DOC_CAT) : key;
+    if (location.hash.slice(1) !== h) history.replaceState(null, "", "#" + h);
+    window.scrollTo(0, 0);
   }
 
   window.showHubView = showHubView;
@@ -5482,12 +5522,10 @@ function showView(name){
   window.businessRules = RULES;
 
   document.getElementById("hub").addEventListener("click", (e) => {
-    const p = e.target.closest("[data-product]");
-    if (p) {
-      const first = PRODUCTS[p.dataset.product].views[0];
-      showHubView(entryView(first));
-      return;
-    }
+    const sec = e.target.closest("[data-sec]");
+    if (sec) { const m = MENU.find((x) => x.id === sec.dataset.sec), it = m.items.find((x) => !x.href); showHubView(itemKey(it)); return; }
+    const it = e.target.closest("[data-item]");
+    if (it) { showHubView(it.dataset.item); return; }
     const v = e.target.closest("[data-view]");
     if (v) showHubView(v.dataset.view);
   });
