@@ -1,0 +1,173 @@
+AVA MANAGER — LOT 2, CORRECTIFS APRÈS AUDIT
+===========================================
+21/09/2026. Un audit indépendant a REFUSÉ le lot 2 au commit 3b59ca5.
+Lis ce prompt en entier avant d'écrire une ligne. Il REMPLACE la
+section « ensuite seulement, le lot 3 » du prompt du 20/09 : le lot 3
+attend que tout ce qui suit soit vert ET revu par un second audit.
+
+
+0. CE QUE L'AUDIT A MESURÉ — PAS DÉCLARÉ, MESURÉ
+────────────────────────────────────────────────
+L'auditeur a saboté le code 37 fois, un sabotage à la fois.
+
+  ⭐ 48 portes sur 64 sont restées VERTES sous un sabotage qui les visait.
+
+  - toutes les commandes refusent sans rien faire   → 40 portes vertes
+  - emit() supprimé, base déjà jouée une fois        → 55/55 vertes
+  - un droit retiré, une politique écrite en dur     → vertes
+  - la couleur du thème changée, clair et sombre     → 4 portes écran vertes
+
+Ton cliquet disait 10/10. Il disait vrai sur le chiffre et faux sur le
+fond. Ce n'est pas un reproche : une partie des trous est dans le banc
+que le BRAIN t'a donné, et il les corrige de son côté (§5).
+
+
+1. LA RÈGLE DE CE TOUR — CHAQUE CORRECTION PROUVÉE PAR UN ROUGE
+───────────────────────────────────────────────────────────────
+Pour chaque point ci-dessous :
+  1. tu écris d'abord la porte qui ÉCHOUE sur le code actuel
+  2. tu la vois rouge, tu notes la sortie dans journal/
+  3. tu corriges le code
+  4. tu la vois verte
+  5. tu REMETS le défaut une fois, tu la revois rouge, tu l'enlèves
+
+⛔ Une porte que tu n'as pas vue rouge sur le vrai défaut n'est pas
+   livrée. L'auditeur reviendra avec les mêmes 37 sabotages.
+⛔ Toute porte de contrat RELIT LA BASE après la commande : la ligne
+   écrite, et l'événement de CETTE transaction. Une réponse HTTP seule
+   ne prouve rien.
+
+
+2. CRITIQUE — DANS CET ORDRE
+────────────────────────────
+C1  V-003  AUTHENTIFICATION. Aujourd'hui l'appelant choisit son groupe
+    dans l'en-tête x-ava-groupe. C'est un oubli du BRAIN, pas le tien :
+    la décision existait (T2, politique auth.fournisseur), aucun lot ne
+    te l'avait confiée. Maintenant :
+    - le compte vient d'une SESSION ; le groupe se déduit du compte,
+      jamais de la requête
+    - x-ava-groupe n'est accepté QUE si AVA_MODE=banc ; sinon 401
+    - le fournisseur réel (Microsoft, OIDC) est le LOT 2c, prompt à
+      part. Ici : la session et le refus de l'en-tête hors banc.
+    Porte : sans AVA_MODE=banc, un appel avec x-ava-groupe: ADM → 401,
+    et rien d'écrit.
+
+C2  V-002  Le serveur se connecte en superutilisateur « postgres » :
+    les murs posés par des droits SQL ne s'appliquent pas à lui. Le
+    BRAIN crée le rôle LOGIN « ava_serveur » (migration 007). Toi :
+    le serveur s'y connecte, et au démarrage il vérifie que
+    current_user n'est pas superutilisateur — sinon il refuse de
+    démarrer. Porte : démarrage en « postgres » → le serveur s'arrête.
+
+C3  V-004  Le périmètre n'est jamais comparé à l'objet. Un IA de
+    l'agence PAR crée et modifie un besoin de l'agence CAS.
+    Chaque commande résout l'agence de l'objet visé (ou créé) et la
+    passe à exigeDroit AVANT toute écriture.
+    Porte : IA de PAR sur un besoin de CAS → DROIT, rien d'écrit.
+
+C4  V-007  La réponse relit « le dernier événement du compte ». Elle
+    doit rendre celui de la transaction : RETURNING id dans emit().
+
+C5  V-005  RecordTimesheet refuse toute saisie : projet.ts:397 compare
+    une chaîne à String(Date). Compare des dates. Porte : un temps
+    saisi DANS les dates est écrit.
+
+C6  V-006  SetPolicy échoue toujours (colonne permission_code
+    inexistante, HTTP 500). Corrige la requête ; « commandes
+    affectées » = les commandes qui LISENT cette clé, pas toutes.
+    ⚠️ Pas de garde sur mur_touche : il est INDICATIF (tranché par le
+    BRAIN, la spec L4 est corrigée). Porte : une politique réglée,
+    relue en base, et l'événement PolicyChanged de la transaction.
+
+C7  V-010 + V-011  Les portes (reprend A-015 du 20/09) :
+    - une porte par commande sur un cas qui RÉUSSIT, base relue
+    - pour chaque ligne de la matrice : un cas qui passe, un cas hors
+      périmètre, un cas sans le groupe
+    - pour chaque politique LUE : deux valeurs, deux résultats
+    - O-2 : CreatePrestation en « signée » par STAF → DROIT
+    - la règle S (soi-même) : un cas soi-même permis, un cas autrui
+
+
+3. ÉLEVÉ
+────────
+E1  V-013  Le pourvu automatique à la signature appelle la même garde
+    que DeclareNeedFilled (besoin.pourvu.garde_minimale).
+E2  V-014  Une clé lue gouverne une branche. Une clé non implémentée
+    n'est pas lue, et n'apparaît pas dans liens.politiques. Liste :
+    besoin.pourvu.garde_minimale, societe.passage_client.propagation,
+    temps.validation, doublon.*.cles.
+E3  V-015  36 « if » métier dans server/ (liste :
+    rapport V-015). Les transitions viennent d'une table par
+    catégorie, lue par les commandes ET par vues.ts. Aucun code d'état,
+    aucun code de groupe (« RH », « RES »…) en littéral.
+E4  V-016  ExitCandidate n'écrit plus jamais dans ref_etat_candidat :
+    pas de code actif dans la catégorie → GARDE.
+E5  V-017  Chaque code est vérifié contre son ref_* actif avant
+    l'écriture (GARDE). Un MUR en production est un bug de commande :
+    tentative_refusee garde la cause technique.
+E6  V-018  Le bouchon /bouchon/*.json n'est plus servi ni copié dans
+    dist/. P-062 → P-065 et P-061 repassent ⏳ lot 3 dans
+    journal/PORTES.md : elles ne touchaient pas le serveur.
+E7  V-019  Portes D : en plus de la capture, les jetons calculés
+    (getComputedStyle des variables), en clair ET en sombre.
+E8  V-020  UploadDocument sous S : seul un porteur rattaché à la
+    personne du compte.
+E9  V-021  contact.statut_code, personne_coordonnee.type_code et
+    usage_code deviennent des ref_* (demande la migration au BRAIN
+    dans journal/, tu ne l'écris pas). perimetre.type_code reste.
+
+
+4. MOYEN
+────────
+M1  V-025  P-002 lit AVA_BASE_URL, plus de port 3000 en dur.
+M2  V-026  une commande écrit la note candidat ; une porte par échelle.
+M3  V-027  le catch {} de la trace de refus journalise l'échec.
+M4  V-030  gestionnaire d'erreurs : code générique au client, détail
+    au journal. Un refus n'est jamais un 500.
+M5  V-031  plus aucun mot de passe versionné : variable
+    d'environnement, .env ignoré.
+M6  V-032  la réponse porte l'objet sous une forme unique (avec id) et
+    la liste des événements de la transaction.
+M7  V-033  UpdateUnit remonte l'arbre comme CreateUnit.
+M8  V-034  ClosePrestation garde la date de clôture (≤ fin).
+M9  V-035  référence projet par séquence, plus count(*)+1.
+M10 V-036  ManageRefs : ordre et actif ; ManageGroups : événement
+    seulement si une ligne a changé.
+M11 V-037  ArchiveObject délègue à la garde de l'objet.
+M12 V-038  un compte RES de banc relié à une personne ressource.
+M13 V-039  captures de référence Linux pour la CI.
+M14 V-040  chaque commit porte un trailer « Role: <sous-agent> ».
+
+
+5. CE QUE LE BRAIN FAIT DE SON CÔTÉ — TU N'Y TOUCHES PAS
+───────────────────────────────────────────────────────
+  migration 007      M-15, rôle ava_serveur, droits de tentative_refusee
+  assertions         une par privilège pour M-6 M-7 M-8 M-15 ;
+                     test/SPEC_ASSERTIONS_L7.sql = copie exacte de _ops/
+  cliquet + CI       case 1 exige make_rc = 0 ; cases 3 et 9 numéro par
+                     numéro ; checkout complet en CI
+  canon              grille, jeu d'essai, 6 contradictions tranchées
+
+Le BRAIN travaille sur la branche « lot-2-brain », dans un autre
+dossier, sur une autre base. Tu n'y vas pas.
+
+Tant que la migration 007 n'est pas là, fais C1, C3 à C7 et le §3.
+C2 attend 007. Ne l'écris pas toi-même.
+Quand Ahmed te dit « lot-2-brain est prêt » :
+  git merge lot-2-brain
+  bash outils/make.sh test
+puis C2. ⚠️ Le cliquet devient plus dur à ce moment-là (cases 1, 3, 9) :
+un rouge qui apparaît après la fusion est une porte qui mentait, pas
+un défaut du cliquet.
+
+
+6. CE QUE TU RENDS
+──────────────────
+  - une ligne par point dans journal/ : V-xxx · commit · la porte ·
+    sa sortie ROUGE avant, VERTE après
+  - journal/PORTES.md à jour, les ⏳ du §3-E6 compris
+  - le cliquet, puis : « prêt pour le second audit »
+
+⛔ Pas de fusion sur main. Le second audit rejoue les 37 sabotages ;
+   le lot 2 est accepté quand il n'en reste AUCUN aveugle sur un point
+   critique.

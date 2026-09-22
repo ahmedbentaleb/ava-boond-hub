@@ -1,0 +1,115 @@
+AVA MANAGER — SESSION BRAIN CODE
+================================
+21/09/2026. Tu es la main du BRAIN : tu écris ce que l'audit du 21/09
+a mis à la charge du BRAIN, et rien d'autre. Grok (le CODE) travaille
+EN MÊME TEMPS que toi sur le serveur, les écrans et les tests.
+Lis ce prompt en entier avant d'écrire une ligne.
+
+Le mot d'Ahmed est donné pour ce qui suit. Pour rien d'autre.
+
+
+0. À LIRE D'ABORD — ET SEULEMENT ÇA
+───────────────────────────────────
+  _ops/ARBITRAGE_AUDIT_2026-09-21.md     les décisions D-1 → D-9, les V- retenus
+  Desktop/ava-audit/rapport/CONSTATS.md  le détail et les preuves de chaque V-
+  _ops/JOURNAL_BUGS.md, lignes A-008 A-010  rôles globaux · single-transaction
+  _ops/SPEC_SQL_AVAMANAGER_V1.sql §1 et §14  la fonction ava_role(), M-15
+
+
+1. TON POSTE — À CÔTÉ DE GROK, JAMAIS DANS SES PIEDS
+────────────────────────────────────────────────────
+Grok travaille dans « Ava Manager », sur la branche lot-2, base « ava »,
+port 3000. ⛔ Tu n'y touches pas.
+
+  cd "/c/Users/Hamada/Desktop/Ava Manager"
+  git worktree add ../ava-brain -b lot-2-brain lot-2
+  cd ../ava-brain
+
+Ta base : « ava_brain », sur le même PostgreSQL 16 local (127.0.0.1:5432).
+Toutes tes commandes visent DATABASE_URL=postgres://postgres@127.0.0.1:5432/ava_brain.
+⚠️ Les RÔLES sont communs aux bases (A-008) : un rôle que tu crées existe
+   aussi pour « ava ». C'est voulu, mais crée-les par ava_role(), jamais
+   par CREATE ROLE nu.
+
+
+2. CE QUE TU FAIS — DANS CET ORDRE, UN COMMIT PAR POINT
+───────────────────────────────────────────────────────
+Règle pour chaque point : le témoin vu ROUGE avant, VERT après. Tu
+rejoues le script de l'audit qui l'avait trouvé
+(Desktop/ava-audit/rapport/preuves/scripts/), en le pointant sur
+ava_brain. Tu colles les deux sorties dans le message de commit.
+
+B1  V-012 + V-001  LES ASSERTIONS D'ABORD — elles doivent voir rouge
+    sur la base actuelle avant que 007 existe.
+    Dans _ops/SPEC_ASSERTIONS_L7.sql, une assertion PAR PRIVILÈGE pour
+    chaque mur « trigger + GRANT » :
+      M-6  ava_app n'a pas UPDATE ni DELETE sur snapshot_marge
+      M-7  ava_app n'a pas UPDATE ni DELETE sur evenement_metier
+      M-8  ava_app n'a DELETE sur AUCUNE table historique
+      M-15 ava_lecture_agregats n'atteint QUE les 4 vues par devise +
+           ref_devise, ref_pays, politique — mesuré sur TOUTES les
+           relations du schéma, pas sur une liste de noms
+    Puis test/SPEC_ASSERTIONS_L7.sql = copie EXACTE de _ops/.
+    Le plancher « 23 » n'est plus écrit en dur dans make.sh ni dans le
+    cliquet : il se compte dans le fichier d'assertions.
+    Témoin : sur ava_brain actuelle, M-15 doit être ROUGE.
+
+B2  V-001 V-002 V-027 V-021  MIGRATION 007
+    db/migrations/007_correctifs_audit.sql, jouée en --single-transaction
+    (A-010) :
+    - M-15 : REVOKE SELECT ON ALL TABLES IN SCHEMA ava FROM
+      ava_lecture_agregats, puis GRANT de ce que dit le canon §14
+    - rôle ava_serveur : ava_role('ava_serveur') puis ALTER ROLE
+      ava_serveur LOGIN NOSUPERUSER NOCREATEROLE NOCREATEDB, et
+      GRANT ava_app TO ava_serveur. ⛔ Aucun mot de passe dans le dépôt :
+      il se pose au déploiement, hors git.
+    - GRANT INSERT, SELECT sur tentative_refusee (et USAGE de sa
+      séquence) à ava_app
+    - D-9 : contact.statut_code, personne_coordonnee.type_code et
+      usage_code passent de CHECK à FK vers trois nouveaux ref_*, semés
+      avec les valeurs actuelles. perimetre.type_code reste en CHECK.
+      Le registre §B et le compte §E suivent (dans le même commit).
+    Témoins : B1 passe au VERT ; la migration jouée deux fois sur une
+    base neuve ne lève pas ; sabotée en son milieu, elle ne laisse rien.
+
+B3  V-008 V-009  LE CLIQUET ET LA CI
+    - case 1 : KO si make_rc ≠ 0, ou si le nombre de portes EXÉCUTÉES
+      est inférieur au nombre de lignes ✅ de journal/PORTES.md
+    - cases 3 et 9 : comparer NUMÉRO PAR NUMÉRO les portes P-xxx de
+      main et de HEAD, quelle que soit la forme du tableau
+    - .github/workflows/ci.yml : checkout avec fetch-depth: 0, et main
+      présent en local avant le cliquet
+    - make.sh : le serveur démarre avec ava_serveur, les migrations
+      avec postgres (deux URL, pas une)
+    Témoins : serveur qui ne démarre pas → case 1 KO ; 4 portes ✅
+    retirées de PORTES.md → case 3 KO. Les scripts de l'audit le font.
+
+B4  V-023 V-024 V-029  LE CANON (du .md, sans code)
+    - V-029 : appliquer D-3 → D-8 dans L4, MACHINES_ETAT et MATRICE ;
+      supprimer le doublon doublon.contact.mode du registre ; la
+      commande de comptage du registre rend le vrai compte
+    - GRILLE_AUDIT : les chiffres renvoient au registre §E au lieu de
+      les recopier ; B1 cherche les if dans server/ et web/ ; A3 vise
+      ci.yml ; C4 mesure toutes les relations
+    - JEU_ESSAI.sql : ne vide plus groupes, périmètres et droits
+    - PLAN_2026-09-21 : lot 2c « authentification » inscrit (D-2)
+
+
+3. CE QUE TU NE FAIS JAMAIS
+───────────────────────────
+⛔ server/  web/  test/ (sauf la copie du fichier d'assertions) : c'est
+   à Grok. Tu vois un défaut chez lui : une ligne dans ton rapport.
+⛔ Réécrire une migration déjà publiée (001 → 006). Tout passe par 007.
+⛔ Toucher la base « ava », le port 3000, le dossier « Ava Manager ».
+⛔ Fusionner dans lot-2 ou main, pousser. C'est Ahmed qui dit quand.
+⛔ Assouplir un contrôle parce qu'il te gêne (A-011).
+
+
+4. CE QUE TU RENDS
+──────────────────
+Quand B1 → B4 sont commités sur lot-2-brain :
+  - une ligne par point dans _ops/JOURNAL_BUGS.md : V-xxx · commit ·
+    témoin ROUGE → VERT
+  - en fin de réponse à Ahmed, 15 lignes au plus : le commit, le
+    tableau des 4 points, et la phrase exacte à donner à Grok :
+      « lot-2-brain est prêt : git merge lot-2-brain, puis C2. »

@@ -507,6 +507,25 @@
       .hub-wrap { position: static; }
       .hub-bandeau { font-size: 13px; }
     }
+
+    /* ═══ 22/09 : la feuille de route cochable et les documents ═══ */
+    .etat-total { font-size: 15px; margin: 4px 0 10px; }
+    .etat-barre { height: 6px; background: rgba(255,255,255,.08); margin-top: 6px; max-width: 520px; }
+    .etat-barre i { display: block; height: 100%; background: #AEBF38; }
+    .etat-phase { border: 1px solid var(--line); border-radius: 6px; margin: 0 0 10px; background: var(--panel); }
+    .etat-phase summary { cursor: pointer; padding: 12px 14px; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+    .etat-ph { font-weight: 600; font-size: 15px; }
+    .etat-liste { list-style: none; margin: 0; padding: 0 14px 10px; }
+    .etat-liste li { border-top: 1px solid var(--line); padding: 9px 0; display: flex; flex-direction: column; gap: 3px; }
+    .etat-liste label { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; }
+    .etat-liste input { margin-top: 3px; accent-color: #AEBF38; }
+    .etat-n { font-variant-numeric: tabular-nums; color: var(--muted); min-width: 2.2em; }
+    .etat-e { font-size: 12.5px; color: var(--muted); padding-left: 2.9em; }
+    .etat-d { font-size: 12.5px; padding-left: 2.9em; }
+    .etat-fait .etat-t { color: var(--muted); }
+    .etat-cours .etat-n { color: #E6A758; }
+    .etat-fusion { opacity: .55; }
+    .etat-moi .etat-t { color: #CDD749; }
 </style>
 <script type="importmap">
 {
@@ -519,7 +538,7 @@
 <main>
   <h1>Ava Manager</h1>
   <p class="lead hub-bandeau">
-  <strong>Où on en est</strong> : lot 1 accepté · lot 2 en correction après l'audit du 21/09 ·
+  <strong>Où on en est</strong> : fondations faites (5.1) · serveur en correction après l'audit du 21/09 (5.2) ·
   réunion avec la direction le 23/09. Le détail, toujours à jour :
   <a href="#ava-etat">État du projet</a> · <a href="#reunion">Questions Avaliance</a> ·
   <a href="dossier.html">le dossier</a> · <a href="doc/cartographie/BOOND_CHEMINS_2026-09-19.md">le relevé Boond</a>.
@@ -541,6 +560,7 @@
 
   <section class="view" id="view-ava-etat" hidden></section>
   <section class="view" id="view-ava-reunion" hidden></section>
+  <section class="view" id="view-ava-documents" hidden></section>
   <section class="view" id="view-ava-metier" hidden></section>
   <section class="view" id="view-ava-quiz" hidden></section>
   <section class="view" id="view-ava-simulateur" hidden></section>
@@ -2653,6 +2673,7 @@ function showView(name){
       views: [
         { id: "ava-etat", label: "État du projet" },
         { id: "ava-reunion", label: "❓ Questions Avaliance" },
+        { id: "ava-documents", label: "Documents" },
         { id: "ava-metier", label: "Métier" },
         { id: "ava-quiz", label: "Quiz" },
         { id: "ava-sim-rules", label: "Règles" },
@@ -5269,38 +5290,121 @@ function showView(name){
     };
   }
 
-  /* ═══════════ ÉTAT DU PROJET — lu dans doc/ETAT_PROJET.md, jamais recopié ici ═══════════ */
-  function etatTables(md) {
+  /* ═══════════ ÉTAT DU PROJET — lu dans doc/ETAT_PROJET.md, jamais recopié ici ═══════════
+     La feuille de route : phases, sous-étapes, état, documents. L'état vient du fichier (le BRAIN
+     le tient). La case que coche Hamada reste dans son navigateur, et se copie pour le BRAIN. */
+  const ETAT_KEY = "ava-etat-coche-v1";
+  const etatCoches = () => { try { return JSON.parse(localStorage.getItem(ETAT_KEY)) || {}; } catch (e) { return {}; } };
+  const etatSave = (o) => { try { localStorage.setItem(ETAT_KEY, JSON.stringify(o)); } catch (e) {} };
+  function etatInline(t) {
+    return esc(t)
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/`([^`]+)`/g, "<code>$1</code>")
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, txt, href) => {
+        const h = href.startsWith("../") ? href.slice(3) || "./" : "doc/" + href;
+        return `<a href="${h}" target="${href.startsWith("../") ? "_self" : "_blank"}" rel="noopener">${txt}</a>`;
+      });
+  }
+  function etatParse(md) {
     const NL = String.fromCharCode(10);
     const i = md.indexOf(NL + "<etat>" + NL), j = md.indexOf(NL + "</etat>", i + 1);
     const bloc = i < 0 ? "" : md.slice(i + 8, j < 0 ? md.length : j);
-    const inl = (t) => esc(t).replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>").replace(/`([^`]+)`/g, "<code>$1</code>");
-    return bloc.trim().split(/\n\s*\n/).map((b) => {
-      const l = b.split(NL).filter((x) => x.startsWith("|"));
-      if (l.length < 3) return `<p class="note">${inl(b.trim())}</p>`;
-      const cel = (x) => x.trim().replace(/^\||\|$/g, "").split("|").map((c) => c.trim());
-      return `<div style="overflow-x:auto"><table class="etat-t"><tr>${cel(l[0]).map((c) => `<th>${inl(c)}</th>`).join("")}</tr>` +
-        l.slice(2).map((r) => `<tr>${cel(r).map((c) => `<td>${inl(c)}</td>`).join("")}</tr>`).join("") + `</table></div>`;
-    }).join("");
+    const phases = []; let intro = "";
+    bloc.split(NL).forEach((l) => {
+      if (l.startsWith("### ")) phases.push({ titre: l.slice(4).trim(), etapes: [] });
+      else if (l.startsWith("|") && phases.length) {
+        const c = l.trim().replace(/^\||\|$/g, "").split("|").map((x) => x.trim());
+        if (c[0] === "#" || /^-+$/.test(c[0].replace(/[: ]/g, ""))) return;
+        phases[phases.length - 1].etapes.push({ n: c[0], etape: c[1] || "", etat: c[2] || "", docs: c[3] || "" });
+      } else if (!phases.length && l.trim()) intro += l + " ";
+    });
+    return { intro, phases };
   }
+  const etatCode = (e) => e.startsWith("✅") ? "fait" : e.startsWith("⏳") ? "cours" : e.startsWith("↪") ? "fusion" : "afaire";
   function renderEtat() {
     const el = document.getElementById("view-ava-etat");
-    el.innerHTML = `<h2>État du projet</h2>
-      <p class="lead">Les lots, ce qui est fini, ce qui bloque. Lu dans <a href="doc/ETAT_PROJET.md">ETAT_PROJET.md</a>, la seule source.</p>
-      <div id="etat-corps"><p class="note">Chargement…</p></div>
-      <div class="rowbtns" style="margin-top:16px">
-        <a class="pill" href="#reunion">❓ Questions pour la réunion</a>
-        <a class="pill" href="doc/ARBITRAGE_AUDIT_2026-09-21.md">L'audit du 21/09</a>
-        <a class="pill" href="doc/DECISIONS_TECHNIQUES_v1.md">Décisions techniques T1–T10</a>
-        <a class="pill" href="dossier.html">Le dossier complet</a>
-      </div>`;
+    el.innerHTML = `<h2>État du projet — du premier jour à la livraison</h2>
+      <p class="lead">Chaque étape, son état et ses documents. L'état est tenu par le BRAIN dans <a href="doc/ETAT_PROJET.md" target="_blank" rel="noopener">ETAT_PROJET.md</a>. Vous pouvez cocher une case : elle reste dans ce navigateur, et <strong>Copier mes coches</strong> l'envoie au BRAIN.</p>
+      <div id="etat-corps"><p class="note">Chargement…</p></div>`;
     fetch("doc/ETAT_PROJET.md", { cache: "no-store" }).then((r) => r.ok ? r.text() : Promise.reject(r.status))
-      .then((md) => { document.getElementById("etat-corps").innerHTML = etatTables(md); })
+      .then((md) => {
+        const { intro, phases } = etatParse(md), co = etatCoches();
+        const tout = phases.flatMap((p) => p.etapes).filter((e) => etatCode(e.etat) !== "fusion");
+        const faits = tout.filter((e) => etatCode(e.etat) === "fait").length;
+        const pct = Math.round(100 * faits / Math.max(1, tout.length));
+        document.getElementById("etat-corps").innerHTML = `
+          <div class="etat-total"><b>${faits} / ${tout.length}</b> étapes faites · ${pct} % <span class="note">(compté en étapes, pas en effort : le code pèse plus lourd)</span>
+            <div class="etat-barre"><i style="width:${pct}%"></i></div></div>
+          <p class="note">${etatInline(intro.trim())}</p>
+          <div class="rowbtns" style="margin:0 0 14px">
+            <button type="button" class="create-btn primary" id="etat-copie">Copier mes coches</button>
+            <a class="pill" href="#documents">Tous les documents</a>
+            <a class="pill" href="#reunion">❓ Questions Avaliance</a>
+          </div>
+          <p class="note" id="etat-flash" hidden></p>
+          ${phases.map((ph) => {
+            const et = ph.etapes.filter((e) => etatCode(e.etat) !== "fusion");
+            const f = et.filter((e) => etatCode(e.etat) === "fait").length;
+            const cours = et.some((e) => etatCode(e.etat) === "cours");
+            return `<details class="etat-phase" ${f < et.length ? "open" : ""}>
+              <summary><span class="etat-ph">${esc(ph.titre)}</span>
+                <span class="tag ${f === et.length ? "ok" : cours ? "warn" : ""}">${f} / ${et.length}</span></summary>
+              <ul class="etat-liste">${ph.etapes.map((e) => {
+                const c = etatCode(e.etat), moi = co[e.n];
+                return `<li class="etat-${c}${moi ? " etat-moi" : ""}">
+                  <label><input type="checkbox" data-etat-n="${esc(e.n)}" ${c === "fait" || moi ? "checked" : ""} ${c === "fait" || c === "fusion" ? "disabled" : ""}>
+                  <span class="etat-n">${esc(e.n)}</span> <span class="etat-t">${etatInline(e.etape)}</span></label>
+                  <span class="etat-e">${etatInline(e.etat)}${moi ? ' · <em>coché par vous</em>' : ""}</span>
+                  ${e.docs && e.docs !== "—" ? `<span class="etat-d">📄 ${etatInline(e.docs)}</span>` : ""}
+                </li>`;
+              }).join("")}</ul></details>`;
+          }).join("")}`;
+      })
       .catch(() => { document.getElementById("etat-corps").innerHTML = '<p class="note">État indisponible hors ligne. Ouvrir <a href="doc/ETAT_PROJET.md">ETAT_PROJET.md</a>.</p>'; });
+    el.onchange = (e) => {
+      const b = e.target.closest("[data-etat-n]"); if (!b) return;
+      const co = etatCoches(); if (b.checked) co[b.dataset.etatN] = new Date().toLocaleDateString("fr-FR"); else delete co[b.dataset.etatN];
+      etatSave(co); renderEtat();
+    };
+    el.onclick = (e) => {
+      if (e.target.id !== "etat-copie") return;
+      const co = etatCoches(), k = Object.keys(co);
+      const t = k.length ? "Étapes cochées par Hamada :\n" + k.map((n) => "- " + n + " (le " + co[n] + ")").join("\n") : "Aucune case cochée.";
+      const f = document.getElementById("etat-flash"); f.hidden = false;
+      if (navigator.clipboard) navigator.clipboard.writeText(t).then(() => { f.textContent = "Copié. Collez-le dans la session BRAIN."; }, () => { f.textContent = t; });
+      else f.textContent = t;
+    };
+  }
+
+  /* ═══════════ DOCUMENTS — tout le projet, lu dans doc/index.json (généré par dossier.py) ═══════════ */
+  function renderDocuments() {
+    const el = document.getElementById("view-ava-documents");
+    el.innerHTML = `<h2>Tous les documents</h2>
+      <p class="lead">Chaque document du projet, rangé par famille. Généré par <code>dossier.py</code> : rien n'est écrit à la main.</p>
+      <input type="search" id="docs-q" placeholder="Chercher un document…" style="width:100%;max-width:420px;padding:9px 12px;margin:0 0 16px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:6px">
+      <div id="docs-corps"><p class="note">Chargement…</p></div>`;
+    fetch("doc/index.json", { cache: "no-store" }).then((r) => r.json()).then((d) => {
+      const ORDRE = ["État et plans", "Cadrage et commande du client", "Étude de Boond", "Conception et contrat",
+        "Décisions d'architecture (ADR)", "Audits", "Journaux du code (portes, bugs, étapes)", "Prompts et briefs"];
+      const paint = (q) => {
+        q = (q || "").toLowerCase();
+        const f = d.filter((x) => !q || (x.titre + " " + x.chemin).toLowerCase().includes(q));
+        document.getElementById("docs-corps").innerHTML = ORDRE.map((cat) => {
+          const l = f.filter((x) => x.categorie === cat);
+          if (!l.length) return "";
+          return `<details class="etat-phase" open><summary><span class="etat-ph">${esc(cat)}</span><span class="tag">${l.length}</span></summary>
+            <ul class="etat-liste">${l.map((x) => `<li><a href="doc/${encodeURI(x.chemin)}" target="_blank" rel="noopener">${esc(x.titre)}</a>
+              <span class="etat-e"><code>${esc(x.chemin)}</code> · ${esc(x.date)} · ${x.ko} Ko</span></li>`).join("")}</ul></details>`;
+        }).join("") || '<p class="note">Aucun document ne correspond.</p>';
+      };
+      paint("");
+      document.getElementById("docs-q").oninput = (e) => paint(e.target.value);
+    }).catch(() => { document.getElementById("docs-corps").innerHTML = '<p class="note">Index indisponible hors ligne.</p>'; });
   }
 
   const RENDER = {
     "ava-etat": renderEtat,
+    "ava-documents": renderDocuments,
     "ava-reunion": renderReunion,
     "ava-metier": renderAvaMetier,
     "ava-simulateur": renderAvaSimulateur,
@@ -5354,7 +5458,7 @@ function showView(name){
   }
 
   function showHubView(name) {
-    const aliases = { etat: "ava-etat", "etat-projet": "ava-etat", reunion: "ava-reunion", avaliance: "ava-reunion", questions: "ava-reunion", "ava-simulateur": "ava-sim-rules", "ava-parcours": "ava-quiz", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-quiz", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
+    const aliases = { documents: "ava-documents", docs: "ava-documents", etat: "ava-etat", "etat-projet": "ava-etat", reunion: "ava-reunion", avaliance: "ava-reunion", questions: "ava-reunion", "ava-simulateur": "ava-sim-rules", "ava-parcours": "ava-quiz", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-quiz", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
     if (aliases[name]) name = aliases[name];
     if (!ALL_VIEWS.includes(name)) name = "ava-metier";
     const product = productOf(name);

@@ -134,7 +134,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <a href="simulateur.html">Banc d’essai</a>
 </div></div></div></div>
 <div class="p">
-<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">22/09/2026 · 560dd81</span></div>
+<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">22/09/2026 · 67cae3b</span></div>
 <p class="chapeau">Le point d'entrée unique. Une autre IA écrit le code, je l'audite. Tout ce qui fait foi est listé ici — et rien n'y est recopié : ce document <b>mesure</b> et <b>pointe</b>.</p>
 <div class="ch">
 <div><b>37</b><span>tables</span></div>
@@ -244,20 +244,79 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <p class="note">Vide, et c'est normal : le code n'a pas encore été écrit.</p>
 <etat>
 <h2><span class="num">08</span>Où on en est</h2>
-<p class="sub">Mis à jour le 22/09/2026.</p>
-<div class="tw"><table><tr><th>Lot</th><th>Contenu</th><th>État</th></tr>
-<tr><td>1</td><td>Fondations : dépôt, base, 15 murs, seeds, CI</td><td>✅ accepté — 69 min</td></tr>
-<tr><td>2</td><td>Serveur : les 55 commandes</td><td>⏳ refusé par l&#x27;audit du 21/09 (47 constats) — critiques C1 → C7 corrigés, élevés et moyens en cours</td></tr>
-<tr><td>2c</td><td>Connexion par compte Microsoft</td><td>⬜ décidé (T2, D-2) — attend la réponse R4 de la réunion</td></tr>
-<tr><td>3</td><td>Les 26 écrans</td><td>⬜ après le lot 2 accepté</td></tr>
-<tr><td>4 · 5 · 6</td><td>Prévus le 20/09 : CRM et recrutement · staffing · production, temps, marge</td><td>↪ fusionnés : leurs commandes sont dans le lot 2, leurs écrans dans le lot 3. Numéros gardés vides pour ne pas renuméroter le 7 et le 8</td></tr>
-<tr><td>7</td><td>Reprise Boond et recette</td><td>⬜ attend l&#x27;export Boond (R3) et la liste des missions (R2)</td></tr>
-<tr><td>8</td><td>Connecteur MCP pour Claude, lecture seule d&#x27;abord</td><td>⬜ en dernier</td></tr>
+<p class="sub">Mis à jour le 22/09/2026. Les anciens numéros de lot sont entre parenthèses.</p>
+<h3 style="margin:22px 0 6px">0 · Démarrage</h3>
+<div class="tw"><table><tr><th>#</th><th>Étape</th><th>État</th><th>Documents</th></tr>
+<tr><td>0.1</td><td>Lire la commande d&#x27;Avaliance : les deux cahiers des charges</td><td>✅ 15/09</td><td><a href="doc/AVA_MANAGER-SPEC_1_extract.txt">SPEC 1</a> · <a href="doc/COCKPIT2-Cahier_de_charge-v0.1_extract.txt">Cockpit 2</a> · <a href="doc/../cdc.html">cahier des charges</a></td></tr>
+<tr><td>0.2</td><td>Écarter la démo Jenspark (un prototype, pas une base)</td><td>✅ 16/09</td><td><a href="doc/adr/ADR-001-zip-jenspark-ecarte.md">ADR-001</a></td></tr>
+<tr><td>0.3</td><td>Dépôt GitHub privé, sauvegarde, règles de travail</td><td>✅ 17/09</td><td><a href="doc/AUDIT_PROJET_2026-09-17.md">audit du projet 17/09</a> · <a href="doc/PLAN_2026-09-17.md">plan du 17</a></td></tr>
 </table></div>
-<div class="tw"><table><tr><th>Aujourd&#x27;hui</th><th>État</th></tr>
-<tr><td>Second audit du lot 2</td><td>⬜ quand Grok écrit « prêt pour le second audit »</td></tr>
-<tr><td>Réunion avec la direction d&#x27;Avaliance</td><td>⬜ 23/09 — 10 questions, hub `#reunion`</td></tr>
-<tr><td>Relevé Boond</td><td>✅ clos le 19/09</td></tr>
+<h3 style="margin:22px 0 6px">1 · Étude de Boond Manager — l&#x27;existant</h3>
+<div class="tw"><table><tr><th>#</th><th>Étape</th><th>État</th><th>Documents</th></tr>
+<tr><td>1.1</td><td>Les 59 captures d&#x27;écran de Boond</td><td>✅ 15/09</td><td>hub › Boond › Audit complet · <a href="doc/cartographie/AUDIT_ECRANS.md">audit des écrans</a></td></tr>
+<tr><td>1.2</td><td>Comprendre comment Boond fonctionne</td><td>✅ 15/09</td><td><a href="doc/cartographie/FONCTIONNEMENT_BOOND.md">fonctionnement</a> · <a href="doc/cartographie/DIAGNOSTIC_METIER.md">diagnostic métier</a></td></tr>
+<tr><td>1.3</td><td>Le relevé des chemins et des volumes (31 sections)</td><td>✅ 19/09</td><td><a href="doc/cartographie/BOOND_CHEMINS_2026-09-19.md">relevé Boond</a> · <a href="doc/GRILLE_INVENTAIRE_BOOND_2026-09-17.md">grille d&#x27;inventaire</a></td></tr>
+<tr><td>1.4</td><td>Les questions que seul Avaliance peut trancher</td><td>⏳ réunion du 23/09</td><td>hub › <a href="doc/../#reunion">Questions Avaliance</a> · <a href="doc/QUESTIONS_BOOND_2026-09-19.md">questions Boond</a></td></tr>
+</table></div>
+<h3 style="margin:22px 0 6px">2 · Cadrage métier — ce que le logiciel doit faire</h3>
+<div class="tw"><table><tr><th>#</th><th>Étape</th><th>État</th><th>Documents</th></tr>
+<tr><td>2.1</td><td>Le cadrage réconcilié : les 15 parcours du métier</td><td>✅ 16/09</td><td><a href="doc/CADRAGE_METIER_RECONCILIE_2026-09-16.md">cadrage</a> · <a href="doc/PARCOURS_METIER_SIMPLE_AVA_MANAGER.md">parcours simples</a> · <a href="doc/TRANSMISSION_SESSION_CADRAGE_2026-09-16.md">passation</a></td></tr>
+<tr><td>2.2</td><td>Les 18 décisions et la feuille F1–F36</td><td>✅ 16/09</td><td>hub › Décisions · <a href="doc/FEUILLE_F1-F36_AHMED_2026-09-16.md">feuille F1–F36</a></td></tr>
+<tr><td>2.3</td><td>La feuille G1–G15, tranchée</td><td>✅ 17/09</td><td><a href="doc/FEUILLE_G1-G15_2026-09-17.md">feuille G</a></td></tr>
+<tr><td>2.4</td><td>Le modèle métier et les 15 murs</td><td>✅ 17/09</td><td><a href="doc/MODELE_METIER_CANONIQUE_v1.md">modèle métier</a></td></tr>
+<tr><td>2.5</td><td>Les cycles de vie (machines d&#x27;état)</td><td>✅ 17/09</td><td><a href="doc/MACHINES_ETAT_V1.md">machines d&#x27;état</a></td></tr>
+<tr><td>2.6</td><td>Tout est réglable : le registre des 173 politiques</td><td>✅ 17/09</td><td><a href="doc/REGISTRE_POLITIQUES_v1.md">registre</a> · <a href="doc/adr/ADR-005-politiques-parametrables-vs-invariants.md">ADR-005</a></td></tr>
+<tr><td>2.7</td><td>Qui a le droit de quoi</td><td>✅ 18/09</td><td><a href="doc/MATRICE_DROITS_v1.md">matrice des droits</a> · <a href="doc/annexes/MATRICE_DROITS_MOTIFS_2026-09-18.md">motifs</a></td></tr>
+<tr><td>2.8</td><td>Relectures externes (Grok, GPT)</td><td>✅ 19/09</td><td><a href="doc/RELECTURE_METIER_EXTERNE_2026-09-19.md">relecture métier</a> · <a href="doc/RELECTURE_5_MODELE_DONNEES_2026-09-17.md">relecture du modèle</a> · <a href="doc/RELECTURE_5_TIERS_2026-09-17.md">tiers</a></td></tr>
+<tr><td>2.9</td><td>Le cahier de relecture métier, pour Avaliance</td><td>✅ 17/09</td><td><a href="doc/CAHIER_RELECTURE_METIER_2026-09-17.md">cahier</a> · <a href="doc/../cahier.html">version lisible</a></td></tr>
+</table></div>
+<h3 style="margin:22px 0 6px">3 · Conception technique — comment il sera construit</h3>
+<div class="tw"><table><tr><th>#</th><th>Étape</th><th>État</th><th>Documents</th></tr>
+<tr><td>3.1</td><td>Les décisions d&#x27;architecture (ADR)</td><td>✅ 16 → 19/09</td><td><a href="doc/adr/ADR-000-mono-tenant.md">ADR-000</a> · <a href="doc/adr/ADR-002-personne-et-profils.md">002</a> · <a href="doc/adr/ADR-003-projet-prestation-ressource.md">003</a> · <a href="doc/adr/ADR-004-evenements-et-archivage.md">004</a> · <a href="doc/adr/ADR-006-avenant-version-datee.md">006</a> · <a href="doc/adr/ADR-007-filiales-pas-maintenant.md">007</a></td></tr>
+<tr><td>3.2</td><td>Les 10 décisions techniques (pile, connexion, hébergement)</td><td>✅ 18/09 — T4 sauvegardes reporté</td><td><a href="doc/DECISIONS_TECHNIQUES_v1.md">décisions techniques</a></td></tr>
+<tr><td>3.3</td><td>Le modèle de données</td><td>✅ 17/09</td><td><a href="doc/MODELE_DONNEES_AVAMANAGER_V1.md">modèle de données</a></td></tr>
+<tr><td>3.4</td><td>Le schéma de la base et ses murs</td><td>✅ 19/09</td><td><a href="doc/SPEC_SQL_LISEZ-MOI.md">lisez-moi</a> · <a href="doc/SPEC_SQL_AVAMANAGER_V1.sql">schéma SQL</a> · <a href="doc/SPEC_ASSERTIONS_L7.sql">assertions des murs</a></td></tr>
+<tr><td>3.5</td><td>Le contrat des 55 commandes</td><td>✅ 19/09</td><td><a href="doc/SPEC_COMMANDES_L4.md">contrat des commandes</a></td></tr>
+<tr><td>3.6</td><td>Les thèmes et les couleurs</td><td>✅ 19/09</td><td><a href="doc/THEMES_v1.md">thèmes</a> · <a href="doc/annexes/AUDIT_THEMES_2026-09-19.md">audit des thèmes</a></td></tr>
+<tr><td>3.7</td><td>La maquette : les 26 écrans et le banc d&#x27;essai</td><td>✅ 18/09</td><td><a href="doc/../terminal.html">les 26 écrans</a> · <a href="doc/../simulateur.html">banc d&#x27;essai</a> · <a href="doc/RELECTURE_5b_SIMULATEUR_2026-09-17.md">relecture du banc</a></td></tr>
+</table></div>
+<h3 style="margin:22px 0 6px">4 · Organisation et contrôle — qui fait quoi, qui vérifie</h3>
+<div class="tw"><table><tr><th>#</th><th>Étape</th><th>État</th><th>Documents</th></tr>
+<tr><td>4.1</td><td>Trois agents séparés : BRAIN, CODE (Grok), AUDIT</td><td>✅ 21/09</td><td><a href="doc/PLAN_2026-09-21.md">plan du 21</a> · <a href="doc/BRIEF_EXECUTANT_2026-09-17.md">brief exécutant</a></td></tr>
+<tr><td>4.2</td><td>La grille d&#x27;audit : 36 contrôles</td><td>✅ 19/09</td><td><a href="doc/GRILLE_AUDIT.md">grille d&#x27;audit</a></td></tr>
+<tr><td>4.3</td><td>Le cliquet et les portes (les tests qui bloquent)</td><td>✅ 20/09</td><td><a href="doc/journal/PORTES.md">portes du code</a> · <a href="doc/PORTES_EN_ATTENTE.md">portes en attente</a></td></tr>
+<tr><td>4.4</td><td>Les journaux de bugs</td><td>⏳ tenus en continu</td><td><a href="doc/JOURNAL_BUGS.md">bugs du BRAIN</a> · <a href="doc/journal/BUGS.md">bugs du code</a> · <a href="doc/journal/CORRECTIFS.md">correctifs</a></td></tr>
+</table></div>
+<h3 style="margin:22px 0 6px">5 · Construction — le code</h3>
+<div class="tw"><table><tr><th>#</th><th>Étape</th><th>État</th><th>Documents</th></tr>
+<tr><td>5.1</td><td>Fondations : dépôt, base, 15 murs, données de départ (lot 1)</td><td>✅ 20/09 — 69 min</td><td><a href="doc/PROMPT_GROK_LOT1.md">prompt lot 1</a> · <a href="doc/journal/ETAPES.md">étapes du code</a> · <a href="doc/db/README.md">base</a></td></tr>
+<tr><td>5.2</td><td>Le serveur : les 55 commandes (lot 2)</td><td>⏳ correctifs en cours</td><td><a href="doc/PROMPT_GROK_LOT2.md">prompt lot 2</a> · <a href="doc/prompt-lot2-correctifs.txt">prompt correctifs</a> · <a href="doc/journal/DECISIONS.md">décisions du code</a></td></tr>
+<tr><td>5.3</td><td>Premier audit indépendant</td><td>✅ 21/09 — refusé, 47 constats</td><td><a href="doc/audit-2026-09-21/SYNTHESE.md">synthèse</a> · <a href="doc/audit-2026-09-21/CONSTATS.md">constats</a> · <a href="doc/audit-2026-09-21/MUTATIONS.md">mutations</a> · <a href="doc/ARBITRAGE_AUDIT_2026-09-21.md">arbitrage</a></td></tr>
+<tr><td>5.4</td><td>Corrections du BRAIN : base, tests des murs, cliquet</td><td>✅ 21/09</td><td><a href="doc/prompt-brain-code.txt">prompt brain code</a></td></tr>
+<tr><td>5.5</td><td>Second audit</td><td>⬜ quand Grok écrit « prêt »</td><td><a href="doc/prompt-audit-2.txt">prompt second audit</a></td></tr>
+<tr><td>5.6</td><td>Connexion par compte Microsoft (lot 2c)</td><td>⬜ attend R4 de la réunion</td><td><a href="doc/DECISIONS_TECHNIQUES_v1.md">décisions techniques T2</a> · <a href="doc/ARBITRAGE_AUDIT_2026-09-21.md">arbitrage D-2</a></td></tr>
+<tr><td>5.7</td><td>Les 26 écrans (lot 3)</td><td>⬜ après le 5.5 accepté</td><td><a href="doc/../terminal.html">les 26 écrans</a> · <a href="doc/PROMPT_CHATGPT_ECRANS.md">prompt écrans</a></td></tr>
+<tr><td>—</td><td>CRM, staffing, production (anciens lots 4, 5, 6)</td><td>↪ fusionnés dans 5.2 et 5.7</td><td><a href="doc/PLAN_2026-09-20.md">plan du 20</a></td></tr>
+</table></div>
+<h3 style="margin:22px 0 6px">6 · Reprise et recette — avec les vraies données</h3>
+<div class="tw"><table><tr><th>#</th><th>Étape</th><th>État</th><th>Documents</th></tr>
+<tr><td>6.1</td><td>Obtenir l&#x27;export des données de Boond</td><td>⬜ attend R3</td><td><a href="doc/cartographie/BOOND_CHEMINS_2026-09-19.md">relevé Boond</a></td></tr>
+<tr><td>6.2</td><td>Ressaisir les missions en cours et leurs tarifs</td><td>⬜ attend R2</td><td>hub › <a href="doc/../#reunion">Questions Avaliance</a></td></tr>
+<tr><td>6.3</td><td>Import des données Boond (lot 7)</td><td>⬜</td><td><a href="doc/MODELE_DONNEES_AVAMANAGER_V1.md">modèle de données</a></td></tr>
+<tr><td>6.4</td><td>Essai de deux semaines, trois utilisateurs réels</td><td>⬜</td><td>—</td></tr>
+<tr><td>6.5</td><td>Un mois en parallèle de Boond, chiffres comparés</td><td>⬜</td><td>—</td></tr>
+</table></div>
+<h3 style="margin:22px 0 6px">7 · Mise en production et livraison à Avaliance</h3>
+<div class="tw"><table><tr><th>#</th><th>Étape</th><th>État</th><th>Documents</th></tr>
+<tr><td>7.1</td><td>Serveur dédié, sauvegardes chaque nuit, test de restauration mensuel</td><td>⬜</td><td><a href="doc/DECISIONS_TECHNIQUES_v1.md">décisions techniques T3–T5</a></td></tr>
+<tr><td>7.2</td><td>Sécurité : mots de passe de base, accès réseau</td><td>⬜</td><td><a href="doc/audit-2026-09-21/CONSTATS.md">audit, constat V-022</a></td></tr>
+<tr><td>7.3</td><td>Documentation utilisateur, par rôle</td><td>⬜</td><td>—</td></tr>
+<tr><td>7.4</td><td>Bascule : Ava Manager remplace Boond</td><td>⬜</td><td>—</td></tr>
+<tr><td>7.5</td><td>⭐ Livraison finale à Avaliance</td><td>⬜</td><td>—</td></tr>
+</table></div>
+<h3 style="margin:22px 0 6px">8 · Après la livraison</h3>
+<div class="tw"><table><tr><th>#</th><th>Étape</th><th>État</th><th>Documents</th></tr>
+<tr><td>8.1</td><td>Connecteur pour Claude, lecture seule d&#x27;abord (lot 8)</td><td>⬜</td><td><a href="doc/PLAN_2026-09-20.md">plan du 20, lot 8</a></td></tr>
 </table></div>
 <p class="note">Source : <a href="doc/ETAT_PROJET.md">ETAT_PROJET.md</a> — la seule, mise à jour après chaque rapport de session.</p>
 </etat>
@@ -266,6 +325,6 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <p class="sub">62 documents dans <code>_ops/</code>. Les 20 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
 <p class="note">Ce fichier est <b>généré</b> par <code>python _ops/outils/dossier.py</code>. ⛔ Ne pas l'éditer à la main : la prochaine génération écraserait la correction, et on ne saurait pas laquelle était juste.<br>Pour en extraire une section sans tout lire :<br><code>sed -n '/&lt;etat&gt;/,/&lt;\/etat&gt;/p' _ops/DOSSIER.html</code></p>
 </source>
-<footer>Ava Manager · dossier généré le 22/09/2026 · commit 560dd81 · 37 tables · 173 politiques · 15 murs · 28 assertions</footer>
+<footer>Ava Manager · dossier généré le 22/09/2026 · commit 67cae3b · 37 tables · 173 politiques · 15 murs · 28 assertions</footer>
 </div>
 </body></html>

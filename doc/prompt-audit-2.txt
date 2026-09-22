@@ -1,0 +1,62 @@
+AVA MANAGER — SECOND AUDIT (CONTRE-AUDIT DU LOT 2)
+==================================================
+À lancer SEULEMENT quand Grok a écrit « prêt pour le second audit » ET
+que lot-2-brain a été fusionné dans lot-2.
+
+Tu es l'AUDITEUR. Ton cahier des charges reste « _ops/prompt-audit.txt » :
+lis-le en entier, toutes ses règles valent. Ce qui suit le complète.
+
+
+1. TON POSTE
+────────────
+Un NOUVEAU clone, à côté du premier — ⛔ ne supprime pas « ava-audit » :
+c'est la preuve du premier audit.
+
+  cd /c/Users/Hamada/Desktop
+  git clone --no-checkout "/c/Users/Hamada/Desktop/Ava Manager" ava-audit-2
+  cd ava-audit-2
+  (même sparse-checkout que prompt-audit.txt §2.1, puis)
+  git checkout lot-2
+
+Base « ava_audit2 », serveur sur le port 3200. Même mur, mêmes interdits.
+
+
+2. CE QUE TU FAIS EN PLUS
+─────────────────────────
+2.1  LES 37 SABOTAGES DU PREMIER AUDIT, REJOUÉS À L'IDENTIQUE.
+     Les scripts sont dans ../ava-audit/rapport/preuves/scripts/.
+     Tu les recopies dans ton rapport/preuves/, tu les pointes sur
+     ava_audit2 et le port 3200, tu ne les adoucis pas.
+     Le chiffre à rendre : « premier audit 48 portes aveugles → second X ».
+
+2.2  CHAQUE V- DU PREMIER AUDIT : FERMÉ OU OUVERT, AVEC PREUVE.
+     Liste : ../ava-audit/rapport/CONSTATS.md.
+     | V | Gravité | Fermé / Ouvert / Partiel | Preuve (commande + sortie) |
+     ⛔ « Fermé » sans une commande qui le montre = « Ouvert ».
+
+2.3  L'ARBITRAGE DU BRAIN, À CONTESTER.
+     « _ops/ARBITRAGE_AUDIT_2026-09-21.md » : 5 constats requalifiés ou
+     partiels, 9 décisions D-1 → D-9. C'est ton tour de contestation
+     (prompt-audit.txt §8) : pour chaque requalification que tu refuses,
+     une preuve. Un rejet sans motif est nul — de ton côté aussi.
+
+2.4  LES CONTRÔLES NOUVEAUX — ils n'existaient pas au premier audit :
+     - le serveur refuse-t-il de démarrer en superutilisateur ?
+     - x-ava-groupe hors AVA_MODE=banc : 401, et rien d'écrit ?
+     - le cliquet devient-il KO avec un serveur mort ? avec 4 portes
+       ✅ retirées ? (les deux témoins que le BRAIN dit avoir vus)
+     - test/SPEC_ASSERTIONS_L7.sql est-il identique à celui de _ops/ ?
+
+
+3. CE QUE TU RENDS — dans ava-audit-2/rapport/
+──────────────────────────────────────────────
+  SYNTHESE.md     15 lignes : verdict, commit, « 48 → X portes
+                  aveugles », V- fermés / ouverts, 3 constats neufs
+  SUIVI_V.md      le tableau du §2.2
+  CONTESTATION.md le §2.3
+  + CONSTATS.md, GRILLE.md, CONFORMITE.md, MUTATIONS.md comme au premier.
+Numérotation : tes constats NEUFS continuent à V-048. Jamais un
+numéro réattribué.
+
+Verdict ACCEPTÉ seulement si : zéro porte aveugle sur un point
+critique, et aucun V- critique ouvert.

@@ -1,0 +1,674 @@
+[
+ {
+  "chemin": "A_FAIRE.md",
+  "titre": "À FAIRE — Ava Manager",
+  "categorie": "État et plans",
+  "date": "18/09/2026",
+  "ko": 5
+ },
+ {
+  "chemin": "adr/ADR-000-mono-tenant.md",
+  "titre": "ADR-000 — Mono-tenant : une base, une société",
+  "categorie": "Décisions d'architecture (ADR)",
+  "date": "17/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "adr/ADR-001-zip-jenspark-ecarte.md",
+  "titre": "ADR-001 — Le prototype « CRM Vision 360 » (zip Jenspark) est écarté",
+  "categorie": "Décisions d'architecture (ADR)",
+  "date": "17/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "adr/ADR-002-personne-et-profils.md",
+  "titre": "ADR-002 — Une Personne, deux profils : Candidat et Ressource",
+  "categorie": "Décisions d'architecture (ADR)",
+  "date": "17/09/2026",
+  "ko": 3
+ },
+ {
+  "chemin": "adr/ADR-003-projet-prestation-ressource.md",
+  "titre": "ADR-003 — Le Projet ne porte pas de ressource : la Prestation est l'affectation",
+  "categorie": "Décisions d'architecture (ADR)",
+  "date": "17/09/2026",
+  "ko": 3
+ },
+ {
+  "chemin": "adr/ADR-004-evenements-et-archivage.md",
+  "titre": "ADR-004 — Événements métier en ajout seul, archivage transverse, jamais de DELETE",
+  "categorie": "Décisions d'architecture (ADR)",
+  "date": "17/09/2026",
+  "ko": 4
+ },
+ {
+  "chemin": "adr/ADR-005-politiques-parametrables-vs-invariants.md",
+  "titre": "ADR-005 — Toute bifurcation est une politique ; seuls les invariants sont des murs",
+  "categorie": "Décisions d'architecture (ADR)",
+  "date": "17/09/2026",
+  "ko": 8
+ },
+ {
+  "chemin": "adr/ADR-006-avenant-version-datee.md",
+  "titre": "ADR-006 — L'avenant est une version datée, pas une mission de plus",
+  "categorie": "Décisions d'architecture (ADR)",
+  "date": "19/09/2026",
+  "ko": 4
+ },
+ {
+  "chemin": "adr/ADR-007-filiales-pas-maintenant.md",
+  "titre": "ADR-007 — Les filiales : par où on passera, le jour où",
+  "categorie": "Décisions d'architecture (ADR)",
+  "date": "20/09/2026",
+  "ko": 7
+ },
+ {
+  "chemin": "annexes/AUDIT_THEMES_2026-09-19.md",
+  "titre": "Audit des 28 thèmes — 19 septembre 2026",
+  "categorie": "Audits",
+  "date": "19/09/2026",
+  "ko": 5
+ },
+ {
+  "chemin": "annexes/MATRICE_DROITS_MOTIFS_2026-09-18.md",
+  "titre": "Annexe — les cases contestables de la matrice des droits",
+  "categorie": "Conception et contrat",
+  "date": "18/09/2026",
+  "ko": 5
+ },
+ {
+  "chemin": "ARBITRAGE_AUDIT_2026-09-21.md",
+  "titre": "Arbitrage de l'audit indépendant — 21/09/2026",
+  "categorie": "Audits",
+  "date": "22/09/2026",
+  "ko": 7
+ },
+ {
+  "chemin": "AUDIT_PROJET_2026-09-17.md",
+  "titre": "Audit du projet Ava Manager — 17 septembre 2026",
+  "categorie": "Audits",
+  "date": "17/09/2026",
+  "ko": 13
+ },
+ {
+  "chemin": "AVA_MANAGER-SPEC_1_extract.txt",
+  "titre": "AVA_MANAGER-SPEC_1_extract.txt",
+  "categorie": "Cadrage et commande du client",
+  "date": "16/09/2026",
+  "ko": 11
+ },
+ {
+  "chemin": "BRIEF_BRAIN_2026-09-16.md",
+  "titre": "Brief canonique Brain — Ava Manager",
+  "categorie": "Prompts et briefs",
+  "date": "16/09/2026",
+  "ko": 12
+ },
+ {
+  "chemin": "BRIEF_EXECUTANT_2026-09-17.md",
+  "titre": "Brief exécutant — Ava Manager v1",
+  "categorie": "Prompts et briefs",
+  "date": "17/09/2026",
+  "ko": 8
+ },
+ {
+  "chemin": "BRIEF_OPUS_SIMULATEUR_2026-09-17.md",
+  "titre": "Brief Opus — corriger le simulateur métier — 17 septembre 2026",
+  "categorie": "Prompts et briefs",
+  "date": "17/09/2026",
+  "ko": 12
+ },
+ {
+  "chemin": "BRIEF_OPUS_SIMULATEUR_v6_2026-09-18.md",
+  "titre": "Brief Opus — simulateur v6 : aligner sur le canon final — 18 septembre 2026",
+  "categorie": "Prompts et briefs",
+  "date": "17/09/2026",
+  "ko": 9
+ },
+ {
+  "chemin": "CADRAGE_METIER_RECONCILIE_2026-09-16.md",
+  "titre": "Cadrage métier réconcilié Ava Manager",
+  "categorie": "Cadrage et commande du client",
+  "date": "22/09/2026",
+  "ko": 80
+ },
+ {
+  "chemin": "CAHIER_RELECTURE_METIER_2026-09-17.md",
+  "titre": "Cahier de relecture métier — Ava Manager",
+  "categorie": "Audits",
+  "date": "18/09/2026",
+  "ko": 27
+ },
+ {
+  "chemin": "cartographie/AUDIT_ECRANS.md",
+  "titre": "Audit visuel Boond Manager — écran par écran",
+  "categorie": "Audits",
+  "date": "15/09/2026",
+  "ko": 13
+ },
+ {
+  "chemin": "cartographie/BOOND_CHEMINS_2026-09-19.md",
+  "titre": "Boond — les écrans et les chemins. Ce qui mène à quoi.",
+  "categorie": "Étude de Boond",
+  "date": "20/09/2026",
+  "ko": 46
+ },
+ {
+  "chemin": "cartographie/DIAGNOSTIC_METIER.md",
+  "titre": "Diagnostic Boond Manager",
+  "categorie": "Étude de Boond",
+  "date": "15/09/2026",
+  "ko": 5
+ },
+ {
+  "chemin": "cartographie/FONCTIONNEMENT_BOOND.md",
+  "titre": "Fonctionnement Boond Manager",
+  "categorie": "Étude de Boond",
+  "date": "15/09/2026",
+  "ko": 7
+ },
+ {
+  "chemin": "COCKPIT2-Cahier_de_charge-v0.1_extract.txt",
+  "titre": "COCKPIT2-Cahier_de_charge-v0.1_extract.txt",
+  "categorie": "Cadrage et commande du client",
+  "date": "16/09/2026",
+  "ko": 38
+ },
+ {
+  "chemin": "DECISIONS_TECHNIQUES_v1.md",
+  "titre": "Décisions techniques Ava Manager v1",
+  "categorie": "Conception et contrat",
+  "date": "18/09/2026",
+  "ko": 10
+ },
+ {
+  "chemin": "ETAT_PROJET.md",
+  "titre": "État du projet Ava Manager — du premier jour à la livraison",
+  "categorie": "État et plans",
+  "date": "22/09/2026",
+  "ko": 9
+ },
+ {
+  "chemin": "FEUILLE_F1-F36_AHMED_2026-09-16.md",
+  "titre": "Pièce de décision — feuille F1–F36",
+  "categorie": "Cadrage et commande du client",
+  "date": "16/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "FEUILLE_G1-G15_2026-09-17.md",
+  "titre": "Feuille G1–G15 — arbitrages bloquants avant le modèle de données",
+  "categorie": "Cadrage et commande du client",
+  "date": "17/09/2026",
+  "ko": 15
+ },
+ {
+  "chemin": "GRILLE_AUDIT.md",
+  "titre": "L2b — la grille d'audit",
+  "categorie": "Audits",
+  "date": "21/09/2026",
+  "ko": 13
+ },
+ {
+  "chemin": "GRILLE_INVENTAIRE_BOOND_2026-09-17.md",
+  "titre": "Grille d'inventaire — ce qu'Avaliance utilise vraiment dans Boond",
+  "categorie": "Étude de Boond",
+  "date": "17/09/2026",
+  "ko": 5
+ },
+ {
+  "chemin": "JEU_ESSAI.sql",
+  "titre": "JEU_ESSAI.sql",
+  "categorie": "Conception et contrat",
+  "date": "21/09/2026",
+  "ko": 31
+ },
+ {
+  "chemin": "JOURNAL_BUGS.md",
+  "titre": "Journal des bugs — Ava Manager · **audit général**",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "21/09/2026",
+  "ko": 13
+ },
+ {
+  "chemin": "MACHINES_ETAT_V1.md",
+  "titre": "Machines d'état Ava Manager v1",
+  "categorie": "Conception et contrat",
+  "date": "21/09/2026",
+  "ko": 13
+ },
+ {
+  "chemin": "MATRICE_DROITS_v1.md",
+  "titre": "Matrice des droits Ava Manager v1",
+  "categorie": "Conception et contrat",
+  "date": "22/09/2026",
+  "ko": 12
+ },
+ {
+  "chemin": "MODELE_DONNEES_AVAMANAGER_V1.md",
+  "titre": "Modèle de données AvaManager v1",
+  "categorie": "Conception et contrat",
+  "date": "19/09/2026",
+  "ko": 47
+ },
+ {
+  "chemin": "MODELE_METIER_CANONIQUE_v1.md",
+  "titre": "Modèle métier canonique Ava Manager v1",
+  "categorie": "Conception et contrat",
+  "date": "17/09/2026",
+  "ko": 9
+ },
+ {
+  "chemin": "PARCOURS_METIER_SIMPLE_AVA_MANAGER.md",
+  "titre": "Ava Manager — le parcours métier, simplement",
+  "categorie": "Cadrage et commande du client",
+  "date": "16/09/2026",
+  "ko": 6
+ },
+ {
+  "chemin": "PLAN_2026-09-15.md",
+  "titre": "Plan — Ava Manager (Boond miniature)",
+  "categorie": "État et plans",
+  "date": "15/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "PLAN_2026-09-16.md",
+  "titre": "Plan cadrage — 16 septembre 2026 (soir)",
+  "categorie": "État et plans",
+  "date": "22/09/2026",
+  "ko": 1
+ },
+ {
+  "chemin": "PLAN_2026-09-17.md",
+  "titre": "Plan — 17 septembre 2026 (version du soir, réparée)",
+  "categorie": "État et plans",
+  "date": "18/09/2026",
+  "ko": 21
+ },
+ {
+  "chemin": "PLAN_2026-09-18.md",
+  "titre": "Plan — 18 septembre 2026",
+  "categorie": "État et plans",
+  "date": "18/09/2026",
+  "ko": 10
+ },
+ {
+  "chemin": "PLAN_2026-09-19.md",
+  "titre": "Plan — 19 septembre 2026",
+  "categorie": "État et plans",
+  "date": "20/09/2026",
+  "ko": 48
+ },
+ {
+  "chemin": "PLAN_2026-09-20.md",
+  "titre": "Plan — 20 septembre 2026",
+  "categorie": "État et plans",
+  "date": "20/09/2026",
+  "ko": 6
+ },
+ {
+  "chemin": "PLAN_2026-09-21.md",
+  "titre": "Plan du 21/09/2026 — trois agents séparés",
+  "categorie": "État et plans",
+  "date": "21/09/2026",
+  "ko": 4
+ },
+ {
+  "chemin": "PLAN_2026-09-22.md",
+  "titre": "Plan du 22/09/2026 — le hub remis en ordre",
+  "categorie": "État et plans",
+  "date": "22/09/2026",
+  "ko": 3
+ },
+ {
+  "chemin": "PORTES_EN_ATTENTE.md",
+  "titre": "La parade ⏳ — une porte posée avant d'être servie",
+  "categorie": "Conception et contrat",
+  "date": "20/09/2026",
+  "ko": 7
+ },
+ {
+  "chemin": "prompt-audit-2.txt",
+  "titre": "prompt-audit-2.txt",
+  "categorie": "Prompts et briefs",
+  "date": "21/09/2026",
+  "ko": 3
+ },
+ {
+  "chemin": "prompt-audit.txt",
+  "titre": "prompt-audit.txt",
+  "categorie": "Prompts et briefs",
+  "date": "21/09/2026",
+  "ko": 14
+ },
+ {
+  "chemin": "prompt-brain-code.txt",
+  "titre": "prompt-brain-code.txt",
+  "categorie": "Prompts et briefs",
+  "date": "21/09/2026",
+  "ko": 6
+ },
+ {
+  "chemin": "prompt-lot1.txt",
+  "titre": "prompt-lot1.txt",
+  "categorie": "Prompts et briefs",
+  "date": "19/09/2026",
+  "ko": 22
+ },
+ {
+  "chemin": "prompt-lot2-correctifs.txt",
+  "titre": "prompt-lot2-correctifs.txt",
+  "categorie": "Prompts et briefs",
+  "date": "21/09/2026",
+  "ko": 9
+ },
+ {
+  "chemin": "prompt-lot2.txt",
+  "titre": "prompt-lot2.txt",
+  "categorie": "Prompts et briefs",
+  "date": "20/09/2026",
+  "ko": 10
+ },
+ {
+  "chemin": "PROMPT_CHATGPT_ECRANS.md",
+  "titre": "Ce qu'est le produit",
+  "categorie": "Prompts et briefs",
+  "date": "18/09/2026",
+  "ko": 10
+ },
+ {
+  "chemin": "PROMPT_GROK_LOT1.md",
+  "titre": "L2a — le prompt d'amorçage · l'équipe et le lot 1",
+  "categorie": "Prompts et briefs",
+  "date": "19/09/2026",
+  "ko": 25
+ },
+ {
+  "chemin": "PROMPT_GROK_LOT2.md",
+  "titre": "PROMPT_GROK_LOT2.md",
+  "categorie": "Prompts et briefs",
+  "date": "20/09/2026",
+  "ko": 10
+ },
+ {
+  "chemin": "QUESTIONS_BOOND_2026-09-19.md",
+  "titre": "Les questions nées du relevé Boond — classées",
+  "categorie": "Étude de Boond",
+  "date": "20/09/2026",
+  "ko": 9
+ },
+ {
+  "chemin": "REGISTRE_POLITIQUES_v1.md",
+  "titre": "Registre des politiques Ava Manager v1",
+  "categorie": "Conception et contrat",
+  "date": "21/09/2026",
+  "ko": 46
+ },
+ {
+  "chemin": "RELECTURE_5_MODELE_DONNEES_2026-09-17.md",
+  "titre": "Relecture contradictoire — Modèle de données v1 (livrable 5) — 17 septembre 2026",
+  "categorie": "Audits",
+  "date": "17/09/2026",
+  "ko": 21
+ },
+ {
+  "chemin": "RELECTURE_5_TIERS_2026-09-17.md",
+  "titre": "RELECTURE_5_TIERS_2026-09-17.md",
+  "categorie": "Audits",
+  "date": "17/09/2026",
+  "ko": 9
+ },
+ {
+  "chemin": "RELECTURE_5_TIERS_DIFF2_2026-09-17.md",
+  "titre": "RELECTURE_5_TIERS_DIFF2_2026-09-17.md",
+  "categorie": "Audits",
+  "date": "17/09/2026",
+  "ko": 8
+ },
+ {
+  "chemin": "RELECTURE_5_TIERS_DIFF3_2026-09-17.md",
+  "titre": "RELECTURE_5_TIERS_DIFF3_2026-09-17.md",
+  "categorie": "Audits",
+  "date": "17/09/2026",
+  "ko": 7
+ },
+ {
+  "chemin": "RELECTURE_5_TIERS_DIFF4_2026-09-17.md",
+  "titre": "RELECTURE_5_TIERS_DIFF4_2026-09-17.md",
+  "categorie": "Audits",
+  "date": "17/09/2026",
+  "ko": 1
+ },
+ {
+  "chemin": "RELECTURE_5_TIERS_DIFF5_2026-09-17.md",
+  "titre": "RELECTURE_5_TIERS_DIFF5_2026-09-17.md",
+  "categorie": "Audits",
+  "date": "17/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "RELECTURE_5_TIERS_DIFF_2026-09-17.md",
+  "titre": "RELECTURE_5_TIERS_DIFF_2026-09-17.md",
+  "categorie": "Audits",
+  "date": "17/09/2026",
+  "ko": 7
+ },
+ {
+  "chemin": "RELECTURE_5b_SIMULATEUR_2026-09-17.md",
+  "titre": "Relecture contradictoire — simulateur métier (5b+) — 17 septembre 2026",
+  "categorie": "Audits",
+  "date": "17/09/2026",
+  "ko": 18
+ },
+ {
+  "chemin": "RELECTURE_METIER_EXTERNE_2026-09-19.md",
+  "titre": "Relecture métier externe — le tri",
+  "categorie": "Audits",
+  "date": "19/09/2026",
+  "ko": 7
+ },
+ {
+  "chemin": "SPEC_ASSERTIONS_L7.sql",
+  "titre": "SPEC_ASSERTIONS_L7.sql",
+  "categorie": "Conception et contrat",
+  "date": "21/09/2026",
+  "ko": 29
+ },
+ {
+  "chemin": "SPEC_COMMANDES_L4.md",
+  "titre": "L4 — le contrat des commandes",
+  "categorie": "Conception et contrat",
+  "date": "21/09/2026",
+  "ko": 22
+ },
+ {
+  "chemin": "SPEC_SQL_AVAMANAGER_V1.sql",
+  "titre": "SPEC_SQL_AVAMANAGER_V1.sql",
+  "categorie": "Conception et contrat",
+  "date": "20/09/2026",
+  "ko": 91
+ },
+ {
+  "chemin": "SPEC_SQL_LISEZ-MOI.md",
+  "titre": "L3 — le schéma en SQL commenté",
+  "categorie": "Conception et contrat",
+  "date": "19/09/2026",
+  "ko": 4
+ },
+ {
+  "chemin": "THEMES_v1.md",
+  "titre": "Thèmes Ava Manager v1 — le design est un réglage",
+  "categorie": "Conception et contrat",
+  "date": "19/09/2026",
+  "ko": 15
+ },
+ {
+  "chemin": "TRANSMISSION_SESSION_CADRAGE_2026-09-16.md",
+  "titre": "Transmission à la session de cadrage Ava Manager",
+  "categorie": "Prompts et briefs",
+  "date": "16/09/2026",
+  "ko": 13
+ },
+ {
+  "chemin": "journal/adr/ADR-R-001-port-postgres-hote.md",
+  "titre": "ADR-R-001 — Port hôte Postgres 55432",
+  "categorie": "Décisions d'architecture (ADR)",
+  "date": "21/09/2026",
+  "ko": 1
+ },
+ {
+  "chemin": "journal/adr/LISEZ-MOI.md",
+  "titre": "Les ADR de RÉALISATION — préfixe `ADR-R-`",
+  "categorie": "Décisions d'architecture (ADR)",
+  "date": "20/09/2026",
+  "ko": 1
+ },
+ {
+  "chemin": "journal/BUGS.md",
+  "titre": "Bugs — un bug par ligne, numéro jamais réutilisé. Fermé avec un SHA, jamais avec « corrigé ».",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "21/09/2026",
+  "ko": 1
+ },
+ {
+  "chemin": "journal/CONTRAT.md",
+  "titre": "CONTRAT — lot 2 · intégrateur / greffe",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "21/09/2026",
+  "ko": 6
+ },
+ {
+  "chemin": "journal/CORRECTIFS.md",
+  "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "22/09/2026",
+  "ko": 11
+ },
+ {
+  "chemin": "journal/DECISIONS.md",
+  "titre": "Décisions techniques tranchées seul",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "21/09/2026",
+  "ko": 3
+ },
+ {
+  "chemin": "journal/ecran/DECISIONS.md",
+  "titre": "Décisions écran — lot 2. Seul, en attendant.",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "21/09/2026",
+  "ko": 1
+ },
+ {
+  "chemin": "journal/ecran/QUESTIONS.md",
+  "titre": "Questions écran — lot 2. Choix pris en attendant.",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "21/09/2026",
+  "ko": 1
+ },
+ {
+  "chemin": "journal/ecran/REMARQUES.md",
+  "titre": "Remarques écran — lot 2. Le canon n'est pas corrigé.",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "21/09/2026",
+  "ko": 1
+ },
+ {
+  "chemin": "journal/ETAPES.md",
+  "titre": "Étapes — lot 1. Une ligne par étape. On ne supprime jamais.",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "22/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "journal/greffe/REMARQUES.md",
+  "titre": "Remarques greffe — lot 2. On ne patche pas `_ops/`.",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "21/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "journal/PORTES.md",
+  "titre": "Portes — le cliquet. Une porte ✅ ne redevient jamais ⏳.",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "21/09/2026",
+  "ko": 21
+ },
+ {
+  "chemin": "journal/QUESTIONS.md",
+  "titre": "Questions pour Hamada. On choisit en attendant, on continue.",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "21/09/2026",
+  "ko": 4
+ },
+ {
+  "chemin": "journal/REMARQUES.md",
+  "titre": "Remarques sur le canon `_ops/` — on ne le corrige pas.",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "21/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "journal/test/DECISIONS.md",
+  "titre": "Décisions du banc — lot 2. Choix pris en attendant.",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "21/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "journal/test/QUESTIONS.md",
+  "titre": "Questions du banc — lot 2. Choix pris, on continue.",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "21/09/2026",
+  "ko": 1
+ },
+ {
+  "chemin": "journal/test/REMARQUES.md",
+  "titre": "Remarques du banc sur le canon — on ne le corrige pas.",
+  "categorie": "Journaux du code (portes, bugs, étapes)",
+  "date": "21/09/2026",
+  "ko": 1
+ },
+ {
+  "chemin": "db/README.md",
+  "titre": "Base Ava Manager",
+  "categorie": "Conception et contrat",
+  "date": "21/09/2026",
+  "ko": 1
+ },
+ {
+  "chemin": "audit-2026-09-21/CONFORMITE.md",
+  "titre": "Conformité au contrat `_ops/SPEC_COMMANDES_L4.md` — commande par commande (famille H)",
+  "categorie": "Audits",
+  "date": "21/09/2026",
+  "ko": 9
+ },
+ {
+  "chemin": "audit-2026-09-21/CONSTATS.md",
+  "titre": "Constats de l'audit indépendant — commit `3b59ca5` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "21/09/2026",
+  "ko": 38
+ },
+ {
+  "chemin": "audit-2026-09-21/GRILLE.md",
+  "titre": "Grille — les 36 contrôles de `_ops/GRILLE_AUDIT.md`, commit `3b59ca5`",
+  "categorie": "Audits",
+  "date": "21/09/2026",
+  "ko": 6
+ },
+ {
+  "chemin": "audit-2026-09-21/MUTATIONS.md",
+  "titre": "Mutations — les tests des tests (famille G)",
+  "categorie": "Audits",
+  "date": "21/09/2026",
+  "ko": 7
+ },
+ {
+  "chemin": "audit-2026-09-21/SYNTHESE.md",
+  "titre": "SYNTHESE.md",
+  "categorie": "Audits",
+  "date": "21/09/2026",
+  "ko": 2
+ }
+]

@@ -1,51 +1,128 @@
-# État du projet Ava Manager
+# État du projet Ava Manager — du premier jour à la livraison
 
 ⭐ **Une seule source pour « où on en est ».** Le hub (vue « État du projet ») et le dossier
-(`dossier.html` §08) lisent ce fichier. ⛔ On ne recopie pas cet état ailleurs : on le met à jour ici.
+(`dossier.html` §08) lisent ce fichier. ⛔ On ne recopie pas cet état ailleurs : on le met à jour ici,
+après chaque rapport de session.
 
 <quand_utiliser>
 
 | ✅ On ouvre ce fichier | ⛔ On ne l'ouvre pas pour |
 |---|---|
-| Savoir quel lot est fini, en cours, à venir | le détail d'un lot → son prompt (`_ops/prompt-*.txt`) |
-| Savoir ce qui bloque aujourd'hui | les constats d'audit → `_ops/ARBITRAGE_AUDIT_2026-09-21.md` |
-| Mettre à jour l'état après un rapport de session | les tâches du jour → le dernier `_ops/PLAN_<date>.md` |
+| Savoir quelle étape est finie, en cours, à venir — et où est son document | le détail d'une étape → le document de sa ligne |
+| Mettre à jour l'état après un rapport de session | les tâches du jour → le dernier `PLAN_<date>.md` |
 
 Extraire l'état sans lire le reste :
 
 ```bash
-sed -n '/<etat>/,/<\/etat>/p' _ops/ETAT_PROJET.md
+sed -n '/^<etat>$/,/^<\/etat>$/p' _ops/ETAT_PROJET.md
 ```
+
+Légende : ✅ fait · ⏳ en cours · ⬜ à faire · ↪ fusionné ailleurs. Les liens sont relatifs à `doc/` du hub.
 
 </quand_utiliser>
 
 <etat>
 
-Mis à jour le 22/09/2026.
+Mis à jour le 22/09/2026. Les anciens numéros de lot sont entre parenthèses.
 
-| Lot | Contenu | État |
-|---|---|---|
-| 1 | Fondations : dépôt, base, 15 murs, seeds, CI | ✅ accepté — 69 min |
-| 2 | Serveur : les 55 commandes | ⏳ refusé par l'audit du 21/09 (47 constats) — critiques C1 → C7 corrigés, élevés et moyens en cours |
-| 2c | Connexion par compte Microsoft | ⬜ décidé (T2, D-2) — attend la réponse R4 de la réunion |
-| 3 | Les 26 écrans | ⬜ après le lot 2 accepté |
-| 4 · 5 · 6 | Prévus le 20/09 : CRM et recrutement · staffing · production, temps, marge | ↪ **fusionnés** : leurs commandes sont dans le lot 2, leurs écrans dans le lot 3. Numéros gardés vides pour ne pas renuméroter le 7 et le 8 |
-| 7 | Reprise Boond et recette | ⬜ attend l'export Boond (R3) et la liste des missions (R2) |
-| 8 | Connecteur MCP pour Claude, lecture seule d'abord | ⬜ en dernier |
+### 0 · Démarrage
 
-| Aujourd'hui | État |
-|---|---|
-| Second audit du lot 2 | ⬜ quand Grok écrit « prêt pour le second audit » |
-| Réunion avec la direction d'Avaliance | ⬜ 23/09 — 10 questions, hub `#reunion` |
-| Relevé Boond | ✅ clos le 19/09 |
+| # | Étape | État | Documents |
+|---|---|---|---|
+| 0.1 | Lire la commande d'Avaliance : les deux cahiers des charges | ✅ 15/09 | [SPEC 1](AVA_MANAGER-SPEC_1_extract.txt) · [Cockpit 2](COCKPIT2-Cahier_de_charge-v0.1_extract.txt) · [cahier des charges](../cdc.html) |
+| 0.2 | Écarter la démo Jenspark (un prototype, pas une base) | ✅ 16/09 | [ADR-001](adr/ADR-001-zip-jenspark-ecarte.md) |
+| 0.3 | Dépôt GitHub privé, sauvegarde, règles de travail | ✅ 17/09 | [audit du projet 17/09](AUDIT_PROJET_2026-09-17.md) · [plan du 17](PLAN_2026-09-17.md) |
+
+### 1 · Étude de Boond Manager — l'existant
+
+| # | Étape | État | Documents |
+|---|---|---|---|
+| 1.1 | Les 59 captures d'écran de Boond | ✅ 15/09 | hub › Boond › Audit complet · [audit des écrans](cartographie/AUDIT_ECRANS.md) |
+| 1.2 | Comprendre comment Boond fonctionne | ✅ 15/09 | [fonctionnement](cartographie/FONCTIONNEMENT_BOOND.md) · [diagnostic métier](cartographie/DIAGNOSTIC_METIER.md) |
+| 1.3 | Le relevé des chemins et des volumes (31 sections) | ✅ 19/09 | [relevé Boond](cartographie/BOOND_CHEMINS_2026-09-19.md) · [grille d'inventaire](GRILLE_INVENTAIRE_BOOND_2026-09-17.md) |
+| 1.4 | Les questions que seul Avaliance peut trancher | ⏳ réunion du 23/09 | hub › [Questions Avaliance](../#reunion) · [questions Boond](QUESTIONS_BOOND_2026-09-19.md) |
+
+### 2 · Cadrage métier — ce que le logiciel doit faire
+
+| # | Étape | État | Documents |
+|---|---|---|---|
+| 2.1 | Le cadrage réconcilié : les 15 parcours du métier | ✅ 16/09 | [cadrage](CADRAGE_METIER_RECONCILIE_2026-09-16.md) · [parcours simples](PARCOURS_METIER_SIMPLE_AVA_MANAGER.md) · [passation](TRANSMISSION_SESSION_CADRAGE_2026-09-16.md) |
+| 2.2 | Les 18 décisions et la feuille F1–F36 | ✅ 16/09 | hub › Décisions · [feuille F1–F36](FEUILLE_F1-F36_AHMED_2026-09-16.md) |
+| 2.3 | La feuille G1–G15, tranchée | ✅ 17/09 | [feuille G](FEUILLE_G1-G15_2026-09-17.md) |
+| 2.4 | Le modèle métier et les 15 murs | ✅ 17/09 | [modèle métier](MODELE_METIER_CANONIQUE_v1.md) |
+| 2.5 | Les cycles de vie (machines d'état) | ✅ 17/09 | [machines d'état](MACHINES_ETAT_V1.md) |
+| 2.6 | Tout est réglable : le registre des 173 politiques | ✅ 17/09 | [registre](REGISTRE_POLITIQUES_v1.md) · [ADR-005](adr/ADR-005-politiques-parametrables-vs-invariants.md) |
+| 2.7 | Qui a le droit de quoi | ✅ 18/09 | [matrice des droits](MATRICE_DROITS_v1.md) · [motifs](annexes/MATRICE_DROITS_MOTIFS_2026-09-18.md) |
+| 2.8 | Relectures externes (Grok, GPT) | ✅ 19/09 | [relecture métier](RELECTURE_METIER_EXTERNE_2026-09-19.md) · [relecture du modèle](RELECTURE_5_MODELE_DONNEES_2026-09-17.md) · [tiers](RELECTURE_5_TIERS_2026-09-17.md) |
+| 2.9 | Le cahier de relecture métier, pour Avaliance | ✅ 17/09 | [cahier](CAHIER_RELECTURE_METIER_2026-09-17.md) · [version lisible](../cahier.html) |
+
+### 3 · Conception technique — comment il sera construit
+
+| # | Étape | État | Documents |
+|---|---|---|---|
+| 3.1 | Les décisions d'architecture (ADR) | ✅ 16 → 19/09 | [ADR-000](adr/ADR-000-mono-tenant.md) · [002](adr/ADR-002-personne-et-profils.md) · [003](adr/ADR-003-projet-prestation-ressource.md) · [004](adr/ADR-004-evenements-et-archivage.md) · [006](adr/ADR-006-avenant-version-datee.md) · [007](adr/ADR-007-filiales-pas-maintenant.md) |
+| 3.2 | Les 10 décisions techniques (pile, connexion, hébergement) | ✅ 18/09 — T4 sauvegardes reporté | [décisions techniques](DECISIONS_TECHNIQUES_v1.md) |
+| 3.3 | Le modèle de données | ✅ 17/09 | [modèle de données](MODELE_DONNEES_AVAMANAGER_V1.md) |
+| 3.4 | Le schéma de la base et ses murs | ✅ 19/09 | [lisez-moi](SPEC_SQL_LISEZ-MOI.md) · [schéma SQL](SPEC_SQL_AVAMANAGER_V1.sql) · [assertions des murs](SPEC_ASSERTIONS_L7.sql) |
+| 3.5 | Le contrat des 55 commandes | ✅ 19/09 | [contrat des commandes](SPEC_COMMANDES_L4.md) |
+| 3.6 | Les thèmes et les couleurs | ✅ 19/09 | [thèmes](THEMES_v1.md) · [audit des thèmes](annexes/AUDIT_THEMES_2026-09-19.md) |
+| 3.7 | La maquette : les 26 écrans et le banc d'essai | ✅ 18/09 | [les 26 écrans](../terminal.html) · [banc d'essai](../simulateur.html) · [relecture du banc](RELECTURE_5b_SIMULATEUR_2026-09-17.md) |
+
+### 4 · Organisation et contrôle — qui fait quoi, qui vérifie
+
+| # | Étape | État | Documents |
+|---|---|---|---|
+| 4.1 | Trois agents séparés : BRAIN, CODE (Grok), AUDIT | ✅ 21/09 | [plan du 21](PLAN_2026-09-21.md) · [brief exécutant](BRIEF_EXECUTANT_2026-09-17.md) |
+| 4.2 | La grille d'audit : 36 contrôles | ✅ 19/09 | [grille d'audit](GRILLE_AUDIT.md) |
+| 4.3 | Le cliquet et les portes (les tests qui bloquent) | ✅ 20/09 | [portes du code](journal/PORTES.md) · [portes en attente](PORTES_EN_ATTENTE.md) |
+| 4.4 | Les journaux de bugs | ⏳ tenus en continu | [bugs du BRAIN](JOURNAL_BUGS.md) · [bugs du code](journal/BUGS.md) · [correctifs](journal/CORRECTIFS.md) |
+
+### 5 · Construction — le code
+
+| # | Étape | État | Documents |
+|---|---|---|---|
+| 5.1 | Fondations : dépôt, base, 15 murs, données de départ (lot 1) | ✅ 20/09 — 69 min | [prompt lot 1](PROMPT_GROK_LOT1.md) · [étapes du code](journal/ETAPES.md) · [base](db/README.md) |
+| 5.2 | Le serveur : les 55 commandes (lot 2) | ⏳ correctifs en cours | [prompt lot 2](PROMPT_GROK_LOT2.md) · [prompt correctifs](prompt-lot2-correctifs.txt) · [décisions du code](journal/DECISIONS.md) |
+| 5.3 | Premier audit indépendant | ✅ 21/09 — refusé, 47 constats | [synthèse](audit-2026-09-21/SYNTHESE.md) · [constats](audit-2026-09-21/CONSTATS.md) · [mutations](audit-2026-09-21/MUTATIONS.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-21.md) |
+| 5.4 | Corrections du BRAIN : base, tests des murs, cliquet | ✅ 21/09 | [prompt brain code](prompt-brain-code.txt) |
+| 5.5 | Second audit | ⬜ quand Grok écrit « prêt » | [prompt second audit](prompt-audit-2.txt) |
+| 5.6 | Connexion par compte Microsoft (lot 2c) | ⬜ attend R4 de la réunion | [décisions techniques T2](DECISIONS_TECHNIQUES_v1.md) · [arbitrage D-2](ARBITRAGE_AUDIT_2026-09-21.md) |
+| 5.7 | Les 26 écrans (lot 3) | ⬜ après le 5.5 accepté | [les 26 écrans](../terminal.html) · [prompt écrans](PROMPT_CHATGPT_ECRANS.md) |
+| — | CRM, staffing, production (anciens lots 4, 5, 6) | ↪ fusionnés dans 5.2 et 5.7 | [plan du 20](PLAN_2026-09-20.md) |
+
+### 6 · Reprise et recette — avec les vraies données
+
+| # | Étape | État | Documents |
+|---|---|---|---|
+| 6.1 | Obtenir l'export des données de Boond | ⬜ attend R3 | [relevé Boond](cartographie/BOOND_CHEMINS_2026-09-19.md) |
+| 6.2 | Ressaisir les missions en cours et leurs tarifs | ⬜ attend R2 | hub › [Questions Avaliance](../#reunion) |
+| 6.3 | Import des données Boond (lot 7) | ⬜ | [modèle de données](MODELE_DONNEES_AVAMANAGER_V1.md) |
+| 6.4 | Essai de deux semaines, trois utilisateurs réels | ⬜ | — |
+| 6.5 | Un mois en parallèle de Boond, chiffres comparés | ⬜ | — |
+
+### 7 · Mise en production et livraison à Avaliance
+
+| # | Étape | État | Documents |
+|---|---|---|---|
+| 7.1 | Serveur dédié, sauvegardes chaque nuit, test de restauration mensuel | ⬜ | [décisions techniques T3–T5](DECISIONS_TECHNIQUES_v1.md) |
+| 7.2 | Sécurité : mots de passe de base, accès réseau | ⬜ | [audit, constat V-022](audit-2026-09-21/CONSTATS.md) |
+| 7.3 | Documentation utilisateur, par rôle | ⬜ | — |
+| 7.4 | Bascule : Ava Manager remplace Boond | ⬜ | — |
+| 7.5 | ⭐ Livraison finale à Avaliance | ⬜ | — |
+
+### 8 · Après la livraison
+
+| # | Étape | État | Documents |
+|---|---|---|---|
+| 8.1 | Connecteur pour Claude, lecture seule d'abord (lot 8) | ⬜ | [plan du 20, lot 8](PLAN_2026-09-20.md) |
 
 </etat>
 
 <source>
 
-Lots 1 et 2 : rapports de Grok et audit indépendant du 21/09 (`ARBITRAGE_AUDIT_2026-09-21.md`).
-Lot 2c : `DECISIONS_TECHNIQUES_v1.md` T2 et arbitrage D-2. Lot 8 : `PLAN_2026-09-20.md`.
-⚠️ Les lots 3 à 6 du plan du 20/09 (CRM, staffing, production, écrans) sont absorbés : les 55
-commandes sont toutes au lot 2, les écrans au lot 3. Le numéro 7 reste à la reprise.
+Étapes 0 → 4 : les plans datés du 15 au 22/09 et les documents cités. Étape 5 : rapports de Grok,
+audit indépendant du 21/09 (`Desktop/ava-audit/rapport/`, copié dans `doc/audit-2026-09-21/`).
+⚠️ Renumérotation du 22/09 : lot 1 → 5.1, lot 2 → 5.2, lot 2c → 5.6, lot 3 → 5.7, lot 7 → 6.3,
+lot 8 → 8.1. Les anciens numéros restent entre parenthèses pour relire les prompts déjà écrits.
 
 </source>
