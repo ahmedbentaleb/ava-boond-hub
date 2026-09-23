@@ -5804,12 +5804,19 @@ function showView(name){
     const bloc = i < 0 ? "" : md.slice(i + 8, j < 0 ? md.length : j);
     const phases = []; let intro = "";
     bloc.split(NL).forEach((l) => {
-      if (l.startsWith("### ")) phases.push({ titre: l.slice(4).trim(), etapes: [] });
-      else if (l.startsWith("|") && phases.length) {
+      if (l.startsWith("### ")) { phases.push({ titre: l.slice(4).trim(), etapes: [], sous: [] }); return; }
+      const ph = phases[phases.length - 1];
+      /* ⭐ Un « #### » dans une phase ouvre un tableau de chiffres, pas des étapes (23/09). */
+      if (l.startsWith("#### ") && ph) { ph.sous.push({ titre: l.slice(5).trim(), lignes: [], note: "" }); return; }
+      const sous = ph && ph.sous.length ? ph.sous[ph.sous.length - 1] : null;
+      if (l.startsWith("|") && ph) {
         const c = l.trim().replace(/^\||\|$/g, "").split("|").map((x) => x.trim());
-        if (c[0] === "#" || /^-+$/.test(c[0].replace(/[: ]/g, ""))) return;
-        phases[phases.length - 1].etapes.push({ n: c[0], etape: c[1] || "", etat: c[2] || "", docs: c[3] || "" });
-      } else if (!phases.length && l.trim()) intro += l + " ";
+        if (/^-+$/.test(c[0].replace(/[: ]/g, ""))) return;
+        if (sous) { sous.lignes.push(c); return; }
+        if (c[0] === "#") return;
+        ph.etapes.push({ n: c[0], etape: c[1] || "", etat: c[2] || "", docs: c[3] || "" });
+      } else if (sous && l.trim()) sous.note += l + " ";
+      else if (!phases.length && l.trim()) intro += l + " ";
     });
     return { intro, phases };
   }
@@ -5850,7 +5857,10 @@ function showView(name){
                   <span class="etat-e">${etatInline(e.etat)}${moi ? ' · <em>coché par vous</em>' : ""}</span>
                   ${e.docs && e.docs !== "—" ? `<span class="etat-d">📄 ${etatInline(e.docs)}</span>` : ""}
                 </li>`;
-              }).join("")}</ul></details>`;
+              }).join("")}</ul>${(ph.sous || []).map((x) => `<div style="padding:0 14px 14px">
+                <h4 style="margin:6px 0 8px;font-size:14px">${esc(x.titre)}</h4>
+                <div style="overflow-x:auto"><table class="etat-t"><tr>${(x.lignes[0] || []).map((c) => `<th>${etatInline(c)}</th>`).join("")}</tr>${x.lignes.slice(1).map((r) => `<tr>${r.map((c) => `<td>${etatInline(c)}</td>`).join("")}</tr>`).join("")}</table></div>
+                ${x.note.trim() ? `<p class="note">${etatInline(x.note.trim())}</p>` : ""}</div>`).join("")}</details>`;
           }).join("")}`;
       })
       .catch(() => { document.getElementById("etat-corps").innerHTML = '<p class="note">État indisponible hors ligne. Ouvrir <a href="doc/ETAT_PROJET.md">ETAT_PROJET.md</a>.</p>'; });
