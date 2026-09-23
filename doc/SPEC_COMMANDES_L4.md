@@ -98,13 +98,13 @@ pas de cycle. ⭐ **La garde doit les distinguer** : trois messages, pas un « M
 | Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
 |---|---|---|---|---|---|---|
 | `CreatePerson` | nom, prénom, coordonnées | la personne | `GARDE` doublon si politique = `bloquer` *(D-6)* | `PersonCreated` | `doublon.personne.*` (défaut **avertir**) | — |
-| `CreateCandidate` | personne_id, titre, provenance | le profil | `MUR` si un profil candidat existe déjà | `CandidateCreated` | — | **M-3** |
+| `CreateCandidate` | personne_id, titre, provenance | le profil | `GARDE` si un profil candidat existe déjà *(V-085, 23/09 : la commande intercepte **avant** le mur ; M-3 reste le filet)* | `CandidateCreated` | — | **M-3** |
 | `UpdateCandidate` | id + champs | le profil | `INTROUVABLE` si archivé | `CandidateUpdated` | — | — |
 | `CompleteCandidate` | id | le profil, état `complete` | `GARDE` **champ requis manquant** — la liste vient de la politique | `CandidateCompleted` | ⭐ `candidat.complete.champs_requis` (**liste de colonnes**) | — |
 | `ExitCandidate` | id, motif | le profil | `ETAT` hors cycle · `GARDE` aucun code actif de catégorie `sorti` | `CandidateExited` | — | ⛔ *D-8, 21/09* : la commande **n'écrit jamais** `ref_etat_candidat` — le code `sorti` est au seed (005) |
 | `ReactivateCandidate` | id | le profil | `ETAT` hors cycle | `CandidateReactivated` | — | — |
 | **`ConvertCandidateToResource`** | profil_candidat_id, type, agence, fournisseur | le profil ressource | voir le bloc **§C-1** | `CandidateConverted` | `candidat.conversion.acteur` · `ressource.externe.societe_fournisseur` | **M-3** |
-| `CreateResource` | personne_id, type, titre, agence | le profil | `MUR` si un profil ressource existe · `GARDE` externe sans fournisseur | `ResourceCreated` | `ressource.externe.societe_fournisseur` (défaut **obligatoire**) | **M-3** |
+| `CreateResource` | personne_id, type, titre, agence | le profil | `GARDE` si un profil ressource existe *(V-085)* · `GARDE` externe sans fournisseur | `ResourceCreated` | `ressource.externe.societe_fournisseur` (défaut **obligatoire**) | **M-3** |
 | `UpdateResource` | id + champs | le profil | ⛔ **jamais le coût** — c'est une autre commande | `ResourceUpdated` | — | — |
 | `SetResourceState` | id, état visé | le profil | `ETAT` hors cycle | `ResourceStateChanged` | `ressource.etat.mode` (défaut **manuel**) | — |
 | ⛔ **`UpdateResourceCost`** | id, coût, devise | le profil | `DROIT` — ⭐ **personne ne l'a au seed** | `ResourceCostChanged` | — | **M-15** (montant + devise) |
@@ -127,6 +127,14 @@ permission sensible se contourne par la commande ordinaire.
 | `UpdateNeed` | id + champs | le besoin | idem | `NeedUpdated` | — | **M-12** |
 | `SetNeedPriority` | id, priorité | le besoin | `INTROUVABLE` | `NeedPriorityChanged` | — | — |
 | `TakeNeedInCharge` | id | le besoin | `ETAT` hors cycle | `NeedTakenInCharge` | — | — |
+
+⭐ **Politiques lues et non annoncées — portées au contrat le 23/09 (V-089).** Mesurées dans
+`liens.politiques`, toutes au registre §C : `UpdateCandidate` → `candidat.note.echelle` ·
+`PositionCandidate` et `PositionResource` → `positionnement.sur_besoin_inactif`,
+`besoin.staffing.declencheur` · `RecordClientDecision` → `positionnement.cv_partage_obligatoire`,
+`positionnement.qualification_requise_avant_decision`, `projet.creation_depuis_besoin` ·
+`RecordTimesheet` → `capacite.jour_ouvre`, `temps.validation` · `ClosePrestation` → `frais.mode`,
+`change.mode`, `marge.taux.si_ca_nul`. ⭐ Le code avait raison, le contrat était en retard.
 
 ⭐ **Événement d'effet (V-064, 22/09)** : quand un `Position*` ou un retenu fait passer le besoin de `a_pourvoir` à `en_recherche`, la transaction émet **`NeedStateChanged`** `{de, vers}` — les états **lus en catégorie**, jamais écrits en dur.
 

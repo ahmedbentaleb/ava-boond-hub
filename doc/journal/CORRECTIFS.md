@@ -258,3 +258,35 @@ Le second audit a refusé `7e3f78c`. Une ligne par V- repris. ROUGE = porte vue 
 | V-054 | E3 décision inconnue → GARDE | P-200 | `not ok` — `Retenu` écrit `refuse_client` | `ok` — GARDE, etat_code inchangé | `6c83213` |
 | V-055 | E4 ManageRefs gardes | P-201 | `not ok` — désactiver `ouvert` `ok:true` actif false | `ok` — GARDE, catégorie inventée non écrite, renommage garde actif | `5b1e1a4` |
 | V-056 | E5 cascade clôture | P-202 | `not ok` — `ETAT` « CloseProject hors cycle » | `ok` — prestation et projet `clos`, les deux événements | `ec41489` |
+| V-011 | C4 chaque ligne : passe, hors périmètre, sans groupe ; chaque politique lue : deux valeurs | P-203–P-254 | `not ok` — CreateCompany hors périmètre `ok:true` CompanyCreated | `ok` — DROIT rien d'écrit ; politiques deux résultats (chemin+matrice+politiques 158/158) | `4f36b74` |
+| V-052 | E2 plafond jour joue RecordTimesheet | P-133 | `not ok` — alerte absente `[]` quand le plafond est ignoré | `ok` — 1,5 j alerte écrite, refus GARDE rien d'écrit | `b46bd61` |
+| V-057 | E6 liens.politiques des clés lues | P-256 | `not ok` — SignPrestation sans `prestation.avenant.mode`, seulement `projet.contact` | `ok` — les quatre clés et `projet.creation_depuis_besoin` | `5bd0196` |
+| V-061 | M1 refus sans compte tracé | P-257 | `not ok` — 0 ligne, uuid vide | `ok` — ligne, auteur nul | `f1ea103` |
+| V-068 | M2 SetPolicy selon le type | P-258 | `not ok` — `ok:true`, valeur `pas du json` | `ok` — GARDE, valeur inchangée | `a9cdc09` |
+| V-071 | M4 SetOwnTheme clés ui | P-259 | `not ok` — `ok:true`, clé `<script>` enregistrée | `ok` — GARDE, thème inchangé, `ui.mode` écrit | `0afd788` |
+| V-030 | M6 entrée mal typée → GARDE | P-260 | `not ok` — HTTP 500 `ERREUR` | `ok` — statut ≠ 500, code GARDE | `061cb07` |
+| V-032 | M6 sortie ArchiveObject | P-261 | `not ok` — sortie `{}` | `ok` — `sortie.id` = l'objet | `a9f86e3` |
+| V-037 | M6 ArchiveObject projet engagé | P-262 | `not ok` — `ok:true` ObjectArchived malgré une prestation ouverte | `ok` — GARDE, projet non archivé | `30a2582` |
+| V-051 | E1 DATABASE_URL, plus de base ava ni de ports fixes | P-263 | `not ok` — `db.ts retombe sur la base ava` | `ok` — lève si DATABASE_URL manque ; ports et URL lus de l'environnement | `6f3df6b` |
+| V-014 | E8 clé nom+prenom+naissance | P-264 | `not ok` — second CreatePerson `ok:true`, `date_naissance` null | `ok` — GARDE, l'autre jour est écrit | `46b816c` |
+| V-015 | E8 statuts commerciaux lus dans le référentiel | P-265 | `not ok` — `crm.ts:54 prospect` et 13 littéraux | `ok` — plus de code en dur, CreateCompany relit l'ordre 1 | `b87917a` |
+| V-018 | E8 le bouchon n'est plus lu | P-266 | `not ok` — `contrat.ts` contient `/bouchon/` | `ok` — liste et fiche relisent le besoin créé | `2d7699a` `b044550` `4238e76` |
+| V-017 | E8 ManageRefs | P-201 | couvert par V-055 | `ok` — catégorie inventée non écrite, renommage garde actif | `5b1e1a4` |
+| V-019 | E8 couleur calculée du titre | P-004 P-005 | `not ok` — reçu `rgb(255, 0, 0)`, attendu `rgb(217, 174, 232)` | `ok` — P-004 et P-005, le h1 est la structure | `b46d31f` |
+| V-069 | M3 profil ressource recréé | P-267 | `not ok` — `0 !== 1` après redémarrage | `ok` — profil ressource = 1 | `0e2d9e3` |
+| V-072 | M5 valeurs de test en $n | P-268 | `not ok` — Missing expected rejection | `ok` — littéral refusé, piège compté 0 | `ccb05f4` |
+| V-036 | M6 renommage | P-201 | couvert par V-055 | `ok` — renommage garde actif | `5b1e1a4` |
+| V-073 | M6 gardePourvu et garde du service | P-269 | `not ok` — `DROIT` puis `UnitArchived` | `ok` — INTROUVABLE, puis GARDE. Besoin fermé et ressource en mission déjà gardés dans ArchiveObject, sans porte séparée | `2b087bb` |
+| V-058 | E7 règle S lue sur le périmètre soi | P-270 | `not ok` — `identite.ts:395`, `droits.ts:59` `GROUPE.RES` | `ok` — plus de rôle en dur, UploadDocument de RES est `soi` | `0f45c06` |
+
+## V-011 · P-203 · sorties
+
+ROUGE (périmètre CreateCompany déplacé sur Casablanca, avant la garde sur l'agence du compte) :
+
+```
+not ok 1 - P-203 matrice CRM : passe, hors périmètre, sans le groupe
+CreateCompany hors périmètre : {"ok":true,"commande":"CreateCompany",...}
+true !== false
+```
+
+VERTE (`aLeDroit` : un périmètre d'agence ne couvre que cette agence) : P-203 à P-254, et chemin+matrice+politiques `pass 158`.

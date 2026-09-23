@@ -1,0 +1,106 @@
+AVA MANAGER — LOT 2, CORRECTIFS APRÈS LE TROISIÈME AUDIT
+========================================================
+23/09/2026. Le troisième audit a REFUSÉ le lot 2 au commit 416a7a3.
+Lis tout avant d'écrire une ligne.
+
+Rapport (il fait foi pour les preuves) :
+  C:\Users\Hamada\Desktop\ava-audit-3\rapport\CONSTATS.md
+  C:\Users\Hamada\Desktop\ava-audit-3\rapport\CONFORMITE3.md et SUIVI_V.md
+Arbitrage du BRAIN : _ops/ARBITRAGE_AUDIT_2026-09-23.md
+
+
+0. D'ABORD : CE QUI EST GAGNÉ
+─────────────────────────────
+  ⭐ 0 porte aveugle sur 50 sabotages (48 → 45 → 0). 264 portes, 31 assertions.
+  ⭐ Les 40 portes « refuse INTROUVABLE » relisent la base. Le filet tient.
+  ⭐ D-10 à D-13 tenues : 401 sur 7/7 commandes hors banc, comptes de banc
+     désactivés, périmètre « soi » en donnée, crochet posé par script.
+  ⭐ 55 commandes servies = 55 contractées, zéro fantôme.
+
+⛔ Deux trous d'ACCÈS EN LECTURE refusent le lot. La mutation ne pouvait pas
+   les voir : aucune porte ne les visait.
+
+
+1. LA RÈGLE — INCHANGÉE
+───────────────────────
+Une porte d'abord, vue ROUGE, puis le correctif, puis VERTE, puis le défaut
+remis une fois et la porte revue rouge. Toute porte relit la base. Un commit
+par point, `Role:` dans le message, `Role: banc` si le commit touche test/.
+
+
+2. CRITIQUE — LA STRUCTURE, PAS LE RAPIÉÇAGE
+────────────────────────────────────────────
+C1  V-075 · D-14   UN SEUL GARDE EN ENTRÉE, POUR TOUTE ROUTE
+    Aujourd'hui `GET /vues/besoins` rend 81 besoins (titre, société, état) à
+    un appelant anonyme, hors mode banc.
+    - un `preHandler` unique sur le serveur : hors AVA_MODE=banc, TOUTE route
+      sauf `/sante` rend 401 « authentification non livrée (lot 2c) »
+    - en banc, une vue filtre par le périmètre du compte, comme une commande
+    - plus aucune route ne décide seule si elle est publique
+    Portes : hors banc, `GET /vues/besoins` et `/vues/besoins/:id` → 401,
+    0 ligne rendue ; en banc, un compte de PAR ne voit pas les besoins de CAS.
+
+C2  V-076 · D-15   L'AGENCE DE L'OBJET SE LIT, ELLE NE SE RAPPELLE PAS
+    `crm.ts` n'a aucun `exigeObjet` : un compte de Paris crée, renomme et
+    archive une unité d'une autre agence, et `CreateUnit` accepte `agence_id`
+    en entrée.
+    - une TABLE de correspondance `commande → table → colonne d'agence`, lue
+      dans `executerCommande` avant le handler
+    - une commande qui n'a pas sa ligne dans cette table est REFUSÉE
+      (erreur de programmation, pas laissée passer)
+    - `exigeObjet` disparaît des 55 handlers
+    - `CreateUnit` n'accepte plus `agence_id` en entrée : il vient de l'objet
+      parent ou du compte
+    Portes : les 3 commandes de `crm.ts` hors agence → DROIT, 0 écriture ;
+    une commande nouvelle sans ligne de correspondance → refus, et une porte
+    qui le prouve.
+
+C3  V-078 · D-16   Hors banc, un refus anonyme ne se trace pas : 401 sec,
+    aucune ligne dans `tentative_refusee`, aucun corps de requête recopié.
+
+
+3. ÉLEVÉ
+────────
+E1 V-079  `CreatePrestation` refuse sur un projet clos.
+E2 V-080  `SetPolicy` : la liste des commandes affectées n'est jamais vide —
+          elle liste celles qui LISENT la clé (`droits.surcharge_restrictive`,
+          `historique.tentatives_refusees` comprises).
+E3 V-081  `ArchiveObject` émet son événement pour les 10 types, motif compris.
+E4 V-082  `v_besoin_couverture` ignore les prestations archivées.
+E5 V-083  `TakeNeedInCharge` passe sous le seed livré, et refuse avec le bon code.
+E6 V-084  La garde « catégorie inconnue » de `ManageRefs` vaut pour TOUS les
+          référentiels, pas seulement ceux qui portent `ck_cat` ; porte sur
+          `ref_pays`.
+
+
+4. MOYEN
+────────
+M1 V-086  Une porte relit `actif` des 9 comptes de banc après migration, avant
+   la fixture : réactivés en base, 264 portes vertes aujourd'hui.
+M2 V-088  `NeedStateChanged` porte `{de, vers}`, lus en catégorie, pas un code
+   écrit en dur.
+M3 V-090  Les 4 commandes sans porte de succès en gagnent une.
+M4 V-091  `ManageGroups` ne déguise plus une erreur de type en garde.
+M5 V-092 · D-19  En banc, l'en-tête désigne LE COMPTE (son e-mail) ; le groupe
+   se déduit du compte, et l'événement porte le bon auteur.
+M6 V-094  Les trois restes : `doublon.contact.cles` (toutes les branches),
+   `societe.passage_client.propagation` (elle doit modifier une donnée),
+   la porte d'écran sur la couleur calculée du fond, les 3 sorties sans `id`.
+
+
+5. CE QUE LE BRAIN FAIT — TU N'Y TOUCHES PAS
+────────────────────────────────────────────
+Branche lot-2-brain : cliquet (fenêtre au point de départ de la branche, porte
+hors tableau = KO), `\set ON_ERROR_STOP on` dans les assertions, script de
+vérification du serveur (`pg_hba`). Le canon (L4, grille) est déjà corrigé.
+Quand Ahmed te dit « lot-2-brain est prêt » : `git merge lot-2-brain`, puis
+`bash outils/make.sh test`.
+
+
+6. CE QUE TU RENDS
+──────────────────
+Une ligne par V- dans journal/ : commit · porte · sortie ROUGE puis VERTE.
+`journal/PORTES.md` à jour. Puis, seulement si `make test` = 0 et cliquet
+tout vert : « prêt pour le quatrième audit ».
+
+⛔ Pas de fusion sur main.

@@ -336,6 +336,23 @@ SELECT t.doit_refuser('un contact d''une autre société sur un besoin', 'M-12',
   WHERE id = 'be000000-0000-0000-0000-000000000001'
 $s$, 'M-12');
 
+-- ⭐ V-070, 22/09 — le trigger `tg_m12` est posé sur QUATRE tables (besoin,
+--    contact, projet, unite_organisation) ; seules besoin et l'arbre étaient
+--    prouvées. `DISABLE TRIGGER tg_m12` sur contact ou projet laissait les
+--    assertions vertes. Une assertion par table porteuse du mur.
+SELECT t.doit_refuser('un contact rangé dans l''unité d''une autre société', 'M-12', $s$
+  INSERT INTO unite_organisation (id, societe_id, type_code, nom)
+  VALUES ('c1e00000-0000-0000-0000-000000000012',
+          '50000000-0000-0000-0000-000000000001','pole','Pôle chez A');
+  UPDATE contact SET unite_organisation_id = 'c1e00000-0000-0000-0000-000000000012'
+  WHERE id = 'c1000000-0000-0000-0000-000000000002'
+$s$, 'M-12');
+
+SELECT t.doit_refuser('un contact d''une autre société sur un projet', 'M-12', $s$
+  UPDATE projet SET contact_id = 'c1000000-0000-0000-0000-000000000002'
+  WHERE id = '60000000-0000-0000-0000-000000000001'
+$s$, 'M-12');
+
 SELECT t.doit_refuser('une unité qui est son propre parent', 'M-12', $s$
   INSERT INTO unite_organisation (id, societe_id, type_code, nom)
   VALUES ('c1e00000-0000-0000-0000-000000000009',

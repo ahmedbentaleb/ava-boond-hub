@@ -84,6 +84,13 @@
   "ko": 6
  },
  {
+  "chemin": "ARBITRAGE_AUDIT_2026-09-23.md",
+  "titre": "Arbitrage du troisième audit — 23/09/2026",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 5
+ },
+ {
   "chemin": "AUDIT_PROJET_2026-09-17.md",
   "titre": "Audit du projet Ava Manager — 17 septembre 2026",
   "categorie": "Audits",
@@ -185,7 +192,7 @@
   "chemin": "ETAT_PROJET.md",
   "titre": "État du projet Ava Manager — du premier jour à la livraison",
   "categorie": "État et plans",
-  "date": "22/09/2026",
+  "date": "23/09/2026",
   "ko": 10
  },
  {
@@ -206,8 +213,8 @@
   "chemin": "GRILLE_AUDIT.md",
   "titre": "L2b — la grille d'audit",
   "categorie": "Audits",
-  "date": "22/09/2026",
-  "ko": 14
+  "date": "23/09/2026",
+  "ko": 15
  },
  {
   "chemin": "GRILLE_INVENTAIRE_BOOND_2026-09-17.md",
@@ -227,8 +234,8 @@
   "chemin": "JOURNAL_BUGS.md",
   "titre": "Journal des bugs — Ava Manager · **audit général**",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "21/09/2026",
-  "ko": 13
+  "date": "22/09/2026",
+  "ko": 15
  },
  {
   "chemin": "MACHINES_ETAT_V1.md",
@@ -301,6 +308,13 @@
   "ko": 4
  },
  {
+  "chemin": "prompt-brain-code-3.txt",
+  "titre": "prompt-brain-code-3.txt",
+  "categorie": "Prompts et briefs",
+  "date": "23/09/2026",
+  "ko": 2
+ },
+ {
   "chemin": "prompt-brain-code.txt",
   "titre": "prompt-brain-code.txt",
   "categorie": "Prompts et briefs",
@@ -320,6 +334,13 @@
   "categorie": "Prompts et briefs",
   "date": "22/09/2026",
   "ko": 6
+ },
+ {
+  "chemin": "prompt-lot2-correctifs-3.txt",
+  "titre": "prompt-lot2-correctifs-3.txt",
+  "categorie": "Prompts et briefs",
+  "date": "23/09/2026",
+  "ko": 5
  },
  {
   "chemin": "prompt-lot2-correctifs.txt",
@@ -402,15 +423,15 @@
   "chemin": "SPEC_ASSERTIONS_L7.sql",
   "titre": "SPEC_ASSERTIONS_L7.sql",
   "categorie": "Conception et contrat",
-  "date": "21/09/2026",
-  "ko": 29
+  "date": "22/09/2026",
+  "ko": 30
  },
  {
   "chemin": "SPEC_COMMANDES_L4.md",
   "titre": "L4 — le contrat des commandes",
   "categorie": "Conception et contrat",
-  "date": "22/09/2026",
-  "ko": 22
+  "date": "23/09/2026",
+  "ko": 23
  },
  {
   "chemin": "SPEC_SQL_AVAMANAGER_V1.sql",
@@ -473,7 +494,7 @@
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "22/09/2026",
-  "ko": 13
+  "ko": 17
  },
  {
   "chemin": "journal/DECISIONS.md",
@@ -522,7 +543,7 @@
   "titre": "Portes — le cliquet. Une porte ✅ ne redevient jamais ⏳.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "22/09/2026",
-  "ko": 28
+  "ko": 38
  },
  {
   "chemin": "journal/QUESTIONS.md",
@@ -662,6 +683,55 @@
   "titre": "SYNTHESE.md",
   "categorie": "Audits",
   "date": "22/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "audit-2026-09-23/CONFORMITE.md",
+  "titre": "CONFORMITE3 — les 55 commandes contre `_ops/SPEC_COMMANDES_L4.md`",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 23
+ },
+ {
+  "chemin": "audit-2026-09-23/CONSTATS.md",
+  "titre": "Constats du troisième audit — commit `416a7a3` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 9
+ },
+ {
+  "chemin": "audit-2026-09-23/GRILLE.md",
+  "titre": "GRILLE3 — troisième audit · lot 2 · commit `416a7a3`",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 22
+ },
+ {
+  "chemin": "audit-2026-09-23/MUTATIONS.md",
+  "titre": "Mutations — les tests des tests (famille G), troisième audit",
+  "categorie": "Audits",
+  "date": "22/09/2026",
+  "ko": 5
+ },
+ {
+  "chemin": "audit-2026-09-23/SECURITE.md",
+  "titre": "SECURITE3 — famille I · lot 2 · commit `416a7a3`",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 14
+ },
+ {
+  "chemin": "audit-2026-09-23/SUIVI_V.md",
+  "titre": "Troisième audit — suivi des constats sur `416a7a3` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 25
+ },
+ {
+  "chemin": "audit-2026-09-23/SYNTHESE.md",
+  "titre": "SYNTHESE.md",
+  "categorie": "Audits",
+  "date": "23/09/2026",
   "ko": 2
  }
 ]

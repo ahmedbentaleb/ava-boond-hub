@@ -141,7 +141,7 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-130 | B CONTRAT | Politique doublon.societe.mode : deux valeurs, deux résultats. | `test/contrat/politiques.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-131 | B CONTRAT | Politique ui.theme.choix_utilisateur : deux valeurs, deux résultats. | `test/contrat/politiques.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-132 | B CONTRAT | Politique besoin.contact : deux valeurs, deux résultats. | `test/contrat/politiques.test.ts` | 2026-09-21 | ✅ | 2 | — |
-| P-133 | B CONTRAT | Politique temps.plafond_jour : deux valeurs, deux résultats. | `test/contrat/politiques.test.ts` | 2026-09-21 | ✅ | 2 | — |
+| P-133 | B CONTRAT | temps.plafond_jour : 1,5 j sous alerte écrit, sous refus GARDE. | `test/contrat/politiques.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-134 | B CONTRAT | Politique candidat.note.echelle : 1_5 / 1_10 / hors échelle. | `test/contrat/politiques.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-135 | B CONTRAT | ExitCandidate sans code sorti actif → GARDE, ref inchangé. | `test/contrat/correctifs.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-136 | B CONTRAT | Démarrage en postgres superutilisateur → le serveur s'arrête. | `test/contrat/correctifs.test.ts` | 2026-09-21 | ✅ | 2 | — |
@@ -211,3 +211,70 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-200 | B CONTRAT | Une décision client inconnue est GARDE, l'état ne change pas. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-201 | B CONTRAT | ManageRefs : catégorie inconnue GARDE, valeur système protégée, renommage sans actif. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-202 | B CONTRAT | CloseProject en cascade clôture les prestations puis le projet. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-203 | B CONTRAT | Matrice CRM : passe, hors périmètre, sans le groupe. | `test/contrat/v011-lignes.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-204 | B CONTRAT | Matrice identité : passe, hors périmètre, sans le groupe. | `test/contrat/v011-lignes.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-205 | B CONTRAT | Matrice besoin : passe, hors périmètre, sans le groupe. | `test/contrat/v011-lignes.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-206 | B CONTRAT | Matrice projet : passe, hors périmètre, sans le groupe. | `test/contrat/v011-lignes.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-207 | B CONTRAT | Matrice admin : passe, hors périmètre, sans le groupe. | `test/contrat/v011-lignes.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-208 | B CONTRAT | S : RecordTimesheet et RecordAbsence, soi permis, autrui refusé. | `test/contrat/v011-lignes.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-209 | B CONTRAT | positionnement.unicite : actifs, historique, aucune — trois résultats. | `test/contrat/v011-lignes.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-210 | B CONTRAT | besoin.staffing.declencheur : deux valeurs, deux résultats. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-211 | B CONTRAT | besoin.pourvu.garde_minimale : deux valeurs, deux résultats. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-212 | B CONTRAT | positionnement.sur_besoin_inactif : refus garde, alerte écrit. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-213 | B CONTRAT | positionnement.cv_partage_obligatoire : deux valeurs, deux résultats. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-214 | B CONTRAT | qualification requise avant décision : deux valeurs, deux résultats. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-215 | B CONTRAT | projet.creation_depuis_besoin : alerte ou non. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-216 | B CONTRAT | projet.contact : obligatoire garde, facultatif écrit. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-217 | B CONTRAT | projet.origine_besoin : deux valeurs, deux résultats. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-218 | B CONTRAT | besoin.projets_max : un seul garde, illimité écrit. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-219 | B CONTRAT | projet.depuis_besoin.garde : deux valeurs, deux résultats. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-220 | B CONTRAT | projet.depuis_besoin.garde_profil : deux valeurs, deux résultats. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-221 | B CONTRAT | projet.cloture.garde : prestations closes garde, cascade clôt. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-222 | B CONTRAT | prestation.avenant.mode : version datée ou non. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-223 | B CONTRAT | societe.passage_client.declencheur : client ou prospect. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-224 | B CONTRAT | societe.passage_client.propagation : société seule ou tous les contacts. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-225 | B CONTRAT | besoin.pourvu.mode : manuel ou auto. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-226 | B CONTRAT | projet.devises_mixtes : autorise ou refus. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-227 | B CONTRAT | prestation.surcharge.seuil_pct : deux seuils, deux alertes. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-228 | B CONTRAT | prestation.surcharge.mode : alerte ou refus. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-229 | B CONTRAT | frais.mode : ignorés ou imputés. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-230 | B CONTRAT | change.mode : marge nulle ou mur sur devises mixtes. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-231 | B CONTRAT | marge.taux.si_ca_nul : nul ou zéro. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-232 | B CONTRAT | prestation.annulation.garde : temps saisi garde, libre annule. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-233 | B CONTRAT | temps.periode : hors dates garde ou écrit. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-234 | B CONTRAT | capacite.jour_ouvre : alerte ou non. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-235 | B CONTRAT | temps.facturable.mode : saisie séparée ou égal au produit. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-236 | B CONTRAT | temps.validation : aucune écrit, par DP garde. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-237 | B CONTRAT | temps.correction_apres_cloture : refus ou ajustement. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-238 | B CONTRAT | absence.chevauchement : refus ou alerte. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-239 | B CONTRAT | absence.sans_prestation : refusée ou autorisée. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-240 | B CONTRAT | doublon.societe.cles : nom bloque, siren seul non. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-241 | B CONTRAT | societe.retour_prospect : manuel ou jamais. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-242 | B CONTRAT | societe.archivage.garde : objets actifs ou libre. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-243 | B CONTRAT | service.archivage.garde : besoin lié ou libre. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-244 | B CONTRAT | doublon.contact.mode : bloquer ou ignorer. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-245 | B CONTRAT | doublon.contact.cles : email ou nom. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-246 | B CONTRAT | contact.transfert.objets_actifs : réaffectation ou conserver. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-247 | B CONTRAT | doublon.personne.mode : bloquer ou ignorer. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-248 | B CONTRAT | doublon.personne.cles : email ou naissance. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-249 | B CONTRAT | candidat.complete.champs_requis : deux listes, deux résultats. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-250 | B CONTRAT | ressource.externe.societe_fournisseur : obligatoire ou facultatif. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-251 | B CONTRAT | ressource.etat.mode : manuel ou dérivé. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-252 | B CONTRAT | qualification.besoin_obligatoire : oui ou non. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-253 | B CONTRAT | candidat.conversion.acteur : groupe RH ou tout habilité. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-254 | B CONTRAT | historique.tentatives_refusees : tracées ou non. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-256 | B CONTRAT | SignPrestation et RecordClientDecision portent les politiques lues. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-257 | B CONTRAT | Un groupe inconnu est tracé, sans uuid vide. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-258 | B CONTRAT | SetPolicy refuse une liste qui n'est pas du JSON. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-259 | B CONTRAT | SetOwnTheme refuse une clé hors ui connu. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-260 | B CONTRAT | Une entrée mal typée est GARDE, pas un HTTP 500. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-261 | B CONTRAT | ArchiveObject rend l'id de l'objet. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-262 | B CONTRAT | ArchiveObject sur un projet engagé est GARDE. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-263 | B CONTRAT | DATABASE_URL manquant lève ; aucun port fixe ni base ava en dur. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | — |
+| P-264 | B CONTRAT | nom+prenom+naissance bloque un doublon, un autre jour passe. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-265 | B CONTRAT | Les statuts commerciaux se lisent dans le référentiel. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-266 | B CONTRAT | L'écran lit les besoins en base, plus le bouchon. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-267 | B CONTRAT | Un compte RES déjà lié retrouve son profil ressource. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-268 | B CONTRAT | compter lie les valeurs et refuse un littéral SQL. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | — |
+| P-269 | B CONTRAT | gardePourvu n'est pas une commande ; un service avec besoin ouvert est GARDE. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-270 | B CONTRAT | La règle S se lit sur le périmètre soi. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |

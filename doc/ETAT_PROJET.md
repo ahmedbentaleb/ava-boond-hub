@@ -87,7 +87,9 @@ Mis à jour le 22/09/2026. Les anciens numéros de lot sont entre parenthèses.
 | 5.4 | Corrections du BRAIN : base, tests des murs, cliquet | ✅ 21/09 — validées par le second audit | [prompt brain code](prompt-brain-code.txt) |
 | 5.5 | Second audit | ✅ 22/09 — refusé, 27 constats neufs, accès non gardé | [synthèse](audit-2026-09-22/SYNTHESE.md) · [constats](audit-2026-09-22/CONSTATS.md) · [contestation](audit-2026-09-22/CONTESTATION.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-22.md) |
 | 5.5b | Corrections du second tour : BRAIN CODE puis Grok | ⏳ | [prompt brain code 2](prompt-brain-code-2.txt) · [prompt correctifs 2](prompt-lot2-correctifs-2.txt) |
-| 5.5c | Troisième audit | ⬜ quand Grok écrit « prêt pour le troisième audit » | [prompt d'audit](prompt-audit-2.txt) |
+| 5.5c | Troisième audit | ✅ 23/09 — refusé, 21 constats neufs ; ⭐ **banc réparé : 0 porte aveugle sur 50 sabotages** | [synthèse](audit-2026-09-23/SYNTHESE.md) · [constats](audit-2026-09-23/CONSTATS.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-23.md) |
+| 5.5d | Corrections du troisième tour | ⏳ | [prompt brain code 3](prompt-brain-code-3.txt) · [prompt correctifs 3](prompt-lot2-correctifs-3.txt) |
+| 5.5e | Quatrième audit | ⬜ quand Grok écrit « prêt pour le quatrième audit » | [prompt d'audit](prompt-audit-2.txt) |
 | 5.6 | Connexion par compte Microsoft (lot 2c) | ⬜ attend R4 de la réunion | [décisions techniques T2](DECISIONS_TECHNIQUES_v1.md) · [arbitrage D-2](ARBITRAGE_AUDIT_2026-09-21.md) |
 | 5.7 | Les 26 écrans (lot 3) | ⬜ après le 5.5 accepté | [les 26 écrans](../terminal.html) · [prompt écrans](PROMPT_CHATGPT_ECRANS.md) |
 | — | CRM, staffing, production (anciens lots 4, 5, 6) | ↪ fusionnés dans 5.2 et 5.7 | — |

@@ -91,11 +91,11 @@ ORDER BY 1;
 
 | # | Contrôle | Comment | Si ça échoue |
 |---|---|---|---|
-| **K1** | Hors `AVA_MODE=banc`, **aucun** appel n'écrit tant que le lot 2c n'est pas livré | serveur sans `AVA_MODE` : toute commande → refus, 0 ligne écrite | 🔴 V-048 |
+| **K1** | Hors `AVA_MODE=banc`, **aucune route ne répond** sauf `/sante` — ⛔ **les vues de lecture comprises** | serveur sans `AVA_MODE` : `POST /commandes/*` **et** `GET /vues/*` → 401, 0 ligne écrite, 0 ligne rendue, rien tracé *(V-075, D-14, 23/09 : une vue ouverte livrait 81 besoins)* | 🔴 |
 | **K2** | Une session n'est jamais l'identifiant d'un compte | envoyer l'UUID d'un compte comme session → refus ; le jeton est aléatoire, haché, expirant (D-10) | 🔴 |
 | **K3** | Un compte désactivé ne fait rien | sa session → refus, 0 écriture | 🔴 |
-| **K4** | Le périmètre se juge **sur l'objet visé** | pour chaque commande qui vise un objet : un cas hors agence → `DROIT`, 0 écriture | 🔴 V-004 |
-| **K5** | La base n'accepte personne sans mot de passe hors poste de dev | `pg_hba_file_rules` : 0 `trust` sur un serveur | 🔴 V-022 (T3) |
+| **K4** | Le périmètre se juge **sur l'objet visé**, et se **lit** au lieu de s'appeler | la table `commande → table → colonne d'agence` existe et couvre les 55 ; une commande sans sa ligne est refusée ; par commande : un cas hors agence → `DROIT`, 0 écriture *(V-076, D-15 : `crm.ts` n'avait aucune garde)* | 🔴 |
+| **K5** | La base n'accepte personne sans mot de passe hors poste de dev | `bash outils/verif_serveur.sh` sur le serveur : 0 `trust`, `listen_addresses` borné, `ava_serveur` avec mot de passe — ⚠️ pas dans le cliquet : le poste de dev est en `trust` assumé *(V-093)* | 🔴 V-022 (T3) |
 
 ## D · LE DÉPÔT — 5 contrôles.
 

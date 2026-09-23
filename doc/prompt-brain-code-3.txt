@@ -1,0 +1,46 @@
+AVA MANAGER — SESSION BRAIN CODE, TROISIÈME TOUR
+================================================
+23/09/2026. Trois points, tous dans les outils du BRAIN. Grok travaille en
+même temps sur le serveur. Le mot d'Ahmed est donné pour ce qui suit.
+
+À lire d'abord, et seulement ça :
+  _ops/ARBITRAGE_AUDIT_2026-09-23.md              D-17, D-18, V-093
+  Desktop/ava-audit-3/rapport/CONSTATS.md         V-077, V-087, V-093
+
+Ton poste — le même :
+  cd /c/Users/Hamada/Desktop/ava-brain
+  git fetch "/c/Users/Hamada/Desktop/Ava Manager" lot-2
+  git checkout lot-2-brain && git merge FETCH_HEAD
+Base ava_brain, refaite à neuf. Chaque commit porte « Role: brain ».
+
+
+B1  V-077 · D-17   LE CLIQUET NE PERD PLUS UNE PORTE
+    - la fenêtre des portes va de `git merge-base main HEAD` à HEAD, plus de
+      `HEAD~1`
+    - « porte exécutée absente du tableau » devient un **KO**, plus un ⚠️
+    Témoin : 70 portes ✅ effacées DANS un commit, puis un commit de plus →
+    aujourd'hui cases 11/12 vertes ; après correction, KO.
+    Le script de l'audit : `ava-audit-3/rapport/preuves/scripts/cliquet3.sh`.
+
+B2  V-087 · D-18   LES ASSERTIONS NE DÉPENDENT PLUS DE QUI LES LANCE
+    `\set ON_ERROR_STOP on` en tête de `_ops/SPEC_ASSERTIONS_L7.sql`, puis
+    copie exacte dans `test/`.
+    Témoin : `tg_m10` désactivé, fichier joué SANS le drapeau en ligne de
+    commande → aujourd'hui rc=0 et 18 OK sur 31 ; après correction, rc≠0.
+
+B3  V-093 · K5   LE CONTRÔLE DU SERVEUR EXISTE ET SE LANCE
+    `outils/verif_serveur.sh` : il lit `pg_hba_file_rules` et
+    `listen_addresses`, et sort ≠ 0 si une règle `trust` traîne sur autre
+    chose que le poste de dev, ou si `ava_serveur` n'a pas de mot de passe.
+    ⚠️ Il ne tourne PAS dans le cliquet (le poste de dev est en `trust`
+    assumé) : il se lance à la main sur un serveur, et la grille K5 le cite.
+    Témoin : lancé sur le poste, il dit ce qu'il voit et sort 1, avec le motif.
+
+
+Ce que tu ne fais jamais : server/ web/ test/ (sauf la copie des assertions) ;
+réécrire une migration publiée ; toucher « ava », le port 3000, le dossier
+« Ava Manager » ; fusionner ou pousser ; assouplir un contrôle qui gêne.
+
+Tu rends : une ligne par point dans `_ops/JOURNAL_BUGS.md` (V-xxx · commit ·
+témoin ROUGE → VERT), puis 15 lignes au plus, avec la phrase exacte à donner
+à Grok : « lot-2-brain est prêt : git merge lot-2-brain. »
