@@ -585,6 +585,7 @@
     .sch-n { fill: var(--muted); font-size: 12px; }
     .sch-g { fill: #CDD749; font-size: 13.5px; font-weight: 600; }
     .sch-fl { stroke: #AEBF38; stroke-width: 2; }
+    .sch-fam { fill: rgba(174,191,56,.06); stroke: #AEBF38; stroke-dasharray: 3 3; }
 </style>
 <script type="importmap">
 {
@@ -612,6 +613,7 @@
   <section class="view" id="view-code-regles" hidden></section>
   <section class="view" id="view-code-methode" hidden></section>
   <section class="view" id="view-code-cout" hidden></section>
+  <section class="view" id="view-code-reglages" hidden></section>
   <section class="view" id="view-lire" hidden></section>
   <section class="view" id="view-page" hidden></section>
   <section class="view" id="view-ava-metier" hidden></section>
@@ -3149,6 +3151,7 @@ function showView(name){
     { id: "code", label: "Code", items: [
       { v: "code-archi", label: "Comment c'est construit", star: 1 },
       { v: "code-regles", label: "Rien n'est figé", star: 1 },
+      { v: "code-reglages", label: "Ce qu'une société règle elle-même", star: 1 },
       { v: "code-methode", label: "Comment on le vérifie", star: 1 },
       { v: "code-cout", label: "Délais et coût", star: 1 } ] },
     { id: "metier", label: "Le métier", items: [
@@ -3186,7 +3189,7 @@ function showView(name){
   const flattenViews = (views) =>
     views.flatMap((v) => (v.children && v.children.length ? v.children : [v]));
   const ALL_VIEWS = Object.values(PRODUCTS).flatMap((p) => flattenViews(p.views).map((v) => v.id))
-    .concat(["code-archi", "code-regles", "code-methode", "code-cout"]);
+    .concat(["code-archi", "code-regles", "code-methode", "code-cout", "code-reglages"]);
   const nestedLast = {};
 
   const DECISIONS = [
@@ -6016,6 +6019,74 @@ function showView(name){
       <div class="rowbtns" style="margin-top:14px"><a class="pill" href="#ava-etat">La feuille de route</a><a class="pill" href="#code-methode">Comment on le vérifie</a></div>`;
   }
 
+
+  /* ═══════════ CODE — ce qu'une société règle elle-même ═══════════ */
+  function codeReglages() {
+    const el = document.getElementById("view-code-reglages");
+    const F = [
+      ["Apparence", "85", "thème et couleurs, entrées du menu, colonnes des listes, page d'accueil"],
+      ["Projets et missions", "8", "qui peut créer un projet, clôture en cascade, avenant daté"],
+      ["Doublons", "8", "société, contact, personne : alerter · bloquer · ignorer, et sur quelles clés"],
+      ["Temps", "7", "période autorisée, plafond par jour, validation, part facturable"],
+      ["Sociétés", "7", "quand un prospect devient client, et si ça descend aux unités"],
+      ["Besoins", "6", "contact obligatoire ou non, quand un besoin passe « pourvu »"],
+      ["Prestations", "5", "seuil de sur-occupation, garde d'annulation, date de clôture"],
+      ["Positionnements", "4", "un candidat deux fois sur un besoin, CV obligatoire avant décision"],
+      ["Absences et occupation", "7", "chevauchement, capacité du jour, calcul du taux"],
+      ["Candidats et ressources", "6", "échelle de note, qui convertit un candidat, coût de référence"],
+      ["Alertes et historique", "5", "quelles alertes, quels seuils, quelles tentatives tracées"],
+      ["Le reste", "25", "devises, arrondis, modèles de document, droits et délégations"],
+    ];
+    const E = [
+      ["Ajouter une étape à un parcours — « Vivier », « À relancer »", 1],
+      ["Renommer, réordonner ou désactiver une étape", 1],
+      ["Ajouter une colonne au tableau du staffing", 1],
+      ["Ajouter un type de mission, une provenance, un motif", 1],
+      ["Changer l'ordre du métier : un besoin sans société, une mission sans projet", 0],
+      ["Supprimer une trace de l'historique", 0],
+      ["Modifier une marge déjà signée", 0],
+      ["Retirer la devise d'un montant", 0],
+    ];
+    el.innerHTML = `<h2>Ce qu'une société règle elle-même</h2>
+      <p class="lead"><strong>173 réglages et 40 listes de valeurs</strong>, changés dans un écran d'administration, sans développeur et sans redéploiement. Les 15 interdits, eux, ne se règlent jamais.</p>
+      <h3 style="margin-top:18px">Les réglages, par famille</h3>
+      <div style="overflow-x:auto"><table class="etat-t"><tr><th>Famille</th><th>Combien</th><th>Exemples</th></tr>
+        ${F.map(([a, n, ex]) => `<tr><td><strong>${a}</strong></td><td class="mono">${n}</td><td>${ex}</td></tr>`).join("")}
+      </table></div>
+      <h3 style="margin-top:18px">Les étapes du parcours : ce qui s'ajoute, ce qui ne bouge pas</h3>
+      <div style="overflow-x:auto"><table class="etat-t"><tr><th>La société veut…</th><th>Possible ?</th></tr>
+        ${E.map(([t, ok]) => `<tr><td>${t}</td><td>${ok ? '<span class="tag ok">oui, dans l\'administration</span>' : '<span class="tag warn">non, jamais</span>'}</td></tr>`).join("")}
+      </table></div>
+      <div class="card-plein" style="margin-top:16px">
+      <svg viewBox="0 0 900 240" class="sch" role="img" aria-label="Les étapes s'ajoutent dans une famille, les familles ne bougent pas">
+        <g class="sch-bloc"><rect x="20" y="20" width="860" height="200" rx="4"/>
+          <text x="40" y="52" class="sch-t">LE PARCOURS D'UN CANDIDAT <tspan class="sch-s">— trois familles, autant d'étapes qu'on veut</tspan></text>
+          <rect x="40" y="76" width="250" height="118" rx="3" class="sch-fam"/>
+          <text x="60" y="102" class="sch-t">EN COURS</text>
+          <text x="60" y="128" class="sch-p">À traiter · En cours · Vivier</text>
+          <text x="60" y="148" class="sch-p">À relancer · Entretien planifié</text>
+          <text x="60" y="176" class="sch-g">+ ajoutez les vôtres</text>
+          <rect x="320" y="76" width="250" height="118" rx="3" class="sch-fam"/>
+          <text x="340" y="102" class="sch-t">TERMINÉ</text>
+          <text x="340" y="128" class="sch-p">Recruté · Converti en</text>
+          <text x="340" y="148" class="sch-p">consultant</text>
+          <text x="340" y="176" class="sch-g">+ ajoutez les vôtres</text>
+          <rect x="600" y="76" width="250" height="118" rx="3" class="sch-fam"/>
+          <text x="620" y="102" class="sch-t">SORTI</text>
+          <text x="620" y="128" class="sch-p">Désistement · Blacklisté ·</text>
+          <text x="620" y="148" class="sch-p">Sans suite</text>
+          <text x="620" y="176" class="sch-g">+ ajoutez les vôtres</text>
+        </g>
+      </svg></div>
+      <div class="row" style="margin-top:16px">
+        ${[["Pourquoi ça marche","Le logiciel ne raisonne que sur la <strong>famille</strong>, jamais sur le nom de l'étape. On peut donc reprendre les 14 étapes de candidat de Boond sans toucher une ligne de code."],
+           ["Ce que ça vous évite","Un devis et trois semaines d'attente chaque fois qu'un mot change. Chez Boond, la liste des états est déjà administrable : nous gardons cet acquis et l'étendons aux règles."],
+           ["Pour une autre société","Le produit se vend à d'autres : elles règlent leurs propres valeurs et leurs propres étapes, sur la même base de code."]]
+          .map(([t, p]) => `<div class="card" style="flex:1 1 260px"><h3>${t}</h3><p>${p}</p></div>`).join("")}
+      </div>
+      <div class="rowbtns" style="margin-top:14px"><a class="pill" href="#ava-sim-rules">Essayer les réglages</a><a class="pill" href="#lire:REGISTRE_POLITIQUES_v1.md">Le registre complet</a><a class="pill" href="#code-regles">Réglage, liste, interdit</a></div>`;
+  }
+
   /* ═══════════ LE LECTEUR — un document du projet, affiché dans le hub ═══════════ */
   let LIRE = "", PAGE = "";
   function resoudre(base, rel) {
@@ -6099,6 +6170,7 @@ function showView(name){
     "code-regles": codeRegles,
     "code-methode": codeMethode,
     "code-cout": codeCout,
+    "code-reglages": codeReglages,
     "ava-documents": renderDocuments,
     "ava-reunion": renderReunion,
     "ava-metier": renderAvaMetier,
@@ -6144,7 +6216,7 @@ function showView(name){
   }
 
   function showHubView(name) {
-    const aliases = { cout: "code-cout", delais: "code-cout", code: "code-archi", "code-archi": "code-archi", regles: "code-regles", methode: "code-methode", documents: "ava-documents", docs: "ava-documents", etat: "ava-etat", "etat-projet": "ava-etat", reunion: "ava-reunion", avaliance: "ava-reunion", questions: "ava-reunion", "ava-simulateur": "ava-sim-rules", "ava-parcours": "ava-quiz", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-quiz", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
+    const aliases = { reglages: "code-reglages", parametres: "code-reglages", cout: "code-cout", delais: "code-cout", code: "code-archi", "code-archi": "code-archi", regles: "code-regles", methode: "code-methode", documents: "ava-documents", docs: "ava-documents", etat: "ava-etat", "etat-projet": "ava-etat", reunion: "ava-reunion", avaliance: "ava-reunion", questions: "ava-reunion", "ava-simulateur": "ava-sim-rules", "ava-parcours": "ava-quiz", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-quiz", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
     if (aliases[name]) name = aliases[name];
     let key = name;
     if (name.startsWith("lire:")) { LIRE = decodeURIComponent(name.slice(5)); key = "lire:" + LIRE; name = "lire"; }
