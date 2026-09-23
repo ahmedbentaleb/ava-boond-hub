@@ -23,7 +23,7 @@ Légende : ✅ fait · ⏳ en cours · ⬜ à faire · ↪ fusionné ailleurs. L
 
 <etat>
 
-Mis à jour le 22/09/2026. Les anciens numéros de lot sont entre parenthèses.
+Mis à jour le 23/09/2026. Les anciens numéros de lot sont entre parenthèses.
 
 ### 0 · Démarrage
 
@@ -82,13 +82,13 @@ Mis à jour le 22/09/2026. Les anciens numéros de lot sont entre parenthèses.
 | # | Étape | État | Documents |
 |---|---|---|---|
 | 5.1 | Fondations : dépôt, base, 15 murs, données de départ (lot 1) | ✅ 20/09 — 69 min | [prompt lot 1](PROMPT_GROK_LOT1.md) · [étapes du code](journal/ETAPES.md) · [base](db/README.md) |
-| 5.2 | Le serveur : les 55 commandes (lot 2) | ⏳ second tour de correctifs (après le second audit) | [prompt lot 2](PROMPT_GROK_LOT2.md) · [prompt correctifs](prompt-lot2-correctifs.txt) · [décisions du code](journal/DECISIONS.md) |
+| 5.2 | Le serveur : les 55 commandes (lot 2) | ⏳ **troisième tour de correctifs** · banc vert au 23/09 : **280 portes jouées, 31 assertions, cliquet 12/12** (fusion `cc3ff64`) | [prompt lot 2](PROMPT_GROK_LOT2.md) · [prompt correctifs](prompt-lot2-correctifs.txt) · [décisions du code](journal/DECISIONS.md) |
 | 5.3 | Premier audit indépendant | ✅ 21/09 — refusé, 47 constats | [synthèse](audit-2026-09-21/SYNTHESE.md) · [constats](audit-2026-09-21/CONSTATS.md) · [mutations](audit-2026-09-21/MUTATIONS.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-21.md) |
 | 5.4 | Corrections du BRAIN : base, tests des murs, cliquet | ✅ 21/09 — validées par le second audit | [prompt brain code](prompt-brain-code.txt) |
 | 5.5 | Second audit | ✅ 22/09 — refusé, 27 constats neufs, accès non gardé | [synthèse](audit-2026-09-22/SYNTHESE.md) · [constats](audit-2026-09-22/CONSTATS.md) · [contestation](audit-2026-09-22/CONTESTATION.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-22.md) |
-| 5.5b | Corrections du second tour : BRAIN CODE puis Grok | ⏳ | [prompt brain code 2](prompt-brain-code-2.txt) · [prompt correctifs 2](prompt-lot2-correctifs-2.txt) |
+| 5.5b | Corrections du second tour : BRAIN CODE puis Grok | ✅ 22-23/09 | [prompt brain code 2](prompt-brain-code-2.txt) · [prompt correctifs 2](prompt-lot2-correctifs-2.txt) |
 | 5.5c | Troisième audit | ✅ 23/09 — refusé, 21 constats neufs ; ⭐ **banc réparé : 0 porte aveugle sur 50 sabotages** | [synthèse](audit-2026-09-23/SYNTHESE.md) · [constats](audit-2026-09-23/CONSTATS.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-23.md) |
-| 5.5d | Corrections du troisième tour | ⏳ | [prompt brain code 3](prompt-brain-code-3.txt) · [prompt correctifs 3](prompt-lot2-correctifs-3.txt) |
+| 5.5d | Corrections du troisième tour | ⏳ — BRAIN CODE ✅ fusionné (cliquet 12/12) · Grok en cours (D-14 le garde unique, D-15 l'agence de l'objet) | [prompt brain code 3](prompt-brain-code-3.txt) · [prompt correctifs 3](prompt-lot2-correctifs-3.txt) |
 | 5.5e | Quatrième audit | ⬜ quand Grok écrit « prêt pour le quatrième audit » | [prompt d'audit](prompt-audit-2.txt) |
 | 5.6 | Connexion par compte Microsoft (lot 2c) | ⬜ attend R4 de la réunion | [décisions techniques T2](DECISIONS_TECHNIQUES_v1.md) · [arbitrage D-2](ARBITRAGE_AUDIT_2026-09-21.md) |
 | 5.7 | Les 26 écrans (lot 3) | ⬜ après le 5.5 accepté | [les 26 écrans](../terminal.html) · [prompt écrans](PROMPT_CHATGPT_ECRANS.md) |

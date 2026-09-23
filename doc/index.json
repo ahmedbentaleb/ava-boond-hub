@@ -234,8 +234,8 @@
   "chemin": "JOURNAL_BUGS.md",
   "titre": "Journal des bugs — Ava Manager · **audit général**",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "22/09/2026",
-  "ko": 15
+  "date": "23/09/2026",
+  "ko": 16
  },
  {
   "chemin": "MACHINES_ETAT_V1.md",
@@ -276,7 +276,7 @@
   "chemin": "PLAN_2026-09-22.md",
   "titre": "Plan du 22/09/2026 — le hub remis en ordre",
   "categorie": "État et plans",
-  "date": "22/09/2026",
+  "date": "23/09/2026",
   "ko": 4
  },
  {
@@ -423,7 +423,7 @@
   "chemin": "SPEC_ASSERTIONS_L7.sql",
   "titre": "SPEC_ASSERTIONS_L7.sql",
   "categorie": "Conception et contrat",
-  "date": "22/09/2026",
+  "date": "23/09/2026",
   "ko": 30
  },
  {
@@ -493,8 +493,8 @@
   "chemin": "journal/CORRECTIFS.md",
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "22/09/2026",
-  "ko": 17
+  "date": "23/09/2026",
+  "ko": 19
  },
  {
   "chemin": "journal/DECISIONS.md",
@@ -542,8 +542,8 @@
   "chemin": "journal/PORTES.md",
   "titre": "Portes — le cliquet. Une porte ✅ ne redevient jamais ⏳.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "22/09/2026",
-  "ko": 38
+  "date": "23/09/2026",
+  "ko": 40
  },
  {
   "chemin": "journal/QUESTIONS.md",

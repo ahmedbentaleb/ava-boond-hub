@@ -290,3 +290,27 @@ true !== false
 ```
 
 VERTE (`aLeDroit` : un périmètre d'agence ne couvre que cette agence) : P-203 à P-254, et chemin+matrice+politiques `pass 158`.
+
+# Correctifs lot 2 — troisième audit · 23/09/2026
+
+Le troisième audit a refusé `416a7a3`. Une ligne par V-. ROUGE = porte vue sur le défaut, y compris remis une fois.
+
+| V- | Point | Porte | ROUGE avant | VERTE après | Commit |
+|---|---|---|---|---|---|
+| V-075 | C1 D-14 un seul garde | P-271 | `not ok` — HTTP 200, `compte=592`, lignes rendues | `ok` — 401 hors banc, 0 ligne ; PAR ne voit pas CAS, la ligne est en base | `a1d74e4` |
+| V-076 | C2 D-15 agence lue | P-272 P-273 | `not ok` — CreateUnit `ok:true` agence CAS ; message `permission absente` | `ok` — DROIT, 0 écriture ; sans ligne de correspondance, refus, 0 événement | `cc6d6d5` |
+| V-078 | C3 D-16 refus anonyme non tracé | P-274 P-066 | `not ok` — `3074 !== 3073` | `ok` — 401, `tentative_refusee` inchangée | `1b1e8a2` |
+| V-079 | E1 prestation sur projet clos | P-275 | `not ok` — la commande passait (`ok:true`) | `ok` — ETAT, 0 prestation | `1b1e8a2` |
+| V-080 | E2 SetPolicy jamais vide | P-276 | `not ok` — `droits.surcharge_restrictive liste vide` | `ok` — la liste contient CreateCompany, valeur relue | `1b1e8a2` |
+| V-081 | E3 ArchiveObject et le motif | P-277 | `not ok` — pas de `ObjectArchived` | `ok` — type ObjectArchived, motif `autre`, `sortie.id` | `1b1e8a2` |
+| V-082 | E4 couverture sans archive | P-278 | `not ok` — la vue comptait encore 1 | `ok` — postes_engages 1 puis 0 | `1b1e8a2` |
+| V-083 | E5 TakeNeedInCharge sous le seed | P-279 | `not ok` — ETAT « n'est pas le déclencheur » | `ok` — `en_recherche`, second appel ETAT, catégorie inchangée | `1b1e8a2` |
+| V-084 | E6 catégorie sur ref_pays | P-280 | `not ok` — `ok:true`, `categorie_inventee` écrite | `ok` — GARDE, 0 ligne | `1b1e8a2` |
+| V-086 | M1 neuf comptes après migration | P-281 | `not ok` — 13 e-mails `@ava.test` | `ok` — les neuf du seed, `actif` faux avant la fixture | `9ce1ccc` |
+| V-088 | M2 NeedStateChanged | P-282 | `not ok` — `{"etat":"staffing"}` | `ok` — `de=a_pourvoir`, `vers=en_recherche` | `1b1e8a2` |
+| V-090 | M3 quatre réussites | P-283 | les quatre n'avaient qu'un refus DROIT au contrat | `ok` — archive et coût relus ; la permission posée est retirée | `1b1e8a2` `8d873ff` |
+| V-091 | M4 ManageGroups | P-284 | `not ok` — GARDE « entrée mal typée » | `ok` — INTROUVABLE | `1b1e8a2` |
+| V-092 | M5 D-19 le compte | P-285 | `not ok` — « groupe inconnu » | `ok` — l'auteur relu est le compte de l'e-mail | `1b1e8a2` |
+| V-094 | M6 trois restes | P-286 P-004 | `not ok` — la branche nom+prenom+societe absente ; la propagation n'écrivait pas | `ok` — GARDE doublon, statut du contact relu ; P-004 compare le fond calculé du body | `1b1e8a2` |
+
+Cliquet après ces commits : 12/12, KO=0. `make test` : OK. 280 portes, 31 assertions.

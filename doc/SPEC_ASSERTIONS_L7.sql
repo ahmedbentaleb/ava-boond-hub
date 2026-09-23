@@ -29,6 +29,13 @@
 --    psql -v ON_ERROR_STOP=1 -f SPEC_ASSERTIONS_L7.sql
 -- ═══════════════════════════════════════════════════════════════════════════
 
+-- ⛔ V-087 / D-18, 23/09 — CE FICHIER NE DÉPEND PLUS DE QUI LE LANCE.
+--    Joué à la main sans `-v ON_ERROR_STOP=1`, il rendait `rc=0` avec 13
+--    assertions en échec : psql continuait après chaque `RAISE EXCEPTION`,
+--    et le verdict était vert. ⭐ Le drapeau est DANS le fichier : le banc
+--    le met aussi (make.sh), une main humaine n'a plus à y penser.
+\set ON_ERROR_STOP on
+
 SET search_path = ava, public;
 
 -- ═══════════════════════════════════════════════════════════════════════════

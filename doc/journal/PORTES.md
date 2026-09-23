@@ -278,3 +278,19 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-268 | B CONTRAT | compter lie les valeurs et refuse un littéral SQL. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | — |
 | P-269 | B CONTRAT | gardePourvu n'est pas une commande ; un service avec besoin ouvert est GARDE. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-270 | B CONTRAT | La règle S se lit sur le périmètre soi. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-271 | B CONTRAT | Hors banc les vues rendent 401 ; en banc PAR ne voit pas CAS. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-272 | B CONTRAT | CreateUnit, UpdateUnit, ArchiveService hors agence : DROIT, rien écrit. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-273 | B CONTRAT | Une commande sans ligne de correspondance d'agence est refusée. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-274 | B CONTRAT | Hors banc, un refus anonyme n'écrit pas tentative_refusee. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-275 | B CONTRAT | CreatePrestation sur un projet clos est ETAT, rien écrit. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-276 | B CONTRAT | SetPolicy liste les commandes qui lisent la clé, jamais vide. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-277 | B CONTRAT | ArchiveObject émet ObjectArchived avec le motif. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-278 | B CONTRAT | v_besoin_couverture ignore une prestation archivée. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-279 | B CONTRAT | TakeNeedInCharge passe sous le seed et refuse ETAT hors cycle. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-280 | B CONTRAT | ManageRefs refuse une catégorie inconnue sur ref_pays. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-281 | B CONTRAT | Après migration, les 9 comptes de banc sont inactifs. | `test/contrat/comptes-avant-fixture.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-282 | B CONTRAT | NeedStateChanged porte de et vers en catégorie. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-283 | B CONTRAT | ArchiveCompany, ArchiveContact, ArchiveService, UpdateResourceCost réussissent, base relue. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-284 | B CONTRAT | ManageGroups : un périmètre non uuid est INTROUVABLE. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-285 | B CONTRAT | L'en-tête est l'e-mail du compte, l'événement porte cet auteur. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-286 | B CONTRAT | Doublon contact nom+prenom+societe, et la propagation écrit le statut. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
