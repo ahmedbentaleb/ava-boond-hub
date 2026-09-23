@@ -99,7 +99,7 @@ pas de cycle. ⭐ **La garde doit les distinguer** : trois messages, pas un « M
 |---|---|---|---|---|---|---|
 | `CreatePerson` | nom, prénom, coordonnées | la personne | `GARDE` doublon si politique = `bloquer` *(D-6)* | `PersonCreated` | `doublon.personne.*` (défaut **avertir**) | — |
 | `CreateCandidate` | personne_id, titre, provenance | le profil | `GARDE` si un profil candidat existe déjà *(V-085, 23/09 : la commande intercepte **avant** le mur ; M-3 reste le filet)* | `CandidateCreated` | — | **M-3** |
-| `UpdateCandidate` | id + champs | le profil | `INTROUVABLE` si archivé | `CandidateUpdated` | — | — |
+| `UpdateCandidate` | id + champs | le profil | `INTROUVABLE` si archivé · `GARDE` note hors échelle | `CandidateUpdated` | `candidat.note.echelle` *(V-105, 23/09)* | — |
 | `CompleteCandidate` | id | le profil, état `complete` | `GARDE` **champ requis manquant** — la liste vient de la politique | `CandidateCompleted` | ⭐ `candidat.complete.champs_requis` (**liste de colonnes**) | — |
 | `ExitCandidate` | id, motif | le profil | `ETAT` hors cycle · `GARDE` aucun code actif de catégorie `sorti` | `CandidateExited` | — | ⛔ *D-8, 21/09* : la commande **n'écrit jamais** `ref_etat_candidat` — le code `sorti` est au seed (005) |
 | `ReactivateCandidate` | id | le profil | `ETAT` hors cycle | `CandidateReactivated` | — | — |
@@ -143,10 +143,10 @@ permission sensible se contourne par la commande ordinaire.
 | `ResumeNeed` | id | le besoin | `ETAT` hors cycle | `NeedResumed` | — | — |
 | `CloseNeed` | id, motif | le besoin | `ETAT` hors cycle | `NeedClosed` | — | — |
 | `ReopenNeed` | id | le besoin | `ETAT` hors cycle | `NeedReopened` | — | — |
-| `PositionCandidate` | besoin_id, profil_candidat_id | le positionnement | `GARDE` unicité selon la politique | `CandidatePositioned` | ⭐ `positionnement.unicite` (défaut **actifs**) | **M-2** |
-| `PositionResource` | besoin_id, profil_ressource_id | le positionnement | idem | `ResourcePositioned` | idem | **M-2** |
+| `PositionCandidate` | besoin_id, profil_candidat_id | le positionnement | `GARDE` unicité selon la politique | `CandidatePositioned` | ⭐ `positionnement.unicite` (défaut **actifs**) · `positionnement.sur_besoin_inactif` · `besoin.staffing.declencheur` *(V-105)* | **M-2** |
+| `PositionResource` | besoin_id, profil_ressource_id | le positionnement | idem | `ResourcePositioned` | idem *(les trois clés, V-105)* | **M-2** |
 | `DeclareCVShared` | positionnement_id, date | le positionnement, état `presente` | `ETAT` hors cycle | `CVShared` | — | ⭐ étape **système** `cv_partage` |
-| **`RecordClientDecision`** | positionnement_id, décision, date, **motif si négatif** | le positionnement | `DROIT` — ⭐ **IA seul** · `ETAT` hors cycle | `ClientDecisionRecorded` | — | ⭐ le motif va dans l'**événement** |
+| **`RecordClientDecision`** | positionnement_id, décision, date, **motif si négatif** | le positionnement | `DROIT` — ⭐ **IA seul** · `ETAT` hors cycle | `ClientDecisionRecorded` | `positionnement.cv_partage_obligatoire` · `positionnement.qualification_requise_avant_decision` · `projet.creation_depuis_besoin` *(V-105)* | ⭐ le motif va dans l'**événement** |
 | `WithdrawPositioning` | id, **motif** (`ref_motif_retrait`) | le positionnement | `ETAT` hors cycle | `PositioningWithdrawn` | — | ⭐ **P-5** : jamais en colonne |
 
 ⛔ **`RecordClientDecision` n'appartient qu'à IA.** C'est lui qui parle au client. ⭐ C'est ce qui
@@ -167,9 +167,9 @@ Une seule place, et les codes admis restent dans `ref_motif_retrait`.
 | `CloseProject` | id | le projet | `ETAT` hors cycle | `ProjectClosed` | — | — |
 | `CreatePrestation` | projet_id, ressource, dates, TJM, CJM, devises, taux | la prestation | voir le bloc **§C-3** | `PrestationCreated` *(+ `PrestationSigned` si `engage`)* | `projet.devises_mixtes` (défaut **autorise**) · `prestation.surcharge.*` | **M-1**, **M-4**, **M-15** |
 | ⛔ **`SignPrestation`** | id, date de signature | la prestation `engage` | voir le bloc **§C-3** | `PrestationSigned` **+** `ClientStatusDerived` | `societe.passage_client.*` · `prestation.avenant.mode` | **M-14** dès cet instant |
-| `ClosePrestation` | id, date | la prestation `clos` | `ETAT` hors cycle | `PrestationClosed` | — | ⭐ **écrit `snapshot_marge` dans la MÊME transaction** · **M-6** |
+| `ClosePrestation` | id, date | la prestation `clos` | `ETAT` hors cycle · `GARDE` date de clôture | `PrestationClosed` | `frais.mode` · `change.mode` · `marge.taux.si_ca_nul` *(V-105)* | ⭐ **écrit `snapshot_marge` dans la MÊME transaction** · **M-6** |
 | `CancelPrestation` | id, motif | la prestation `annule` | `ETAT` hors cycle | `PrestationCancelled` | — | — |
-| `RecordTimesheet` | prestation_id, jour, quantité *(+ facturable)* | la ligne | voir le bloc **§C-4** | `TimesheetRecorded` | `temps.periode` · `temps.plafond_jour` (défaut **alerte**) · `temps.facturable.mode` · `temps.validation` | **M-1**, **M-10** |
+| `RecordTimesheet` | prestation_id, jour, quantité *(+ facturable)* | la ligne | voir le bloc **§C-4** | `TimesheetRecorded` | `temps.periode` · `temps.plafond_jour` (défaut **alerte**) · `temps.facturable.mode` · `temps.validation` · `capacite.jour_ouvre` *(V-105)* | **M-1**, **M-10** |
 | `AdjustTimesheetAfterClose` | prestation_id, jour, quantité, motif | la ligne, `ajustement = true` | `GARDE` si politique = `refus` | `TimesheetAdjusted` | `temps.correction_apres_cloture` (défaut **ajustement tracé**) | ⛔⛔ **M-6 : le snapshot ne bouge PAS** |
 | `RecordAbsence` | ressource_id, type, dates, quantité/jour | l'absence | `GARDE` chevauchement selon la politique | `AbsenceRecorded` | `absence.chevauchement` | — |
 

@@ -91,6 +91,13 @@
   "ko": 5
  },
  {
+  "chemin": "ARBITRAGE_AUDIT_2026-09-23b.md",
+  "titre": "Arbitrage du quatrième audit — 23/09/2026 (soir)",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 5
+ },
+ {
   "chemin": "AUDIT_PROJET_2026-09-17.md",
   "titre": "Audit du projet Ava Manager — 17 septembre 2026",
   "categorie": "Audits",
@@ -315,6 +322,13 @@
   "ko": 2
  },
  {
+  "chemin": "prompt-brain-code-4.txt",
+  "titre": "prompt-brain-code-4.txt",
+  "categorie": "Prompts et briefs",
+  "date": "23/09/2026",
+  "ko": 3
+ },
+ {
   "chemin": "prompt-brain-code.txt",
   "titre": "prompt-brain-code.txt",
   "categorie": "Prompts et briefs",
@@ -341,6 +355,13 @@
   "categorie": "Prompts et briefs",
   "date": "23/09/2026",
   "ko": 5
+ },
+ {
+  "chemin": "prompt-lot2-correctifs-4.txt",
+  "titre": "prompt-lot2-correctifs-4.txt",
+  "categorie": "Prompts et briefs",
+  "date": "23/09/2026",
+  "ko": 4
  },
  {
   "chemin": "prompt-lot2-correctifs.txt",
@@ -729,6 +750,55 @@
  },
  {
   "chemin": "audit-2026-09-23/SYNTHESE.md",
+  "titre": "SYNTHESE.md",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "audit-2026-09-23b/CONFORMITE.md",
+  "titre": "CONFORMITE4 — les 55 commandes contre `_ops/SPEC_COMMANDES_L4.md`",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 27
+ },
+ {
+  "chemin": "audit-2026-09-23b/CONSTATS.md",
+  "titre": "Constats du quatrième audit — commit `cc3ff64` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 6
+ },
+ {
+  "chemin": "audit-2026-09-23b/GRILLE.md",
+  "titre": "GRILLE4 — les 42 contrôles de `_ops/GRILLE_AUDIT.md`, mesurés",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 26
+ },
+ {
+  "chemin": "audit-2026-09-23b/MUTATIONS.md",
+  "titre": "Mutations — les tests des tests (famille G), quatrième audit",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 4
+ },
+ {
+  "chemin": "audit-2026-09-23b/SECURITE.md",
+  "titre": "SECURITE4 — SQL, périmètre, accès, secrets, front",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 23
+ },
+ {
+  "chemin": "audit-2026-09-23b/SUIVI_V.md",
+  "titre": "Quatrième audit — suivi des constats sur `cc3ff64` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 24
+ },
+ {
+  "chemin": "audit-2026-09-23b/SYNTHESE.md",
   "titre": "SYNTHESE.md",
   "categorie": "Audits",
   "date": "23/09/2026",

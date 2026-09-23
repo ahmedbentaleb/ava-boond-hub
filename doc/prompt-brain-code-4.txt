@@ -1,0 +1,52 @@
+AVA MANAGER — SESSION BRAIN CODE, QUATRIÈME TOUR
+================================================
+23/09/2026, soir. Trois points. Le mot d'Ahmed est donné pour ce qui suit.
+
+À lire d'abord : _ops/ARBITRAGE_AUDIT_2026-09-23b.md (D-20, D-22, D-24) et
+Desktop/ava-audit-4/rapport/CONSTATS.md (V-096, V-101, V-104).
+
+Ton poste :
+  cd /c/Users/Hamada/Desktop/ava-brain
+  git fetch "/c/Users/Hamada/Desktop/Ava Manager" lot-2
+  git checkout lot-2-brain && git merge FETCH_HEAD
+Base ava_brain, refaite à neuf. Chaque commit porte « Role: brain ».
+
+
+B1  V-096 · D-20   LE BANC REPART DE ZÉRO
+    `outils/cliquet.sh` refait la base avant `make test` (`make.sh reset`
+    puis `test`), et l'annonce en première ligne.
+    ⚠️ Garde une sortie rapide pour l'usage courant si tu veux
+    (`AVA_RAPIDE=1`), mais le chemin par défaut — celui du pre-push et de la
+    CI — refait la base, sans option.
+    Témoin : aujourd'hui, base neuve → P-207 tombe et le cliquet doit dire
+    case 1 KO ; base déjà jouée → 12/12. Après correction, les deux chemins
+    disent la même chose.
+
+B2  V-104 · D-22   MIGRATION 009 : L'UNITÉ PORTE TOUJOURS SON AGENCE
+    - remplir `unite_organisation.agence_id` quand il est NULL : l'agence de
+      la société si elle en a une, sinon celle du compte créateur lu dans
+      `evenement_metier`, sinon l'agence par défaut de l'installation
+    - puis `ALTER TABLE unite_organisation ALTER COLUMN agence_id SET NOT NULL`
+    - jouée en `--single-transaction`, rejouable deux fois de suite
+    ⚠️ Grok corrige `crm.ts` de son côté : préviens dans ta réponse que la
+    migration attend son correctif pour que les nouvelles lignes soient
+    remplies à la création.
+
+B3  V-101 · D-24   LES OUTILS DE GARDE SONT GARDÉS
+    Deux portes, dans le banc du BRAIN (`test/`, commit `Role: banc`) :
+    - une porte qui vérifie que `\set ON_ERROR_STOP on` est bien en tête de
+      `_ops/SPEC_ASSERTIONS_L7.sql` ET de la copie `test/`
+    - une porte qui joue `outils/verif_serveur.sh` sur une configuration
+      fabriquée (un `pg_hba` de test avec une ligne `trust`) et attend une
+      sortie ≠ 0
+    Témoin : retire le `\set`, la première tombe ; fais rendre 0 à
+    `verif_serveur.sh` quoi qu'il voie, la seconde tombe.
+
+
+Ce que tu ne fais jamais : server/ web/ (Grok) ; réécrire une migration
+publiée ; toucher « ava », le port 3000, le dossier « Ava Manager » ;
+fusionner ou pousser ; assouplir un contrôle qui gêne.
+
+Tu rends : une ligne par point dans `_ops/JOURNAL_BUGS.md` (V-xxx · commit ·
+témoin ROUGE → VERT), puis 15 lignes au plus, avec la phrase exacte pour
+Grok : « lot-2-brain est prêt : git merge lot-2-brain. »

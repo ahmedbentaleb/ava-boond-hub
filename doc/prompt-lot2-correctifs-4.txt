@@ -1,0 +1,84 @@
+AVA MANAGER — LOT 2, CORRECTIFS APRÈS LE QUATRIÈME AUDIT
+========================================================
+23/09/2026, soir. Le quatrième audit a REFUSÉ le lot 2 au commit cc3ff64.
+Lis tout avant d'écrire une ligne.
+
+Rapport : C:\Users\Hamada\Desktop\ava-audit-4\rapport\ (CONSTATS.md, MUTATIONS.md,
+SUIVI_V.md). Arbitrage : _ops/ARBITRAGE_AUDIT_2026-09-23b.md
+
+
+0. CE QUI EST GAGNÉ — ET C'EST NOUVEAU
+──────────────────────────────────────
+  ⭐ V-075, V-076, V-077 et V-078 sont fermés ET GARDÉS : l'auditeur les a
+     re-cassés, et des portes tombent (garde d'entrée → 3 · table d'agence →
+     14 · lecture d'agence → 44). Une correction prouvée durable, enfin.
+  ⭐ 11 routes sur 11 en 401 hors banc, 15 sabotages SQL sur 15 vus, 280
+     portes, 31 assertions, 1 seule porte aveugle sur 57 sabotages.
+
+
+1. CRITIQUE
+───────────
+C1  V-096   LE BANC EST ROUGE SUR UNE BASE NEUVE
+    `make.sh reset` puis `make test` : **P-207 tombe**. Elle envoie
+    `categorie:"europe"` (test/contrat/v011-lignes.ts:994) alors que
+    `ref_pays` n'a que `defaut` au seed, et la garde de V-084 n'accepte
+    qu'une catégorie déjà en table.
+    - la porte crée elle-même la catégorie qu'elle utilise (par `ManageRefs`),
+      ou utilise `defaut`
+    - ⛔ elle ne doit dépendre d'aucune donnée laissée par un tour précédent
+    Le cliquet va désormais refaire la base avant `make test` (D-20, côté
+    BRAIN) : une porte qui dépend de l'ancien état tombera.
+
+C2  V-097 · D-21   AUCUN REPLI SILENCIEUX DANS LA RÉSOLUTION D'AGENCE
+    `agence.ts:202` : objet lu, agence nulle → `return`, aucun `exigeDroit`.
+    Résultat : un compte de Londres renomme et archive une unité cliente de
+    Paris. Trois cas, trois règles :
+      agence de l'objet lue  → `exigeDroit(commande, agence de l'objet)`
+      agence nulle           → `exigeDroit(commande, agence du demandeur)`
+      objet introuvable      → `INTROUVABLE`
+    ⛔ Plus aucun chemin ne sort de cette fonction sans contrôle.
+    Portes : une par cas, dont le cas « agence nulle » avec un compte d'une
+    autre agence → DROIT, 0 écriture.
+
+
+2. ÉLEVÉ
+────────
+E1 V-098  `ConvertCandidateToResource` ne lit plus l'agence dans l'entrée
+   (`identite.ts:196`) : elle vient du compte, comme les 4 autres créations.
+E2 V-099 · D-23  Les 7 portes qui rougissent dès qu'on accorde une permission
+   légitime **posent elles-mêmes** le droit qu'elles testent : elles gardent
+   la règle, pas le seed.
+E3 V-100  Une porte garde la confrontation « agence demandée ≠ agence lue » :
+   envoyer une agence différente de celle de l'objet → DROIT. Aujourd'hui le
+   sabotage `entreeAgence: []` laisse 280 portes vertes.
+
+
+3. MOYEN
+────────
+M1 V-102  `/sante` ne touche plus la base, et ne dit rien de plus que « je
+   réponds ».
+M2 V-103  Plus d'identité par défaut (`index.ts:180` `?? "ia@ava.test"`) :
+   sans en-tête → refus ; groupe inconnu → refus, jamais une liste vide.
+M3 V-104 · D-22  `unite_organisation.agence_id` n'est plus jamais NULL :
+   l'agence est celle du compte qui crée, société cliente comprise
+   (`crm.ts:170`). La migration 009 du BRAIN remplit l'existant et pose le
+   NOT NULL — attends-la pour cette ligne.
+M4 V-104 bis  P-285 ne laisse plus un compte actif à 23 droits derrière elle.
+M5 Reprises : les 4 commandes sans porte de succès (C-10) en gagnent une.
+
+
+4. CE QUE LE BRAIN FAIT — TU N'Y TOUCHES PAS
+────────────────────────────────────────────
+Branche lot-2-brain : le cliquet refait la base avant `make test` (D-20), la
+migration 009 (agence de l'unité, D-22), et deux portes qui gardent les outils
+du BRAIN (D-24). Le canon est déjà corrigé (les 11 politiques au contrat).
+Quand Ahmed te dit « lot-2-brain est prêt » : `git merge lot-2-brain`, puis
+`bash outils/make.sh reset && bash outils/make.sh test`.
+
+
+5. CE QUE TU RENDS
+──────────────────
+Une ligne par V- dans journal/ : commit · porte · sortie ROUGE puis VERTE.
+⛔ Le banc se juge désormais **sur une base refaite** : avant d'écrire la
+phrase, lance `make.sh reset` puis `make test`, puis le cliquet.
+Puis, seulement si tout est vert : « prêt pour le cinquième audit ».

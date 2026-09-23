@@ -23,7 +23,7 @@ Légende : ✅ fait · ⏳ en cours · ⬜ à faire · ↪ fusionné ailleurs. L
 
 <etat>
 
-Mis à jour le 23/09/2026. Les anciens numéros de lot sont entre parenthèses.
+Mis à jour le 23/09/2026, au soir. Les anciens numéros de lot sont entre parenthèses.
 
 ### 0 · Démarrage
 
@@ -82,14 +82,16 @@ Mis à jour le 23/09/2026. Les anciens numéros de lot sont entre parenthèses.
 | # | Étape | État | Documents |
 |---|---|---|---|
 | 5.1 | Fondations : dépôt, base, 15 murs, données de départ (lot 1) | ✅ 20/09 — 69 min | [prompt lot 1](PROMPT_GROK_LOT1.md) · [étapes du code](journal/ETAPES.md) · [base](db/README.md) |
-| 5.2 | Le serveur : les 55 commandes (lot 2) | ⏳ **troisième tour de correctifs** · banc vert au 23/09 : **280 portes jouées, 31 assertions, cliquet 12/12** (fusion `cc3ff64`) | [prompt lot 2](PROMPT_GROK_LOT2.md) · [prompt correctifs](prompt-lot2-correctifs.txt) · [décisions du code](journal/DECISIONS.md) |
+| 5.2 | Le serveur : les 55 commandes (lot 2) | ⏳ **quatrième tour de correctifs** · banc vert au 23/09 : **280 portes jouées, 31 assertions, cliquet 12/12** (fusion `cc3ff64`) | [prompt lot 2](PROMPT_GROK_LOT2.md) · [prompt correctifs](prompt-lot2-correctifs.txt) · [décisions du code](journal/DECISIONS.md) |
 | 5.3 | Premier audit indépendant | ✅ 21/09 — refusé, 47 constats | [synthèse](audit-2026-09-21/SYNTHESE.md) · [constats](audit-2026-09-21/CONSTATS.md) · [mutations](audit-2026-09-21/MUTATIONS.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-21.md) |
 | 5.4 | Corrections du BRAIN : base, tests des murs, cliquet | ✅ 21/09 — validées par le second audit | [prompt brain code](prompt-brain-code.txt) |
 | 5.5 | Second audit | ✅ 22/09 — refusé, 27 constats neufs, accès non gardé | [synthèse](audit-2026-09-22/SYNTHESE.md) · [constats](audit-2026-09-22/CONSTATS.md) · [contestation](audit-2026-09-22/CONTESTATION.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-22.md) |
 | 5.5b | Corrections du second tour : BRAIN CODE puis Grok | ✅ 22-23/09 | [prompt brain code 2](prompt-brain-code-2.txt) · [prompt correctifs 2](prompt-lot2-correctifs-2.txt) |
 | 5.5c | Troisième audit | ✅ 23/09 — refusé, 21 constats neufs ; ⭐ **banc réparé : 0 porte aveugle sur 50 sabotages** | [synthèse](audit-2026-09-23/SYNTHESE.md) · [constats](audit-2026-09-23/CONSTATS.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-23.md) |
 | 5.5d | Corrections du troisième tour | ⏳ — BRAIN CODE ✅ fusionné (cliquet 12/12) · Grok en cours (D-14 le garde unique, D-15 l'agence de l'objet) | [prompt brain code 3](prompt-brain-code-3.txt) · [prompt correctifs 3](prompt-lot2-correctifs-3.txt) |
-| 5.5e | Quatrième audit | ⬜ quand Grok écrit « prêt pour le quatrième audit » | [prompt d'audit](prompt-audit-2.txt) |
+| 5.5e | Quatrième audit | ✅ 23/09 — refusé, 11 constats ; ⭐ **les corrections du 3e tour tiennent et sont gardées** | [synthèse](audit-2026-09-23b/SYNTHESE.md) · [constats](audit-2026-09-23b/CONSTATS.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-23b.md) |
+| 5.5f | Corrections du quatrième tour | ⏳ | [prompt brain code 4](prompt-brain-code-4.txt) · [prompt correctifs 4](prompt-lot2-correctifs-4.txt) |
+| 5.5g | Cinquième audit | ⬜ quand Grok écrit « prêt pour le cinquième audit » | [prompt d'audit](prompt-audit-2.txt) |
 | 5.6 | Connexion par compte Microsoft (lot 2c) | ⬜ attend R4 de la réunion | [décisions techniques T2](DECISIONS_TECHNIQUES_v1.md) · [arbitrage D-2](ARBITRAGE_AUDIT_2026-09-21.md) |
 | 5.7 | Les 26 écrans (lot 3) | ⬜ après le 5.5 accepté | [les 26 écrans](../terminal.html) · [prompt écrans](PROMPT_CHATGPT_ECRANS.md) |
 | — | CRM, staffing, production (anciens lots 4, 5, 6) | ↪ fusionnés dans 5.2 et 5.7 | — |
@@ -98,10 +100,10 @@ Mis à jour le 23/09/2026. Les anciens numéros de lot sont entre parenthèses.
 
 | | 1er (21/09) | 2e (22/09) | 3e (23/09) | 4e (en cours) |
 |---|---|---|---|---|
-| Tests aveugles | 48 | 45 | **0** | 0 jusqu'ici |
-| Défauts critiques ouverts | 12 | 7 | 2 | — |
-| Tests joués | 64 | 151 | 264 | **280** |
-| Constats du tour précédent fermés | — | 22/47 | 37/47 | en cours |
+| Tests aveugles | 48 | 45 | **0** | **1** |
+| Défauts critiques ouverts | 12 | 7 | 2 | 2 |
+| Tests joués | 64 | 151 | 264 | **280** · 57 sabotages |
+| Constats du tour précédent fermés | — | 22/47 | 37/47 | **20/25**, et les 4 critiques **gardés** |
 
 ⭐ **Le filet tient depuis le 3e tour** : plus aucun test ne reste vert quand on casse le code exprès (50 sabotages).
 
