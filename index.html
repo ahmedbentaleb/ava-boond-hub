@@ -569,6 +569,22 @@
     .lire-corps code { font-size: 12.5px; }
     .lire-corps h1 { font-size: 24px; } .lire-corps h2 { font-size: 19px; margin-top: 28px; } .lire-corps h3 { font-size: 16px; }
     .page-cadre { width: 100%; height: calc(100vh - 150px); min-height: 520px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+
+    /* ═══ 23/09 : plein écran, et les schémas de la section Code ═══ */
+    .page-barre { display: flex; gap: 10px; align-items: center; margin: 0 0 10px; flex-wrap: wrap; }
+    .page-cadre-haut { height: calc(100vh - 90px); }
+    .page-cadre-plein { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 9999; border: 0; border-radius: 0; }
+    body.sans-defil { overflow: hidden; }
+    .card-plein { border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: 14px; overflow-x: auto; }
+    .sch { width: 100%; min-width: 620px; height: auto; }
+    .sch-bloc rect { fill: rgba(255,255,255,.03); stroke: var(--line); }
+    .sch-fort rect { stroke: #AEBF38; }
+    .sch-t { fill: var(--text); font: 600 15px var(--f-display, inherit); letter-spacing: .04em; }
+    .sch-s { fill: var(--muted); font-weight: 400; font-size: 13px; letter-spacing: 0; }
+    .sch-p { fill: var(--text); font-size: 13.5px; }
+    .sch-n { fill: var(--muted); font-size: 12px; }
+    .sch-g { fill: #CDD749; font-size: 13.5px; font-weight: 600; }
+    .sch-fl { stroke: #AEBF38; stroke-width: 2; }
 </style>
 <script type="importmap">
 {
@@ -592,6 +608,9 @@
   <section class="view" id="view-ava-etat" hidden></section>
   <section class="view" id="view-ava-reunion" hidden></section>
   <section class="view" id="view-ava-documents" hidden></section>
+  <section class="view" id="view-code-archi" hidden></section>
+  <section class="view" id="view-code-regles" hidden></section>
+  <section class="view" id="view-code-methode" hidden></section>
   <section class="view" id="view-lire" hidden></section>
   <section class="view" id="view-page" hidden></section>
   <section class="view" id="view-ava-metier" hidden></section>
@@ -3125,8 +3144,11 @@ function showView(name){
   const MENU = [
     { id: "projet", label: "Projet", items: [
       { v: "ava-etat", label: "État du projet", star: 1 },
-      { v: "ava-reunion", label: "❓ Questions Avaliance", star: 1 },
-      { v: "page:dossier.html", label: "Dossier" } ] },
+      { v: "ava-reunion", label: "❓ Questions Avaliance", star: 1 } ] },
+    { id: "code", label: "Code", items: [
+      { v: "code-archi", label: "Comment c'est construit", star: 1 },
+      { v: "code-regles", label: "Rien n'est figé", star: 1 },
+      { v: "code-methode", label: "Comment on le vérifie", star: 1 } ] },
     { id: "metier", label: "Le métier", items: [
       { v: "ava-metier", label: "Vue d'ensemble", star: 1 },
       { v: "ava-quiz", label: "Quiz" },
@@ -3144,6 +3166,7 @@ function showView(name){
       { docs: "État et plans", label: "Plans datés" } ] },
     { id: "documents", label: "Documents", items: [
       { v: "ava-documents", label: "Tous les documents" },
+      { v: "page:dossier.html", label: "Le dossier — les chiffres mesurés" },
       { docs: "Cadrage et commande du client", label: "Commande du client" },
       { v: "page:cdc.html", label: "Cahier des charges" },
       { docs: "Conception et contrat", label: "Conception et contrat" },
@@ -3160,7 +3183,8 @@ function showView(name){
 
   const flattenViews = (views) =>
     views.flatMap((v) => (v.children && v.children.length ? v.children : [v]));
-  const ALL_VIEWS = Object.values(PRODUCTS).flatMap((p) => flattenViews(p.views).map((v) => v.id));
+  const ALL_VIEWS = Object.values(PRODUCTS).flatMap((p) => flattenViews(p.views).map((v) => v.id))
+    .concat(["code-archi", "code-regles", "code-methode"]);
   const nestedLast = {};
 
   const DECISIONS = [
@@ -5843,6 +5867,111 @@ function showView(name){
     };
   }
 
+
+  /* ═══════════ CODE — comment le logiciel est construit, pour un dirigeant ═══════════ */
+  function codeArchi() {
+    const el = document.getElementById("view-code-archi");
+    el.innerHTML = `<h2>Comment le logiciel est construit</h2>
+      <p class="lead">Trois étages, et une règle : <strong>les interdits vivent dans la base</strong>, pas dans les écrans. Un écran ne décide jamais.</p>
+      <div class="card-plein">
+      <svg viewBox="0 0 900 470" class="sch" role="img" aria-label="Les trois étages : écrans, serveur, base">
+        <defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#AEBF38"/></marker></defs>
+        <g class="sch-bloc"><rect x="40" y="20" width="820" height="110" rx="4"/><text x="60" y="50" class="sch-t">1 · LES ÉCRANS <tspan class="sch-s">— React, dans le navigateur</tspan></text>
+          <text x="60" y="76" class="sch-p">Ils affichent ce que le serveur envoie, et rien d'autre : pas de calcul d'argent, pas de règle métier,</text>
+          <text x="60" y="96" class="sch-p">pas de libellé d'état écrit en dur. Un bouton visible n'est jamais une autorisation.</text>
+          <text x="60" y="118" class="sch-n">26 écrans · les 4 thèmes · le mock fait foi</text></g>
+        <line x1="450" y1="130" x2="450" y2="175" class="sch-fl" marker-end="url(#fl)"/>
+        <text x="466" y="158" class="sch-n">une commande, jamais une requête SQL</text>
+        <g class="sch-bloc"><rect x="40" y="180" width="820" height="130" rx="4"/><text x="60" y="210" class="sch-t">2 · LE SERVEUR <tspan class="sch-s">— Node et TypeScript, 55 commandes</tspan></text>
+          <text x="60" y="236" class="sch-p">Chaque geste du métier est une commande nommée : créer un besoin, signer une mission, saisir un temps.</text>
+          <text x="60" y="256" class="sch-p">Elle vérifie le droit, puis le périmètre, puis les gardes, écrit, et laisse une trace — dans la même transaction.</text>
+          <text x="60" y="278" class="sch-n">un refus dit toujours pourquoi : DROIT · GARDE · ÉTAT · MUR</text>
+          <text x="60" y="298" class="sch-n">55 commandes · 264 tests qui les jouent</text></g>
+        <line x1="450" y1="310" x2="450" y2="355" class="sch-fl" marker-end="url(#fl)"/>
+        <text x="466" y="338" class="sch-n">lecture et écriture, sous un compte aux droits réduits</text>
+        <g class="sch-bloc sch-fort"><rect x="40" y="360" width="820" height="95" rx="4"/><text x="60" y="390" class="sch-t">3 · LA BASE <tspan class="sch-s">— PostgreSQL, la mémoire et les interdits</tspan></text>
+          <text x="60" y="416" class="sch-p">Les 15 interdits qui ne se négocient pas sont ici : la base refuse elle-même, même si le reste se trompe.</text>
+          <text x="60" y="438" class="sch-n">37 tables · 15 murs · 173 réglages · 40 listes de valeurs · l'historique, ajout seulement</text></g>
+      </svg></div>
+      <div class="row" style="margin-top:16px">
+        ${[["Pourquoi trois étages","Chaque étage ne fait qu'une chose. Quand un écran se trompe, la base refuse quand même : c'est ce qui empêche une erreur d'abîmer les données."],
+           ["Ce qui est déjà fait","La base et ses 15 interdits (lot 1, accepté). Le serveur et ses 55 commandes (lot 2, en audit). Les écrans viennent après."],
+           ["Ce qu'on ne fait pas","Pas de logiciel tout prêt qu'on habille : Boond a montré ses limites. Pas de règle cachée dans un écran."]]
+          .map(([t,p])=>`<div class="card" style="flex:1 1 260px"><h3>${t}</h3><p>${p}</p></div>`).join("")}
+      </div>
+      <div class="rowbtns" style="margin-top:14px"><a class="pill" href="#code-regles">Les règles du code</a><a class="pill" href="#code-methode">Comment on le fabrique</a><a class="pill" href="#page:terminal.html">Voir les 26 écrans</a></div>`;
+  }
+
+  function codeRegles() {
+    const el = document.getElementById("view-code-regles");
+    el.innerHTML = `<h2>Les règles du code — rien n'est figé dans le code</h2>
+      <p class="lead">La question qui commande tout : <strong>« le jour où la maison change d'avis, faut-il un développeur ? »</strong> La réponse doit être non.</p>
+      <div class="card-plein">
+      <svg viewBox="0 0 900 300" class="sch" role="img" aria-label="Réglage, liste de valeurs, interdit">
+        <g class="sch-bloc"><rect x="20" y="20" width="270" height="250" rx="4"/><text x="40" y="52" class="sch-t">UN RÉGLAGE</text>
+          <text x="40" y="78" class="sch-p">Ce qui peut changer d'avis :</text>
+          <text x="40" y="100" class="sch-p">un contact est-il obligatoire ?</text>
+          <text x="40" y="120" class="sch-p">un doublon bloque-t-il ou alerte ?</text>
+          <text x="40" y="146" class="sch-n">173 réglages, changés dans l'écran</text>
+          <text x="40" y="166" class="sch-n">Administration, sans redéploiement</text>
+          <text x="40" y="200" class="sch-g">→ on tourne un bouton</text></g>
+        <g class="sch-bloc"><rect x="315" y="20" width="270" height="250" rx="4"/><text x="335" y="52" class="sch-t">UNE LISTE</text>
+          <text x="335" y="78" class="sch-p">Les valeurs qui vivent :</text>
+          <text x="335" y="100" class="sch-p">états d'un candidat, types de</text>
+          <text x="335" y="120" class="sch-p">mission, provenances, pays.</text>
+          <text x="335" y="146" class="sch-n">40 listes administrables</text>
+          <text x="335" y="166" class="sch-n">le code compare des familles,</text>
+          <text x="335" y="186" class="sch-n">jamais un mot écrit en dur</text>
+          <text x="335" y="220" class="sch-g">→ on ajoute une ligne</text></g>
+        <g class="sch-bloc sch-fort"><rect x="610" y="20" width="270" height="250" rx="4"/><text x="630" y="52" class="sch-t">UN INTERDIT</text>
+          <text x="630" y="78" class="sch-p">Ce qui ne se négocie pas :</text>
+          <text x="630" y="100" class="sch-p">on ne supprime pas un historique,</text>
+          <text x="630" y="120" class="sch-p">un montant a toujours sa devise,</text>
+          <text x="630" y="140" class="sch-p">une marge signée ne bouge plus.</text>
+          <text x="630" y="166" class="sch-n">15 interdits, tenus par la base</text>
+          <text x="630" y="200" class="sch-g">→ personne ne peut passer</text></g>
+      </svg></div>
+      <div class="row" style="margin-top:16px">
+        ${[["Ce que ça donne au quotidien","Changer « le contact est obligatoire » prend dix secondes dans un écran d'administration. Chez un éditeur, c'est un devis."],
+           ["Ce qui est interdit au développeur","Écrire une règle métier dans le code, écrire un état en toutes lettres, mettre un interdit ailleurs que dans la base. Chaque écart est refusé à l'audit."],
+           ["Comment on le vérifie","Un audit cherche ces écarts à chaque tour, avec des commandes qui les listent. Trois tours ont déjà eu lieu."]]
+          .map(([t,p])=>`<div class="card" style="flex:1 1 260px"><h3>${t}</h3><p>${p}</p></div>`).join("")}
+      </div>
+      <div class="rowbtns" style="margin-top:14px"><a class="pill" href="#ava-sim-rules">Jouer avec les réglages</a><a class="pill" href="#code-methode">Comment on le fabrique</a></div>`;
+  }
+
+  function codeMethode() {
+    const el = document.getElementById("view-code-methode");
+    el.innerHTML = `<h2>Comment on le fabrique — et comment on le vérifie</h2>
+      <p class="lead">Trois intelligences artificielles, <strong>séparées exprès</strong> : celle qui décide, celle qui code, celle qui contrôle. Aucune ne juge son propre travail.</p>
+      <div class="card-plein">
+      <svg viewBox="0 0 900 330" class="sch" role="img" aria-label="La boucle : décider, coder, contrôler, arbitrer">
+        <defs><marker id="fl2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#AEBF38"/></marker></defs>
+        <g class="sch-bloc"><rect x="30" y="30" width="230" height="120" rx="4"/><text x="50" y="60" class="sch-t">1 · DÉCIDER</text>
+          <text x="50" y="86" class="sch-p">Les règles du métier sont</text><text x="50" y="106" class="sch-p">écrites avant le code, et</text><text x="50" y="126" class="sch-p">ne se rouvrent plus.</text>
+          <text x="50" y="144" class="sch-n">18 décisions · 15 interdits</text></g>
+        <line x1="260" y1="90" x2="330" y2="90" class="sch-fl" marker-end="url(#fl2)"/><text x="268" y="80" class="sch-n">un ordre écrit</text>
+        <g class="sch-bloc"><rect x="335" y="30" width="230" height="120" rx="4"/><text x="355" y="60" class="sch-t">2 · CODER</text>
+          <text x="355" y="86" class="sch-p">Le codeur suit l'ordre, et</text><text x="355" y="106" class="sch-p">écrit d'abord le test qui</text><text x="355" y="126" class="sch-p">échoue, puis le code.</text>
+          <text x="355" y="144" class="sch-n">264 tests · un test vu rouge</text></g>
+        <line x1="565" y1="90" x2="635" y2="90" class="sch-fl" marker-end="url(#fl2)"/><text x="575" y="80" class="sch-n">une livraison</text>
+        <g class="sch-bloc sch-fort"><rect x="640" y="30" width="230" height="120" rx="4"/><text x="660" y="60" class="sch-t">3 · CONTRÔLER</text>
+          <text x="660" y="86" class="sch-p">Un auditeur indépendant</text><text x="660" y="106" class="sch-p">casse le code exprès pour</text><text x="660" y="126" class="sch-p">voir si les tests le voient.</text>
+          <text x="660" y="144" class="sch-n">50 sabotages par tour</text></g>
+        <path d="M755 150 L755 215 L120 215 L120 150" class="sch-fl" marker-end="url(#fl2)" fill="none"/>
+        <text x="330" y="207" class="sch-n">refusé → on corrige, et on recommence</text>
+        <g class="sch-bloc"><rect x="230" y="235" width="440" height="75" rx="4"/><text x="250" y="263" class="sch-t">4 · ARBITRER</text>
+          <text x="250" y="289" class="sch-p">Chaque constat est retenu, requalifié ou rejeté — avec son motif, par écrit.</text></g>
+      </svg></div>
+      <div class="row" style="margin-top:16px">
+        ${[["Trois audits déjà faits","95 constats. Le premier tour : 48 tests aveugles sur 64. Le troisième : <strong>0 sur 50 sabotages</strong>. Le filet tient enfin."],
+           ["Ce qu'un test doit prouver","Qu'il devient rouge quand le code est faux. Un test toujours vert ne prouve rien — c'est ce que l'auditeur mesure en cassant le code."],
+           ["Ce que ça évite","Livrer un logiciel qui a l'air de marcher. Les trois audits ont trouvé deux portes d'entrée ouvertes que personne d'autre n'avait vues."]]
+          .map(([t,p])=>`<div class="card" style="flex:1 1 260px"><h3>${t}</h3><p>${p}</p></div>`).join("")}
+      </div>
+      <div class="rowbtns" style="margin-top:14px"><a class="pill" href="#lire:ARBITRAGE_AUDIT_2026-09-23.md">Le dernier arbitrage</a><a class="pill" href="#docs:Audits">Les rapports d'audit</a><a class="pill" href="#ava-etat">Où on en est</a></div>`;
+  }
+
   /* ═══════════ LE LECTEUR — un document du projet, affiché dans le hub ═══════════ */
   let LIRE = "", PAGE = "";
   function resoudre(base, rel) {
@@ -5873,7 +6002,25 @@ function showView(name){
   }
   function renderPage() {
     const el = document.getElementById("view-page");
-    el.innerHTML = `<iframe class="page-cadre" src="${esc(PAGE)}" title="${esc(PAGE)}"></iframe>`;
+    el.innerHTML = `<div class="page-barre">
+        <button type="button" class="create-btn primary" id="page-plein">⛶ Plein écran</button>
+        <button type="button" class="pill" id="page-haut">Agrandir le cadre</button>
+        <span class="note">Échap pour revenir</span></div>
+      <iframe class="page-cadre" id="page-cadre" src="${esc(PAGE)}" title="${esc(PAGE)}" allowfullscreen></iframe>`;
+    const f = document.getElementById("page-cadre");
+    document.getElementById("page-plein").onclick = () => {
+      const d = f.requestFullscreen || f.webkitRequestFullscreen;
+      if (d) d.call(f); else { f.classList.add("page-cadre-plein"); document.body.classList.add("sans-defil"); }
+    };
+    document.getElementById("page-haut").onclick = (e) => {
+      f.classList.toggle("page-cadre-haut");
+      e.target.textContent = f.classList.contains("page-cadre-haut") ? "Réduire le cadre" : "Agrandir le cadre";
+    };
+    document.addEventListener("keydown", function esc2(ev) {
+      if (ev.key !== "Escape") return;
+      f.classList.remove("page-cadre-plein"); document.body.classList.remove("sans-defil");
+      document.removeEventListener("keydown", esc2);
+    });
   }
 
   /* ═══════════ DOCUMENTS — tout le projet, lu dans doc/index.json (généré par dossier.py) ═══════════ */
@@ -5904,6 +6051,9 @@ function showView(name){
 
   const RENDER = {
     "ava-etat": renderEtat,
+    "code-archi": codeArchi,
+    "code-regles": codeRegles,
+    "code-methode": codeMethode,
     "ava-documents": renderDocuments,
     "ava-reunion": renderReunion,
     "ava-metier": renderAvaMetier,
@@ -5949,7 +6099,7 @@ function showView(name){
   }
 
   function showHubView(name) {
-    const aliases = { documents: "ava-documents", docs: "ava-documents", etat: "ava-etat", "etat-projet": "ava-etat", reunion: "ava-reunion", avaliance: "ava-reunion", questions: "ava-reunion", "ava-simulateur": "ava-sim-rules", "ava-parcours": "ava-quiz", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-quiz", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
+    const aliases = { code: "code-archi", "code-archi": "code-archi", regles: "code-regles", methode: "code-methode", documents: "ava-documents", docs: "ava-documents", etat: "ava-etat", "etat-projet": "ava-etat", reunion: "ava-reunion", avaliance: "ava-reunion", questions: "ava-reunion", "ava-simulateur": "ava-sim-rules", "ava-parcours": "ava-quiz", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-quiz", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
     if (aliases[name]) name = aliases[name];
     let key = name;
     if (name.startsWith("lire:")) { LIRE = decodeURIComponent(name.slice(5)); key = "lire:" + LIRE; name = "lire"; }
