@@ -94,6 +94,17 @@ Mis à jour le 23/09/2026. Les anciens numéros de lot sont entre parenthèses.
 | 5.7 | Les 26 écrans (lot 3) | ⬜ après le 5.5 accepté | [les 26 écrans](../terminal.html) · [prompt écrans](PROMPT_CHATGPT_ECRANS.md) |
 | — | CRM, staffing, production (anciens lots 4, 5, 6) | ↪ fusionnés dans 5.2 et 5.7 | — |
 
+#### Les tours d'audit du serveur — mesurés
+
+| | 1er (21/09) | 2e (22/09) | 3e (23/09) | 4e (en cours) |
+|---|---|---|---|---|
+| Tests aveugles | 48 | 45 | **0** | 0 jusqu'ici |
+| Défauts critiques ouverts | 12 | 7 | 2 | — |
+| Tests joués | 64 | 151 | 264 | **280** |
+| Constats du tour précédent fermés | — | 22/47 | 37/47 | en cours |
+
+⭐ **Le filet tient depuis le 3e tour** : plus aucun test ne reste vert quand on casse le code exprès (50 sabotages).
+
 ### 6 · Reprise et recette — avec les vraies données
 
 | # | Étape | État | Documents |

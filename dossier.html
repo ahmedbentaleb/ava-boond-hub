@@ -134,7 +134,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <a href="simulateur.html">Banc d’essai</a>
 </div></div></div></div>
 <div class="p">
-<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">23/09/2026 · eae9f35</span></div>
+<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">23/09/2026 · 2659411</span></div>
 <p class="chapeau">Le point d'entrée unique. Une autre IA écrit le code, je l'audite. Tout ce qui fait foi est listé ici — et rien n'y est recopié : ce document <b>mesure</b> et <b>pointe</b>.</p>
 <div class="ch">
 <div><b>37</b><span>tables</span></div>
@@ -302,6 +302,14 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <tr><td>5.7</td><td>Les 26 écrans (lot 3)</td><td>⬜ après le 5.5 accepté</td><td><a href="doc/../terminal.html">les 26 écrans</a> · <a href="doc/PROMPT_CHATGPT_ECRANS.md">prompt écrans</a></td></tr>
 <tr><td>—</td><td>CRM, staffing, production (anciens lots 4, 5, 6)</td><td>↪ fusionnés dans 5.2 et 5.7</td><td>—</td></tr>
 </table></div>
+<p class="sub">#### Les tours d&#x27;audit du serveur — mesurés</p>
+<div class="tw"><table><tr><th></th><th>1er (21/09)</th><th>2e (22/09)</th><th>3e (23/09)</th><th>4e (en cours)</th></tr>
+<tr><td>Tests aveugles</td><td>48</td><td>45</td><td>0</td><td>0 jusqu&#x27;ici</td></tr>
+<tr><td>Défauts critiques ouverts</td><td>12</td><td>7</td><td>2</td><td>—</td></tr>
+<tr><td>Tests joués</td><td>64</td><td>151</td><td>264</td><td>280</td></tr>
+<tr><td>Constats du tour précédent fermés</td><td>—</td><td>22/47</td><td>37/47</td><td>en cours</td></tr>
+</table></div>
+<p class="sub">⭐ Le filet tient depuis le 3e tour : plus aucun test ne reste vert quand on casse le code exprès (50 sabotages).</p>
 <h3 style="margin:22px 0 6px">6 · Reprise et recette — avec les vraies données</h3>
 <div class="tw"><table><tr><th>#</th><th>Étape</th><th>État</th><th>Documents</th></tr>
 <tr><td>6.1</td><td>Obtenir l&#x27;export des données de Boond</td><td>⬜ attend R3</td><td><a href="doc/cartographie/BOOND_CHEMINS_2026-09-19.md">relevé Boond</a></td></tr>
@@ -329,6 +337,6 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <p class="sub">65 documents dans <code>_ops/</code>. Les 20 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
 <p class="note">Ce fichier est <b>généré</b> par <code>python _ops/outils/dossier.py</code>. ⛔ Ne pas l'éditer à la main : la prochaine génération écraserait la correction, et on ne saurait pas laquelle était juste.<br>Pour en extraire une section sans tout lire :<br><code>sed -n '/&lt;etat&gt;/,/&lt;\/etat&gt;/p' _ops/DOSSIER.html</code></p>
 </source>
-<footer>Ava Manager · dossier généré le 23/09/2026 · commit eae9f35 · 37 tables · 173 politiques · 15 murs · 30 assertions</footer>
+<footer>Ava Manager · dossier généré le 23/09/2026 · commit 2659411 · 37 tables · 173 politiques · 15 murs · 30 assertions</footer>
 </div>
 </body></html>
