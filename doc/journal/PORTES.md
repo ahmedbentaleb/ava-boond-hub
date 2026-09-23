@@ -10,7 +10,7 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | Porte | Espèce | Phrase | Test | Vue rouge | État | Lot cible | Tolérance |
 |---|---|---|---|---|---|---|---|
 | P-001 | A BASE | Les 15 murs tiennent dans la base : 22 assertions + 1 contre-test. | `test/SPEC_ASSERTIONS_L7.sql` | 2026-09-19 | ✅ | 1 | — |
-| P-002 | B CONTRAT | GET /sante renvoie le JSON figé (titre, état, actions, thème). | `test/contrat/sante.test.ts` | 2026-09-19 | ✅ | 1 | égalité stricte |
+| P-002 | B CONTRAT | GET /sante répond, sans interroger la base. | `test/contrat/sante.test.ts` | 2026-09-23 | ✅ | 2 | égalité stricte |
 | P-003 | C GESTE | Ouvrir le tuyau, cliquer Acquitter, lire le libellé serveur « Acquitté ». | `test/geste/tuyau.spec.ts` | 2026-09-19 | ✅ | 1 | — |
 | P-004 | D ÉCRAN | Capture du tuyau, thème sombre, comparée au golden. | `test/ecran/tuyau.spec.ts` sombre | 2026-09-19 | ✅ | 1 | 1 % pixels |
 | P-005 | D ÉCRAN | Capture du tuyau, thème clair, comparée au golden. | `test/ecran/tuyau.spec.ts` clair | 2026-09-19 | ✅ | 1 | 1 % pixels |
@@ -294,3 +294,17 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-284 | B CONTRAT | ManageGroups : un périmètre non uuid est INTROUVABLE. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
 | P-285 | B CONTRAT | L'en-tête est l'e-mail du compte, l'événement porte cet auteur. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
 | P-286 | B CONTRAT | Doublon contact nom+prenom+societe, et la propagation écrit le statut. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-287 | B CONTRAT | Agence de l'objet lue : un compte d'une autre agence est DROIT, rien n'est écrit. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-288 | B CONTRAT | Agence nulle d'un candidat : un compte d'une autre agence est DROIT, rien n'est écrit. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-289 | B CONTRAT | Objet introuvable à la résolution d'agence → INTROUVABLE. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | — |
+| P-290 | B CONTRAT | ConvertCandidateToResource écrit l'agence du compte, pas celle de l'entrée. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-291 | B CONTRAT | Agence demandée différente de l'agence lue → DROIT, rien écrit. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-292 | B CONTRAT | Vue sans en-tête ou groupe inconnu → DROIT, pas une liste vide. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | — |
+| P-293 | B CONTRAT | Une unité de société cliente porte l'agence du compte qui la crée. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-294 | B CONTRAT | ArchiveCompany pose le droit, joue la garde, le retire. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-295 | B CONTRAT | ArchiveService pose le droit, joue la garde, le retire. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-296 | B CONTRAT | ArchiveContact pose le droit, joue la garde, le retire. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-297 | B CONTRAT | ArchiveObject pose le droit, joue la garde, le retire. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-298 | B CONTRAT | Quatre commandes sans succès au seed réussissent, le droit est retiré. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
+| P-299 | B CONTRAT | Le fichier d'assertions porte `\set ON_ERROR_STOP on` en tête, et la copie `test/` est le canon. | `test/contrat/outils.test.ts` | 2026-09-23 | ✅ | 2 | égalité stricte |
+| P-300 | B CONTRAT | `verif_serveur.sh` refuse une base ouverte et nomme le motif ; poste de dev déclaré, il accepte. | `test/contrat/outils.test.ts` | 2026-09-23 | ✅ | 2 | — |

@@ -20,6 +20,12 @@ c'est la preuve du premier audit.
 
 Base « ava_audit2 », serveur sur le port 3200. Même mur, mêmes interdits.
 
+⛔ AVANT TOUT — LE CONTRÔLE D'ANCÊTRE (posé le 23/09 au soir)
+  git merge-base --is-ancestor lot-2-brain HEAD && echo "ancetre : OK"
+Si ce n'est pas « OK », ⛔ TU N'AUDITES PAS : les correctifs du BRAIN sont
+hors de la branche, et tu les déclarerais ouverts à tort. Tu rends une ligne
+à Ahmed : « la branche ne descend pas de lot-2-brain », et tu t'arrêtes.
+
 
 2. CE QUE TU FAIS EN PLUS
 ─────────────────────────

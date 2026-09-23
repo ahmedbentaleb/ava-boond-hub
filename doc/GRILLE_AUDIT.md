@@ -150,6 +150,7 @@ lis `/web/src` une fois, à l'œil, à chaque lot — c'est ce qu'aucun grep ne 
 | **F7** | Il est branché en **pre-push** | `git config core.hooksPath` vaut `.githooks` — posé par `bash outils/installer.sh`, et la case du cliquet le vérifie *(V-060)* | 🟠 |
 | **F8** | La CI relance **le même** script | `.github/workflows/` appelle `cliquet.sh`, pas une copie | 🔴 — deux copies divergent |
 | **F9** | Le script ne s'arrête pas à la première case | il imprime **toutes** ses cases même après un échec *(V-065)* | 🟠 |
+| **F13** | ⛔ **La branche auditée descend de `lot-2-brain`** | `git merge-base --is-ancestor lot-2-brain HEAD` → vrai. Sinon les correctifs du BRAIN ne sont pas dans ce qu'on audite, et l'audit les déclare ouverts *(posé le 23/09 au soir : deux tours de suite ont commencé par ce faux départ)* | 🔴 on n'audite pas |
 | **F12** | ⭐ Une porte ✅ **de la branche** ne disparaît pas | le `PORTES.md` de HEAD contient toutes les ✅ du commit précédent **et** de `main` ; une porte exécutée absente du tableau est signalée *(V-050)* | 🔴 |
 
 ⭐⭐ **F3 compte les portes SERVIES, pas le total** — voir [PORTES_EN_ATTENTE.md](PORTES_EN_ATTENTE.md).

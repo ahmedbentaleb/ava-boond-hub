@@ -168,6 +168,13 @@
   "ko": 9
  },
  {
+  "chemin": "cartographie/BOOND_REGLAGES_2026-09-23.md",
+  "titre": "Boond — tous les réglages, valeur par valeur (23/09/2026)",
+  "categorie": "Étude de Boond",
+  "date": "23/09/2026",
+  "ko": 8
+ },
+ {
   "chemin": "cartographie/DIAGNOSTIC_METIER.md",
   "titre": "Diagnostic Boond Manager",
   "categorie": "Étude de Boond",
@@ -242,7 +249,7 @@
   "titre": "Journal des bugs — Ava Manager · **audit général**",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "23/09/2026",
-  "ko": 16
+  "ko": 17
  },
  {
   "chemin": "MACHINES_ETAT_V1.md",
@@ -297,7 +304,7 @@
   "chemin": "prompt-audit-2.txt",
   "titre": "prompt-audit-2.txt",
   "categorie": "Prompts et briefs",
-  "date": "21/09/2026",
+  "date": "23/09/2026",
   "ko": 3
  },
  {
@@ -445,7 +452,7 @@
   "titre": "SPEC_ASSERTIONS_L7.sql",
   "categorie": "Conception et contrat",
   "date": "23/09/2026",
-  "ko": 30
+  "ko": 31
  },
  {
   "chemin": "SPEC_COMMANDES_L4.md",
@@ -515,7 +522,7 @@
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "23/09/2026",
-  "ko": 19
+  "ko": 22
  },
  {
   "chemin": "journal/DECISIONS.md",
@@ -564,7 +571,7 @@
   "titre": "Portes — le cliquet. Une porte ✅ ne redevient jamais ⏳.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "23/09/2026",
-  "ko": 40
+  "ko": 42
  },
  {
   "chemin": "journal/QUESTIONS.md",

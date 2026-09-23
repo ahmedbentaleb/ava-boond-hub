@@ -39,7 +39,7 @@ Mis à jour le 23/09/2026, au soir. Les anciens numéros de lot sont entre paren
 |---|---|---|---|
 | 1.1 | Les captures d'écran de Boond — 89 | ✅ 15/09, complétées le 22/09 (administration, référentiels, plans de charge) | hub › Boond › Audit complet · [audit des écrans](cartographie/AUDIT_ECRANS.md) |
 | 1.2 | Comprendre comment Boond fonctionne | ✅ 15/09 | [fonctionnement](cartographie/FONCTIONNEMENT_BOOND.md) · [diagnostic métier](cartographie/DIAGNOSTIC_METIER.md) |
-| 1.3 | Le relevé des chemins et des volumes (31 sections) | ✅ 19/09, complété le 22/09 | [relevé Boond](cartographie/BOOND_CHEMINS_2026-09-19.md) · [écrans du 22/09](cartographie/BOOND_ECRANS_2026-09-22.md) · [grille d'inventaire](GRILLE_INVENTAIRE_BOOND_2026-09-17.md) |
+| 1.3 | Le relevé de Boond : chemins, écrans, et **tous les réglages valeur par valeur** | ✅ 19 → 23/09 | [relevé Boond](cartographie/BOOND_CHEMINS_2026-09-19.md) · [écrans du 22/09](cartographie/BOOND_ECRANS_2026-09-22.md) · [réglages du 23/09](cartographie/BOOND_REGLAGES_2026-09-23.md) · [grille d'inventaire](GRILLE_INVENTAIRE_BOOND_2026-09-17.md) |
 | 1.4 | Les questions que seul Avaliance peut trancher | ⏳ réunion du 23/09 | hub › [Questions Avaliance](../#reunion) · [questions Boond](QUESTIONS_BOOND_2026-09-19.md) |
 
 ### 2 · Cadrage métier — ce que le logiciel doit faire

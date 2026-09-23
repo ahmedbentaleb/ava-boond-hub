@@ -314,3 +314,24 @@ Le troisième audit a refusé `416a7a3`. Une ligne par V-. ROUGE = porte vue sur
 | V-094 | M6 trois restes | P-286 P-004 | `not ok` — la branche nom+prenom+societe absente ; la propagation n'écrivait pas | `ok` — GARDE doublon, statut du contact relu ; P-004 compare le fond calculé du body | `1b1e8a2` |
 
 Cliquet après ces commits : 12/12, KO=0. `make test` : OK. 280 portes, 31 assertions.
+
+# Correctifs lot 2 — quatrième audit · 23/09/2026
+
+Le quatrième audit a refusé `cc3ff64`. Une ligne par V-. ROUGE = le défaut mesuré par l'audit (ou la porte, avant correctif). VERTE = la porte sur une base refaite.
+
+| V- | Point | Porte | ROUGE avant | VERTE après | Commit |
+|---|---|---|---|---|---|
+| V-096 | C1 P-207 sur base neuve | P-207 | `not ok` — ManageRefs `catégorie inconnue` (`categorie:"europe"`, seed `defaut` seul) | `ok` — la porte envoie `defaut`, reset puis `make test` vert | `4b74720` |
+| V-097 | C2 D-21 aucun repli silencieux | P-287 P-288 P-289 | un compte d'une autre agence : UpdateUnit `ok:true` sur une unité sans agence | `ok` — agence lue → DROIT ; agence nulle → DROIT, 0 écriture ; objet introuvable → INTROUVABLE | `4b74720` |
+| V-098 | E1 conversion : l'agence vient du compte | P-290 | l'entrée `agence_id` était écrite telle quelle | `ok` — ressource en agence du compte, pas celle demandée | `4b74720` |
+| V-099 | E2 D-23 la porte pose le droit | P-009 P-012 P-016 P-027 P-056 P-127 P-204 P-294–P-297 | accorder les 5 permissions absentes du seed faisait tomber ces 7 portes | `ok` — chaque porte retire ou pose le droit qu'elle joue, puis le remet ; les gardes sont relues | `4b74720` |
+| V-100 | E3 agence demandée ≠ agence lue | P-291 | sabotage `entreeAgence: []` : 0 porte tombée | `ok` — CreateUnit avec une autre agence → DROIT, 0 écriture | `4b74720` |
+| V-102 | M1 `/sante` sans la base | P-002 | `GET /sante` faisait `SELECT 1` et rendait le thème | `ok` — `{ok:true}` seulement ; l'écran lit `/tuyau` | `4b74720` `aece10c` |
+| V-103 | M2 pas d'identité par défaut | P-292 | sans en-tête → périmètre IA ; `ADM` → liste vide HTTP 200 | `ok` — 403 DROIT, pas de liste | `4b74720` |
+| V-104 | M3 D-22 l'unité porte l'agence du compte | P-293 | société cliente : `agence_id` NULL (`crm.ts`) | `ok` — l'unité créée a l'agence du compte. NOT NULL : migration du BRAIN, non posée | `4b74720` |
+| V-104 bis | M4 P-285 ne laisse pas 23 droits | P-285 | compte de test actif, 23 droits dans `v_droits_effectifs` | `ok` — `actif` faux, 0 droit effectif | `4b74720` |
+| C-10 | M5 quatre commandes, une réussite | P-298 | jouées seulement par leur DROIT | `ok` — archive société, contact, unité, coût relu ; droits retirés | `4b74720` |
+
+Mesure de clôture, base refaite (`make.sh reset` puis `make test`) : `make test` OK. Cliquet : cases OK=12 KO=0. 292 portes, 31 assertions.
+
+Non fait ici, réservé au BRAIN : D-20 (le cliquet refait la base), migration 009 NOT NULL, D-24 (portes des outils). `lot-2-brain` n'a pas été fusionné.

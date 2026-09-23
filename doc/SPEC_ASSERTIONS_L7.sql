@@ -348,9 +348,10 @@ $s$, 'M-12');
 --    prouvées. `DISABLE TRIGGER tg_m12` sur contact ou projet laissait les
 --    assertions vertes. Une assertion par table porteuse du mur.
 SELECT t.doit_refuser('un contact rangé dans l''unité d''une autre société', 'M-12', $s$
-  INSERT INTO unite_organisation (id, societe_id, type_code, nom)
+  INSERT INTO unite_organisation (id, societe_id, type_code, nom, agence_id)
   VALUES ('c1e00000-0000-0000-0000-000000000012',
-          '50000000-0000-0000-0000-000000000001','pole','Pôle chez A');
+          '50000000-0000-0000-0000-000000000001','pole','Pôle chez A',
+          'a0000000-0000-0000-0000-000000000001');
   UPDATE contact SET unite_organisation_id = 'c1e00000-0000-0000-0000-000000000012'
   WHERE id = 'c1000000-0000-0000-0000-000000000002'
 $s$, 'M-12');
@@ -361,16 +362,18 @@ SELECT t.doit_refuser('un contact d''une autre société sur un projet', 'M-12',
 $s$, 'M-12');
 
 SELECT t.doit_refuser('une unité qui est son propre parent', 'M-12', $s$
-  INSERT INTO unite_organisation (id, societe_id, type_code, nom)
+  INSERT INTO unite_organisation (id, societe_id, type_code, nom, agence_id)
   VALUES ('c1e00000-0000-0000-0000-000000000009',
-          '50000000-0000-0000-0000-000000000001','pole','Boucle');
+          '50000000-0000-0000-0000-000000000001','pole','Boucle',
+          'a0000000-0000-0000-0000-000000000001');
   UPDATE unite_organisation SET parent_id = id
   WHERE id = 'c1e00000-0000-0000-0000-000000000009'
 $s$, 'cycle');
 
 -- ⭐ D-1 : une équipe de l'agence B ne pend pas d'un pôle de l'agence A —
---    sinon le périmètre de droits ne veut plus rien dire.
-SELECT t.doit_refuser('une unité interne dont le parent est d''une autre agence', 'M-12', $s$
+--    sinon le périmètre de droits ne veut plus rien dire. ⭐ D-22, 23/09 : la
+--    règle vaut désormais pour TOUTE unité, cliente comprise (migration 009).
+SELECT t.doit_refuser('une unité dont le parent est d''une autre agence', 'M-12', $s$
   INSERT INTO societe_role VALUES ('50000000-0000-0000-0000-000000000001','interne');
   INSERT INTO unite_organisation (id, societe_id, type_code, nom, agence_id)
   VALUES ('c1e00000-0000-0000-0000-000000000001','50000000-0000-0000-0000-000000000001',
@@ -378,6 +381,13 @@ SELECT t.doit_refuser('une unité interne dont le parent est d''une autre agence
   INSERT INTO unite_organisation (societe_id, parent_id, type_code, nom, agence_id)
   VALUES ('50000000-0000-0000-0000-000000000001','c1e00000-0000-0000-0000-000000000001',
           'equipe','Équipe Rabat','a0000000-0000-0000-0000-000000000002')
+$s$, 'agence');
+
+-- ⭐ V-104 / D-22, 23/09 — une unité sans agence n'entre plus : c'est cette
+--    colonne qui porte la garde de périmètre (migration 009).
+SELECT t.doit_refuser('une unité sans agence', 'M-12', $s$
+  INSERT INTO unite_organisation (societe_id, type_code, nom)
+  VALUES ('50000000-0000-0000-0000-000000000001','pole','Sans agence')
 $s$, 'agence');
 
 -- ── M-13 · une permission n'existe jamais sans périmètre ──────────────────
