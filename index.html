@@ -611,6 +611,7 @@
   <section class="view" id="view-code-archi" hidden></section>
   <section class="view" id="view-code-regles" hidden></section>
   <section class="view" id="view-code-methode" hidden></section>
+  <section class="view" id="view-code-cout" hidden></section>
   <section class="view" id="view-lire" hidden></section>
   <section class="view" id="view-page" hidden></section>
   <section class="view" id="view-ava-metier" hidden></section>
@@ -3148,7 +3149,8 @@ function showView(name){
     { id: "code", label: "Code", items: [
       { v: "code-archi", label: "Comment c'est construit", star: 1 },
       { v: "code-regles", label: "Rien n'est figé", star: 1 },
-      { v: "code-methode", label: "Comment on le vérifie", star: 1 } ] },
+      { v: "code-methode", label: "Comment on le vérifie", star: 1 },
+      { v: "code-cout", label: "Délais et coût", star: 1 } ] },
     { id: "metier", label: "Le métier", items: [
       { v: "ava-metier", label: "Vue d'ensemble", star: 1 },
       { v: "ava-quiz", label: "Quiz" },
@@ -3184,7 +3186,7 @@ function showView(name){
   const flattenViews = (views) =>
     views.flatMap((v) => (v.children && v.children.length ? v.children : [v]));
   const ALL_VIEWS = Object.values(PRODUCTS).flatMap((p) => flattenViews(p.views).map((v) => v.id))
-    .concat(["code-archi", "code-regles", "code-methode"]);
+    .concat(["code-archi", "code-regles", "code-methode", "code-cout"]);
   const nestedLast = {};
 
   const DECISIONS = [
@@ -5972,6 +5974,38 @@ function showView(name){
       <div class="rowbtns" style="margin-top:14px"><a class="pill" href="#lire:ARBITRAGE_AUDIT_2026-09-23.md">Le dernier arbitrage</a><a class="pill" href="#docs:Audits">Les rapports d'audit</a><a class="pill" href="#ava-etat">Où on en est</a></div>`;
   }
 
+
+  /* ═══════════ CODE — délais et coût, mesurés ═══════════ */
+  function codeCout() {
+    const el = document.getElementById("view-code-cout");
+    const L = [
+      ["Fondations", "base, 15 interdits, données de départ", "fait", "1 h 09", "mesuré le 20/09"],
+      ["Serveur", "les 55 commandes du métier", "en cours", "≈ 30 h", "3 audits, 95 constats, 4e tour en cours"],
+      ["Connexion Microsoft", "chacun entre avec son compte de la maison", "à faire", "2 – 4 h", "estimation"],
+      ["Les 26 écrans", "ce que les équipes utiliseront", "à faire", "8 – 14 h", "estimation"],
+      ["Reprise et recette", "les données de Boond, puis l'essai réel", "à faire", "4 – 6 h", "après la réunion"],
+      ["Mise en production", "serveur dédié, sauvegardes, bascule", "à faire", "3 – 5 h", "estimation"],
+      ["Connecteur Claude", "poser une question à l'outil, en lecture", "plus tard", "≈ 1 h", "après la livraison"],
+    ];
+    const etat = (e) => e === "fait" ? '<span class="tag ok">fait</span>' : e === "en cours" ? '<span class="tag warn">en cours</span>' : `<span class="tag">${e}</span>`;
+    el.innerHTML = `<h2>Délais et coût — ce qui est mesuré, ce qui est estimé</h2>
+      <p class="lead">Le temps est du <strong>temps machine</strong> : ce que les IA passent à écrire et à vérifier. Le reste, c'est votre temps de décision — et c'est lui qui commande le calendrier.</p>
+      <div class="etat-total"><b>1 h 09</b> mesurées sur les fondations · <b>≈ 30 h</b> sur le serveur, audits compris
+        <div class="etat-barre"><i style="width:35%"></i></div></div>
+      <div style="overflow-x:auto"><table class="etat-t">
+        <tr><th>Étape</th><th>Ce que c'est</th><th>État</th><th>Temps machine</th><th>D'où vient le chiffre</th></tr>
+        ${L.map(([a,b,c,d,e]) => `<tr><td><strong>${a}</strong></td><td>${b}</td><td>${etat(c)}</td><td class="mono">${d}</td><td class="etat-e" style="padding-left:0">${e}</td></tr>`).join("")}
+      </table></div>
+      <div class="row" style="margin-top:16px">
+        ${[["Ce que ça coûte à faire tourner","<strong>5 à 35 € par mois</strong> : hébergement, sauvegarde chez un second fournisseur, nom de domaine. Aujourd'hui zéro, le serveur est déjà payé."],
+           ["Ce que ça remplace","L'abonnement Boond, payé chaque mois, pour un outil dont les temps sont fermés et 9 missions sur 200 saisies."],
+           ["Ce qui décide vraiment du calendrier","Les réponses de la direction, l'export des données et les deux semaines d'essai avec de vrais utilisateurs. Le code n'est pas le chemin critique."]]
+          .map(([t,p])=>`<div class="card" style="flex:1 1 260px"><h3>${t}</h3><p>${p}</p></div>`).join("")}
+      </div>
+      <p class="note" style="margin-top:14px">⚠️ Les estimations sont des fourchettes, pas des promesses : la première, faite avant les fondations, était <strong>six fois trop haute</strong>. Depuis, chaque lot fini écrit son temps réel, et l'estimation du suivant part de ce qui a été mesuré.</p>
+      <div class="rowbtns" style="margin-top:14px"><a class="pill" href="#ava-etat">La feuille de route</a><a class="pill" href="#code-methode">Comment on le vérifie</a></div>`;
+  }
+
   /* ═══════════ LE LECTEUR — un document du projet, affiché dans le hub ═══════════ */
   let LIRE = "", PAGE = "";
   function resoudre(base, rel) {
@@ -6054,6 +6088,7 @@ function showView(name){
     "code-archi": codeArchi,
     "code-regles": codeRegles,
     "code-methode": codeMethode,
+    "code-cout": codeCout,
     "ava-documents": renderDocuments,
     "ava-reunion": renderReunion,
     "ava-metier": renderAvaMetier,
@@ -6099,7 +6134,7 @@ function showView(name){
   }
 
   function showHubView(name) {
-    const aliases = { code: "code-archi", "code-archi": "code-archi", regles: "code-regles", methode: "code-methode", documents: "ava-documents", docs: "ava-documents", etat: "ava-etat", "etat-projet": "ava-etat", reunion: "ava-reunion", avaliance: "ava-reunion", questions: "ava-reunion", "ava-simulateur": "ava-sim-rules", "ava-parcours": "ava-quiz", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-quiz", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
+    const aliases = { cout: "code-cout", delais: "code-cout", code: "code-archi", "code-archi": "code-archi", regles: "code-regles", methode: "code-methode", documents: "ava-documents", docs: "ava-documents", etat: "ava-etat", "etat-projet": "ava-etat", reunion: "ava-reunion", avaliance: "ava-reunion", questions: "ava-reunion", "ava-simulateur": "ava-sim-rules", "ava-parcours": "ava-quiz", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-quiz", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
     if (aliases[name]) name = aliases[name];
     let key = name;
     if (name.startsWith("lire:")) { LIRE = decodeURIComponent(name.slice(5)); key = "lire:" + LIRE; name = "lire"; }
