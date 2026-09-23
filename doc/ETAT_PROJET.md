@@ -93,6 +93,7 @@ Mis à jour le 23/09/2026, au soir. Les anciens numéros de lot sont entre paren
 | 5.5f | Corrections du quatrième tour | ⏳ | [prompt brain code 4](prompt-brain-code-4.txt) · [prompt correctifs 4](prompt-lot2-correctifs-4.txt) |
 | 5.5g | Cinquième audit | ⬜ quand Grok écrit « prêt pour le cinquième audit » | [prompt d'audit](prompt-audit-2.txt) |
 | 5.6 | Connexion par compte Microsoft (lot 2c) | ⬜ attend R4 de la réunion | [décisions techniques T2](DECISIONS_TECHNIQUES_v1.md) · [arbitrage D-2](ARBITRAGE_AUDIT_2026-09-21.md) |
+| 5.8 | ⭐ **RH et facturation** — contrats, documents à suivre, devis, factures (décision du 23/09 : tout en V1) | ⬜ après les écrans | [ce que la V1 doit porter en plus](COMPLEMENTS_V1_2026-09-23.md) · [réglages Boond](cartographie/BOOND_REGLAGES_2026-09-23.md) |
 | 5.7 | Les 26 écrans (lot 3) | ⬜ après le 5.5 accepté | [les 26 écrans](../terminal.html) · [prompt écrans](PROMPT_CHATGPT_ECRANS.md) |
 | — | CRM, staffing, production (anciens lots 4, 5, 6) | ↪ fusionnés dans 5.2 et 5.7 | — |
 

@@ -196,6 +196,13 @@
   "ko": 38
  },
  {
+  "chemin": "COMPLEMENTS_V1_2026-09-23.md",
+  "titre": "Ce que la V1 doit porter en plus — décidé le 23/09/2026",
+  "categorie": "Cadrage et commande du client",
+  "date": "23/09/2026",
+  "ko": 5
+ },
+ {
   "chemin": "DECISIONS_TECHNIQUES_v1.md",
   "titre": "Décisions techniques Ava Manager v1",
   "categorie": "Conception et contrat",
@@ -416,8 +423,8 @@
   "chemin": "REGISTRE_POLITIQUES_v1.md",
   "titre": "Registre des politiques Ava Manager v1",
   "categorie": "Conception et contrat",
-  "date": "22/09/2026",
-  "ko": 45
+  "date": "23/09/2026",
+  "ko": 49
  },
  {
   "chemin": "RELECTURE_5_MODELE_DONNEES_2026-09-17.md",

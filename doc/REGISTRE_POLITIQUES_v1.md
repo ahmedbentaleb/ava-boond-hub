@@ -72,6 +72,30 @@ Le **code** est stable, le **libellé** se renomme, une valeur s'**ajoute** dans
 | `ref_statut_contact` | `actif` · `parti` | actif, parti — **système** | ⭐ **D-9, 21/09** (V-021) : était un CHECK sur `contact.statut_code` ; migration 007 |
 | `ref_type_coordonnee` | `email` · `telephone` · `reseau_social` | email, telephone, reseau_social — **système** (la contrainte « un réseau social porte son réseau » raisonne sur `reseau_social`) | ⭐ **D-9, 21/09** (V-021) : était un CHECK sur `personne_coordonnee.type_code` ; migration 007 |
 | `ref_usage_coordonnee` | — | personnel, professionnel, mobile, fixe, autre (**système** : valeur par défaut) | ⭐ **D-9, 21/09** (V-021) : était un CHECK sur `personne_coordonnee.usage_code` ; migration 007. ⛔ `perimetre.type_code` **reste** un CHECK : mécanique des droits, pas une liste métier |
+| `ref_secteur` | — | 30 valeurs relevées chez Boond (aéronautique, assurance, banque, défense, énergie, pharmacie, secteur public…) ⚠️ **secteur d'une société**, distinct de `ref_domaine` | ⭐ **23/09, relevé des réglages Boond** |
+| `ref_metier` | — | product owner, chef de projet, MOA, ingénierie financière, architecture, ingénieur études et dev, support, ingénieur IT, administrateur, SDM/SM, autre (13) | ⭐ 23/09 |
+| `ref_certification` | — | ITIL, AZURE, SAFe, AWS — ⬜ vide au seed, l'admin ajoute | ⭐ 23/09 |
+| `ref_niveau_experience` | — | debutant, junior_0_2, confirme_3_5, senior_5_10, expert_10p | ⭐ 23/09 |
+| `ref_niveau_formation` | — | bac, bac2, bac3, bac4, bac5 | ⭐ 23/09 |
+| `ref_langue` | — | anglais, espagnol, allemand… (l'admin ajoute) | ⭐ 23/09 |
+| `ref_niveau_langue` | — | scolaire, intermediaire, courant, maternel | ⭐ 23/09 |
+| `ref_disponibilite_candidat` | — | asap, 1_2_semaines, 1_3_mois, 3_6_mois, 6_mois_plus | ⭐ 23/09 — ⛔ ne pas confondre avec `ref_disponibilite` (ressource) |
+| `ref_situation_familiale` | — | celibataire, marie, concubinage, divorce, veuf, pacs | ⭐ 23/09 |
+| `ref_type_contrat` | `actif` · `termine` | salarie_cdi, salarie_cdd, independant, stagiaire, portage, autre | ⭐ 23/09 — la fiche ressource porte le contrat |
+| `ref_categorie_contrat` | — | ingenieur_cadre, etam | ⭐ 23/09 |
+| `ref_classification_contrat` | — | ⭐ **21 positions Syntec** : position 1.1 coef 95 → position 3.3 coef 500 | ⭐ 23/09 — ⛔ ne se code pas en dur : une convention collective change |
+| `ref_temps_travail` | — | temps_plein, temps_partiel, mi_temps | ⭐ 23/09 |
+| `ref_type_document_suivi` | — | titre_sejour, certification (l'admin ajoute) | ⭐ 23/09 — document qui expire, lié à l'alerte « document arrivant à expiration » |
+| `ref_categorie_achat` | — | divers, prestation_externe | ⭐ 23/09 — achats hors V1, le référentiel existe pour la reprise |
+| `ref_calendrier` | — | france_sans_pentecote, royaume_uni, usa | ⭐ 23/09 — ⚠️ chaque **agence** porte son calendrier et ses jours ouvrés |
+| `ref_taux_tva` | — | 20, 10, 0 (%) | ⭐ 23/09 — **facturation** |
+| `ref_condition_reglement` | — | 10, 30, 40, 45, 60 jours | ⭐ 23/09 — **facturation** |
+| `ref_mode_reglement` | — | virement, prelevement, cheque, cb | ⭐ 23/09 — **facturation** |
+| `ref_mode_envoi_facture` | — | email, courrier, email_courrier, portail_chorus | ⭐ 23/09 — **facturation**, ⚠️ Chorus est une obligation du secteur public |
+| `ref_etat_facture` | `brouillon` · `emise` · `payee` · `litige` | proforma, creation, transmis_client, relance_1, relance_2, email_client, impayee, payee | ⭐ 23/09 — **facturation** |
+| `ref_etat_facture_fournisseur` | `brouillon` · `valide` · `paye` · `rejete` | brouillon, a_valider, validee, rejetee, payee | ⭐ 23/09 — **achats** |
+| `ref_etat_devis` | `en_cours` · `accepte` · `refuse` · `archive` | creation, transmis_client, attente, refuse, accord_client, archive | ⭐ 23/09 — **facturation** |
+| `ref_type_message` | — | 19 modèles relevés : saisie des temps, des frais, attente de validation, validée, rejet, refus, suppression, demande/relance/confirmation de signature | ⭐ 23/09 — le **texte** du message est un modèle (`modele`), le type est ici |
 
 ---
 
@@ -325,7 +349,7 @@ Les autres documents **ne réécrivent pas ces chiffres** : ils renvoient ici (�
 | Quoi | Compte | Détail |
 |---|---|---|
 | Murs | **15** | M-1 → M-15, §A ; **+ 1 règle de code** R-1, hors des quinze |
-| Référentiels | ⭐ **40 au 21/09** | ⭐ **+3 le 21/09 (D-9, migration 007)** : `ref_statut_contact`, `ref_type_coordonnee`, `ref_usage_coordonnee` — trois listes figées en CHECK (V-021). ⭐ **33 lignes en §B** (métier) **+ 7 techniques** ; mesuré en base : `select count(*) from pg_tables where schemaname='ava' and tablename like 'ref\_%'` = 40. Avant : **37 au 20/09**, ⭐ **27 métier** (§B, un par ligne — ⛔ *`ref_theme` était cité ici par erreur : il n'y a pas de table `ref_theme`, un thème est un **code texte** porté par `ui.theme`. Retiré le 20/09, signalé par le lot 1* ; `ref_unite_couverture`, `ref_motif_avenant`, `ref_motif_interruption`, `ref_motif_fin_emploi`, `ref_type_modele`, `ref_portee_modele` et `ref_gravite_alerte` le 19/09) **+ 7 techniques** : `ref_civilite`, `ref_pays`, `ref_type_unite`, `ref_type_contact`, `ref_type_mission`, `ref_type_document`, `ref_disponibilite` |
+| Référentiels | ⭐ **64 au 23/09** (57 métier en §B + 7 techniques) ⚠️ **+24 le 23/09** : relevé complet des réglages Boond, tout est repris en V1 (secteur, métier, certification, expérience, formation, langue, niveau, disponibilité candidat, situation familiale, contrat ×4, temps de travail, document suivi, catégorie d'achat, calendrier, TVA, conditions et modes de règlement, envoi de facture, états facture / facture fournisseur / devis, type de message). ⛔ La migration qui les crée reste à écrire. Avant : **40 au 21/09** | ⭐ **+3 le 21/09 (D-9, migration 007)** : `ref_statut_contact`, `ref_type_coordonnee`, `ref_usage_coordonnee` — trois listes figées en CHECK (V-021). ⭐ **33 lignes en §B** (métier) **+ 7 techniques** ; mesuré en base : `select count(*) from pg_tables where schemaname='ava' and tablename like 'ref\_%'` = 40. Avant : **37 au 20/09**, ⭐ **27 métier** (§B, un par ligne — ⛔ *`ref_theme` était cité ici par erreur : il n'y a pas de table `ref_theme`, un thème est un **code texte** porté par `ui.theme`. Retiré le 20/09, signalé par le lot 1* ; `ref_unite_couverture`, `ref_motif_avenant`, `ref_motif_interruption`, `ref_motif_fin_emploi`, `ref_type_modele`, `ref_portee_modele` et `ref_gravite_alerte` le 19/09) **+ 7 techniques** : `ref_civilite`, `ref_pays`, `ref_type_unite`, `ref_type_contact`, `ref_type_mission`, `ref_type_document`, `ref_disponibilite` |
 | Politiques | ⭐ **173 au 20/09** | §C — **172 en tableau + 1 déclarée en prose** (mesuré le 21/09, V-029 — le « 168 » précédent était un compte retenu). ⭐ **+2 le 20/09, annoncés comme l'exige le gel** :
 `societe.archivage.garde` et `absence.chevauchement`, toutes deux **citées dans L4** et
 **absentes du registre** — trou de ma spécification, comblé par le codeur du lot 2, qui a écrit
