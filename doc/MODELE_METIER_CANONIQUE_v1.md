@@ -71,7 +71,7 @@ Hors V1, **nommés pour ne pas être oubliés** : Achat, Facture (client et four
 | Objet historique → ÉvénementMétier | 1 → N | ajout seul ; `liens` porte les politiques lues | ADR-004, ADR-005 |
 | Cycle → RéférentielÉtat | FK | `etat_code` → `ref_etat_<objet>.code` ; CHECK sur la **catégorie**, jamais sur le code | ADR-005 |
 
-## 3. Ce qui est interdit — les 15 murs, en structure, pas en écran
+## 3. Ce qui est interdit — les 15 murs (18 au 24/09), en structure, pas en écran
 
 La liste canonique est le **§A du registre des politiques** (M-1 → M-15). Rappel de la forme physique :
 
@@ -92,6 +92,9 @@ La liste canonique est le **§A du registre des politiques** (M-1 → M-15). Rap
 | M-13 | Permission sans périmètre | la jointure exige la paire. |
 | M-14 | Conditions économiques qui suivent la fiche ressource, ou qui changent après signature | colonnes propres à la prestation, **immuables dès `engage`** (trigger, T-2). |
 | M-15 | Montant stocké sans devise ; agrégat multi-devises stocké | `devise_code NOT NULL` à côté de chaque montant ; aucune colonne convertie (T-2). |
+| **M-16** *(24/09, à assertir)* | Une facture émise modifiée en place | trigger : une facture dont l'état n'est plus `brouillon` refuse tout UPDATE ; on l'annule par un **avoir** (la loi) |
+| **M-17** *(24/09, à assertir)* | Deux contrats RH d'une même personne qui se chevauchent | `EXCLUDE USING gist (personne_id WITH =, daterange(debut, fin) WITH &&)` — Boond en faisait une alerte |
+| **M-18** *(24/09, à assertir)* | Un numéro de facture réutilisé, ou un trou dans la séquence | séquence dédiée, `UNIQUE`, attribuée à l'émission seulement (la loi française exige une numérotation continue) |
 
 *Règle de code R-1, hors des quinze* : les agrégats groupent par devise — une addition EUR + MAD est un refus en revue, pas un mur (registre §A).
 

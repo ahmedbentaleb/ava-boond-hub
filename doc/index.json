@@ -283,15 +283,15 @@
   "chemin": "MODELE_DONNEES_AVAMANAGER_V1.md",
   "titre": "Modèle de données AvaManager v1",
   "categorie": "Conception et contrat",
-  "date": "19/09/2026",
-  "ko": 47
+  "date": "24/09/2026",
+  "ko": 52
  },
  {
   "chemin": "MODELE_METIER_CANONIQUE_v1.md",
   "titre": "Modèle métier canonique Ava Manager v1",
   "categorie": "Conception et contrat",
-  "date": "17/09/2026",
-  "ko": 9
+  "date": "24/09/2026",
+  "ko": 10
  },
  {
   "chemin": "PARCOURS_METIER_SIMPLE_AVA_MANAGER.md",
@@ -304,8 +304,8 @@
   "chemin": "PLAN_2026-09-22.md",
   "titre": "Plan du 22/09/2026 — le hub remis en ordre",
   "categorie": "État et plans",
-  "date": "23/09/2026",
-  "ko": 4
+  "date": "24/09/2026",
+  "ko": 6
  },
  {
   "chemin": "PORTES_EN_ATTENTE.md",
@@ -445,7 +445,7 @@
   "titre": "Registre des politiques Ava Manager v1",
   "categorie": "Conception et contrat",
   "date": "24/09/2026",
-  "ko": 51
+  "ko": 54
  },
  {
   "chemin": "RELECTURE_5_MODELE_DONNEES_2026-09-17.md",

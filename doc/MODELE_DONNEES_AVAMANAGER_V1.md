@@ -611,7 +611,7 @@ La correspondance des états Boond (14 étapes candidat, 9 états positionnement
 | Le contenu de la matrice rôle × commande | étape 8 — **configuration**, pas schéma |
 | Les écrans | étape 5b, mock |
 | Les formules ATL | code, versionné (`snapshot_marge.version_atl`) |
-| Achats, factures, commentaires, alertes, portail, emailing, processus | ⬜ hors V1 (F16–F18), **nommés** au §1 |
+| Commentaires, portail candidat, emailing, processus de recrutement versionné | ⬜ hors V1 (F16–F18), **nommés** au §1 · ⭐ **achats, factures, devis, contrats RH et alertes entrent en V1 le 23/09 : §13** |
 | Le partitionnement, la rétention, la stratégie d'index fine | après la première mesure — pas avant |
 
 ---
@@ -635,3 +635,63 @@ La correspondance des états Boond (14 étapes candidat, 9 états positionnement
 Ce document + le mock d'écrans (5b) forment le livrable à valider.
 **G15** : la validation prend la forme d'une pièce datée `VALIDATION_MODELE_V1_<date>.md`, de la main d'Ahmed, avec ses réserves numérotées.
 ⛔ Tant qu'elle n'existe pas : **pas de migration, pas d'API, pas d'UI.**
+
+---
+
+## 13. Ajouts V1 du 23-24/09 — tout ce que Boond porte, et les réponses d'Avaliance
+
+⭐ **Décision d'Hamada, 23/09 : « tout en V1, ne rien oublier ».** Chaque objet vient du relevé des
+réglages Boond (`cartographie/BOOND_REGLAGES_2026-09-23.md`) ou d'une réponse de la direction
+(`REPONSES_AVALIANCE_2026-09-24.md`). ⛔ Les règles du §0 valent ici aussi : `TEXT` jamais `VARCHAR(n)`,
+un montant a sa `devise_code`, une date est un `TIMESTAMPTZ` ou une `DATE`, aucune suppression sur
+l'historique, les états en référentiel à catégorie.
+
+### 13.1 Colonnes ajoutées aux tables existantes
+
+| Table | Colonnes | Source |
+|---|---|---|
+| `societe` | `agence_responsable_id` (FK agence, **NOT NULL**) · `secteur_code` (→ `ref_secteur`) · `societe_mere_id` (FK societe) · `statut_juridique`, `tva_intracom`, `siret`, `rcs`, `code_ape`, `numero_fournisseur` (TEXT) | D-25, capture 66 |
+| `contact` | `agence_responsable_id` (FK agence, **NOT NULL**) · `type_contact_code` (→ `ref_type_contact`) · `perimetre_technique` (TEXT[]) | D-25, capture 90 |
+| `personne` | `drapeau_blackliste` (BOOL) + `blackliste_motif`, `blackliste_le`, `blackliste_par`, `blackliste_portee` (→ `candidat.blackliste.portee`) · `situation_familiale_code` · `nationalite_code` (→ `ref_pays`) · `lieu_naissance` · `numero_securite_sociale` ⛔ **chiffré**, lu sous `LireDonneesRHSensibles` | R7, R8 |
+| `profil_candidat` | `agence_id` **NOT NULL** · `disponibilite_code` (→ `ref_disponibilite_candidat`) · `niveau_experience_code` · `niveau_formation_code` · `metier_code` | V-114, relevé |
+| `profil_ressource` | `brut_annuel`, `primes_annuelles`, `frais_annuels` (NUMERIC + `devise_code`) — ⭐ le coût journalier d'un salarié **se calcule** : (brut + primes + frais) ÷ `cout.jours_base` ; pour un externe, c'est le prix d'achat | R5 |
+| `besoin` | `origine_code` (→ `ref_origine_besoin`) | R10 |
+| `projet` | l'interlocuteur : `contact_id` **ou** `unite_organisation_id` **ou** `interlocuteur_societe` (BOOL) — ⛔ **exactement un des trois** si `projet.contact ≠ facultatif` (CHECK) | R10 |
+| `agence` | `calendrier_code` (→ `ref_calendrier`) · `jours_ouvres_annuel` (INT) · `coefficient_charge` (NUMERIC) | capture 72 |
+| `compte` | `widgets` (JSONB, défaut = `ui.tableau_de_bord.widgets`) | capture 92 |
+
+### 13.2 Tables nouvelles
+
+| Table | Colonnes | Murs et règles |
+|---|---|---|
+| **`personne_langue`** | `personne_id`, `langue_code`, `niveau_code` | une ligne par langue |
+| **`personne_certification`** | `personne_id`, `certification_code`, `obtenue_le`, `expire_le` | l'expiration nourrit l'alerte |
+| **`contrat_rh`** | `personne_id`, `agence_id`, `type_code`, `categorie_code`, `classification_code` (Syntec), `temps_travail_code`, `debut`, `fin`, `fin_periode_essai`, `motif_fin_code`, `renouvelle_id` (FK contrat_rh) | ⛔ deux contrats d'une même personne ne se chevauchent pas (EXCLUDE sur la période) — c'est l'alerte « dates qui se chevauchent » de Boond, devenue un mur |
+| **`document_suivi`** | `personne_id`, `type_code` (→ `ref_type_document_suivi`), `expire_le`, `document_id` (FK document) | alerte à `rh.document.alerte_jours` |
+| **`devis`** | `societe_id`, `projet_id`, `etat_code` (→ `ref_etat_devis`), `montant_ht` + `devise_code`, `emis_le` | ajout seul sur son historique d'états |
+| **`facture`** | `societe_id`, `projet_id`, `numero` (séquence, **unique, jamais réutilisé**), `etat_code` (→ `ref_etat_facture`), `emise_le`, `echeance_le`, `tva_code`, `condition_reglement_code`, `mode_reglement_code`, `mode_envoi_code`, `montant_ht` + `devise_code` | ⛔ une facture émise ne se modifie pas : on l'annule par un **avoir** (nouveau mur, M-16 à écrire au modèle métier) |
+| **`facture_ligne`** | `facture_id`, `prestation_id`, `quantite`, `prix_unitaire` + `devise_code`, `libelle` | libellé tiré du modèle `[BILL_PERIOD_MONTH]` |
+| **`facture_fournisseur`** | `societe_id` (fournisseur), `achat_id`, `etat_code` (→ `ref_etat_facture_fournisseur`), `montant_ht` + `devise_code` | |
+| **`achat`** + **`paiement`** | `projet_id`, `fournisseur_id`, `categorie_code` (→ `ref_categorie_achat`), `montant` + `devise_code`, `etat_code` · paiement : `achat_id`, `montant`, `etat_code` (planifié · confirmé · réglé) | 1 seul achat chez Boond aujourd'hui : le module existe pour la reprise |
+| **`relance_facture`** | `facture_id`, `rang`, `envoyee_le`, `mode_envoi_code` | rythme : `facturation.relance.jours` |
+
+### 13.3 Les nouveaux murs à écrire au modèle métier
+
+| Mur proposé | Ce qu'il interdit | Pourquoi c'est un mur, pas une politique |
+|---|---|---|
+| **M-16** | modifier une facture émise | la loi : une facture émise s'annule par un avoir, jamais en place |
+| **M-17** | deux contrats RH d'une personne qui se chevauchent | Boond en fait une alerte ; une paie juste n'a qu'un contrat à la fois |
+| **M-18** | un numéro de facture réutilisé ou un trou dans la séquence | la loi française exige une numérotation continue |
+
+⚠️ Ces trois murs portent le compte de **15 à 18**. Ils s'écrivent au modèle métier, avec leurs
+assertions, **avant** la migration.
+
+### 13.4 Ce qui change dans les comptes (registre §E)
+
+| | Avant le 23/09 | Au 24/09 |
+|---|---|---|
+| Référentiels | 40 | **65** (+ `ref_origine_besoin`, `ref_decision_client`) |
+| Politiques | 173 | **192** |
+| Tables | 37 | **≈ 49** |
+| Murs | 15 | **18** (M-16 → M-18, à écrire) |
+

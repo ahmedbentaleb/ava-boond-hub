@@ -139,7 +139,7 @@ Clé · options (**défaut**) · source de la bifurcation · effet quand on chan
 | `projet.creation_depuis_besoin` | **explicite** · automatique_au_retenu | DEC-06 vs SPEC US6 RG1 | `automatique` : `RecordClientDecision(retenu)` crée le projet avec les paramètres du besoin et un événement — jamais silencieux : l'événement le dit |
 | `projet.depuis_besoin.garde` | **retenu_requis** · libre | F1 | garde de `CreateProjectFromNeed` |
 | `projet.depuis_besoin.garde_profil` | **personne_avec_ressource** · positionnement_ressource_strict | G1 | ce que « retenu » doit porter |
-| `projet.contact` | **obligatoire** · facultatif · `obligatoire_avant_engagement` (relecture externe 19/09 : libre à la création, exigé avant la première signature) | US5, F4 | `CreateProject*` demande ou non un contact |
+| `projet.contact` | **obligatoire** · facultatif · `obligatoire_avant_engagement` (relecture externe 19/09 : libre à la création, exigé avant la première signature) · ⭐ `service_ou_societe` (R10, 24/09 : l'interlocuteur peut être une unité ou la société entière, selon `besoin.origine_code`) | US5, F4, R10 | `CreateProject*` demande ou non un contact, ou accepte une unité ou la société |
 | `projet.cloture.garde` | **prestations_closes** · cascade_cloture_prestations | F7 | `cascade` clôture les prestations `engage` restantes avec snapshot, dans la même transaction |
 | `projet.devises_mixtes` | **autorise** · refus | D-9 → cahier des directeurs, question 61 | `refus` : `CreatePrestation` refuse une devise différente de la première prestation du projet ; `autorise` : le projet s'affiche en deux lignes, M-15 tient |
 | `conversion.repositionnement_ressource` | **non_requis** · requis | F2 | après `ConvertCandidateToResource`, faut-il un positionnement Ressource avant `CreatePrestation` |
@@ -345,6 +345,34 @@ Clé · options (**défaut**) · source de la bifurcation · effet quand on chan
 
 ⬜ **Hors V1, clé déclarée** : `ui.theme.personnalise` — un thème sur mesure aux couleurs d'un client. C'est un éditeur de thèmes, même piège que l'éditeur de process différé par F16.
 
+### C.bis — Ajouts du 23-24/09 : le relevé complet des réglages Boond et les réponses d'Avaliance
+
+⭐ **Décision d'Hamada, 23/09 : « tout en V1, ne rien oublier ».** Chaque ligne vient soit d'un réglage
+**vu à l'écran chez Boond** (`cartographie/BOOND_REGLAGES_2026-09-23.md`), soit d'une **réponse de la
+direction** (`REPONSES_AVALIANCE_2026-09-24.md`). Défaut en gras = ce que fait Avaliance aujourd'hui.
+
+| Clé | Valeurs (défaut en **gras**) | Source | Effet |
+|---|---|---|---|
+| `cout.mode` | **selon_type_ressource** · achat_externe · salarie_formule | R5, 24/09 | l'externe coûte son achat ; le salarié coûte brut + primes + frais ÷ `cout.jours_base` |
+| `cout.jours_base` | **200** | R5 | le diviseur du coût journalier d'un salarié |
+| `societe.perimetre.mode` | **agence_responsable** · par_besoins · partagee | D-25 bis, 24/09 | comment on juge le périmètre d'une société et de ses contacts |
+| `candidat.blackliste.portee` | **agence** · installation | R7, 24/09 | un drapeau réversible, posé pour une agence ou pour toutes |
+| `reprise.donnees_rh_sensibles` | **oui** · non | R8, 24/09 | la reprise importe n° de sécurité sociale, nationalité, lieu de naissance, situation familiale — lus sous `LireDonneesRHSensibles` |
+| `actions.creation_multiple` | **oui** · non | Boond, actions/états | forcer plusieurs actions d'un coup pour « Présentation client » et « Suivi de mission » |
+| `referentiels.tri_alphabetique` | **non** · oui | Boond, actions/états | l'ordre des listes : celui de l'administrateur, ou alphabétique |
+| `facturation.tva_defaut` | **20** · 10 · 0 | Boond, facturation | le taux proposé à la création d'une facture |
+| `facturation.condition_reglement_defaut` | **30** · 10 · 40 · 45 · 60 | Boond, facturation | l'échéance proposée, en jours |
+| `facturation.mode_envoi_defaut` | **email** · courrier · email_courrier · portail_chorus | Boond, facturation | le canal d'envoi proposé ; Chorus pour le secteur public |
+| `facturation.relance.jours` | **[7, 15, 30]** | Boond (Relance 1, Relance 2) | quand relancer une facture impayée |
+| `rh.contrat.obligatoire_avant_prestation` | **non** · oui | Boond, alerte « prestation non couverte par un contrat RH » | exiger un contrat RH avant de signer une mission |
+| `rh.document.alerte_jours` | **60** | Boond, alertes | le seuil de l'alerte « document arrivant à expiration » |
+| `temps.signature.demandee` | **non** · oui | Boond, activité/frais | demander la signature d'une feuille de temps |
+| `alerte.rapport.jours` | **[lun, mar, mer, jeu, ven]** | Boond, alertes | les jours d'envoi du rapport quotidien |
+| `alerte.rapport.heure_quotidienne` | **08:00** | Boond, alertes | l'heure du rapport quotidien — ⚠️ à l'heure de l'agence du lecteur |
+| `alerte.rapport.jour_hebdo` | **lundi** | Boond, alertes | le jour du rapport hebdomadaire |
+| `alerte.rapport.heure_hebdo` | **08:00** | Boond, alertes | l'heure du rapport hebdomadaire |
+| `ui.tableau_de_bord.widgets` | **[repartition_besoins, repartition_candidats, synthese, ca_facture_signe, ca_periode_production_signe, ca_marge_signes, mes_alertes]** · + mes_temps · mes_frais · mes_absences | Boond, configuration d'un compte | les widgets affichés, **réglables compte par compte** ; le défaut est ce qu'Avaliance affiche |
+
 ---
 
 ## D. Ce qui n'est ni mur, ni référentiel, ni politique
@@ -364,7 +392,7 @@ Les autres documents **ne réécrivent pas ces chiffres** : ils renvoient ici (�
 |---|---|---|
 | Murs | **15** | M-1 → M-15, §A ; **+ 1 règle de code** R-1, hors des quinze |
 | Référentiels | ⭐ **64 au 23/09** (57 métier en §B + 7 techniques) ⚠️ **+24 le 23/09** : relevé complet des réglages Boond, tout est repris en V1 (secteur, métier, certification, expérience, formation, langue, niveau, disponibilité candidat, situation familiale, contrat ×4, temps de travail, document suivi, catégorie d'achat, calendrier, TVA, conditions et modes de règlement, envoi de facture, états facture / facture fournisseur / devis, type de message). ⛔ La migration qui les crée reste à écrire. Avant : **40 au 21/09** | ⭐ **+3 le 21/09 (D-9, migration 007)** : `ref_statut_contact`, `ref_type_coordonnee`, `ref_usage_coordonnee` — trois listes figées en CHECK (V-021). ⭐ **33 lignes en §B** (métier) **+ 7 techniques** ; mesuré en base : `select count(*) from pg_tables where schemaname='ava' and tablename like 'ref\_%'` = 40. Avant : **37 au 20/09**, ⭐ **27 métier** (§B, un par ligne — ⛔ *`ref_theme` était cité ici par erreur : il n'y a pas de table `ref_theme`, un thème est un **code texte** porté par `ui.theme`. Retiré le 20/09, signalé par le lot 1* ; `ref_unite_couverture`, `ref_motif_avenant`, `ref_motif_interruption`, `ref_motif_fin_emploi`, `ref_type_modele`, `ref_portee_modele` et `ref_gravite_alerte` le 19/09) **+ 7 techniques** : `ref_civilite`, `ref_pays`, `ref_type_unite`, `ref_type_contact`, `ref_type_mission`, `ref_type_document`, `ref_disponibilite` |
-| Politiques | ⭐ **173 au 20/09** | §C — **172 en tableau + 1 déclarée en prose** (mesuré le 21/09, V-029 — le « 168 » précédent était un compte retenu). ⭐ **+2 le 20/09, annoncés comme l'exige le gel** :
+| Politiques | ⭐ **192 au 24/09** (191 en tableau + 1 en prose) ⚠️ **+19 le 23-24/09** (§C.bis) : relevé complet des réglages Boond et réponses d'Avaliance — coût salarié, périmètre de société, blacklist, données RH, facturation ×4, contrat RH, documents, signature des temps, rapports d'alerte ×4, widgets du tableau de bord, actions multiples, tri des listes. ⛔ La migration qui les sème reste à écrire. Avant : **173 au 20/09** | §C — **172 en tableau + 1 déclarée en prose** (mesuré le 21/09, V-029 — le « 168 » précédent était un compte retenu). ⭐ **+2 le 20/09, annoncés comme l'exige le gel** :
 `societe.archivage.garde` et `absence.chevauchement`, toutes deux **citées dans L4** et
 **absentes du registre** — trou de ma spécification, comblé par le codeur du lot 2, qui a écrit
 leur source dans la table (`L4 L82`, `L4 L163`). ⭐ **C'est exactement ce qu'on attend de lui** (`ui.theme.personnalise`). ⚠️ *La répartition « 79 métier · 2 installation · 86 apparence » (= 167) date d'avant le 20/09 et ne tient plus (V-062, 22/09) : **seul le total 173 est mesuré**, en base et par la commande ci-dessous.* ⭐ **+5 le 19/09** : les **quatre encres**, avec le garde-fou — une encre choisie qui ne passe pas 4,5:1 sur sa surface est **relevée**, jamais posée telle quelle — et le rôle du banc d'essai |
