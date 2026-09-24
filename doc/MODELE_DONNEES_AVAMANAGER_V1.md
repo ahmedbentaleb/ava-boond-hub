@@ -692,6 +692,29 @@ assertions, **avant** la migration.
 |---|---|---|
 | Référentiels | 40 | **66** (+ `ref_origine_besoin`, `ref_decision_client`) |
 | Politiques | 173 | **192** |
-| Tables | 37 | **≈ 49** |
+| Tables | 37 | **≈ 57** (§13.2 + §13.5) |
 | Murs | 15 | **18** (M-16 → M-18, à écrire) |
 
+### 13.5 La grille de parité du 24/09 — ce que Boond porte encore
+
+⭐ Source : `cartographie/BOOND_PARITE_2026-09-24.md` (10 listes, 8 fiches, le formulaire de contrat RH).
+
+| Objet | Ajout | Note |
+|---|---|---|
+| `profil_candidat`, `profil_ressource`, `besoin` | `confidentiel` (BOOL) · `responsable_rh_compte_id` · `pole_code` → `ref_pole` | « visible uniquement de vous » ; politique `confidentialite.autorisee` |
+| `profil_candidat`, `profil_ressource` | `mobilite` (TEXT[] de codes `ref_mobilite`) | |
+| **`dossier_technique`** + **`dossier_technique_ligne`** | personne, titre, description ; lignes : compétence, expérience, formation, diplôme, niveau, langue, domaine, secteur | plusieurs DT par personne |
+| **`personne_experience`** · **`personne_diplome`** | poste, employeur, début, fin — diplôme, établissement, année | |
+| `profil_ressource` | `matricule` (UNIQUE par agence) · `fonction` | ⚠️ les éléments de coût du §13.1 **quittent** le profil pour `contrat_rh` |
+| `contrat_rh` (+ colonnes) | `salaire_annuel_brut`, `salaire_mensuel_brut`, `salaire_horaire_brut` (+ `devise_code`) · `coefficient_charge` · `jours_ouvres_annuel` · `duree_hebdo_heures` · `calendrier_code` · `frais_journaliers`, `frais_mensuels` · **`cjm_contrat` calculé** (vue, jamais saisi) | ⭐ R5 et la capture 93 : le coût d'un salarié dépend de **son contrat en cours** |
+| **`avantage_verse`** | personne, `type_code` → `ref_type_avantage`, montant + devise, période | |
+| `besoin` | `criteres_requis` (TEXT) · `lieu` · `duree_jours` · `secteur_code` · `budget_envisage` + devise · `ponderation_pct` · `ca_envisage` + devise · `date_reponse` · `date_cloture` | le CA pondéré se **calcule**, jamais stocké |
+| `projet` | `adresse`, `code_postal`, `ville`, `pays_code` · `intermediaire_facturation_id` (FK société) | |
+| **`jalon`** | projet, libellé, date, montant + devise, état | le forfait |
+| `prestation` | `jours_gratuits` · `calendrier_code` · `intermediaire_facturation_id` | |
+| **`ca_additionnel`** | prestation ou projet, libellé, montant + devise, date | |
+| `positionnement` | `tarif_vente_jour`, `jours_vendus`, `taux_occupation`, `cout_jour_moyen` (+ devise) — **prévisionnels** | Boond chiffre le positionnement avant la mission |
+| **`contact_domaine`** · **`contact_outil`** | contact, code | |
+
+⛔ **Écarté, avec motif** : le « taux de change de l'agence juridique » (T-2, M-15 : aucun montant
+converti n'est stocké) · les produits (0 utilisé) · « Demander à l'IA » (lot 8).
