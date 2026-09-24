@@ -136,6 +136,40 @@ Le motif ligne par ligne, et les cas contestés : [annexes/MATRICE_DROITS_MOTIFS
 
 ⚠️ **`SignPrestation` au DP seul, `—` pour le staffing (O-2).** Créer une mission déjà signée, **c'est la signer** : `CreatePrestation` avec l'état initial `engage` exige **en plus** la permission `SignPrestation`. Sans cette règle, le staffing signait par la porte de derrière.
 
+## RH — contrats, documents, coût, blacklist *(24/09)*
+
+| Commande | IA | RH | RR | ÉVAL | STAF | DP | RES | ADM | SUP |
+|---|---|---|---|---|---|---|---|---|---|
+| `CreateHrContract` · `RenewHrContract` · `EndHrContract` | — | ✓ | ✓ | — | — | — | — | D | — |
+| `AddTrackedDocument` | — | ✓ | ✓ | — | — | — | S | D | — |
+| `SetBlacklistFlag` · `ClearBlacklistFlag` | ✓ | ✓ | ✓ | — | — | — | — | D | — |
+| `UpdateEmployeeCost` | — | — | — | — | — | — | — | D | — |
+| `UpdateSensitiveHrData` | — | ✓ | — | — | — | — | — | D | — |
+
+⚠️ `UpdateEmployeeCost` suit la règle de `UpdateResourceCost` : **personne au départ**, délégué
+nommément. ⚠️ Les données RH sensibles (R8) sont lues sous une permission dédiée,
+`LireDonneesRHSensibles`, donnée au seul groupe RH.
+
+## Facturation et achats *(24/09)*
+
+| Commande | IA | RH | RR | ÉVAL | STAF | DP | RES | ADM | SUP |
+|---|---|---|---|---|---|---|---|---|---|
+| `CreateQuote` · `ChangeQuoteState` | ✓ | — | — | — | — | ✓ | — | D | — |
+| `CreateInvoiceDraft` · `UpdateInvoiceDraft` | — | — | — | — | — | ✓ | — | D | — |
+| `IssueInvoice` · `SendInvoice` · `IssueCreditNote` | — | — | — | — | — | ✓ | — | D | — |
+| `RecordInvoiceReminder` · `RecordInvoicePayment` | — | — | — | — | — | ✓ | — | D | — |
+| `CreatePurchase` · `ValidatePurchase` | — | — | — | — | — | ✓ | — | D | — |
+| `RecordSupplierInvoice` · `RecordPayment` | — | — | — | — | — | ✓ | — | D | — |
+
+⭐ **Un groupe « Comptabilité » n'est pas codé** : les groupes sont des données. L'admin le crée et lui
+délègue ces lignes, sans une ligne de code.
+
+## Réglages du compte *(24/09)*
+
+| Commande | IA | RH | RR | ÉVAL | STAF | DP | RES | ADM | SUP |
+|---|---|---|---|---|---|---|---|---|---|
+| `SetOwnDashboardWidgets` | S | S | S | S | S | S | S | S | S |
+
 ## Transverse et administration
 
 | Commande | IA | RH | RR | ÉVAL | STAF | DP | RES | ADM | SUP |

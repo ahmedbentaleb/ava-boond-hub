@@ -270,14 +270,14 @@
   "titre": "Machines d'état Ava Manager v1",
   "categorie": "Conception et contrat",
   "date": "24/09/2026",
-  "ko": 14
+  "ko": 16
  },
  {
   "chemin": "MATRICE_DROITS_v1.md",
   "titre": "Matrice des droits Ava Manager v1",
   "categorie": "Conception et contrat",
-  "date": "22/09/2026",
-  "ko": 12
+  "date": "24/09/2026",
+  "ko": 14
  },
  {
   "chemin": "MODELE_DONNEES_AVAMANAGER_V1.md",
@@ -493,8 +493,8 @@
   "chemin": "SPEC_COMMANDES_L4.md",
   "titre": "L4 — le contrat des commandes",
   "categorie": "Conception et contrat",
-  "date": "23/09/2026",
-  "ko": 23
+  "date": "24/09/2026",
+  "ko": 27
  },
  {
   "chemin": "SPEC_SQL_AVAMANAGER_V1.sql",

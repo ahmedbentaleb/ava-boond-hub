@@ -690,7 +690,7 @@ assertions, **avant** la migration.
 
 | | Avant le 23/09 | Au 24/09 |
 |---|---|---|
-| Référentiels | 40 | **65** (+ `ref_origine_besoin`, `ref_decision_client`) |
+| Référentiels | 40 | **66** (+ `ref_origine_besoin`, `ref_decision_client`) |
 | Politiques | 173 | **192** |
 | Tables | 37 | **≈ 49** |
 | Murs | 15 | **18** (M-16 → M-18, à écrire) |

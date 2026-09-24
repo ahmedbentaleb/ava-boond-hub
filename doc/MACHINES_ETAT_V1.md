@@ -115,6 +115,23 @@ Terminal : `clos`. Archivage possible depuis `clos` seulement. `ReopenProject` :
 
 `prospect → client` : déclencheur `societe.passage_client.declencheur` (défaut : première prestation `engage`, G8) ; portée `societe.passage_client.propagation` (défaut : branche contractante + contacts du service). `client → prospect` : `societe.retour_prospect` (défaut : **manuel**, `RequalifyCompany` par CRM habilité, motif écrit, F23–F24 ; options : fin du dernier contrat · après `societe.retour_prospect.delai_mois`). Le « 6 mois » du CdC est devenu une option, pas une règle. Rôles (`fournisseur`, `interne`) : un ensemble, pas un état — `client` et `prospect` **ne sont pas des rôles**, c'est le statut de ce cycle (D-3).
 
+## 7 bis. Les cycles ajoutés le 24/09 — tout en V1
+
+⭐ Même règle que les six premiers : **des catégories fixes, des codes administrables**. Les codes semés
+sont ceux de Boond (`cartographie/BOOND_REGLAGES_2026-09-23.md`) ; l'admin en ajoute dans une catégorie.
+
+| Objet | Catégories (fixes) | Codes semés (Boond) | Transitions et commandes | Mur |
+|---|---|---|---|---|
+| **Devis** | `en_cours` · `accepte` · `refuse` · `archive` | creation, transmis_client, attente → en_cours · accord_client → accepte · refuse → refuse · archive → archive | `CreateQuote` → en_cours ; `ChangeQuoteState` entre catégories ; un devis `accepte` ou `refuse` ne revient pas en `en_cours` | — |
+| **Facture** | `brouillon` · `emise` · `payee` · `litige` | proforma, creation → brouillon · transmis_client, relance_1, relance_2, email_client → emise · impayee → litige · payee → payee | `CreateInvoiceDraft` → brouillon ; `IssueInvoice` → emise (numéro attribué) ; `RecordInvoiceReminder` reste en emise ; `RecordInvoicePayment` → payee ; ⛔ **une facture émise n'est jamais modifiée : `IssueCreditNote` crée un avoir** | **M-16**, **M-18** |
+| **Facture fournisseur** | `brouillon` · `valide` · `paye` · `rejete` | brouillon, a_valider → brouillon · validee → valide · payee → paye · rejetee → rejete | `RecordSupplierInvoice` → brouillon ; `ChangeSupplierInvoiceState` | — |
+| **Contrat RH** | `actif` · `termine` | (pas de code : la catégorie se déduit des dates) | `CreateHrContract` → actif ; `RenewHrContract` → le contrat courant `termine`, un nouveau `actif` lié par `renouvelle_id` ; `EndHrContract` → termine, avec motif | **M-17** |
+| **Achat** | `planifie` · `valide` | planifie, valide | `CreatePurchase` → planifie ; `ValidatePurchase` → valide | — |
+| **Paiement** | `planifie` · `confirme` · `regle` | planifie, confirme, regle | `RecordPayment` → planifie ; `ChangePaymentState` en avant seulement | — |
+
+⭐ **La blacklist n'est pas un cycle** (R7) : c'est un drapeau posé et retiré (`SetBlacklistFlag`,
+`ClearBlacklistFlag`), avec son historique. L'étape du candidat ne change pas.
+
 ## 8. Correction à reporter dans le cadrage
 
 S1 étape 3 : « N1 passe en staffing sur le retour client retenu » → **faux sous G3** : N1 passe en `staffing` à l'étape 2 (positionnement de Jean). L'étape 3 fait passer X1 à `retenu`. Le résultat final de S1 ne change pas. Corrigé dans `CADRAGE_METIER_RECONCILIE` le 17/09. **Le hub reste à aligner** (régénération + publication = déploiement, attend le mot).

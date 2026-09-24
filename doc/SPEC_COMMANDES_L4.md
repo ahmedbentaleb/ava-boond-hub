@@ -199,6 +199,46 @@ catégorie existante, renomme un libellé, réordonne, désactive. ⭐ **C'est c
 
 ---
 
+# VII · RH — CONTRATS, DOCUMENTS, COÛT, BLACKLIST — 8 commandes *(24/09, tout en V1)*
+
+| Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
+|---|---|---|---|---|---|---|
+| `CreateHrContract` | personne_id, type, catégorie, classification, temps de travail, début, fin?, fin d'essai? | le contrat | `GARDE` codes inconnus · `MUR` chevauchement | `HrContractCreated` | — | **M-17** |
+| `RenewHrContract` | contrat_id, nouvelle fin | le nouveau contrat | `ETAT` contrat terminé | `HrContractRenewed` | — | **M-17** |
+| `EndHrContract` | contrat_id, date, motif | le contrat `termine` | `ETAT` déjà terminé | `HrContractEnded` | — | — |
+| `AddTrackedDocument` | personne_id, type, expire_le, document_id | le suivi | `GARDE` type inconnu | `TrackedDocumentAdded` | `rh.document.alerte_jours` | — |
+| `SetBlacklistFlag` | personne_id, motif, portée | la personne | `GARDE` motif vide | `BlacklistFlagSet` | `candidat.blackliste.portee` | — |
+| `ClearBlacklistFlag` | personne_id, motif | la personne | `ETAT` pas de drapeau | `BlacklistFlagCleared` | — | — |
+| `UpdateEmployeeCost` | profil_ressource_id, brut, primes, frais, devise | le profil, coût journalier **calculé** | `DROIT` (permission sensible) | `EmployeeCostUpdated` | `cout.mode` · `cout.jours_base` | **M-15** |
+| `UpdateSensitiveHrData` | personne_id, n° sécu, nationalité, lieu de naissance, situation familiale | la personne | `DROIT` sans `ModifierDonneesRHSensibles` | `SensitiveHrDataUpdated` *(sans les valeurs dans l'événement)* | `reprise.donnees_rh_sensibles` | — |
+
+# VIII · FACTURATION ET ACHATS — 13 commandes *(24/09, tout en V1)*
+
+| Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
+|---|---|---|---|---|---|---|
+| `CreateQuote` | societe_id, projet_id?, lignes, devise | le devis | `GARDE` société archivée | `QuoteCreated` | — | **M-15** |
+| `ChangeQuoteState` | id, code d'état | le devis | `ETAT` hors cycle | `QuoteStateChanged` | — | — |
+| `CreateInvoiceDraft` | projet_id, période | la facture `brouillon` et ses lignes (depuis les temps validés) | `GARDE` rien à facturer | `InvoiceDraftCreated` | `facturation.tva_defaut` · `facturation.condition_reglement_defaut` · `facturation.mode_envoi_defaut` | **M-15** |
+| `UpdateInvoiceDraft` | id + champs | la facture | `ETAT` pas en brouillon | `InvoiceDraftUpdated` | — | **M-16** |
+| `IssueInvoice` | id | la facture `emise`, **numéro attribué** | `ETAT` pas en brouillon | `InvoiceIssued` | — | **M-16**, **M-18** |
+| `SendInvoice` | id, mode d'envoi | la facture | `ETAT` pas émise | `InvoiceSent` | `facturation.mode_envoi_defaut` | — |
+| `RecordInvoiceReminder` | id | la relance | `ETAT` pas émise ou déjà payée | `InvoiceReminderRecorded` | `facturation.relance.jours` | — |
+| `RecordInvoicePayment` | id, montant, date | la facture `payee` si soldée | `GARDE` montant > reste dû | `InvoicePaid` | — | **M-15** |
+| `IssueCreditNote` | facture_id, motif, montant | l'avoir (une facture négative) | `ETAT` facture pas émise | `CreditNoteIssued` | — | **M-16**, **M-18** |
+| `CreatePurchase` | projet_id, fournisseur_id, catégorie, montant, devise | l'achat | `GARDE` fournisseur sans rôle fournisseur | `PurchaseCreated` | — | **M-15** |
+| `ValidatePurchase` | id | l'achat `valide` | `ETAT` déjà validé | `PurchaseValidated` | — | — |
+| `RecordSupplierInvoice` | achat_id, montant, devise, document_id | la facture fournisseur | `GARDE` achat non validé | `SupplierInvoiceRecorded` | — | **M-15** |
+| `RecordPayment` | achat_id, montant, état | le paiement | `ETAT` retour en arrière | `PaymentRecorded` | — | **M-15** |
+
+# IX · RÉGLAGES DU COMPTE — 1 commande *(24/09)*
+
+| Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
+|---|---|---|---|---|---|---|
+| `SetOwnDashboardWidgets` | liste de widgets | le compte | `GARDE` widget inconnu | `DashboardWidgetsSet` | `ui.tableau_de_bord.widgets` | — |
+
+⭐ **Compte au 24/09 : 55 + 22 = 77 commandes.** ⛔ Les 22 nouvelles ne se codent qu'**après** le lot 2
+accepté : elles forment le lot « RH et facturation » (étape 5.8).
+
 # VI · LES CINQ COMMANDES QUI MÉRITENT UN BLOC
 
 ## §C-1 · `ConvertCandidateToResource` — la garde G1
