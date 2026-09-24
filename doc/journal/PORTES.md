@@ -308,4 +308,16 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-298 | B CONTRAT | Quatre commandes sans succès au seed réussissent, le droit est retiré. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
 | P-299 | B CONTRAT | Le fichier d'assertions porte `\set ON_ERROR_STOP on` en tête, et la copie `test/` est le canon. | `test/contrat/outils.test.ts` | 2026-09-23 | ✅ | 2 | égalité stricte |
 | P-300 | B CONTRAT | `verif_serveur.sh` refuse une base ouverte et nomme le motif ; poste de dev déclaré, il accepte. | `test/contrat/outils.test.ts` | 2026-09-23 | ✅ | 2 | — |
-| P-301 | B CONTRAT | ArchiveObject sur un candidat sans agence, compte d'une autre agence → DROIT, rien écrit. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
+| P-301 | B CONTRAT | Un candidat ne peut plus perdre son agence : la base refuse `agence_id` NULL. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | mur NOT NULL |
+| P-302 | B CONTRAT | UpdateCompany dans l'agence responsable, nom et agence relus. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
+| P-303 | B CONTRAT | Sept commandes société et contact hors agence → DROIT, rien écrit. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-304 | B CONTRAT | `societe.perimetre.mode` = agence_responsable : l'autre agence est DROIT. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | — |
+| P-305 | B CONTRAT | `societe.perimetre.mode` = par_besoins : l'agence d'un besoin passe, relue. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
+| P-306 | B CONTRAT | `societe.perimetre.mode` = partagee : l'autre agence écrit, relue. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
+| P-307 | B CONTRAT | UpdateCandidate écrit le responsable RH, relu. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
+| P-308 | B CONTRAT | UpdateCandidate écrit le pôle lu dans `ref_pole`. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
+| P-309 | B CONTRAT | UpdateResource écrit la mobilité, relue. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
+| P-310 | B CONTRAT | UpdateResource écrit le matricule, relu. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
+| P-311 | B CONTRAT | UpdateNeed écrit les critères du besoin, relus. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
+| P-312 | B CONTRAT | UpdateNeed écrit le lieu de mission, relu. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
+| P-313 | B CONTRAT | UpdateProject écrit l'intermédiaire de facturation, relu. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |

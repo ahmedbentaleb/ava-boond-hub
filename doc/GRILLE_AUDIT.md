@@ -3,7 +3,7 @@
 ⭐ **Écrite AVANT qu'il code.** Une grille écrite après le code vérifie ce qu'il a fait, pas ce
 qu'on voulait. Celle-ci ne discute pas.
 
-**42 contrôles · 7 familles** (A → F, et K l'accès depuis le 22/09). Un seul 🔴 refuse le lot entier.
+**43 contrôles · 7 familles** *(V-126 : on en annonçait 42 pour 43 écrits)* (A → F, et K l'accès depuis le 22/09). Un seul 🔴 refuse le lot entier.
 
 ⭐ **Je suis l'auditeur GÉNÉRAL** : je passe sur le lot rendu. L'auditeur **interne** (sous-agent 4) passe **entre chaque étape**. Deux mailles, pas deux chefs.
 
@@ -42,7 +42,7 @@ casse le code est pire qu'aucune suite : elle donne confiance sans rien prouver.
 
 | # | Contrôle | Comment | Verdict si faux |
 |---|---|---|---|
-| **B1** | Aucun `if` métier en dur | `grep -rnE "(etat_code\|type_code\|statut_code\|categorie\|_code) *(===?\|!==?) *['\"\`]" server/src web/src` puis `grep -rnE "if .*(etat_code\|type_code\|categorie) *[=!]=" db/` *(V-023 : les `if` sont dans `server/` et `web/`, pas dans `db/`)* | 🟠 chaque occurrence |
+| **B1** | Aucun `if` métier en dur | `grep -rnE "(etat_code\|type_code\|statut_code\|categorie\|_code) *(===?\|!==?) *['\"\`]" server/src web/src` **et** `grep -rnE "\.(includes\|startsWith\|endsWith)\(['\"\`]" server/src web/src` *(V-126 : un libellé testé par `.includes()` échappait au premier)* puis `grep -rnE "if .*(etat_code\|type_code\|categorie) *[=!]=" db/` *(V-023 : les `if` sont dans `server/` et `web/`, pas dans `db/`)* | 🟠 chaque occurrence |
 | **B2** | Toutes les politiques sont chargées | `SELECT count(*) FROM politique` = le compte du **registre §E** — ⛔ ne pas recopier le chiffre ici | 🟠 |
 | **B3** | `valeur` = `valeur_defaut` au seed | `WHERE valeur <> valeur_defaut` → 0 ligne | 🟠 |
 | **B4** | Tous les référentiels existent | `\dt ava.ref_*` = le compte du **registre §E** — ⛔ ne pas recopier le chiffre ici | 🟠 |

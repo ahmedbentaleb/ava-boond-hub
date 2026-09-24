@@ -72,7 +72,7 @@ rempart, pas le premier. ⚠️ Si l'utilisateur le voit, c'est que la garde ne 
 
 ---
 
-# I · CRM — 11 commandes
+# I · CRM — 11 commandes · *lot 2*
 
 | Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
 |---|---|---|---|---|---|---|
@@ -93,7 +93,7 @@ pas de cycle. ⭐ **La garde doit les distinguer** : trois messages, pas un « M
 
 ---
 
-# II · IDENTITÉ ET RECRUTEMENT — 13 commandes
+# II · IDENTITÉ ET RECRUTEMENT — 13 commandes · *lot 2*
 
 | Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
 |---|---|---|---|---|---|---|
@@ -121,7 +121,7 @@ permission sensible se contourne par la commande ordinaire.
 
 ---
 
-# III · BESOIN ET POSITIONNEMENT — 14 commandes
+# III · BESOIN ET POSITIONNEMENT — 14 commandes · *lot 2*
 
 | Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
 |---|---|---|---|---|---|---|
@@ -159,7 +159,7 @@ Une seule place, et les codes admis restent dans `ref_motif_retrait`.
 
 ---
 
-# IV · PROJET, PRESTATION, PRODUCTION — 11 commandes
+# IV · PROJET, PRESTATION, PRODUCTION — 11 commandes · *lot 2*
 
 | Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
 |---|---|---|---|---|---|---|
@@ -181,12 +181,12 @@ même pas l'`UPDATE`. ⚠️ **Un chiffre montré à un client ne se recalcule p
 
 ---
 
-# V · TRANSVERSE ET ADMINISTRATION — 6 commandes
+# V · TRANSVERSE ET ADMINISTRATION — 6 commandes · *lot 2*
 
 | Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
 |---|---|---|---|---|---|---|
 | `CreateAction` | **un seul** porteur, type, date, contenu | l'action | `GARDE` zéro ou deux porteurs | `ActionCreated` | — | **M-9** |
-| `ArchiveObject` | type, id, motif | — | `GARDE` selon l'objet | `ObjectArchived` | — | **M-8** — ⛔ jamais de `DELETE` |
+| `ArchiveObject` | type, id, motif | — | `GARDE` selon l'objet · ⛔ `GARDE` pour société, contact, unité, service : **la commande dédiée** (D-31) · `DROIT` dans l'agence **lue** de l'objet, jamais celle du demandeur | `ObjectArchived` | — | **M-8** — ⛔ jamais de `DELETE` |
 | ⛔ **`SetPolicy`** | clé, valeur | la politique | `DROIT` **ADM seul** · `GARDE` valeur hors `valeurs_possibles` | `PolicyChanged` | — | `mur_touche` est **indicatif** : il s'affiche, il ne garde rien *(D-3, 21/09)* |
 | ⛔ `ManageRefs` | référentiel, code, libellé, catégorie | la valeur | `GARDE` catégorie inconnue · valeur **système** · valeur **utilisée** | `RefChanged` | — | CHECK **catégorie** |
 | ⛔ `ManageGroups` | groupe, permission, **périmètre** | la paire | `GARDE` permission sans périmètre | `GroupPermissionChanged` | — | ⭐ **M-13** |
@@ -201,7 +201,7 @@ catégorie existante, renomme un libellé, réordonne, désactive. ⭐ **C'est c
 
 ---
 
-# VII · RH — CONTRATS, DOCUMENTS, COÛT, BLACKLIST — 8 commandes *(24/09, tout en V1)*
+# VII · RH — CONTRATS, DOCUMENTS, COÛT, BLACKLIST — 8 commandes *(24/09, tout en V1)* · *lot 5.8*
 
 | Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
 |---|---|---|---|---|---|---|
@@ -214,7 +214,7 @@ catégorie existante, renomme un libellé, réordonne, désactive. ⭐ **C'est c
 | `UpdateEmployeeCost` | profil_ressource_id, brut, primes, frais, devise | le profil, coût journalier **calculé** | `DROIT` (permission sensible) | `EmployeeCostUpdated` | `cout.mode` · `cout.jours_base` | **M-15** |
 | `UpdateSensitiveHrData` | personne_id, n° sécu, nationalité, lieu de naissance, situation familiale | la personne | `DROIT` sans `ModifierDonneesRHSensibles` | `SensitiveHrDataUpdated` *(sans les valeurs dans l'événement)* | `reprise.donnees_rh_sensibles` | — |
 
-# VIII · FACTURATION ET ACHATS — 13 commandes *(24/09, tout en V1)*
+# VIII · FACTURATION ET ACHATS — 13 commandes *(24/09, tout en V1)* · *lot 5.8*
 
 | Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
 |---|---|---|---|---|---|---|
@@ -232,7 +232,7 @@ catégorie existante, renomme un libellé, réordonne, désactive. ⭐ **C'est c
 | `RecordSupplierInvoice` | achat_id, montant, devise, document_id | la facture fournisseur | `GARDE` achat non validé | `SupplierInvoiceRecorded` | — | **M-15** |
 | `RecordPayment` | achat_id, montant, état | le paiement | `ETAT` retour en arrière | `PaymentRecorded` | — | **M-15** |
 
-# IX · RÉGLAGES DU COMPTE — 1 commande *(24/09)*
+# IX · RÉGLAGES DU COMPTE — 1 commande *(24/09)* · *lot 5.7 (écrans)*
 
 | Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
 |---|---|---|---|---|---|---|
@@ -241,7 +241,7 @@ catégorie existante, renomme un libellé, réordonne, désactive. ⭐ **C'est c
 ⭐ **Compte au 24/09 : 55 + 22 = 77 commandes.** ⛔ Les 22 nouvelles ne se codent qu'**après** le lot 2
 accepté : elles forment le lot « RH et facturation » (étape 5.8).
 
-# X · LA GRILLE DE PARITÉ — 9 commandes *(24/09)*
+# X · LA GRILLE DE PARITÉ — 9 commandes *(24/09)* · *lot 5.8*
 
 | Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
 |---|---|---|---|---|---|---|
@@ -259,7 +259,7 @@ pôle, mobilité, matricule, lieu de mission, champs du besoin, intermédiaire d
 gratuits, chiffrage du positionnement) passent par les commandes `Update*` existantes : leur entrée
 s'élargit, aucune commande nouvelle.
 
-# XI · LES APPLICATIONS — MAIL, SÉLECTION, DOCUMENTS, OUTLOOK, PAIE — 10 commandes *(24/09)*
+# XI · LES APPLICATIONS — MAIL, SÉLECTION, DOCUMENTS, OUTLOOK, PAIE — 12 commandes *(24/09)* · *lot 5.8*
 
 ⭐ Source : `cartographie/BOOND_APPLICATIONS_2026-09-24.md`. ⛔ **Une action sur une sélection vérifie
 le droit ligne par ligne** : une ligne hors périmètre est refusée (`DROIT`) et **n'arrête pas les
@@ -278,8 +278,15 @@ autres** ; la réponse rend le compte des acceptées et des refusées, avec leur
 | `RecordOutlookMail` | outlook_id, objet cible | l'action + le document | `ETAT` déjà enregistré | `OutlookMailRecorded` | `outlook.synchro` | — |
 | `PreparePayroll` · `FreezePayroll` · `ExportPayroll` | agence, mois · id · id | la préparation, figée, exportée | `ETAT` déjà figée · `DROIT` sans `LireDonneesRHSensibles` | `PayrollPrepared` · `PayrollFrozen` · `PayrollExported` | `paie.export.format` | — |
 
-⭐ **Compte au 24/09 au soir : 86 + 10 = 96 commandes** (la ligne paie compte pour une). Elles se codent
-avec le lot 5.8, jamais avant le lot 2 accepté.
+⭐ **Compte au 24/09 au soir : 86 + 12 = 98 commandes**, mesuré (V-122) : L4 = MATRICE = **98** ; le serveur
+en sert **55** (sections I → V, lot 2). ⛔ Un compte ne se recopie pas, il se mesure :
+
+```bash
+python -c "import re;s=open('_ops/SPEC_COMMANDES_L4.md',encoding='utf-8').read();c=set();[c.update(re.findall(r'`([A-Z][a-z][A-Za-z]+)`',l.split('|')[1])) for l in s.splitlines() if l.startswith('| ') and not l.startswith('| Commande')];print(len(c-{'ClientStatusDerived','PrestationSigned'}))"
+```
+
+⭐ **Le lot cible est écrit sur chaque section** (V-122). ⛔ Une table ne devient écrivable par
+`ava_app` qu'avec la migration qui livre ses commandes : **le GRANT vient avec la commande**.
 
 # VI · LES CINQ COMMANDES QUI MÉRITENT UN BLOC
 

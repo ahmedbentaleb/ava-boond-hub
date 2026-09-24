@@ -341,6 +341,11 @@ Non fait ici, réservé au BRAIN : D-20 (le cliquet refait la base), migration 0
 | V-110 | E2 P-203 et P-207 ignorent les délégations des autres | P-203 P-207 | `deplacer` écrasait une délégation déjà posée | `ok` — la porte photographie ses lignes et les remet | `fdad89c` |
 | V-115 | H-2 motif d'archivage, H-4 message fte, session du compte | ArchiveService ArchiveContact DeclareNeedFilled `/vues/besoins` | motif jeté ; `0/1 postes` ; session `Banc` / `IA` | `ok` — motif dans l'événement ; `fte_engage/fte_vise` ; e-mail et groupe du compte | `d1776e3` `fdad89c` |
 
-En attente du BRAIN, non codé ici : V-108 (migration 010, `agence_responsable_id`), le schéma V1 (migration 011, lot 5.8). Les 5 permissions sans titulaire au seed restent une décision de matrice, pas un titulaire inventé.
+| V-108 | C2 D-25 agence responsable | P-302 P-303 P-304 P-305 P-306 | sept commandes se comparaient à l'agence du demandeur | `ok` — hors agence DROIT et 0 écriture ; témoin dans le périmètre ; une porte par `societe.perimetre.mode` | `2f39ccb` `fd59e39` `dc5f053` |
+| V-115 bis | 3 bis colonnes simples de la grille | P-307 P-308 P-309 P-310 P-311 P-312 P-313 | les `Update*` ignoraient responsable RH, pôle, mobilité, matricule, critères, lieu, intermédiaire | `ok` — chaque colonne relue en base ; le pôle vient de `ref_pole` | `fd59e39` `dc5f053` |
 
-Mesure sur base refaite (`make.sh reset` puis `make test`) : `make test` OK. Cliquet : cases OK=12 KO=0. P-301 est au tableau.
+Mesure de clôture, base refaite (`make.sh reset` puis `make test`) : `make test` OK. Cliquet : cases OK=13 KO=0, F13 comprise (`lot-2-brain` est un ancêtre de HEAD). 307 portes, 40 assertions.
+
+Prêt pour le sixième audit.
+
+D-30 : les cinq permissions sans titulaire au seed sont voulues. Rien n'est codé pour leur inventer un titulaire. La migration 013 est dans `lot-2`.

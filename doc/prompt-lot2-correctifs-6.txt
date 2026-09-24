@@ -1,0 +1,93 @@
+AVA MANAGER — LOT 2, CORRECTIFS APRÈS LE SIXIÈME AUDIT
+======================================================
+24/09/2026 (soir). Le sixième audit a REFUSÉ le lot 2 au commit a26291c, sur UN
+seul défaut critique. Lis tout avant d'écrire une ligne.
+
+Rapport : C:\Users\Hamada\Desktop\ava-audit-6\rapport\
+Arbitrage : _ops/ARBITRAGE_AUDIT_2026-09-24b.md (D-31)
+
+
+0. CE QUI EST GAGNÉ
+───────────────────
+  ⭐ Banc vert sur base neuve : 307 portes, 40 assertions, make_rc=0.
+  ⭐ 69 sabotages, UN seul chemin aveugle. Le modèle d'agence responsable
+     tient : 3 modes, 3 comportements, 3 portes qui tombent si on le fige.
+  ⛔ Ce chemin aveugle est le même trou depuis quatre tours :
+     V-076 → V-097 → V-107 → V-117. On le ferme à la racine, pas commande
+     par commande.
+
+
+1. CRITIQUE — D-31 : LA LIGNE 285 DISPARAÎT
+───────────────────────────────────────────
+C1  V-117 · V-118 · V-123   server/src/agence.ts
+    ⛔ Supprimer :
+        else await exigeDroit(ctx, ctx.commande, ctx.compte.agence_id);
+    ⭐ LA RÈGLE : l'agence du demandeur n'est JAMAIS l'agence d'un objet.
+
+    Chaque ligne de CORRESPONDANCE déclare sa NATURE (champ obligatoire) :
+      objet         l'objet existe : droit dans l'agence LUE sur lui.
+                    Pas d'identifiant donné → GARDE. Identifiant qui ne
+                    mène à rien → INTROUVABLE. Agence lue nulle → DROIT.
+      creation      l'objet naît : droit dans l'agence où il sera écrit,
+                    celle demandée, sinon celle du compte (D-26). ⭐ C'est
+                    la SEULE place de l'agence du compte.
+      installation  réglages, listes, groupes (SetPolicy, ManageRefs,
+                    ManageGroups) : droit au périmètre GLOBAL.
+      soi           ce qui ne regarde que le compte (SetOwnTheme).
+    - la branche « agence nulle → exigeGlobal » et `agenceGouvernante`
+      disparaissent : toutes les colonnes lues sont NOT NULL depuis 009-011
+    - plus aucun chemin ne se termine sans contrôle : une nature inconnue
+      → GARDE
+
+C2  V-117   ArchiveObject (admin.ts:39-49)
+    - société, contact, unité, service → GARDE qui nomme la commande
+      dédiée (ArchiveCompany, ArchiveContact, ArchiveService) : sinon
+      ArchiveObject contourne AUSSI leur garde métier
+    - candidat, ressource, besoin, projet → le lecteur de leur commande
+    - personne → lue par TOUS ses profils ; deux agences → droit dans les
+      deux
+    - action → lue par son porteur (un seul, M-9)
+    - CreateAction et UploadDocument : lecteurs pour TOUS les porteurs
+      possibles, société et contact compris
+
+    PORTES (chacune rouge avant, verte après) :
+    - une par type d'ArchiveObject : objet d'une autre agence → DROIT,
+      0 écriture ; témoin positif dans le périmètre
+    - P « table complète » : chaque commande SERVIE (les 55) a une ligne
+      avec sa nature ; chaque type de ARCHIVE a un lecteur ou un refus
+    - P « NOT NULL gardé » : chaque colonne d'agence lue par la table est
+      NOT NULL en base (information_schema) — le jour où l'une redevient
+      nullable, le banc rougit
+    - le sabotage W1 (remettre le repli) doit faire tomber au moins une
+      porte : aujourd'hui 0 sur 307
+
+
+2. ÉLEVÉ
+────────
+E1 V-119  TransferContact : droit dans l'agence du contact ET dans celle
+   de la société d'arrivée ; le contact prend l'agence_responsable_id de sa
+   nouvelle société. Porte : vers une société hors périmètre → DROIT, rien
+   d'écrit ; relu en base après un transfert permis.
+E2 V-120  Le banc ne retire que ce qu'il a posé : chaque porte photographie
+   les délégations avant d'en poser, et ne retire que les siennes.
+   Porte : une délégation posée avant le banc lui survit. Commit `Role: banc`.
+
+
+3. CE QUE LE BRAIN FAIT — TU N'Y TOUCHES PAS
+────────────────────────────────────────────
+Migration 014 (ref_etat_paiement, GRANT retiré aux tables des lots 5.7 et
+5.8, LireDonneesRHSensibles au groupe RH), le pas des trailers dans la CI,
+le canon (lot cible par section de L4, 98 commandes, grille à 43).
+⚠️ Après 014, `ava_app` n'écrit plus dans les tables sans commande : si une
+porte y écrivait, c'est la porte qui se trompe.
+Quand Ahmed te dit « lot-2-brain est prêt » : `git merge lot-2-brain`, puis
+`bash outils/make.sh reset && bash outils/make.sh test`.
+
+
+4. CE QUE TU RENDS
+──────────────────
+Une ligne par V- dans journal/ : commit · porte · ROUGE puis VERTE. Le banc
+se juge sur une base refaite, le cliquet à 13 cases. Puis, seulement si tout
+est vert : « prêt pour le septième audit ».
+⛔ Pas de fusion sur main. Chaque commit porte son trailer `Role:` — la CI
+le vérifie désormais.

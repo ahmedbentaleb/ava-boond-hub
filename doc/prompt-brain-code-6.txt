@@ -1,0 +1,57 @@
+AVA MANAGER — SESSION BRAIN CODE, SIXIÈME TOUR
+==============================================
+24/09/2026 (soir). Quatre points. Le mot d'Ahmed est donné pour ce qui suit.
+
+À lire d'abord : _ops/ARBITRAGE_AUDIT_2026-09-24b.md et
+Desktop/ava-audit-6/rapport/CONSTATS.md (V-121, V-122, V-124, V-125).
+
+Ton poste :
+  cd /c/Users/Hamada/Desktop/ava-brain
+  git fetch "/c/Users/Hamada/Desktop/Ava Manager" lot-2
+  git checkout lot-2-brain && git merge FETCH_HEAD
+Base ava_brain, refaite à neuf. Chaque commit porte « Role: brain ».
+
+
+B1  V-124   LE PAS DES TRAILERS, BRANCHÉ POUR DE VRAI
+    ⛔ Ton B4 du cinquième tour était annoncé fait : `outils/verif_trailers.sh`
+    existe, mais `.github/workflows/ci.yml` ne l'appelle NULLE PART
+    (`grep verif_trailers .github/` → 0).
+    - un pas dans ci.yml qui lance verif_trailers.sh sur la branche
+    - `fetch-depth: 0` si le pas en a besoin
+    - les 2 commits sans `Role:` depuis la borne (18757b7, f9ff657, les
+      tiens) sont nommés au journal, pas réécrits
+    - vérifie aussi pourquoi ton crochet local les a laissés passer
+      (core.hooksPath posé dans ava-brain ?)
+    Témoin : la commande EXACTE du pas, jouée à la main sur une branche
+    d'essai avec un commit sans trailer → échec ; sans lui → succès.
+
+B2  V-121 · V-125   MIGRATION 014 — DEUX CORRECTIONS DE 012
+    - `ref_etat_paiement` (catégories planifie · confirme · regle, codes
+      identiques) ; `paiement.etat_code` → FK, le CHECK disparaît
+    - `LireDonneesRHSensibles` donnée au groupe RH au seed (MATRICE) —
+      ce n'est PAS une des cinq permissions sans titulaire de D-30
+    ⛔ 012 ne se réécrit pas. `--single-transaction`, rejouable.
+    Témoin : `\dt ava.ref_*` = 72 ; CHECK sur paiement → 0 ;
+    un code d'état inconnu → refus FK.
+
+B3  V-122   LE GRANT VIENT AVEC LA COMMANDE
+    - dans 014 : REVOKE INSERT, UPDATE (et DELETE s'il existe) FROM ava_app
+      sur chaque table créée par 012 et 013 qu'AUCUNE commande servie
+      n'écrit (l'audit en compte 27) ; SELECT reste
+    - l'assertion L7 correspondante dans _ops/SPEC_ASSERTIONS_L7.sql, puis
+      copie exacte dans test/ : aucune de ces tables n'est écrivable par
+      ava_app
+    Témoin : INSERT en ava_serveur sur `devis` → refus de privilège ;
+    GRANT remis à la main → l'assertion lève.
+
+B4  LE COMPTE DES COMMANDES
+    `make.sh` ou la grille ne recopient aucun compte de commandes : 98 se
+    mesure avec la commande écrite dans SPEC_COMMANDES_L4.md (§XI).
+
+Ce que tu ne fais jamais : server/ web/ (Grok) ; réécrire une migration
+publiée ; toucher « ava », le port 3000, le dossier « Ava Manager » ;
+fusionner ou pousser ; assouplir un contrôle qui gêne.
+
+Tu rends : une ligne par point dans `_ops/JOURNAL_BUGS.md` (V-xxx · commit ·
+témoin ROUGE → VERT), puis 15 lignes au plus, avec la phrase exacte pour
+Grok : « lot-2-brain est prêt : git merge lot-2-brain. »

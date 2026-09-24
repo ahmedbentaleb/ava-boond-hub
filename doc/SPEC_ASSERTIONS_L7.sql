@@ -144,12 +144,13 @@ BEGIN
     ('c0000000-0000-0000-0000-000000000001','essai@ava.test','a0000000-0000-0000-0000-000000000001');
 
   -- Deux sociétés : la seconde ne sert QU'à prouver M-12.
-  INSERT INTO societe (id, nom, nom_normalise, statut_commercial_code) VALUES
-    ('50000000-0000-0000-0000-000000000001','Client A','client a','prospect'),
-    ('50000000-0000-0000-0000-000000000002','Client B','client b','prospect');
+  -- ⭐ D-25, 24/09 : une société et un contact portent leur agence responsable.
+  INSERT INTO societe (id, nom, nom_normalise, statut_commercial_code, agence_responsable_id) VALUES
+    ('50000000-0000-0000-0000-000000000001','Client A','client a','prospect','a0000000-0000-0000-0000-000000000001'),
+    ('50000000-0000-0000-0000-000000000002','Client B','client b','prospect','a0000000-0000-0000-0000-000000000002');
 
-  INSERT INTO contact (id, societe_id, nom) VALUES
-    ('c1000000-0000-0000-0000-000000000002','50000000-0000-0000-0000-000000000002','Chez B');
+  INSERT INTO contact (id, societe_id, nom, agence_responsable_id) VALUES
+    ('c1000000-0000-0000-0000-000000000002','50000000-0000-0000-0000-000000000002','Chez B','a0000000-0000-0000-0000-000000000002');
 
   -- Deux personnes : l'une candidate, l'autre ressource.
   INSERT INTO personne (id, nom, prenom) VALUES
@@ -157,8 +158,8 @@ BEGIN
     ('90000000-0000-0000-0000-000000000002','Essai','Ressource'),
     ('90000000-0000-0000-0000-000000000003','Essai','Autre');
 
-  INSERT INTO profil_candidat (id, personne_id, etat_code, titre) VALUES
-    ('b0000000-0000-0000-0000-000000000001','90000000-0000-0000-0000-000000000001','complete','Dév');
+  INSERT INTO profil_candidat (id, personne_id, etat_code, titre, agence_id) VALUES
+    ('b0000000-0000-0000-0000-000000000001','90000000-0000-0000-0000-000000000001','complete','Dév','a0000000-0000-0000-0000-000000000001');
 
   INSERT INTO profil_ressource (id, personne_id, type_code, etat_code, titre, agence_id) VALUES
     ('d0000000-0000-0000-0000-000000000001','90000000-0000-0000-0000-000000000002','INTERNAL','en_cours','Dév','a0000000-0000-0000-0000-000000000001'),
@@ -219,8 +220,8 @@ $s$, 'ck_m2_xor');
 --    vrai. Le doublon de PERSONNE, lui, est une politique : on avertit.
 --    ⛔ Ne pas confondre les deux — c'est l'erreur classique.
 SELECT t.doit_refuser('deux profils candidat sur la même personne', 'M-3', $s$
-  INSERT INTO profil_candidat (personne_id, etat_code, titre)
-  VALUES ('90000000-0000-0000-0000-000000000001','complete','Doublon')
+  INSERT INTO profil_candidat (personne_id, etat_code, titre, agence_id)
+  VALUES ('90000000-0000-0000-0000-000000000001','complete','Doublon','a0000000-0000-0000-0000-000000000001')
 $s$, 'unique');
 
 -- ── M-4 · la ressource d'une prestation est immuable ──────────────────────
@@ -470,6 +471,98 @@ SELECT t.doit_etre('`ava_lecture_agregats` n''écrit sur aucune relation', 'M-15
        OR has_table_privilege('ava_lecture_agregats', r.oid, 'DELETE')
        OR has_table_privilege('ava_lecture_agregats', r.oid, 'TRUNCATE')));
 
+
+-- ── M-16 · une facture émise ne se modifie pas ────────────────────────
+-- ⭐ La loi : une facture émise s'annule par un AVOIR, jamais en place. Sans
+--    ce mur, une erreur de montant se « corrige » en silence, et la
+--    comptabilité ne peut plus être reconstituée.
+SELECT t.doit_refuser('modifier le montant d''une facture émise', 'M-16', $s$
+  INSERT INTO facture (id, societe_id, etat_code, emise_le, montant_ht, devise_code)
+  VALUES ('fa000000-0000-0000-0000-000000000001','50000000-0000-0000-0000-000000000001',
+          'transmis_client', DATE '2026-09-01', 1000, 'EUR');
+  UPDATE facture SET montant_ht = 2000 WHERE id = 'fa000000-0000-0000-0000-000000000001'
+$s$, 'M-16');
+
+SELECT t.doit_refuser('ajouter une ligne à une facture émise', 'M-16', $s$
+  INSERT INTO facture (id, societe_id, etat_code, emise_le, montant_ht, devise_code)
+  VALUES ('fa000000-0000-0000-0000-000000000002','50000000-0000-0000-0000-000000000001',
+          'transmis_client', DATE '2026-09-01', 1000, 'EUR');
+  INSERT INTO facture_ligne (facture_id, libelle, quantite, prix_unitaire, devise_code)
+  VALUES ('fa000000-0000-0000-0000-000000000002','En plus', 1, 500, 'EUR')
+$s$, 'M-16');
+
+-- ⭐ Et le contre-test : tant qu'elle N'EST PAS émise, elle se corrige.
+DO $$
+BEGIN
+  INSERT INTO facture (id, societe_id, etat_code, montant_ht, devise_code)
+  VALUES ('fa000000-0000-0000-0000-000000000003','50000000-0000-0000-0000-000000000001',
+          'creation', 1000, 'EUR');
+  UPDATE facture SET montant_ht = 1200 WHERE id = 'fa000000-0000-0000-0000-000000000003';
+  RAISE NOTICE 'OK   M-16 — une facture NON émise se corrige encore (contre-test)';
+EXCEPTION WHEN OTHERS THEN
+  RAISE EXCEPTION E'\n  ⛔ M-16 est TROP LARGE : une facture en création ne se corrige plus.';
+END $$;
+
+-- ── M-17 · deux contrats d'une personne ne se chevauchent pas ─────────
+-- ⭐ Boond en fait une alerte ; une paie juste n'a qu'un contrat à la fois.
+--    ⛔ C'est un EXCLUDE : la base refuse, pas une garde applicative.
+SELECT t.doit_refuser('deux contrats RH qui se chevauchent', 'M-17', $s$
+  INSERT INTO contrat_rh (personne_id, agence_id, type_code, debut, fin)
+  VALUES ('90000000-0000-0000-0000-000000000002','a0000000-0000-0000-0000-000000000001',
+          'salarie_cdi', DATE '2026-01-01', DATE '2026-12-31');
+  INSERT INTO contrat_rh (personne_id, agence_id, type_code, debut, fin)
+  VALUES ('90000000-0000-0000-0000-000000000002','a0000000-0000-0000-0000-000000000001',
+          'salarie_cdd', DATE '2026-06-01', DATE '2027-01-31')
+$s$, 'm17');
+
+-- ⭐ Contre-test : deux contrats qui se SUIVENT passent.
+DO $$
+BEGIN
+  INSERT INTO contrat_rh (personne_id, agence_id, type_code, debut, fin)
+  VALUES ('90000000-0000-0000-0000-000000000003','a0000000-0000-0000-0000-000000000001',
+          'salarie_cdd', DATE '2026-01-01', DATE '2026-06-30');
+  INSERT INTO contrat_rh (personne_id, agence_id, type_code, debut, fin)
+  VALUES ('90000000-0000-0000-0000-000000000003','a0000000-0000-0000-0000-000000000001',
+          'salarie_cdi', DATE '2026-07-01', NULL);
+  RAISE NOTICE 'OK   M-17 — deux contrats qui se suivent passent (contre-test)';
+EXCEPTION WHEN OTHERS THEN
+  RAISE EXCEPTION E'\n  ⛔ M-17 est TROP LARGE : un renouvellement de contrat ne passe plus.';
+END $$;
+
+-- ── M-18 · une numérotation continue, sans trou ni réemploi ──────────
+-- ⭐ La loi française l'exige. Le numéro vient d'un compteur, jamais de
+--    l'appelant — et il ne se réécrit pas.
+SELECT t.doit_refuser('choisir soi-même un numéro de facture', 'M-18', $s$
+  INSERT INTO facture (societe_id, etat_code, numero, montant_ht, devise_code)
+  VALUES ('50000000-0000-0000-0000-000000000001','creation', 42, 100, 'EUR')
+$s$, 'M-18');
+
+SELECT t.doit_refuser('réécrire le numéro d''une facture', 'M-18', $s$
+  INSERT INTO facture (id, societe_id, etat_code, montant_ht, devise_code)
+  VALUES ('fa000000-0000-0000-0000-000000000004','50000000-0000-0000-0000-000000000001',
+          'creation', 100, 'EUR');
+  UPDATE facture SET numero = numero + 10 WHERE id = 'fa000000-0000-0000-0000-000000000004'
+$s$, 'M-18');
+
+-- ⭐ Et la continuité elle-même : trois factures, trois numéros qui se
+--    suivent, sans trou.
+-- ⚠️ Un `WITH` qui écrit doit être au plus haut niveau : on insère, puis on
+--    constate — c'est le même test, en deux temps.
+DO $c$
+DECLARE n INT; ecart INT; distincts INT;
+BEGIN
+  INSERT INTO facture (societe_id, etat_code, montant_ht, devise_code)
+  SELECT '50000000-0000-0000-0000-000000000001','creation', 100, 'EUR'
+    FROM generate_series(1, 3);
+  SELECT count(*), max(numero) - min(numero), count(DISTINCT numero)
+    INTO n, ecart, distincts
+    FROM facture WHERE etat_code = 'creation' AND montant_ht = 100;
+  IF n < 3 OR ecart <> n - 1 OR distincts <> n THEN
+    RAISE EXCEPTION E'
+  ⛔ les numéros de facture sautent (% factures, écart %, % distincts) (M-18) — FAUX.', n, ecart, distincts;
+  END IF;
+  RAISE NOTICE 'OK   M-18 — les % numéros de facture se suivent sans trou', n;
+END $c$;
 
 -- ═══════════════════════════════════════════════════════════════════════════
 --  §3 — LE COMPTE

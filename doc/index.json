@@ -105,6 +105,13 @@
   "ko": 6
  },
  {
+  "chemin": "ARBITRAGE_AUDIT_2026-09-24b.md",
+  "titre": "Arbitrage du sixième audit — 24/09/2026 (soir)",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 7
+ },
+ {
   "chemin": "AUDIT_PROJET_2026-09-17.md",
   "titre": "Audit du projet Ava Manager — 17 septembre 2026",
   "categorie": "Audits",
@@ -235,7 +242,7 @@
   "titre": "État du projet Ava Manager — du premier jour à la livraison",
   "categorie": "État et plans",
   "date": "24/09/2026",
-  "ko": 12
+  "ko": 13
  },
  {
   "chemin": "FEUILLE_F1-F36_AHMED_2026-09-16.md",
@@ -255,7 +262,7 @@
   "chemin": "GRILLE_AUDIT.md",
   "titre": "L2b — la grille d'audit",
   "categorie": "Audits",
-  "date": "23/09/2026",
+  "date": "24/09/2026",
   "ko": 15
  },
  {
@@ -276,8 +283,8 @@
   "chemin": "JOURNAL_BUGS.md",
   "titre": "Journal des bugs — Ava Manager · **audit général**",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "23/09/2026",
-  "ko": 17
+  "date": "24/09/2026",
+  "ko": 20
  },
  {
   "chemin": "MACHINES_ETAT_V1.md",
@@ -378,6 +385,13 @@
   "ko": 1
  },
  {
+  "chemin": "prompt-brain-code-6.txt",
+  "titre": "prompt-brain-code-6.txt",
+  "categorie": "Prompts et briefs",
+  "date": "24/09/2026",
+  "ko": 3
+ },
+ {
   "chemin": "prompt-brain-code.txt",
   "titre": "prompt-brain-code.txt",
   "categorie": "Prompts et briefs",
@@ -415,6 +429,13 @@
  {
   "chemin": "prompt-lot2-correctifs-5.txt",
   "titre": "prompt-lot2-correctifs-5.txt",
+  "categorie": "Prompts et briefs",
+  "date": "24/09/2026",
+  "ko": 5
+ },
+ {
+  "chemin": "prompt-lot2-correctifs-6.txt",
+  "titre": "prompt-lot2-correctifs-6.txt",
   "categorie": "Prompts et briefs",
   "date": "24/09/2026",
   "ko": 5
@@ -507,8 +528,8 @@
   "chemin": "SPEC_ASSERTIONS_L7.sql",
   "titre": "SPEC_ASSERTIONS_L7.sql",
   "categorie": "Conception et contrat",
-  "date": "23/09/2026",
-  "ko": 31
+  "date": "24/09/2026",
+  "ko": 36
  },
  {
   "chemin": "SPEC_COMMANDES_L4.md",
@@ -578,7 +599,7 @@
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "24/09/2026",
-  "ko": 23
+  "ko": 24
  },
  {
   "chemin": "journal/DECISIONS.md",
@@ -627,7 +648,7 @@
   "titre": "Portes — le cliquet. Une porte ✅ ne redevient jamais ⏳.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "24/09/2026",
-  "ko": 42
+  "ko": 44
  },
  {
   "chemin": "journal/QUESTIONS.md",
@@ -914,6 +935,55 @@
   "titre": "SYNTHESE.md",
   "categorie": "Audits",
   "date": "23/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "audit-2026-09-24b/CONFORMITE.md",
+  "titre": "CONFORMITE6 — les commandes servies contre `_ops/SPEC_COMMANDES_L4.md`",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 17
+ },
+ {
+  "chemin": "audit-2026-09-24b/CONSTATS.md",
+  "titre": "Constats du sixième audit — commit `a26291c` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 6
+ },
+ {
+  "chemin": "audit-2026-09-24b/GRILLE.md",
+  "titre": "GRILLE6 — les contrôles de `_ops/GRILLE_AUDIT.md`, recomptés et mesurés",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 23
+ },
+ {
+  "chemin": "audit-2026-09-24b/MUTATIONS.md",
+  "titre": "Mutations — les tests des tests (famille G), sixième audit",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 4
+ },
+ {
+  "chemin": "audit-2026-09-24b/SECURITE.md",
+  "titre": "SECURITE6 — SQL, refus avant écriture, périmètre par objet, GRANT, pg_hba, secrets, écran",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 26
+ },
+ {
+  "chemin": "audit-2026-09-24b/SUIVI_V.md",
+  "titre": "Sixième audit — suivi des constats sur `a26291c` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 27
+ },
+ {
+  "chemin": "audit-2026-09-24b/SYNTHESE.md",
+  "titre": "SYNTHESE.md",
+  "categorie": "Audits",
+  "date": "24/09/2026",
   "ko": 2
  }
 ]
