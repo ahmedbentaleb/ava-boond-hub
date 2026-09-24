@@ -239,6 +239,24 @@ catégorie existante, renomme un libellé, réordonne, désactive. ⭐ **C'est c
 ⭐ **Compte au 24/09 : 55 + 22 = 77 commandes.** ⛔ Les 22 nouvelles ne se codent qu'**après** le lot 2
 accepté : elles forment le lot « RH et facturation » (étape 5.8).
 
+# X · LA GRILLE DE PARITÉ — 9 commandes *(24/09)*
+
+| Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
+|---|---|---|---|---|---|---|
+| `CreateTechnicalFile` | personne_id, titre, description, lignes | le dossier technique | `GARDE` codes inconnus | `TechnicalFileCreated` | — | — |
+| `UpdateTechnicalFile` | id + champs, lignes | le dossier technique | `INTROUVABLE` archivé | `TechnicalFileUpdated` | — | — |
+| `RecordExperience` | personne_id, poste, employeur, début, fin | l'expérience | `GARDE` fin avant début | `ExperienceRecorded` | — | — |
+| `RecordDiploma` | personne_id, diplôme, établissement, année | le diplôme | — | `DiplomaRecorded` | — | — |
+| `RecordBenefit` | personne_id, type, montant, devise, période | l'avantage | `DROIT` (permission sensible) | `BenefitRecorded` | — | **M-15** |
+| `CreateMilestone` · `ChangeMilestoneState` | projet_id, libellé, date, montant, devise · id, état | le jalon | `ETAT` hors cycle | `MilestoneCreated` · `MilestoneStateChanged` | — | **M-15** |
+| `AddAdditionalRevenue` | prestation_id ou projet_id, libellé, montant, devise, date | le CA additionnel | `GARDE` ni projet ni prestation | `AdditionalRevenueAdded` | — | **M-15** |
+| `SetConfidential` | objet, id, oui/non | l'objet | `GARDE` politique `confidentialite.autorisee` = non | `ConfidentialitySet` | `confidentialite.autorisee` | — |
+
+⭐ **Compte au 24/09 : 77 + 9 = 86 commandes.** Les colonnes simples de la grille (responsable RH,
+pôle, mobilité, matricule, lieu de mission, champs du besoin, intermédiaire de facturation, jours
+gratuits, chiffrage du positionnement) passent par les commandes `Update*` existantes : leur entrée
+s'élargit, aucune commande nouvelle.
+
 # VI · LES CINQ COMMANDES QUI MÉRITENT UN BLOC
 
 ## §C-1 · `ConvertCandidateToResource` — la garde G1

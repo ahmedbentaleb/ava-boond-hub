@@ -1,6 +1,6 @@
 AVA MANAGER — SESSION BRAIN CODE, CINQUIÈME TOUR
 ================================================
-24/09/2026. Quatre points. Le mot d'Ahmed est donné pour ce qui suit.
+24/09/2026. Six points — dont le schéma V1 complet, décidé par Hamada. Le mot d'Ahmed est donné pour ce qui suit.
 
 À lire d'abord : _ops/ARBITRAGE_AUDIT_2026-09-24.md (D-25 → D-29) et
 Desktop/ava-audit-5/rapport/CONSTATS.md (V-108, V-111 → V-114).
@@ -45,6 +45,33 @@ B4  V-113 · D-29   LES TRAILERS VÉRIFIÉS PAR LA CI
     Témoin : un commit d'essai sans trailer → le pas échoue (joue-le à la
     main avec la même commande que la CI).
 
+
+B5  « TOUT EN V1 » (Hamada, 23-24/09)   MIGRATION 011 — LE SCHÉMA V1 COMPLET
+    ⛔ Rien ne se code au-delà tant que le canon n'est pas en base. Source unique :
+      _ops/MODELE_DONNEES_AVAMANAGER_V1.md §13 (13.1 → 13.5)
+      _ops/REGISTRE_POLITIQUES_v1.md §B (70 référentiels) et §C.bis (194 politiques)
+      _ops/cartographie/BOOND_REGLAGES_2026-09-23.md (les VALEURS de chaque liste)
+    - les 30 référentiels nouveaux, créés ET semés avec les valeurs de Boond,
+      chaque code dans sa catégorie
+    - les 21 politiques nouvelles, semées à leur défaut
+    - les colonnes du §13.1 et du §13.5 sur les tables existantes
+    - les tables nouvelles du §13.2 et du §13.5 (contrat RH, documents suivis,
+      langues, certifications, dossier technique, expériences, diplômes,
+      avantages, devis, facture, lignes, relances, facture fournisseur, achat,
+      paiement, jalon, CA additionnel, domaines et outils de contact)
+    - `personne.numero_securite_sociale` CHIFFRÉ, lu sous la permission
+      `LireDonneesRHSensibles`
+    ⛔ `TEXT`, jamais `VARCHAR(n)` ; chaque montant a sa `devise_code` ;
+       aucune colonne convertie ; le CA pondéré et le CJM contrat sont des VUES.
+    Témoin : `select count(*) from politique` = le compte du registre §E ;
+    `\dt ava.ref_*` = 70 ; chaque valeur = son défaut.
+
+B6  LES MURS M-16 → M-18
+    Écrits au modèle métier le 24/09 : facture émise immuable (avoir seulement),
+    contrats RH sans chevauchement (EXCLUDE), numérotation des factures sans trou
+    ni réemploi. Une assertion par mur dans `_ops/SPEC_ASSERTIONS_L7.sql`, puis
+    copie exacte dans `test/`. Le plancher se recompte tout seul.
+    Témoin : chaque interdit tenté → refus ; trigger désactivé → l'assertion lève.
 
 Ce que tu ne fais jamais : server/ web/ (Grok) ; réécrire une migration
 publiée ; toucher « ava », le port 3000, le dossier « Ava Manager » ;

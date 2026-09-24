@@ -164,6 +164,15 @@ nommément. ⚠️ Les données RH sensibles (R8) sont lues sous une permission 
 ⭐ **Un groupe « Comptabilité » n'est pas codé** : les groupes sont des données. L'admin le crée et lui
 délègue ces lignes, sans une ligne de code.
 
+## Grille de parité *(24/09)*
+
+| Commande | IA | RH | RR | ÉVAL | STAF | DP | RES | ADM | SUP |
+|---|---|---|---|---|---|---|---|---|---|
+| `CreateTechnicalFile` · `UpdateTechnicalFile` · `RecordExperience` · `RecordDiploma` | ✓ | ✓ | ✓ | — | ✓ | — | S | D | — |
+| `RecordBenefit` | — | ✓ | — | — | — | — | — | D | — |
+| `CreateMilestone` · `ChangeMilestoneState` · `AddAdditionalRevenue` | — | — | — | — | — | ✓ | — | D | — |
+| `SetConfidential` | ✓ | ✓ | ✓ | — | ✓ | ✓ | — | D | — |
+
 ## Réglages du compte *(24/09)*
 
 | Commande | IA | RH | RR | ÉVAL | STAF | DP | RES | ADM | SUP |

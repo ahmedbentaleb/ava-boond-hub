@@ -66,6 +66,18 @@ M1 V-115  Les quatre écarts reconduits du 4e tour : les 5 permissions sans
    (`{nom:"Banc", groupe:"IA"}` → le compte réel, D-19).
 
 
+3 bis. LE SCHÉMA V1 COMPLET ARRIVE AVEC LA FUSION (Hamada, 23-24/09 : « tout en V1 »)
+─────────────────────────────────────────────────────────────────────────────
+La migration 011 du BRAIN pose tout le relevé Boond en base : 70 référentiels,
+194 politiques, ≈ 57 tables, 18 murs. ⛔ Tu ne codes PAS les 31 commandes
+nouvelles (RH, facturation, grille de parité) dans ce tour : elles forment le
+lot 5.8. Ce que tu fais dans ce tour, après la fusion :
+  - `make.sh reset && make test` doit rester vert avec le nouveau schéma
+  - les `Update*` existants acceptent les colonnes simples de la grille
+    (responsable RH, pôle, mobilité, matricule, champs du besoin, lieu de
+    mission, intermédiaire de facturation) — une porte par colonne, relue en base
+  - aucune valeur de liste en dur : chaque code se lit dans son `ref_*`
+
 4. CE QUE LE BRAIN FAIT — TU N'Y TOUCHES PAS
 ────────────────────────────────────────────
 Migration 010 (colonnes d'agence responsable + remplissage + NOT NULL,

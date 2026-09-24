@@ -361,7 +361,7 @@
   "titre": "prompt-brain-code-5.txt",
   "categorie": "Prompts et briefs",
   "date": "24/09/2026",
-  "ko": 3
+  "ko": 5
  },
  {
   "chemin": "prompt-brain-code.txt",
@@ -403,7 +403,7 @@
   "titre": "prompt-lot2-correctifs-5.txt",
   "categorie": "Prompts et briefs",
   "date": "24/09/2026",
-  "ko": 4
+  "ko": 5
  },
  {
   "chemin": "prompt-lot2-correctifs.txt",
@@ -501,7 +501,7 @@
   "titre": "L4 — le contrat des commandes",
   "categorie": "Conception et contrat",
   "date": "24/09/2026",
-  "ko": 27
+  "ko": 29
  },
  {
   "chemin": "SPEC_SQL_AVAMANAGER_V1.sql",
