@@ -134,22 +134,22 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <a href="simulateur.html">Banc d’essai</a>
 </div></div></div></div>
 <div class="p">
-<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">24/09/2026 · 24a0ef1</span></div>
+<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">24/09/2026 · 49fb9d6</span></div>
 <p class="chapeau">Le point d'entrée unique. Une autre IA écrit le code, je l'audite. Tout ce qui fait foi est listé ici — et rien n'y est recopié : ce document <b>mesure</b> et <b>pointe</b>.</p>
 <div class="ch">
 <div><b>37</b><span>tables</span></div>
-<div><b>70</b><span>référentiels</span></div>
-<div><b>194</b><span>politiques</span></div>
+<div><b>71</b><span>référentiels</span></div>
+<div><b>201</b><span>politiques</span></div>
 <div><b>15</b><span>murs</span></div>
 <div><b>31</b><span>assertions</span></div>
 <div><b>26</b><span>écrans</span></div>
 <div><b>8</b><span>ADR</span></div>
-<div><b>71</b><span>documents</span></div>
+<div><b>72</b><span>documents</span></div>
 </div>
 <p class="note">⭐ Tous ces chiffres sont <b>mesurés</b> à la génération, jamais saisis. Un compte écrit à deux endroits diverge à la passe suivante.</p>
 <quand_utiliser>
 <h2><span class="num">01</span>Qui lit quoi</h2>
-<p class="sub">Quatre lecteurs, quatre portes. Personne n'a besoin des 71 documents.</p>
+<p class="sub">Quatre lecteurs, quatre portes. Personne n'a besoin des 72 documents.</p>
 <div class="tw"><table><tr><th>Vous êtes</th><th>Vous lisez</th><th>Vous ne lisez pas</th></tr>
 <tr><td>L&#x27;IA qui code</td><td>le prompt, puis le SQL et les assertions</td><td>les relectures, les plans, l&#x27;historique — c&#x27;est du chemin parcouru</td></tr>
 <tr><td>Moi, l&#x27;auditeur</td><td>les assertions, le registre §E, le journal des bugs</td><td>rien — mais je mesure avant de citer</td></tr>
@@ -168,7 +168,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <a href="doc/SPEC_SQL_AVAMANAGER_V1.sql"><b>L3 — le schéma</b><span>1664 lignes · 37 tables</span><em>SPEC_SQL_AVAMANAGER_V1.sql</em></a>
 <a href="doc/SPEC_ASSERTIONS_L7.sql"><b>L7 — les assertions</b><span>31 tests, un par mur</span><em>SPEC_ASSERTIONS_L7.sql</em></a>
 <a href="doc/MODELE_DONNEES_AVAMANAGER_V1.md"><b>Le modèle de données</b><span>le canon dont le SQL est tiré</span><em>MODELE_DONNEES_AVAMANAGER_V1.md</em></a>
-<a href="doc/REGISTRE_POLITIQUES_v1.md"><b>Le registre</b><span>194 politiques · §E fait foi</span><em>REGISTRE_POLITIQUES_v1.md</em></a>
+<a href="doc/REGISTRE_POLITIQUES_v1.md"><b>Le registre</b><span>201 politiques · §E fait foi</span><em>REGISTRE_POLITIQUES_v1.md</em></a>
 <a href="doc/SPEC_COMMANDES_L4.md"><b>L4 — le contrat des commandes</b><span>55 commandes · entrée, refus, événement, mur</span><em>SPEC_COMMANDES_L4.md</em></a>
 <a href="doc/MATRICE_DROITS_v1.md"><b>La matrice des droits</b><span>rôle × commande × périmètre</span><em>MATRICE_DROITS_v1.md</em></a>
 <a href="doc/MACHINES_ETAT_V1.md"><b>Les machines d&#x27;état</b><span>6 cycles fermés</span><em>MACHINES_ETAT_V1.md</em></a>
@@ -192,7 +192,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <div class="c ok"><div class="n">L7</div><div class="t">Les assertions</div><div class="d">31 tests, un par mur, plus 1 contre-test. joués à chaque make test</div></div>
 <div class="c ok"><div class="n">L2</div><div class="t">Le prompt et la grille</div><div class="d">à coller dans Cursor · 18 contrôles au retour</div></div>
 <div class="c ok"><div class="n">L4</div><div class="t">Les 55 commandes</div><div class="d">entrée, sortie, refus, événement, politique lue, mur touché</div></div>
-<div class="c go"><div class="n">L5</div><div class="t">Les deux seeds</div><div class="d">194 politiques et 70 référentiels — mécanique, ça part chez Grok</div></div>
+<div class="c go"><div class="n">L5</div><div class="t">Les deux seeds</div><div class="d">201 politiques et 71 référentiels — mécanique, ça part chez Grok</div></div>
 <div class="c ok"><div class="n">L1</div><div class="t">Le relevé Boond</div><div class="d">clos le 19/09 · 32 sections</div></div>
 </div>
 <h2><span class="num">04</span>Les 15 murs</h2>
@@ -303,7 +303,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <tr><td>5.5h</td><td>Corrections du cinquième tour — l&#x27;agence responsable (D-25) et le schéma V1 complet (migration 011)</td><td>⬜ prêt à partir : le canon porte tout le relevé Boond depuis le 24/09</td><td><a href="doc/prompt-brain-code-5.txt">prompt brain code 5</a> · <a href="doc/prompt-lot2-correctifs-5.txt">prompt correctifs 5</a></td></tr>
 <tr><td>5.5i</td><td>Sixième audit</td><td>⬜ quand Grok écrit « prêt pour le sixième audit »</td><td><a href="doc/prompt-audit-2.txt">prompt d&#x27;audit</a></td></tr>
 <tr><td>5.6</td><td>Connexion par compte Microsoft (lot 2c)</td><td>⬜ prêt (R4 : tout le monde a une adresse Microsoft)</td><td><a href="doc/DECISIONS_TECHNIQUES_v1.md">décisions techniques T2</a> · <a href="doc/ARBITRAGE_AUDIT_2026-09-21.md">arbitrage D-2</a></td></tr>
-<tr><td>5.8</td><td>⭐ RH et facturation — contrats, documents à suivre, devis, factures (décision du 23/09 : tout en V1)</td><td>⬜ après les écrans</td><td><a href="doc/COMPLEMENTS_V1_2026-09-23.md">ce que la V1 doit porter en plus</a> · <a href="doc/cartographie/BOOND_REGLAGES_2026-09-23.md">réglages Boond</a></td></tr>
+<tr><td>5.8</td><td>⭐ RH, facturation et applications — contrats, documents à suivre, devis, factures ; mail groupé, push de CV, actions sur une sélection, documents depuis modèles, lecture de CV, Outlook, préparation de paie (décisions des 23-24/09 : tout en V1)</td><td>⬜ après les écrans</td><td><a href="doc/COMPLEMENTS_V1_2026-09-23.md">ce que la V1 doit porter en plus</a> · <a href="doc/cartographie/BOOND_REGLAGES_2026-09-23.md">réglages Boond</a> · <a href="doc/cartographie/BOOND_APPLICATIONS_2026-09-24.md">applications Boond</a></td></tr>
 <tr><td>5.7</td><td>Les 26 écrans (lot 3)</td><td>⬜ après le 5.5 accepté</td><td><a href="doc/../terminal.html">les 26 écrans</a> · <a href="doc/PROMPT_CHATGPT_ECRANS.md">prompt écrans</a></td></tr>
 <tr><td>—</td><td>CRM, staffing, production (anciens lots 4, 5, 6)</td><td>↪ fusionnés dans 5.2 et 5.7</td><td>—</td></tr>
 </table></div>
@@ -339,9 +339,9 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 </etat>
 <source>
 <h2><span class="num">09</span>D'où ça vient</h2>
-<p class="sub">71 documents dans <code>_ops/</code>. Les 20 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
+<p class="sub">72 documents dans <code>_ops/</code>. Les 20 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
 <p class="note">Ce fichier est <b>généré</b> par <code>python _ops/outils/dossier.py</code>. ⛔ Ne pas l'éditer à la main : la prochaine génération écraserait la correction, et on ne saurait pas laquelle était juste.<br>Pour en extraire une section sans tout lire :<br><code>sed -n '/&lt;etat&gt;/,/&lt;\/etat&gt;/p' _ops/DOSSIER.html</code></p>
 </source>
-<footer>Ava Manager · dossier généré le 24/09/2026 · commit 24a0ef1 · 37 tables · 194 politiques · 15 murs · 31 assertions</footer>
+<footer>Ava Manager · dossier généré le 24/09/2026 · commit 49fb9d6 · 37 tables · 201 politiques · 15 murs · 31 assertions</footer>
 </div>
 </body></html>

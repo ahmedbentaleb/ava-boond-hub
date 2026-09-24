@@ -58,7 +58,7 @@ Le **code** est stable, le **libellé** se renomme, une valeur s'**ajoute** dans
 | `ref_competence` | domaines à fixer | — | CdC IV.B.5 |
 | `ref_motif_retrait` | — | desistement, no_go_interne, autre | G10 |
 | `ref_unite_couverture` | — | postes, fte, postes_et_fte — **système** | B-1, relecture externe 19/09 |
-| `ref_type_modele` | — | action, recherche, liste_taches, formulaire, email — **système** | S-10.1, 19/09 |
+| `ref_type_modele` | — | action, recherche, liste_taches, formulaire, email, **document**, **signature** (24/09, applications) — **système** | S-10.1, 19/09 |
 | `ref_portee_modele` | — | installation, agence, personnelle — **système** | S-10.1, 19/09 |
 | `ref_gravite_alerte` | `sens` | critique, elevee, moyenne, bonne — **système**. ⛔ L'échelle du SENS : aucune palette ne la touche | S-10.3, 19/09 |
 | `ref_motif_interruption` | — | client, ressource, commercial, autre — **système** | M4, relecture externe 19/09 |
@@ -101,6 +101,7 @@ Le **code** est stable, le **libellé** se renomme, une valeur s'**ajoute** dans
 | `ref_pole` | — | pole_rh, pole_sales | ⭐ 24/09 — sur candidat, ressource, besoin, compte |
 | `ref_mobilite` | — | ⬜ à remplir par l'admin (zones) | ⭐ 24/09 |
 | `ref_type_avantage` | — | ⬜ à remplir par l'admin | ⭐ 24/09 — 0 avantage saisi chez Avaliance |
+| `ref_famille_document` | — | dossier technique, contrat RH, contrat de sous-traitance, facture, avoir, devis, achat, commande, prestation, ordre de mission, besoin, données administratives | ⭐ 24/09, DocTemplates — la famille d'un modèle de document |
 | `ref_type_message` | — | 19 modèles relevés : saisie des temps, des frais, attente de validation, validée, rejet, refus, suppression, demande/relance/confirmation de signature | ⭐ 23/09 — le **texte** du message est un modèle (`modele`), le type est ici |
 
 ---
@@ -379,7 +380,23 @@ direction** (`REPONSES_AVALIANCE_2026-09-24.md`). Défaut en gras = ce que fait 
 | `alerte.rapport.jour_hebdo` | **lundi** | Boond, alertes | le jour du rapport hebdomadaire |
 | `alerte.rapport.heure_hebdo` | **08:00** | Boond, alertes | l'heure du rapport hebdomadaire |
 | `confidentialite.autorisee` | **oui** · non | Boond, « visible uniquement de vous » | un candidat, une ressource ou un besoin peut être confidentiel : vu de son responsable et des groupes délégués seulement |
-| `ui.tableau_de_bord.widgets` | **[repartition_besoins, repartition_candidats, synthese, ca_facture_signe, ca_periode_production_signe, ca_marge_signes, mes_alertes]** · + mes_temps · mes_frais · mes_absences | Boond, configuration d'un compte | les widgets affichés, **réglables compte par compte** ; le défaut est ce qu'Avaliance affiche |
+| `ui.tableau_de_bord.widgets` | **[repartition_besoins, repartition_candidats, synthese, ca_facture_signe, ca_periode_production_signe, ca_marge_signes, mes_alertes]** · + mes_temps · mes_frais · mes_absences · celebrations | Boond, configuration d'un compte | les widgets affichés, **réglables compte par compte** ; le défaut est ce qu'Avaliance affiche |
+
+### C.ter — Les applications Boond reprises en V1 (24/09)
+
+⭐ **Hamada, 24/09 : « tout en V1, relève les 9 applications ».** Source :
+`cartographie/BOOND_APPLICATIONS_2026-09-24.md`. Défaut en gras = ce que fait Avaliance aujourd'hui.
+
+| Clé | Valeurs (défaut en **gras**) | Source | Effet |
+|---|---|---|---|
+| `email.fournisseur` | **microsoft** · google · smtp · aucun | Emailing, Office 365 | par quel compte partent les mails : celui de l'utilisateur, jamais une adresse commune |
+| `email.push_cv.action_auto` | **oui** · non | Emailing | un CV envoyé à un contact crée l'action « Push CV » sur le candidat et le contact |
+| `email.envoi_groupe.max` | **200** | Emailing | le nombre de destinataires d'un envoi groupé ; au-delà, refus |
+| `cv.lecteur` | **hrflow** · aucun · autre | HRFlow | le moteur qui lit un CV pour pré-remplir la fiche ; `aucun` = saisie à la main |
+| `outlook.synchro` | **oui** · non | Microsoft | une action ↔ un événement Outlook ; un mail Outlook s'enregistre en action |
+| `paie.export.format` | **xlsx** · csv | ExtractPayroll | le format de la préparation de paie envoyée au cabinet |
+| `celebrations.types` | **[anniversaire, anciennete, arrivee]** | Célébrations | ce que le widget annonce ; ⚠️ l'anniversaire n'apparaît que si la date de naissance est lue sous le droit RH |
+
 
 ---
 
@@ -399,8 +416,8 @@ Les autres documents **ne réécrivent pas ces chiffres** : ils renvoient ici (�
 | Quoi | Compte | Détail |
 |---|---|---|
 | Murs | **15** | M-1 → M-15, §A ; **+ 1 règle de code** R-1, hors des quinze |
-| Référentiels | ⭐ **70 au 24/09** (63 métier en §B + 7 techniques ; +6 le 24/09 : origine du besoin, décision client, critère d'évaluation, pôle, mobilité, type d'avantage) · **64 au 23/09** ⚠️ **+24 le 23/09** : relevé complet des réglages Boond, tout est repris en V1 (secteur, métier, certification, expérience, formation, langue, niveau, disponibilité candidat, situation familiale, contrat ×4, temps de travail, document suivi, catégorie d'achat, calendrier, TVA, conditions et modes de règlement, envoi de facture, états facture / facture fournisseur / devis, type de message). ⛔ La migration qui les crée reste à écrire. Avant : **40 au 21/09** | ⭐ **+3 le 21/09 (D-9, migration 007)** : `ref_statut_contact`, `ref_type_coordonnee`, `ref_usage_coordonnee` — trois listes figées en CHECK (V-021). ⭐ **33 lignes en §B** (métier) **+ 7 techniques** ; mesuré en base : `select count(*) from pg_tables where schemaname='ava' and tablename like 'ref\_%'` = 40. Avant : **37 au 20/09**, ⭐ **27 métier** (§B, un par ligne — ⛔ *`ref_theme` était cité ici par erreur : il n'y a pas de table `ref_theme`, un thème est un **code texte** porté par `ui.theme`. Retiré le 20/09, signalé par le lot 1* ; `ref_unite_couverture`, `ref_motif_avenant`, `ref_motif_interruption`, `ref_motif_fin_emploi`, `ref_type_modele`, `ref_portee_modele` et `ref_gravite_alerte` le 19/09) **+ 7 techniques** : `ref_civilite`, `ref_pays`, `ref_type_unite`, `ref_type_contact`, `ref_type_mission`, `ref_type_document`, `ref_disponibilite` |
-| Politiques | ⭐ **194 au 24/09** (193 en tableau + 1 en prose ; +2 de la grille de parité : confidentialité, colonnes des listes) · **192** le matin ⚠️ **+19 le 23-24/09** (§C.bis) : relevé complet des réglages Boond et réponses d'Avaliance — coût salarié, périmètre de société, blacklist, données RH, facturation ×4, contrat RH, documents, signature des temps, rapports d'alerte ×4, widgets du tableau de bord, actions multiples, tri des listes. ⛔ La migration qui les sème reste à écrire. Avant : **173 au 20/09** | §C — **172 en tableau + 1 déclarée en prose** (mesuré le 21/09, V-029 — le « 168 » précédent était un compte retenu). ⭐ **+2 le 20/09, annoncés comme l'exige le gel** :
+| Référentiels | ⭐ **71 au 24/09 au soir** (+1 : `ref_famille_document`, applications Boond) · **70 au 24/09** (63 métier en §B + 7 techniques ; +6 le 24/09 : origine du besoin, décision client, critère d'évaluation, pôle, mobilité, type d'avantage) · **64 au 23/09** ⚠️ **+24 le 23/09** : relevé complet des réglages Boond, tout est repris en V1 (secteur, métier, certification, expérience, formation, langue, niveau, disponibilité candidat, situation familiale, contrat ×4, temps de travail, document suivi, catégorie d'achat, calendrier, TVA, conditions et modes de règlement, envoi de facture, états facture / facture fournisseur / devis, type de message). ⛔ La migration qui les crée reste à écrire. Avant : **40 au 21/09** | ⭐ **+3 le 21/09 (D-9, migration 007)** : `ref_statut_contact`, `ref_type_coordonnee`, `ref_usage_coordonnee` — trois listes figées en CHECK (V-021). ⭐ **33 lignes en §B** (métier) **+ 7 techniques** ; mesuré en base : `select count(*) from pg_tables where schemaname='ava' and tablename like 'ref\_%'` = 40. Avant : **37 au 20/09**, ⭐ **27 métier** (§B, un par ligne — ⛔ *`ref_theme` était cité ici par erreur : il n'y a pas de table `ref_theme`, un thème est un **code texte** porté par `ui.theme`. Retiré le 20/09, signalé par le lot 1* ; `ref_unite_couverture`, `ref_motif_avenant`, `ref_motif_interruption`, `ref_motif_fin_emploi`, `ref_type_modele`, `ref_portee_modele` et `ref_gravite_alerte` le 19/09) **+ 7 techniques** : `ref_civilite`, `ref_pays`, `ref_type_unite`, `ref_type_contact`, `ref_type_mission`, `ref_type_document`, `ref_disponibilite` |
+| Politiques | ⭐ **201 au 24/09 au soir** (+7, §C.ter : les applications Boond — mail, push de CV, envoi groupé, lecture de CV, Outlook, paie, célébrations) · **194 au 24/09** (193 en tableau + 1 en prose ; +2 de la grille de parité : confidentialité, colonnes des listes) · **192** le matin ⚠️ **+19 le 23-24/09** (§C.bis) : relevé complet des réglages Boond et réponses d'Avaliance — coût salarié, périmètre de société, blacklist, données RH, facturation ×4, contrat RH, documents, signature des temps, rapports d'alerte ×4, widgets du tableau de bord, actions multiples, tri des listes. ⛔ La migration qui les sème reste à écrire. Avant : **173 au 20/09** | §C — **172 en tableau + 1 déclarée en prose** (mesuré le 21/09, V-029 — le « 168 » précédent était un compte retenu). ⭐ **+2 le 20/09, annoncés comme l'exige le gel** :
 `societe.archivage.garde` et `absence.chevauchement`, toutes deux **citées dans L4** et
 **absentes du registre** — trou de ma spécification, comblé par le codeur du lot 2, qui a écrit
 leur source dans la table (`L4 L82`, `L4 L163`). ⭐ **C'est exactement ce qu'on attend de lui** (`ui.theme.personnalise`). ⚠️ *La répartition « 79 métier · 2 installation · 86 apparence » (= 167) date d'avant le 20/09 et ne tient plus (V-062, 22/09) : **seul le total 173 est mesuré**, en base et par la commande ci-dessous.* ⭐ **+5 le 19/09** : les **quatre encres**, avec le garde-fou — une encre choisie qui ne passe pas 4,5:1 sur sa surface est **relevée**, jamais posée telle quelle — et le rôle du banc d'essai |

@@ -128,6 +128,8 @@ sont ceux de Boond (`cartographie/BOOND_REGLAGES_2026-09-23.md`) ; l'admin en aj
 | **Contrat RH** | `actif` · `termine` | (pas de code : la catégorie se déduit des dates) | `CreateHrContract` → actif ; `RenewHrContract` → le contrat courant `termine`, un nouveau `actif` lié par `renouvelle_id` ; `EndHrContract` → termine, avec motif | **M-17** |
 | **Achat** | `planifie` · `valide` | planifie, valide | `CreatePurchase` → planifie ; `ValidatePurchase` → valide | — |
 | **Paiement** | `planifie` · `confirme` · `regle` | planifie, confirme, regle | `RecordPayment` → planifie ; `ChangePaymentState` en avant seulement | — |
+| **Préparation de paie** | `brouillon` · `figee` · `exportee` | (pas de code) | `PreparePayroll` → brouillon (recalculable) ; `FreezePayroll` → figee (photographie) ; `ExportPayroll` → exportee | — |
+| **Destinataire d'un mail** | `en_attente` · `envoye` · `echec` | (pas de code) | posé par `SendEmail` et `PushCVToContacts` ; ⛔ un échec ne se renvoie pas en silence : nouvel envoi | — |
 
 ⭐ **La blacklist n'est pas un cycle** (R7) : c'est un drapeau posé et retiré (`SetBlacklistFlag`,
 `ClearBlacklistFlag`), avec son historique. L'étape du candidat ne change pas.

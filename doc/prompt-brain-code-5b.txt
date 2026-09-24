@@ -1,0 +1,23 @@
+AVA MANAGER — SESSION BRAIN CODE, COMPLÉMENT AU CINQUIÈME TOUR
+==============================================================
+24/09/2026 au soir. Un seul point, qui s'ajoute à B5. Le mot d'Ahmed est donné.
+
+Hamada : « tout en V1, relève les 9 applications ». Le relevé est fait :
+  _ops/cartographie/BOOND_APPLICATIONS_2026-09-24.md
+
+B5 bis  LES APPLICATIONS DANS LE SCHÉMA V1
+    Si la migration 011 n'est pas encore commitée : ajoute-les dedans.
+    Si elle l'est : migration 012, jamais une réécriture de 011.
+    - les 6 tables de MODELE_DONNEES_AVAMANAGER_V1.md §13.6 : envoi_email,
+      envoi_email_destinataire, document_genere, lien_outlook,
+      preparation_paie, preparation_paie_ligne
+    - `ref_famille_document` semé de ses 12 familles (registre §B)
+    - `ref_type_modele` reçoit les codes `document` et `signature`
+    - les 7 politiques du registre §C.ter, à leur défaut
+    - `celebrations` ajouté aux widgets proposés de `ui.tableau_de_bord.widgets`
+    ⛔ Mêmes règles que B5 : TEXT, une devise par montant, rien de supprimé (M-8).
+    Témoin : politiques = 201 ; `\dt ava.ref_*` = 71 ; `lien_outlook` refuse
+    deux lignes pour le même (compte, outlook_id).
+
+Tu rends : une ligne dans `_ops/JOURNAL_BUGS.md`, et tu l'inclus dans ta
+réponse du cinquième tour.

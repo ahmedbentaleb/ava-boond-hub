@@ -143,7 +143,7 @@
   "chemin": "CADRAGE_METIER_RECONCILIE_2026-09-16.md",
   "titre": "Cadrage métier réconcilié Ava Manager",
   "categorie": "Cadrage et commande du client",
-  "date": "22/09/2026",
+  "date": "24/09/2026",
   "ko": 80
  },
  {
@@ -159,6 +159,13 @@
   "categorie": "Audits",
   "date": "15/09/2026",
   "ko": 13
+ },
+ {
+  "chemin": "cartographie/BOOND_APPLICATIONS_2026-09-24.md",
+  "titre": "Boond — les applications, installées et disponibles (24/09/2026)",
+  "categorie": "Étude de Boond",
+  "date": "24/09/2026",
+  "ko": 6
  },
  {
   "chemin": "cartographie/BOOND_CHEMINS_2026-09-19.md",
@@ -284,14 +291,14 @@
   "titre": "Matrice des droits Ava Manager v1",
   "categorie": "Conception et contrat",
   "date": "24/09/2026",
-  "ko": 14
+  "ko": 15
  },
  {
   "chemin": "MODELE_DONNEES_AVAMANAGER_V1.md",
   "titre": "Modèle de données AvaManager v1",
   "categorie": "Conception et contrat",
   "date": "24/09/2026",
-  "ko": 55
+  "ko": 57
  },
  {
   "chemin": "MODELE_METIER_CANONIQUE_v1.md",
@@ -362,6 +369,13 @@
   "categorie": "Prompts et briefs",
   "date": "24/09/2026",
   "ko": 5
+ },
+ {
+  "chemin": "prompt-brain-code-5b.txt",
+  "titre": "prompt-brain-code-5b.txt",
+  "categorie": "Prompts et briefs",
+  "date": "24/09/2026",
+  "ko": 1
  },
  {
   "chemin": "prompt-brain-code.txt",
@@ -452,7 +466,7 @@
   "titre": "Registre des politiques Ava Manager v1",
   "categorie": "Conception et contrat",
   "date": "24/09/2026",
-  "ko": 56
+  "ko": 58
  },
  {
   "chemin": "RELECTURE_5_MODELE_DONNEES_2026-09-17.md",
@@ -501,7 +515,7 @@
   "titre": "L4 — le contrat des commandes",
   "categorie": "Conception et contrat",
   "date": "24/09/2026",
-  "ko": 29
+  "ko": 31
  },
  {
   "chemin": "SPEC_SQL_AVAMANAGER_V1.sql",
@@ -563,8 +577,8 @@
   "chemin": "journal/CORRECTIFS.md",
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "23/09/2026",
-  "ko": 22
+  "date": "24/09/2026",
+  "ko": 23
  },
  {
   "chemin": "journal/DECISIONS.md",

@@ -179,6 +179,20 @@ délègue ces lignes, sans une ligne de code.
 |---|---|---|---|---|---|---|---|---|---|
 | `SetOwnDashboardWidgets` | S | S | S | S | S | S | S | S | S |
 
+## Applications — mail, sélection, documents, Outlook, paie *(24/09)*
+
+| Commande | IA | RH | RR | ÉVAL | STAF | DP | RES | ADM | SUP |
+|---|---|---|---|---|---|---|---|---|---|
+| `SendEmail` · `GenerateDocument` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | D | — |
+| `PushCVToContacts` | ✓ | — | — | — | ✓ | ✓ | — | D | — |
+| `BulkUpdate` · `BulkArchive` · `ExportSelection` | ✓ | ✓ | ✓ | — | ✓ | ✓ | — | D | — |
+| `ParseCV` | ✓ | ✓ | ✓ | — | ✓ | — | — | D | — |
+| `SyncOutlookEvent` · `RecordOutlookMail` | S | S | S | S | S | S | S | S | S |
+| `PreparePayroll` · `FreezePayroll` · `ExportPayroll` | — | ✓ | — | — | — | — | — | D | — |
+
+⚠️ Sur une sélection, chaque ligne garde **son** périmètre : le ✓ ouvre la commande, pas les lignes.
+⚠️ Outlook est « soi » : chacun ne relie que **son** agenda et **ses** mails.
+
 ## Transverse et administration
 
 | Commande | IA | RH | RR | ÉVAL | STAF | DP | RES | ADM | SUP |

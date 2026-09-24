@@ -690,9 +690,9 @@ assertions, **avant** la migration.
 
 | | Avant le 23/09 | Au 24/09 |
 |---|---|---|
-| Référentiels | 40 | **66** (+ `ref_origine_besoin`, `ref_decision_client`) |
-| Politiques | 173 | **192** |
-| Tables | 37 | **≈ 57** (§13.2 + §13.5) |
+| Référentiels | 40 | **71** (registre §E) |
+| Politiques | 173 | **201** (registre §E) |
+| Tables | 37 | **≈ 63** (§13.2 + §13.5 + §13.6) |
 | Murs | 15 | **18** (M-16 → M-18, à écrire) |
 
 ### 13.5 La grille de parité du 24/09 — ce que Boond porte encore
@@ -718,3 +718,20 @@ assertions, **avant** la migration.
 
 ⛔ **Écarté, avec motif** : le « taux de change de l'agence juridique » (T-2, M-15 : aucun montant
 converti n'est stocké) · les produits (0 utilisé) · « Demander à l'IA » (lot 8).
+
+### 13.6 Les applications Boond reprises en V1 (24/09)
+
+⭐ Source : `cartographie/BOOND_APPLICATIONS_2026-09-24.md` (les 9 applications installées chez Avaliance).
+
+| Table | Colonnes | Note |
+|---|---|---|
+| **`envoi_email`** | id, `expediteur_compte_id`, `modele_id?`, objet, corps, `pieces` (document_id[]), `nature` (message · push_cv), `envoye_le`, `fournisseur_code` | ⛔ jamais supprimé (M-8) ; le fournisseur est celui de `email.fournisseur` au moment de l'envoi |
+| **`envoi_email_destinataire`** | envoi_id, `contact_id?` · `personne_id?` (un des deux), adresse, `etat` (en_attente · envoye · echec), `motif_echec`, `action_id?` | l'action créée par le push de CV y est reliée |
+| **`document_genere`** | id, `modele_id` (type document), `famille_code` → `ref_famille_document`, objet + objet_id, format (docx · pdf), `document_id`, `genere_par_compte_id`, `genere_le` | le fichier va dans `document` ; on garde qui l'a produit et depuis quel modèle |
+| **`lien_outlook`** | `action_id`, `compte_id`, `outlook_id` (événement ou message), nature (evenement · message), `synchronise_le` | UNIQUE (compte, outlook_id) — un événement ne crée jamais deux actions |
+| **`preparation_paie`** | id, `agence_id`, mois, `etat` (brouillon · figee · exportee), `figee_le`, `figee_par_compte_id` | UNIQUE (agence, mois) hors brouillon |
+| **`preparation_paie_ligne`** | preparation_id, `contrat_rh_id`, jours de production, internes, absences, salaire, avantages, frais (+ devise), état des temps, état des frais, note | ⭐ une photographie : figée, elle ne bouge plus si un temps change après |
+
+⭐ Aucune table pour HRFlow, PlanProduction, PostProduction, Célébrations ni Viewer : ce sont des
+**lectures** de tables existantes (CV → proposition de fiche ; temps et absences par jour ; produit
+face à facturé ; dates de naissance, d'entrée et d'ancienneté ; aperçu d'un `document`).

@@ -257,6 +257,28 @@ pôle, mobilité, matricule, lieu de mission, champs du besoin, intermédiaire d
 gratuits, chiffrage du positionnement) passent par les commandes `Update*` existantes : leur entrée
 s'élargit, aucune commande nouvelle.
 
+# XI · LES APPLICATIONS — MAIL, SÉLECTION, DOCUMENTS, OUTLOOK, PAIE — 10 commandes *(24/09)*
+
+⭐ Source : `cartographie/BOOND_APPLICATIONS_2026-09-24.md`. ⛔ **Une action sur une sélection vérifie
+le droit ligne par ligne** : une ligne hors périmètre est refusée (`DROIT`) et **n'arrête pas les
+autres** ; la réponse rend le compte des acceptées et des refusées, avec leur motif.
+
+| Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
+|---|---|---|---|---|---|---|
+| `SendEmail` | destinataires (contacts ou personnes), modele_id?, objet, corps, pièces | l'envoi et un état par destinataire | `GARDE` au-delà du maximum · `GARDE` fournisseur `aucun` | `EmailSent` | `email.fournisseur` · `email.envoi_groupe.max` | **M-8** |
+| `PushCVToContacts` | personne_ids, contact_ids, dossier_technique_id?, modele_id? | l'envoi + une action par couple | `GARDE` candidat blacklisté · `DROIT` hors périmètre | `CVPushed` | `email.push_cv.action_auto` · `candidat.blackliste.portee` | — |
+| `BulkUpdate` | objet, ids, champs | acceptées / refusées | `DROIT` par ligne · `GARDE` code inconnu | un événement **par ligne** | — | — |
+| `BulkArchive` | objet, ids, motif | acceptées / refusées | `DROIT` par ligne · `ETAT` déjà archivé | un `…Archived` par ligne | — | **M-8** |
+| `ExportSelection` | objet, ids, colonnes | le fichier xlsx | `DROIT` colonne sensible sans la permission | `SelectionExported` *(qui, quoi, combien)* | `ui.liste.colonnes` | — |
+| `GenerateDocument` | modele_id, objet, objet_id, format | le document | `GARDE` modèle d'une autre famille | `DocumentGenerated` | — | — |
+| `ParseCV` | document_id | une **proposition** de fiche, jamais écrite seule | `GARDE` lecteur `aucun` | `CVParsed` | `cv.lecteur` | — |
+| `SyncOutlookEvent` | action_id | le lien | `GARDE` synchro coupée · `ETAT` déjà lié | `OutlookEventSynced` | `outlook.synchro` | — |
+| `RecordOutlookMail` | outlook_id, objet cible | l'action + le document | `ETAT` déjà enregistré | `OutlookMailRecorded` | `outlook.synchro` | — |
+| `PreparePayroll` · `FreezePayroll` · `ExportPayroll` | agence, mois · id · id | la préparation, figée, exportée | `ETAT` déjà figée · `DROIT` sans `LireDonneesRHSensibles` | `PayrollPrepared` · `PayrollFrozen` · `PayrollExported` | `paie.export.format` | — |
+
+⭐ **Compte au 24/09 au soir : 86 + 10 = 96 commandes** (la ligne paie compte pour une). Elles se codent
+avec le lot 5.8, jamais avant le lot 2 accepté.
+
 # VI · LES CINQ COMMANDES QUI MÉRITENT UN BLOC
 
 ## §C-1 · `ConvertCandidateToResource` — la garde G1
