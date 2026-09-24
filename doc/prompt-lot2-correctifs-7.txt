@@ -1,0 +1,88 @@
+AVA MANAGER — LOT 2, CORRECTIFS APRÈS LE SEPTIÈME AUDIT
+=======================================================
+24/09/2026 (nuit). Le septième audit a REFUSÉ le lot 2 au commit ba9a284, sur
+UN défaut critique d'une famille nouvelle. Lis tout avant d'écrire une ligne.
+
+Rapport : C:\Users\Hamada\Desktop\ava-audit-7\rapport\
+Arbitrage : _ops/ARBITRAGE_AUDIT_2026-09-24c.md (D-32, D-33)
+
+
+0. CE QUI EST GAGNÉ
+───────────────────
+  ⭐ V-117 FERMÉ ET GARDÉ : la ligne de repli a disparu, les 55 natures sont
+     cohérentes, ArchiveObject refuse les 10 types hors agence ; retirer le
+     contrôle fait tomber P-318 / P-319.
+  ⭐ 318 portes, 41 assertions, base neuve, 52 sondes hors agence refusées
+     sans une écriture.
+  ⛔ Le trou restant est d'une autre famille : la garde et la commande lisent
+     l'entrée chacune de leur côté.
+
+
+1. CRITIQUE — D-32 : UNE SEULE LECTURE DE L'ENTRÉE
+──────────────────────────────────────────────────
+C1  V-128 · V-136
+    Mesuré : DeclareCVShared avec {"id": <PAR>, "positionnement_id": <CAS>} —
+    la garde juge PAR (agence.ts:56), la commande modifie CAS (besoin.ts:276).
+    CreateProject écrit un besoin_id jamais contrôlé (projet.ts:58). Même
+    mécanique : CreateCandidate, CreateResource (agence / agence_id),
+    CreateCompany (le manager).
+    ⛔ Ne corrige PAS l'ordre des clés commande par commande : c'est la
+    famille qu'on ferme.
+
+    Règle 1 — UN IDENTIFIANT = UN NOM
+      chaque commande déclare les clés de son entrée ; plus d'alias
+      (id / positionnement_id, agence / agence_id). Clé inconnue, ou deux
+      clés pour le même objet → GARDE « entrée ambiguë », rien d'écrit.
+    Règle 2 — LA GARDE LIT, LA COMMANDE REÇOIT
+      la garde résout l'objet une fois et le met dans le contexte
+      (ctx.cible : table, id, agence) ; la commande ne relit PLUS
+      l'identifiant dans l'entrée. La seconde recherche d'un objet
+      introuvable dans la commande disparaît (V-136).
+    Règle 3 — TOUTE RÉFÉRENCE ÉCRITE PASSE PAR LA GARDE
+      chaque identifiant qu'une commande écrit vers un autre objet
+      (besoin_id de CreateProject, manager de CreateCompany, societe_id…)
+      est déclaré dans sa ligne de correspondance ; la garde lit son
+      agence et exige le droit dessus. Référence non déclarée → GARDE.
+
+    PORTES — génériques, sur les 55 commandes servies :
+    - une clé inconnue → GARDE, 0 écriture
+    - les deux noms d'un même objet → GARDE, 0 écriture
+    - une référence écrite d'une autre agence → DROIT, 0 écriture, relu en base
+    - la sonde de l'audit (PAR / CAS sur DeclareCVShared) rejouée → refus
+
+
+2. ÉLEVÉ
+────────
+E1 V-129 · D-33   droits.ts:32 — `soi` ne couvre AUCUNE agence. Il ne vaut
+   que pour une commande de nature `soi`, sur le compte lui-même.
+   ManageGroups refuse (GARDE) de poser `soi` sur une autre nature.
+   Porte : un groupe `soi` sur UpdateNeed → DROIT hors du compte.
+E2 V-130   Porte : TransferContact vers une société d'une autre agence →
+   DROIT. Le sabotage Y6 (ne juger qu'une des deux agences) doit la faire
+   tomber : aujourd'hui 0 sur 318.
+E3 V-134 (= V-120, toujours ouvert)   matrice, audit4, chemin effacent
+   encore 4 délégations sur 6 qu'ils n'ont pas posées. Chaque fichier
+   photographie et ne retire que les siennes. Porte : une délégation posée
+   avant le banc lui survit, fichier par fichier. Commit `Role: banc`.
+
+
+3. CE QUE LE BRAIN FAIT — TU N'Y TOUCHES PAS
+────────────────────────────────────────────
+Migration 015 (19 tables fermées à ava_app, compte par colonne, deux états
+en référentiel), la porte qui compare les GRANT au code, la case 9 qui lit
+toute l'histoire de PORTES.md, JEU_ESSAI.sql réparé. P-062 → P-065 sont
+déclarées dans PORTES_EN_ATTENTE (D-35) : ⛔ ne les repasse pas ✅.
+⚠️ Après 015, ava_app n'écrit plus `groupe`, `permission`, `perimetre`,
+`agence`… : si une porte y écrivait par l'application, c'est la porte qui
+se trompe ; si une COMMANDE servie y écrit, dis-le au BRAIN, la porte des
+GRANT le verra.
+Quand Ahmed te dit « lot-2-brain est prêt » : `git merge lot-2-brain`, puis
+`bash outils/make.sh reset && bash outils/make.sh test`.
+
+
+4. CE QUE TU RENDS
+──────────────────
+Une ligne par V- dans journal/ : commit · porte · ROUGE puis VERTE. Base
+refaite, cliquet à 13 cases. Puis, seulement si tout est vert :
+« prêt pour le huitième audit ».
+⛔ Pas de fusion sur main. Chaque commit porte son trailer `Role:`.

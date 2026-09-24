@@ -1,0 +1,263 @@
+SESSION KIT — FAIRE DE LA MÉTHODE AVA MANAGER LE KIT DE TOUS LES PROJETS FROM SCRATCH
+====================================================================================
+24/09/2026. Rédigé par la session BRAIN d'Ava Manager, pour Hamada (= Ahmed).
+
+Hamada, 24/09 : « que ça devienne un kit pour tous mes projets from scratch :
+comment on a scrapé, relevé, matché, surtout comment on a codé, les journaux
+qu'on a établis, comment on a audité les allers-retours ».
+
+Le mot d'Ahmed est donné pour ÉCRIRE dans ~/.claude/skills/projet/ (SKILL.md,
+reference/, gabarits). ⛔ Rien d'autre sans son mot.
+
+
+0. CE QUI EXISTE DÉJÀ — LIS AVANT D'ÉCRIRE
+──────────────────────────────────────────
+Le kit existe : C:\Users\Hamada\.claude\skills\projet\
+  SKILL.md + reference/ (DEPOT, DOCTRINE, EQUIPE, GABARITS, OUTILLAGE,
+  PROMPT_A_COLLER, REGLES). Il pose déjà le hub, le banc, le sabotage, les
+  trois journaux, les hooks, et l'équipe (deux mères, contrainte croisée).
+Skills voisines à ne pas doubler : audit-code, audit-correction,
+  audit-rapport, schema-chemins, miroir-site, balises, plan, mere, fille.
+
+⭐ Ton travail : ENRICHIR ce kit avec ce qu'Ava Manager a prouvé, pas en
+écrire un second. Chaque ajout va là où il appartient ; ce qui contredit
+l'existant, tu le signales (« Ava Manager a mesuré X, le kit dit Y »), tu
+ne tranches pas seul.
+⛔ Rien de propre à Avaliance ni à Boond dans le kit : Boond devient
+« l'application à remplacer », Avaliance « le client ». Les exemples gardent
+leur date et leur source, comme les anecdotes RYMA du kit actuel.
+
+
+1. LA SOURCE — LE PROJET AVA MANAGER, À LIRE (lecture seule)
+────────────────────────────────────────────────────────────
+Dépôt : C:\Users\Hamada\Desktop\Ava Manager   (branche lot-2 ; main)
+Hub publié : https://ahmedbentaleb.github.io/ava-boond-hub/
+⛔ Tu n'écris RIEN dans ce dépôt, tu ne lances ni make ni cliquet (une autre
+session code dedans, sur la base « ava », port 3000).
+
+| Sujet | Fichiers à lire |
+|---|---|
+| Tout, dans l'ordre | _ops/ETAT_PROJET.md (du premier token au livrable) |
+| Relever | _ops/cartographie/BOOND_CHEMINS_2026-09-19.md, BOOND_ECRANS_2026-09-22.md, BOOND_REGLAGES_2026-09-23.md, BOOND_PARITE_2026-09-24.md, BOOND_APPLICATIONS_2026-09-24.md |
+| Matcher | BOOND_PARITE (✅ ➕ ⛔), _ops/REPONSES_AVALIANCE_2026-09-24.md, _ops/COMPLEMENTS_V1_2026-09-23.md |
+| Le canon | _ops/MODELE_DONNEES_AVAMANAGER_V1.md, MODELE_METIER_CANONIQUE_v1.md, REGISTRE_POLITIQUES_v1.md (§E), MACHINES_ETAT_V1.md, SPEC_COMMANDES_L4.md, MATRICE_DROITS_v1.md, SPEC_ASSERTIONS_L7.sql, DECISIONS_TECHNIQUES_v1.md |
+| Coder | outils/make.sh, outils/cliquet.sh, outils/verif_trailers.sh, .githooks/commit-msg, .github/workflows/ci.yml, les prompts _ops/prompt-lot2-correctifs*.txt et _ops/prompt-brain-code*.txt |
+| Journaux | journal/PORTES.md, CORRECTIFS.md, ETAPES.md, BUGS.md, DECISIONS.md, QUESTIONS.md, REMARQUES.md, journal/adr/, _ops/JOURNAL_BUGS.md, _ops/PLAN_*.md |
+| Auditer | _ops/prompt-audit.txt, _ops/prompt-audit-2.txt, _ops/GRILLE_AUDIT.md, les six _ops/ARBITRAGE_AUDIT_*.md, les rapports Desktop/ava-audit-{1..6}/rapport/ |
+| Le hub | _ops/share-hub/index.html, _ops/outils/dossier.py |
+
+
+2. LA MÉTHODE, ÉTAPE PAR ÉTAPE — ce que le kit doit savoir faire
+────────────────────────────────────────────────────────────────
+
+2.1 SCRAPER — capturer l'application à remplacer
+  - Hamada ouvre la session lui-même. ⛔ Claude ne tape jamais un mot de
+    passe, ne crée pas de compte.
+  - ⛔ Lecture seule : on ouvre les formulaires, on les quitte sans
+    enregistrer. On ne capture PAS les pages à secrets (sessions et
+    adresses IP, clé d'API).
+  - Le navigateur intégré (volet de droite), pas Chrome. Pour lire :
+    get_page_text / read_page, pas des captures.
+  - Le piège mesuré : Chrome et le volet bloquent les téléchargements après
+    le premier, et une page https ne peut pas POSTer vers 127.0.0.1.
+    ⭐ La parade qui a tenu (93 captures) : html2canvas dans la page →
+    window.name = 'nom|dataURL' → l'onglet navigue vers
+    http://127.0.0.1:8766/ → ce récepteur local écrit le PNG. Script en
+    annexe A : il entre dans le kit comme outil.
+  - Chaque capture a un nom, un écran, une explication (BOOND_ECRANS).
+
+2.2 RELEVER — tout, pas un échantillon
+  Cinq relevés, chacun un fichier daté et balisé (<quand_utiliser> <etat>
+  <source>, chaque balise sur sa ligne) :
+  | Relevé | Contenu |
+  |---|---|
+  | Chemins | les sections, les états, les chemins d'un objet, les volumes |
+  | Écrans | chaque écran : capture + ce qu'il fait + qui s'en sert |
+  | Réglages | chaque page d'administration, chaque liste AVEC ses valeurs |
+  | Parité | chaque liste : colonnes affichées ET disponibles ; chaque fiche : chaque champ |
+  | Applications | les modules installés (ce qu'ils font, qui les édite) et la place de marché |
+  ⭐ Leçon : la première cartographie s'est crue finie trois fois. Hamada :
+  « tu n'as pas tout capturé, même ceux de paramètres » ; puis les widgets du
+  tableau de bord ; puis les colonnes ; puis les applications. Le kit impose
+  la liste des cinq relevés AVANT de déclarer la cartographie close.
+
+2.3 MATCHER — chaque élément relevé reçoit un verdict
+  - ✅ déjà au modèle · ➕ ajouté aujourd'hui · ⛔ écarté AVEC son motif
+  - puis on le range, et c'est la clé de tout le projet :
+    | Genre | Ce que c'est | Où |
+    |---|---|---|
+    | MUR | un invariant que la base refuse (CHECK, trigger, EXCLUDE) | modèle métier + une assertion SQL par mur |
+    | POLITIQUE | une bifurcation métier : clé, valeurs, défaut = ce que fait le client aujourd'hui | table `politique`, registre |
+    | RÉFÉRENTIEL | une liste de valeurs : catégories FIXES (le code s'y fie), codes ADMINISTRABLES | tables `ref_*` |
+    | MACHINE D'ÉTAT | les catégories et leurs transitions, chaque transition = une commande | machines d'état |
+  - ⛔ « Tout paramétrable, rien en dur » : aucun if sur un libellé, aucun
+    CHECK qui fige une liste de codes métier.
+  - Ce qui ne se déduit pas d'un texte → une QUESTION AU CLIENT, rangée dans
+    le hub (bouton Questions), réponse consignée (R1…Rn) puis reportée au
+    canon. Tout ce qui se déduit, le BRAIN le tranche seul.
+
+2.4 CODER — ⭐ le cœur, à détailler le plus
+  a) LE CANON D'ABORD. « On n'avance pas dans le code tant que tout n'est
+     pas introduit. » Le canon = modèle de données, murs, registre des
+     politiques et référentiels (§E, SEULE source des comptes, mesurés par
+     une commande écrite à côté), machines d'état, contrat des commandes L4,
+     matrice des droits, assertions SQL.
+  b) LE CONTRAT L4 d'une commande : Entrée · Sortie · Refuse si · Événement ·
+     Politique · Mur. Cinq familles de refus : GARDE, DROIT, ETAT,
+     INTROUVABLE, MUR. Chaque section porte son LOT CIBLE.
+  c) LA MATRICE : groupes × commandes, quatre symboles : ✓ (a le droit),
+     S (sur soi), D (délégable seulement), — (jamais). Les groupes sont des
+     données, pas du code.
+  d) LES RÔLES, un poste chacun :
+     | Rôle | Qui | Branche / dossier | Base, port | Fait | Ne fait jamais |
+     |---|---|---|---|---|---|
+     | BRAIN | Claude | canon dans _ops/ | — | canon, arbitrage, prompts, hub | coder server/web |
+     | CODE | une autre IA (Grok) | lot-N, dossier principal | ava, 3000 | server/ web/ test/ | toucher _ops/, fusionner sur main |
+     | BRAIN CODE | Claude | lot-N-brain, worktree ava-brain | ava_brain | migrations, assertions, outils, CI | server/ web/ |
+     | DESIGN | Claude | design, worktree ava-design | — | maquettes | canon, code |
+     | AUDIT | Claude, neuve à chaque tour | clone ava-audit-N | ava_auditN, 3N00 | mesurer, saboter | lire les prompts, plans, arbitrages |
+     Variable d'environnement pour la base (AVA_DB) et le port (AVA_PORT) :
+     deux postes ne touchent jamais la base du voisin.
+  e) LES PORTES : un test = une porte P-nnn, déclarée dans PORTES.md avec son
+     état (✅ servie / ⏳ en attente) et son lot cible. Chaque porte : ROUGE
+     avant le correctif, VERTE après ; un témoin positif ET un négatif ; un
+     refus se relit en base (« 0 écriture »).
+  f) LE CLIQUET — des cases MESURÉES, aucune déclarée (13 aujourd'hui) :
+     1 make 0, toutes les portes ✅ jouées et vertes · 2 assertions : copie =
+     canon, toutes OK · 3 portes servies sur main toutes présentes · 4 zéro
+     skip/only/todo · 5 vue rouge non vide pour chaque porte · 6 ligne d'étape
+     au journal · 7 _ops/ identique à main · 8 frontière web/server · 9 aucune
+     porte rétrogradée ✅→⏳ · 10 aucune ⏳ au-delà de son lot · 11 aucune porte
+     ✅ perdue depuis le départ de la branche · 12 crochets posés · 13 la
+     branche brain est un ANCÊTRE de HEAD.
+     ⭐ Le cliquet REFAIT LA BASE avant de mesurer (D-20) : un banc vert sur
+     une base sale a menti une fois (V-096).
+  g) LES TRAILERS : chaque commit porte « Role: brain|code|banc|design » ; un
+     commit qui touche test/ porte « Role: banc ». Crochet commit-msg local
+     ET pas de CI. ⚠️ V-124 : le script existait, la CI ne l'appelait pas —
+     « fait » n'est pas « branché ».
+  h) LES FUSIONS : lot-N-brain → lot-N (jamais l'inverse) ; le canon _ops/
+     se porte sur main par un worktree temporaire (git checkout lot-N --
+     _ops/, commit Role: brain) ; ⛔ jamais de rebase d'une branche partagée
+     (il casserait la case 13) ; ⛔ jamais réécrire une migration publiée :
+     on en ajoute une ; un numéro de migration = un fichier.
+  i) LES RÈGLES QUE LES AUDITS ONT PAYÉES (à mettre dans DOCTRINE) :
+     - un contrôle d'accès se ferme par défaut : aucun repli silencieux
+       (quatre tours sur le même trou, fermé en supprimant UNE ligne, D-31)
+     - un compte ne se recopie pas, il se mesure contre l'autre document
+     - corriger la racine, pas le symptôme (D-2 → D-10 → V-108 → D-25)
+     - le GRANT vient avec la commande : une table sans commande n'est pas
+       écrivable
+     - un sabotage qui ne fait tomber aucune porte = une porte aveugle
+
+2.5 LES JOURNAUX — qui écrit quoi
+  | Journal | Qui | Une ligne = |
+  |---|---|---|
+  | journal/PORTES.md | CODE | P-nnn · ce qu'elle prouve · état · lot |
+  | journal/CORRECTIFS.md | CODE | V-nnn · commit · porte · ROUGE → VERTE |
+  | journal/ETAPES.md | CODE | l'étape du lot (E1…E7) |
+  | journal/BUGS.md, DECISIONS.md, QUESTIONS.md, REMARQUES.md, adr/ | CODE | un bug, une décision locale, une question au BRAIN, une remarque |
+  | _ops/JOURNAL_BUGS.md | BRAIN CODE | V-nnn · commit · témoin ROUGE → VERT |
+  | _ops/PLAN_<date>.md | BRAIN | ce qui reste à faire EN HAUT, puis à trancher |
+  | _ops/ARBITRAGE_AUDIT_<date>.md | BRAIN | décisions D-n, à faire en haut, qui fait quoi |
+  | _ops/ETAT_PROJET.md | BRAIN | les phases du premier token au livrable, le tableau des tours d'audit |
+  Le hub publie tout (dossier.py génère l'index) ; rien ne fait sortir du hub.
+
+2.6 AUDITER — l'aller-retour, un tour complet
+  1. CODE écrit « prêt pour le Nème audit » (banc sur base refaite, cliquet
+     tout vert).
+  2. BRAIN vérifie avant de lancer : ancêtre (case 13), _ops/ = main, arbre
+     propre.
+  3. AUDIT dans un clone NEUF, sa base, son port. ⛔ Mur d'indépendance : il
+     ne lit ni plans, ni prompts, ni arbitrages. Contrôle d'ancêtre AVANT
+     tout, sinon il n'audite pas.
+  4. Il rejoue le banc sur base neuve, SABOTE (69 au 6e tour : on casse le
+     code exprès, une porte doit tomber), passe la grille (43 contrôles,
+     familles A–F et K ; un seul 🔴 refuse le lot).
+  5. Il rend : SYNTHESE (verdict ACCEPTÉ/REFUSÉ en ligne 1), CONSTATS (V-n
+     numérotés à la suite ; Cible, Gravité critique/elevee/moyenne/bonne,
+     Preuve fichier:ligne, Reproduire, Prétend/Mesure, Correction), SUIVI_V
+     (chaque constat précédent : fermé, partiel, ouvert), MUTATIONS,
+     SECURITE, CONFORMITE, GRILLE.
+  6. BRAIN ARBITRE : chaque V- tranché, décision D-n, qui le fait ; le canon
+     corrigé d'abord.
+  7. Deux prompts en parallèle : correctifs pour CODE, tour N pour BRAIN
+     CODE. Forme fixe : 0 ce qui est gagné · 1 critique · 2 élevé · 3 moyen ·
+     ce que l'autre fait (tu n'y touches pas) · ce que tu rends, avec la
+     PHRASE EXACTE de fin.
+  8. BRAIN CODE finit → « lot-N-brain est prêt » → CODE fusionne, refait la
+     base, joue le banc et le cliquet → retour en 1.
+  9. L'audit conteste UNE fois ; le BRAIN répond ; c'est clos.
+  Le tableau des tours se tient dans ETAT_PROJET (tests aveugles, critiques
+  ouverts, tests joués, constats fermés). Ava Manager : 6 tours, de 48 tests
+  aveugles et 12 critiques à 1 et 1.
+
+2.7 LA FORME AVEC HAMADA — déjà dans ses skills focus, brainstorm, plan :
+  le kit y renvoie, il ne les recopie pas.
+
+
+3. CE QUE TU RENDS
+──────────────────
+- Le kit enrichi dans ~/.claude/skills/projet/ : SKILL.md reste court
+  (procédure) ; le détail va dans reference/ — proposé :
+  reference/RELEVE.md (2.1-2.3), reference/CANON.md (2.4 a-c),
+  reference/CODE.md (2.4 d-i), reference/JOURNAUX.md (2.5),
+  reference/AUDIT.md (2.6) — fusionne avec GABARITS/EQUIPE/DOCTRINE quand le
+  sujet y est déjà.
+- Des GABARITS à poser, pas à décrire : le prompt d'audit, le prompt de
+  correctifs, le prompt brain code, l'arbitrage, l'en-tête de CONSTATS, de
+  PORTES et de CORRECTIFS, le cliquet générique (cases paramétrées par le
+  nom des branches), verif_trailers, le récepteur de captures (annexe A).
+- Un tableau final en 15 lignes au plus : ce qui est ajouté, où, et les
+  contradictions trouvées avec le kit existant, numérotées, pour qu'Hamada
+  tranche.
+⛔ Pas de commit, pas de push sans son mot.
+
+
+ANNEXE A — le récepteur de captures (outil qui a servi, tel quel)
+─────────────────────────────────────────────────────────────────
+"""Reçoit une capture par window.name : la page y range 'nom|dataURL', puis
+l'onglet navigue ici (origine locale), et cette page POSTe le tout en same-origin."""
+import base64, http.server, os, re
+DEST = os.path.join(os.path.dirname(os.path.abspath(__file__)), "captures")
+os.makedirs(DEST, exist_ok=True)
+
+PAGE = b"""<!doctype html><meta charset=utf-8><title>recepteur</title>
+<body style="background:#111;color:#ccc;font:14px sans-serif">recepteur<pre id=e></pre><script>
+(async () => {
+  const n = window.name || '';
+  const i = n.indexOf('|');
+  if (i < 0) { e.textContent = 'rien dans window.name'; return; }
+  const nom = n.slice(0, i), png = n.slice(i + 1);
+  const r = await fetch('/save?nom=' + encodeURIComponent(nom), {method: 'POST', body: png});
+  e.textContent = await r.text();
+  window.name = '';
+})();
+</script>"""
+
+class H(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header("content-type", "text/html; charset=utf-8")
+        self.end_headers()
+        self.wfile.write(PAGE)
+    def do_POST(self):
+        nom = re.sub(r"[^a-zA-Z0-9_-]", "", self.path.split("nom=")[-1])[:60] or "capture"
+        corps = self.rfile.read(int(self.headers.get("content-length", 0))).decode()
+        png = base64.b64decode(corps.split(",", 1)[1])
+        with open(os.path.join(DEST, nom + ".png"), "wb") as f:
+            f.write(png)
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(f"ECRIT {nom}.png {len(png)//1024} Ko".encode())
+    def log_message(self, *a):
+        pass
+
+http.server.HTTPServer(("127.0.0.1", 8766), H).serve_forever()
+
+Côté page (dans le navigateur, sur l'écran à capturer) :
+  html2canvas chargé depuis cdnjs, puis
+  const c = await html2canvas(document.body);
+  window.name = 'nom-de-l-ecran|' + c.toDataURL('image/png');
+  location.href = 'http://127.0.0.1:8766/';
+  puis revenir à l'écran suivant.

@@ -308,6 +308,25 @@ SELECT t.doit_etre('`ava_app` n''a TRUNCATE sur aucune relation', 'M-8',
     ) AS r
     WHERE has_table_privilege('ava_app', r.oid, 'TRUNCATE')));
 
+-- ⛔ V-122, 24/09 — LE GRANT VIENT AVEC LA COMMANDE. 012 et 013 donnaient
+--    l'écriture à `ava_app` sur 27 tables qu'aucune commande servie n'écrit.
+--    014 la retire ; cette assertion dit qu'elle ne revient pas en douce.
+-- ⭐ La liste EST le contrat : le jour où une commande livre l'écriture d'une
+--    de ces tables, la migration qui la sert lui rend son GRANT ET la retire
+--    d'ici, dans le même commit. Un GRANT remis à la main fait lever.
+SELECT t.doit_etre('`ava_app` n''écrit aucune table dont la commande n''est pas servie', 'M-8',
+  NOT EXISTS (
+    SELECT 1 FROM unnest(ARRAY[
+      'personne_langue','personne_certification','personne_experience','personne_diplome',
+      'contrat_rh','document_suivi','avantage_verse','dossier_technique',
+      'dossier_technique_ligne','devis','facture','facture_ligne','relance_facture',
+      'achat','facture_fournisseur','paiement','jalon','ca_additionnel',
+      'contact_domaine','contact_outil','compteur_facture',
+      'envoi_email','envoi_email_destinataire','document_genere','lien_outlook',
+      'preparation_paie','preparation_paie_ligne'
+    ]) AS n(tbl)
+    WHERE t.droit('ava_app', n.tbl, 'INSERT') OR t.droit('ava_app', n.tbl, 'UPDATE')));
+
 -- ── M-9 · une action a exactement un porteur ──────────────────────────────
 SELECT t.doit_refuser('une action sans porteur', 'M-9', $s$
   INSERT INTO action (type_code, contenu) VALUES ('note','orpheline')

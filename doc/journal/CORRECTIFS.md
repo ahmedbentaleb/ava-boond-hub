@@ -349,3 +349,13 @@ Mesure de clôture, base refaite (`make.sh reset` puis `make test`) : `make test
 Prêt pour le sixième audit.
 
 D-30 : les cinq permissions sans titulaire au seed sont voulues. Rien n'est codé pour leur inventer un titulaire. La migration 013 est dans `lot-2`.
+
+| V-117 | C1 D-31 plus aucun repli sur l'agence du demandeur | P-314 P-315 P-316 P-317 | le `else` final exigeait le droit dans l'agence du compte | `ok` — objet d'une autre agence → DROIT, 0 écriture ; témoin dans le périmètre | `090ea40` `7a15df9` |
+| V-118 | C1 ArchiveObject nomme la commande dédiée | P-320 | société, contact, unité, service passaient par ArchiveObject | `ok` — GARDE qui nomme ArchiveCompany, ArchiveContact ou ArchiveService | `090ea40` `7a15df9` |
+| V-119 | E1 TransferContact dans les deux agences | P-323 | le contact gardait l'agence d'origine | `ok` — société hors périmètre → DROIT, rien écrit ; transfert permis, agence relue | `090ea40` `7a15df9` |
+| V-120 | E2 le banc ne retire que ce qu'il a posé | P-324 | `retirer` effaçait toute la permission | `ok` — une délégation posée avant le banc lui survit | `7a15df9` |
+| V-123 | C1 chaque commande a une nature ; colonnes NOT NULL | P-321 P-322 | une commande sans agence lue retombait sur le compte | `ok` — nature objet, création, installation ou soi ; colonne d'agence lue NOT NULL | `090ea40` `7a15df9` |
+
+Mesure de clôture, base refaite (`make.sh reset` puis `make test`) : `make test` OK. Cliquet : cases OK=13 KO=0, F13 comprise (`lot-2-brain` est un ancêtre de HEAD). 318 portes, 41 assertions.
+
+Prêt pour le septième audit.

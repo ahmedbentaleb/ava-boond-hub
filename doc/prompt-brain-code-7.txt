@@ -1,0 +1,69 @@
+AVA MANAGER — SESSION BRAIN CODE, SEPTIÈME TOUR
+===============================================
+24/09/2026 (nuit). Quatre points. Le mot d'Ahmed est donné pour ce qui suit.
+
+À lire d'abord : _ops/ARBITRAGE_AUDIT_2026-09-24c.md (D-34, D-35) et
+Desktop/ava-audit-7/rapport/SECURITE.md §I-08, GRILLE.md, CONSTATS.md
+(V-131, V-132, V-133, V-135).
+
+Ton poste :
+  cd /c/Users/Hamada/Desktop/ava-brain
+  git fetch "/c/Users/Hamada/Desktop/Ava Manager" lot-2
+  git checkout lot-2-brain && git merge FETCH_HEAD
+Base ava_brain, refaite à neuf. Chaque commit porte « Role: brain »
+(« Role: banc » s'il touche test/).
+
+
+B1  V-131 · D-34   LE GRANT SE CALCULE
+    - migration 015 : REVOKE INSERT, UPDATE sur les 19 tables qu'aucune
+      commande servie n'écrit (liste : SECURITE.md §I-08 — agence,
+      compte_groupe, compte_surcharge, groupe, permission, perimetre,
+      alerte_regle, besoin_competence, besoin_domaine, besoin_outil,
+      calendrier_jour_non_ouvre, candidat_domaine, candidat_outil, modele,
+      periode_emploi, personne_coordonnee, prestation_ligne_ca,
+      reprise_boond, societe_role) ; plus de GRANT sur les 7 vues ;
+      `compte` : UPDATE sur la seule colonne theme_json
+    ⚠️ Avant de fermer une table, vérifie qu'aucune commande servie ne
+      l'écrit (grep INSERT/UPDATE dans server/src) — sinon elle reste, et
+      tu le dis.
+    - UNE PORTE CALCULÉE (Role: banc) : les tables écrivables par ava_app
+      (has_table_privilege) = les tables nommées dans un INSERT/UPDATE de
+      server/src (+ ref_* et politique par leurs commandes d'admin). Toute
+      différence → rouge, avec le nom de la table.
+    - l'assertion L7 de V-122 garde son nom exact : elle ne prétend plus
+      mesurer plus que ce qu'elle mesure
+    Témoin : GRANT INSERT ON groupe remis à la main → la porte rougit.
+
+B2  V-132   MIGRATION 015, SUITE — DEUX ÉTATS EN RÉFÉRENTIEL
+    - ref_etat_envoi_email (en_attente, envoye, echec) et
+      ref_etat_preparation_paie (brouillon, figee, exportee), catégories
+      fixes, codes identiques ; les deux CHECK de 013 → FK
+    - nature (envoi_email, lien_outlook) et format (document_genere)
+      RESTENT en CHECK : justifiés au registre §D (déjà écrit)
+    Témoin : `\dt ava.ref_*` = 74 ; le grep B5 de la grille (élargi) ne
+      rend plus que des lignes justifiées au registre.
+
+B3  V-133 · D-35   LA CASE 9 LIT TOUTE L'HISTOIRE
+    - case 9 du cliquet : pour chaque porte, chaque passage ✅ → ⏳ dans
+      l'histoire de journal/PORTES.md sur la branche (git log -p), pas
+      seulement début contre fin ; un passage absent du tableau D-35 de
+      _ops/PORTES_EN_ATTENTE.md → KO avec le numéro et le commit
+    - P-062 → P-065 y sont déjà déclarées : la case doit être VERTE avec
+      elles, ROUGE si on retire leur ligne
+    Témoin : les deux, joués.
+
+B4  V-135   LE JEU D'ESSAI SE CHARGE
+    - _ops/JEU_ESSAI.sql reçoit agence_responsable_id (et tout ce que 011 à
+      015 exigent)
+    - make test le charge sur base neuve ; un échec de chargement fait
+      échouer make
+    Témoin : base neuve → chargé, 0 erreur ; une colonne NOT NULL retirée
+      du jeu → make rouge.
+
+Ce que tu ne fais jamais : server/ web/ (Grok) ; réécrire une migration
+publiée ; toucher « ava », le port 3000, le dossier « Ava Manager » ;
+fusionner ou pousser ; assouplir un contrôle qui gêne.
+
+Tu rends : une ligne par point dans `_ops/JOURNAL_BUGS.md` (V-xxx · commit ·
+témoin ROUGE → VERT), puis 15 lignes au plus, avec la phrase exacte pour
+Grok : « lot-2-brain est prêt : git merge lot-2-brain. »

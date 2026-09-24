@@ -159,6 +159,15 @@ tombe était ✅ ou ⏳, et la case redevient du tout-ou-rien.
 
 ⚠️ **Les 5 portes du lot 1 passent ✅ sans discussion** — elles sont servies et vertes.
 
+## ⛔ D-35 (24/09) — un ✅ retiré se DÉCLARE ici
+
+Un ✅ ne redevient ⏳ que s'il était **faux**, et la ligne ci-dessous le dit. La case 9 lit **toute
+l'histoire** de `journal/PORTES.md` sur la branche : un passage ✅ → ⏳ absent de ce tableau → KO.
+
+| Porte | ✅ posé | ⏳ remis | Motif | Décision |
+|---|---|---|---|---|
+| P-062 · P-063 · P-064 · P-065 | `6dc1e89` (20/09) | `b2b7d1e` (21/09) | captures des écrans besoin : ✅ posé en masse avec les 55 portes de contrat, alors que ces écrans sont du **lot 3** et n'existent pas | D-35 — le ⏳ est la vérité, lot cible **3** |
+
 </etat>
 
 ---

@@ -46,7 +46,7 @@ casse le code est pire qu'aucune suite : elle donne confiance sans rien prouver.
 | **B2** | Toutes les politiques sont chargées | `SELECT count(*) FROM politique` = le compte du **registre §E** — ⛔ ne pas recopier le chiffre ici | 🟠 |
 | **B3** | `valeur` = `valeur_defaut` au seed | `WHERE valeur <> valeur_defaut` → 0 ligne | 🟠 |
 | **B4** | Tous les référentiels existent | `\dt ava.ref_*` = le compte du **registre §E** — ⛔ ne pas recopier le chiffre ici | 🟠 |
-| **B5** | Aucun CHECK qui fige une **liste de codes** métier | `grep -niE "CHECK *\(.*_code *(IN\|=)" db/migrations/*.sql` — chaque ligne doit être justifiée au registre (ex. `perimetre.type_code`, D-9) *(V-065 : l'ancien grep donnait un faux 🔴)* | 🔴 non justifiée |
+| **B5** | Aucun CHECK qui fige une **liste de codes** métier | `grep -niE "CHECK *\([a-z_]+ +IN *\(" db/migrations/*.sql` *(V-132 : l'ancien ne voyait que les colonnes `_code` ; un `etat IN (…)` lui échappait)* — chaque ligne doit être justifiée au registre (ex. `perimetre.type_code`, D-9) *(V-065 : l'ancien grep donnait un faux 🔴)* | 🔴 non justifiée |
 
 ⚠️ **B1 attrape aussi les faux positifs** — un `if` sur un état dans un outil de migration n'est
 pas du métier. ⭐ **Je lis chaque occurrence, je ne compte pas.** Un grep qui décide tout seul
@@ -94,7 +94,7 @@ ORDER BY 1;
 | **K1** | Hors `AVA_MODE=banc`, **aucune route ne répond** sauf `/sante` — ⛔ **les vues de lecture comprises** | serveur sans `AVA_MODE` : `POST /commandes/*` **et** `GET /vues/*` → 401, 0 ligne écrite, 0 ligne rendue, rien tracé *(V-075, D-14, 23/09 : une vue ouverte livrait 81 besoins)* | 🔴 |
 | **K2** | Une session n'est jamais l'identifiant d'un compte | envoyer l'UUID d'un compte comme session → refus ; le jeton est aléatoire, haché, expirant (D-10) | 🔴 |
 | **K3** | Un compte désactivé ne fait rien | sa session → refus, 0 écriture | 🔴 |
-| **K4** | Le périmètre se juge **sur l'objet visé**, et se **lit** au lieu de s'appeler | la table `commande → table → colonne d'agence` existe et couvre les 55 ; une commande sans sa ligne est refusée ; par commande : un cas hors agence → `DROIT`, 0 écriture *(V-076, D-15 : `crm.ts` n'avait aucune garde)* | 🔴 |
+| **K4** | Le périmètre se juge **sur l'objet visé**, et se **lit** au lieu de s'appeler | la table `commande → table → colonne d'agence` existe et couvre **toutes les commandes servies** — le compte des contractées se mesure (`bash outils/compte_commandes.sh`, la commande de L4), il ne se recopie pas *(B4, 24/09)* ; une commande sans sa ligne est refusée ; par commande : un cas hors agence → `DROIT`, 0 écriture *(V-076, D-15 : `crm.ts` n'avait aucune garde)* | 🔴 |
 | **K5** | La base n'accepte personne sans mot de passe hors poste de dev | `bash outils/verif_serveur.sh` sur le serveur : 0 `trust`, `listen_addresses` borné, `ava_serveur` avec mot de passe — ⚠️ pas dans le cliquet : le poste de dev est en `trust` assumé *(V-093)* | 🔴 V-022 (T3) |
 
 ## D · LE DÉPÔT — 5 contrôles.
@@ -133,7 +133,7 @@ lis `/web/src` une fois, à l'œil, à chaque lot — c'est ce qu'aucun grep ne 
 
 ---
 
-## F · LE CLIQUET — 11 contrôles (F1 → F11). ⛔⛔ Plus important que l'audit lui-même.
+## F · LE CLIQUET — 13 contrôles (F1 → F13) *(V-136 : on en annonçait 11)*. ⛔⛔ Plus important que l'audit lui-même.
 
 > **Hamada :** « On ne doit plus faire marche arrière. On avance et on ne recule pas. »
 
@@ -142,7 +142,7 @@ lis `/web/src` une fois, à l'œil, à chaque lot — c'est ce qu'aucun grep ne 
 | **F1** | `/journal/PORTES.md` existe et est à jour | une ligne par porte : numéro, description, espèce, vue rouge quand | 🔴 |
 | **F2** | Les **quatre espèces** tournent | base · contrat · geste · **écran** | 🔴 — l'écran est celle qu'on oublie |
 | **F3** | ⭐ **Les portes SERVIES n'ont pas baissé** | **numéro par numéro** : chaque porte servie sur `main` existe dans HEAD — l'état se lit dans la colonne « État » trouvée par son en-tête ; sans cette colonne, toute porte de `main` est servie *(V-009 : un compte de `main` sans colonne valait 0)* | 🔴 **le contrôle du cliquet** |
-| **F10** | ⛔ **Aucune porte n'est passée de ✅ à ⏳** | numéro par numéro, pas par compte | 🔴 — c'est le `skip` avec un joli symbole |
+| **F10** | ⛔ **Aucune porte n'est passée de ✅ à ⏳** | numéro par numéro, pas par compte, sur **toute l'histoire** de la branche ; un retour déclaré dans `PORTES_EN_ATTENTE.md` (D-35) est admis | 🔴 — c'est le `skip` avec un joli symbole |
 | **F11** | Aucune **⏳** au-delà de son **lot cible** | chaque `⏳` porte le lot où elle doit passer ✅ | 🟠 une ⏳ sans échéance est un parking |
 | **F4** | Aucune porte désactivée, commentée, ou en `skip` | `grep -rniE "skip\|todo\|xit\|\.only\|disabled" test/` | 🔴 |
 | **F5** | Chaque porte a été **vue rouge** | la colonne du journal est remplie, avec la date | 🟠 |
@@ -222,7 +222,7 @@ du prompt.
 Le prompt qu'elle juge : [PROMPT_GROK_LOT1.md](PROMPT_GROK_LOT1.md).
 Le journal qu'elle alimente : [JOURNAL_BUGS.md](JOURNAL_BUGS.md) — 0 ligne.
 
-⏳ **Elle grandira.** Le lot 2 (les 44 commandes) ajoutera une famille **F — les contrats** :
+⏳ **Elle grandira.** Le lot 2 (ses commandes : `bash outils/compte_commandes.sh`) ajoutera une famille **F — les contrats** :
 un contrôle par commande, tirés de L4.
 
 </etat>

@@ -321,3 +321,14 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-311 | B CONTRAT | UpdateNeed écrit les critères du besoin, relus. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
 | P-312 | B CONTRAT | UpdateNeed écrit le lieu de mission, relu. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
 | P-313 | B CONTRAT | UpdateProject écrit l'intermédiaire de facturation, relu. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
+| P-314 | B CONTRAT | ArchiveObject candidat d'une autre agence → DROIT, témoin dans le périmètre. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-315 | B CONTRAT | ArchiveObject ressource d'une autre agence → DROIT, témoin dans le périmètre. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-316 | B CONTRAT | ArchiveObject besoin d'une autre agence → DROIT, témoin dans le périmètre. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-317 | B CONTRAT | ArchiveObject projet d'une autre agence → DROIT, 0 écriture. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-318 | B CONTRAT | ArchiveObject personne lue par ses deux profils → DROIT hors des deux. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-319 | B CONTRAT | ArchiveObject action portée par un projet d'une autre agence → DROIT. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-320 | B CONTRAT | ArchiveObject sur société, contact, unité ou service nomme la commande dédiée. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | GARDE |
+| P-321 | B CONTRAT | Chaque commande servie a une nature ; chaque type d'archive a un lecteur ou un refus. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | table |
+| P-322 | B CONTRAT | Chaque colonne d'agence lue par la table est NOT NULL. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | information_schema |
+| P-323 | B CONTRAT | TransferContact hors périmètre → DROIT ; transfert permis, agence relue. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
+| P-324 | B CONTRAT | Une délégation posée avant le banc lui survit. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | — |

@@ -112,6 +112,13 @@
   "ko": 7
  },
  {
+  "chemin": "ARBITRAGE_AUDIT_2026-09-24c.md",
+  "titre": "Arbitrage du septième audit — 24/09/2026 (nuit)",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 7
+ },
+ {
   "chemin": "AUDIT_PROJET_2026-09-17.md",
   "titre": "Audit du projet Ava Manager — 17 septembre 2026",
   "categorie": "Audits",
@@ -242,7 +249,7 @@
   "titre": "État du projet Ava Manager — du premier jour à la livraison",
   "categorie": "État et plans",
   "date": "24/09/2026",
-  "ko": 13
+  "ko": 14
  },
  {
   "chemin": "FEUILLE_F1-F36_AHMED_2026-09-16.md",
@@ -263,7 +270,7 @@
   "titre": "L2b — la grille d'audit",
   "categorie": "Audits",
   "date": "24/09/2026",
-  "ko": 15
+  "ko": 16
  },
  {
   "chemin": "GRILLE_INVENTAIRE_BOOND_2026-09-17.md",
@@ -284,7 +291,7 @@
   "titre": "Journal des bugs — Ava Manager · **audit général**",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "24/09/2026",
-  "ko": 20
+  "ko": 22
  },
  {
   "chemin": "MACHINES_ETAT_V1.md",
@@ -332,8 +339,8 @@
   "chemin": "PORTES_EN_ATTENTE.md",
   "titre": "La parade ⏳ — une porte posée avant d'être servie",
   "categorie": "Conception et contrat",
-  "date": "20/09/2026",
-  "ko": 7
+  "date": "24/09/2026",
+  "ko": 8
  },
  {
   "chemin": "prompt-audit-2.txt",
@@ -392,11 +399,25 @@
   "ko": 3
  },
  {
+  "chemin": "prompt-brain-code-7.txt",
+  "titre": "prompt-brain-code-7.txt",
+  "categorie": "Prompts et briefs",
+  "date": "24/09/2026",
+  "ko": 4
+ },
+ {
   "chemin": "prompt-brain-code.txt",
   "titre": "prompt-brain-code.txt",
   "categorie": "Prompts et briefs",
   "date": "21/09/2026",
   "ko": 6
+ },
+ {
+  "chemin": "prompt-kit-methode.txt",
+  "titre": "prompt-kit-methode.txt",
+  "categorie": "Prompts et briefs",
+  "date": "24/09/2026",
+  "ko": 16
  },
  {
   "chemin": "prompt-lot1.txt",
@@ -436,6 +457,13 @@
  {
   "chemin": "prompt-lot2-correctifs-6.txt",
   "titre": "prompt-lot2-correctifs-6.txt",
+  "categorie": "Prompts et briefs",
+  "date": "24/09/2026",
+  "ko": 5
+ },
+ {
+  "chemin": "prompt-lot2-correctifs-7.txt",
+  "titre": "prompt-lot2-correctifs-7.txt",
   "categorie": "Prompts et briefs",
   "date": "24/09/2026",
   "ko": 5
@@ -487,7 +515,7 @@
   "titre": "Registre des politiques Ava Manager v1",
   "categorie": "Conception et contrat",
   "date": "24/09/2026",
-  "ko": 58
+  "ko": 59
  },
  {
   "chemin": "RELECTURE_5_MODELE_DONNEES_2026-09-17.md",
@@ -529,7 +557,7 @@
   "titre": "SPEC_ASSERTIONS_L7.sql",
   "categorie": "Conception et contrat",
   "date": "24/09/2026",
-  "ko": 36
+  "ko": 38
  },
  {
   "chemin": "SPEC_COMMANDES_L4.md",
@@ -570,7 +598,7 @@
   "chemin": "journal/adr/ADR-R-001-port-postgres-hote.md",
   "titre": "ADR-R-001 — Port hôte Postgres 55432",
   "categorie": "Décisions d'architecture (ADR)",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 1
  },
  {
@@ -584,14 +612,14 @@
   "chemin": "journal/BUGS.md",
   "titre": "Bugs — un bug par ligne, numéro jamais réutilisé. Fermé avec un SHA, jamais avec « corrigé ».",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 1
  },
  {
   "chemin": "journal/CONTRAT.md",
   "titre": "CONTRAT — lot 2 · intégrateur / greffe",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 6
  },
  {
@@ -599,48 +627,48 @@
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "24/09/2026",
-  "ko": 24
+  "ko": 25
  },
  {
   "chemin": "journal/DECISIONS.md",
   "titre": "Décisions techniques tranchées seul",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 3
  },
  {
   "chemin": "journal/ecran/DECISIONS.md",
   "titre": "Décisions écran — lot 2. Seul, en attendant.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 1
  },
  {
   "chemin": "journal/ecran/QUESTIONS.md",
   "titre": "Questions écran — lot 2. Choix pris en attendant.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 1
  },
  {
   "chemin": "journal/ecran/REMARQUES.md",
   "titre": "Remarques écran — lot 2. Le canon n'est pas corrigé.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 1
  },
  {
   "chemin": "journal/ETAPES.md",
   "titre": "Étapes — lot 1. Une ligne par étape. On ne supprime jamais.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "22/09/2026",
+  "date": "24/09/2026",
   "ko": 2
  },
  {
   "chemin": "journal/greffe/REMARQUES.md",
   "titre": "Remarques greffe — lot 2. On ne patche pas `_ops/`.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 2
  },
  {
@@ -648,48 +676,48 @@
   "titre": "Portes — le cliquet. Une porte ✅ ne redevient jamais ⏳.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "24/09/2026",
-  "ko": 44
+  "ko": 46
  },
  {
   "chemin": "journal/QUESTIONS.md",
   "titre": "Questions pour Hamada. On choisit en attendant, on continue.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 4
  },
  {
   "chemin": "journal/REMARQUES.md",
   "titre": "Remarques sur le canon `_ops/` — on ne le corrige pas.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 2
  },
  {
   "chemin": "journal/test/DECISIONS.md",
   "titre": "Décisions du banc — lot 2. Choix pris en attendant.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 2
  },
  {
   "chemin": "journal/test/QUESTIONS.md",
   "titre": "Questions du banc — lot 2. Choix pris, on continue.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 1
  },
  {
   "chemin": "journal/test/REMARQUES.md",
   "titre": "Remarques du banc sur le canon — on ne le corrige pas.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 1
  },
  {
   "chemin": "db/README.md",
   "titre": "Base Ava Manager",
   "categorie": "Conception et contrat",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 1
  },
  {
@@ -981,6 +1009,55 @@
  },
  {
   "chemin": "audit-2026-09-24b/SYNTHESE.md",
+  "titre": "SYNTHESE.md",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "audit-2026-09-24c/CONFORMITE.md",
+  "titre": "CONFORMITÉ 7 — famille H · commit `ba9a284`",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 14
+ },
+ {
+  "chemin": "audit-2026-09-24c/CONSTATS.md",
+  "titre": "Constats du septième audit — commit `ba9a284` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 5
+ },
+ {
+  "chemin": "audit-2026-09-24c/GRILLE.md",
+  "titre": "GRILLE 7 — `_ops/GRILLE_AUDIT.md` passée en entier · commit `ba9a284`",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 16
+ },
+ {
+  "chemin": "audit-2026-09-24c/MUTATIONS.md",
+  "titre": "Mutations — les tests des tests (famille G), septième audit",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 3
+ },
+ {
+  "chemin": "audit-2026-09-24c/SECURITE.md",
+  "titre": "SÉCURITÉ 7 — famille I · commit `ba9a284` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 19
+ },
+ {
+  "chemin": "audit-2026-09-24c/SUIVI_V.md",
+  "titre": "Septième audit — suivi des constats sur `ba9a284` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 24
+ },
+ {
+  "chemin": "audit-2026-09-24c/SYNTHESE.md",
   "titre": "SYNTHESE.md",
   "categorie": "Audits",
   "date": "24/09/2026",
