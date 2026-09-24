@@ -71,6 +71,12 @@ propose ──(DeclareCVShared)──▶ presente ──(RecordClientDecision: r
 | presente | refuse_client | `RecordClientDecision(refusé)` | IA | motif | idem |
 | propose, presente | retire | `WithdrawPositioning` | IA, RH, Staffing | motif dans {désistement, no_go_interne, autre} | `PositioningWithdrawn` *(D-4)* |
 
+⭐ **R1, direction d'Avaliance, 24/09 : « valider n'est pas gagner ».** Chez Boond, `Validé` = le
+dossier technique est posé, on attend la validation financière. ⇒ un code comme `valide` se range
+dans la catégorie **`presente`** (active), **jamais** en `terminal_positif`. Seul un code de
+`terminal_positif` (`retenu`, le `Gagné` de Boond) ouvre le projet. Reprise : les 80 « Validé » restent
+ouverts, les 198 « Gagné » deviennent `retenu`.
+
 Terminaux : `retenu`, `refuse_client`, `retire`. **Aucune** transition sortant de `retenu` : la suite est `CreateProjectFromNeed` (garde G1) puis `CreatePrestation` (F2), qui **ne modifient pas** le positionnement. Entretiens et qualifications sont des **événements / objets**, pas des états (CdC IV.E). « Gagné » n'existe pas (DEC-13).
 
 `propose → terminal_positif` direct : selon `positionnement.cv_partage_obligatoire` — **oui** (défaut : la décision client se prend sur un CV présenté, BM-23 ; `presente` obligatoire avant `RecordClientDecision`) · non (saut direct autorisé). *Tranché C-1, 17/09 soir : le registre faisait foi, cette ligne disait « non » par erreur.* `positionnement.qualification_requise_avant_decision` (défaut non) peut exiger une qualification avant `RecordClientDecision`.

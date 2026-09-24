@@ -40,7 +40,7 @@ Mis à jour le 24/09/2026. Les anciens numéros de lot sont entre parenthèses.
 | 1.1 | Les captures d'écran de Boond — 89 | ✅ 15/09, complétées le 22/09 (administration, référentiels, plans de charge) | hub › Boond › Audit complet · [audit des écrans](cartographie/AUDIT_ECRANS.md) |
 | 1.2 | Comprendre comment Boond fonctionne | ✅ 15/09 | [fonctionnement](cartographie/FONCTIONNEMENT_BOOND.md) · [diagnostic métier](cartographie/DIAGNOSTIC_METIER.md) |
 | 1.3 | Le relevé de Boond : chemins, écrans, et **tous les réglages valeur par valeur** | ✅ 19 → 23/09 | [relevé Boond](cartographie/BOOND_CHEMINS_2026-09-19.md) · [écrans du 22/09](cartographie/BOOND_ECRANS_2026-09-22.md) · [réglages du 23/09](cartographie/BOOND_REGLAGES_2026-09-23.md) · [grille d'inventaire](GRILLE_INVENTAIRE_BOOND_2026-09-17.md) |
-| 1.4 | Les questions que seul Avaliance peut trancher | ⏳ réunion du 23/09 | hub › [Questions Avaliance](../#reunion) · [questions Boond](QUESTIONS_BOOND_2026-09-19.md) |
+| 1.4 | Les questions que seul Avaliance peut trancher | ✅ 24/09 — les 10 réponses de la direction, intégrées au canon | [les réponses et ce qu'elles changent](REPONSES_AVALIANCE_2026-09-24.md) · [questions Boond](QUESTIONS_BOOND_2026-09-19.md) |
 
 ### 2 · Cadrage métier — ce que le logiciel doit faire
 
@@ -94,7 +94,7 @@ Mis à jour le 24/09/2026. Les anciens numéros de lot sont entre parenthèses.
 | 5.5g | Cinquième audit | ✅ 24/09 — refusé, 10 constats ; ⭐ **le banc part de rien et garde ses propres outils** | [synthèse](audit-2026-09-24/SYNTHESE.md) · [constats](audit-2026-09-24/CONSTATS.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-24.md) |
 | 5.5h | Corrections du cinquième tour — l'agence responsable (D-25) | ⏳ | [prompt brain code 5](prompt-brain-code-5.txt) · [prompt correctifs 5](prompt-lot2-correctifs-5.txt) |
 | 5.5i | Sixième audit | ⬜ quand Grok écrit « prêt pour le sixième audit » | [prompt d'audit](prompt-audit-2.txt) |
-| 5.6 | Connexion par compte Microsoft (lot 2c) | ⬜ attend R4 de la réunion | [décisions techniques T2](DECISIONS_TECHNIQUES_v1.md) · [arbitrage D-2](ARBITRAGE_AUDIT_2026-09-21.md) |
+| 5.6 | Connexion par compte Microsoft (lot 2c) | ⬜ prêt (R4 : tout le monde a une adresse Microsoft) | [décisions techniques T2](DECISIONS_TECHNIQUES_v1.md) · [arbitrage D-2](ARBITRAGE_AUDIT_2026-09-21.md) |
 | 5.8 | ⭐ **RH et facturation** — contrats, documents à suivre, devis, factures (décision du 23/09 : tout en V1) | ⬜ après les écrans | [ce que la V1 doit porter en plus](COMPLEMENTS_V1_2026-09-23.md) · [réglages Boond](cartographie/BOOND_REGLAGES_2026-09-23.md) |
 | 5.7 | Les 26 écrans (lot 3) | ⬜ après le 5.5 accepté | [les 26 écrans](../terminal.html) · [prompt écrans](PROMPT_CHATGPT_ECRANS.md) |
 | — | CRM, staffing, production (anciens lots 4, 5, 6) | ↪ fusionnés dans 5.2 et 5.7 | — |
@@ -114,8 +114,8 @@ Mis à jour le 24/09/2026. Les anciens numéros de lot sont entre parenthèses.
 
 | # | Étape | État | Documents |
 |---|---|---|---|
-| 6.1 | Obtenir l'export des données de Boond | ⬜ attend R3 | [relevé Boond](cartographie/BOOND_CHEMINS_2026-09-19.md) |
-| 6.2 | Ressaisir les missions en cours et leurs tarifs | ⬜ attend R2 | hub › [Questions Avaliance](../#reunion) |
+| 6.1 | Obtenir l'export des données de Boond | ⬜ possible (R3 : export total par un compte habilité) | [relevé Boond](cartographie/BOOND_CHEMINS_2026-09-19.md) |
+| 6.2 | Ressaisir les missions en cours et leurs tarifs | ⬜ confirmé (R2 : retard de saisie chez Avaliance, pas un bug) | hub › [Questions Avaliance](../#reunion) |
 | 6.3 | Import des données Boond (lot 7) | ⬜ | [modèle de données](MODELE_DONNEES_AVAMANAGER_V1.md) |
 | 6.4 | Essai de deux semaines, trois utilisateurs réels | ⬜ | — |
 | 6.5 | Un mois en parallèle de Boond, chiffres comparés | ⬜ | — |

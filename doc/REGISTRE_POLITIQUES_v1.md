@@ -42,7 +42,8 @@ Le **code** est stable, le **libellé** se renomme, une valeur s'**ajoute** dans
 | `ref_etat_besoin` | `a_pourvoir` · `en_recherche` · `pourvu` · `suspendu` · `ferme` | ouvert, staffing, pourvu, suspendu, ferme | DEC-13, F6 |
 | `ref_etat_candidat` | `brouillon` · `actif` · `sorti` | draft, complete | F19 ; Boond en a 14 → ajout dans `actif` ou `sorti` |
 | `ref_etat_ressource` | `en_mission` · `disponible` · `sorti` | en_cours, intercontrat, sortie | US1, F26 |
-| `ref_etat_positionnement` | `propose` · `presente` · `terminal_positif` · `terminal_negatif` · `retire` | propose, presente, retenu, refuse_client, retire | G10 ; Boond en a 9 |
+| `ref_etat_positionnement` | `propose` · `presente` · `terminal_positif` · `terminal_negatif` · `retire` | propose, presente, retenu, refuse_client, retire | G10 ; Boond en a 9 — ⭐ **R1, 24/09** : `valide` (Boond) se range en `presente`, **jamais** en `terminal_positif` |
+| `ref_origine_besoin` | — | regie, appel_offres, gre_a_gre, renouvellement, autre | ⭐ **R10, 24/09** : c'est elle qui dit si le projet peut se passer d'une personne comme interlocuteur |
 | `ref_etat_prestation` | `previsionnel` · `engage` · `clos` · `annule` | previsionnelle, signee, cloturee, annulee | G11, US5 |
 | `ref_etat_projet` | `ouvert` · `clos` | ouvert, clos | G12 |
 | `ref_role_societe` | (ensemble, pas un cycle) | fournisseur, interne — **D-3** : `client` / `prospect` sont un **statut**, pas un rôle | BM-11, G6 |
@@ -101,6 +102,14 @@ Le **code** est stable, le **libellé** se renomme, une valeur s'**ajoute** dans
 ---
 
 ## C. Les politiques — bifurcations, table `politique`
+
+⭐ **Ajouts du 24/09 — réponses de la direction d'Avaliance** (`REPONSES_AVALIANCE_2026-09-24.md`) :
+`cout.mode` = **selon_type_ressource** · achat_externe · salarie_formule (R5 : l'externe coûte son
+achat, le salarié coûte brut + primes + frais divisés par les jours) · `cout.jours_base` = **200** (R5) ·
+`projet.contact` gagne la valeur **`service_ou_societe`** (R10 : le service ou la société fait
+interlocuteur, plus de contact fictif) · `candidat.blackliste.portee` = **agence** · installation (R7 :
+un drapeau réversible, pas un état) · `reprise.donnees_rh_sensibles` = **oui** (R8 : on importe tout,
+sous la permission dédiée `LireDonneesRHSensibles`).
 
 ⭐ **Ajout du 24/09 (D-25 bis, V-108)** — `societe.perimetre.mode` : **`agence_responsable`** (défaut) ·
 `par_besoins` · `partagee`. Elle dit **comment** on juge le périmètre d'une société et d'un contact ;
