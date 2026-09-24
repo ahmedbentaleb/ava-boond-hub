@@ -102,7 +102,7 @@
   "titre": "Arbitrage du cinquième audit — 24/09/2026",
   "categorie": "Audits",
   "date": "24/09/2026",
-  "ko": 5
+  "ko": 6
  },
  {
   "chemin": "AUDIT_PROJET_2026-09-17.md",
@@ -515,7 +515,7 @@
   "titre": "L4 — le contrat des commandes",
   "categorie": "Conception et contrat",
   "date": "24/09/2026",
-  "ko": 31
+  "ko": 32
  },
  {
   "chemin": "SPEC_SQL_AVAMANAGER_V1.sql",
@@ -626,7 +626,7 @@
   "chemin": "journal/PORTES.md",
   "titre": "Portes — le cliquet. Une porte ✅ ne redevient jamais ⏳.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "23/09/2026",
+  "date": "24/09/2026",
   "ko": 42
  },
  {

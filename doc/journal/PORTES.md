@@ -308,3 +308,4 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-298 | B CONTRAT | Quatre commandes sans succès au seed réussissent, le droit est retiré. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
 | P-299 | B CONTRAT | Le fichier d'assertions porte `\set ON_ERROR_STOP on` en tête, et la copie `test/` est le canon. | `test/contrat/outils.test.ts` | 2026-09-23 | ✅ | 2 | égalité stricte |
 | P-300 | B CONTRAT | `verif_serveur.sh` refuse une base ouverte et nomme le motif ; poste de dev déclaré, il accepte. | `test/contrat/outils.test.ts` | 2026-09-23 | ✅ | 2 | — |
+| P-301 | B CONTRAT | ArchiveObject sur un candidat sans agence, compte d'une autre agence → DROIT, rien écrit. | `test/contrat/audit4.test.ts` | 2026-09-24 | ✅ | 2 | base relue |

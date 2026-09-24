@@ -336,9 +336,11 @@ Mesure de clôture, base refaite (`make.sh reset` puis `make test`) : `make test
 
 Non fait ici, réservé au BRAIN : D-20 (le cliquet refait la base), migration 009 NOT NULL, D-24 (portes des outils). `lot-2-brain` n'a pas été fusionné.
 
-| V-107 | C1 D-26 plus de repli sur l'agence du demandeur | P-301 | `ArchiveObject` sur un candidat sans agence retombait sur l'agence du compte | `ok` — compte d'une autre agence → DROIT, rien écrit | ce commit |
-| V-109 | E1 décision lue dans `ref_decision_client` | RecordClientDecision | `.includes()` sur des libellés | `ok` — catégorie `positive` / `negative` / `en_attente` | ce commit |
-| V-110 | E2 P-203 et P-207 ignorent les délégations des autres | P-203 P-207 | `deplacer` écrasait une délégation déjà posée | `ok` — la porte photographie ses lignes et les remet | ce commit |
-| V-115 | H-2 motif d'archivage, H-4 message fte, session du compte | ArchiveService ArchiveContact DeclareNeedFilled `/vues/besoins` | motif jeté ; `0/1 postes` ; session `Banc` / `IA` | `ok` — motif dans l'événement ; `fte_engage/fte_vise` ; e-mail et groupe du compte | ce commit |
+| V-107 | C1 D-26 plus de repli sur l'agence du demandeur | P-301 | `ArchiveObject` sur un candidat sans agence retombait sur l'agence du compte | `ok` — compte d'une autre agence → DROIT, rien écrit | `d1776e3` `fdad89c` |
+| V-109 | E1 décision lue dans `ref_decision_client` | RecordClientDecision | `.includes()` sur des libellés | `ok` — catégorie `positive` / `negative` / `en_attente` | `d1776e3` |
+| V-110 | E2 P-203 et P-207 ignorent les délégations des autres | P-203 P-207 | `deplacer` écrasait une délégation déjà posée | `ok` — la porte photographie ses lignes et les remet | `fdad89c` |
+| V-115 | H-2 motif d'archivage, H-4 message fte, session du compte | ArchiveService ArchiveContact DeclareNeedFilled `/vues/besoins` | motif jeté ; `0/1 postes` ; session `Banc` / `IA` | `ok` — motif dans l'événement ; `fte_engage/fte_vise` ; e-mail et groupe du compte | `d1776e3` `fdad89c` |
 
 En attente du BRAIN, non codé ici : V-108 (migration 010, `agence_responsable_id`), le schéma V1 (migration 011, lot 5.8). Les 5 permissions sans titulaire au seed restent une décision de matrice, pas un titulaire inventé.
+
+Mesure sur base refaite (`make.sh reset` puis `make test`) : `make test` OK. Cliquet : cases OK=12 KO=0. P-301 est au tableau.

@@ -111,8 +111,10 @@ pas de cycle. ⭐ **La garde doit les distinguer** : trois messages, pas un « M
 | `UploadDocument` | **un seul** porteur, type, fichier | le document | `GARDE` zéro ou deux porteurs | `DocumentUploaded` | — | CHECK **un porteur** |
 | `RecordQualification` | personne_id, besoin_id, type, mesures | la séance | `GARDE` besoin absent si politique = oui | `QualificationRecorded` | `qualification.besoin_obligatoire` (défaut **oui**) | — |
 
-⛔⛔ **`UpdateResourceCost` est la seule commande que PERSONNE n'a au départ.** Ni RH, ni DP.
-⭐ C'est une délégation écrite une par une, et elle se voit dans le journal.
+⛔⛔ **Cinq commandes, et cinq seulement, que PERSONNE n'a au départ** (D-30, 24/09) : `UpdateResourceCost`
+— ni RH, ni DP — et les quatre archivages `ArchiveCompany`, `ArchiveService`, `ArchiveContact`,
+`ArchiveObject`, que la MATRICE marque `D` depuis le 17/09. ⭐ Chacune est une délégation écrite une
+par une, et elle se voit dans le journal. ⛔ Le seed ne leur invente pas de titulaire.
 
 ⭐ **`UpdateResource` ne touche jamais le coût.** Deux commandes, deux permissions — sinon la
 permission sensible se contourne par la commande ordinaire.

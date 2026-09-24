@@ -6,8 +6,7 @@ Hamada : « tout en V1, relève les 9 applications ». Le relevé est fait :
   _ops/cartographie/BOOND_APPLICATIONS_2026-09-24.md
 
 B5 bis  LES APPLICATIONS DANS LE SCHÉMA V1
-    Si la migration 011 n'est pas encore commitée : ajoute-les dedans.
-    Si elle l'est : migration 012, jamais une réécriture de 011.
+    Migration 013 (011 et 012 sont commitées : on ne les réécrit pas).
     - les 6 tables de MODELE_DONNEES_AVAMANAGER_V1.md §13.6 : envoi_email,
       envoi_email_destinataire, document_genere, lien_outlook,
       preparation_paie, preparation_paie_ligne

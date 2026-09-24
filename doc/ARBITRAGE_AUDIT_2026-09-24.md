@@ -20,6 +20,15 @@ garde eux-mêmes (`ON_ERROR_STOP` retiré → P-299 ; `verif_serveur.sh` muet �
 
 </etat>
 
+## D-30 · H-1 — les cinq permissions sans titulaire : c'est voulu (24/09 au soir)
+
+| | |
+|---|---|
+| Constat | `ArchiveCompany`, `ArchiveContact`, `ArchiveService`, `ArchiveObject`, `UpdateResourceCost` n'ont aucun titulaire au seed |
+| Tranché | ⭐ **voulu** : la MATRICE les marque `D` (délégable seulement) depuis le 17/09 ; archiver et toucher au coût se délèguent nommément |
+| Le vrai défaut | le canon se contredisait : L4 disait « `UpdateResourceCost` est la **seule** ». Corrigé : cinq, nommées |
+| Grok | ✅ a eu raison de ne rien inventer — rien à coder ; une porte existe déjà par refus `DROIT` |
+
 ## ⚠️ V-108 — TRANCHÉ : ni A, ni B, ni C exactement
 
 ⭐ **La réponse était dans Boond, et je ne l'avais pas lue.** L'écran « Créer une société » (capture 66,
