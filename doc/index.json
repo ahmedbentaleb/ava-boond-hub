@@ -98,6 +98,13 @@
   "ko": 5
  },
  {
+  "chemin": "ARBITRAGE_AUDIT_2026-09-24.md",
+  "titre": "Arbitrage du cinquième audit — 24/09/2026",
+  "categorie": "Audits",
+  "date": "24/09/2026",
+  "ko": 5
+ },
+ {
   "chemin": "AUDIT_PROJET_2026-09-17.md",
   "titre": "Audit du projet Ava Manager — 17 septembre 2026",
   "categorie": "Audits",
@@ -213,8 +220,8 @@
   "chemin": "ETAT_PROJET.md",
   "titre": "État du projet Ava Manager — du premier jour à la livraison",
   "categorie": "État et plans",
-  "date": "23/09/2026",
-  "ko": 11
+  "date": "24/09/2026",
+  "ko": 12
  },
  {
   "chemin": "FEUILLE_F1-F36_AHMED_2026-09-16.md",
@@ -343,6 +350,13 @@
   "ko": 3
  },
  {
+  "chemin": "prompt-brain-code-5.txt",
+  "titre": "prompt-brain-code-5.txt",
+  "categorie": "Prompts et briefs",
+  "date": "24/09/2026",
+  "ko": 3
+ },
+ {
   "chemin": "prompt-brain-code.txt",
   "titre": "prompt-brain-code.txt",
   "categorie": "Prompts et briefs",
@@ -375,6 +389,13 @@
   "titre": "prompt-lot2-correctifs-4.txt",
   "categorie": "Prompts et briefs",
   "date": "23/09/2026",
+  "ko": 4
+ },
+ {
+  "chemin": "prompt-lot2-correctifs-5.txt",
+  "titre": "prompt-lot2-correctifs-5.txt",
+  "categorie": "Prompts et briefs",
+  "date": "24/09/2026",
   "ko": 4
  },
  {
@@ -423,8 +444,8 @@
   "chemin": "REGISTRE_POLITIQUES_v1.md",
   "titre": "Registre des politiques Ava Manager v1",
   "categorie": "Conception et contrat",
-  "date": "23/09/2026",
-  "ko": 49
+  "date": "24/09/2026",
+  "ko": 50
  },
  {
   "chemin": "RELECTURE_5_MODELE_DONNEES_2026-09-17.md",
@@ -813,6 +834,55 @@
  },
  {
   "chemin": "audit-2026-09-23b/SYNTHESE.md",
+  "titre": "SYNTHESE.md",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "audit-2026-09-24/CONFORMITE.md",
+  "titre": "CONFORMITE5 — les 55 commandes contre `_ops/SPEC_COMMANDES_L4.md`",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 29
+ },
+ {
+  "chemin": "audit-2026-09-24/CONSTATS.md",
+  "titre": "Constats du cinquième audit — commit `b6ff087` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 7
+ },
+ {
+  "chemin": "audit-2026-09-24/GRILLE.md",
+  "titre": "GRILLE5 — les contrôles de `_ops/GRILLE_AUDIT.md`, un par un",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 25
+ },
+ {
+  "chemin": "audit-2026-09-24/MUTATIONS.md",
+  "titre": "Mutations — les tests des tests (famille G), cinquième audit",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 3
+ },
+ {
+  "chemin": "audit-2026-09-24/SECURITE.md",
+  "titre": "SECURITE5 — SQL, périmètre par objet, accès, secrets, front",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 30
+ },
+ {
+  "chemin": "audit-2026-09-24/SUIVI_V.md",
+  "titre": "Cinquième audit — suivi des constats sur `b6ff087` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "23/09/2026",
+  "ko": 22
+ },
+ {
+  "chemin": "audit-2026-09-24/SYNTHESE.md",
   "titre": "SYNTHESE.md",
   "categorie": "Audits",
   "date": "23/09/2026",

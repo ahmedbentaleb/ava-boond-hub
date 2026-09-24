@@ -134,22 +134,22 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <a href="simulateur.html">Banc d’essai</a>
 </div></div></div></div>
 <div class="p">
-<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">23/09/2026 · 4c46609</span></div>
+<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">24/09/2026 · 8ea4611</span></div>
 <p class="chapeau">Le point d'entrée unique. Une autre IA écrit le code, je l'audite. Tout ce qui fait foi est listé ici — et rien n'y est recopié : ce document <b>mesure</b> et <b>pointe</b>.</p>
 <div class="ch">
 <div><b>37</b><span>tables</span></div>
-<div><b>64</b><span>référentiels</span></div>
+<div><b>65</b><span>référentiels</span></div>
 <div><b>173</b><span>politiques</span></div>
 <div><b>15</b><span>murs</span></div>
 <div><b>31</b><span>assertions</span></div>
 <div><b>26</b><span>écrans</span></div>
 <div><b>8</b><span>ADR</span></div>
-<div><b>68</b><span>documents</span></div>
+<div><b>69</b><span>documents</span></div>
 </div>
 <p class="note">⭐ Tous ces chiffres sont <b>mesurés</b> à la génération, jamais saisis. Un compte écrit à deux endroits diverge à la passe suivante.</p>
 <quand_utiliser>
 <h2><span class="num">01</span>Qui lit quoi</h2>
-<p class="sub">Quatre lecteurs, quatre portes. Personne n'a besoin des 68 documents.</p>
+<p class="sub">Quatre lecteurs, quatre portes. Personne n'a besoin des 69 documents.</p>
 <div class="tw"><table><tr><th>Vous êtes</th><th>Vous lisez</th><th>Vous ne lisez pas</th></tr>
 <tr><td>L&#x27;IA qui code</td><td>le prompt, puis le SQL et les assertions</td><td>les relectures, les plans, l&#x27;historique — c&#x27;est du chemin parcouru</td></tr>
 <tr><td>Moi, l&#x27;auditeur</td><td>les assertions, le registre §E, le journal des bugs</td><td>rien — mais je mesure avant de citer</td></tr>
@@ -192,7 +192,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <div class="c ok"><div class="n">L7</div><div class="t">Les assertions</div><div class="d">31 tests, un par mur, plus 1 contre-test. joués à chaque make test</div></div>
 <div class="c ok"><div class="n">L2</div><div class="t">Le prompt et la grille</div><div class="d">à coller dans Cursor · 18 contrôles au retour</div></div>
 <div class="c ok"><div class="n">L4</div><div class="t">Les 55 commandes</div><div class="d">entrée, sortie, refus, événement, politique lue, mur touché</div></div>
-<div class="c go"><div class="n">L5</div><div class="t">Les deux seeds</div><div class="d">173 politiques et 64 référentiels — mécanique, ça part chez Grok</div></div>
+<div class="c go"><div class="n">L5</div><div class="t">Les deux seeds</div><div class="d">173 politiques et 65 référentiels — mécanique, ça part chez Grok</div></div>
 <div class="c ok"><div class="n">L1</div><div class="t">Le relevé Boond</div><div class="d">clos le 19/09 · 32 sections</div></div>
 </div>
 <h2><span class="num">04</span>Les 15 murs</h2>
@@ -244,7 +244,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <p class="note">Vide, et c'est normal : le code n'a pas encore été écrit.</p>
 <etat>
 <h2><span class="num">08</span>Où on en est</h2>
-<p class="sub">Mis à jour le 23/09/2026, au soir. Les anciens numéros de lot sont entre parenthèses.</p>
+<p class="sub">Mis à jour le 24/09/2026. Les anciens numéros de lot sont entre parenthèses.</p>
 <h3 style="margin:22px 0 6px">0 · Démarrage</h3>
 <div class="tw"><table><tr><th>#</th><th>Étape</th><th>État</th><th>Documents</th></tr>
 <tr><td>0.1</td><td>Lire la commande d&#x27;Avaliance : les deux cahiers des charges</td><td>✅ 15/09</td><td><a href="doc/AVA_MANAGER-SPEC_1_extract.txt">SPEC 1</a> · <a href="doc/COCKPIT2-Cahier_de_charge-v0.1_extract.txt">Cockpit 2</a> · <a href="doc/../cdc.html">cahier des charges</a></td></tr>
@@ -290,7 +290,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <h3 style="margin:22px 0 6px">5 · Construction — le code</h3>
 <div class="tw"><table><tr><th>#</th><th>Étape</th><th>État</th><th>Documents</th></tr>
 <tr><td>5.1</td><td>Fondations : dépôt, base, 15 murs, données de départ (lot 1)</td><td>✅ 20/09 — 69 min</td><td><a href="doc/PROMPT_GROK_LOT1.md">prompt lot 1</a> · <a href="doc/journal/ETAPES.md">étapes du code</a> · <a href="doc/db/README.md">base</a></td></tr>
-<tr><td>5.2</td><td>Le serveur : les 55 commandes (lot 2)</td><td>⏳ quatrième tour de correctifs · banc vert au 23/09 : 280 portes jouées, 31 assertions, cliquet 12/12 (fusion `cc3ff64`)</td><td><a href="doc/PROMPT_GROK_LOT2.md">prompt lot 2</a> · <a href="doc/prompt-lot2-correctifs.txt">prompt correctifs</a> · <a href="doc/journal/DECISIONS.md">décisions du code</a></td></tr>
+<tr><td>5.2</td><td>Le serveur : les 55 commandes (lot 2)</td><td>⏳ cinquième tour de correctifs · banc vert au 23/09 : 280 portes jouées, 31 assertions, cliquet 12/12 (fusion `cc3ff64`)</td><td><a href="doc/PROMPT_GROK_LOT2.md">prompt lot 2</a> · <a href="doc/prompt-lot2-correctifs.txt">prompt correctifs</a> · <a href="doc/journal/DECISIONS.md">décisions du code</a></td></tr>
 <tr><td>5.3</td><td>Premier audit indépendant</td><td>✅ 21/09 — refusé, 47 constats</td><td><a href="doc/audit-2026-09-21/SYNTHESE.md">synthèse</a> · <a href="doc/audit-2026-09-21/CONSTATS.md">constats</a> · <a href="doc/audit-2026-09-21/MUTATIONS.md">mutations</a> · <a href="doc/ARBITRAGE_AUDIT_2026-09-21.md">arbitrage</a></td></tr>
 <tr><td>5.4</td><td>Corrections du BRAIN : base, tests des murs, cliquet</td><td>✅ 21/09 — validées par le second audit</td><td><a href="doc/prompt-brain-code.txt">prompt brain code</a></td></tr>
 <tr><td>5.5</td><td>Second audit</td><td>✅ 22/09 — refusé, 27 constats neufs, accès non gardé</td><td><a href="doc/audit-2026-09-22/SYNTHESE.md">synthèse</a> · <a href="doc/audit-2026-09-22/CONSTATS.md">constats</a> · <a href="doc/audit-2026-09-22/CONTESTATION.md">contestation</a> · <a href="doc/ARBITRAGE_AUDIT_2026-09-22.md">arbitrage</a></td></tr>
@@ -299,18 +299,20 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <tr><td>5.5d</td><td>Corrections du troisième tour</td><td>⏳ — BRAIN CODE ✅ fusionné (cliquet 12/12) · Grok en cours (D-14 le garde unique, D-15 l&#x27;agence de l&#x27;objet)</td><td><a href="doc/prompt-brain-code-3.txt">prompt brain code 3</a> · <a href="doc/prompt-lot2-correctifs-3.txt">prompt correctifs 3</a></td></tr>
 <tr><td>5.5e</td><td>Quatrième audit</td><td>✅ 23/09 — refusé, 11 constats ; ⭐ les corrections du 3e tour tiennent et sont gardées</td><td><a href="doc/audit-2026-09-23b/SYNTHESE.md">synthèse</a> · <a href="doc/audit-2026-09-23b/CONSTATS.md">constats</a> · <a href="doc/ARBITRAGE_AUDIT_2026-09-23b.md">arbitrage</a></td></tr>
 <tr><td>5.5f</td><td>Corrections du quatrième tour</td><td>⏳</td><td><a href="doc/prompt-brain-code-4.txt">prompt brain code 4</a> · <a href="doc/prompt-lot2-correctifs-4.txt">prompt correctifs 4</a></td></tr>
-<tr><td>5.5g</td><td>Cinquième audit</td><td>⬜ quand Grok écrit « prêt pour le cinquième audit »</td><td><a href="doc/prompt-audit-2.txt">prompt d&#x27;audit</a></td></tr>
+<tr><td>5.5g</td><td>Cinquième audit</td><td>✅ 24/09 — refusé, 10 constats ; ⭐ le banc part de rien et garde ses propres outils</td><td><a href="doc/audit-2026-09-24/SYNTHESE.md">synthèse</a> · <a href="doc/audit-2026-09-24/CONSTATS.md">constats</a> · <a href="doc/ARBITRAGE_AUDIT_2026-09-24.md">arbitrage</a></td></tr>
+<tr><td>5.5h</td><td>Corrections du cinquième tour — l&#x27;agence responsable (D-25)</td><td>⏳</td><td><a href="doc/prompt-brain-code-5.txt">prompt brain code 5</a> · <a href="doc/prompt-lot2-correctifs-5.txt">prompt correctifs 5</a></td></tr>
+<tr><td>5.5i</td><td>Sixième audit</td><td>⬜ quand Grok écrit « prêt pour le sixième audit »</td><td><a href="doc/prompt-audit-2.txt">prompt d&#x27;audit</a></td></tr>
 <tr><td>5.6</td><td>Connexion par compte Microsoft (lot 2c)</td><td>⬜ attend R4 de la réunion</td><td><a href="doc/DECISIONS_TECHNIQUES_v1.md">décisions techniques T2</a> · <a href="doc/ARBITRAGE_AUDIT_2026-09-21.md">arbitrage D-2</a></td></tr>
 <tr><td>5.8</td><td>⭐ RH et facturation — contrats, documents à suivre, devis, factures (décision du 23/09 : tout en V1)</td><td>⬜ après les écrans</td><td><a href="doc/COMPLEMENTS_V1_2026-09-23.md">ce que la V1 doit porter en plus</a> · <a href="doc/cartographie/BOOND_REGLAGES_2026-09-23.md">réglages Boond</a></td></tr>
 <tr><td>5.7</td><td>Les 26 écrans (lot 3)</td><td>⬜ après le 5.5 accepté</td><td><a href="doc/../terminal.html">les 26 écrans</a> · <a href="doc/PROMPT_CHATGPT_ECRANS.md">prompt écrans</a></td></tr>
 <tr><td>—</td><td>CRM, staffing, production (anciens lots 4, 5, 6)</td><td>↪ fusionnés dans 5.2 et 5.7</td><td>—</td></tr>
 </table></div>
 <p class="sub">#### Les tours d&#x27;audit du serveur — mesurés</p>
-<div class="tw"><table><tr><th></th><th>1er (21/09)</th><th>2e (22/09)</th><th>3e (23/09)</th><th>4e (en cours)</th></tr>
-<tr><td>Tests aveugles</td><td>48</td><td>45</td><td>0</td><td>1</td></tr>
-<tr><td>Défauts critiques ouverts</td><td>12</td><td>7</td><td>2</td><td>2</td></tr>
-<tr><td>Tests joués</td><td>64</td><td>151</td><td>264</td><td>280 · 57 sabotages</td></tr>
-<tr><td>Constats du tour précédent fermés</td><td>—</td><td>22/47</td><td>37/47</td><td>20/25, et les 4 critiques gardés</td></tr>
+<div class="tw"><table><tr><th></th><th>1er (21/09)</th><th>2e (22/09)</th><th>3e (23/09)</th><th>4e (23/09)</th><th>5e (24/09)</th></tr>
+<tr><td>Tests aveugles</td><td>48</td><td>45</td><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>Défauts critiques ouverts</td><td>12</td><td>7</td><td>2</td><td>2</td><td>2</td></tr>
+<tr><td>Tests joués</td><td>64</td><td>151</td><td>264</td><td>280</td><td>294 · 62 sabotages</td></tr>
+<tr><td>Constats du tour précédent fermés</td><td>—</td><td>22/47</td><td>37/47</td><td>20/25</td><td>10/11, tous gardés</td></tr>
 </table></div>
 <p class="sub">⭐ Le filet tient depuis le 3e tour : plus aucun test ne reste vert quand on casse le code exprès (50 sabotages).</p>
 <h3 style="margin:22px 0 6px">6 · Reprise et recette — avec les vraies données</h3>
@@ -337,9 +339,9 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 </etat>
 <source>
 <h2><span class="num">09</span>D'où ça vient</h2>
-<p class="sub">68 documents dans <code>_ops/</code>. Les 20 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
+<p class="sub">69 documents dans <code>_ops/</code>. Les 20 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
 <p class="note">Ce fichier est <b>généré</b> par <code>python _ops/outils/dossier.py</code>. ⛔ Ne pas l'éditer à la main : la prochaine génération écraserait la correction, et on ne saurait pas laquelle était juste.<br>Pour en extraire une section sans tout lire :<br><code>sed -n '/&lt;etat&gt;/,/&lt;\/etat&gt;/p' _ops/DOSSIER.html</code></p>
 </source>
-<footer>Ava Manager · dossier généré le 23/09/2026 · commit 4c46609 · 37 tables · 173 politiques · 15 murs · 31 assertions</footer>
+<footer>Ava Manager · dossier généré le 24/09/2026 · commit 8ea4611 · 37 tables · 173 politiques · 15 murs · 31 assertions</footer>
 </div>
 </body></html>

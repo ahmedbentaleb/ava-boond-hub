@@ -95,11 +95,16 @@ Le **code** est stable, le **libellé** se renomme, une valeur s'**ajoute** dans
 | `ref_etat_facture` | `brouillon` · `emise` · `payee` · `litige` | proforma, creation, transmis_client, relance_1, relance_2, email_client, impayee, payee | ⭐ 23/09 — **facturation** |
 | `ref_etat_facture_fournisseur` | `brouillon` · `valide` · `paye` · `rejete` | brouillon, a_valider, validee, rejetee, payee | ⭐ 23/09 — **achats** |
 | `ref_etat_devis` | `en_cours` · `accepte` · `refuse` · `archive` | creation, transmis_client, attente, refuse, accord_client, archive | ⭐ 23/09 — **facturation** |
+| `ref_decision_client` | `positive` · `negative` · `en_attente` | retenu, refuse, sans_suite, reporte — ⭐ **V-109, 24/09** : les décisions étaient écrites en dur dans le code |
 | `ref_type_message` | — | 19 modèles relevés : saisie des temps, des frais, attente de validation, validée, rejet, refus, suppression, demande/relance/confirmation de signature | ⭐ 23/09 — le **texte** du message est un modèle (`modele`), le type est ici |
 
 ---
 
 ## C. Les politiques — bifurcations, table `politique`
+
+⭐ **Ajout du 24/09 (D-25 bis, V-108)** — `societe.perimetre.mode` : **`agence_responsable`** (défaut) ·
+`par_besoins` · `partagee`. Elle dit **comment** on juge le périmètre d'une société et d'un contact ;
+la colonne `agence_responsable_id` est le mur, ce réglage est la bifurcation.
 
 Clé · options (**défaut**) · source de la bifurcation · effet quand on change. Portée V1 = installation.
 

@@ -1,0 +1,85 @@
+AVA MANAGER — LOT 2, CORRECTIFS APRÈS LE CINQUIÈME AUDIT
+========================================================
+24/09/2026. Le cinquième audit a REFUSÉ le lot 2 au commit b6ff087.
+Lis tout avant d'écrire une ligne.
+
+Rapport : C:\Users\Hamada\Desktop\ava-audit-5\rapport\
+Arbitrage : _ops/ARBITRAGE_AUDIT_2026-09-24.md
+
+
+0. CE QUI EST GAGNÉ
+───────────────────
+  ⭐ Le banc part de rien : base refaite par le cliquet, 294 portes vertes,
+     32 assertions, make_rc=0. V-096 fermé.
+  ⭐ 10 constats du 4e tour fermés ET GARDÉS : retirer un correctif fait
+     tomber une porte à chaque fois (garde d'entrée → 3, table d'agence →
+     16, lecture d'agence → 210, « soi » → 51).
+  ⭐ Même les outils du BRAIN sont gardés : ON_ERROR_STOP retiré → P-299,
+     verif_serveur.sh muet → P-300.
+  ⛔ Une seule porte aveugle sur 62 sabotages : celle de V-107.
+
+
+1. CRITIQUE
+───────────
+C1  V-107 · D-26   PLUS AUCUN REPLI SUR L'AGENCE DU DEMANDEUR
+    `agence.ts:244` : pour les lignes `sinonCompte: true` (UploadDocument,
+    CreateAction, ArchiveObject), un objet sans agence retombe sur l'agence
+    DU DEMANDEUR — le contrôle se compare à lui-même. Mesuré : un compte de
+    Londres archive un candidat de Paris.
+    - `sinonCompte` disparaît de la table
+    - agence de l'objet lue → on l'exige ; **agence nulle → périmètre
+      GLOBAL**, comme les autres lignes le font déjà
+    Porte : sabotage W1 (repli rétabli) doit faire tomber au moins une
+    porte ; aujourd'hui 0 sur 294.
+
+C2  V-108 · D-25   LA SOCIÉTÉ ET LE CONTACT PORTENT LEUR AGENCE
+    Ni `societe` ni `contact` n'ont de colonne d'agence : leurs 7 commandes
+    sont en ligne COMPTE, donc le périmètre se compare à lui-même.
+    ⭐ Tranché par le BRAIN, d'après Boond lui-même (son écran « créer une
+    société » porte Agence et Pôle) :
+    - `agence_responsable_id` sur `societe` ET sur `contact`, NOT NULL,
+      remplie à la création par l'agence du compte (ou de son manager)
+    - le périmètre se lit sur cette colonne, comme partout
+    - le **mode** est une politique : `societe.perimetre.mode` =
+      `agence_responsable` (défaut) · `par_besoins` · `partagee`
+    ⚠️ La migration 010 (colonnes + remplissage + NOT NULL) est écrite par
+    le BRAIN CODE : attends-la, puis branche le périmètre dessus.
+    Portes : les 7 commandes de société et de contact, hors agence → DROIT,
+    0 écriture, avec témoin positif dans le périmètre ; et une porte par
+    valeur de `societe.perimetre.mode`.
+
+
+2. ÉLEVÉ
+────────
+E1 V-109  Les décisions client sortent du code : `ref_decision_client`
+   (`positive`, `negative`, `en_attente` ; codes retenu, refuse, sans_suite,
+   reporte). ⛔ Plus de `.includes()` sur des libellés (besoin.ts:313-314).
+E2 V-110  P-203 et P-207 posent elles-mêmes le droit qu'elles testent : elles
+   ne doivent plus rougir quand on délègue ArchiveCompany.
+
+
+3. MOYEN
+────────
+M1 V-115  Les quatre écarts reconduits du 4e tour : les 5 permissions sans
+   titulaire au seed · le motif d'archivage jeté · « 0/1 postes » pour un
+   `fte_vise = 2.0` · la session de banc identique pour tous
+   (`{nom:"Banc", groupe:"IA"}` → le compte réel, D-19).
+
+
+4. CE QUE LE BRAIN FAIT — TU N'Y TOUCHES PAS
+────────────────────────────────────────────
+Migration 010 (colonnes d'agence responsable + remplissage + NOT NULL,
+`profil_candidat.agence_id` NOT NULL), numéros de migration et rang unique
+dans `schema_migrations` (D-27), F13 dans le cliquet (D-28), trailers `Role:`
+vérifiés par la CI (D-29). Le canon est déjà corrigé (référentiel des
+décisions, politique de périmètre).
+Quand Ahmed te dit « lot-2-brain est prêt » : `git merge lot-2-brain`, puis
+`bash outils/make.sh reset && bash outils/make.sh test`.
+
+
+5. CE QUE TU RENDS
+──────────────────
+Une ligne par V- dans journal/ : commit · porte · ROUGE puis VERTE. Le banc
+se juge sur une base refaite. Puis, seulement si tout est vert :
+« prêt pour le sixième audit ».
+⛔ Pas de fusion sur main. Chaque commit porte son trailer `Role:`.

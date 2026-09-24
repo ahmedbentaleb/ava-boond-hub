@@ -1,0 +1,55 @@
+AVA MANAGER — SESSION BRAIN CODE, CINQUIÈME TOUR
+================================================
+24/09/2026. Quatre points. Le mot d'Ahmed est donné pour ce qui suit.
+
+À lire d'abord : _ops/ARBITRAGE_AUDIT_2026-09-24.md (D-25 → D-29) et
+Desktop/ava-audit-5/rapport/CONSTATS.md (V-108, V-111 → V-114).
+
+Ton poste :
+  cd /c/Users/Hamada/Desktop/ava-brain
+  git fetch "/c/Users/Hamada/Desktop/Ava Manager" lot-2
+  git checkout lot-2-brain && git merge FETCH_HEAD
+Base ava_brain, refaite à neuf. Chaque commit porte « Role: brain ».
+
+
+B1  V-108 · D-25   MIGRATION 010 — L'AGENCE RESPONSABLE
+    - `societe.agence_responsable_id` et `contact.agence_responsable_id`
+      (FK agence), remplies : agence du manager s'il existe, sinon agence
+      du compte créateur lu dans `evenement_metier`, sinon agence par
+      défaut ; puis **NOT NULL**
+    - `profil_candidat.agence_id` : remplissage puis **NOT NULL** (V-114 —
+      c'est elle que la reprise Boond remplira)
+    - la politique `societe.perimetre.mode` semée à `agence_responsable`
+    - `--single-transaction`, rejouable deux fois de suite
+    Témoin : base neuve → 0 ligne nulle sur les trois colonnes.
+    ⚠️ Grok branche le périmètre dessus de son côté : dis-le dans ta réponse.
+
+B2  V-111 · D-27   UN NUMÉRO = UN FICHIER
+    Les deux migrations `009` : la seconde devient `010` (et la tienne
+    passe à `011` si besoin — le journal dit le vrai ordre).
+    `ava.schema_migrations` porte un **rang unique** (entier) et la date
+    d'exécution ; une migration inconnue ou hors rang fait échouer `migrate`.
+    Témoin : deux fichiers au même numéro → `make migrate` refuse.
+
+B3  V-112 · D-28   F13 DANS LE CLIQUET
+    Nouvelle case 13 : `git merge-base --is-ancestor lot-2-brain HEAD`.
+    ⚠️ Dans un clone neuf, la référence peut manquer : la case est alors
+    **KO avec son motif** (« référence lot-2-brain absente »), jamais verte
+    par défaut. Prévois `git fetch origin lot-2-brain` si l'origine l'a.
+    Témoin : sur une branche qui ne descend pas de lot-2-brain → KO.
+
+B4  V-113 · D-29   LES TRAILERS VÉRIFIÉS PAR LA CI
+    `.github/workflows/ci.yml` : un pas qui refuse la PR si un commit de la
+    branche n'a pas de trailer `Role:`, et si un commit qui touche `test/`
+    n'a pas `Role: banc`. Le crochet local reste, mais il ne suffit plus.
+    Témoin : un commit d'essai sans trailer → le pas échoue (joue-le à la
+    main avec la même commande que la CI).
+
+
+Ce que tu ne fais jamais : server/ web/ (Grok) ; réécrire une migration
+publiée ; toucher « ava », le port 3000, le dossier « Ava Manager » ;
+fusionner ou pousser ; assouplir un contrôle qui gêne.
+
+Tu rends : une ligne par point dans `_ops/JOURNAL_BUGS.md` (V-xxx · commit ·
+témoin ROUGE → VERT), puis 15 lignes au plus, avec la phrase exacte pour
+Grok : « lot-2-brain est prêt : git merge lot-2-brain. »
