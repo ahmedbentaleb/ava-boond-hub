@@ -369,3 +369,12 @@ Prêt pour le septième audit.
 Mesure de clôture, base refaite (`make.sh reset` puis `make test`) : `make test` OK. Cliquet : cases OK=13 KO=0, F13 comprise (`lot-2-brain` est un ancêtre de HEAD). 332 portes, 41 assertions.
 
 Prêt pour le huitième audit.
+
+| V-138 | C1 D-37 une commande, ses clés | P-326 | une clé admise et non lue passait | `ok` — clé inconnue → GARDE ; les deux noms d'une agence → GARDE ; plus aucun `…_id` lu dans l'entrée | `84fad8d` `c96f4bb` |
+| V-140 | C1 D-37 plus de liste commune | P-341 | CreatePrestation naissait close ; facturable refusé | `ok` — clos/annulé → GARDE ; saisie séparée avec facturable s'enregistre | `84fad8d` `29e4e8b` |
+| V-139 | C3 D-39 soi ne couvre pas une agence | P-340 | soi passait sur un objet d'une autre agence | `ok` — RES et STAF de PAR sur une absence ou un document de CAS → DROIT, 0 écriture | `e43394b` `1af2090` |
+| V-145 | M1 ManageGroups refuse pôle et équipe | P-343 | un périmètre pôle était accepté | `ok` — GARDE « périmètre non servi », rien écrit | `5cea79c` `29e4e8b` |
+| V-141 | E1 un numéro, un titre | P-326–P-331 | six titres portaient deux numéros | `ok` — un numéro par titre ; P-333–P-338 retirées du tableau | `03fd088` |
+| V-142 | E2 une aide retire les délégations | P-331 | DELETE hors de l'aide | `ok` — case 17 verte, seul `test/contrat/delegations.ts` | `03fd088` |
+
+Mesure : `make test` OK. Porte croisée : 55 commandes servies · 117 identifiants · 0 fuite · 0 positif KO. Cliquet : case 7 (`_ops/` ≠ main, porte du cerveau) et case 11 (P-333–P-338 perdues, retrait V-141) restent rouges. Phrase du neuvième audit non écrite.

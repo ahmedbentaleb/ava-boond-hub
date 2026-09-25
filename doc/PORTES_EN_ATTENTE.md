@@ -159,6 +159,15 @@ tombe était ✅ ou ⏳, et la case redevient du tout-ou-rien.
 
 ⚠️ **Les 5 portes du lot 1 passent ✅ sans discussion** — elles sont servies et vertes.
 
+## ⏳ P-339 — la porte croisée (D-36, 25/09)
+
+| Porte | Posée | Vue rouge | Pourquoi ⏳ | Passe ✅ quand |
+|---|---|---|---|---|
+| P-339 | 25/09, `lot-2-brain` | 25/09 : **17 fuites**, les 17 de l'audit 8 (V-138) | le serveur écrit des identifiants qu'il ne résout pas (D-37, côté CODE) | **0 fuite** sur les 55 commandes servies, 0 positif KO, 0 identifiant déclaré sans cas |
+
+⛔ Une ⏳ qui tombe fait tomber `make test`, donc la case 1 du cliquet : c'est voulu (D-36). La porte
+ne se retouche pas pour passer — `test/` en est la copie exacte du canon (case 14).
+
 ## ⛔ D-35 (24/09) — un ✅ retiré se DÉCLARE ici
 
 Un ✅ ne redevient ⏳ que s'il était **faux**, et la ligne ci-dessous le dit. La case 9 lit **toute
@@ -167,6 +176,21 @@ l'histoire** de `journal/PORTES.md` sur la branche : un passage ✅ → ⏳ abse
 | Porte | ✅ posé | ⏳ remis | Motif | Décision |
 |---|---|---|---|---|
 | P-062 · P-063 · P-064 · P-065 | `6dc1e89` (20/09) | `b2b7d1e` (21/09) | captures des écrans besoin : ✅ posé en masse avec les 55 portes de contrat, alors que ces écrans sont du **lot 3** et n'existent pas | D-35 — le ⏳ est la vérité, lot cible **3** |
+
+## ⛔ D-41 (25/09) — une porte ✅ RETIRÉE du tableau se déclare ici
+
+Une porte ✅ ne sort du tableau que si elle était un **doublon** (même test, deux numéros) ; le test,
+lui, reste sous l'autre numéro. La case 11 retire de ses « perdues » les seules portes de ce tableau,
+et vérifie que le numéro gardé est bien ✅ dans HEAD. Une porte retirée sans ligne ici → KO.
+
+| Porte retirée | Retirée au commit | Doublon de (gardée ✅) | Motif | Décision |
+|---|---|---|---|---|
+| P-333 | `5aefe26` (25/09) | P-326 | recopiée mot pour mot, un test portait les deux numéros | V-141, D-41 |
+| P-334 | `5aefe26` (25/09) | P-327 | idem | V-141, D-41 |
+| P-335 | `5aefe26` (25/09) | P-328 | idem | V-141, D-41 |
+| P-336 | `5aefe26` (25/09) | P-329 | idem | V-141, D-41 |
+| P-337 | `5aefe26` (25/09) | P-330 | idem | V-141, D-41 |
+| P-338 | `5aefe26` (25/09) | P-331 | idem | V-141, D-41 |
 
 </etat>
 

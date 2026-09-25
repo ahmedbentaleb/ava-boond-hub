@@ -297,8 +297,8 @@
   "chemin": "JOURNAL_BUGS.md",
   "titre": "Journal des bugs — Ava Manager · **audit général**",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
-  "ko": 24
+  "date": "25/09/2026",
+  "ko": 26
  },
  {
   "chemin": "MACHINES_ETAT_V1.md",
@@ -346,8 +346,8 @@
   "chemin": "PORTES_EN_ATTENTE.md",
   "titre": "La parade ⏳ — une porte posée avant d'être servie",
   "categorie": "Conception et contrat",
-  "date": "24/09/2026",
-  "ko": 8
+  "date": "25/09/2026",
+  "ko": 9
  },
  {
   "chemin": "prompt-audit-2.txt",
@@ -418,6 +418,13 @@
   "categorie": "Prompts et briefs",
   "date": "25/09/2026",
   "ko": 4
+ },
+ {
+  "chemin": "prompt-brain-code-8b.txt",
+  "titre": "prompt-brain-code-8b.txt",
+  "categorie": "Prompts et briefs",
+  "date": "25/09/2026",
+  "ko": 2
  },
  {
   "chemin": "prompt-brain-code.txt",
@@ -647,8 +654,8 @@
   "chemin": "journal/CORRECTIFS.md",
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
-  "ko": 26
+  "date": "25/09/2026",
+  "ko": 28
  },
  {
   "chemin": "journal/DECISIONS.md",
@@ -696,7 +703,7 @@
   "chemin": "journal/PORTES.md",
   "titre": "Portes — le cliquet. Une porte ✅ ne redevient jamais ⏳.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
+  "date": "25/09/2026",
   "ko": 48
  },
  {

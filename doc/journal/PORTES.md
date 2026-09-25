@@ -340,9 +340,8 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-330 | B CONTRAT | TransferContact vers une société d'une autre agence → DROIT. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
 | P-331 | B CONTRAT | Une délégation posée avant le banc survit, fichier par fichier. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | — |
 | P-332 | B CONTRAT | DeclareCVShared avec id et positionnement_id → GARDE, rien écrit. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
-| P-333 | B CONTRAT | Les deux noms d'une agence → GARDE, 0 écriture. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
-| P-334 | B CONTRAT | Une clé inconnue → GARDE sur chaque commande servie. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | GARDE |
-| P-335 | B CONTRAT | CreateProject vers un besoin d'une autre agence → DROIT, rien écrit. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
-| P-336 | B CONTRAT | ManageGroups refuse soi hors nature soi ; UpdateNeed en soi → DROIT. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
-| P-337 | B CONTRAT | TransferContact vers une société d'une autre agence → DROIT. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
-| P-338 | B CONTRAT | Une délégation posée avant le banc survit, fichier par fichier. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | — |
+| P-339 | B CONTRAT | Porte croisée : chaque commande servie, chaque identifiant pointé vers une autre agence → DROIT ou GARDE et rien d'écrit ; un positif dans l'agence → ok ; complète par construction (D-36). | `test/contrat/porte_croisee.test.mjs` | 2026-09-25 | ⏳ | 2 | 0 fuite |
+| P-340 | B CONTRAT | RES et STAF de PAR sur une absence ou un document de CAS → DROIT, 0 écriture. | `test/contrat/audit7.test.ts` | 2026-09-25 | ✅ | 2 | 0 écriture |
+| P-341 | B CONTRAT | Saisie séparée : un temps avec facturable s'enregistre. | `test/contrat/audit7.test.ts` | 2026-09-25 | ✅ | 2 | base relue |
+| P-342 | B CONTRAT | staffing.inter_agences = oui : un candidat d'une autre agence se positionne ; non reste DROIT. | `test/contrat/audit7.test.ts` | 2026-09-25 | ✅ | 2 | base relue |
+| P-343 | B CONTRAT | ManageGroups refuse un périmètre pôle ou équipe. | `test/contrat/audit7.test.ts` | 2026-09-25 | ✅ | 2 | GARDE |

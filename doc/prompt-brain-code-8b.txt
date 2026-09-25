@@ -1,0 +1,33 @@
+AVA MANAGER — SESSION BRAIN CODE, COMPLÉMENT AU HUITIÈME TOUR
+=============================================================
+25/09/2026. Un seul point. Le mot d'Ahmed est donné.
+
+Grok a retiré P-333 → P-338 du tableau, comme V-141 le demandait (doublons
+de P-326 → P-331). La case 11 les compte comme « perdues » : elle n'a aucun
+moyen de distinguer un doublon retiré d'une porte perdue. C'est un trou de
+MA décision, pas une faute de Grok.
+
+Ton poste :
+  cd /c/Users/Hamada/Desktop/ava-brain
+  git fetch "/c/Users/Hamada/Desktop/Ava Manager" lot-2
+  git checkout lot-2-brain && git merge FETCH_HEAD
+
+B5  D-41   LA CASE 11 LIT LES PORTES RETIRÉES DÉCLARÉES
+    - la déclaration est écrite : _ops/PORTES_EN_ATTENTE.md, section D-41
+      (porte retirée · commit · doublon de · motif · décision)
+    - case 11 : une porte ✅ absente de HEAD n'est PAS perdue si, et
+      seulement si, elle a sa ligne D-41 ET que le numéro « doublon de »
+      est ✅ dans HEAD. Sinon KO, comme avant
+    - rien d'autre ne change dans la case (fenêtre depuis le départ de la
+      branche, portes exécutées hors tableau)
+    Témoins, les trois joués :
+      avec la déclaration → case 11 VERTE
+      une ligne D-41 retirée → KO nommant la porte
+      une porte ✅ quelconque retirée sans déclaration → KO
+    ⛔ Ne remets pas P-333 → P-338 dans le tableau.
+
+Ce que tu ne fais jamais : server/ web/ ; toucher « ava », le port 3000, le
+dossier « Ava Manager » ; fusionner ou pousser ; assouplir un contrôle.
+
+Tu rends : une ligne dans `_ops/JOURNAL_BUGS.md`, puis la phrase exacte pour
+Grok : « lot-2-brain est prêt : git merge lot-2-brain. »
