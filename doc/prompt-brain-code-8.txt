@@ -1,0 +1,70 @@
+AVA MANAGER — SESSION BRAIN CODE, HUITIÈME TOUR
+===============================================
+25/09/2026. Cinq points. ⭐ B1 D'ABORD : Grok attend la porte croisée pour
+travailler. Le mot d'Ahmed est donné pour ce qui suit.
+
+À lire d'abord : _ops/ARBITRAGE_AUDIT_2026-09-25.md (D-36, D-38, D-40) et
+Desktop/ava-audit-8/rapport/ (CONSTATS.md, preuves/securite8/croise_55.mjs,
+monde8.mjs, croise_55.md, 00_seconde_agence.sql, 01_permissions_posees.txt).
+
+Ton poste :
+  cd /c/Users/Hamada/Desktop/ava-brain
+  git fetch "/c/Users/Hamada/Desktop/Ava Manager" lot-2
+  git checkout lot-2-brain && git merge FETCH_HEAD
+Base ava_brain, refaite à neuf. « Role: brain », ou « Role: banc » pour test/.
+
+
+B1  V-138 · D-36   LA PORTE CROISÉE ENTRE AU BANC — EN PREMIER
+    Pars du script de l'audit (croise_55.mjs + monde8.mjs), ne le réinvente pas.
+    - source canon : _ops/PORTE_CROISEE.mjs ; copie EXACTE dans test/ ; une
+      case du cliquet compare les deux (comme les assertions, case 2)
+    - le monde : la fixture pose une 2e et une 3e agence ; l'acteur reçoit
+      les 55 permissions PAR ManageGroups, sur son agence seulement
+    - pour chaque commande servie, chaque identifiant pointé vers un objet
+      d'une autre agence → DROIT ou GARDE ET empreinte de toutes les tables
+      inchangée ; puis un positif dans l'agence → ok
+    - COMPLÈTE PAR CONSTRUCTION : la liste des commandes vient du serveur
+      (les 55 servies) ; les champs viennent de la déclaration de chaque
+      ligne de agence.ts quand elle existe (D-37, Grok la pose), sinon de la
+      liste de l'audit. Une commande servie sans cas, ou un identifiant
+      déclaré sans cas → la porte ROUGIT
+    - le seuil : 0 fuite ; la politique staffing.inter_agences jouée à son
+      défaut `non` (une porte par valeur viendra de Grok)
+    - numéro de porte à la suite de PORTES.md, état ⏳ lot 2 tant qu'elle a
+      des fuites (déclaré dans PORTES_EN_ATTENTE), ✅ à 0
+    Témoin : sur le lot-2 actuel → ROUGE avec 17 fuites nommées (le chiffre
+    de l'audit) ; une commande retirée de la table → ROUGE « sans cas ».
+    ⚠️ Dès que B1 est commité, dis-le à Ahmed : Grok peut fusionner et
+    commencer. Les points suivants viennent après, dans une seconde fusion.
+
+B2  V-143 · D-40   UNE MIGRATION PUBLIÉE NE SE RÉÉCRIT PAS
+    - 001_schema.sql et 002_seed_ref.sql reviennent à leur version de main
+      (réécrites par le codeur : 4b74720, d1776e3)
+    - ce qu'elles avaient gagné passe dans 017 (ref_decision_client et le
+      reste) ; la base neuve doit être identique avant/après
+    - 017 sème aussi la politique staffing.inter_agences (défaut « non »)
+    - case du cliquet : chaque migration présente sur main est IDENTIQUE
+      dans HEAD
+    Témoin : une ligne ajoutée à 001 → la case rougit ; `select count(*)
+    from politique` = 202 ; schéma de la base neuve identique (pg_dump
+    --schema-only comparé avant/après).
+
+B3  V-141 · V-142   DEUX CASES DU CLIQUET
+    - un numéro = un test : chaque P-nnn apparaît une fois dans PORTES.md et
+      dans un seul titre de test ; un test qui porte deux numéros → KO
+    - aucune délégation effacée à la main : un DELETE (ou un appel de
+      retrait) sur les tables de délégation dans test/ hors de l'aide
+      commune que Grok écrit → KO avec le fichier et la ligne
+    Témoin : les deux, ROUGE puis VERT.
+
+B4  V-144   dossier.py lit les référentiels dans TOUTES les migrations
+    (plus d'écart annoncé à tort) ; il affiche 74 référentiels et 202
+    politiques comptés au registre.
+
+Ce que tu ne fais jamais : server/ web/ (Grok) ; réécrire une migration
+publiée (tu en RESTAURES deux) ; toucher « ava », le port 3000, le dossier
+« Ava Manager » ; fusionner ou pousser ; assouplir un contrôle qui gêne.
+
+Tu rends : une ligne par point dans `_ops/JOURNAL_BUGS.md` (V-xxx · commit ·
+témoin ROUGE → VERT), puis 15 lignes au plus, avec la phrase exacte pour
+Grok : « lot-2-brain est prêt : git merge lot-2-brain. »

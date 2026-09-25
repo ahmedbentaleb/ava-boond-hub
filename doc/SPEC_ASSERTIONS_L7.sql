@@ -314,7 +314,12 @@ SELECT t.doit_etre('`ava_app` n''a TRUNCATE sur aucune relation', 'M-8',
 -- ⭐ La liste EST le contrat : le jour où une commande livre l'écriture d'une
 --    de ces tables, la migration qui la sert lui rend son GRANT ET la retire
 --    d'ici, dans le même commit. Un GRANT remis à la main fait lever.
-SELECT t.doit_etre('`ava_app` n''écrit aucune table dont la commande n''est pas servie', 'M-8',
+-- ⚠️ V-131, 24/09 — le nom disait « aucune table dont la commande n'est pas
+--    servie » : il prétendait mesurer TOUTES les tables et n'en regardait que
+--    27. Il dit désormais ce qu'il mesure. ⭐ La mesure complète est une porte
+--    CALCULÉE du banc (P-325, D-34) : droits réels contre tables écrites par
+--    le code.
+SELECT t.doit_etre('`ava_app` n''écrit aucune des 27 tables de 012 et 013 (lots 5.7, 5.8, applications)', 'M-8',
   NOT EXISTS (
     SELECT 1 FROM unnest(ARRAY[
       'personne_langue','personne_certification','personne_experience','personne_diplome',

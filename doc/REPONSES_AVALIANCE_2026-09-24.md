@@ -27,6 +27,8 @@ Les 10 questions posées à la direction, ses réponses, et **ce que chacune cha
 | **R9** | « On importe **le contrat de travail dès le départ**. » | ✅ `contrat_rh` en V1, avec type, catégorie, classification Syntec, temps de travail, dates, renouvellements (étape 5.8) |
 | **R10** | ⭐ « Appel d'offres gagné : parfois un interlocuteur, parfois non. On prend un interlocuteur fictif, ou **c'est le service, ou la société entière** qui fait interlocuteur. » | Le projet peut pointer **une unité (service) ou la société** au lieu d'une personne : `projet.contact` gagne la valeur `service_ou_societe`, et `ref_origine_besoin` (régie · appel d'offres · …) est créé. ⛔ Plus besoin d'inventer un contact fictif |
 
+| **R11** | ❓ **ouverte, 25/09** — « Un consultant ou un candidat d'une agence (Casablanca) peut-il être positionné ou staffé sur un besoin d'une autre agence (Paris) ? » | politique `staffing.inter_agences`, défaut **non** tant qu'Avaliance n'a pas répondu (D-38) |
+
 ## Ce que j'ajoute au canon, maintenant
 
 | Où | Ajout |

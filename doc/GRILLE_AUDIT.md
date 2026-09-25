@@ -46,7 +46,7 @@ casse le code est pire qu'aucune suite : elle donne confiance sans rien prouver.
 | **B2** | Toutes les politiques sont chargées | `SELECT count(*) FROM politique` = le compte du **registre §E** — ⛔ ne pas recopier le chiffre ici | 🟠 |
 | **B3** | `valeur` = `valeur_defaut` au seed | `WHERE valeur <> valeur_defaut` → 0 ligne | 🟠 |
 | **B4** | Tous les référentiels existent | `\dt ava.ref_*` = le compte du **registre §E** — ⛔ ne pas recopier le chiffre ici | 🟠 |
-| **B5** | Aucun CHECK qui fige une **liste de codes** métier | `grep -niE "CHECK *\([a-z_]+ +IN *\(" db/migrations/*.sql` *(V-132 : l'ancien ne voyait que les colonnes `_code` ; un `etat IN (…)` lui échappait)* — chaque ligne doit être justifiée au registre (ex. `perimetre.type_code`, D-9) *(V-065 : l'ancien grep donnait un faux 🔴)* | 🔴 non justifiée |
+| **B5** | Aucun CHECK qui fige une **liste de codes** métier | ⭐ **mesuré en base**, pas dans les fichiers *(V-132, 24/09 nuit : un grep sur `db/migrations/` montre aussi les CHECK que 007, 014 et 015 ont retirés)* : `select c.relname, pg_get_constraintdef(k.oid) from pg_constraint k join pg_class c on c.oid = k.conrelid where k.connamespace = 'ava'::regnamespace and k.contype = 'c' and pg_get_constraintdef(k.oid) ~ 'ANY \(ARRAY\[' and c.relname not like 'ref\_%'` — chaque ligne rendue est justifiée au **registre §D**, sinon elle devient un `ref_*` | 🔴 |
 
 ⚠️ **B1 attrape aussi les faux positifs** — un `if` sur un état dans un outil de migration n'est
 pas du métier. ⭐ **Je lis chaque occurrence, je ne compte pas.** Un grep qui décide tout seul

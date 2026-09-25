@@ -332,3 +332,17 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-322 | B CONTRAT | Chaque colonne d'agence lue par la table est NOT NULL. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | information_schema |
 | P-323 | B CONTRAT | TransferContact hors périmètre → DROIT ; transfert permis, agence relue. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
 | P-324 | B CONTRAT | Une délégation posée avant le banc lui survit. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | — |
+| P-325 | B CONTRAT | Les tables écrivables par `ava_app` sont exactement celles qu'une commande servie écrit (droits réels contre `server/src`, D-34). | `test/contrat/grants.test.ts` | 2026-09-24 | ✅ | 2 | égalité stricte |
+| P-326 | B CONTRAT | Les deux noms d'une agence → GARDE, 0 écriture. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-327 | B CONTRAT | Une clé inconnue → GARDE sur chaque commande servie. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | GARDE |
+| P-328 | B CONTRAT | CreateProject vers un besoin d'une autre agence → DROIT, rien écrit. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-329 | B CONTRAT | ManageGroups refuse soi hors nature soi ; UpdateNeed en soi → DROIT. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-330 | B CONTRAT | TransferContact vers une société d'une autre agence → DROIT. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-331 | B CONTRAT | Une délégation posée avant le banc survit, fichier par fichier. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | — |
+| P-332 | B CONTRAT | DeclareCVShared avec id et positionnement_id → GARDE, rien écrit. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-333 | B CONTRAT | Les deux noms d'une agence → GARDE, 0 écriture. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-334 | B CONTRAT | Une clé inconnue → GARDE sur chaque commande servie. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | GARDE |
+| P-335 | B CONTRAT | CreateProject vers un besoin d'une autre agence → DROIT, rien écrit. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-336 | B CONTRAT | ManageGroups refuse soi hors nature soi ; UpdateNeed en soi → DROIT. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-337 | B CONTRAT | TransferContact vers une société d'une autre agence → DROIT. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
+| P-338 | B CONTRAT | Une délégation posée avant le banc survit, fichier par fichier. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | — |

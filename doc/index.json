@@ -119,6 +119,13 @@
   "ko": 7
  },
  {
+  "chemin": "ARBITRAGE_AUDIT_2026-09-25.md",
+  "titre": "Arbitrage du huitième audit — 25/09/2026",
+  "categorie": "Audits",
+  "date": "25/09/2026",
+  "ko": 9
+ },
+ {
   "chemin": "AUDIT_PROJET_2026-09-17.md",
   "titre": "Audit du projet Ava Manager — 17 septembre 2026",
   "categorie": "Audits",
@@ -248,7 +255,7 @@
   "chemin": "ETAT_PROJET.md",
   "titre": "État du projet Ava Manager — du premier jour à la livraison",
   "categorie": "État et plans",
-  "date": "24/09/2026",
+  "date": "25/09/2026",
   "ko": 14
  },
  {
@@ -283,7 +290,7 @@
   "chemin": "JEU_ESSAI.sql",
   "titre": "JEU_ESSAI.sql",
   "categorie": "Conception et contrat",
-  "date": "21/09/2026",
+  "date": "24/09/2026",
   "ko": 31
  },
  {
@@ -291,7 +298,7 @@
   "titre": "Journal des bugs — Ava Manager · **audit général**",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "24/09/2026",
-  "ko": 22
+  "ko": 24
  },
  {
   "chemin": "MACHINES_ETAT_V1.md",
@@ -406,6 +413,13 @@
   "ko": 4
  },
  {
+  "chemin": "prompt-brain-code-8.txt",
+  "titre": "prompt-brain-code-8.txt",
+  "categorie": "Prompts et briefs",
+  "date": "25/09/2026",
+  "ko": 4
+ },
+ {
   "chemin": "prompt-brain-code.txt",
   "titre": "prompt-brain-code.txt",
   "categorie": "Prompts et briefs",
@@ -469,6 +483,13 @@
   "ko": 5
  },
  {
+  "chemin": "prompt-lot2-correctifs-8.txt",
+  "titre": "prompt-lot2-correctifs-8.txt",
+  "categorie": "Prompts et briefs",
+  "date": "25/09/2026",
+  "ko": 5
+ },
+ {
   "chemin": "prompt-lot2-correctifs.txt",
   "titre": "prompt-lot2-correctifs.txt",
   "categorie": "Prompts et briefs",
@@ -514,8 +535,8 @@
   "chemin": "REGISTRE_POLITIQUES_v1.md",
   "titre": "Registre des politiques Ava Manager v1",
   "categorie": "Conception et contrat",
-  "date": "24/09/2026",
-  "ko": 59
+  "date": "25/09/2026",
+  "ko": 60
  },
  {
   "chemin": "RELECTURE_5_MODELE_DONNEES_2026-09-17.md",
@@ -549,7 +570,7 @@
   "chemin": "REPONSES_AVALIANCE_2026-09-24.md",
   "titre": "Les réponses d'Avaliance — réunion du 24/09/2026",
   "categorie": "Cadrage et commande du client",
-  "date": "24/09/2026",
+  "date": "25/09/2026",
   "ko": 5
  },
  {
@@ -627,7 +648,7 @@
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "24/09/2026",
-  "ko": 25
+  "ko": 26
  },
  {
   "chemin": "journal/DECISIONS.md",
@@ -676,7 +697,7 @@
   "titre": "Portes — le cliquet. Une porte ✅ ne redevient jamais ⏳.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "24/09/2026",
-  "ko": 46
+  "ko": 48
  },
  {
   "chemin": "journal/QUESTIONS.md",
@@ -1061,6 +1082,55 @@
   "titre": "SYNTHESE.md",
   "categorie": "Audits",
   "date": "24/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "audit-2026-09-25/CONFORMITE.md",
+  "titre": "CONFORMITE8 — famille H : les 55 commandes servies contre L4",
+  "categorie": "Audits",
+  "date": "25/09/2026",
+  "ko": 20
+ },
+ {
+  "chemin": "audit-2026-09-25/CONSTATS.md",
+  "titre": "Constats du huitième audit — commit `48e90c4` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "25/09/2026",
+  "ko": 5
+ },
+ {
+  "chemin": "audit-2026-09-25/GRILLE.md",
+  "titre": "GRILLE8 — huitième audit, lot 2, commit 48e90c4",
+  "categorie": "Audits",
+  "date": "25/09/2026",
+  "ko": 17
+ },
+ {
+  "chemin": "audit-2026-09-25/MUTATIONS.md",
+  "titre": "Mutations — les tests des tests (famille G), huitième audit",
+  "categorie": "Audits",
+  "date": "25/09/2026",
+  "ko": 3
+ },
+ {
+  "chemin": "audit-2026-09-25/SECURITE.md",
+  "titre": "SECURITE8 — famille I : le périmètre par objet, avec toutes les permissions posées",
+  "categorie": "Audits",
+  "date": "25/09/2026",
+  "ko": 17
+ },
+ {
+  "chemin": "audit-2026-09-25/SUIVI_V.md",
+  "titre": "Huitième audit — suivi des constats sur `48e90c4` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "25/09/2026",
+  "ko": 31
+ },
+ {
+  "chemin": "audit-2026-09-25/SYNTHESE.md",
+  "titre": "SYNTHESE.md",
+  "categorie": "Audits",
+  "date": "25/09/2026",
   "ko": 2
  }
 ]

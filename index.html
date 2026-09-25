@@ -5738,7 +5738,12 @@ function showView(name){
       q: "Quand on gagne un appel d'offres, y a-t-il quand même un interlocuteur côté client (acheteur, chef de projet) ? Ou parfois personne ?",
       pourquoi: "En régie, le besoin passe par un contact. En appel d'offres, souvent non. Aujourd'hui, le projet exige un contact : un appel d'offres gagné sans contact serait bloqué. On veut que la règle dépende de l'origine du besoin.",
       options: ["Toujours un interlocuteur, même en appel d'offres", "Parfois personne", "Jamais de contact nommé en appel d'offres"],
-      defaut: "Contact obligatoire en régie, facultatif en appel d'offres — deux réglages, un par origine." }
+      defaut: "Contact obligatoire en régie, facultatif en appel d'offres — deux réglages, un par origine." },
+    { id: "R11", sujet: "Staffer entre agences",
+      q: "Un consultant ou un candidat de Casablanca peut-il être positionné ou placé sur un besoin de Paris (ou l'inverse) ?",
+      pourquoi: "Aujourd'hui l'outil l'interdit : chaque agence ne voit et ne place que ses propres consultants. Si le nearshore fait partie du métier, il faut l'ouvrir — c'est un réglage, pas du code.",
+      options: ["Oui, entre toutes les agences", "Oui, mais seulement de Casablanca vers la France", "Non, chaque agence staffe les siens"],
+      defaut: "Interdit : chaque agence ne place que ses propres consultants." }
   ];
 
   function reunionLoad() {

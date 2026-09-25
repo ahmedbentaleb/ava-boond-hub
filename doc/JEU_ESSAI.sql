@@ -195,8 +195,10 @@ FROM generate_series(1, 30) n;
 --  §3 — LES SOCIÉTÉS : 2 580, dont UNE interne
 -- ═══════════════════════════════════════════════════════════════════════════
 
+-- ⭐ V-135 / D-25 : depuis 011, une société porte son AGENCE RESPONSABLE
+--    (NOT NULL). Le jeu la prend à son manager — c'est la règle même de 011.
 INSERT INTO societe (id, nom, nom_normalise, secteur, pays_code,
-                     manager_compte_id, statut_commercial_code)
+                     manager_compte_id, statut_commercial_code, agence_responsable_id)
 SELECT ('f2000000-0000-0000-0000-' || lpad(n::text, 12, '0'))::uuid,
        'Société ' || n,
        'societe ' || n,
@@ -204,12 +206,15 @@ SELECT ('f2000000-0000-0000-0000-' || lpad(n::text, 12, '0'))::uuid,
        CASE WHEN n % 3 = 0 THEN 'MA' ELSE 'FR' END,
        ('f1000000-0000-0000-0000-' || lpad(((n % 30) + 1)::text, 12, '0'))::uuid,
        -- ⭐ La proportion vient du relevé : une minorité de clients.
-       CASE WHEN n % 10 = 0 THEN 'client' ELSE 'prospect' END
+       CASE WHEN n % 10 = 0 THEN 'client' ELSE 'prospect' END,
+       (SELECT c.agence_id FROM compte c
+         WHERE c.id = ('f1000000-0000-0000-0000-' || lpad(((n % 30) + 1)::text, 12, '0'))::uuid)
 FROM generate_series(1, 2580) n;
 
 -- La société interne — celle qui porte Avaliance elle-même (G6).
-INSERT INTO societe (id, nom, nom_normalise, pays_code, statut_commercial_code)
-VALUES ('f2000000-0000-0000-0000-000000009999','Avaliance','avaliance','FR','client');
+INSERT INTO societe (id, nom, nom_normalise, pays_code, statut_commercial_code, agence_responsable_id)
+VALUES ('f2000000-0000-0000-0000-000000009999','Avaliance','avaliance','FR','client',
+        'f0000000-0000-0000-0000-000000000001');
 INSERT INTO societe_role VALUES
   ('f2000000-0000-0000-0000-000000009999','interne');
 
@@ -223,8 +228,9 @@ INSERT INTO unite_organisation (id, societe_id, type_code, nom, agence_id) VALUE
 
 -- 8 000 contacts, répartis sur les sociétés. ⭐ Inégalement : quelques grosses
 -- sociétés en portent 28, comme SODEXO chez Boond.
+-- ⭐ Le contact suit sa société (011) : même agence responsable.
 INSERT INTO contact (id, societe_id, civilite, nom, prenom, fonction,
-                     type_code, statut_code, manager_compte_id)
+                     type_code, statut_code, manager_compte_id, agence_responsable_id)
 SELECT ('f3000000-0000-0000-0000-' || lpad(n::text, 12, '0'))::uuid,
        ('f2000000-0000-0000-0000-' || lpad((1 + (n * 7) % 2580)::text, 12, '0'))::uuid,
        CASE WHEN n % 2 = 0 THEN 'm' ELSE 'mme' END,
@@ -236,7 +242,9 @@ SELECT ('f3000000-0000-0000-0000-' || lpad(n::text, 12, '0'))::uuid,
             ELSE 'Chef de projet' END,
        CASE WHEN n % 3 = 0 THEN 'principal' ELSE 'autre' END,
        'actif',
-       ('f1000000-0000-0000-0000-' || lpad(((n % 30) + 1)::text, 12, '0'))::uuid
+       ('f1000000-0000-0000-0000-' || lpad(((n % 30) + 1)::text, 12, '0'))::uuid,
+       (SELECT s.agence_responsable_id FROM societe s
+         WHERE s.id = ('f2000000-0000-0000-0000-' || lpad((1 + (n * 7) % 2580)::text, 12, '0'))::uuid)
 FROM generate_series(1, 8000) n;
 
 -- ═══════════════════════════════════════════════════════════════════════════
@@ -269,7 +277,7 @@ SELECT ('f5000000-0000-0000-0000-' || lpad(n::text, 12, '0'))::uuid,
        ('f4000000-0000-0000-0000-' || lpad(n::text, 12, '0'))::uuid,
        CASE WHEN n % 20 = 0 THEN 'draft' ELSE 'complete' END,
        (SELECT v FROM mot_titre WHERE i = n % 16),
-       CASE WHEN n % 3 = 0 THEN 'immediate' WHEN n % 3 = 1 THEN 'un_mois' ELSE 'plus' END,
+       CASE WHEN n % 3 = 0 THEN 'asap' WHEN n % 3 = 1 THEN '1_3_mois' ELSE '6_mois_plus' END,
        ('f1000000-0000-0000-0000-' || lpad(((n % 30) + 1)::text, 12, '0'))::uuid,
        (SELECT id FROM agence WHERE id::text LIKE 'f%' ORDER BY code LIMIT 1 OFFSET (n % 5)),
        -- ⛔ M-15 : le montant et la devise vont ensemble, ou pas du tout.

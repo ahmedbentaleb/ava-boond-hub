@@ -1,0 +1,98 @@
+AVA MANAGER — LOT 2, CORRECTIFS APRÈS LE HUITIÈME AUDIT
+======================================================
+25/09/2026. Le huitième audit a REFUSÉ le lot 2 au commit 48e90c4.
+Lis tout avant d'écrire une ligne.
+
+Rapport : C:\Users\Hamada\Desktop\ava-audit-8\rapport\
+Arbitrage : _ops/ARBITRAGE_AUDIT_2026-09-25.md (D-37, D-38, D-39)
+
+
+0. CE QUI EST GAGNÉ
+───────────────────
+  ⭐ Pour la première fois : 0 porte aveugle sur 71 sabotages. Chaque
+     correctif du 7e tour fait tomber une porte quand on le retire.
+  ⭐ 332 portes, 41 assertions, 173 appels hors banc sur 173 en 401.
+  ⛔ Mais D-32 n'est appliquée qu'à 5 commandes sur 55 (ctx.resolues).
+     La porte croisée de l'audit : 96 champs pointés hors agence,
+     17 FUITES. CLES_COMMUNES et PAIRES ferment les cas montrés, pas la
+     famille.
+
+
+⭐ LA RÈGLE DE CE TOUR : TU TOURNES JUSQU'À 0 FUITE
+──────────────────────────────────────────────────
+Le BRAIN CODE livre d'abord la porte croisée (D-36) — attends « lot-2-brain
+est prêt », fusionne, joue-la : elle doit être ROUGE avec 17 fuites.
+Puis tu corriges, tu la rejoues, et tu recommences — sans audit
+entre-temps. ⛔ Tu ne touches PAS à cette porte (copie du canon, le cliquet
+la compare) : si elle te semble fausse, écris-le dans journal/QUESTIONS.md.
+
+
+1. CRITIQUE
+───────────
+C1  V-138 · V-140 · D-37   D-32 SUR LES 55 COMMANDES, PAS SUR 5
+    - chaque ligne de agence.ts DÉCLARE toutes les clés de l'entrée de sa
+      commande, tirées de son contrat L4 : les identifiants (avec leur
+      table) et les valeurs simples ; exporte cette déclaration (la porte
+      croisée la lit)
+    - la garde résout CHAQUE identifiant déclaré, une fois, dans
+      ctx.resolues (table, id, agence)
+    - ⛔ une commande ne lit JAMAIS un objet dans ctx.entree : plus aucun
+      req(ctx.entree, "…_id") ni opt(…, "…_id") dans server/src/commandes
+      (une porte le vérifie dans le code)
+    - CLES_COMMUNES et PAIRES disparaissent : une clé absente de la
+      déclaration DE CETTE COMMANDE → GARDE. Les 10 clés du contrat
+      refusées à tort (mesures, facturable, contexte, devise du coût…)
+      reviennent ; `etat` sort de la création (une prestation ne naît pas
+      close) ; un objet = un seul nom (manager OU manager_compte_id, celui
+      du contrat)
+    Porte : en saisie_separee, un temps s'enregistre de nouveau (V-140).
+
+C2  D-38   CHAQUE RÉFÉRENCE ÉCRITE A SA RÈGLE — lis le tableau de l'arbitrage
+    objet d'agence → droit dans son agence · société → selon
+    societe.perimetre.mode · compte (manager, responsable RH) → son agence
+    couverte · personne existante → toutes les agences de ses profils
+    couvertes · agence demandée → droit dans celle-ci · candidat ou
+    ressource d'une autre agence sur un besoin ou une prestation →
+    politique staffing.inter_agences (non : refus ; oui : droit dans
+    l'agence du besoin ou du projet).
+    Porte : une par valeur de staffing.inter_agences.
+
+C3  V-139 · D-39   `soi` NE LÈVE JAMAIS UNE AUTRE RÈGLE (droits.ts:28-33, :63)
+    `soi` ne couvre que la personne du compte ; chaque droit est jugé sur
+    son propre périmètre, puis on prend l'union. Porte : un compte RES +
+    STAF de PAR sur un document ou une absence de CAS → DROIT, 0 écriture.
+
+
+2. ÉLEVÉ
+────────
+E1 V-141  P-333 → P-338 retirées (doublons de P-326 → P-331) ; un test porte
+   UN numéro. Commit `Role: banc`.
+E2 V-142  ⛔ Troisième tour ouvert : on arrête fichier par fichier. UNE aide
+   commune pose et retire les délégations, et ne retire que ce qu'elle a
+   enregistré ; tous les fichiers de test passent par elle. Le cliquet
+   rougira sur tout retrait direct. Commit `Role: banc`.
+
+
+3. MOYEN
+────────
+M1 V-145  Périmètres `pole` et `equipe` : un droit sur eux ne couvre rien ;
+   ManageGroups refuse de les poser (GARDE « périmètre non servi »).
+
+
+4. CE QUE LE BRAIN FAIT — TU N'Y TOUCHES PAS
+────────────────────────────────────────────
+La porte croisée (D-36), la restauration de 001 et 002 et la migration 017
+(D-40), deux cases du cliquet, dossier.py.
+⛔ D-40 : tu n'écris plus AUCUNE migration, et jamais dans une migration
+publiée — 001 et 002 l'ont été par toi (4b74720, d1776e3). Un besoin de
+schéma → journal/QUESTIONS.md, le BRAIN CODE l'écrit.
+⛔ Le canon sur main se porte par le BRAIN, pas par toi (b6eea7c l'a été
+sous « Role: brain »).
+
+
+5. CE QUE TU RENDS
+──────────────────
+Une ligne par V- dans journal/ : commit · porte · ROUGE puis VERTE. Base
+refaite, cliquet complet, porte croisée à 0 FUITE. Seulement alors :
+« prêt pour le neuvième audit — porte croisée : 0 fuite sur N champs ».
+⛔ Pas de fusion sur main. Chaque commit porte son trailer `Role:`.

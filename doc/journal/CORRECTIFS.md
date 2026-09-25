@@ -359,3 +359,13 @@ D-30 : les cinq permissions sans titulaire au seed sont voulues. Rien n'est cod�
 Mesure de clôture, base refaite (`make.sh reset` puis `make test`) : `make test` OK. Cliquet : cases OK=13 KO=0, F13 comprise (`lot-2-brain` est un ancêtre de HEAD). 318 portes, 41 assertions.
 
 Prêt pour le septième audit.
+
+| V-128 | C1 D-32 une seule lecture de l'entrée | P-332 P-333 P-334 P-335 | la garde lisait `id`, la commande `positionnement_id` | `ok` — deux noms ou clé inconnue → GARDE ; besoin d'une autre agence → DROIT, 0 écriture | `105c803` `0fc91a9` |
+| V-136 | C1 la commande reçoit la cible, elle ne relance pas la recherche | P-332 | seconde lecture d'un autre identifiant | `ok` — `ctx.cible` est l'objet déjà trouvé | `105c803` |
+| V-129 | E1 D-33 soi ne couvre aucune agence | P-336 | `soi` passait pour UpdateNeed | `ok` — ManageGroups GARDE ; UpdateNeed en soi → DROIT, rien écrit | `105c803` `0fc91a9` |
+| V-130 | E2 TransferContact juge les deux agences | P-337 | une seule agence laissait passer | `ok` — société d'une autre agence → DROIT, rien écrit | `105c803` `0fc91a9` |
+| V-134 | E3 le banc ne retire que ses délégations | P-338 | matrice et chemin effaçaient des délégations d'autrui | `ok` — une délégation posée avant le banc survit, fichier par fichier | `0fc91a9` |
+
+Mesure de clôture, base refaite (`make.sh reset` puis `make test`) : `make test` OK. Cliquet : cases OK=13 KO=0, F13 comprise (`lot-2-brain` est un ancêtre de HEAD). 332 portes, 41 assertions.
+
+Prêt pour le huitième audit.
