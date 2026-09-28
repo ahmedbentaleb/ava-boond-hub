@@ -12,7 +12,9 @@ lis-le en entier, toutes ses règles valent. Ce qui suit le complète.
 Un NOUVEAU clone, à côté du premier — ⛔ ne supprime pas « ava-audit » :
 c'est la preuve du premier audit.
 
-  cd /c/Users/Hamada/Desktop
+  ⛔ JAMAIS sur le Bureau (Hamada, 28/09) : tous les clones d'audit vivent dans
+  « Ava Manager/audits-independants/ » (ignoré par git), à côté des précédents.
+  cd "/c/Users/Hamada/Desktop/Ava Manager/audits-independants"
   git clone --no-checkout "/c/Users/Hamada/Desktop/Ava Manager" ava-audit-2
   cd ava-audit-2
   (même sparse-checkout que prompt-audit.txt §2.1, puis)

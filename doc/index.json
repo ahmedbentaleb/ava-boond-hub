@@ -164,7 +164,7 @@
   "chemin": "CADRAGE_METIER_RECONCILIE_2026-09-16.md",
   "titre": "Cadrage métier réconcilié Ava Manager",
   "categorie": "Cadrage et commande du client",
-  "date": "24/09/2026",
+  "date": "28/09/2026",
   "ko": 80
  },
  {
@@ -297,8 +297,8 @@
   "chemin": "JOURNAL_BUGS.md",
   "titre": "Journal des bugs — Ava Manager · **audit général**",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "25/09/2026",
-  "ko": 26
+  "date": "26/09/2026",
+  "ko": 27
  },
  {
   "chemin": "MACHINES_ETAT_V1.md",
@@ -353,14 +353,14 @@
   "chemin": "prompt-audit-2.txt",
   "titre": "prompt-audit-2.txt",
   "categorie": "Prompts et briefs",
-  "date": "23/09/2026",
+  "date": "28/09/2026",
   "ko": 3
  },
  {
   "chemin": "prompt-audit.txt",
   "titre": "prompt-audit.txt",
   "categorie": "Prompts et briefs",
-  "date": "21/09/2026",
+  "date": "28/09/2026",
   "ko": 14
  },
  {

@@ -54,7 +54,9 @@ Le CODE travaille EN MÊME TEMPS que toi, sur la même machine, dans
      prompts ni les constats déjà faits — sinon tu ne trouveras que ce
      qu'on t'a dit de chercher.
 
-  cd /c/Users/Hamada/Desktop
+  ⛔ JAMAIS sur le Bureau (Hamada, 28/09) : tous les clones d'audit vivent dans
+  « Ava Manager/audits-independants/ » (ignoré par git).
+  cd "/c/Users/Hamada/Desktop/Ava Manager/audits-independants"
   git clone --no-checkout "/c/Users/Hamada/Desktop/Ava Manager" ava-audit
   cd ava-audit
   git sparse-checkout init --no-cone
