@@ -377,4 +377,6 @@ Prêt pour le huitième audit.
 | V-141 | E1 un numéro, un titre | P-326–P-331 | six titres portaient deux numéros | `ok` — un numéro par titre ; P-333–P-338 retirées du tableau | `03fd088` |
 | V-142 | E2 une aide retire les délégations | P-331 | DELETE hors de l'aide | `ok` — case 17 verte, seul `test/contrat/delegations.ts` | `03fd088` |
 
-Mesure : `make test` OK. Porte croisée : 55 commandes servies · 117 identifiants · 0 fuite · 0 positif KO. Cliquet : case 7 (`_ops/` ≠ main, porte du cerveau) et case 11 (P-333–P-338 perdues, retrait V-141) restent rouges. Phrase du neuvième audit non écrite.
+Mesure de clôture, base refaite (`make.sh reset` puis `make test`) : `make test` OK. Porte croisée : 55 commandes servies · 117 identifiants · 0 fuite · 0 positif KO. Cliquet : cases OK=17 KO=0.
+
+Prêt pour le neuvième audit — porte croisée : 0 fuite sur 117 champs.

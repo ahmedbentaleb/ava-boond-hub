@@ -255,8 +255,8 @@
   "chemin": "ETAT_PROJET.md",
   "titre": "État du projet Ava Manager — du premier jour à la livraison",
   "categorie": "État et plans",
-  "date": "25/09/2026",
-  "ko": 14
+  "date": "29/09/2026",
+  "ko": 15
  },
  {
   "chemin": "FEUILLE_F1-F36_AHMED_2026-09-16.md",
@@ -354,6 +354,13 @@
   "titre": "prompt-audit-2.txt",
   "categorie": "Prompts et briefs",
   "date": "28/09/2026",
+  "ko": 3
+ },
+ {
+  "chemin": "prompt-audit-9.txt",
+  "titre": "prompt-audit-9.txt",
+  "categorie": "Prompts et briefs",
+  "date": "29/09/2026",
   "ko": 3
  },
  {
@@ -654,7 +661,7 @@
   "chemin": "journal/CORRECTIFS.md",
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "25/09/2026",
+  "date": "28/09/2026",
   "ko": 28
  },
  {

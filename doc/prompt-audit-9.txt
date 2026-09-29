@@ -1,0 +1,54 @@
+AVA MANAGER — NEUVIÈME AUDIT : L'AUDIT DE SORTIE DU LOT 2
+=========================================================
+29/09/2026. Commit audité : 31ea4ae (branche lot-2).
+Ton cahier reste _ops/prompt-audit.txt, complété par _ops/prompt-audit-2.txt :
+lis-les en entier, toutes leurs règles valent. Ce qui suit les PRÉCISE.
+
+Ton poste : un clone neuf dans
+  C:\Users\Hamada\Desktop\Ava Manager\audits-independants\ava-audit-9
+(⛔ jamais sur le Bureau), base ava_audit9, port 3900.
+Contrôle d'ancêtre (F13) et _ops/ identique à main AVANT tout.
+
+
+⭐ POURQUOI CE PROMPT
+────────────────────
+Huit audits. Les défauts critiques ont suivi 12 → 7 → 2 → 2 → 2 → 1 → 1 → 2,
+et chaque tour a trouvé une famille plus profonde que la précédente. Le lot 2
+ne se juge plus sur « peut-on encore trouver quelque chose » — on le peut
+toujours — mais sur une règle de sortie écrite AVANT l'audit.
+
+
+1. LE VERDICT — RÈGLE FIXÉE D'AVANCE
+────────────────────────────────────
+  REFUSÉ, seulement si l'un de ces trois est vrai :
+    a) un mur percé : une écriture, mesurée en base, hors du périmètre du
+       demandeur ou contre un invariant de la base ;
+    b) la porte croisée (_ops/PORTE_CROISEE.mjs) n'est pas à 0 fuite dans
+       TON clone, sur base neuve, ou un sabotage laisse toutes les portes
+       vertes (porte aveugle) ;
+    c) un constat CRITIQUE du 8e tour (V-138, V-139) n'est pas fermé.
+  ACCEPTÉ AVEC RÉSERVES, sinon. Tout constat élevé, moyen ou bon est écrit
+  normalement, avec sa preuve, et reçoit un LOT CIBLE (3 : écrans ; 5.8) —
+  il ne refuse pas le lot 2.
+  ⛔ Pas de « refusé » pour la forme d'un journal, un compte recopié, une
+  case de grille : ce sont des réserves.
+
+
+2. CE QUE TU FAIS, DANS CET ORDRE
+─────────────────────────────────
+  1. Banc sur base neuve, cliquet complet dans ton clone (la case 12, le
+     crochet, peut manquer : la CI le pose).
+  2. La porte croisée : 0 fuite ? Puis ajoute TES cas (un identifiant, une
+     commande que la porte ne couvre pas) — c'est là que tu cherches.
+  3. SUIVI_V des 9 constats du 8e tour (V-138 → V-146) : fermé, partiel,
+     ouvert, avec la preuve.
+  4. Sabotages : au moins un par correctif du 8e tour ; une porte doit tomber.
+  5. Le reste de la grille, comme d'habitude.
+
+
+3. CE QUE TU RENDS
+──────────────────
+Dans audits-independants/ava-audit-9/rapport/ : SYNTHESE (verdict en ligne 1 :
+ACCEPTÉ, ACCEPTÉ AVEC RÉSERVES ou REFUSÉ, et laquelle des règles a, b, c s'il
+est refusé), CONSTATS (V-147 →, chacun avec son lot cible), SUIVI_V,
+MUTATIONS, SECURITE, CONFORMITE, GRILLE.
