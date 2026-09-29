@@ -126,6 +126,13 @@
   "ko": 9
  },
  {
+  "chemin": "ARBITRAGE_AUDIT_2026-09-29.md",
+  "titre": "Arbitrage du neuvième audit — 29/09/2026",
+  "categorie": "Audits",
+  "date": "29/09/2026",
+  "ko": 10
+ },
+ {
   "chemin": "AUDIT_PROJET_2026-09-17.md",
   "titre": "Audit du projet Ava Manager — 17 septembre 2026",
   "categorie": "Audits",
@@ -164,7 +171,7 @@
   "chemin": "CADRAGE_METIER_RECONCILIE_2026-09-16.md",
   "titre": "Cadrage métier réconcilié Ava Manager",
   "categorie": "Cadrage et commande du client",
-  "date": "28/09/2026",
+  "date": "29/09/2026",
   "ko": 80
  },
  {
@@ -276,7 +283,7 @@
   "chemin": "GRILLE_AUDIT.md",
   "titre": "L2b — la grille d'audit",
   "categorie": "Audits",
-  "date": "24/09/2026",
+  "date": "29/09/2026",
   "ko": 16
  },
  {
@@ -311,8 +318,8 @@
   "chemin": "MATRICE_DROITS_v1.md",
   "titre": "Matrice des droits Ava Manager v1",
   "categorie": "Conception et contrat",
-  "date": "24/09/2026",
-  "ko": 15
+  "date": "29/09/2026",
+  "ko": 16
  },
  {
   "chemin": "MODELE_DONNEES_AVAMANAGER_V1.md",
@@ -434,6 +441,13 @@
   "ko": 2
  },
  {
+  "chemin": "prompt-brain-code-9.txt",
+  "titre": "prompt-brain-code-9.txt",
+  "categorie": "Prompts et briefs",
+  "date": "29/09/2026",
+  "ko": 4
+ },
+ {
   "chemin": "prompt-brain-code.txt",
   "titre": "prompt-brain-code.txt",
   "categorie": "Prompts et briefs",
@@ -502,6 +516,13 @@
   "categorie": "Prompts et briefs",
   "date": "25/09/2026",
   "ko": 5
+ },
+ {
+  "chemin": "prompt-lot2-correctifs-9.txt",
+  "titre": "prompt-lot2-correctifs-9.txt",
+  "categorie": "Prompts et briefs",
+  "date": "29/09/2026",
+  "ko": 7
  },
  {
   "chemin": "prompt-lot2-correctifs.txt",
@@ -1145,6 +1166,55 @@
   "titre": "SYNTHESE.md",
   "categorie": "Audits",
   "date": "25/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "audit-2026-09-29/CONFORMITE.md",
+  "titre": "CONFORMITE9 — les 55 commandes servies contre `SPEC_COMMANDES_L4.md`, par appels HTTP réels",
+  "categorie": "Audits",
+  "date": "29/09/2026",
+  "ko": 22
+ },
+ {
+  "chemin": "audit-2026-09-29/CONSTATS.md",
+  "titre": "Constats du neuvième audit — commit `071b7b2` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "29/09/2026",
+  "ko": 9
+ },
+ {
+  "chemin": "audit-2026-09-29/GRILLE.md",
+  "titre": "GRILLE9 — la grille d'audit passée en entier sur `071b7b2`",
+  "categorie": "Audits",
+  "date": "29/09/2026",
+  "ko": 14
+ },
+ {
+  "chemin": "audit-2026-09-29/MUTATIONS.md",
+  "titre": "Mutations — les tests des tests (famille G), neuvième audit",
+  "categorie": "Audits",
+  "date": "29/09/2026",
+  "ko": 2
+ },
+ {
+  "chemin": "audit-2026-09-29/SECURITE.md",
+  "titre": "SECURITE9 — la sécurité mesurée sur `071b7b2`",
+  "categorie": "Audits",
+  "date": "29/09/2026",
+  "ko": 13
+ },
+ {
+  "chemin": "audit-2026-09-29/SUIVI_V.md",
+  "titre": "Neuvième audit — suivi des constats et trous de la porte croisée, sur `071b7b2` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "29/09/2026",
+  "ko": 25
+ },
+ {
+  "chemin": "audit-2026-09-29/SYNTHESE.md",
+  "titre": "SYNTHESE.md",
+  "categorie": "Audits",
+  "date": "29/09/2026",
   "ko": 2
  }
 ]

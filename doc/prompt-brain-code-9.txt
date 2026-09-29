@@ -1,0 +1,79 @@
+AVA MANAGER — SESSION BRAIN CODE, NEUVIÈME TOUR
+===============================================
+29/09/2026. Six points. ⭐ B1 et B2 D'ABORD : Grok en a besoin pour voir ses
+portes rouges avant de corriger. Le mot d'Ahmed est donné.
+
+À lire d'abord : _ops/ARBITRAGE_AUDIT_2026-09-29.md (D-42 → D-47) et
+audits-independants/ava-audit-9/rapport/ (CONSTATS, SECURITE, CONFORMITE §3).
+
+⭐ LA RÈGLE DE CE TOUR : chaque porte ou case que tu écris tire ses cas de la
+DÉCLARATION, du REGISTRE ou du SERVEUR, jamais d'une liste écrite à la main,
+et tu la montres ROUGE sur le lot-2 actuel avant de la rendre.
+
+Ton poste :
+  cd /c/Users/Hamada/Desktop/ava-brain
+  git fetch "/c/Users/Hamada/Desktop/Ava Manager" lot-2
+  git checkout lot-2-brain && git merge FETCH_HEAD
+Base ava_brain, refaite à neuf. « Role: brain », ou « Role: banc » pour test/.
+
+
+B1  V-149 · D-44   LA PORTE CROISÉE SOUS CHAQUE VALEUR DE PÉRIMÈTRE
+    _ops/PORTE_CROISEE.mjs (puis copie exacte dans test/) : elle se joue une
+    fois par valeur de chaque politique de périmètre — societe.perimetre.mode
+    (3), staffing.inter_agences (2) — valeurs lues dans la table `politique`,
+    jamais écrites dans la porte.
+    Témoin : ROUGE sur le lot-2 actuel sous `partagee` et `par_besoins`
+    (l'audit l'a mesuré : projet et besoin de Lyon modifiés depuis Paris).
+
+B2  V-153 · V-156 · D-47   DEUX CASES
+    - case 14 : la porte croisée est la copie du canon ET elle est ✅ dans
+      PORTES.md ET verte ; ⏳ → KO
+    - case 17 : on ne regarde plus où est le DELETE. Photographie des
+      délégations (groupe_permission_perimetre, compte_groupe) avant make
+      test, comparaison après ; toute ligne disparue que le banc n'a pas
+      insérée → KO avec la ligne
+    Témoin : les deux, ROUGE sur le lot-2 actuel (P-339 ⏳ ; 6 fichiers sur 8
+    effacent), puis tu t'arrêtes — c'est Grok qui les rend vertes.
+
+    ⚠️ Dès B1 et B2 commités : dis-le à Ahmed, Grok fusionne et commence.
+
+B3  V-147 · D-42   LES VALEURS SERVIES, EN BASE
+    - migration : table `politique_valeur_servie (cle, valeur)` et un
+      contrôle qui refuse en base une `politique.valeur` absente de cette
+      table ; elle est semée des valeurs AUJOURD'HUI servies (les défauts
+      + ce que le code lit déjà) — Grok y ajoutera les 11 en les codant,
+      par une migration que TU écris quand il te le demande
+    - porte : la table = les clés de COMPORTEMENTS côté serveur (Grok
+      l'exporte) ; toute différence → ROUGE
+    Témoin : `update politique set valeur='par_dp' where cle='temps.validation'`
+    → refus en base.
+
+B4  V-150 · D-46   LES SIX PERMISSIONS DE LECTURE
+    Migration : LireSocietes, LireContacts, LireCandidats, LireRessources,
+    LireBesoins, LireProjets dans `permission`, semées selon le bloc
+    « Lecture » de MATRICE_DROITS_v1.md (✓ au périmètre du groupe, S = soi,
+    D = délégable). Témoin : count = 6, et le groupe SUP les a toutes en global.
+
+B5  V-154 · V-157   GRANT PAR COLONNE, EMPREINTE DES MIGRATIONS
+    - GRANT UPDATE par colonne, calculé depuis les colonnes que les
+      commandes servies écrivent ; plus d'INSERT sur `politique` (seule
+      `valeur`) ; P-325 regarde les colonnes ET les deux rôles
+      (ava_app, ava_serveur)
+    - sha256 de chaque fichier dans `schema_migrations` ; case du cliquet :
+      fichier ≠ empreinte appliquée → KO
+    Témoin : GRANT UPDATE(valeur_defaut) ON politique remis à la main →
+    P-325 rougit ; une ligne ajoutée à une migration appliquée → la case
+    rougit.
+
+B6  V-159   make test REJOUABLE
+    Le jeu d'essai part d'une base migrée à neuf (template des migrations),
+    jamais d'une copie de la base courante. Témoin : make test deux fois de
+    suite sans reset → vert les deux fois.
+
+Ce que tu ne fais jamais : server/ web/ (Grok) ; réécrire une migration
+publiée ; toucher « ava », le port 3000, le dossier « Ava Manager » ;
+fusionner ou pousser ; assouplir un contrôle.
+
+Tu rends : une ligne par point dans `_ops/JOURNAL_BUGS.md` (V-xxx · commit ·
+témoin ROUGE → VERT), puis 15 lignes au plus, avec la phrase exacte pour
+Grok : « lot-2-brain est prêt : git merge lot-2-brain. »

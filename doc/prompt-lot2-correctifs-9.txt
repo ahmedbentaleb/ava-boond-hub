@@ -1,0 +1,122 @@
+AVA MANAGER — LOT 2, CORRECTIFS APRÈS LE NEUVIÈME AUDIT
+======================================================
+29/09/2026. Le neuvième audit — un vrai audit, sans compromis — a REFUSÉ le
+lot 2 au commit 071b7b2. Lis tout avant d'écrire une ligne.
+
+Rapport : C:\Users\Hamada\Desktop\Ava Manager\audits-independants\ava-audit-9\rapport\
+Arbitrage : _ops/ARBITRAGE_AUDIT_2026-09-29.md (D-42 → D-47)
+
+
+0. CE QUI EST GAGNÉ
+───────────────────
+  ⭐ La construction a pris : la porte croisée est au banc — 55 commandes,
+     117 identifiants, 0 fuite — et retirer une déclaration la fait tomber.
+  ⭐ 8 règles de construction sur 10 tiennent sous sabotage.
+  ⛔ Trois familles que la porte croisée ne regarde pas : les valeurs de
+     politique, les cascades, le mode société.
+
+
+⭐ LA RÈGLE DE CE TOUR — Hamada : « pas de compromis, un truc qui marche dès
+le départ ; on ne comble pas des trous »
+──────────────────────────────────────────────────────────────────────────
+  - chaque correction rend la FAMILLE impossible par construction (le type
+    du code, la base, une table déclarée) — ⛔ jamais « corriger la ligne X »
+  - chaque correction arrive avec SA PORTE D'ÉNUMÉRATION, qui tire ses cas
+    de la déclaration, du registre ou du serveur, jamais d'une liste à la
+    main
+  - chaque porte est VUE ROUGE sur le code actuel, puis verte ; les deux
+    sorties vont au journal
+  - tu tournes jusqu'à tout vert, sans audit entre-temps
+
+
+1. ⭐ D'ABORD — D-45 : UNE SEULE DÉCLARATION TYPÉE PAR COMMANDE
+──────────────────────────────────────────────────────────────
+C1  V-151 · V-152 · V-155 · V-158
+    - pour chaque commande : clé → { rôle : cible · référence · valeur,
+      table si objet, type : uuid · date · décimal · texte · code(ref_x) ·
+      liste }
+    - EN DÉRIVENT, par le code : les clés acceptées, les lecteurs de la
+      garde d'agence, la validation de type, les cas de la porte croisée
+      (exporte la déclaration : la porte la lit)
+    - ⛔ le handler ne voit plus l'entrée : il reçoit ctx.resolues (objets)
+      et ctx.valeurs (valeurs typées, SANS aucun identifiant). `ctx.entree`
+      disparaît du type du contexte des commandes — le compilateur tient la
+      règle
+    - une clé déclarée jamais lue par le handler → porte statique rouge
+      (ConvertCandidateToResource : Lyon demandée, Paris créée)
+    - TransferContact : sa société d'arrivée est une référence déclarée ;
+      la porte croisée la couvre d'office (4e tour — fermé par construction)
+    - hors banc : authentification AVANT l'analyse du corps ; corps mal
+      formé, d'un autre type, trop gros → 400 après 401, jamais 500
+    PORTES : types (mauvais type sur chaque clé déclarée → GARDE) ; statique
+    (aucun accès d'objet hors ctx.resolues) ; clés déclarées toutes lues.
+
+
+2. CRITIQUE
+───────────
+C2  V-147 · D-42   CHAQUE VALEUR DE POLITIQUE A UN COMPORTEMENT, OU ELLE EST REFUSÉE
+    - COMPORTEMENTS[clé][valeur] côté serveur ; pol() ne rend qu'une valeur
+      qui y figure ; SetPolicy refuse une valeur absente (GARDE « valeur
+      non servie ») ; exporte la table (la porte du BRAIN CODE la compare
+      à la base)
+    - pol() enregistre (commande, clé) pendant le banc : la carte se calcule
+    - les 11 valeurs mesurées par l'audit (CONFORMITE.md §3 : temps.periode,
+      temps.validation, change.mode, besoin.pourvu.mode,
+      besoin.staffing.declencheur, ressource.etat.mode,
+      societe.retour_prospect, societe.passage_client.declencheur) se
+      CODENT selon la colonne « Effet » du registre. ⛔ Effet insuffisant →
+      journal/QUESTIONS.md, le BRAIN tranche. Chaque valeur codée : demande
+      au BRAIN CODE sa ligne dans politique_valeur_servie
+    - besoin.unite_couverture lue par CreateNeed ; plus de « postes » en dur
+    PORTE : politiques lues × toutes leurs valeurs × chaque commande qui les
+    lit — le comportement est celui du registre, jamais une levée hors refus
+    contractuel.
+
+C3  V-148 · D-43   UNE CASCADE EST UNE COMMANDE
+    - une écriture en cascade passe par executerCommande (droit, garde,
+      événement) ; jamais une table écrite par une autre commande
+    - CASCADES (mère → filles) déclarée à côté des déclarations ; une
+      écriture hors de sa commande → porte statique rouge
+    - atomique : fille refusée → mère refusée, rien écrit
+    - le passage « client » d'une société est une cascade comme les autres
+    PORTE : chaque cascade déclarée × (acteur avec la mère sans la fille ;
+    fille d'une autre agence) → DROIT, rien écrit.
+
+C4  V-149 · D-44   LE MODE SOCIÉTÉ NE JUGE QUE LA SOCIÉTÉ (agence.ts:656)
+    La garde juge CHAQUE objet résolu puis prend le verdict le plus strict ;
+    societe.perimetre.mode ne s'applique qu'aux objets société et contact ;
+    aucune branche ne rend la main avant d'avoir jugé tous les objets.
+    PORTE : la porte croisée sous chaque valeur de périmètre (BRAIN CODE, B1).
+
+
+3. ÉLEVÉ
+────────
+E1 V-150 · D-46   LA LECTURE A SES DROITS : chaque route de lecture exige sa
+   permission (LireBesoins…, bloc « Lecture » de la MATRICE), jugée sur son
+   propre périmètre. PORTE : routes × groupes × agences, tirée des routes
+   déclarées par le serveur.
+E2 V-153   P-339 passe ✅ (elle est à 0 fuite). Commit `Role: banc`.
+E3 V-156 (4e tour)   l'aide commune supprime PAR IDENTIFIANT ce qu'elle a
+   inséré ; tous les fichiers passent par elle. La case 17 du BRAIN CODE
+   compare les délégations avant/après : elle doit passer verte.
+   Commit `Role: banc`.
+
+
+4. CE QUE LE BRAIN CODE FAIT — TU N'Y TOUCHES PAS
+─────────────────────────────────────────────────
+La porte croisée sous chaque valeur de périmètre, les cases 14 et 17, la
+table des valeurs servies, les six permissions de lecture en base, le GRANT
+par colonne, l'empreinte des migrations, make test rejouable.
+⛔ Aucune migration de ta main (D-40) : un besoin de schéma →
+journal/QUESTIONS.md.
+Quand Ahmed te dit « lot-2-brain est prêt » : `git merge lot-2-brain`, puis
+`bash outils/make.sh reset && bash outils/make.sh test` — et regarde tes
+portes ROUGES avant de corriger.
+
+
+5. CE QUE TU RENDS
+──────────────────
+Une ligne par V- dans journal/ : commit · porte · sortie ROUGE puis VERTE.
+Base refaite, cliquet complet vert, porte croisée à 0 fuite sous chaque
+valeur de périmètre. Seulement alors : « prêt pour le dixième audit ».
+⛔ Pas de fusion sur main. Chaque commit porte son trailer `Role:`.

@@ -15,7 +15,7 @@ Le motif ligne par ligne, et les cas contestés : [annexes/MATRICE_DROITS_MOTIFS
 | Peupler `groupe_permission_perimetre` (lot « Droits » du brief) | Pour savoir si une règle est réglable — c'est le registre |
 | Répondre à « qui peut faire ça ? » | Pour la lecture des **objets** — c'est BM-45, pas cette grille |
 
-⚠️ **Cette matrice porte les commandes, pas la lecture.** « Lire CreateCompany » n'est pas une permission cohérente (BM-45). Qui voit quoi se règle par le périmètre, objet par objet.
+⚠️ **Cette matrice porte les commandes ET, depuis le 29/09, la lecture** (bloc « Lecture », D-46). « Lire CreateCompany » n'a pas de sens ; « Lire les besoins » en a un. ⛔ *Avant le 29/09 elle renvoyait la lecture « au périmètre » sans dire de quelle permission : le code a pris celui de n'importe laquelle (V-150).*
 
 </quand_utiliser>
 
@@ -192,6 +192,23 @@ délègue ces lignes, sans une ligne de code.
 
 ⚠️ Sur une sélection, chaque ligne garde **son** périmètre : le ✓ ouvre la commande, pas les lignes.
 ⚠️ Outlook est « soi » : chacun ne relie que **son** agenda et **ses** mails.
+
+## Lecture — qui voit quoi *(D-46, 29/09)*
+
+⭐ Une route de lecture exige **sa** permission, jugée sur **son** périmètre. Aucune autre permission n'ouvre une
+lecture : avoir `SetOwnTheme` en global ne fait rien lire.
+
+| Permission | IA | RH | RR | ÉVAL | STAF | DP | RES | ADM | SUP |
+|---|---|---|---|---|---|---|---|---|---|
+| `LireSocietes` (sociétés, unités) | ✓ | — | — | — | ✓ | ✓ | — | D | ✓ |
+| `LireContacts` | ✓ | — | — | — | ✓ | ✓ | — | D | ✓ |
+| `LireCandidats` | ✓ | ✓ | ✓ | ✓ | ✓ | — | S | D | ✓ |
+| `LireRessources` | ✓ | ✓ | ✓ | — | ✓ | ✓ | S | D | ✓ |
+| `LireBesoins` (besoins, positionnements) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | D | ✓ |
+| `LireProjets` (projets, prestations, temps) | ✓ | — | — | — | ✓ | ✓ | S | D | ✓ |
+
+⚠️ `SUP` lit sur son périmètre global et n'écrit rien. `RES` ne voit que **lui-même** (son profil, ses
+prestations, ses temps). Les champs sensibles restent sous `LireDonneesRHSensibles`.
 
 ## Transverse et administration
 

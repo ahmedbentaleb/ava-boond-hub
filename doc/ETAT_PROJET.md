@@ -99,7 +99,9 @@ Mis à jour le 24/09/2026. Les anciens numéros de lot sont entre parenthèses.
 | 5.5k | Corrections du septième tour — **D-32 : la garde lit l'objet une fois, la commande le reçoit** ; D-33 → D-35, migration 015 | ⬜ prêt à partir | [prompt correctifs 7](prompt-lot2-correctifs-7.txt) · [prompt brain code 7](prompt-brain-code-7.txt) |
 | 5.5l | Huitième audit | ✅ 25/09 — refusé ; ⭐ **0 porte aveugle sur 71 sabotages** (une première), mais la porte croisée de l'audit trouve **17 fuites sur 96 champs** | [synthèse](audit-2026-09-25/SYNTHESE.md) · [constats](audit-2026-09-25/CONSTATS.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-25.md) |
 | 5.5m | Corrections du huitième tour — **la porte croisée au banc (D-36), D-32 sur les 55 commandes (D-37)** ; Grok tourne jusqu'à **0 fuite**, sans audit entre-temps | ⬜ prêt à partir | [prompt correctifs 8](prompt-lot2-correctifs-8.txt) · [prompt brain code 8](prompt-brain-code-8.txt) |
-| 5.5n | Neuvième audit — **un vrai audit, sans compromis** (Hamada, 29/09) : un seul 🔴 refuse ; chaque constat nomme sa famille, son étendue mesurée et sa correction de construction | ⬜ prêt : Grok à 0 fuite et cliquet 17/17 (`31ea4ae`) | [prompt d'audit 9](prompt-audit-9.txt) |
+| 5.5n | Neuvième audit — un vrai audit, sans compromis | ✅ 29/09 — refusé ; ⭐ **la construction a pris** (porte croisée au banc, 0 fuite, 8 règles sur 10 gardées) ; 3 familles hors de sa vue | [synthèse](audit-2026-09-29/SYNTHESE.md) · [constats](audit-2026-09-29/CONSTATS.md) · [arbitrage](ARBITRAGE_AUDIT_2026-09-29.md) |
+| 5.5o | Corrections du neuvième tour — **une déclaration typée par commande (D-45)**, valeurs de politique servies ou refusées (D-42), cascades (D-43), mode société (D-44), lecture (D-46) | ⬜ prêt à partir | [prompt correctifs 9](prompt-lot2-correctifs-9.txt) · [prompt brain code 9](prompt-brain-code-9.txt) |
+| 5.5p | Dixième audit, même exigence | ⬜ | [prompt d'audit 9](prompt-audit-9.txt) |
 | 5.6 | Connexion par compte Microsoft (lot 2c) | ⬜ prêt (R4 : tout le monde a une adresse Microsoft) | [décisions techniques T2](DECISIONS_TECHNIQUES_v1.md) · [arbitrage D-2](ARBITRAGE_AUDIT_2026-09-21.md) |
 | 5.8 | ⭐ **RH, facturation et applications** — contrats, documents à suivre, devis, factures ; mail groupé, push de CV, actions sur une sélection, documents depuis modèles, lecture de CV, Outlook, préparation de paie (décisions des 23-24/09 : tout en V1) | ⬜ après les écrans | [ce que la V1 doit porter en plus](COMPLEMENTS_V1_2026-09-23.md) · [réglages Boond](cartographie/BOOND_REGLAGES_2026-09-23.md) · [applications Boond](cartographie/BOOND_APPLICATIONS_2026-09-24.md) |
 | 5.7 | Les 26 écrans (lot 3) | ⬜ après le 5.5 accepté | [les 26 écrans](../terminal.html) · [prompt écrans](PROMPT_CHATGPT_ECRANS.md) |
@@ -107,12 +109,12 @@ Mis à jour le 24/09/2026. Les anciens numéros de lot sont entre parenthèses.
 
 #### Les tours d'audit du serveur — mesurés
 
-| | 1er (21/09) | 2e (22/09) | 3e (23/09) | 4e (23/09) | 5e (24/09) | 6e (24/09) | 7e (24/09) | 8e (25/09) |
-|---|---|---|---|---|---|---|---|---|
-| Tests aveugles | 48 | 45 | **0** | **1** | **1** | **1** | **1** (Y6) | **0** · mais 17 fuites à la porte croisée |
-| Défauts critiques ouverts | 12 | 7 | 2 | 2 | 2 | **1** | **1**, famille nouvelle | 2 (D-32 sur 5 commandes sur 55 ; `soi`) |
-| Tests joués | 64 | 151 | 264 | 280 | **294** · 62 sabotages | **307** · 69 sabotages | **318** · 70 sabotages | **332** · 71 sabotages |
-| Constats du tour précédent fermés | — | 22/47 | 37/47 | 20/25 | **10/11, tous gardés** | 3 fermés · 6 partiels · 1 ouvert | **6 fermés** · 3 partiels · 1 ouvert | 4 fermés · 4 partiels · 1 ouvert |
+| | 1er (21/09) | 2e (22/09) | 3e (23/09) | 4e (23/09) | 5e (24/09) | 6e (24/09) | 7e (24/09) | 8e (25/09) | 9e (29/09) |
+|---|---|---|---|---|---|---|---|---|---|
+| Tests aveugles | 48 | 45 | **0** | **1** | **1** | **1** | **1** (Y6) | **0** · mais 17 fuites à la porte croisée | 0 fuite · 3 familles hors de la porte |
+| Défauts critiques ouverts | 12 | 7 | 2 | 2 | 2 | **1** | **1**, famille nouvelle | 2 (D-32 sur 5 commandes sur 55 ; `soi`) | 3 (politiques, cascades, mode société) |
+| Tests joués | 64 | 151 | 264 | 280 | **294** · 62 sabotages | **307** · 69 sabotages | **318** · 70 sabotages | **332** · 71 sabotages | **331** · 8 règles sur 10 gardées |
+| Constats du tour précédent fermés | — | 22/47 | 37/47 | 20/25 | **10/11, tous gardés** | 3 fermés · 6 partiels · 1 ouvert | **6 fermés** · 3 partiels · 1 ouvert | 4 fermés · 4 partiels · 1 ouvert | 5 fermés · 3 partiels · 1 ouvert |
 
 ⭐ **Le filet tient depuis le 3e tour** : plus aucun test ne reste vert quand on casse le code exprès (50 sabotages).
 
