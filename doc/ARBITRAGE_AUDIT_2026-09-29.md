@@ -105,6 +105,19 @@ groupes × agences.
 | V-160 | K2 (la session) marquée **lot 2c** dans la grille : le banc s'identifie par en-tête, c'est D-10, assumé | BRAIN ✅ |
 | V-161 | ⭐ gardé : la porte croisée au banc, 8 règles de construction sur 10 sous sabotage, registre exact (202 = 202) | — |
 
+## Décisions du 30/09 — les questions de Grok (Q-014 → Q-016)
+
+⚠️ Le prompt « Brain Code, dixième tour » reçu le 30/09 a été écrit **par le codeur**. Ses points mécaniques
+sont justes ; deux points sont des décisions de juge, tranchées ici, et un point manquait.
+
+| Question | Tranché |
+|---|---|
+| Q-014 — 5 valeurs codées, retirées par 018 | **servies** par une migration 021 ; Grok les ajoute à `COMPORTEMENTS` après la fusion. ⚠️ Les **6 autres** des 11 valeurs ne sont ni codées ni déclarées : Grok rend leur liste ; chacune est **codée** (registre, colonne « Effet ») ou fait l'objet d'une question — jamais laissée muette |
+| Q-015 — **D-48** | la MATRICE contredisait D-43 : le DP signe, mais les filles (`RequalifyCompany`, `DeclareNeedFilled`) n'étaient qu'à IA et STAF ; le banc les accordait en douce dans sa fixture. ⭐ **Qui a la mère a les filles** : le DP les reçoit au seed ; une porte vérifie, pour chaque cascade déclarée, que tout groupe titulaire de la mère a les filles. La fixture du banc n'accorde plus rien que le seed n'accorde |
+| Q-016 — **D-49** | `staffing.inter_agences = oui` : les 4 écritures sont un **permis**, pas une fuite (D-38) — **à la condition mesurée** que le demandeur ait le droit dans l'agence du besoin ou du projet ; un besoin ou un projet d'une autre agence reste un **refus** même sous `oui`. `RequalifyCompany` reçoit ses cas `contact_id` et `besoin_id`. La porte est modifiée par le **BRAIN CODE**, jamais par le codeur |
+| P-340 en double | collision de numéro créée par le BRAIN CODE : sa porte des valeurs servies prend le prochain numéro libre ; le passage ✅ → ⏳ est déclaré au tableau D-35 avec le motif « collision » |
+| Le report sur `main` | c'est le **BRAIN**, pas le BRAIN CODE |
+
 ## Ce que ce tour apprend
 
 ⭐ **Une règle tenue par une relecture finit toujours par être contournée ; une règle tenue par le type du

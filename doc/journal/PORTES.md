@@ -332,7 +332,7 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-322 | B CONTRAT | Chaque colonne d'agence lue par la table est NOT NULL. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | information_schema |
 | P-323 | B CONTRAT | TransferContact hors périmètre → DROIT ; transfert permis, agence relue. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | base relue |
 | P-324 | B CONTRAT | Une délégation posée avant le banc lui survit. | `test/contrat/audit6.test.ts` | 2026-09-24 | ✅ | 2 | — |
-| P-325 | B CONTRAT | Les tables écrivables par `ava_app` sont exactement celles qu'une commande servie écrit (droits réels contre `server/src`, D-34). | `test/contrat/grants.test.ts` | 2026-09-24 | ✅ | 2 | égalité stricte |
+| P-325 | B CONTRAT | Ce que `ava_app` et `ava_serveur` peuvent écrire — INSERT à la table, UPDATE colonne par colonne, ni DELETE ni TRUNCATE — est exactement ce qu'une commande servie écrit (droits réels contre `outils/ecritures_serveur.mjs`, D-34, V-154). | `test/contrat/grants.test.ts` | 2026-09-24 | ✅ | 2 | égalité stricte |
 | P-326 | B CONTRAT | Les deux noms d'une agence → GARDE, 0 écriture. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
 | P-327 | B CONTRAT | Une clé inconnue → GARDE sur chaque commande servie. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | GARDE |
 | P-328 | B CONTRAT | CreateProject vers un besoin d'une autre agence → DROIT, rien écrit. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
@@ -345,3 +345,12 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-341 | B CONTRAT | Saisie séparée : un temps avec facturable s'enregistre. | `test/contrat/audit7.test.ts` | 2026-09-25 | ✅ | 2 | base relue |
 | P-342 | B CONTRAT | staffing.inter_agences = oui : un candidat d'une autre agence se positionne ; non reste DROIT. | `test/contrat/audit7.test.ts` | 2026-09-25 | ✅ | 2 | base relue |
 | P-343 | B CONTRAT | ManageGroups refuse un périmètre pôle ou équipe. | `test/contrat/audit7.test.ts` | 2026-09-25 | ✅ | 2 | GARDE |
+| P-340 | B CONTRAT | Les valeurs servies en base (`politique_valeur_servie`) sont exactement celles que le serveur code (`COMPORTEMENTS`, D-42). | `test/contrat/valeurs_servies.test.ts` | 2026-09-30 | ✅ | 2 | égalité stricte |
+| P-344 | B CONTRAT | Un mauvais type sur chaque clé déclarée → GARDE (D-45). | `test/contrat/declaration.test.ts` | 2026-09-29 | ✅ | 2 | GARDE |
+| P-345 | B CONTRAT | Le handler ne voit pas l'entrée ; chaque clé déclarée est lue (D-45). | `test/contrat/declaration.test.ts` | 2026-09-29 | ✅ | 2 | source |
+| P-346 | B CONTRAT | Corps mal formé, d'un autre type ou trop gros → 400, jamais 500 (D-45). | `test/contrat/declaration.test.ts` | 2026-09-29 | ✅ | 2 | 400 |
+| P-347 | B CONTRAT | Une mère n'écrit pas la table de sa fille (D-43). | `test/contrat/cascades.test.ts` | 2026-09-30 | ✅ | 2 | source |
+| P-348 | B CONTRAT | Mère sans la fille, ou fille hors agence → DROIT, rien écrit (D-43). | `test/contrat/cascades.test.ts` | 2026-09-30 | ✅ | 2 | DROIT |
+| P-349 | B CONTRAT | Chaque lecture, chaque groupe, chaque agence (D-46). | `test/contrat/lectures.test.ts` | 2026-09-30 | ✅ | 2 | 403 / 404 |
+| P-350 | B CONTRAT | Chaque valeur servie d'une politique lue a une branche (D-42). | `test/contrat/politiques.test.ts` | 2026-09-30 | ✅ | 2 | source |
+| P-351 | B CONTRAT | pol() enregistre la commande et la clé pendant le banc (D-42). | `test/contrat/politiques.test.ts` | 2026-09-30 | ✅ | 2 | carte |

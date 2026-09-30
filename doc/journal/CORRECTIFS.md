@@ -380,3 +380,13 @@ Prêt pour le huitième audit.
 Mesure de clôture, base refaite (`make.sh reset` puis `make test`) : `make test` OK. Porte croisée : 55 commandes servies · 117 identifiants · 0 fuite · 0 positif KO. Cliquet : cases OK=17 KO=0.
 
 Prêt pour le neuvième audit — porte croisée : 0 fuite sur 117 champs.
+
+| V-151 | C1 D-45 une déclaration typée par commande | P-344 P-345 | trois listes à la main, 158 lectures de `ctx.entree` | `ok` — clés, lecteurs et types dérivent de `DECLARATION` ; mauvais type → GARDE | `53ba72d` `96abe07` |
+| V-152 | C1 D-45 une clé déclarée est lue | P-345 | ConvertCandidateToResource ignorait l'agence demandée | `ok` — l'agence résolue est écrite ; chaque clé déclarée est dans le handler | `53ba72d` `96abe07` |
+| V-155 | C1 D-45 le handler ne voit plus l'entrée | P-345 | `ctx.entree` restait sur le contexte des commandes | `ok` — `Ctx` n'a plus `entree` ; valeurs typées, objets dans `resolues` | `53ba72d` |
+| V-158 | E1 D-45 authentification avant le corps | P-346 | un corps mal formé devenait 500 | `ok` — hors banc 401 avant l'analyse ; corps mal formé, autre type ou trop gros → 400 | `53ba72d` `96abe07` |
+| V-147 | C2 D-42 une valeur servie a un comportement | P-340 P-350 P-351 | P-350, 11 lectures dont la branche est la valeur écrite ou `polLues` | `ok` — P-340 égalité ; P-350 et P-351 verts. P-138 P-223 P-230 P-233 P-236 P-251 restent rouges : Q-014 | `de8b16d` `de1c1a3` `328f726` `d352666` |
+| V-148 | C3 D-43 une cascade est une commande | P-347 P-348 | première mesure verte (la porte est née avec la construction) | `ok` — mère sans la fille, ou société à Lyon → DROIT, rien écrit. P-114 P-224 P-225 P-256 verts | `a964f2b` `328f726` |
+| V-149 | C4 D-44 le mode société ne juge que la société | P-339 | partagee 9, par_besoins 9, staffing oui 4 (témoin brain) | 4 passes à 0 fuite, 0 positif KO. `staffing.inter_agences=oui` : 4 écritures (Q-016). Porte incomplète : `contact_id`, `besoin_id`. P-339 reste ⏳ | `dcb0626` |
+| V-150 | E1 D-46 la lecture a son droit | P-349 | la porte lisait un compte de test du groupe RES et voyait 200 | `ok` — le compte `res@ava.test` : sans droit 403, hors agence 404 | `b244492` `328f726` |
+| V-156 | E3 les délégations d'avant | photo make test | une photo en une seule ligne (retour chariot) | `délégations d'avant disparues : 0 (sur 133)` | `72c3337` |

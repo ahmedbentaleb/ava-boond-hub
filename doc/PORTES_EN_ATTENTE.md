@@ -159,6 +159,13 @@ tombe était ✅ ou ⏳, et la case redevient du tout-ou-rien.
 
 ⚠️ **Les 5 portes du lot 1 passent ✅ sans discussion** — elles sont servies et vertes.
 
+## ⏳ P-340 — les valeurs servies (D-42, 29/09)
+
+| Porte | Posée | Vue rouge | Pourquoi ⏳ | Passe ✅ quand |
+|---|---|---|---|---|
+| P-340 | 29/09, `lot-2-brain` | 29/09 : « COMPORTEMENTS absent de server/src » | le serveur n'exporte pas encore sa table de dispatch (D-42, côté CODE) | `COMPORTEMENTS` = `politique_valeur_servie`, paire pour paire |
+
+
 ## ⏳ P-339 — la porte croisée (D-36, 25/09)
 
 | Porte | Posée | Vue rouge | Pourquoi ⏳ | Passe ✅ quand |

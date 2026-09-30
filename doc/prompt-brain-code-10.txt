@@ -1,0 +1,63 @@
+AVA MANAGER — SESSION BRAIN CODE, DIXIÈME TOUR
+==============================================
+30/09/2026. Grok a codé le neuvième tour. Quatre points. Le mot d'Ahmed est
+donné. ⛔ Ce prompt REMPLACE celui que Grok a rédigé pour toi le 30/09 : le
+codeur ne dicte pas au juge ce qu'il compte comme une fuite.
+
+À lire : journal/QUESTIONS.md Q-014 Q-015 Q-016 et
+_ops/ARBITRAGE_AUDIT_2026-09-29.md, section « Décisions du 30/09 » (D-48, D-49).
+
+Ton poste :
+  cd /c/Users/Hamada/Desktop/ava-brain
+  git fetch "/c/Users/Hamada/Desktop/Ava Manager" lot-2
+  git checkout lot-2-brain && git merge FETCH_HEAD
+Base ava_brain, refaite à neuf. « Role: brain », ou « Role: banc » pour test/.
+Pas de fusion sur main, pas de push. ⛔ Le report de _ops/ sur main, c'est le
+BRAIN qui le fait après toi : tu n'y touches pas.
+
+
+B1  Q-014 · Q-015 · D-48   MIGRATION 021
+    - politique_valeur_servie reçoit les 5 valeurs codées :
+        societe.passage_client.declencheur = manuel
+        change.mode = taux_saisi
+        temps.periode = dates_prestation_et_mois_ouvert
+        temps.validation = par_dp
+        ressource.etat.mode = derive_des_prestations
+      (018 ne se réécrit pas). P-340 sera rouge « dans l'autre sens » tant
+      que Grok ne les a pas mises dans COMPORTEMENTS : attendu.
+    - D-48 : le groupe DP reçoit RequalifyCompany et DeclareNeedFilled sur
+      son périmètre (MATRICE du 30/09)
+    - PORTE (Role: banc) : pour chaque cascade de CASCADES (exportée par le
+      serveur), tout groupe qui a la mère au seed a les filles — tirée du
+      seed et de CASCADES, pas d'une liste
+    - la fixture du banc (db/fixtures/banc.sql) n'accorde plus rien que le
+      seed n'accorde : une case ou une porte le vérifie
+    Témoin : sans la ligne DP → la porte cascade/seed ROUGE ; avec → verte.
+
+B2  Q-016 · D-49   LA PORTE CROISÉE
+    _ops/PORTE_CROISEE.mjs, puis copie exacte dans test/.
+    - RequalifyCompany : deux cas, contact_id et besoin_id (générateurs déjà
+      dans la porte)
+    - staffing.inter_agences = oui : un profil (candidat, ressource) d'une
+      autre agence sur un besoin ou un projet DE L'AGENCE du demandeur →
+      PERMIS attendu (plus une fuite) ; ⛔ mais un besoin ou un projet d'une
+      AUTRE agence reste un REFUS attendu sous `oui` — ajoute ce cas
+    - `non` : inchangé, refus
+    Témoin : 0 fuite sur les 5 passes, porte complète ; et le cas « besoin
+    d'une autre agence sous oui » vu ROUGE si on le laisse passer.
+
+B3  CASES 9 ET 16 — P-340 EN DOUBLE
+    - ta porte des valeurs servies prend le prochain numéro libre de
+      journal/PORTES.md ; le P-340 d'audit7 (RES/STAF) ne bouge pas
+    - _ops/PORTES_EN_ATTENTE.md, tableau D-35 : déclare le passage P-340
+      ✅ → ⏳ au commit 419f7b2, motif « collision de numéro, porte des
+      valeurs servies renumérotée P-xxx »
+    Écris ce numéro dans ta phrase finale : Grok aligne son journal.
+
+Ce que tu ne fais jamais : server/ web/ ; réécrire une migration publiée ;
+toucher « ava », le port 3000, le dossier « Ava Manager » ; fusionner ou
+pousser ; assouplir un contrôle.
+
+Tu rends : une ligne par point dans `_ops/JOURNAL_BUGS.md`, puis 15 lignes au
+plus, avec la phrase exacte :
+« lot-2-brain est prêt : git merge lot-2-brain. Porte des valeurs servies : P-xxx. »
