@@ -442,10 +442,10 @@ FROM generate_series(1, 170) n;
 --    le chemin ; ils veulent saisir, ils saisissent ». Sans temps, on ne peut
 --    ni tester le CA produit, ni la surcharge, ni le plafond journalier.
 INSERT INTO temps (prestation_id, profil_ressource_id, jour, quantite,
-                   saisi_par_compte_id)
+                   saisi_par_compte_id, etat_code)
 SELECT p.id, p.profil_ressource_id, d::date,
        CASE WHEN (extract(day FROM d)::int % 7) = 0 THEN 0.5 ELSE 1.0 END,
-       'f1000000-0000-0000-0000-000000000001'::uuid
+       'f1000000-0000-0000-0000-000000000001'::uuid, 'valide'
 FROM prestation p
 CROSS JOIN LATERAL generate_series(
   p.date_debut, LEAST(p.date_fin, p.date_debut + 90), '1 day') d

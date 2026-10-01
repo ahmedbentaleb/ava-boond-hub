@@ -355,3 +355,4 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-350 | B CONTRAT | Chaque valeur servie d'une politique lue a une branche (D-42). | `test/contrat/politiques.test.ts` | 2026-09-30 | ✅ | 2 | source |
 | P-351 | B CONTRAT | pol() enregistre la commande et la clé pendant le banc (D-42). | `test/contrat/politiques.test.ts` | 2026-09-30 | ✅ | 2 | carte |
 | P-353 | B CONTRAT | Au seed, tout groupe qui a la mère d'une cascade (`CASCADES`) a ses filles, sur le même périmètre ; la mère qui exige un autre droit pour cascader (`aLeDroit`) n'oblige que ses titulaires complets (D-48). | `test/contrat/cascades_seed.test.ts` | 2026-09-30 | ✅ | 2 | seed relu |
+| P-354 | B CONTRAT | D-50 à D-55 : chaque valeur servie le 01/10 change le comportement que le registre décrit. | `test/contrat/decisions_0110.test.ts` | 2026-10-01 | ✅ | 2 | une valeur, un effet |

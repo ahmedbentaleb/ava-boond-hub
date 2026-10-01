@@ -133,6 +133,13 @@
   "ko": 13
  },
  {
+  "chemin": "ARBITRAGE_AUDIT_2026-10-01.md",
+  "titre": "Arbitrage du dixième audit — 01/10/2026",
+  "categorie": "Audits",
+  "date": "01/10/2026",
+  "ko": 6
+ },
+ {
   "chemin": "AUDIT_PROJET_2026-09-17.md",
   "titre": "Audit du projet Ava Manager — 17 septembre 2026",
   "categorie": "Audits",
@@ -262,8 +269,8 @@
   "chemin": "ETAT_PROJET.md",
   "titre": "État du projet Ava Manager — du premier jour à la livraison",
   "categorie": "État et plans",
-  "date": "29/09/2026",
-  "ko": 15
+  "date": "01/10/2026",
+  "ko": 16
  },
  {
   "chemin": "FEUILLE_F1-F36_AHMED_2026-09-16.md",
@@ -297,15 +304,15 @@
   "chemin": "JEU_ESSAI.sql",
   "titre": "JEU_ESSAI.sql",
   "categorie": "Conception et contrat",
-  "date": "24/09/2026",
+  "date": "01/10/2026",
   "ko": 31
  },
  {
   "chemin": "JOURNAL_BUGS.md",
   "titre": "Journal des bugs — Ava Manager · **audit général**",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
-  "ko": 32
+  "date": "01/10/2026",
+  "ko": 33
  },
  {
   "chemin": "MACHINES_ETAT_V1.md",
@@ -633,7 +640,7 @@
   "chemin": "SPEC_ASSERTIONS_L7.sql",
   "titre": "SPEC_ASSERTIONS_L7.sql",
   "categorie": "Conception et contrat",
-  "date": "24/09/2026",
+  "date": "01/10/2026",
   "ko": 38
  },
  {
@@ -675,7 +682,7 @@
   "chemin": "journal/adr/ADR-R-001-port-postgres-hote.md",
   "titre": "ADR-R-001 — Port hôte Postgres 55432",
   "categorie": "Décisions d'architecture (ADR)",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 1
  },
  {
@@ -689,112 +696,112 @@
   "chemin": "journal/BUGS.md",
   "titre": "Bugs — un bug par ligne, numéro jamais réutilisé. Fermé avec un SHA, jamais avec « corrigé ».",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 1
  },
  {
   "chemin": "journal/CONTRAT.md",
   "titre": "CONTRAT — lot 2 · intégrateur / greffe",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 6
  },
  {
   "chemin": "journal/CORRECTIFS.md",
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
-  "ko": 30
+  "date": "01/10/2026",
+  "ko": 32
  },
  {
   "chemin": "journal/DECISIONS.md",
   "titre": "Décisions techniques tranchées seul",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 3
  },
  {
   "chemin": "journal/ecran/DECISIONS.md",
   "titre": "Décisions écran — lot 2. Seul, en attendant.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 1
  },
  {
   "chemin": "journal/ecran/QUESTIONS.md",
   "titre": "Questions écran — lot 2. Choix pris en attendant.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 1
  },
  {
   "chemin": "journal/ecran/REMARQUES.md",
   "titre": "Remarques écran — lot 2. Le canon n'est pas corrigé.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 1
  },
  {
   "chemin": "journal/ETAPES.md",
   "titre": "Étapes — lot 1. Une ligne par étape. On ne supprime jamais.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 2
  },
  {
   "chemin": "journal/greffe/REMARQUES.md",
   "titre": "Remarques greffe — lot 2. On ne patche pas `_ops/`.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 2
  },
  {
   "chemin": "journal/PORTES.md",
   "titre": "Portes — le cliquet. Une porte ✅ ne redevient jamais ⏳.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
-  "ko": 50
+  "date": "01/10/2026",
+  "ko": 51
  },
  {
   "chemin": "journal/QUESTIONS.md",
   "titre": "Questions pour Hamada. On choisit en attendant, on continue.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 7
  },
  {
   "chemin": "journal/REMARQUES.md",
   "titre": "Remarques sur le canon `_ops/` — on ne le corrige pas.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 2
  },
  {
   "chemin": "journal/test/DECISIONS.md",
   "titre": "Décisions du banc — lot 2. Choix pris en attendant.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 2
  },
  {
   "chemin": "journal/test/QUESTIONS.md",
   "titre": "Questions du banc — lot 2. Choix pris, on continue.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 1
  },
  {
   "chemin": "journal/test/REMARQUES.md",
   "titre": "Remarques du banc sur le canon — on ne le corrige pas.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 1
  },
  {
   "chemin": "db/README.md",
   "titre": "Base Ava Manager",
   "categorie": "Conception et contrat",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 1
  },
  {
@@ -1237,5 +1244,54 @@
   "categorie": "Audits",
   "date": "29/09/2026",
   "ko": 2
+ },
+ {
+  "chemin": "audit-2026-10-01/CONFORMITE.md",
+  "titre": "CONFORMITE10 — les 57 commandes servies contre `_ops/SPEC_COMMANDES_L4.md` · auditeur B",
+  "categorie": "Audits",
+  "date": "01/10/2026",
+  "ko": 16
+ },
+ {
+  "chemin": "audit-2026-10-01/CONSTATS.md",
+  "titre": "Constats du dixième audit — commit `16ea24d` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "01/10/2026",
+  "ko": 23
+ },
+ {
+  "chemin": "audit-2026-10-01/GRILLE.md",
+  "titre": "GRILLE10 — dixième audit, lot 2, commit `16ea24d` · auditeur B (base `ava_audit10_b`, port 4002)",
+  "categorie": "Audits",
+  "date": "01/10/2026",
+  "ko": 14
+ },
+ {
+  "chemin": "audit-2026-10-01/MUTATIONS.md",
+  "titre": "Mutations — les tests des tests (famille G), dixième audit",
+  "categorie": "Audits",
+  "date": "01/10/2026",
+  "ko": 4
+ },
+ {
+  "chemin": "audit-2026-10-01/SECURITE.md",
+  "titre": "SECURITE10 — famille I et la chasse · auditeur B (base `ava_audit10_b`, port 4002)",
+  "categorie": "Audits",
+  "date": "01/10/2026",
+  "ko": 15
+ },
+ {
+  "chemin": "audit-2026-10-01/SUIVI_V.md",
+  "titre": "Suivi du 9e audit et des décisions D-48 → D-55 — dixième audit, commit `16ea24d` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "01/10/2026",
+  "ko": 16
+ },
+ {
+  "chemin": "audit-2026-10-01/SYNTHESE.md",
+  "titre": "SYNTHESE.md",
+  "categorie": "Audits",
+  "date": "01/10/2026",
+  "ko": 3
  }
 ]

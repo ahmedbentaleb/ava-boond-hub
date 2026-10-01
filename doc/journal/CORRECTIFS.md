@@ -393,6 +393,15 @@ Prêt pour le neuvième audit — porte croisée : 0 fuite sur 117 champs.
 | V-147 | C2 D-42 les cinq valeurs de 021 | P-352 | servies en base sans comportement : les cinq | `ok` — P-352 verte | `a6331a7` |
 | V-149 | C4 D-49 la porte croisée sous les cinq passes | P-339 | 4 écritures sous `staffing=oui`, deux identifiants sans cas | `ok` — 0 fuite sur les 5 passes, 4 permis, 0 positif KO | `5385562` |
 
-Cliquet : 19 cases OK, 0 KO. Porte croisée : 0 fuite sur les 5 passes.
+Cliquet du 30/09 : 19 cases OK, 0 KO. Phrase retirée le 01/10 : six valeurs non servies, et `par_dp` refusait la saisie.
+
+| D-50 | temps.validation en V1 | P-354 | `par_dp` refusait la saisie | `ok` — `aucune` écrit `valide`, `par_dp` et `par_projet` (si le drapeau) écrivent `a_valider` ; ValidateTimesheet et RejectTimesheet. P-138 et P-236 verts. P-354 verte. | `ddb4afb` `1160fb4` |
+| D-51 | trois modes de pourvoi | P-354 | un seul chemin pour toute valeur hors manuel | `ok` — couverture atteinte pour `auto_par_prestation_signee`, première personne pour `auto_par_personne_signee`, alerte sans changement d'état pour `auto_propose_confirme`. P-354 verte. | `ddb4afb` `1160fb4` |
+| D-52 | retour client retenu | P-354 | le déclencheur ne lisait que le premier positionnement | `ok` — une décision positive passe `a_pourvoir` → `en_recherche`. P-354 verte. | `ddb4afb` `1160fb4` |
+| D-53 | l'horloge se lit | P-354 | l'écran lisait l'état écrit | `ok` — `v_ressource_etat` et `v_societe_statut`. `derive_des_prestations` refuse hors `sorti`. L'exception court jusqu'à sa date, puis l'état dérivé. P-354 verte. | `ddb4afb` `1160fb4` |
+| D-54 | fin du dernier contrat | P-354 | seul le mode manuel requalifiait | `ok` — `auto_fin_dernier_contrat` → prospect, `jamais_ancien_client` → ancien client, `auto_apres_delai` se lit prospect sans réécrire. P-354 verte. | `ddb4afb` `1160fb4` |
+| D-55 | passage à la création du projet | P-354 P-353 | CreateProject ne lisait pas le déclencheur | `ok` — cascade RequalifyCompany. P-353 verte au seed (STAF a la fille). P-354 verte. | `ddb4afb` `1160fb4` |
+
+Mesure du 01/10 : `make test` OK, 342 portes. Porte croisée : 57 commandes · 5 passes · 691 identifiants · 0 fuite · 0 positif KO. Cliquet : 19 cases OK, 0 KO. Canon sur main : `ab0471c`.
 
 Prêt pour le dixième audit.

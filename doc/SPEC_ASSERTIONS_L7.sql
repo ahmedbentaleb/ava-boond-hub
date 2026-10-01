@@ -345,10 +345,10 @@ $s$, 'ck_m9');
 
 -- ── M-10 · un temps appartient à la ressource de la prestation ────────────
 SELECT t.doit_refuser('un temps saisi pour une autre ressource', 'M-10', $s$
-  INSERT INTO temps (prestation_id, profil_ressource_id, jour, quantite, saisi_par_compte_id)
+  INSERT INTO temps (prestation_id, profil_ressource_id, jour, quantite, saisi_par_compte_id, etat_code)
   VALUES ('70000000-0000-0000-0000-000000000001',
           'd0000000-0000-0000-0000-000000000002','2026-03-02',1,
-          'c0000000-0000-0000-0000-000000000001')
+          'c0000000-0000-0000-0000-000000000001','valide')
 $s$, 'M-10');
 
 -- ── M-11 · un besoin a toujours une société ───────────────────────────────
