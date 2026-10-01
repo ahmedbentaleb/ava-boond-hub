@@ -1,0 +1,88 @@
+AVA MANAGER — LOT 2, CORRECTIFS APRÈS LE DIXIÈME AUDIT — LE REGISTRE EXÉCUTABLE
+==============================================================================
+01/10/2026. Le dixième audit a REFUSÉ le lot 2 (3 critiques). Lis tout avant
+d'écrire une ligne.
+
+Rapport : C:\Users\Hamada\Desktop\Ava Manager\audits-independants\ava-audit-10\rapport\
+Arbitrage : _ops/ARBITRAGE_AUDIT_2026-10-01.md (D-56 → D-60)
+⭐ LA SPÉCIFICATION : _ops/REGISTRE_EXECUTABLE.md — chaque valeur de chaque
+politique lue au lot 2 : commande, scénario, issue attendue. ⛔ C'est elle qui
+fait foi, plus ton interprétation, plus tes portes.
+
+
+0. CE QUI EST GAGNÉ
+───────────────────
+  ⭐ 342/342 portes ; porte croisée 0 fuite sur 691 identifiants et 5 passes ;
+     les 5 règles de construction tiennent ; D-48 → D-55 codées et gardées.
+  ⛔ Ce qui refuse : des valeurs « servies » qui ne font rien ou font
+     l'inverse, et des portes qui ont gravé l'inverse. La faute est d'abord
+     au canon (une phrase par valeur) : il est réécrit.
+
+
+⭐ LA RÈGLE DE CE TOUR
+─────────────────────
+  - attends « lot-2-brain est prêt » : le BRAIN CODE livre le lecteur du
+    registre et la porte différentielle GÉNÉRÉE. Fusionne, joue-la : elle
+    est ROUGE. Tu codes jusqu'à ce qu'elle soit verte, ligne par ligne.
+  - COMPORTEMENTS et POLITIQUE_COMMANDES ne s'écrivent plus à la main : ils
+    se dérivent du JSON du lecteur (outils/registre_executable.mjs).
+    Une valeur sans ligne au registre n'est pas servie.
+  - ⛔ tu ne modifies NI le registre, NI la porte générée. Une ligne qui te
+    semble fausse → journal/QUESTIONS.md, le BRAIN tranche.
+  - chaque issue vient du registre ; une branche « par défaut » qui avale
+    une autre valeur est interdite (table de stratégies, D-56).
+
+
+1. CRITIQUE
+───────────
+C1  V-162 · V-164 · D-56   LES VALEURS FONT CE QUE LE REGISTRE DIT
+    Les 6 valeurs fausses en premier (registre §2) : temps.periode
+    (S-TP1 → S-TP4, D-62 le mois ouvert), change.mode taux_saisi (S-CH1,
+    S-CH2, D-63, taux déclaré à CreatePrestation), besoin.pourvu.mode
+    (S-PM1 → S-PM3), temps.plafond_jour refus_avec_derogation_tracee
+    (S-PJ2, D-64), projet.cloture.garde cascade (S-PCL1), projet.creation_
+    depuis_besoin automatique_au_retenu (S-CB1). Puis toutes les autres
+    lignes. Les politiques liste : leur domaine ; les nombres : leurs
+    bornes. SetOwnTheme : même garde que SetPolicy (D-66).
+
+C2  V-163 · D-57   LE MÉTIER NE PASSE PAR NI `ordre`, NI UN NOM DE COMMANDE, NI UN LITTÉRAL
+    - cycle.ts, crm.ts:100, v_societe_statut : la CATÉGORIE du statut
+      commercial (prospect, client, ancien_client), jamais `ordre`
+    - plus aucun nom de commande dans la garde générique (agence.ts:251,
+      :326, :420) : la nature et la déclaration portent tout
+    - plus aucun défaut métier en dur ("principal", "regie"…) : une
+      politique ou une catégorie
+    Porte (générée par le BRAIN CODE) : ManageRefs change l'ordre de
+    `client` → aucune signature ne tombe.
+
+C3  D-58 · D-59   PÉRIMÈTRE
+    - par_besoins : l'union de l'agence responsable et des agences des
+      besoins ; l'exemption de CreateNeed disparaît (S-SP1 → S-SP3)
+    - un droit délégué sur une autre agence opère sur cette agence, et en
+      création quand l'entrée la demande
+
+
+2. ÉLEVÉ ET MOYEN
+─────────────────
+E1 V-166  une transition ne s'écrit que dans sa commande : CreatePrestation
+   naît `proposee` (jamais `signee`) ; aucun besoin en recherche sans sa
+   commande ou sa politique
+E2 V-167  une seule horloge : ava.aujourdhui(agence) de la base, jamais Node
+E3 V-168  une garde lit l'état DÉRIVÉ (la vue de D-53), comme l'écran
+E4 V-169  une entrée bien typée ne rend jamais 500 ni MUR : chaque
+   contrainte de base a son refus métier, avant l'écriture
+M1 V-171  un uuid se déclare `référence`, jamais `valeur`
+M2 V-172 V-173  commandes_affectees calculée ; une politique se lit au
+   moment de la commande, jamais photographiée à l'émission
+M3 V-174  L4 = DECLARATION (la porte du BRAIN CODE compare)
+M4 V-175  les gardes en double disparaissent (code mort)
+
+
+3. CE QUE TU RENDS
+──────────────────
+Une ligne par V- dans journal/ : commit · porte · ROUGE puis VERTE. Base
+refaite, cliquet complet vert, porte croisée à 0 fuite, porte différentielle
+VERTE sur toutes les lignes du registre. Seulement alors : « prêt pour le
+onzième audit ».
+⛔ Pas de fusion ni de report sur main : c'est le BRAIN. Chaque commit porte
+son trailer `Role:`.

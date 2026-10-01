@@ -1,0 +1,79 @@
+AVA MANAGER — SESSION BRAIN CODE, DOUZIÈME TOUR — LE REGISTRE EXÉCUTABLE
+=========================================================================
+01/10/2026. Le mot d'Ahmed est donné. ⭐ B1 et B2 D'ABORD : Grok code contre
+ce que tu génères.
+
+À lire : _ops/REGISTRE_EXECUTABLE.md (en entier : §0 la grammaire, §1 les
+règles, §2 les cas, §3 les alias, §4 D-61 → D-67) ; _ops/ARBITRAGE_AUDIT_2026-10-01.md
+(D-56 → D-60) ; audits-independants/ava-audit-10/rapport/CONSTATS.md.
+
+Ton poste :
+  cd /c/Users/Hamada/Desktop/ava-brain
+  git fetch "/c/Users/Hamada/Desktop/Ava Manager" lot-2
+  git checkout lot-2-brain && git merge FETCH_HEAD
+Base ava_brain refaite, AVA_PORT=3200. « Role: brain », « Role: banc » pour test/.
+
+
+B1  LE LECTEUR DU REGISTRE
+    outils/registre_executable.mjs (sans dépendance) : lit les lignes
+    | clé | valeur | commande | scénario | issue | de REGISTRE_EXECUTABLE.md,
+    les domaines et bornes (§2), les alias (§3) ; refuse un fichier qui
+    sort de la grammaire du §0 (issue inconnue, scénario non défini sous
+    son tableau). Sortie : un JSON (clé → valeurs → [ {commande, scénario,
+    issue} ]). Ce JSON est la SEULE source de : politique_valeur_servie,
+    POLITIQUE_COMMANDES, COMPORTEMENTS (Grok les branche dessus), et des
+    cas de porte.
+    Témoin : une issue mal écrite → le lecteur refuse ; 56 clés lues.
+
+B2  LA PORTE DIFFÉRENTIELLE (Role: banc), GÉNÉRÉE
+    - chaque scénario S-… écrit en fixture une fois (test/), à la lettre de
+      sa définition ; chaque ligne du registre jouée et comparée à SON issue
+    - la règle 3 du §1 : deux valeurs à l'issue identique sur tous les
+      scénarios de leur clé → ROUGE, sauf alias du §3
+    - les domaines et bornes : un élément hors domaine, un nombre hors
+      bornes → SetPolicy refus GARDE
+    - une clé ABSENTE du registre : SetPolicy refuse toute valeur autre que
+      son défaut
+    Témoin : ROUGE sur le lot-2 actuel — au moins les 6 valeurs fausses de
+    V-162 (temps.periode, taux_saisi, auto_par_personne_signee,
+    refus_avec_derogation_tracee, cascade_cloture_prestations,
+    automatique_au_retenu) et les 3 portes inversées de V-164.
+    ⛔ Les portes P-233, P-230, P-215 (et toute porte qui contredit le
+    registre) sont retirées ou réécrites depuis le registre — déclarées au
+    tableau D-41 de PORTES_EN_ATTENTE.md, motif « contredisait le registre ».
+
+    ⚠️ B1 et B2 commités : dis-le à Ahmed ; Grok fusionne et commence.
+
+B3  MIGRATION 023 — LE SCHÉMA DE D-57 → D-67
+    - politique_valeur_servie RÉGÉNÉRÉE depuis le JSON de B1 (et une case
+      du cliquet : table = JSON)
+    - ref_statut_commercial : catégories prospect, client, ancien_client
+      (D-57) ; chaque code existant reçoit la sienne
+    - temps.mois_ouvert.grace_jours (défaut 5) dans politique (203)
+    - temps.derogation_motif (D-64) ; prestation.taux_change NUMERIC
+      (D-63) ; snapshot_marge.taux_change et snapshot_marge.motif_sans_marge
+    - doublon.personne.cles : la valeur score_pondere disparaît des valeurs
+      possibles (D-61)
+    - une seule horloge (V-167) : une fonction ava.aujourdhui(agence) au
+      fuseau de l'agence ; le serveur la lit, jamais Node
+    Témoin : select count(*) from politique = 203 ; ManageRefs qui change
+    l'ordre de `client` → aucune signature ne tombe (la porte de V-163).
+
+B4  LE BANC ET LE CLIQUET (V-156 5e tour, V-165, V-170, V-176, V-177)
+    - V-165 : chaque ligne de la porte croisée a un attendu calculé de la
+      politique de périmètre ; « PERMIS » n'est plus un verdict ; les
+      positifs par_besoins sont jugés (D-58 : l'agence responsable garde sa
+      société) ; un acteur dont le SEUL droit est sur une autre agence (D-59)
+    - V-170 : les portes énumèrent ce que le serveur déclare (routes,
+      écrivains), jamais une liste écrite à côté
+    - V-156 : la photographie des délégations avant/après rend le cliquet
+      ROUGE sur toute ligne effacée par une porte qui ne l'a pas posée
+    - V-176 : une case refuse un commit `Role: banc` qui touche _ops/
+    - V-177 : le cliquet lit ses cases par leur NOM, jamais par leur rang
+
+Ce que tu ne fais jamais : server/ web/ ; réécrire une migration publiée ;
+toucher « ava », le port 3000, le dossier « Ava Manager » ; fusionner, pousser,
+porter sur main (c'est le BRAIN) ; assouplir un contrôle.
+
+Tu rends : une ligne par point dans `_ops/JOURNAL_BUGS.md`, puis 15 lignes au
+plus, avec la phrase exacte : « lot-2-brain est prêt : git merge lot-2-brain. »

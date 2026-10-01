@@ -399,6 +399,13 @@
   "ko": 2
  },
  {
+  "chemin": "prompt-brain-code-12.txt",
+  "titre": "prompt-brain-code-12.txt",
+  "categorie": "Prompts et briefs",
+  "date": "01/10/2026",
+  "ko": 4
+ },
+ {
   "chemin": "prompt-brain-code-2.txt",
   "titre": "prompt-brain-code-2.txt",
   "categorie": "Prompts et briefs",
@@ -497,6 +504,13 @@
   "ko": 3
  },
  {
+  "chemin": "prompt-lot2-correctifs-11.txt",
+  "titre": "prompt-lot2-correctifs-11.txt",
+  "categorie": "Prompts et briefs",
+  "date": "01/10/2026",
+  "ko": 5
+ },
+ {
   "chemin": "prompt-lot2-correctifs-2.txt",
   "titre": "prompt-lot2-correctifs-2.txt",
   "categorie": "Prompts et briefs",
@@ -593,6 +607,13 @@
   "categorie": "Étude de Boond",
   "date": "20/09/2026",
   "ko": 9
+ },
+ {
+  "chemin": "REGISTRE_EXECUTABLE.md",
+  "titre": "Registre exécutable — le lot 2 (D-56, 01/10/2026)",
+  "categorie": "Conception et contrat",
+  "date": "01/10/2026",
+  "ko": 39
  },
  {
   "chemin": "REGISTRE_POLITIQUES_v1.md",
