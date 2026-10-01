@@ -159,7 +159,7 @@ Une seule place, et les codes admis restent dans `ref_motif_retrait`.
 
 ---
 
-# IV · PROJET, PRESTATION, PRODUCTION — 11 commandes · *lot 2*
+# IV · PROJET, PRESTATION, PRODUCTION — 13 commandes · *lot 2* *(+2 le 01/10, D-50 : la validation des temps)*
 
 | Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
 |---|---|---|---|---|---|---|
@@ -173,6 +173,8 @@ Une seule place, et les codes admis restent dans `ref_motif_retrait`.
 | `CancelPrestation` | id, motif | la prestation `annule` | `ETAT` hors cycle | `PrestationCancelled` | — | — |
 | `RecordTimesheet` | prestation_id, jour, quantité *(+ facturable)* | la ligne | voir le bloc **§C-4** | `TimesheetRecorded` | `temps.periode` · `temps.plafond_jour` (défaut **alerte**) · `temps.facturable.mode` · `temps.validation` · `capacite.jour_ouvre` *(V-105)* | **M-1**, **M-10** |
 | `AdjustTimesheetAfterClose` | prestation_id, jour, quantité, motif | la ligne, `ajustement = true` | `GARDE` si politique = `refus` | `TimesheetAdjusted` | `temps.correction_apres_cloture` (défaut **ajustement tracé**) | ⛔⛔ **M-6 : le snapshot ne bouge PAS** |
+| `ValidateTimesheet` | temps_ids (ou prestation_id + période) | les lignes `valide` | `ETAT` pas `a_valider` · `DROIT` hors agence du projet | `TimesheetValidated` | `temps.validation` | — |
+| `RejectTimesheet` | temps_ids, motif | les lignes `rejete` | `ETAT` pas `a_valider` · `GARDE` motif vide | `TimesheetRejected` | `temps.validation` | — |
 | `RecordAbsence` | ressource_id, type, dates, quantité/jour | l'absence | `GARDE` chevauchement selon la politique | `AbsenceRecorded` | `absence.chevauchement` | — |
 
 ⛔⛔ **`AdjustTimesheetAfterClose` est la commande la plus dangereuse du lot.** Elle corrige un
@@ -278,7 +280,7 @@ autres** ; la réponse rend le compte des acceptées et des refusées, avec leur
 | `RecordOutlookMail` | outlook_id, objet cible | l'action + le document | `ETAT` déjà enregistré | `OutlookMailRecorded` | `outlook.synchro` | — |
 | `PreparePayroll` · `FreezePayroll` · `ExportPayroll` | agence, mois · id · id | la préparation, figée, exportée | `ETAT` déjà figée · `DROIT` sans `LireDonneesRHSensibles` | `PayrollPrepared` · `PayrollFrozen` · `PayrollExported` | `paie.export.format` | — |
 
-⭐ **Compte au 24/09 au soir : 86 + 12 = 98 commandes**, mesuré (V-122) : L4 = MATRICE = **98** ; le serveur
+⭐ **Compte au 01/10 : 100 commandes** (+2 `ValidateTimesheet`, `RejectTimesheet`, D-50 ; le lot 2 en sert **57**). Au 24/09 au soir : 86 + 12 = 98, mesuré (V-122) : L4 = MATRICE = **98** ; le serveur
 en sert **55** (sections I → V, lot 2). ⛔ Un compte ne se recopie pas, il se mesure :
 
 ```bash

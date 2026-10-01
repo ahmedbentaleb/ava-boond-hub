@@ -340,12 +340,12 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-330 | B CONTRAT | TransferContact vers une société d'une autre agence → DROIT. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
 | P-331 | B CONTRAT | Une délégation posée avant le banc survit, fichier par fichier. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | — |
 | P-332 | B CONTRAT | DeclareCVShared avec id et positionnement_id → GARDE, rien écrit. | `test/contrat/audit7.test.ts` | 2026-09-24 | ✅ | 2 | 0 écriture |
-| P-339 | B CONTRAT | Porte croisée : chaque commande servie, chaque identifiant pointé vers une autre agence → DROIT ou GARDE et rien d'écrit ; un positif dans l'agence → ok ; complète par construction (D-36). | `test/contrat/porte_croisee.test.mjs` | 2026-09-25 | ⏳ | 2 | 0 fuite |
+| P-339 | B CONTRAT | Porte croisée : chaque commande servie, chaque identifiant pointé vers une autre agence → DROIT ou GARDE et rien d'écrit ; un positif dans l'agence → ok ; complète par construction (D-36). | `test/contrat/porte_croisee.test.mjs` | 2026-09-25 | ✅ | 2 | 0 fuite |
 | P-340 | B CONTRAT | RES et STAF de PAR sur une absence ou un document de CAS → DROIT, 0 écriture. | `test/contrat/audit7.test.ts` | 2026-09-25 | ✅ | 2 | 0 écriture |
 | P-341 | B CONTRAT | Saisie séparée : un temps avec facturable s'enregistre. | `test/contrat/audit7.test.ts` | 2026-09-25 | ✅ | 2 | base relue |
 | P-342 | B CONTRAT | staffing.inter_agences = oui : un candidat d'une autre agence se positionne ; non reste DROIT. | `test/contrat/audit7.test.ts` | 2026-09-25 | ✅ | 2 | base relue |
 | P-343 | B CONTRAT | ManageGroups refuse un périmètre pôle ou équipe. | `test/contrat/audit7.test.ts` | 2026-09-25 | ✅ | 2 | GARDE |
-| P-340 | B CONTRAT | Les valeurs servies en base (`politique_valeur_servie`) sont exactement celles que le serveur code (`COMPORTEMENTS`, D-42). | `test/contrat/valeurs_servies.test.ts` | 2026-09-30 | ✅ | 2 | égalité stricte |
+| P-352 | B CONTRAT | Les valeurs servies en base (`politique_valeur_servie`) sont exactement celles que le serveur code (`COMPORTEMENTS`, D-42). | `test/contrat/valeurs_servies.test.ts` | 2026-09-30 | ✅ | 2 | égalité stricte |
 | P-344 | B CONTRAT | Un mauvais type sur chaque clé déclarée → GARDE (D-45). | `test/contrat/declaration.test.ts` | 2026-09-29 | ✅ | 2 | GARDE |
 | P-345 | B CONTRAT | Le handler ne voit pas l'entrée ; chaque clé déclarée est lue (D-45). | `test/contrat/declaration.test.ts` | 2026-09-29 | ✅ | 2 | source |
 | P-346 | B CONTRAT | Corps mal formé, d'un autre type ou trop gros → 400, jamais 500 (D-45). | `test/contrat/declaration.test.ts` | 2026-09-29 | ✅ | 2 | 400 |
@@ -354,3 +354,4 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-349 | B CONTRAT | Chaque lecture, chaque groupe, chaque agence (D-46). | `test/contrat/lectures.test.ts` | 2026-09-30 | ✅ | 2 | 403 / 404 |
 | P-350 | B CONTRAT | Chaque valeur servie d'une politique lue a une branche (D-42). | `test/contrat/politiques.test.ts` | 2026-09-30 | ✅ | 2 | source |
 | P-351 | B CONTRAT | pol() enregistre la commande et la clé pendant le banc (D-42). | `test/contrat/politiques.test.ts` | 2026-09-30 | ✅ | 2 | carte |
+| P-353 | B CONTRAT | Au seed, tout groupe qui a la mère d'une cascade (`CASCADES`) a ses filles, sur le même périmètre ; la mère qui exige un autre droit pour cascader (`aLeDroit`) n'oblige que ses titulaires complets (D-48). | `test/contrat/cascades_seed.test.ts` | 2026-09-30 | ✅ | 2 | seed relu |

@@ -118,6 +118,22 @@ sont justes ; deux points sont des décisions de juge, tranchées ici, et un poi
 | P-340 en double | collision de numéro créée par le BRAIN CODE : sa porte des valeurs servies prend le prochain numéro libre ; le passage ✅ → ⏳ est déclaré au tableau D-35 avec le motif « collision » |
 | Le report sur `main` | c'est le **BRAIN**, pas le BRAIN CODE |
 
+## Décisions du 01/10 — les six valeurs muettes (Q-017 → Q-022) et `par_dp`
+
+⛔ Grok a déclaré « prêt pour le dixième audit » avec **6 valeurs de politique non servies** et `temps.validation =
+par_dp` « codé » en **refusant toute saisie** (`projet.ts:480`, « exige une commande hors V1 ») — c'est le défaut
+V-147 lui-même, déclaré servi. ⭐ **Le dixième audit ne part pas** avant ces décisions codées. Les effets sont
+écrits au registre, colonne « Effet », pour qu'aucune valeur ne se code au jugé.
+
+| Décision | Question | Tranché |
+|---|---|---|
+| **D-50** | Q-017 et `par_dp` | ⭐ **la validation des temps est en V1** (Hamada : « tout en V1 » ; l'emailing de Boond porte déjà le modèle « Relance de validation des temps »). `ValidateTimesheet` et `RejectTimesheet` entrent au lot 2 (100 commandes, 57 servies), au DP ; cycle `temps` (`a_valider` · `valide` · `rejete`) ; `par_projet` lit `projet.validation_temps` (défaut vrai, réglé par `UpdateProject`) |
+| **D-51** | Q-018 | les trois modes automatiques de `besoin.pourvu.mode` distingués : couverture atteinte · première signature · alerte à confirmer |
+| **D-52** | Q-019 | `retour_client_retenu` : la transition s'écrit à `RecordClientDecision` d'une décision `positive` — la valeur est servie |
+| **D-53** | Q-020 | ⭐ **une règle qui dépend de l'horloge se calcule à la lecture** (vue), jamais par une tâche planifiée ; l'exception tracée a un motif et une date de fin |
+| **D-54** | Q-021 | `auto_fin_dernier_contrat` : cascade à la dernière clôture ; `auto_apres_delai` : vue (D-53) |
+| **D-55** | Q-022 | `creation_projet` : cascade `RequalifyCompany` à la création du projet ; STAF reçoit la fille au seed (D-48) |
+
 ## Ce que ce tour apprend
 
 ⭐ **Une règle tenue par une relecture finit toujours par être contournée ; une règle tenue par le type du

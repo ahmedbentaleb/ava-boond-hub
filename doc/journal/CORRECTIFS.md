@@ -390,3 +390,9 @@ Prêt pour le neuvième audit — porte croisée : 0 fuite sur 117 champs.
 | V-149 | C4 D-44 le mode société ne juge que la société | P-339 | partagee 9, par_besoins 9, staffing oui 4 (témoin brain) | 4 passes à 0 fuite, 0 positif KO. `staffing.inter_agences=oui` : 4 écritures (Q-016). Porte incomplète : `contact_id`, `besoin_id`. P-339 reste ⏳ | `dcb0626` |
 | V-150 | E1 D-46 la lecture a son droit | P-349 | la porte lisait un compte de test du groupe RES et voyait 200 | `ok` — le compte `res@ava.test` : sans droit 403, hors agence 404 | `b244492` `328f726` |
 | V-156 | E3 les délégations d'avant | photo make test | une photo en une seule ligne (retour chariot) | `délégations d'avant disparues : 0 (sur 133)` | `72c3337` |
+| V-147 | C2 D-42 les cinq valeurs de 021 | P-352 | servies en base sans comportement : les cinq | `ok` — P-352 verte | `a6331a7` |
+| V-149 | C4 D-49 la porte croisée sous les cinq passes | P-339 | 4 écritures sous `staffing=oui`, deux identifiants sans cas | `ok` — 0 fuite sur les 5 passes, 4 permis, 0 positif KO | `5385562` |
+
+Cliquet : 19 cases OK, 0 KO. Porte croisée : 0 fuite sur les 5 passes.
+
+Prêt pour le dixième audit.

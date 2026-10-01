@@ -1,0 +1,50 @@
+AVA MANAGER — LOT 2, AVANT LE DIXIÈME AUDIT : LES VALEURS MUETTES
+=================================================================
+01/10/2026. ⛔ Le dixième audit ne part pas encore. Ta phrase « prêt pour le
+dixième audit » est retirée : 6 valeurs de politique sont non servies, et
+`temps.validation = par_dp` est « codé » en refusant toute saisie
+(projet.ts:480, « exige une commande hors V1 ») — c'est V-147 lui-même,
+déclaré servi.
+
+Tes questions Q-017 → Q-022 sont tranchées : _ops/ARBITRAGE_AUDIT_2026-09-29.md,
+section « Décisions du 01/10 » (D-50 → D-55), et le détail de chaque valeur
+dans la colonne « Effet » du registre. Attends « lot-2-brain est prêt »
+(migration 022), fusionne, puis :
+
+
+C1  D-50   LA VALIDATION DES TEMPS (en V1)
+    - RecordTimesheet : `valide` sous `aucune` ; `a_valider` sous `par_dp`,
+      et sous `par_projet` si projet.validation_temps ; plus aucun refus
+      « hors V1 »
+    - ValidateTimesheet et RejectTimesheet (contrat L4 §IV, MATRICE : DP),
+      déclarés (D-45), droit dans l'agence du projet
+    - UpdateProject règle validation_temps
+    - ca_produit.base = temps_valides compte les seules lignes `valide`
+
+C2  D-51 · D-52 · D-55   LES CASCADES DU BESOIN ET DE LA SOCIÉTÉ
+    - besoin.pourvu.mode : les trois modes automatiques distingués (registre)
+      ; auto_propose_confirme pose une ALERTE, ne change aucun état
+    - besoin.staffing.declencheur = retour_client_retenu : la transition à
+      RecordClientDecision `positive`
+    - passage_client = creation_projet : cascade RequalifyCompany à
+      CreateProject et CreateProjectFromNeed (D-43 : par executerCommande)
+
+C3  D-53 · D-54   L'HORLOGE SE LIT, ELLE NE S'ÉCRIT PAS
+    - l'état d'une ressource sous derive_* se LIT dans la vue (022) ;
+      derive_des_prestations : SetResourceState refusé sauf `sorti` ;
+      derive_avec_exceptions_tracees : permis avec motif et date de fin
+    - retour_prospect : auto_fin_dernier_contrat = cascade à la dernière
+      clôture/annulation ; auto_apres_delai = la vue ; jamais_ancien_client
+      → ancien_client aux mêmes déclencheurs
+    - ⛔ aucune tâche planifiée
+
+PORTES — la porte des politiques (P-352 et celle qui joue chaque valeur)
+couvre désormais TOUTES les valeurs servies : chaque valeur, réglée, change
+le comportement comme le registre le dit. Vue ROUGE avant, verte après.
+Chaque nouvelle commande entre dans la porte croisée par sa déclaration.
+
+Tu rends : une ligne par décision dans journal/ (commit · porte · ROUGE puis
+VERTE), base refaite, cliquet complet vert, porte croisée à 0 fuite sur ses
+5 passes, et AUCUNE valeur du registre non servie pour une clé lue par une
+commande du lot 2. Seulement alors : « prêt pour le dixième audit ».
+⛔ Le report de _ops/ sur main est au BRAIN, pas à toi (012fc4d l'a été par toi).

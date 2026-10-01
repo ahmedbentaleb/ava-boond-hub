@@ -129,8 +129,8 @@
   "chemin": "ARBITRAGE_AUDIT_2026-09-29.md",
   "titre": "Arbitrage du neuvième audit — 29/09/2026",
   "categorie": "Audits",
-  "date": "30/09/2026",
-  "ko": 11
+  "date": "01/10/2026",
+  "ko": 13
  },
  {
   "chemin": "AUDIT_PROJET_2026-09-17.md",
@@ -171,7 +171,7 @@
   "chemin": "CADRAGE_METIER_RECONCILIE_2026-09-16.md",
   "titre": "Cadrage métier réconcilié Ava Manager",
   "categorie": "Cadrage et commande du client",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 80
  },
  {
@@ -304,21 +304,21 @@
   "chemin": "JOURNAL_BUGS.md",
   "titre": "Journal des bugs — Ava Manager · **audit général**",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "29/09/2026",
-  "ko": 30
+  "date": "30/09/2026",
+  "ko": 32
  },
  {
   "chemin": "MACHINES_ETAT_V1.md",
   "titre": "Machines d'état Ava Manager v1",
   "categorie": "Conception et contrat",
-  "date": "24/09/2026",
-  "ko": 16
+  "date": "01/10/2026",
+  "ko": 17
  },
  {
   "chemin": "MATRICE_DROITS_v1.md",
   "titre": "Matrice des droits Ava Manager v1",
   "categorie": "Conception et contrat",
-  "date": "30/09/2026",
+  "date": "01/10/2026",
   "ko": 17
  },
  {
@@ -353,8 +353,8 @@
   "chemin": "PORTES_EN_ATTENTE.md",
   "titre": "La parade ⏳ — une porte posée avant d'être servie",
   "categorie": "Conception et contrat",
-  "date": "29/09/2026",
-  "ko": 10
+  "date": "30/09/2026",
+  "ko": 11
  },
  {
   "chemin": "prompt-audit-2.txt",
@@ -383,6 +383,13 @@
   "categorie": "Prompts et briefs",
   "date": "30/09/2026",
   "ko": 3
+ },
+ {
+  "chemin": "prompt-brain-code-11.txt",
+  "titre": "prompt-brain-code-11.txt",
+  "categorie": "Prompts et briefs",
+  "date": "01/10/2026",
+  "ko": 2
  },
  {
   "chemin": "prompt-brain-code-2.txt",
@@ -474,6 +481,13 @@
   "categorie": "Prompts et briefs",
   "date": "19/09/2026",
   "ko": 22
+ },
+ {
+  "chemin": "prompt-lot2-correctifs-10.txt",
+  "titre": "prompt-lot2-correctifs-10.txt",
+  "categorie": "Prompts et briefs",
+  "date": "01/10/2026",
+  "ko": 3
  },
  {
   "chemin": "prompt-lot2-correctifs-2.txt",
@@ -577,8 +591,8 @@
   "chemin": "REGISTRE_POLITIQUES_v1.md",
   "titre": "Registre des politiques Ava Manager v1",
   "categorie": "Conception et contrat",
-  "date": "25/09/2026",
-  "ko": 60
+  "date": "01/10/2026",
+  "ko": 62
  },
  {
   "chemin": "RELECTURE_5_MODELE_DONNEES_2026-09-17.md",
@@ -626,8 +640,8 @@
   "chemin": "SPEC_COMMANDES_L4.md",
   "titre": "L4 — le contrat des commandes",
   "categorie": "Conception et contrat",
-  "date": "24/09/2026",
-  "ko": 32
+  "date": "01/10/2026",
+  "ko": 33
  },
  {
   "chemin": "SPEC_SQL_AVAMANAGER_V1.sql",
@@ -661,7 +675,7 @@
   "chemin": "journal/adr/ADR-R-001-port-postgres-hote.md",
   "titre": "ADR-R-001 — Port hôte Postgres 55432",
   "categorie": "Décisions d'architecture (ADR)",
-  "date": "24/09/2026",
+  "date": "30/09/2026",
   "ko": 1
  },
  {
@@ -675,14 +689,14 @@
   "chemin": "journal/BUGS.md",
   "titre": "Bugs — un bug par ligne, numéro jamais réutilisé. Fermé avec un SHA, jamais avec « corrigé ».",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
+  "date": "30/09/2026",
   "ko": 1
  },
  {
   "chemin": "journal/CONTRAT.md",
   "titre": "CONTRAT — lot 2 · intégrateur / greffe",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
+  "date": "30/09/2026",
   "ko": 6
  },
  {
@@ -696,42 +710,42 @@
   "chemin": "journal/DECISIONS.md",
   "titre": "Décisions techniques tranchées seul",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
+  "date": "30/09/2026",
   "ko": 3
  },
  {
   "chemin": "journal/ecran/DECISIONS.md",
   "titre": "Décisions écran — lot 2. Seul, en attendant.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
+  "date": "30/09/2026",
   "ko": 1
  },
  {
   "chemin": "journal/ecran/QUESTIONS.md",
   "titre": "Questions écran — lot 2. Choix pris en attendant.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
+  "date": "30/09/2026",
   "ko": 1
  },
  {
   "chemin": "journal/ecran/REMARQUES.md",
   "titre": "Remarques écran — lot 2. Le canon n'est pas corrigé.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
+  "date": "30/09/2026",
   "ko": 1
  },
  {
   "chemin": "journal/ETAPES.md",
   "titre": "Étapes — lot 1. Une ligne par étape. On ne supprime jamais.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
+  "date": "30/09/2026",
   "ko": 2
  },
  {
   "chemin": "journal/greffe/REMARQUES.md",
   "titre": "Remarques greffe — lot 2. On ne patche pas `_ops/`.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
+  "date": "30/09/2026",
   "ko": 2
  },
  {
@@ -746,41 +760,41 @@
   "titre": "Questions pour Hamada. On choisit en attendant, on continue.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "30/09/2026",
-  "ko": 5
+  "ko": 7
  },
  {
   "chemin": "journal/REMARQUES.md",
   "titre": "Remarques sur le canon `_ops/` — on ne le corrige pas.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
+  "date": "30/09/2026",
   "ko": 2
  },
  {
   "chemin": "journal/test/DECISIONS.md",
   "titre": "Décisions du banc — lot 2. Choix pris en attendant.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
+  "date": "30/09/2026",
   "ko": 2
  },
  {
   "chemin": "journal/test/QUESTIONS.md",
   "titre": "Questions du banc — lot 2. Choix pris, on continue.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
+  "date": "30/09/2026",
   "ko": 1
  },
  {
   "chemin": "journal/test/REMARQUES.md",
   "titre": "Remarques du banc sur le canon — on ne le corrige pas.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "24/09/2026",
+  "date": "30/09/2026",
   "ko": 1
  },
  {
   "chemin": "db/README.md",
   "titre": "Base Ava Manager",
   "categorie": "Conception et contrat",
-  "date": "24/09/2026",
+  "date": "30/09/2026",
   "ko": 1
  },
  {

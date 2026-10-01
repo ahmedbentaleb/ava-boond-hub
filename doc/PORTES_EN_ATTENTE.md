@@ -159,14 +159,18 @@ tombe était ✅ ou ⏳, et la case redevient du tout-ou-rien.
 
 ⚠️ **Les 5 portes du lot 1 passent ✅ sans discussion** — elles sont servies et vertes.
 
-## ⏳ P-340 — les valeurs servies (D-42, 29/09)
+## ✅ P-352 — les valeurs servies (D-42, 29/09 ; renumérotée le 30/09, collision avec P-340 d'audit7)
+
+⚠️ ✅ au tableau depuis `9137fbe` (greffe). Depuis 021 (30/09) elle est rouge « dans l'autre sens » : cinq valeurs servies en base que `COMPORTEMENTS` n'a pas encore — attendu jusqu'à ce que Grok les code (Q-014). Elle ne repasse pas ⏳ : elle n'était pas fausse.
 
 | Porte | Posée | Vue rouge | Pourquoi ⏳ | Passe ✅ quand |
 |---|---|---|---|---|
-| P-340 | 29/09, `lot-2-brain` | 29/09 : « COMPORTEMENTS absent de server/src » | le serveur n'exporte pas encore sa table de dispatch (D-42, côté CODE) | `COMPORTEMENTS` = `politique_valeur_servie`, paire pour paire |
+| P-352 | 29/09, `lot-2-brain` | 29/09 : « COMPORTEMENTS absent de server/src » | le serveur n'exporte pas encore sa table de dispatch (D-42, côté CODE) | `COMPORTEMENTS` = `politique_valeur_servie`, paire pour paire |
 
 
-## ⏳ P-339 — la porte croisée (D-36, 25/09)
+## ✅ P-339 — la porte croisée (D-36, 25/09) — LEVÉE le 30/09
+
+⭐ 30/09 (10e tour, D-49) : **0 fuite** sur les 5 passes, 0 positif KO, 0 identifiant déclaré sans cas, 4 permis inter-agences sous `oui` → ✅ au tableau.
 
 | Porte | Posée | Vue rouge | Pourquoi ⏳ | Passe ✅ quand |
 |---|---|---|---|---|
@@ -183,6 +187,7 @@ l'histoire** de `journal/PORTES.md` sur la branche : un passage ✅ → ⏳ abse
 | Porte | ✅ posé | ⏳ remis | Motif | Décision |
 |---|---|---|---|---|
 | P-062 · P-063 · P-064 · P-065 | `6dc1e89` (20/09) | `b2b7d1e` (21/09) | captures des écrans besoin : ✅ posé en masse avec les 55 portes de contrat, alors que ces écrans sont du **lot 3** et n'existent pas | D-35 — le ⏳ est la vérité, lot cible **3** |
+| P-340 | `2b6299f` (25/09) | `419f7b2` (29/09) | collision de numéro, porte des valeurs servies renumérotée P-352 : le BRAIN CODE avait inscrit sa porte sous P-340, déjà pris par la porte d'audit7 (RES/STAF) ; la ligne ⏳ portait le même numéro. P-340 d'audit7 ne bouge pas et reste ✅ | décisions du 30/09 (arbitrage 9e audit), case 16 |
 
 ## ⛔ D-41 (25/09) — une porte ✅ RETIRÉE du tableau se déclare ici
 

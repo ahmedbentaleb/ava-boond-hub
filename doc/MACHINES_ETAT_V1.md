@@ -128,6 +128,7 @@ sont ceux de Boond (`cartographie/BOOND_REGLAGES_2026-09-23.md`) ; l'admin en aj
 | **Contrat RH** | `actif` · `termine` | (pas de code : la catégorie se déduit des dates) | `CreateHrContract` → actif ; `RenewHrContract` → le contrat courant `termine`, un nouveau `actif` lié par `renouvelle_id` ; `EndHrContract` → termine, avec motif | **M-17** |
 | **Achat** | `planifie` · `valide` | planifie, valide | `CreatePurchase` → planifie ; `ValidatePurchase` → valide | — |
 | **Paiement** | `planifie` · `confirme` · `regle` | planifie, confirme, regle | `RecordPayment` → planifie ; `ChangePaymentState` en avant seulement | — |
+| **Temps** *(D-50, 01/10)* | `a_valider` · `valide` · `rejete` | a_valider, valide, rejete | `RecordTimesheet` → `valide` si `temps.validation = aucune` (ou projet sans validation sous `par_projet`), sinon `a_valider` ; `ValidateTimesheet` → valide ; `RejectTimesheet` → rejete (motif) ; une ligne rejetée se ressaisit | — |
 | **Préparation de paie** | `brouillon` · `figee` · `exportee` | (pas de code) | `PreparePayroll` → brouillon (recalculable) ; `FreezePayroll` → figee (photographie) ; `ExportPayroll` → exportee | — |
 | **Destinataire d'un mail** | `en_attente` · `envoye` · `echec` | (pas de code) | posé par `SendEmail` et `PushCVToContacts` ; ⛔ un échec ne se renvoie pas en silence : nouvel envoi | — |
 

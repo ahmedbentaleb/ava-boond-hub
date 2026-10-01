@@ -1,0 +1,44 @@
+AVA MANAGER — SESSION BRAIN CODE, ONZIÈME TOUR (AVANT LE DIXIÈME AUDIT)
+=======================================================================
+01/10/2026. Un point, le schéma des décisions D-50 → D-55. Le mot d'Ahmed est
+donné. Grok attend ta migration pour coder.
+
+À lire : _ops/ARBITRAGE_AUDIT_2026-09-29.md, section « Décisions du 01/10 » ;
+registre (colonne Effet de temps.validation, besoin.pourvu.mode,
+besoin.staffing.declencheur, ressource.etat.mode, societe.retour_prospect,
+societe.passage_client.declencheur) ; MACHINES §7 bis (cycle Temps) ; MATRICE
+(ValidateTimesheet, RejectTimesheet, RequalifyCompany pour STAF).
+
+Ton poste :
+  cd /c/Users/Hamada/Desktop/ava-brain
+  git fetch "/c/Users/Hamada/Desktop/Ava Manager" lot-2
+  git checkout lot-2-brain && git merge FETCH_HEAD
+Base ava_brain refaite. AVA_PORT=3200 (jamais 3000). « Role: brain »,
+« Role: banc » pour test/. Pas de fusion sur main, pas de push.
+
+
+B1  MIGRATION 022
+    - ref_etat_temps (catégories a_valider, valide, rejete ; codes
+      identiques) ; temps.etat_code → FK, NOT NULL ; les lignes existantes
+      → `valide` (elles ont été saisies sous `aucune`) ; motif de rejet
+    - projet.validation_temps BOOL NOT NULL DEFAULT true
+    - profil_ressource : etat_exception_code, etat_exception_motif,
+      etat_exception_jusquau (NULL ensemble ou remplis ensemble — CHECK)
+    - la VUE de l'état dérivé d'une ressource (D-53) et celle du statut
+      commercial lu (D-54, auto_apres_delai) : calculées à la lecture
+    - permissions ValidateTimesheet, RejectTimesheet ; seed : DP ✓ ;
+      STAF reçoit RequalifyCompany (D-55)
+    - politique_valeur_servie : temps.validation = par_projet ;
+      besoin.pourvu.mode = auto_par_personne_signee, auto_propose_confirme ;
+      besoin.staffing.declencheur = retour_client_retenu ;
+      ressource.etat.mode = derive_avec_exceptions_tracees ;
+      societe.retour_prospect = auto_fin_dernier_contrat, auto_apres_delai ;
+      societe.passage_client.declencheur = creation_projet
+    ⛔ Aucune migration publiée réécrite. P-352 sera rouge « dans l'autre
+    sens » tant que Grok n'a pas codé : attendu.
+    Témoins : `\dt ava.ref_*` = 75 ; P-353 (qui a la mère a les filles)
+    verte avec STAF ; la vue d'état rend `en_mission` pour une prestation
+    engage couvrant aujourd'hui, `disponible` sinon.
+
+Tu rends une ligne dans `_ops/JOURNAL_BUGS.md`, puis la phrase exacte :
+« lot-2-brain est prêt : git merge lot-2-brain. »

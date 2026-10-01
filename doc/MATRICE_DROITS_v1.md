@@ -74,7 +74,7 @@ Le motif ligne par ligne, et les cas contestés : [annexes/MATRICE_DROITS_MOTIFS
 |---|---|---|---|---|---|---|---|---|---|
 | `CreateCompany` | ✓ | — | — | — | — | — | — | D | — |
 | `UpdateCompany` | ✓ | — | — | — | — | — | — | D | — |
-| `RequalifyCompany` | ✓ | — | — | — | — | ✓ *(D-48)* | — | D | — |
+| `RequalifyCompany` | ✓ | — | — | — | ✓ *(D-55)* | ✓ *(D-48)* | — | D | — |
 | `ArchiveCompany` | D | — | — | — | — | — | — | D | — |
 | `CreateUnit` · `UpdateUnit` | ✓ | — | — | — | — | — | — | D | — |
 | `ArchiveService` | D | — | — | — | — | — | — | D | — |
@@ -124,6 +124,9 @@ Le motif ligne par ligne, et les cas contestés : [annexes/MATRICE_DROITS_MOTIFS
 | Commande | IA | RH | RR | ÉVAL | STAF | DP | RES | ADM | SUP |
 |---|---|---|---|---|---|---|---|---|---|
 | `CreateProject` · `CreateProjectFromNeed` | — | — | — | — | ✓ | ✓ | — | D | — |
+
+⭐ D-48 appliqué à `societe.passage_client.declencheur = creation_projet` (D-55) : STAF reçoit aussi `RequalifyCompany` sur son périmètre, la fille de cette cascade.
+
 | `UpdateProject` | — | — | — | — | D | ✓ | — | D | — |
 | `CloseProject` | — | — | — | — | — | ✓ | — | D | — |
 | `CreatePrestation` | — | — | — | — | ✓ | ✓ | — | D | — |
@@ -132,6 +135,7 @@ Le motif ligne par ligne, et les cas contestés : [annexes/MATRICE_DROITS_MOTIFS
 | `CancelPrestation` | — | — | — | — | ✓ | ✓ | — | D | — |
 | `RecordTimesheet` | — | — | — | — | ✓ | ✓ | **S** | D | — |
 | `AdjustTimesheetAfterClose` | — | — | — | — | D | ✓ | — | D | — |
+| `ValidateTimesheet` · `RejectTimesheet` *(D-50)* | — | — | — | — | — | ✓ | — | D | — |
 | `RecordAbsence` | — | ✓ | — | — | D | D | **S** | D | — |
 
 ⭐ **D-48 (30/09) — qui a la mère a les filles.** Signer une prestation déclenche en cascade `RequalifyCompany` (le prospect devient client) et `DeclareNeedFilled` (le besoin est pourvu) ; depuis D-43 une cascade exige le droit de la fille. Le DP reçoit donc les deux, sur son périmètre. Une porte le garde : pour chaque cascade déclarée, tout groupe qui a la mère a les filles au seed.
