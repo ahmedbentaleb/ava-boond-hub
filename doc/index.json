@@ -189,6 +189,13 @@
   "ko": 27
  },
  {
+  "chemin": "CANON_LOT3_ECRANS.md",
+  "titre": "Canon du lot 3 — les écrans (01/10/2026)",
+  "categorie": "Cadrage et commande du client",
+  "date": "01/10/2026",
+  "ko": 17
+ },
+ {
   "chemin": "cartographie/AUDIT_ECRANS.md",
   "titre": "Audit visuel Boond Manager — écran par écran",
   "categorie": "Audits",
@@ -481,6 +488,13 @@
   "categorie": "Prompts et briefs",
   "date": "21/09/2026",
   "ko": 6
+ },
+ {
+  "chemin": "prompt-design-lot3.txt",
+  "titre": "prompt-design-lot3.txt",
+  "categorie": "Prompts et briefs",
+  "date": "01/10/2026",
+  "ko": 1
  },
  {
   "chemin": "prompt-kit-methode.txt",

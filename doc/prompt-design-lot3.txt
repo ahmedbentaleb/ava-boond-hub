@@ -1,0 +1,25 @@
+AVA MANAGER — SESSION DESIGN — LES MAQUETTES DU LOT 3
+====================================================
+01/10/2026. Ton poste : C:\Users\Hamada\Desktop\ava-design, branche `design`,
+« Role: design ». ⛔ Jamais le dossier « Ava Manager », ni _ops/, ni server/,
+web/, test/.
+
+La spécification des écrans est écrite :
+  C:\Users\Hamada\Desktop\Ava Manager\_ops\CANON_LOT3_ECRANS.md
+Lis-la en entier, surtout §0 (les règles D-68 → D-77) et §2 (les 28 écrans).
+
+Ce que tu fais :
+  1. Une maquette par écran, dans l'ordre : Besoins (5), Fiche besoin (13),
+     Fiche projet (14), Plan de charge (17), Politiques (22), puis la
+     nouvelle Validation des temps (19), Positionnements (6), et le reste.
+  2. ⛔ Une maquette n'affiche QUE ce que le canon liste : colonnes par
+     défaut, onglets, actions. Rien en plus (un style n'ajoute rien).
+  3. Les trois composants génériques (liste, fiche, formulaire) d'abord :
+     un écran n'est qu'une de leurs déclinaisons (D-69).
+  4. Un bouton refusé est visible, avec le motif que la commande rendrait
+     (D-71) ; un onglet cadenassé dit la permission qui manque.
+  5. Mes temps : aussi en téléphone 375 × 812.
+
+Tu rends : les maquettes dans ava-design, commitées sur `design`, et la liste
+des écarts que tu trouves entre le canon et ce qui se dessine bien — en
+QUESTIONS pour le BRAIN, jamais tranchés par toi.

@@ -106,7 +106,7 @@ Mis à jour le 24/09/2026. Les anciens numéros de lot sont entre parenthèses.
 | 5.5r | Onzième audit | ⬜ après le registre exécutable et son code | [prompt d'audit 9](prompt-audit-9.txt) |
 | 5.6 | Connexion par compte Microsoft (lot 2c) | ⬜ prêt (R4 : tout le monde a une adresse Microsoft) | [décisions techniques T2](DECISIONS_TECHNIQUES_v1.md) · [arbitrage D-2](ARBITRAGE_AUDIT_2026-09-21.md) |
 | 5.8 | ⭐ **RH, facturation et applications** — contrats, documents à suivre, devis, factures ; mail groupé, push de CV, actions sur une sélection, documents depuis modèles, lecture de CV, Outlook, préparation de paie (décisions des 23-24/09 : tout en V1) | ⬜ après les écrans | [ce que la V1 doit porter en plus](COMPLEMENTS_V1_2026-09-23.md) · [réglages Boond](cartographie/BOOND_REGLAGES_2026-09-23.md) · [applications Boond](cartographie/BOOND_APPLICATIONS_2026-09-24.md) |
-| 5.7 | Les 26 écrans (lot 3) | ⬜ après le 5.5 accepté | [les 26 écrans](../terminal.html) · [prompt écrans](PROMPT_CHATGPT_ECRANS.md) |
+| 5.7 | Les **28** écrans (lot 3) | ✅ 01/10 **canon écrit** (D-68 → D-77 : la page peint ce que le serveur envoie, formulaires générés de la déclaration, 0 commande nouvelle) · ⬜ code après le 5.5 accepté | [canon des écrans](CANON_LOT3_ECRANS.md) · [prompt Design](prompt-design-lot3.txt) · [maquette jouable](../terminal.html) |
 | — | CRM, staffing, production (anciens lots 4, 5, 6) | ↪ fusionnés dans 5.2 et 5.7 | — |
 
 #### Les tours d'audit du serveur — mesurés
