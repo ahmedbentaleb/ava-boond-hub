@@ -149,6 +149,8 @@ Une **catégorie** se note `cat:prospect` (on ne juge jamais un code, D-57).
 | `candidat.note.echelle` | aucune | UpdateCandidate | S-NE1 | refus GARDE |
 | `candidat.note.echelle` | 1_10 | UpdateCandidate | S-NE2 | refus GARDE |
 | `candidat.note.echelle` | 1_100 | UpdateCandidate | S-NE2 | ok · écrit profil_candidat.note = 50 |
+| `candidat.note.echelle` | 1_5 | UpdateCandidate | S-NE3 | ok · écrit profil_candidat.note = 3 |
+| `candidat.note.echelle` | aucune | UpdateCandidate | S-NE3 | refus GARDE |
 | `ressource.externe.societe_fournisseur` | obligatoire | CreateResource | S-RF1 | refus GARDE |
 | `ressource.externe.societe_fournisseur` | facultatif | CreateResource | S-RF1 | ok |
 | `ressource.externe.societe_fournisseur` | obligatoire | ConvertCandidateToResource | S-RF2 | refus GARDE |
@@ -157,7 +159,7 @@ Une **catégorie** se note `cat:prospect` (on ne juge jamais un code, D-57).
 - **S-CC1** — candidat de PAR : nom, prénom, localisation, e-mail remplis ; **civilité vide**.
 - **S-CV1** — le demandeur est du groupe **RR**, la permission lui est déléguée sur PAR ; candidat de PAR.
 - **S-CV2** — le demandeur est du groupe **IA**, la permission lui est déléguée sur PAR.
-- **S-NE1** — `UpdateCandidate` note = 7 ; **S-NE2** — note = 50.
+- **S-NE1** — `UpdateCandidate` note = 7 ; **S-NE2** — note = 50 ; **S-NE3** — note = 3 (sépare `1_5` de `aucune`, Q-024).
 - **S-RF1** — `CreateResource` type externe, sans société fournisseur ; **S-RF2** — conversion vers une ressource externe, sans société fournisseur.
 - **Domaine** de `candidat.complete.champs_requis` : `nom`, `prenom`, `civilite`, `localisation`, `email`, `telephone`, `email_ou_telephone`, `date_naissance`, `cv`.
 
@@ -427,7 +429,7 @@ Une **catégorie** se note `cat:prospect` (on ne juge jamais un code, D-57).
 
 - **S-AB1** — absence du 10 au 12/11 déjà saisie ; nouvelle du 12 au 14/11. **S-AB2** — absence d'une ressource sans prestation `engage` sur la période.
 - **S-UT1** — `SetOwnTheme` d'un thème **servi**. ⛔ `SetOwnTheme` passe par la même garde de valeurs que `SetPolicy` : un thème non servi → refus GARDE sous les deux valeurs.
-- **S-DR1** — le groupe du demandeur a `UpdateNeed` sur PAR ; une surcharge **restrictive** de son compte la retire ; besoin de PAR.
+- **S-DR1** — le groupe du demandeur a `UpdateNeed` sur le périmètre agence PAR ; **une ligne `compte_surcharge`** (compte du demandeur, `UpdateNeed`, ce même périmètre) ; `UpdateNeed` d'un besoin de PAR. ⭐ Q-023 : `compte_surcharge` n'a **pas** de colonne de sens (`001_schema.sql`, F28) — **toute** ligne retire ; on n'en ajoute pas.
 - **S-HT1** — compte sans `UpdateNeed` ; `UpdateNeed` d'un besoin de PAR.
 
 ### Périmètre
@@ -461,7 +463,6 @@ Une **catégorie** se note `cat:prospect` (on ne juge jamais un code, D-57).
 | clé | valeurs | sur quels scénarios | motif | jusqu'à |
 |---|---|---|---|---|
 | `societe.passage_client.declencheur` | premiere_prestation_signee = premier_engagement_contractuel | tous ceux du lot 2 | l'engagement contractuel d'avant la prestation (devis accepté) n'existe qu'au lot 5.8 | lot 5.8 : `AcceptQuote` passe client sous `premier_engagement_contractuel` seulement |
-| `candidat.note.echelle` | 1_10 = 1_100 | S-NE1 | une note de 7 vaut sous les deux ; S-NE2 les distingue | — |
 
 ## 4 · Les décisions prises en écrivant ce fichier
 

@@ -223,7 +223,7 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-212 | B CONTRAT | positionnement.sur_besoin_inactif : refus garde, alerte écrit. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-213 | B CONTRAT | positionnement.cv_partage_obligatoire : deux valeurs, deux résultats. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-214 | B CONTRAT | qualification requise avant décision : deux valeurs, deux résultats. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
-| P-215 | B CONTRAT | projet.creation_depuis_besoin : alerte ou non. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-215 | B CONTRAT | projet.creation_depuis_besoin : chaque ligne du registre exécutable tient (réécrite depuis le registre, D-56 — exigeait l'inverse, V-164). | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-216 | B CONTRAT | projet.contact : obligatoire garde, facultatif écrit. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-217 | B CONTRAT | projet.origine_besoin : deux valeurs, deux résultats. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-218 | B CONTRAT | besoin.projets_max : un seul garde, illimité écrit. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
@@ -236,12 +236,12 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-225 | B CONTRAT | besoin.pourvu.mode : manuel ou auto. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-226 | B CONTRAT | projet.devises_mixtes : autorise ou refus. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-227 | B CONTRAT | prestation.surcharge.seuil_pct : deux seuils, deux alertes. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
-| P-228 | B CONTRAT | prestation.surcharge.mode : alerte ou refus. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-228 | B CONTRAT | prestation.surcharge.mode : chaque ligne du registre exécutable tient (réécrite depuis le registre, D-56 — réglait un seuil hors bornes, D-67). | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-229 | B CONTRAT | frais.mode : ignorés ou imputés. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
-| P-230 | B CONTRAT | change.mode : marge nulle ou mur sur devises mixtes. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-230 | B CONTRAT | change.mode : chaque ligne du registre exécutable tient (réécrite depuis le registre, D-56 — exigeait l'inverse, V-164). | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-231 | B CONTRAT | marge.taux.si_ca_nul : nul ou zéro. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-232 | B CONTRAT | prestation.annulation.garde : temps saisi garde, libre annule. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
-| P-233 | B CONTRAT | temps.periode : hors dates garde ou écrit. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
+| P-233 | B CONTRAT | temps.periode : chaque ligne du registre exécutable tient (réécrite depuis le registre, D-56 — exigeait l'inverse, V-164). | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-234 | B CONTRAT | capacite.jour_ouvre : alerte ou non. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-235 | B CONTRAT | temps.facturable.mode : saisie séparée ou égal au produit. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-236 | B CONTRAT | temps.validation : aucune écrit, par DP garde. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
@@ -356,3 +356,10 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-351 | B CONTRAT | pol() enregistre la commande et la clé pendant le banc (D-42). | `test/contrat/politiques.test.ts` | 2026-09-30 | ✅ | 2 | carte |
 | P-353 | B CONTRAT | Au seed, tout groupe qui a la mère d'une cascade (`CASCADES`) a ses filles, sur le même périmètre ; la mère qui exige un autre droit pour cascader (`aLeDroit`) n'oblige que ses titulaires complets (D-48). | `test/contrat/cascades_seed.test.ts` | 2026-09-30 | ✅ | 2 | seed relu |
 | P-354 | B CONTRAT | D-50 à D-55 : chaque valeur servie le 01/10 change le comportement que le registre décrit. | `test/contrat/decisions_0110.test.ts` | 2026-10-01 | ✅ | 2 | une valeur, un effet |
+| P-355 | B CONTRAT | Chaque ligne du registre exécutable (`_ops/REGISTRE_EXECUTABLE.md`), son scénario écrit en fixture et joué, rend l'issue que le registre écrit (D-56, V-162, V-164). | `test/contrat/registre_differentiel.test.ts` | 2026-10-01 | ⏳ | 2 | issue du registre |
+| P-356 | B CONTRAT | Deux valeurs d'une clé ne font jamais la même chose sur tous ses scénarios, hors alias du §3 — au registre et à l'observé (règle 3). | `test/contrat/registre_differentiel.test.ts` | 2026-10-01 | ⏳ | 2 | différentiel |
+| P-357 | B CONTRAT | Un élément hors domaine, un nombre hors bornes → SetPolicy refus GARDE (règles 4, 5). | `test/contrat/registre_differentiel.test.ts` | 2026-10-01 | ✅ | 2 | GARDE |
+| P-358 | B CONTRAT | Une clé absente du registre exécutable n'a que son défaut servi : SetPolicy refuse toute autre valeur (règle 2). | `test/contrat/registre_differentiel.test.ts` | 2026-10-01 | ✅ | 2 | GARDE |
+| P-359 | B CONTRAT | Réordonner les statuts commerciaux (ManageRefs) ne fait tomber aucune signature : le métier lit la catégorie, jamais `ordre` (D-57, V-163). | `test/contrat/ordre_affichage.test.ts` | 2026-10-01 | ⏳ | 2 | catégorie |
+| P-360 | B CONTRAT | Un nom hérité d'`Object.prototype` (lu sur lui-même) n'est jamais une commande : INTROUVABLE, jamais 500 (V-170). | `test/contrat/routes.test.ts` | 2026-10-01 | ⏳ | 2 | INTROUVABLE |
+| P-361 | B CONTRAT | Les routes enregistrées par le serveur sont exactement `LECTURES`, la santé et les commandes (V-170). | `test/contrat/routes.test.ts` | 2026-10-01 | ⏳ | 2 | égalité stricte |

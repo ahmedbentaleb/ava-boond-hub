@@ -405,3 +405,5 @@ Cliquet du 30/09 : 19 cases OK, 0 KO. Phrase retirée le 01/10 : six valeurs non
 Mesure du 01/10 : `make test` OK, 342 portes. Porte croisée : 57 commandes · 5 passes · 691 identifiants · 0 fuite · 0 positif KO. Cliquet : 19 cases OK, 0 KO. Canon sur main : `ab0471c`.
 
 Prêt pour le dixième audit.
+
+Porte différentielle, 01/10, après fusion `482ea27` : mesurée rouge (35 lignes / 22 clés), puis 202 / 204. P-357 et P-358 vertes. Restent S-DR1 (fixture non écrivable, Q-023) et l'alias `candidat.note.echelle` `1_5` = `aucune` (Q-024). Pas la phrase du onzième audit.

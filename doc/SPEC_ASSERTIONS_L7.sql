@@ -115,7 +115,7 @@ BEGIN
   INSERT INTO ref_etat_prestation   VALUES ('previsionnelle','Prévisionnelle','previsionnel',1,true,true),
                                            ('signee','Signée','engage',2,true,true) ON CONFLICT DO NOTHING;
   INSERT INTO ref_etat_positionnement VALUES ('propose','Proposé','propose',1,true,true) ON CONFLICT DO NOTHING;
-  INSERT INTO ref_statut_commercial VALUES ('prospect','Prospect','defaut',1,true,true) ON CONFLICT DO NOTHING;
+  INSERT INTO ref_statut_commercial VALUES ('prospect','Prospect','prospect',1,true,true) ON CONFLICT DO NOTHING; -- D-57 (023) : la catégorie, fermée
   INSERT INTO ref_role_societe      VALUES ('interne','Interne','defaut',1,true,true) ON CONFLICT DO NOTHING;
   INSERT INTO ref_type_mission      VALUES ('regie','Régie','defaut',1,true,true) ON CONFLICT DO NOTHING;
   INSERT INTO ref_type_unite        VALUES ('pole','Pôle','pole',1,true,true),

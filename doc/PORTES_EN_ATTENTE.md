@@ -159,6 +159,24 @@ tombe était ✅ ou ⏳, et la case redevient du tout-ou-rien.
 
 ⚠️ **Les 5 portes du lot 1 passent ✅ sans discussion** — elles sont servies et vertes.
 
+## ⏳ P-355 → P-358 — la porte différentielle du registre exécutable (D-56, 01/10)
+
+| Porte | Posée | Vue rouge | Pourquoi ⏳ | Passe ✅ quand |
+|---|---|---|---|---|
+| P-355 | 01/10, `lot-2-brain` | 01/10 : **58 lignes sur 204** non tenues, sur 26 clés — dont 5 des 6 valeurs fausses de V-162 (le ⑤ `cascade_cloture_prestations` tient déjà) | le serveur ne code pas encore le registre (CODE), le schéma de D-57 → D-67 est en 023 (BRAIN CODE), et 4 scénarios ne s'écrivent pas à la lettre (S-DR1, S-CH2 avant 023 ; S-UC1, S-CV* : à trancher au registre) | 204 / 204 |
+| P-356 | 01/10, `lot-2-brain` | 01/10 : 13 paires indiscernables, dont **1 au registre** (`candidat.note.echelle` : `1_5` = `aucune`, aucun scénario ne les distingue) | idem, et le registre lui-même (BRAIN) | 0 paire |
+| P-357 | 01/10, `lot-2-brain` | 01/10 : 8 / 8 acceptés (4 domaines, 2 bornes × 2) | `SetPolicy` ne lit pas domaines ni bornes (CODE ; base : 023) | 8 refus GARDE |
+| P-358 | 01/10, `lot-2-brain` | 01/10 : **140 / 141** clés hors registre réglables au-delà du défaut ; après 023 : 0 acceptée, mais 141 refusées en `ERREUR` (la base refuse, le serveur ne traduit pas — V-169) | règle 2 au serveur (CODE) | 0 acceptée, 0 hors GARDE |
+| P-359 | 01/10, `lot-2-brain` | 01/10 : SignPrestation → GARDE « aucun statut commercial actif d'ordre 1 » après réordonnancement (V-163) | le serveur lit `ordre` (CODE) ; la base a ses catégories depuis 023 | signature ok, société de catégorie client |
+
+### Portes réécrites depuis le registre — « contredisait le registre » (V-164){nl}{nl}| Porte | Exigeait | Réécrite au commit | Maintenant | Décision |
+|---|---|---|---|---|
+| P-215 | une alerte `PROJET_AUTO` sous `automatique_au_retenu` — le registre : le projet est créé | B2, 10e audit | les lignes de `projet.creation_depuis_besoin`, jouées par le moteur de P-355 ; ✅ gardé, rouge tant que le serveur ne crée pas le projet | D-56 |
+| P-230 | un refus de `taux_saisi` en devises mixtes — le registre : la conversion au taux saisi | B2, 10e audit | les lignes de `change.mode` ; rouge tant que D-63 n'est pas codé | D-56, D-63 |
+| P-233 | qu'un temps hors prestation passe sous le mois ouvert — le registre : la valeur stricte AJOUTE une garde | B2, 10e audit | les lignes de `temps.periode` ; rouge tant que D-62 n'est pas codé | D-56, D-62 |
+
+⚠️ Réécrites, pas retirées : le numéro garde sa place et son ✅ — elles n'étaient pas des doublons (D-41 ne s'applique pas) ; leur rouge est la vérité du serveur.
+
 ## ✅ P-352 — les valeurs servies (D-42, 29/09 ; renumérotée le 30/09, collision avec P-340 d'audit7)
 
 ⚠️ ✅ au tableau depuis `9137fbe` (greffe). Depuis 021 (30/09) elle est rouge « dans l'autre sens » : cinq valeurs servies en base que `COMPORTEMENTS` n'a pas encore — attendu jusqu'à ce que Grok les code (Q-014). Elle ne repasse pas ⏳ : elle n'était pas fausse.
