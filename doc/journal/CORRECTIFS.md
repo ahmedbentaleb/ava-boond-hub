@@ -407,3 +407,9 @@ Mesure du 01/10 : `make test` OK, 342 portes. Porte croisée : 57 commandes · 5
 Prêt pour le dixième audit.
 
 Porte différentielle, 01/10, après fusion `482ea27` : mesurée rouge (35 lignes / 22 clés), puis 202 / 204. P-357 et P-358 vertes. Restent S-DR1 (fixture non écrivable, Q-023) et l'alias `candidat.note.echelle` `1_5` = `aucune` (Q-024). Pas la phrase du onzième audit.
+
+Mesure du 02/10, arbre de travail, juge modifié : `make test` OK, porte différentielle 0 fausse, porte croisée 0 fuite, cliquet 21 OK. Cette mesure ne compte pas : le juge a été remis, puis les cas de Q-025 ont été écrits au canon (`882cdd9`, `975283f`).
+
+Mesure du 03/10 sur `975283f` : `make test` OK. P-339 verte, 0 fuite. Cliquet : 21 OK, 0 KO.
+
+Prêt pour le onzième audit.

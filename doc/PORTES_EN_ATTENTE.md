@@ -164,7 +164,7 @@ tombe était ✅ ou ⏳, et la case redevient du tout-ou-rien.
 | Porte | Posée | Vue rouge | Pourquoi ⏳ | Passe ✅ quand |
 |---|---|---|---|---|
 | P-355 | 01/10, `lot-2-brain` | 01/10 : **58 lignes sur 204** non tenues, sur 26 clés — dont 5 des 6 valeurs fausses de V-162 (le ⑤ `cascade_cloture_prestations` tient déjà) | le serveur ne code pas encore le registre (CODE), le schéma de D-57 → D-67 est en 023 (BRAIN CODE), et 4 scénarios ne s'écrivent pas à la lettre (S-DR1, S-CH2 avant 023 ; S-UC1, S-CV* : à trancher au registre) | 204 / 204 |
-| P-356 | 01/10, `lot-2-brain` | 01/10 : 13 paires indiscernables, dont **1 au registre** (`candidat.note.echelle` : `1_5` = `aucune`, aucun scénario ne les distingue) | idem, et le registre lui-même (BRAIN) | 0 paire |
+| P-356 | 01/10, `lot-2-brain` | 01/10 : 13 paires indiscernables, dont **1 au registre** (`candidat.note.echelle` : `1_5` = `aucune`, aucun scénario ne les distingue) ; 02/10 : S-NE3 (Q-024) les distingue — 6 paires, toutes observées au serveur, 0 au registre | idem, et le registre lui-même (BRAIN) | 0 paire |
 | P-357 | 01/10, `lot-2-brain` | 01/10 : 8 / 8 acceptés (4 domaines, 2 bornes × 2) | `SetPolicy` ne lit pas domaines ni bornes (CODE ; base : 023) | 8 refus GARDE |
 | P-358 | 01/10, `lot-2-brain` | 01/10 : **140 / 141** clés hors registre réglables au-delà du défaut ; après 023 : 0 acceptée, mais 141 refusées en `ERREUR` (la base refuse, le serveur ne traduit pas — V-169) | règle 2 au serveur (CODE) | 0 acceptée, 0 hors GARDE |
 | P-359 | 01/10, `lot-2-brain` | 01/10 : SignPrestation → GARDE « aucun statut commercial actif d'ordre 1 » après réordonnancement (V-163) | le serveur lit `ordre` (CODE) ; la base a ses catégories depuis 023 | signature ok, société de catégorie client |

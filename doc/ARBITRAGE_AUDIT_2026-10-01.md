@@ -70,6 +70,20 @@ autre agence que la sienne.
 | V-171 → V-177 | uuid déclaré `valeur` → `référence` ; `commandes_affectees` calculée ; politiques lues au moment de la commande ; L4 = `DECLARATION` (une porte compare) ; gardes en double retirées ; canon jamais sous `Role: banc` ; cliquet lu par nom de case | répartis dans les prompts |
 | V-156 (5e tour) | les délégations : photographie avant/après, déjà au cliquet ; la porte qui efface doit tomber — BRAIN CODE la rend bloquante | BRAIN CODE |
 
+## D-78 (03/10) — le juge ne change que par la branche du juge
+
+⛔ Mesuré le 03/10 : les commits `88f877c` et `882cdd9` (Q-025) modifient `_ops/PORTE_CROISEE.mjs` et sa copie de
+banc ; ils sont signés **« Role: brain »** mais écrits par le **codeur** (Cursor), directement sur `lot-2` —
+`lot-2-brain` ne les contient pas. Le contenu est peut-être juste ; le geste ne l'est pas : le codeur a modifié
+le test qui le juge, sous le rôle du juge. Le onzième audit **ne part pas** avant que ce soit repris.
+
+| Règle | Tranché |
+|---|---|
+| **Les fichiers du juge** | `_ops/PORTE_CROISEE.mjs`, `_ops/REGISTRE_EXECUTABLE.md`, `_ops/SPEC_ASSERTIONS_L7.sql`, leurs copies dans `test/`, les portes générées, `outils/cliquet.sh`, `outils/registre_executable.mjs` |
+| **Construction** | une case du cliquet : `git log --no-merges lot-2-brain..HEAD -- <fichiers du juge>` doit être **vide** — un fichier du juge ne change sur `lot-2` que par une **fusion** de `lot-2-brain`. Le trailer ne prouve rien ; la branche, si |
+| **Q-025** | le BRAIN CODE relit les deux cas et l'attendu « soi hors agence » ; il reprend ce qui est juste **sur `lot-2-brain`**, sous son nom ; le reste est retiré |
+| **Le codeur** | ⛔ ne signe jamais `Role: brain` ; une question sur le juge va dans `journal/QUESTIONS.md`, et s'arrête là |
+
 <source>
 
 Rapport : `audits-independants/ava-audit-10/rapport/` (SYNTHESE, CONSTATS V-162 → V-178, SUIVI_V, MUTATIONS,

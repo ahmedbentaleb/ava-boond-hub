@@ -136,8 +136,8 @@
   "chemin": "ARBITRAGE_AUDIT_2026-10-01.md",
   "titre": "Arbitrage du dixième audit — 01/10/2026",
   "categorie": "Audits",
-  "date": "01/10/2026",
-  "ko": 6
+  "date": "03/10/2026",
+  "ko": 7
  },
  {
   "chemin": "AUDIT_PROJET_2026-09-17.md",
@@ -178,7 +178,7 @@
   "chemin": "CADRAGE_METIER_RECONCILIE_2026-09-16.md",
   "titre": "Cadrage métier réconcilié Ava Manager",
   "categorie": "Cadrage et commande du client",
-  "date": "02/10/2026",
+  "date": "03/10/2026",
   "ko": 80
  },
  {
@@ -318,7 +318,7 @@
   "chemin": "JOURNAL_BUGS.md",
   "titre": "Journal des bugs — Ava Manager · **audit général**",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "01/10/2026",
+  "date": "02/10/2026",
   "ko": 37
  },
  {
@@ -367,7 +367,7 @@
   "chemin": "PORTES_EN_ATTENTE.md",
   "titre": "La parade ⏳ — une porte posée avant d'être servie",
   "categorie": "Conception et contrat",
-  "date": "01/10/2026",
+  "date": "02/10/2026",
   "ko": 13
  },
  {
@@ -745,8 +745,8 @@
   "chemin": "journal/CORRECTIFS.md",
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "01/10/2026",
-  "ko": 32
+  "date": "03/10/2026",
+  "ko": 33
  },
  {
   "chemin": "journal/DECISIONS.md",
@@ -794,14 +794,14 @@
   "chemin": "journal/PORTES.md",
   "titre": "Portes — le cliquet. Une porte ✅ ne redevient jamais ⏳.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "01/10/2026",
+  "date": "02/10/2026",
   "ko": 52
  },
  {
   "chemin": "journal/QUESTIONS.md",
   "titre": "Questions pour Hamada. On choisit en attendant, on continue.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "01/10/2026",
+  "date": "03/10/2026",
   "ko": 8
  },
  {
