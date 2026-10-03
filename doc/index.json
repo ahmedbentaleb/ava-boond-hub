@@ -192,8 +192,8 @@
   "chemin": "CANON_LOT3_ECRANS.md",
   "titre": "Canon du lot 3 — les écrans (01/10/2026)",
   "categorie": "Cadrage et commande du client",
-  "date": "01/10/2026",
-  "ko": 17
+  "date": "03/10/2026",
+  "ko": 20
  },
  {
   "chemin": "cartographie/AUDIT_ECRANS.md",
@@ -318,8 +318,8 @@
   "chemin": "JOURNAL_BUGS.md",
   "titre": "Journal des bugs — Ava Manager · **audit général**",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "02/10/2026",
-  "ko": 37
+  "date": "03/10/2026",
+  "ko": 38
  },
  {
   "chemin": "MACHINES_ETAT_V1.md",

@@ -24,7 +24,7 @@
 | **D-70** | ⭐ **Le formulaire se génère de la déclaration de la commande** (D-45) : un champ par clé déclarée, son type donne le contrôle (date, décimal, liste de `ref_*`, choix d'un objet). Un champ « référence » est un sélecteur alimenté par la route de lecture de sa table, **filtrée par le périmètre** du compte | porte : champs du formulaire = clés déclarées, une à une |
 | **D-71** | **Un bouton visible n'est pas une autorisation**, mais il dit la vérité : chaque action rendue porte `permise` et, sinon, le **refus que la commande rendrait** (code + motif) | porte : une action `permise = false` appelée → **le même** refus ; `permise = true` → jamais `DROIT` |
 | **D-72** | **Une lecture exige sa permission** (D-46), jugée sur son périmètre, et rend **seulement** les lignes de ce périmètre. Une fiche hors périmètre → `404`, jamais une fiche vide | porte croisée de lecture : routes × groupes × agences (comme la porte croisée des commandes) |
-| **D-73** | **Les colonnes d'une liste sont un réglage par compte** (`ui.liste.colonnes`, parité Boond) : le serveur rend le **catalogue** des colonnes de la liste et celles choisies, dans l'ordre ; le défaut est celui de Boond | porte : chaque colonne du catalogue est triable et filtrable côté serveur, ou déclarée « non triable » |
+| **D-73** | **Les colonnes d'une liste sont un réglage par compte** (`ui.liste.<liste>.colonnes`, une clé par liste — nom réel en base, écart Design 13) : le serveur rend le **catalogue** des colonnes de la liste et celles choisies, dans l'ordre ; le défaut est celui de Boond | porte : chaque colonne du catalogue est triable et filtrable côté serveur, ou déclarée « non triable » |
 | **D-74** | **Recherche, filtres, tri et pagination se font au serveur**, jamais dans la page. Page de **50** lignes ; le compte total est rendu | porte : une liste de 500 lignes rend 50 lignes et le total 500 |
 | **D-75** | **Un état s'affiche par son libellé (référentiel) et sa pastille par sa catégorie** — jamais par son code, jamais par `ordre` (D-57) | porte : renommer un libellé au référentiel change l'écran sans toucher le code |
 | **D-76** | **Une donnée dérivée de l'horloge se lit dans sa vue** (D-53) : l'état d'une ressource, le statut commercial lu, la charge du jour | même vue que les gardes (V-168) |
@@ -38,8 +38,8 @@
 |---|---|
 | `titre` · `compte` | le titre de la liste, le **total** de lignes du périmètre après filtres |
 | `catalogue` | toutes les colonnes possibles : `{cle, libelle, triable, filtre: aucun · texte · ref(ref_x) · date · nombre}` |
-| `colonnes` | celles du compte (`ui.liste.colonnes`), dans son ordre ; défaut = §2 |
-| `lignes` | `{id, href, cellules: [{cle, libelle, sous?, pastille?}]}` — 50 au plus |
+| `colonnes` | celles du compte (`ui.liste.<liste>.colonnes`), dans son ordre ; défaut = §2 |
+| `lignes` | `{id, href, cellules: [{cle, libelle, sous?, pastille?, nature}], actions?}` — 50 au plus ; `nature` ∈ `texte` · `donnee` · `jours` (plan de charge) · `choix` (un menu, écran Politiques) · `matrice` (✓ D S —) ; `actions` d'une ligne : même format que les actions de page (D-80) |
 | `actions` | les actions de **page** (Créer…) : `{id = commande, libelle, permise, refus?}` |
 | `pagination` | `{page, pages, total}` |
 | `menu` · `session` · `theme` | comme aujourd'hui (`web/src/contrat.ts`) |
@@ -141,13 +141,40 @@ porte croisée des commandes juge les écritures.
 | Couverture | chaque commande servie est déclenchable depuis au moins un écran |
 | Lot servi | chaque onglet, colonne, widget rendu repose sur une route ou une commande servie (D-77) |
 | Libellé au référentiel | renommer un libellé change l'écran ; changer `ordre` ne change aucune règle (D-75) |
-| Captures | chaque écran dans les 7 thèmes, et Mes temps en téléphone ; un thème ne déplace rien et ne change aucun mot |
+| Captures | chaque écran sous **chaque thème servi** (les valeurs servies de `ui.theme`, lues au serveur — pas un nombre fixe), dans le groupe qui s'en sert (STAF, DP, RES, ADM), et Mes temps en téléphone ; un thème ne déplace rien et ne change aucun mot |
 
 ## 5 · Le lot 3 en commandes nouvelles
 
-**Aucune.** Le lot 3 n'ajoute **que des lectures** et des formulaires générés : toutes ses actions sont des
+**Une seule** : `SetOwnDashboardWidgets` (L4 §IX, lot 5.7 — écart Design 17). Pour le reste, le lot 3 n'ajoute **que des lectures** et des formulaires générés : toutes ses autres actions sont des
 commandes du lot 2 déjà servies et déjà gardées. Ce qui demande une commande nouvelle (export, actions sur une
 sélection, envoi de mail…) est au lot 5.8.
+
+## 6 · Réponses aux 18 écarts de la session Design (03/10)
+
+Source : `ava-design/_ops/maquettes/lot3/ECARTS_POUR_BRAIN.md`. Tous tranchés par le BRAIN.
+
+| # | Écart | Tranché |
+|---|---|---|
+| 1 | Trois composants ? | **D-79** : trois composants, plus des **natures de cellule** (`jours`, `choix`, `matrice`) et une vue **« page »** qui empile des blocs (liste · formulaire · répartition) — le tableau de bord, le plan de charge. Écrit au §1.1 |
+| 2 | Actions d'une ligne d'onglet | **D-80** : `ligne.actions`, même format que les actions de page. Écrit au §1.1 |
+| 3 | Sélection multiple (Validation des temps) | ⭐ permise : `ValidateTimesheet` et `RejectTimesheet` prennent **une liste** `temps_ids` (L4 §IV) — c'est leur contrat, pas une action de masse générique (celles-là restent au lot 5.8). ⚠️ Mesuré le 03/10 : la déclaration actuelle prend `prestation_id` + **un** `id` ; au lot 3, elle passe à `temps_ids` (liste, min 1), comme le contrat L4 le dit |
+| 4 | Plan de charge, vue jour | ✅ la proposition : une ligne par personne pour un jour — prestation, temps saisi, état, absence |
+| 5 | Une capture par groupe ? | oui : chaque écran dans le groupe qui s'en sert (§4, porte Captures) |
+| 6 | « D » non délégué | ✅ refusé `DROIT`, avec le motif du serveur : c'est la vérité |
+| 7 | Libellé du refus de couverture | ✅ le texte du serveur, mot pour mot (D-71) |
+| 8 | Pas de code `PERIMETRE` | ✅ `DROIT` partout ; une **fiche** hors périmètre → 404 (D-72) |
+| 9 | La déclaration n'a pas `obligatoire` | **D-81** : la déclaration porte `obligatoire`, `min`, `max`, `defaut` ; la porte « formulaire = déclaration » vérifie aussi qu'une clé obligatoire absente rend `GARDE` |
+| 10 | `derogation_motif`, `taux_change` non déclarés | ✅ **déclarés depuis** (mesuré le 03/10 dans `declaration.ts`) : Design a lu une version du 01/10 — les formulaires les montrent |
+| 11 | Qui décide la pastille ? | **D-82** : un référentiel `ref_pastille_categorie` (machine, catégorie → pastille), **administrable**, semé avec la proposition de Design ; le serveur rend la pastille, la page la peint |
+| 12 | Valeurs non servies « avec leur lot » | le lot s'affiche **quand il est connu** (au registre exécutable de son lot) ; sinon « non servie », sans lot. La maquette est juste |
+| 13 | `ui.liste.colonnes` | ✅ nom réel `ui.liste.<liste>.colonnes`. Corrigé au §0 et au §1.1 |
+| 14 | Les 7 thèmes | chaque **thème servi** (valeurs servies de `ui.theme`), pas un nombre fixe. Corrigé au §4 |
+| 15 | Sélection vide | ⛔ pas une règle de page : la déclaration dit `temps_ids` liste `min 1` (D-81) ; le formulaire le sait par la donnée, et la commande refuse `GARDE` si elle reçoit vide |
+| 16 | Commandes d'administration sans déclaration | ✅ **déclarées depuis** (`declaration.ts`, mesuré le 03/10) : les formulaires se génèrent comme les autres |
+| 17 | `SetOwnDashboardWidgets` hors des 57 | ✅ c'est une commande **du lot 3** (L4 §IX). Le §5 est corrigé : le lot 3 en ajoute **une** |
+| 18 | `/vues/besoins` rend le code brut | ✅ le canon fait foi (D-75) ; le serveur se corrige au lot 3 |
+
+⭐ Les écarts 10 et 16 venaient d'une lecture du 01/10 : le lot 2 les a fermés depuis. Aucun écart ne bloque le onzième audit.
 
 </etat>
 
