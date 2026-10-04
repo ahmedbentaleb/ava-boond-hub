@@ -165,6 +165,20 @@ session Design sans fixer le cadre. Corrigé par **D-90**.
 | 3 | `CreatePrestation` déclare ses alias comme des champs (21 pour 13 données) | ⛔ défaut du lot 2 (D-37 : un objet = un nom, plus de synonymes) : un champ par donnée ; le formulaire en a 13 |
 | 4 | `ManageRefs` : la catégorie n'a pas de liste de valeurs | la déclaration donne, pour chaque `ref_*`, ses **catégories fermées** comme domaine du champ `categorie` |
 
+### Les 4 écarts du 04/10 — D-90 contre D-77
+
+⭐ **D-91 — le cadre est une forme, pas un contenu.** D-90 fixe la **forme** du Style Ava : où sont le bandeau,
+le nom et l'agence, le menu, le rail, et à quoi ils ressemblent. Leur **contenu** (entrées du menu, outils du rail,
+thèmes proposés) vient du serveur et obéit à D-77 et à la règle 2 du registre. Quand les deux semblent se
+contredire, **la forme vient du Style Ava, le contenu de ce qui est servi**.
+
+| # | Écart | Tranché |
+|---|---|---|
+| 1 | Le menu montre Profils types, Produits, Achats (hors lot) | ⛔ retirés (D-77) : le menu est rendu par le serveur et ne contient que des écrans servis. Le badge « hors lot » du Style Ava était une démonstration, pas un écran |
+| 2 | Le rail propose 29 thèmes et 2 styles, `ui.theme` n'en sert qu'un | le rail garde son réglage de thème, mais ne propose **que les valeurs servies** (aujourd'hui : Avaliance seul) ; les autres arrivent avec le registre du lot 3 |
+| 3 | « Voir l'écran comme » ne propose pas l'Administrateur | c'est un outil de la maquette, pas du produit : ajoute ADM, pour les 7 écrans d'administration |
+| 4 | Le menu Reporting répète 4 écrans sans lecture servie | ⛔ retiré (D-77) : aucun reporting n'est servi au lot 3 |
+
 ## 6 · Réponses aux 18 écarts de la session Design (03/10)
 
 Source : `ava-design/_ops/maquettes/lot3/ECARTS_POUR_BRAIN.md`. Tous tranchés par le BRAIN.
