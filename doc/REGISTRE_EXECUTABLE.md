@@ -222,13 +222,17 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 | clé | valeur | commande | scénario | issue |
 |---|---|---|---|---|
 | `besoin.unite_couverture` | postes | CreateNeed | S-UC1 | ok · besoin[N].unite_couverture_code = postes |
-| `besoin.unite_couverture` | fte | CreateNeed | S-UC1 | ok · besoin[N].unite_couverture_code = fte |
-| `besoin.unite_couverture` | postes_et_fte | CreateNeed | S-UC1 | ok · besoin[N].unite_couverture_code = postes_et_fte |
+| `besoin.unite_couverture` | fte | CreateNeed | S-UC1 | refus GARDE |
+| `besoin.unite_couverture` | postes_et_fte | CreateNeed | S-UC1 | refus GARDE |
+| `besoin.unite_couverture` | postes | CreateNeed | S-UC2 | refus GARDE |
+| `besoin.unite_couverture` | fte | CreateNeed | S-UC2 | ok · besoin[N].unite_couverture_code = fte · besoin[N].fte_vise = 1.0 |
+| `besoin.unite_couverture` | postes_et_fte | CreateNeed | S-UC2 | ok · besoin[N].unite_couverture_code = postes_et_fte · besoin[N].fte_vise = 1.0 |
 | `besoin.contact` | facultatif | CreateNeed | S-BC1 | ok · besoin[N].contact_id = NULL |
 | `besoin.contact` | obligatoire | CreateNeed | S-BC1 | refus GARDE |
 | `besoin.contact` | obligatoire | CreateNeed | S-BC2 | ok · besoin[N].contact_id = C1 |
 
-- **S-UC1** — société A (PAR) ; `CreateNeed` N avec contact C1, 1 poste, fte visé 1.0, **sans** unité de couverture.
+- **S-UC1** — société A (PAR) ; `CreateNeed` N avec contact C1, 1 poste, **sans** fte visé, **sans** unité de couverture.
+- **S-UC2** — idem, avec **fte visé 1.0**. ⭐ D-93 : la base exige un fte visé sous `fte` et `postes_et_fte`, et l'interdit sous `postes` (`besoin_couverture`) ; la commande le refuse **avant** la base (`GARDE`, jamais `MUR`, V-169).
 - **S-BC1** — `CreateNeed` N sur A, sans contact. **S-BC2** — `CreateNeed` N sur A, contact C1.
 
 | clé | valeur | commande | scénario | issue |
@@ -258,7 +262,7 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 - **S-PG1** — besoin B1 (PAR) `en_recherche`, unité `postes`, **2** postes visés, **sans** fte ; **1** prestation `engage` rattachée.
 - **S-PG2** — B1 comme S-PG1, **aucune** prestation `engage`.
 - **S-PG3** — B1 unité `postes`, 1 poste visé, **sans** fte ; 1 prestation `engage` à 50 % : couverture atteinte (1/1 poste).
-- **S-PG4** — B1 unité **`fte`**, fte visé 1.0, sans nombre de postes ; 1 prestation `engage` à 50 % : non atteinte (0,5/1,0).
+- **S-PG4** — B1 unité **`fte`**, fte visé 1.0, 1 poste visé (la colonne est obligatoire, D-93) ; 1 prestation `engage` à 50 % : non atteinte (0,5/1,0).
 
 | clé | valeur | commande | scénario | issue |
 |---|---|---|---|---|
