@@ -133,7 +133,6 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-122 | B CONTRAT | SetPolicy chemin nominal, base relue. | `test/contrat/chemin.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-123 | B CONTRAT | ManageRefs chemin nominal, base relue. | `test/contrat/chemin.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-124 | B CONTRAT | ManageGroups chemin nominal, base relue. | `test/contrat/chemin.test.ts` | 2026-09-21 | ✅ | 2 | — |
-| P-125 | B CONTRAT | SetOwnTheme chemin nominal, base relue. | `test/contrat/chemin.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-126 | B CONTRAT | O-2 CreatePrestation en signée par STAF → DROIT. | `test/contrat/chemin.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-127 | B CONTRAT | Matrice : sans le groupe → DROIT, rien d'écrit. | `test/contrat/matrice.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-128 | B CONTRAT | Matrice : IA hors périmètre CAS → DROIT. | `test/contrat/matrice.test.ts` | 2026-09-21 | ✅ | 2 | — |
@@ -141,7 +140,6 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-130 | B CONTRAT | Politique doublon.societe.mode : deux valeurs, deux résultats. | `test/contrat/politiques.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-131 | B CONTRAT | Politique ui.theme.choix_utilisateur : deux valeurs, deux résultats. | `test/contrat/politiques.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-132 | B CONTRAT | Politique besoin.contact : deux valeurs, deux résultats. | `test/contrat/politiques.test.ts` | 2026-09-21 | ✅ | 2 | — |
-| P-133 | B CONTRAT | temps.plafond_jour : 1,5 j sous alerte écrit, sous refus GARDE. | `test/contrat/politiques.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-134 | B CONTRAT | Politique candidat.note.echelle : 1_5 / 1_10 / hors échelle. | `test/contrat/politiques.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-135 | B CONTRAT | ExitCandidate sans code sorti actif → GARDE, ref inchangé. | `test/contrat/correctifs.test.ts` | 2026-09-21 | ✅ | 2 | — |
 | P-136 | B CONTRAT | Démarrage en postgres superutilisateur → le serveur s'arrête. | `test/contrat/correctifs.test.ts` | 2026-09-21 | ✅ | 2 | — |
@@ -235,14 +233,12 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-224 | B CONTRAT | societe.passage_client.propagation : société seule ou tous les contacts. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-225 | B CONTRAT | besoin.pourvu.mode : manuel ou auto. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-226 | B CONTRAT | projet.devises_mixtes : autorise ou refus. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
-| P-227 | B CONTRAT | prestation.surcharge.seuil_pct : deux seuils, deux alertes. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-228 | B CONTRAT | prestation.surcharge.mode : chaque ligne du registre exécutable tient (réécrite depuis le registre, D-56 — réglait un seuil hors bornes, D-67). | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-229 | B CONTRAT | frais.mode : ignorés ou imputés. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-230 | B CONTRAT | change.mode : chaque ligne du registre exécutable tient (réécrite depuis le registre, D-56 — exigeait l'inverse, V-164). | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-231 | B CONTRAT | marge.taux.si_ca_nul : nul ou zéro. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-232 | B CONTRAT | prestation.annulation.garde : temps saisi garde, libre annule. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-233 | B CONTRAT | temps.periode : chaque ligne du registre exécutable tient (réécrite depuis le registre, D-56 — exigeait l'inverse, V-164). | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
-| P-234 | B CONTRAT | capacite.jour_ouvre : alerte ou non. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-235 | B CONTRAT | temps.facturable.mode : saisie séparée ou égal au produit. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-236 | B CONTRAT | temps.validation : aucune écrit, par DP garde. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-237 | B CONTRAT | temps.correction_apres_cloture : refus ou ajustement. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
@@ -253,11 +249,8 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-242 | B CONTRAT | societe.archivage.garde : objets actifs ou libre. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-243 | B CONTRAT | service.archivage.garde : besoin lié ou libre. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-244 | B CONTRAT | doublon.contact.mode : bloquer ou ignorer. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
-| P-245 | B CONTRAT | doublon.contact.cles : email ou nom. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-246 | B CONTRAT | contact.transfert.objets_actifs : réaffectation ou conserver. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-247 | B CONTRAT | doublon.personne.mode : bloquer ou ignorer. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
-| P-248 | B CONTRAT | doublon.personne.cles : email ou naissance. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
-| P-249 | B CONTRAT | candidat.complete.champs_requis : deux listes, deux résultats. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-250 | B CONTRAT | ressource.externe.societe_fournisseur : obligatoire ou facultatif. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-251 | B CONTRAT | ressource.etat.mode : manuel ou dérivé. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-252 | B CONTRAT | qualification.besoin_obligatoire : oui ou non. | `test/contrat/v011-politiques.ts` | 2026-09-22 | ✅ | 2 | base relue |
@@ -266,12 +259,10 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-256 | B CONTRAT | SignPrestation et RecordClientDecision portent les politiques lues. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-257 | B CONTRAT | Un groupe inconnu est tracé, sans uuid vide. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-258 | B CONTRAT | SetPolicy refuse une liste qui n'est pas du JSON. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
-| P-259 | B CONTRAT | SetOwnTheme refuse une clé hors ui connu. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-260 | B CONTRAT | Une entrée mal typée est GARDE, pas un HTTP 500. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-261 | B CONTRAT | ArchiveObject rend l'id de l'objet. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-262 | B CONTRAT | ArchiveObject sur un projet engagé est GARDE. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-263 | B CONTRAT | DATABASE_URL manquant lève ; aucun port fixe ni base ava en dur. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | — |
-| P-264 | B CONTRAT | nom+prenom+naissance bloque un doublon, un autre jour passe. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-265 | B CONTRAT | Les statuts commerciaux se lisent dans le référentiel. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-266 | B CONTRAT | L'écran lit les besoins en base, plus le bouchon. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
 | P-267 | B CONTRAT | Un compte RES déjà lié retrouve son profil ressource. | `test/contrat/correctifs.test.ts` | 2026-09-22 | ✅ | 2 | base relue |
@@ -293,7 +284,6 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-283 | B CONTRAT | ArchiveCompany, ArchiveContact, ArchiveService, UpdateResourceCost réussissent, base relue. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
 | P-284 | B CONTRAT | ManageGroups : un périmètre non uuid est INTROUVABLE. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
 | P-285 | B CONTRAT | L'en-tête est l'e-mail du compte, l'événement porte cet auteur. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
-| P-286 | B CONTRAT | Doublon contact nom+prenom+societe, et la propagation écrit le statut. | `test/contrat/audit3.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
 | P-287 | B CONTRAT | Agence de l'objet lue : un compte d'une autre agence est DROIT, rien n'est écrit. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
 | P-288 | B CONTRAT | Agence nulle d'un candidat : un compte d'une autre agence est DROIT, rien n'est écrit. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | base relue |
 | P-289 | B CONTRAT | Objet introuvable à la résolution d'agence → INTROUVABLE. | `test/contrat/audit4.test.ts` | 2026-09-23 | ✅ | 2 | — |
@@ -355,11 +345,16 @@ Colonnes **État** et **Lot cible** : parade ⏳ (`_ops/PORTES_EN_ATTENTE.md`), 
 | P-350 | B CONTRAT | Chaque valeur servie d'une politique lue a une branche (D-42). | `test/contrat/politiques.test.ts` | 2026-09-30 | ✅ | 2 | source |
 | P-351 | B CONTRAT | pol() enregistre la commande et la clé pendant le banc (D-42). | `test/contrat/politiques.test.ts` | 2026-09-30 | ✅ | 2 | carte |
 | P-353 | B CONTRAT | Au seed, tout groupe qui a la mère d'une cascade (`CASCADES`) a ses filles, sur le même périmètre ; la mère qui exige un autre droit pour cascader (`aLeDroit`) n'oblige que ses titulaires complets (D-48). | `test/contrat/cascades_seed.test.ts` | 2026-09-30 | ✅ | 2 | seed relu |
-| P-354 | B CONTRAT | D-50 à D-55 : chaque valeur servie le 01/10 change le comportement que le registre décrit. | `test/contrat/decisions_0110.test.ts` | 2026-10-01 | ✅ | 2 | une valeur, un effet |
-| P-355 | B CONTRAT | Chaque ligne du registre exécutable (`_ops/REGISTRE_EXECUTABLE.md`), son scénario écrit en fixture et joué, rend l'issue que le registre écrit (D-56, V-162, V-164). | `test/contrat/registre_differentiel.test.ts` | 2026-10-01 | ✅ | 2 | issue du registre |
+| P-355 | B CONTRAT | Chaque ligne du registre exécutable v2, jouée par le chemin de l'utilisateur (SetPolicy en HTTP, chaque clé seule, lignes « * » développées), rend l'issue que le registre écrit (D-56 v2, D-84). | `test/contrat/registre_differentiel.test.ts` | 2026-10-01 | ✅ | 2 | issue du registre |
 | P-356 | B CONTRAT | Deux valeurs d'une clé ne font jamais la même chose sur tous ses scénarios, hors alias du §3 — au registre et à l'observé (règle 3). | `test/contrat/registre_differentiel.test.ts` | 2026-10-01 | ✅ | 2 | différentiel |
-| P-357 | B CONTRAT | Un élément hors domaine, un nombre hors bornes → SetPolicy refus GARDE (règles 4, 5). | `test/contrat/registre_differentiel.test.ts` | 2026-10-01 | ✅ | 2 | GARDE |
+| P-357 | B CONTRAT | Listes : seules les listes écrites (D-85) ; plages : min, max et défaut admis, hors plage et forme non canonique refusés (D-86). | `test/contrat/registre_differentiel.test.ts` | 2026-10-01 | ✅ | 2 | GARDE |
 | P-358 | B CONTRAT | Une clé absente du registre exécutable n'a que son défaut servi : SetPolicy refuse toute autre valeur (règle 2). | `test/contrat/registre_differentiel.test.ts` | 2026-10-01 | ✅ | 2 | GARDE |
-| P-359 | B CONTRAT | Réordonner les statuts commerciaux (ManageRefs) ne fait tomber aucune signature : le métier lit la catégorie, jamais `ordre` (D-57, V-163). | `test/contrat/ordre_affichage.test.ts` | 2026-10-01 | ⏳ | 2 | catégorie |
-| P-360 | B CONTRAT | Un nom hérité d'`Object.prototype` (lu sur lui-même) n'est jamais une commande : INTROUVABLE, jamais 500 (V-170). | `test/contrat/routes.test.ts` | 2026-10-01 | ⏳ | 2 | INTROUVABLE |
-| P-361 | B CONTRAT | Les routes enregistrées par le serveur sont exactement `LECTURES`, la santé et les commandes (V-170). | `test/contrat/routes.test.ts` | 2026-10-01 | ⏳ | 2 | égalité stricte |
+| P-359 | B CONTRAT | Réordonner les statuts commerciaux (ManageRefs) ne fait tomber aucune signature : le métier lit la catégorie, jamais `ordre` (D-57, V-163). | `test/contrat/ordre_affichage.test.ts` | 2026-10-01 | ✅ | 2 | catégorie |
+| P-360 | B CONTRAT | Un nom hérité d'`Object.prototype` (lu sur lui-même) n'est jamais une commande : INTROUVABLE, jamais 500 (V-170). | `test/contrat/routes.test.ts` | 2026-10-01 | ✅ | 2 | INTROUVABLE |
+| P-361 | B CONTRAT | Les routes enregistrées par le serveur sont exactement `LECTURES`, la santé et les commandes (V-170). | `test/contrat/routes.test.ts` | 2026-10-01 | ✅ | 2 | égalité stricte |
+| P-362 | B CONTRAT | Chaque ligne de `CASCADES` (exportée par le serveur) : la mère sans le droit de la fille — même agence, délégation de la fille sur une autre agence seule, surcharge — est refusée DROIT et n'écrit rien ; avec les deux, elle passe (D-43, D-84, V-179). | `test/contrat/registre_differentiel.test.ts` | 2026-10-04 | ⏳ | 2 | DROIT |
+| P-363 | B CONTRAT | Le défaut de chacune des politiques se pose par SetPolicy (V-181). | `test/contrat/registre_differentiel.test.ts` | 2026-10-04 | ✅ | 2 | égalité stricte |
+| P-364 | B CONTRAT | Porte AST sur `server/src` : aucun `ORDER BY ordre`, aucune colonne `*_code` comparée à un littéral ou à un code choisi par `code…()`, aucun `x.commande ===` ni ensemble de noms de commandes hors de la déclaration, aucun littéral de code dans un SQL ; seule exception mesurée : `perimetre.type_code` contre son CHECK (D-57, D-89, V-180, V-194). | `test/contrat/porte_ast.test.ts` | 2026-10-04 | ⏳ | 2 | 0 site |
+| P-365 | B CONTRAT | Passe d'ordre : chaque positif rejoué (i) `ordre` inversé dans chaque ref_*, (ii) un second code actif d'ordre 0 dans chaque catégorie — même issue, mêmes événements, mêmes codes écrits (D-57, D-89, V-180). | `test/contrat/ordre_passe.test.ts` | 2026-10-04 | ⏳ | 2 | égalité stricte |
+| P-366 | B CONTRAT | Une seule horloge : sous un jour de banc éloigné du vrai, chaque date « du jour » qu'écrit une commande est le jour de la base, jamais Node, `CURRENT_DATE` ni `now()` (V-167, V-193). | `test/contrat/horloge.test.ts` | 2026-10-04 | ⏳ | 2 | égalité stricte |
+| P-367 | B CONTRAT | Chaque transition d'état observée (positifs, et variantes d'une entrée qui choisit l'état) est écrite par la commande que MACHINES_ETAT_V1 §7 ter nomme, sous sa politique ; une naissance non écrite au tableau est refusée (D-87, V-166). | `test/contrat/transitions.test.ts` | 2026-10-04 | ⏳ | 2 | 0 écriture hors tableau |

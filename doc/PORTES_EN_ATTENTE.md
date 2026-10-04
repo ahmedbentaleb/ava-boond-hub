@@ -168,6 +168,8 @@ tombe était ✅ ou ⏳, et la case redevient du tout-ou-rien.
 | P-357 | 01/10, `lot-2-brain` | 01/10 : 8 / 8 acceptés (4 domaines, 2 bornes × 2) | `SetPolicy` ne lit pas domaines ni bornes (CODE ; base : 023) | 8 refus GARDE |
 | P-358 | 01/10, `lot-2-brain` | 01/10 : **140 / 141** clés hors registre réglables au-delà du défaut ; après 023 : 0 acceptée, mais 141 refusées en `ERREUR` (la base refuse, le serveur ne traduit pas — V-169) | règle 2 au serveur (CODE) | 0 acceptée, 0 hors GARDE |
 | P-359 | 01/10, `lot-2-brain` | 01/10 : SignPrestation → GARDE « aucun statut commercial actif d'ordre 1 » après réordonnancement (V-163) | le serveur lit `ordre` (CODE) ; la base a ses catégories depuis 023 | signature ok, société de catégorie client |
+| P-362 | 04/10, `lot-2-brain` | 04/10 : RecordClientDecision → CreateProjectFromNeed passe sans la fille, dans les 3 variantes (V-179) | `executerDans` saute la garde de la fille (CODE) | 0 écart sur les 10 cascades × 4 acteurs |
+| P-363 | 04/10, `lot-2-brain` | 04/10 : 177 / 203 — 26 défauts refusés par SetPolicy (listes non JSON, valeurs_possibles) | 026 (BRAIN CODE) et SetPolicy sur `politique_admise` (CODE) | 203 / 203 |
 
 ### Portes réécrites depuis le registre — « contredisait le registre » (V-164){nl}{nl}| Porte | Exigeait | Réécrite au commit | Maintenant | Décision |
 |---|---|---|---|---|
@@ -185,6 +187,15 @@ tombe était ✅ ou ⏳, et la case redevient du tout-ou-rien.
 |---|---|---|---|---|
 | P-352 | 29/09, `lot-2-brain` | 29/09 : « COMPORTEMENTS absent de server/src » | le serveur n'exporte pas encore sa table de dispatch (D-42, côté CODE) | `COMPORTEMENTS` = `politique_valeur_servie`, paire pour paire |
 
+
+## ⏳ P-364 → P-367 — le banc du 13e tour (V-180, V-193, V-166 · 04/10)
+
+| Porte | Posée | Vue rouge | Pourquoi ⏳ | Passe ✅ quand |
+|---|---|---|---|---|
+| P-364 | 04/10, `lot-2-brain` | 04/10 : **25 sites** — 5 `ORDER BY ordre` (cycle.ts ×2, projet.ts ×2, crm.ts), 4 codes comparés à un code choisi (projet.ts:29, :53, :304, :731), `ctx.commande ===` ×2 (agence.ts), `sauve.commande ===` (executer.ts), `SOI_MEME` (kernel.ts), 7 littéraux de code en SQL, 2 `?? "postes"`, l'aide de banc d'index.ts | le serveur lit `ordre`, des codes et des noms de commandes (CODE, V-180) | 0 site |
+| P-365 | 04/10, `lot-2-brain` | 04/10 : ordre inversé → 0 écart ; second code d'ordre 0 → **27 commandes** écrivent le code d'ordre 0 (`codeCategorie`), ValidateTimesheet et RejectTimesheet refusent ETAT | le défaut se lit par `ordre`, pas par `par_defaut` (CODE, D-89) | 0 écart sur les deux passes |
+| P-366 | 04/10, `lot-2-brain` | 04/10 : jour du banc 2031-03-17 → ArchiveContact, ArchiveObject (`now()`), RecordQualification, CancelPrestation (`CURRENT_DATE`) écrivent 2026-10-04 | deux horloges (CODE, V-167) | les 8 commandes écrivent le jour de la base |
+| P-367 | 04/10, `lot-2-brain` | 04/10 : `CreatePrestation {etat: signee}` (acteur qui a aussi SignPrestation) fait naître une prestation `engage` | une transition hors de sa commande (CODE, V-166) | 0 écriture hors du tableau §7 ter |
 
 ## ✅ P-339 — la porte croisée (D-36, 25/09) — LEVÉE le 30/09
 
@@ -215,6 +226,17 @@ et vérifie que le numéro gardé est bien ✅ dans HEAD. Une porte retirée san
 
 | Porte retirée | Retirée au commit | Doublon de (gardée ✅) | Motif | Décision |
 |---|---|---|---|---|
+| P-133 | B2 du 13e tour (04/10) | P-355 | contredisait le registre — temps.plafond_jour : la porte différentielle P-355 la joue depuis le registre v2 | D-84, V-192 |
+| P-227 | B2 du 13e tour (04/10) | P-355 | contredisait le registre — prestation.surcharge.seuil_pct : la porte différentielle P-355 la joue depuis le registre v2 | D-84, V-192 |
+| P-234 | B2 du 13e tour (04/10) | P-355 | contredisait le registre — capacite.jour_ouvre : la porte différentielle P-355 la joue depuis le registre v2 | D-84, V-192 |
+| P-245 | B2 du 13e tour (04/10) | P-355 | contredisait le registre — doublon.contact.cles : la porte différentielle P-355 la joue depuis le registre v2 | D-84, V-192 |
+| P-248 | B2 du 13e tour (04/10) | P-355 | contredisait le registre — doublon.personne.cles : la porte différentielle P-355 la joue depuis le registre v2 | D-84, V-192 |
+| P-249 | B2 du 13e tour (04/10) | P-355 | contredisait le registre — candidat.complete.champs_requis : la porte différentielle P-355 la joue depuis le registre v2 | D-84, V-192 |
+| P-264 | B2 du 13e tour (04/10) | P-355 | contredisait le registre — doublon.personne.cles : la porte différentielle P-355 la joue depuis le registre v2 | D-84, V-192 |
+| P-286 | B2 du 13e tour (04/10) | P-355 | contredisait le registre — doublon.contact.cles et propagation : la porte différentielle P-355 la joue depuis le registre v2 | D-84, V-192 |
+| P-354 | B2 du 13e tour (04/10) | P-355 | contredisait le registre — les valeurs de D-50 → D-55 : la porte différentielle P-355 la joue depuis le registre v2 | D-84, V-192 |
+| P-125 | B2 du 13e tour (04/10) | P-355 | contredisait le registre — SetOwnTheme (S-UT1) : la porte différentielle P-355 la joue depuis le registre v2 | D-84, V-192 |
+| P-259 | B2 du 13e tour (04/10) | P-355 | contredisait le registre — SetOwnTheme (S-UT2) : la porte différentielle P-355 la joue depuis le registre v2 | D-84, V-192 |
 | P-333 | `5aefe26` (25/09) | P-326 | recopiée mot pour mot, un test portait les deux numéros | V-141, D-41 |
 | P-334 | `5aefe26` (25/09) | P-327 | idem | V-141, D-41 |
 | P-335 | `5aefe26` (25/09) | P-328 | idem | V-141, D-41 |

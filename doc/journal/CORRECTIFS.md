@@ -417,3 +417,12 @@ Prêt pour le onzième audit.
 Mesure du 03/10 après fusion `6554250` : `make test` OK. Cliquet : 22 OK, 0 KO. Case 22 verte. Le juge n'a pas été modifié à la main.
 
 Prêt pour le onzième audit.
+
+## 13e tour — BRAIN CODE (04/10) · D-83
+
+| V- | Point | Porte | ROUGE avant | VERTE après | Commit |
+|---|---|---|---|---|---|
+| V-188 | une porte verte et ⏳ → KO ; P-359 → P-361 ✅ | case 26 | `KO` — lot-2 @777a565 : « vertes au banc, ⏳ au tableau : P-359 P-360 P-361 » | `OK` — P-359 → P-361 ✅, aucune verte laissée ⏳ | `95ac9c3` |
+| V-189 | case 22 dans un clone neuf, et la CI | case 22 | `KO` — clone `--single-branch -b lot-2` : « la branche lot-2-brain est introuvable » | `OK` — origin/lot-2-brain récupérée, 17 fichiers du juge, 0 commit hors ligne | `95ac9c3` |
+| V-191 | le registre v2 lu et vérifié contre la base | case 23 | `KO` — une colonne inventée (`societe.siren_inventee`) nommée | `OK` — 58 clés, 251 lignes, 115 scénarios | `82f68d2` |
+| V-192 | portes qui contredisent le registre retirées (D-41) ; politiques posées par SetPolicy | case 24 | `KO` — « porte_croisee.test.mjs:312, 473, 482, 493, 494 » (UPDATE politique) | `OK` — 0 écriture SQL de politique ; 11 portes au tableau D-41 | `968a2e5` `9d83c02` |
