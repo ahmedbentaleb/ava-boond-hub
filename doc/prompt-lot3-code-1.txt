@@ -1,0 +1,103 @@
+AVA MANAGER — SESSION « CODE LOT 3 » — LES ÉCRANS, PREMIER TOUR
+================================================================
+05/10/2026. Tu es le codeur du lot 3 : les 28 écrans. Le mot d'Ahmed est donné
+pour coder dans TON poste, sur TA branche. Lis tout avant d'écrire une ligne.
+
+Tu travailles EN PARALLÈLE du lot 2, qui n'est pas encore accepté : un autre
+codeur (Grok, session « Code lot 2 ») le finit sur la branche `lot-2`. Tu ne
+dois jamais le gêner.
+
+
+0. TON POSTE — À OUVRIR EN PREMIER
+──────────────────────────────────
+  cd "/c/Users/Hamada/Desktop/Ava Manager"
+  git worktree add -b lot-3 "postes/ava-lot3" lot-2
+  cd "postes/ava-lot3"
+  git config core.hooksPath .githooks
+  (cd server && npm install) ; (cd web && npm install) ; (cd test && npm install)
+Ta base : AVA_DB=ava_lot3 ; ton port : AVA_PORT=3300.
+  ⛔ JAMAIS la base « ava », ni le port 3000 (Grok), ni 3200 (Brain Code) :
+     make.sh tue ce qui écoute sur son port.
+  bash outils/make.sh reset puis bash outils/make.sh test : vert avant de commencer.
+Le dossier `postes/` est exclu de git : rien à commiter dedans hors de ta branche.
+
+Chaque commit porte « Role: ecran » (web/), « Role: serveur » (routes de
+lecture), « Role: banc » (test/). ⛔ Jamais « Role: brain ».
+
+
+1. CE QUE TU LIS
+────────────────
+⭐ _ops/CANON_LOT3_ECRANS.md — EN ENTIER. C'est ta spécification :
+   §0 les règles D-68 → D-77 et D-90, D-91 (le cadre du Style Ava)
+   §1 les trois contrats (vue liste, vue fiche, formulaire de commande)
+   §2 les 28 écrans : route, permission de lecture, colonnes, onglets,
+      commandes
+   §3 ce que le serveur doit ajouter · §5 une seule commande nouvelle
+   §6 et §6 bis les réponses aux écarts de Design (D-79 → D-82)
+⭐ Les maquettes validées (la forme à reproduire) :
+   C:\Users\Hamada\Desktop\ava-design\_ops\maquettes\ecrans-lot3.html
+   et son cadre : ava-design\_ops\maquettes\lot3\rendu-cadre.js, cadre.css,
+   style-ava.css. Tu reprends le cadre, tu ne le redessines pas.
+Le contrat existant : web/src/contrat.ts, server/src/vues.ts, server/src/lectures.ts.
+La déclaration des commandes (d'où les formulaires se GÉNÈRENT) :
+   server/src/declaration.ts.
+
+
+2. LES RÈGLES DE CONSTRUCTION — DÈS LA PREMIÈRE LIGNE
+─────────────────────────────────────────────────────
+  - D-68 : la page PEINT ce que le serveur envoie. ⛔ Aucun mot métier,
+    aucune règle, aucun libellé d'état dans web/ : tout vient de la réponse.
+  - D-69 : TROIS composants génériques (liste, fiche, formulaire) + la
+    « page » qui empile des blocs (D-79). Pas un écran écrit à la main.
+  - D-70 : le formulaire se génère de DECLARATION (champs, types,
+    obligatoire, min, max, défaut — D-81) ; un champ référence est un
+    sélecteur nourri par la route de lecture de sa table, filtrée par le
+    périmètre.
+  - D-71 : chaque action porte `permise` et, sinon, le refus EXACT que la
+    commande rendrait (calculé par la même garde, pas recopié).
+  - D-72 : chaque route de lecture exige SA permission (Lire*, D-46) ; une
+    fiche hors périmètre → 404.
+  - D-74 : recherche, filtres, tri, pagination au SERVEUR ; 50 lignes.
+  - D-75 : un état = son libellé (référentiel) + sa pastille (catégorie,
+    D-82) — jamais son code, jamais `ordre`.
+  - D-77 / D-91 : rien de ce qui n'est pas servi n'apparaît.
+
+
+3. CE QUE TU NE TOUCHES PAS — LE TERRITOIRE DU LOT 2
+────────────────────────────────────────────────────
+  ⛔ server/src/commandes/, agence.ts, droits.ts, executer.ts, declaration.ts,
+     comportements.ts, politiques.ts, kernel.ts : c'est le lot 2 (Grok). Si
+     tu as besoin qu'ils changent → journal/QUESTIONS.md, le BRAIN tranche.
+  ⛔ db/migrations/ : aucune migration de ta main (D-40). Une table, une
+     colonne, une permission (ref_pastille_categorie D-82, LireBesoins…,
+     SetOwnDashboardWidgets) → QUESTIONS.md, le BRAIN CODE l'écrit.
+  ⛔ les fichiers du juge (_ops/, outils/cliquet.sh, les portes générées) :
+     D-78, case 22.
+  ⭐ Ton code serveur va dans des fichiers NEUFS : server/src/lecture/*.ts
+     (une vue par fichier, un moteur commun de liste et de fiche), branchés
+     par UNE ligne dans index.ts. Ton code web dans web/src/.
+  ⭐ Tu fusionnes `lot-2` dans `lot-3` à chaque fois qu'Ahmed te le dit
+     (« git merge lot-2 ») ; jamais l'inverse, jamais sur main.
+
+
+4. L'ORDRE DU PREMIER TOUR
+──────────────────────────
+  1. Le CADRE du Style Ava dans web/ (bandeau, nom et agence dessous, menu
+     groupé rendu par le serveur, rail de droite) — vide mais juste.
+  2. Le MOTEUR de vue liste au serveur (contrat 1.1 : catalogue, colonnes
+     du compte, filtres, tri, pagination, actions par ligne) et le
+     composant liste ; la liste des Besoins d'abord (écran 5), puis les 7
+     autres listes.
+  3. Le MOTEUR de fiche (contrat 1.2) ; la fiche Besoin (13), puis Projet
+     (14).
+  4. Le FORMULAIRE généré (contrat 1.3) pour toutes les commandes servies.
+  Puis le transverse, puis l'administration, dans l'ordre du §2.
+  Chaque écran : une capture comparée à la maquette ecrans-lot3.html.
+
+
+5. CE QUE TU RENDS À CHAQUE ÉTAPE
+─────────────────────────────────
+Une ligne dans journal/ETAPES.md (étape · écrans livrés · commit) ; tes
+questions dans journal/QUESTIONS.md ; base refaite et make test vert sur TA
+branche. À la fin de l'étape 4 : « lot 3, étape 4 livrée » et la liste des
+écrans faits. ⛔ Pas de push, pas de fusion sur main.
