@@ -1,13 +1,28 @@
-AVA MANAGER — SESSION BRAIN CODE, QUATORZIÈME TOUR — LE JEU DE DÉMONSTRATION
-===========================================================================
-05/10/2026. Le mot d'Ahmed est donné. Un seul chantier.
+AVA MANAGER — SESSION « DÉMO » — LE JEU DE DÉMONSTRATION, PREMIER TOUR
+====================================================================
+05/10/2026. Tu es la session de test et de démonstration. Hamada : « on laisse
+Brain Code au lot 2, il faut une session à part ». Le mot d'Ahmed est donné pour
+coder dans TON poste, sur TA branche. Un seul chantier.
 
 À lire : _ops/JEU_DEMO.md (en entier : les 6 règles, les deux tailles, ce que
 la démo contient, les 6 histoires).
 
-Ton poste : ava-brain, branche lot-2-brain (fusionne lot-2 d'abord).
-Ta base de démonstration : AVA_DB=ava_demo, AVA_PORT=3200 (jamais 3000).
-« Role: brain » ; « Role: banc » pour test/.
+TON POSTE — À OUVRIR EN PREMIER
+  cd "/c/Users/Hamada/Desktop/Ava Manager"
+  git worktree add -b demo "postes/ava-demo" lot-2
+  cd "postes/ava-demo"
+  git config core.hooksPath .githooks
+  (cd server && npm install) ; (cd test && npm install)
+Ta base : AVA_DB=ava_demo ; ton port : AVA_PORT=3400.
+  ⛔ jamais la base « ava », ni les ports 3000 (Grok), 3200 (Brain Code),
+     3300 (lot 3) : make.sh tue ce qui écoute sur son port.
+Chaque commit porte « Role: banc ». ⛔ Jamais « Role: brain ».
+Tu fusionnes `lot-2` dans `demo` quand Ahmed te le dit ; jamais l'inverse.
+
+⛔ TU NE TOUCHES PAS : server/, web/, db/migrations/, les fichiers du juge
+(_ops/, outils/cliquet.sh, les portes générées). Ton code va dans outils/demo/
+et ta porte dans test/demo/ ; une ligne d'appel dans outils/make.sh (« demo »).
+Une commande qui manque ou qui refuse à tort → journal/QUESTIONS.md.
 
 
 D1  LE SCRIPT outils/demo/
@@ -33,9 +48,9 @@ D3  LA PORTE (Role: banc)
     Témoin : retirer une histoire du script → la porte rougit.
 
 Ce que tu ne fais jamais : server/ web/ ; une migration de démonstration
-(la démo n'est PAS une migration) ; toucher « ava », le port 3000 ; fusionner
-sur main, pousser.
+(la démo n'est PAS une migration) ; toucher « ava » ; fusionner sur main,
+pousser.
 
-Tu rends : une ligne dans _ops/JOURNAL_BUGS.md, le temps que prend
+Tu rends : une ligne dans journal/ETAPES.md, le temps que prend
 `make.sh demo` et `make.sh demo --pleine`, et les commandes qui ont refusé
 (s'il y en a : ce sont des défauts du lot 2 à signaler, pas à contourner).

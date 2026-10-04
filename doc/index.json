@@ -434,13 +434,6 @@
   "ko": 5
  },
  {
-  "chemin": "prompt-brain-code-14.txt",
-  "titre": "prompt-brain-code-14.txt",
-  "categorie": "Prompts et briefs",
-  "date": "04/10/2026",
-  "ko": 2
- },
- {
   "chemin": "prompt-brain-code-2.txt",
   "titre": "prompt-brain-code-2.txt",
   "categorie": "Prompts et briefs",
@@ -516,6 +509,13 @@
   "categorie": "Prompts et briefs",
   "date": "21/09/2026",
   "ko": 6
+ },
+ {
+  "chemin": "prompt-demo-1.txt",
+  "titre": "prompt-demo-1.txt",
+  "categorie": "Prompts et briefs",
+  "date": "04/10/2026",
+  "ko": 3
  },
  {
   "chemin": "prompt-design-lot3.txt",

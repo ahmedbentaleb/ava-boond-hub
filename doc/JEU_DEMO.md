@@ -74,8 +74,8 @@ futur client sans jamais montrer une donnée réelle.
 | # | Quoi | Qui | État |
 |---|---|---|---|
 | 1 | Ce fichier | BRAIN | ✅ 05/10 |
-| 2 | Le script `outils/demo/` (HTTP, comptes par groupe, graine fixe), `make.sh demo` et `make.sh demo --pleine` | BRAIN CODE — [prompt 14](prompt-brain-code-14.txt) | ⬜ |
-| 3 | La porte « chaque catégorie de chaque cycle existe dans la démo » | BRAIN CODE | ⬜ |
+| 2 | Le script `outils/demo/` (HTTP, comptes par groupe, graine fixe), `make.sh demo` et `make.sh demo --pleine` | session **« Démo »** (Hamada, 05/10 : Brain Code reste au lot 2) — [prompt](prompt-demo-1.txt) | ⬜ |
+| 3 | La porte « chaque catégorie de chaque cycle existe dans la démo » | session « Démo » | ⬜ |
 | 4 | Les commandes que le jeu appelle et qui n'existent pas encore (lot 5.8 : contrats, factures) : **pas dans la démo** tant qu'elles ne sont pas servies | — | règle |
 
 </etat>
