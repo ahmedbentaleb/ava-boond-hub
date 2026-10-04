@@ -426,3 +426,16 @@ Prêt pour le onzième audit.
 | V-189 | case 22 dans un clone neuf, et la CI | case 22 | `KO` — clone `--single-branch -b lot-2` : « la branche lot-2-brain est introuvable » | `OK` — origin/lot-2-brain récupérée, 17 fichiers du juge, 0 commit hors ligne | `95ac9c3` |
 | V-191 | le registre v2 lu et vérifié contre la base | case 23 | `KO` — une colonne inventée (`societe.siren_inventee`) nommée | `OK` — 58 clés, 251 lignes, 115 scénarios | `82f68d2` |
 | V-192 | portes qui contredisent le registre retirées (D-41) ; politiques posées par SetPolicy | case 24 | `KO` — « porte_croisee.test.mjs:312, 473, 482, 493, 494 » (UPDATE politique) | `OK` — 0 écriture SQL de politique ; 11 portes au tableau D-41 | `968a2e5` `9d83c02` |
+| V-167 | une seule horloge, le jour du banc | P-366 | `not ok` — CancelPrestation et RecordQualification en CURRENT_DATE, Archive* en now() : banc au 15/10, date écrite au 04/10 | `ok` — P-366, chaque date du jour est `aujourdhui` | `0eee204` |
+| V-179 | une cascade ne saute plus la garde de sa fille | P-362 | `not ok` — 3 écarts, RecordClientDecision → CreateProjectFromNeed acceptée sans la fille | `ok` — 10 cascades, 40 jeux, 0 écart | `0eee204` |
+| V-180 | ni ordre, ni premier code, ni littéral | P-364 | `not ok` — 4 sites : `etat_code !== attente`, `etat_code` intercontrat, `type_code` INTERNAL, `pays_code` FR | `ok` — P-364 | `0eee204` |
+| V-181 | SetPolicy et SetOwnTheme ne jugent que par politique_admise | P-363 | `not ok` — S-UT2 acceptée ; garde `valeurs_possibles` écrite à la main | `ok` — P-363 203/203 ; P-355, S-UT2 dans les 0 ligne fausse | `0eee204` |
+| V-182 | depuis_signature sort de l'entrée publique | P-355 | `not ok` — S-PM4 acceptée | `ok` — P-355, 0 ligne fausse | `0eee204` |
+| V-183 | S-K1 → S-K3, S-UT2, S-PM3 tenus au registre v2 | P-355 | `not ok` — S-UT2 acceptée | `ok` — P-355 0 ligne fausse, P-357 verte | `0eee204` |
+| V-184 | CreateCompany et UpdateCompany écrivent le SIREN | P-355 | `not ok` — S-DS4 siren NULL, S-DS3 doublon accepté | `ok` — P-355, 0 ligne fausse | `0eee204` |
+| V-185 | un coût garde sa devise | P-355 | `not ok` — ClosePrestation convertissait le coût | `ok` — S-CH2 dans les 0 ligne fausse de P-355 | `0eee204` |
+| V-186 | aucun GRANT de banc dans une migration de production | déclaré | 025 accordait UPDATE (personne_id) à l'application | 026 le retire ; la fixture du banc relie le compte en superutilisateur | décision D-33 du BRAIN, `f78f315` |
+| V-187 | une délégation sur une autre agence opère, en création quand l'entrée la nomme | P-355 | `not ok` — S-SP5 DROIT | `ok` — P-355, 0 ligne fausse | `0eee204` |
+| V-190 | tous les contacts de l'unité ; contact exigé en régie | P-355 | `not ok` — S-PR1 C2 reste prospect ; S-PC5 acceptée | `ok` — P-355, 0 ligne fausse | `0eee204` |
+| V-193 | une seule horloge | P-366 | `not ok` — dates du jour lues par Node ou CURRENT_DATE | `ok` — P-366 | `0eee204` |
+| V-194 | B1 et D3 renvoient à la porte AST | déclaré | la grille pointait un grep | le BRAIN a tranché ✅ : la porte AST | décision D-57 du BRAIN |

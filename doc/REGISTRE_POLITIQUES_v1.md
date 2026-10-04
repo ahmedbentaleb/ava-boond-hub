@@ -373,7 +373,7 @@ direction** (`REPONSES_AVALIANCE_2026-09-24.md`). Défaut en gras = ce que fait 
 | `societe.perimetre.mode` | **agence_responsable** · par_besoins · partagee | D-25 bis, 24/09 | comment on juge le périmètre d'une société et de ses contacts |
 | `staffing.inter_agences` | **non** · oui | D-38, 25/09 (8e audit) — ❓ question R11 à Avaliance | positionner ou staffer un candidat ou une ressource **d'une autre agence** : `non` → refus ; `oui` → permis avec le droit dans l'agence du besoin ou du projet, le profil garde son agence |
 | `candidat.blackliste.portee` | **agence** · installation | R7, 24/09 | un drapeau réversible, posé pour une agence ou pour toutes |
-| `reprise.donnees_rh_sensibles` | **oui** · non | R8, 24/09 | la reprise importe n° de sécurité sociale, nationalité, lieu de naissance, situation familiale — lus sous `LireDonneesRHSensibles` |
+| ~~`reprise.donnees_rh_sensibles`~~ | ⛔ **retirée le 05/10** (D-98 : plus de reprise Boond, D-94) | R8 | les données sensibles se saisissent par `UpdateSensitiveHrData` |
 | `actions.creation_multiple` | **oui** · non | Boond, actions/états | forcer plusieurs actions d'un coup pour « Présentation client » et « Suivi de mission » |
 | `referentiels.tri_alphabetique` | **non** · oui | Boond, actions/états | l'ordre des listes : celui de l'administrateur, ou alphabétique |
 | `facturation.tva_defaut` | **20** · 10 · 0 | Boond, facturation | le taux proposé à la création d'une facture |

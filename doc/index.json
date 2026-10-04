@@ -340,7 +340,7 @@
   "titre": "Machines d'état Ava Manager v1",
   "categorie": "Conception et contrat",
   "date": "04/10/2026",
-  "ko": 18
+  "ko": 19
  },
  {
   "chemin": "MATRICE_DROITS_v1.md",
@@ -679,6 +679,13 @@
   "ko": 50
  },
  {
+  "chemin": "REGISTRE_EXECUTABLE_LOT58.md",
+  "titre": "Registre exécutable — lot 5.8 (RH, facturation, applications) · 05/10/2026",
+  "categorie": "Conception et contrat",
+  "date": "04/10/2026",
+  "ko": 16
+ },
+ {
   "chemin": "REGISTRE_POLITIQUES_v1.md",
   "titre": "Registre des politiques Ava Manager v1",
   "categorie": "Conception et contrat",
@@ -756,6 +763,13 @@
   "ko": 15
  },
  {
+  "chemin": "TODO.md",
+  "titre": "TODO — Ava Manager (mis à jour le 05/10)",
+  "categorie": "Cadrage et commande du client",
+  "date": "04/10/2026",
+  "ko": 1
+ },
+ {
   "chemin": "TRANSMISSION_SESSION_CADRAGE_2026-09-16.md",
   "titre": "Transmission à la session de cadrage Ava Manager",
   "categorie": "Prompts et briefs",
@@ -795,7 +809,7 @@
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "04/10/2026",
-  "ko": 34
+  "ko": 36
  },
  {
   "chemin": "journal/DECISIONS.md",
@@ -850,8 +864,8 @@
   "chemin": "journal/QUESTIONS.md",
   "titre": "Questions pour Hamada. On choisit en attendant, on continue.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
-  "date": "03/10/2026",
-  "ko": 8
+  "date": "04/10/2026",
+  "ko": 9
  },
  {
   "chemin": "journal/REMARQUES.md",

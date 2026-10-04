@@ -135,6 +135,8 @@ une porte compare les écritures observées à ce tableau.
 | Temps | `→ a_valider · valide` | `RecordTimesheet`, `AdjustTimesheetAfterClose` | sous `temps.validation` |
 | Temps | `a_valider → valide · rejete` | `ValidateTimesheet` · `RejectTimesheet` | toujours |
 
+⭐ **Un positionnement « actif »** (05/10, lot 3 Q4) : catégorie `propose` ou `presente` — tout sauf `terminal_positif`, `terminal_negatif`, `retire`. La colonne « Positionnements actifs » et `positionnement.unicite = actifs` lisent **cette même** définition, par catégorie.
+
 ## 7 bis. Les cycles ajoutés le 24/09 — tout en V1
 
 ⭐ Même règle que les six premiers : **des catégories fixes, des codes administrables**. Les codes semés
