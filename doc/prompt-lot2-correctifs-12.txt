@@ -1,0 +1,82 @@
+AVA MANAGER — LOT 2, CORRECTIFS APRÈS LE ONZIÈME AUDIT
+=====================================================
+04/10/2026. Le onzième audit a REFUSÉ le lot 2 (6 critiques). Lis tout avant
+d'écrire une ligne.
+
+Rapport : C:\Users\Hamada\Desktop\Ava Manager\audits-independants\ava-audit-11\rapport\
+Arbitrage : _ops/ARBITRAGE_AUDIT_2026-10-04.md (D-83 → D-89)
+⭐ Spécification : _ops/REGISTRE_EXECUTABLE.md — VERSION 2 (04/10), 252 cas.
+
+
+0. CE QUI EST GAGNÉ — ET CE QUI NE L'EST PAS
+────────────────────────────────────────────
+  ⭐ 348 portes ; un rejoueur indépendant trouve 203 cas sur 206 conformes ;
+     porte croisée 0 fuite sur 846 identifiants.
+  ⛔ Tu as écrit « prêt » avec 8 constats du 10e tour JAMAIS ouverts :
+     V-166, V-167, V-168, V-169, V-171, V-173, V-174, V-175. D-83 : c'est
+     fini — une case du cliquet exige une ligne de journal par constat, et
+     c'est le cliquet, plus toi, qui écrit la phrase.
+
+
+⭐ LES RÈGLES DE CE TOUR
+───────────────────────
+  - attends « lot-2-brain est prêt » : le BRAIN CODE livre le lecteur v2,
+    la porte qui joue le registre PAR SetPolicy, et la garde de valeurs
+    générée. Fusionne, joue : c'est ROUGE. Code jusqu'au vert.
+  - ⛔ tu ne touches ni au registre, ni aux portes générées, ni à aucun
+    fichier du juge (D-78, case 22) ; tu ne signes jamais « Role: brain ».
+    Une ligne qui te semble fausse → journal/QUESTIONS.md.
+  - chaque constat ci-dessous ET chacun des 8 du 10e tour : une ligne de
+    journal/CORRECTIFS.md — V-n · porte · sortie rouge · sortie verte ·
+    commit. Sans elle, le cliquet refuse.
+
+
+1. CRITIQUE
+───────────
+C1  V-179 · D-43   UNE CASCADE N'A AUCUN CHEMIN QUI SAUTE LA GARDE DE SA FILLE
+    executer.ts:244-252 : plus d'exemption RecordClientDecision →
+    CreateProjectFromNeed. Une cascade « au nom du système » se déclare dans
+    CASCADES (acteur: systeme) et la garde le lit. 0 nom de commande dans
+    executer.ts et agence.ts. (Registre : S-CB2, S-PCL2.)
+
+C2  V-180 · D-57 · D-89   LE MÉTIER NE LIT NI ordre, NI LE PREMIER CODE, NI UN LITTÉRAL
+    Les 20 sites de l'audit (CONSTATS V-180) : lecture par catégorie ; un
+    défaut s'écrit par `par_defaut` (migration 026), jamais par
+    ORDER BY ordre LIMIT 1 ; SOI_MEME disparaît (la nature `soi` suffit) ;
+    les 7 littéraux sortent. (Registre : S-PCD4 ; porte AST du BRAIN CODE.)
+
+C3  V-181 · D-85 · D-86   ADMIS = SERVI
+    SetPolicy et SetOwnTheme ne jugent que par politique_admise (générée) ;
+    plus aucune seconde garde écrite à la main (valeurs_possibles) ; forme
+    canonique avant toute garde. (S-DS5, S-CC3, S-SU3, S-PC6, S-UT2.)
+
+C4  V-182 · D-88   `depuis_signature` sort de l'entrée publique : la cascade
+    passe par le contexte serveur. (S-PM4.)
+
+C5  V-183   S-K1 → S-K3 (contraintes entre clés), S-UT2 (D-66), S-PM3.
+
+C6  V-184   CreateCompany et UpdateCompany écrivent le SIREN ; une colonne
+    comparée par une garde de doublon est écrite par la commande. (S-DS4.)
+
+
+2. ÉLEVÉ ET MOYEN
+─────────────────
+E1 V-185  M-15 : un coût garde sa devise, seul le taux s'écrit (S-CH2).
+E2 V-187  D-59 : une délégation sur une autre agence seule opère, en création
+   quand l'entrée la demande (S-SP5).
+E3 V-190  propagation : TOUS les contacts de l'unité contractante (S-PR1) ;
+   R10 : contact exigé en régie même avec une unité (S-PC5).
+E4 V-193  une seule horloge (ava.aujourdhui) ; les gardes en double retirées.
+E5 LES 8 DU 10e TOUR, chacun avec sa porte :
+   V-166 une transition ne s'écrit que par ses écrivains (MACHINES §7 ter ;
+   CreatePrestation naît `proposee`) · V-167 une horloge · V-168 une garde
+   lit l'état DÉRIVÉ · V-169 aucune entrée bien typée ne rend 500 ni MUR ·
+   V-171 un uuid se déclare `référence` · V-173 une politique se lit au
+   moment de la commande · V-174 L4 = DECLARATION · V-175 gardes en double.
+
+
+3. CE QUE TU RENDS
+──────────────────
+Base refaite, make test, cliquet complet : c'est SA dernière ligne qui dit
+« prêt pour le douzième audit » (D-83). git status vide. Rien d'autre.
+⛔ Pas de fusion ni de report sur main : c'est le BRAIN.

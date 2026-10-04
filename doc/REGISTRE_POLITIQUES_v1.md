@@ -112,6 +112,8 @@ Le **code** est stable, le **libellé** se renomme, une valeur s'**ajoute** dans
 
 ## C. Les politiques — bifurcations, table `politique`
 
+⭐ **Depuis le 04/10 (D-56, V-191)** : ce §C donne la **clé**, le **défaut** et les valeurs **prévues**. Les valeurs **servies**, et ce que chacune fait, sont dans `REGISTRE_EXECUTABLE.md` — c'est lui qui fait foi. Une liste ou un nombre servis (`["siren"]`, `200`, `1.5`…) y sont écrits, même absents d'ici. Les défauts des politiques liste sont en JSON (`["a","b"]`) en base.
+
 ⭐ **Ajouts du 24/09 — réponses de la direction d'Avaliance** (`REPONSES_AVALIANCE_2026-09-24.md`) :
 `cout.mode` = **selon_type_ressource** · achat_externe · salarie_formule (R5 : l'externe coûte son
 achat, le salarié coûte brut + primes + frais divisés par les jours) · `cout.jours_base` = **200** (R5) ·

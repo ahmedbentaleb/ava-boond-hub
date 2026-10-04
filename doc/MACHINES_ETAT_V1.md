@@ -115,6 +115,26 @@ Terminal : `clos`. Archivage possible depuis `clos` seulement. `ReopenProject` :
 
 `prospect → client` : déclencheur `societe.passage_client.declencheur` (défaut : première prestation `engage`, G8) ; portée `societe.passage_client.propagation` (défaut : branche contractante + contacts du service). `client → prospect` : `societe.retour_prospect` (défaut : **manuel**, `RequalifyCompany` par CRM habilité, motif écrit, F23–F24 ; options : fin du dernier contrat · après `societe.retour_prospect.delai_mois`). Le « 6 mois » du CdC est devenu une option, pas une règle. Rôles (`fournisseur`, `interne`) : un ensemble, pas un état — `client` et `prospect` **ne sont pas des rôles**, c'est le statut de ce cycle (D-3).
 
+## 7 ter. Qui écrit une transition (D-87, 04/10)
+
+⭐ Une transition est écrite par **sa** commande, ou par la commande qu'une **politique désigne** — alors elle fait
+partie de cette commande, et le droit de celle-ci suffit. Toute autre écriture d'un état est interdite (V-166) ;
+une porte compare les écritures observées à ce tableau.
+
+| Objet | Transition | Écrite par | Sous |
+|---|---|---|---|
+| Besoin | `a_pourvoir → en_recherche` | `PositionCandidate`, `PositionResource` | `besoin.staffing.declencheur = premier_positionnement` |
+| Besoin | `a_pourvoir → en_recherche` | `TakeNeedInCharge` | `= commande_prise_en_charge` |
+| Besoin | `a_pourvoir → en_recherche` | `RecordClientDecision` (décision `positive`) | `= retour_client_retenu` |
+| Besoin | `en_recherche → pourvu` | `DeclareNeedFilled` ; `SignPrestation` | toujours ; sous `besoin.pourvu.mode = auto_*` (registre exécutable) |
+| Prestation | `→ proposee` | `CreatePrestation` (⛔ jamais née `engage`) | toujours |
+| Prestation | `proposee → engage` | `SignPrestation` | toujours |
+| Prestation | `engage → clos` | `ClosePrestation` ; `CloseProject` en cascade (D-43) | toujours ; sous `projet.cloture.garde = cascade_cloture_prestations` |
+| Société | `prospect → client` | `RequalifyCompany` ; la cascade de `SignPrestation`, `CreateProject*` | toujours ; sous `societe.passage_client.declencheur` |
+| Société | `client → prospect · ancien_client` | `RequalifyCompany` ; la cascade de `ClosePrestation`, `CancelPrestation` | toujours ; sous `societe.retour_prospect` |
+| Temps | `→ a_valider · valide` | `RecordTimesheet`, `AdjustTimesheetAfterClose` | sous `temps.validation` |
+| Temps | `a_valider → valide · rejete` | `ValidateTimesheet` · `RejectTimesheet` | toujours |
+
 ## 7 bis. Les cycles ajoutés le 24/09 — tout en V1
 
 ⭐ Même règle que les six premiers : **des catégories fixes, des codes administrables**. Les codes semés

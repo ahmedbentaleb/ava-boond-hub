@@ -128,7 +128,7 @@ permission sensible se contourne par la commande ordinaire.
 | `CreateNeed` | **societe_id**, agence, titre, type, couverture | le besoin | `GARDE` contact d'une autre société · FTE manquant si couverture le demande | `NeedCreated` | `besoin.contact` (défaut **facultatif**) | **M-11**, **M-12** |
 | `UpdateNeed` | id + champs | le besoin | idem | `NeedUpdated` | — | **M-12** |
 | `SetNeedPriority` | id, priorité | le besoin | `INTROUVABLE` | `NeedPriorityChanged` | — | — |
-| `TakeNeedInCharge` | id | le besoin | `ETAT` hors cycle | `NeedTakenInCharge` | — | — |
+| `TakeNeedInCharge` | id | le besoin, `manager_compte_id` = le demandeur ; la transition `a_pourvoir → en_recherche` **seulement** sous `besoin.staffing.declencheur = commande_prise_en_charge` (D-87) | `ETAT` besoin fermé ou pourvu | `NeedTakenInCharge` | `besoin.staffing.declencheur` | — |
 
 ⭐ **Politiques lues et non annoncées — portées au contrat le 23/09 (V-089).** Mesurées dans
 `liens.politiques`, toutes au registre §C : `UpdateCandidate` → `candidat.note.echelle` ·
@@ -192,7 +192,7 @@ même pas l'`UPDATE`. ⚠️ **Un chiffre montré à un client ne se recalcule p
 | ⛔ **`SetPolicy`** | clé, valeur | la politique | `DROIT` **ADM seul** · `GARDE` valeur hors `valeurs_possibles` | `PolicyChanged` | — | `mur_touche` est **indicatif** : il s'affiche, il ne garde rien *(D-3, 21/09)* |
 | ⛔ `ManageRefs` | référentiel, code, libellé, catégorie | la valeur | `GARDE` catégorie inconnue · valeur **système** · valeur **utilisée** | `RefChanged` | — | CHECK **catégorie** |
 | ⛔ `ManageGroups` | groupe, permission, **périmètre** | la paire | `GARDE` permission sans périmètre | `GroupPermissionChanged` | — | ⭐ **M-13** |
-| `SetOwnTheme` | les réglages d'apparence | `compte.theme_json` | `GARDE` si `ui.theme.choix_utilisateur` = non | `ThemeChanged` | `ui.theme.choix_utilisateur` | — |
+| `SetOwnTheme` | les réglages d'apparence | `compte.theme_json` | `GARDE` si `ui.theme.choix_utilisateur` = non · `GARDE` si une clé `ui.*` porte une valeur **non servie** (D-66, même garde que `SetPolicy`) | `ThemeChanged` | `ui.theme.choix_utilisateur` | — |
 
 ⭐ **`SetOwnTheme` est la seule commande que les neuf groupes ont.** Choisir son apparence n'est
 pas un pouvoir métier — et **une politique la ferme pour tout le monde d'un coup**.

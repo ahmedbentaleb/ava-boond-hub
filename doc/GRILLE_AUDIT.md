@@ -42,7 +42,7 @@ casse le code est pire qu'aucune suite : elle donne confiance sans rien prouver.
 
 | # | Contrôle | Comment | Verdict si faux |
 |---|---|---|---|
-| **B1** | Aucun `if` métier en dur | `grep -rnE "(etat_code\|type_code\|statut_code\|categorie\|_code) *(===?\|!==?) *['\"\`]" server/src web/src` **et** `grep -rnE "\.(includes\|startsWith\|endsWith)\(['\"\`]" server/src web/src` *(V-126 : un libellé testé par `.includes()` échappait au premier)* puis `grep -rnE "if .*(etat_code\|type_code\|categorie) *[=!]=" db/` *(V-023 : les `if` sont dans `server/` et `web/`, pas dans `db/`)* | 🟠 chaque occurrence |
+| **B1** | Aucun `if` métier en dur — ⭐ **depuis le 04/10 (V-194) : la porte AST du banc fait foi** (égalités sur un `*_code`, `ORDER BY ordre` hors affichage, `ctx.commande ===`, littéraux de code) ; les greps ci-contre ne sont plus qu'un premier tri | `grep -rnE "(etat_code\|type_code\|statut_code\|categorie\|_code) *(===?\|!==?) *['\"\`]" server/src web/src` **et** `grep -rnE "\.(includes\|startsWith\|endsWith)\(['\"\`]" server/src web/src` *(V-126 : un libellé testé par `.includes()` échappait au premier)* puis `grep -rnE "if .*(etat_code\|type_code\|categorie) *[=!]=" db/` *(V-023 : les `if` sont dans `server/` et `web/`, pas dans `db/`)* | 🟠 chaque occurrence |
 | **B2** | Toutes les politiques sont chargées | `SELECT count(*) FROM politique` = le compte du **registre §E** — ⛔ ne pas recopier le chiffre ici | 🟠 |
 | **B3** | `valeur` = `valeur_defaut` au seed | `WHERE valeur <> valeur_defaut` → 0 ligne | 🟠 |
 | **B4** | Tous les référentiels existent | `\dt ava.ref_*` = le compte du **registre §E** — ⛔ ne pas recopier le chiffre ici | 🟠 |

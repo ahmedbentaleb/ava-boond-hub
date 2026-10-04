@@ -413,3 +413,7 @@ Mesure du 02/10, arbre de travail, juge modifié : `make test` OK, porte différ
 Mesure du 03/10 sur `975283f` : `make test` OK. P-339 verte, 0 fuite. Cliquet : 21 OK, 0 KO.
 
 Prêt pour le onzième audit.
+
+Mesure du 03/10 après fusion `6554250` : `make test` OK. Cliquet : 22 OK, 0 KO. Case 22 verte. Le juge n'a pas été modifié à la main.
+
+Prêt pour le onzième audit.

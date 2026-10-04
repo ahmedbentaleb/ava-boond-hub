@@ -1,0 +1,82 @@
+AVA MANAGER — SESSION BRAIN CODE, TREIZIÈME TOUR (APRÈS LE ONZIÈME AUDIT)
+=======================================================================
+04/10/2026. Le mot d'Ahmed est donné. ⭐ B1 → B3 D'ABORD : le codeur code
+contre ce que tu génères.
+
+À lire : _ops/ARBITRAGE_AUDIT_2026-10-04.md (D-83 → D-89) ;
+_ops/REGISTRE_EXECUTABLE.md — ⭐ VERSION 2, réécrite le 04/10 (grammaire du §0
+changée : `cat(T[O].c)`, `refus CODE · trace`, commande `*`, `SetPolicy`,
+plages, contraintes) ; audits-independants/ava-audit-11/rapport/ (CONSTATS,
+REGISTRE.md, preuves/registre11/rejoueur11.mjs et ses voisins).
+
+Ton poste :
+  cd /c/Users/Hamada/Desktop/ava-brain
+  git fetch "/c/Users/Hamada/Desktop/Ava Manager" lot-2
+  git checkout lot-2-brain && git merge FETCH_HEAD
+Base ava_brain refaite, AVA_PORT=3200. « Role: brain », « Role: banc » pour test/.
+
+
+B1  D-84 · V-191   LE LECTEUR LIT LA VERSION 2, ET LA VÉRIFIE
+    - registre_executable.mjs suit la grammaire v2 ; `--verifier` refuse :
+      une forme hors §0, une colonne absente d'information_schema, une issue
+      au pluriel sur un scénario à un élément, une condition sans ses deux
+      côtés, un « ⛔ » qui n'a pas sa ligne
+    - `--verifier` est une case du cliquet
+    Témoin : la v2 passe ; une colonne inventée → KO.
+
+B2  D-84 · V-181 · V-183 · V-192   LA PORTE DIFFÉRENTIELLE PAR LE CHEMIN DE L'UTILISATEUR
+    Reprends le rejoueur de l'audit (rejoueur11.mjs), ne le réinvente pas :
+    - toute politique posée par SetPolicy (ADM, HTTP) — 0 UPDATE politique
+      dans test/ et db/fixtures (une case le vérifie)
+    - chaque clé seule ; chaque ligne de CASCADES avec un acteur qui a la
+      mère sans la fille (même agence, délégation seule, surcharge)
+    - les plages : min, max, défaut ; une forme non canonique
+    - les portes qui contredisent le registre (dont v011-politiques.ts :
+      P-133 P-227 P-234 P-245 P-248 P-249 P-264 P-286, P-354 P-125 P-259)
+      sont retirées, déclarées au tableau D-41 « contredisait le registre »
+    Témoin : ROUGE sur le lot-2 actuel — au moins S-DS4 (SIREN), S-PM4
+    (depuis_signature), S-CB2 (cascade), S-PCD4 (second code prospect),
+    S-PR1 (deux contacts), S-PC5 (R10), S-PC6, S-K1, S-UT2.
+
+B3  D-85 · D-86 · V-181   MIGRATION 026 — UNE SEULE GARDE DE VALEURS, GÉNÉRÉE
+    - politique_admise(clé, valeur, état) GÉNÉRÉE du registre : couple servi
+      + forme canonique + contraintes (§2 « Contraintes ») ; valeurs_possibles
+      devient une sortie du générateur
+    - les 33 défauts des politiques liste en JSON ; une porte : pour chacune
+      des 203 politiques, SetPolicy de son défaut → ok
+    - D-89 : colonne `par_defaut` (index unique partiel) sur chaque ref_* dont
+      le code écrit un défaut, semée ; ⛔ ne retire pas `ordre`
+    - aucun GRANT de banc dans une migration de production (V-186)
+    Témoin : SetPolicy candidat.complete.champs_requis = [] → refus ;
+    SetPolicy projet.contact = service_ou_societe → ok.
+
+    ⚠️ B1 → B3 commités : dis-le à Ahmed ; le codeur fusionne et commence.
+
+B4  D-83   « PRÊT » SE MESURE
+    Une case du cliquet lit les V-n du tableau de l'arbitrage EN COURS
+    (_ops/ARBITRAGE_AUDIT_<date la plus récente>.md) et exige pour chacun une
+    ligne de journal/CORRECTIFS.md (V-n · porte · sortie rouge · sortie verte
+    · commit), ou une déclaration avec la décision du BRAIN. La dernière
+    ligne du cliquet, et elle seule, écrit « prêt pour le N-ième audit ».
+    Témoin : sur le lot-2 actuel, KO avec V-166, V-167, V-168… nommés.
+
+B5  LE BANC (V-180 V-187 V-188 V-189 V-193)
+    - porte AST (V-180) : dans server/src, tout ORDER BY ordre hors vue
+      d'affichage, toute égalité sur un *_code, tout `ctx.commande ===`, tout
+      littéral de code dans un INSERT/WHERE → rouge ; + la passe « ordre
+      inversé et second code d'ordre 0 dans chaque catégorie » sur les 57
+      positifs
+    - porte croisée : D-59 (S-SP5) et les permis de par_besoins jugés (V-187)
+    - une porte verte et ⏳ → KO ; P-359 → P-361 ✅ (V-188)
+    - case 22 dans un clone neuf : `git fetch origin lot-2-brain`, et la CI
+      aussi (V-189)
+    - une porte de l'horloge unique : servir la date de Node fait tomber
+      une porte (V-193)
+    - écritures d'état comparées à MACHINES_ETAT_V1 §7 ter (V-166)
+
+Ce que tu ne fais jamais : server/ web/ ; réécrire une migration publiée ;
+toucher « ava », le port 3000, le dossier « Ava Manager » ; fusionner, pousser,
+porter sur main ; assouplir un contrôle.
+
+Tu rends : une ligne par point dans `_ops/JOURNAL_BUGS.md`, puis 15 lignes au
+plus, avec la phrase exacte : « lot-2-brain est prêt : git merge lot-2-brain. »

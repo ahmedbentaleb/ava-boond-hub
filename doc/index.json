@@ -140,6 +140,13 @@
   "ko": 7
  },
  {
+  "chemin": "ARBITRAGE_AUDIT_2026-10-04.md",
+  "titre": "Arbitrage du onzième audit — 04/10/2026",
+  "categorie": "Audits",
+  "date": "04/10/2026",
+  "ko": 8
+ },
+ {
   "chemin": "AUDIT_PROJET_2026-09-17.md",
   "titre": "Audit du projet Ava Manager — 17 septembre 2026",
   "categorie": "Audits",
@@ -178,7 +185,7 @@
   "chemin": "CADRAGE_METIER_RECONCILIE_2026-09-16.md",
   "titre": "Cadrage métier réconcilié Ava Manager",
   "categorie": "Cadrage et commande du client",
-  "date": "03/10/2026",
+  "date": "04/10/2026",
   "ko": 80
  },
  {
@@ -276,8 +283,8 @@
   "chemin": "ETAT_PROJET.md",
   "titre": "État du projet Ava Manager — du premier jour à la livraison",
   "categorie": "État et plans",
-  "date": "01/10/2026",
-  "ko": 16
+  "date": "04/10/2026",
+  "ko": 17
  },
  {
   "chemin": "FEUILLE_F1-F36_AHMED_2026-09-16.md",
@@ -297,7 +304,7 @@
   "chemin": "GRILLE_AUDIT.md",
   "titre": "L2b — la grille d'audit",
   "categorie": "Audits",
-  "date": "29/09/2026",
+  "date": "04/10/2026",
   "ko": 16
  },
  {
@@ -325,8 +332,8 @@
   "chemin": "MACHINES_ETAT_V1.md",
   "titre": "Machines d'état Ava Manager v1",
   "categorie": "Conception et contrat",
-  "date": "01/10/2026",
-  "ko": 17
+  "date": "04/10/2026",
+  "ko": 18
  },
  {
   "chemin": "MATRICE_DROITS_v1.md",
@@ -411,6 +418,13 @@
   "categorie": "Prompts et briefs",
   "date": "01/10/2026",
   "ko": 4
+ },
+ {
+  "chemin": "prompt-brain-code-13.txt",
+  "titre": "prompt-brain-code-13.txt",
+  "categorie": "Prompts et briefs",
+  "date": "04/10/2026",
+  "ko": 5
  },
  {
   "chemin": "prompt-brain-code-2.txt",
@@ -525,6 +539,13 @@
   "ko": 5
  },
  {
+  "chemin": "prompt-lot2-correctifs-12.txt",
+  "titre": "prompt-lot2-correctifs-12.txt",
+  "categorie": "Prompts et briefs",
+  "date": "04/10/2026",
+  "ko": 4
+ },
+ {
   "chemin": "prompt-lot2-correctifs-2.txt",
   "titre": "prompt-lot2-correctifs-2.txt",
   "categorie": "Prompts et briefs",
@@ -624,17 +645,17 @@
  },
  {
   "chemin": "REGISTRE_EXECUTABLE.md",
-  "titre": "Registre exécutable — le lot 2 (D-56, 01/10/2026)",
+  "titre": "Registre exécutable — le lot 2 · version 2 (D-56, réécrit le 04/10/2026 après le 11e audit)",
   "categorie": "Conception et contrat",
-  "date": "02/10/2026",
-  "ko": 40
+  "date": "04/10/2026",
+  "ko": 49
  },
  {
   "chemin": "REGISTRE_POLITIQUES_v1.md",
   "titre": "Registre des politiques Ava Manager v1",
   "categorie": "Conception et contrat",
-  "date": "01/10/2026",
-  "ko": 62
+  "date": "04/10/2026",
+  "ko": 63
  },
  {
   "chemin": "RELECTURE_5_MODELE_DONNEES_2026-09-17.md",
@@ -682,7 +703,7 @@
   "chemin": "SPEC_COMMANDES_L4.md",
   "titre": "L4 — le contrat des commandes",
   "categorie": "Conception et contrat",
-  "date": "01/10/2026",
+  "date": "04/10/2026",
   "ko": 33
  },
  {
@@ -1328,5 +1349,61 @@
   "categorie": "Audits",
   "date": "01/10/2026",
   "ko": 3
+ },
+ {
+  "chemin": "audit-2026-10-04/CONFORMITE.md",
+  "titre": "CONFORMITE11 — les 57 commandes servies contre `_ops/SPEC_COMMANDES_L4.md` · auditeur B",
+  "categorie": "Audits",
+  "date": "04/10/2026",
+  "ko": 16
+ },
+ {
+  "chemin": "audit-2026-10-04/CONSTATS.md",
+  "titre": "Constats du onzième audit — commit `34d98a4` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "04/10/2026",
+  "ko": 24
+ },
+ {
+  "chemin": "audit-2026-10-04/GRILLE.md",
+  "titre": "GRILLE11 — onzième audit, lot 2, commit `34d98a4` · auditeur B (base `ava_audit11_b`, port 4102)",
+  "categorie": "Audits",
+  "date": "04/10/2026",
+  "ko": 17
+ },
+ {
+  "chemin": "audit-2026-10-04/MUTATIONS.md",
+  "titre": "Mutations — les tests des tests (famille G), onzième audit",
+  "categorie": "Audits",
+  "date": "04/10/2026",
+  "ko": 4
+ },
+ {
+  "chemin": "audit-2026-10-04/REGISTRE.md",
+  "titre": "REGISTRE.md",
+  "categorie": "Audits",
+  "date": "04/10/2026",
+  "ko": 60
+ },
+ {
+  "chemin": "audit-2026-10-04/SECURITE.md",
+  "titre": "SECURITE11 — famille I et la chasse · auditeur B (base `ava_audit11_b`, port 4102)",
+  "categorie": "Audits",
+  "date": "04/10/2026",
+  "ko": 15
+ },
+ {
+  "chemin": "audit-2026-10-04/SUIVI_V.md",
+  "titre": "Suivi du 10e audit (V-162 → V-178, V-156) et des décisions D-56 → D-67, D-78 — onzième audit, commit `34d98a4` (branche `lot-2`)",
+  "categorie": "Audits",
+  "date": "04/10/2026",
+  "ko": 22
+ },
+ {
+  "chemin": "audit-2026-10-04/SYNTHESE.md",
+  "titre": "SYNTHESE.md",
+  "categorie": "Audits",
+  "date": "04/10/2026",
+  "ko": 4
  }
 ]
