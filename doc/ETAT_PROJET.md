@@ -147,6 +147,7 @@ Mis à jour le 24/09/2026. Les anciens numéros de lot sont entre parenthèses.
 | # | Étape | État | Documents |
 |---|---|---|---|
 | 8.1 | Connecteur pour Claude, lecture seule d'abord (lot 8) | ⬜ | détail au canon : `PLAN_2026-09-20.md` |
+| 8.2 | ⭐ **La console éditeur** (D-95, Hamada 05/10 : « si demain on le vend, il faut un tableau de bord de tous les clients ») : une application **à part**, qui voit chaque installation — version, migrations appliquées, santé, sauvegarde du jour, nombre de comptes, **réglages** (politiques et référentiels) — par un accès en **lecture seule**, signé. ⛔ Jamais une donnée métier d'un client (ADR-000 : une installation par société, une base par installation). Elle sert aussi à **pousser une mise à jour** et à **copier un jeu de réglages** d'une installation modèle vers une nouvelle | ⬜ canon à écrire avant le 2e client | [ADR-000 mono-tenant](adr/ADR-000-mono-tenant.md) · [décisions techniques T9, F2](DECISIONS_TECHNIQUES_v1.md) |
 
 </etat>
 
