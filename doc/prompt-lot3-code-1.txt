@@ -18,7 +18,10 @@ dois jamais le gêner.
 Ta base : AVA_DB=ava_lot3 ; ton port : AVA_PORT=3300.
   ⛔ JAMAIS la base « ava », ni le port 3000 (Grok), ni 3200 (Brain Code) :
      make.sh tue ce qui écoute sur son port.
-  bash outils/make.sh reset puis bash outils/make.sh test : vert avant de commencer.
+  bash outils/make.sh reset puis bash outils/make.sh test. ⚠️ Corrigé le 05/10 :
+  tant que le lot 2 n'est pas accepté, des portes du juge sont rouges EXPRÈS ;
+  elles forment une LIGNE DE BASE gelée (journal/ETAPES.md). Ta règle : zéro
+  rouge nouveau, et la liste ne fait que rétrécir à chaque « git merge lot-2 ».
 Le dossier `postes/` est exclu de git : rien à commiter dedans hors de ta branche.
 
 Chaque commit porte « Role: ecran » (web/), « Role: serveur » (routes de
