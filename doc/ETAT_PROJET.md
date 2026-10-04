@@ -126,7 +126,7 @@ Mis à jour le 24/09/2026. Les anciens numéros de lot sont entre parenthèses.
 
 | # | Étape | État | Documents |
 |---|---|---|---|
-| 6.1 | ⭐ **Le jeu de démonstration** (D-94, Hamada 05/10 : « pas d'export Boond, on teste avec nos données ») : une Avaliance fictive aux volumes réels de Boond (2 580 sociétés, 229 ressources, 20 744 candidats, 161 projets), créée **par les commandes**, jamais en SQL | ⬜ à écrire | [volumes Boond](cartographie/BOOND_CHEMINS_2026-09-19.md) |
+| 6.1 | ⭐ **Le jeu de démonstration** (D-94, Hamada 05/10 : « pas d'export Boond, on teste avec nos données ») : une Avaliance fictive aux volumes réels de Boond (2 580 sociétés, 229 ressources, 20 744 candidats, 161 projets), créée **par les commandes**, jamais en SQL | ✅ 05/10 contenu écrit · ⬜ script (BRAIN CODE) | [le jeu de démonstration](JEU_DEMO.md) · [plan du 05/10](PLAN_2026-10-05.md) |
 | 6.2 | Ressaisie des missions en cours par Avaliance, dans Ava Manager, à la bascule | ⬜ (R2) | hub › [Questions Avaliance](../#reunion) |
 | 6.3 | ~~Import des données Boond (lot 7)~~ — ⛔ **pas d'export Boond disponible** (Hamada, 05/10) : remplacé par le jeu de démonstration (6.1) et la ressaisie (6.2) | ✖ retiré | — |
 | 6.4 | Essai de deux semaines, trois utilisateurs réels | ⬜ | — |

@@ -134,7 +134,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <a href="simulateur.html">Banc d’essai</a>
 </div></div></div></div>
 <div class="p">
-<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">04/10/2026 · 572c9ac</span></div>
+<div class="hd"><h1>Dossier Ava Manager</h1><span class="dt">04/10/2026 · 40dc736</span></div>
 <p class="chapeau">Le point d'entrée unique. Une autre IA écrit le code, je l'audite. Tout ce qui fait foi est listé ici — et rien n'y est recopié : ce document <b>mesure</b> et <b>pointe</b>.</p>
 <div class="ch">
 <div><b>37</b><span>tables</span></div>
@@ -144,12 +144,12 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <div><b>37</b><span>assertions</span></div>
 <div><b>26</b><span>écrans</span></div>
 <div><b>8</b><span>ADR</span></div>
-<div><b>80</b><span>documents</span></div>
+<div><b>82</b><span>documents</span></div>
 </div>
 <p class="note">⭐ Tous ces chiffres sont <b>mesurés</b> à la génération, jamais saisis. Un compte écrit à deux endroits diverge à la passe suivante.</p>
 <quand_utiliser>
 <h2><span class="num">01</span>Qui lit quoi</h2>
-<p class="sub">Quatre lecteurs, quatre portes. Personne n'a besoin des 80 documents.</p>
+<p class="sub">Quatre lecteurs, quatre portes. Personne n'a besoin des 82 documents.</p>
 <div class="tw"><table><tr><th>Vous êtes</th><th>Vous lisez</th><th>Vous ne lisez pas</th></tr>
 <tr><td>L&#x27;IA qui code</td><td>le prompt, puis le SQL et les assertions</td><td>les relectures, les plans, l&#x27;historique — c&#x27;est du chemin parcouru</td></tr>
 <tr><td>Moi, l&#x27;auditeur</td><td>les assertions, le registre §E, le journal des bugs</td><td>rien — mais je mesure avant de citer</td></tr>
@@ -170,6 +170,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <a href="doc/MODELE_DONNEES_AVAMANAGER_V1.md"><b>Le modèle de données</b><span>le canon dont le SQL est tiré</span><em>MODELE_DONNEES_AVAMANAGER_V1.md</em></a>
 <a href="doc/REGISTRE_POLITIQUES_v1.md"><b>Le registre</b><span>203 politiques · §E fait foi</span><em>REGISTRE_POLITIQUES_v1.md</em></a>
 <a href="doc/REGISTRE_EXECUTABLE.md"><b>Le registre exécutable</b><span>chaque valeur lue au lot 2 : commande, scénario, issue — D-56</span><em>REGISTRE_EXECUTABLE.md</em></a>
+<a href="doc/JEU_DEMO.md"><b>Le jeu de démonstration</b><span>une Avaliance fictive, créée par les commandes — D-94</span><em>JEU_DEMO.md</em></a>
 <a href="doc/CANON_LOT3_ECRANS.md"><b>Le canon des écrans</b><span>lot 3 : 28 écrans, ce qu&#x27;ils lisent et déclenchent — D-68 → D-77</span><em>CANON_LOT3_ECRANS.md</em></a>
 <a href="doc/SPEC_COMMANDES_L4.md"><b>L4 — le contrat des commandes</b><span>55 commandes · entrée, refus, événement, mur</span><em>SPEC_COMMANDES_L4.md</em></a>
 <a href="doc/MATRICE_DROITS_v1.md"><b>La matrice des droits</b><span>rôle × commande × périmètre</span><em>MATRICE_DROITS_v1.md</em></a>
@@ -182,7 +183,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <a href="doc/PROMPT_GROK_LOT2.md"><b>Le prompt du lot 2</b><span>deux sessions · un seul banc · l&#x27;intégrateur</span><em>PROMPT_GROK_LOT2.md</em></a>
 <a href="doc/GRILLE_AUDIT.md"><b>L2b — la grille d&#x27;audit</b><span>36 contrôles · un 🔴 refuse le lot</span><em>GRILLE_AUDIT.md</em></a>
 <a href="doc/PORTES_EN_ATTENTE.md"><b>La parade ⏳</b><span>une porte posée avant d&#x27;être servie</span><em>PORTES_EN_ATTENTE.md</em></a>
-<a href="doc/PLAN_2026-09-22.md"><b>Le plan du jour</b><span>ce qui reste, en haut</span><em>PLAN_2026-09-22.md</em></a>
+<a href="doc/PLAN_2026-10-05.md"><b>Le plan du jour</b><span>ce qui reste, en haut</span><em>PLAN_2026-10-05.md</em></a>
 </div>
 <p class="note">⛔ Un <code>.sql</code> reste un <code>.sql</code> : Grok l'exécute, git le diffe, <code>psql -f</code> le charge. Noyé dans une page, aucun des trois ne marche. <b>Ce dossier est la porte, pas le coffre.</b></p>
 </procedure>
@@ -331,7 +332,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 <p class="sub">⭐ Le filet tient depuis le 3e tour : plus aucun test ne reste vert quand on casse le code exprès (50 sabotages).</p>
 <h3 style="margin:22px 0 6px">6 · Reprise et recette — avec les vraies données</h3>
 <div class="tw"><table><tr><th>#</th><th>Étape</th><th>État</th><th>Documents</th></tr>
-<tr><td>6.1</td><td>⭐ Le jeu de démonstration (D-94, Hamada 05/10 : « pas d&#x27;export Boond, on teste avec nos données ») : une Avaliance fictive aux volumes réels de Boond (2 580 sociétés, 229 ressources, 20 744 candidats, 161 projets), créée par les commandes, jamais en SQL</td><td>⬜ à écrire</td><td><a href="doc/cartographie/BOOND_CHEMINS_2026-09-19.md">volumes Boond</a></td></tr>
+<tr><td>6.1</td><td>⭐ Le jeu de démonstration (D-94, Hamada 05/10 : « pas d&#x27;export Boond, on teste avec nos données ») : une Avaliance fictive aux volumes réels de Boond (2 580 sociétés, 229 ressources, 20 744 candidats, 161 projets), créée par les commandes, jamais en SQL</td><td>✅ 05/10 contenu écrit · ⬜ script (BRAIN CODE)</td><td><a href="doc/JEU_DEMO.md">le jeu de démonstration</a> · <a href="doc/PLAN_2026-10-05.md">plan du 05/10</a></td></tr>
 <tr><td>6.2</td><td>Ressaisie des missions en cours par Avaliance, dans Ava Manager, à la bascule</td><td>⬜ (R2)</td><td>hub › <a href="doc/../#reunion">Questions Avaliance</a></td></tr>
 <tr><td>6.3</td><td>~~Import des données Boond (lot 7)~~ — ⛔ pas d&#x27;export Boond disponible (Hamada, 05/10) : remplacé par le jeu de démonstration (6.1) et la ressaisie (6.2)</td><td>✖ retiré</td><td>—</td></tr>
 <tr><td>6.4</td><td>Essai de deux semaines, trois utilisateurs réels</td><td>⬜</td><td>—</td></tr>
@@ -354,9 +355,9 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--bord);
 </etat>
 <source>
 <h2><span class="num">09</span>D'où ça vient</h2>
-<p class="sub">80 documents dans <code>_ops/</code>. Les 22 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
+<p class="sub">82 documents dans <code>_ops/</code>. Les 23 ci-dessus font foi ; le reste est le chemin parcouru — relectures, plans datés, cartographies, captures Boond. On les garde, on ne les lit pas.</p>
 <p class="note">Ce fichier est <b>généré</b> par <code>python _ops/outils/dossier.py</code>. ⛔ Ne pas l'éditer à la main : la prochaine génération écraserait la correction, et on ne saurait pas laquelle était juste.<br>Pour en extraire une section sans tout lire :<br><code>sed -n '/&lt;etat&gt;/,/&lt;\/etat&gt;/p' _ops/DOSSIER.html</code></p>
 </source>
-<footer>Ava Manager · dossier généré le 04/10/2026 · commit 572c9ac · 37 tables · 203 politiques · 15 murs · 37 assertions</footer>
+<footer>Ava Manager · dossier généré le 04/10/2026 · commit 40dc736 · 37 tables · 203 politiques · 15 murs · 37 assertions</footer>
 </div>
 </body></html>
