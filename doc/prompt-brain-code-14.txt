@@ -1,0 +1,41 @@
+AVA MANAGER — SESSION BRAIN CODE, QUATORZIÈME TOUR — LE JEU DE DÉMONSTRATION
+===========================================================================
+05/10/2026. Le mot d'Ahmed est donné. Un seul chantier.
+
+À lire : _ops/JEU_DEMO.md (en entier : les 6 règles, les deux tailles, ce que
+la démo contient, les 6 histoires).
+
+Ton poste : ava-brain, branche lot-2-brain (fusionne lot-2 d'abord).
+Ta base de démonstration : AVA_DB=ava_demo, AVA_PORT=3200 (jamais 3000).
+« Role: brain » ; « Role: banc » pour test/.
+
+
+D1  LE SCRIPT outils/demo/
+    - il crée la société fictive en APPELANT LES COMMANDES par HTTP, avec un
+      compte par groupe — ⛔ aucun INSERT, aucun UPDATE en SQL : si une
+      commande refuse, le script s'arrête et dit laquelle et pourquoi
+    - graine fixe : deux lancements donnent la même base
+    - dates relatives à la date du jour (ava.aujourdhui)
+    - noms fictifs, e-mails en @demo.ava.test
+    - `bash outils/make.sh demo` : base neuve, migrations, démo taille
+      « démo » ; `bash outils/make.sh demo --pleine` : taille « pleine »
+    - seulement les commandes SERVIES (lot 2) ; rien du lot 5.8
+
+D2  LES 6 HISTOIRES
+    Chacune créée telle qu'écrite au §4 de JEU_DEMO.md, et retrouvable par
+    un nom stable (ALPHA, BETA…), pour qu'on puisse la montrer.
+
+D3  LA PORTE (Role: banc)
+    Après `make.sh demo` : chaque catégorie de chaque cycle (besoin,
+    positionnement, prestation, candidat, ressource, société, temps) existe
+    au moins une fois ; les 6 histoires sont là ; 0 ligne écrite hors
+    commande (tentative_refusee mise à part).
+    Témoin : retirer une histoire du script → la porte rougit.
+
+Ce que tu ne fais jamais : server/ web/ ; une migration de démonstration
+(la démo n'est PAS une migration) ; toucher « ava », le port 3000 ; fusionner
+sur main, pousser.
+
+Tu rends : une ligne dans _ops/JOURNAL_BUGS.md, le temps que prend
+`make.sh demo` et `make.sh demo --pleine`, et les commandes qui ont refusé
+(s'il y en a : ce sont des défauts du lot 2 à signaler, pas à contourner).
