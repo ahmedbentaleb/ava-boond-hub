@@ -31,8 +31,7 @@
 | Forme | Sens |
 |---|---|
 | `ok` | la commande réussit |
-| `refus CODE` | refusée avec `CODE` ∈ GARDE · ETAT · DROIT · INTROUVABLE ; **aucune ligne écrite** nulle part |
-| `refus CODE · trace` | idem, sauf **une** ligne `tentative_refusee` (la seule écriture permise d'un refus) |
+| `refus CODE` | refusée avec `CODE` ∈ GARDE · ETAT · DROIT · INTROUVABLE ; **aucune écriture métier**. ⭐ D-92 (05/10) : **tout** refus, quel que soit son code, écrit **une** ligne `tentative_refusee` sous `historique.tentatives_refusees = tracees_a_part` (le défaut), **aucune** sous `non_tracees` — c'est la seule écriture d'un refus, et la porte la vérifie sur chaque ligne de refus |
 | `T[O].c = v` | après l'appel, la colonne `c` de la ligne de `T` désignée par l'objet `O` du scénario vaut `v` |
 | `cat(T[O].c) = k` | la **catégorie** du code dans `T[O].c` vaut `k` (D-57 : on ne juge jamais un code ni un ordre) |
 | `T[O].c inchangé` | la colonne n'a pas bougé |
@@ -487,36 +486,39 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 | `ui.theme.choix_utilisateur` | oui | SetOwnTheme | S-UT1 | ok · compte[D].theme_json = le thème donné |
 | `ui.theme.choix_utilisateur` | non | SetOwnTheme | S-UT1 | refus GARDE |
 | `ui.theme.choix_utilisateur` | oui | SetOwnTheme | S-UT2 | refus GARDE |
-| `droits.surcharge_restrictive` | restriction_gagne | UpdateNeed | S-DR1 | refus DROIT · trace |
+| `droits.surcharge_restrictive` | restriction_gagne | UpdateNeed | S-DR1 | refus DROIT |
 | `droits.surcharge_restrictive` | union_gagne | UpdateNeed | S-DR1 | ok |
-| `droits.surcharge_restrictive` | restriction_gagne | * | S-DR1 | refus DROIT · trace |
-| `historique.tentatives_refusees` | tracees_a_part | UpdateNeed | S-HT1 | refus DROIT · trace |
-| `historique.tentatives_refusees` | non_tracees | UpdateNeed | S-HT1 | refus DROIT |
-| `historique.tentatives_refusees` | tracees_a_part | * | S-HT1 | refus DROIT · trace |
+| `droits.surcharge_restrictive` | restriction_gagne | * | S-DR1 | refus DROIT |
+| `historique.tentatives_refusees` | tracees_a_part | UpdateNeed | S-HT1 | refus DROIT · lignes tentative_refusee = 1 |
+| `historique.tentatives_refusees` | non_tracees | UpdateNeed | S-HT1 | refus DROIT · lignes tentative_refusee = 0 |
+| `historique.tentatives_refusees` | tracees_a_part | CompleteCandidate | S-HT2 | refus GARDE · lignes tentative_refusee = 1 |
+| `historique.tentatives_refusees` | non_tracees | CompleteCandidate | S-HT2 | refus GARDE · lignes tentative_refusee = 0 |
+| `historique.tentatives_refusees` | tracees_a_part | * | S-HT1 | refus DROIT · lignes tentative_refusee = 1 |
 
 - **S-AB1** — absence de R du 10 au 12/11/2026 ; nouvelle du 12 au 14/11. **S-AB2** — absence de R (PAR) sans prestation `engage` sur la période.
 - **S-UT1** — le demandeur D ; `SetOwnTheme` du thème **par défaut** (`ui.theme.defaut`).
 - **S-UT2** — `SetOwnTheme {"ui.palette":"zz_non_servie"}` : ⛔ **D-66** — chaque clé `ui.*` du thème passe par la garde des valeurs servies, comme `SetPolicy` ; aujourd'hui seuls les défauts des clés `ui.*` sont servis (règle 2), leurs autres valeurs entrent avec le registre du lot 3.
 - **S-DR1** — le groupe du demandeur a `UpdateNeed` sur le périmètre PAR ; **une ligne `compte_surcharge`** (compte du demandeur, `UpdateNeed`, ce périmètre) — toute ligne retire, la table n'a pas de sens (F28) ; `UpdateNeed` d'un besoin de PAR. La ligne `*` : même surcharge sur la commande jouée.
 - **S-HT1** — compte sans `UpdateNeed` ; `UpdateNeed` d'un besoin de PAR. La ligne `*` : compte sans la commande jouée.
+- **S-HT2** — candidat K `brouillon` sans localisation ni e-mail ; `CompleteCandidate K` (refus GARDE au défaut des champs requis).
 
 ### Périmètre
 
 | clé | valeur | commande | scénario | issue |
 |---|---|---|---|---|
-| `societe.perimetre.mode` | agence_responsable | UpdateCompany | S-SP1 | refus DROIT · trace |
+| `societe.perimetre.mode` | agence_responsable | UpdateCompany | S-SP1 | refus DROIT |
 | `societe.perimetre.mode` | par_besoins | UpdateCompany | S-SP1 | ok |
 | `societe.perimetre.mode` | partagee | UpdateCompany | S-SP1 | ok |
-| `societe.perimetre.mode` | par_besoins | UpdateCompany | S-SP2 | refus DROIT · trace |
+| `societe.perimetre.mode` | par_besoins | UpdateCompany | S-SP2 | refus DROIT |
 | `societe.perimetre.mode` | partagee | UpdateCompany | S-SP2 | ok |
 | `societe.perimetre.mode` | par_besoins | UpdateCompany | S-SP3 | ok |
 | `societe.perimetre.mode` | agence_responsable | UpdateCompany | S-SP3 | ok |
-| `societe.perimetre.mode` | partagee | UpdateProject | S-SP4 | refus DROIT · trace |
+| `societe.perimetre.mode` | partagee | UpdateProject | S-SP4 | refus DROIT |
 | `societe.perimetre.mode` | agence_responsable | CreateNeed | S-SP5 | ok · besoin[N].agence_id = LYO |
-| `staffing.inter_agences` | non | PositionCandidate | S-SI1 | refus DROIT · trace |
+| `staffing.inter_agences` | non | PositionCandidate | S-SI1 | refus DROIT |
 | `staffing.inter_agences` | oui | PositionCandidate | S-SI1 | ok · profil_candidat[K].agence_id = LYO |
-| `staffing.inter_agences` | oui | PositionCandidate | S-SI2 | refus DROIT · trace |
-| `staffing.inter_agences` | non | CreatePrestation | S-SI3 | refus DROIT · trace |
+| `staffing.inter_agences` | oui | PositionCandidate | S-SI2 | refus DROIT |
+| `staffing.inter_agences` | non | CreatePrestation | S-SI3 | refus DROIT |
 | `staffing.inter_agences` | oui | CreatePrestation | S-SI3 | ok · profil_ressource[R].agence_id = LYO |
 
 - **S-SP1** — société A, agence responsable **LYO**, avec un besoin de **PAR** ; le demandeur (PAR) la modifie.
