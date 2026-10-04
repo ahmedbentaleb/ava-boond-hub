@@ -67,6 +67,11 @@ E2 V-187  D-59 : une délégation sur une autre agence seule opère, en créatio
 E3 V-190  propagation : TOUS les contacts de l'unité contractante (S-PR1) ;
    R10 : contact exigé en régie même avec une unité (S-PC5).
 E4 V-193  une seule horloge (ava.aujourdhui) ; les gardes en double retirées.
+E6 DÉCLARATIONS (écarts de Design du 03/10, CANON_LOT3_ECRANS §6 bis) :
+   SetOwnTheme déclare chaque clé ui.* qu'il accepte ; CreatePrestation
+   n'a plus de champs-alias (un objet = un nom, D-37 : 13 données, 13
+   champs) ; ManageRefs donne au champ `categorie` le domaine des
+   catégories fermées de la ref visée.
 E5 LES 8 DU 10e TOUR, chacun avec sa porte :
    V-166 une transition ne s'écrit que par ses écrivains (MACHINES §7 ter ;
    CreatePrestation naît `proposee`) · V-167 une horloge · V-168 une garde

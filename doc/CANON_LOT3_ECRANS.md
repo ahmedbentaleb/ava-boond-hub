@@ -29,6 +29,7 @@
 | **D-75** | **Un état s'affiche par son libellé (référentiel) et sa pastille par sa catégorie** — jamais par son code, jamais par `ordre` (D-57) | porte : renommer un libellé au référentiel change l'écran sans toucher le code |
 | **D-76** | **Une donnée dérivée de l'horloge se lit dans sa vue** (D-53) : l'état d'une ressource, le statut commercial lu, la charge du jour | même vue que les gardes (V-168) |
 | **D-77** | **Rien d'un lot non servi n'apparaît** : ni onglet, ni colonne, ni widget d'une commande du lot 5.8. Le serveur ne les rend pas | porte : chaque onglet, colonne, widget rendu a une route ou une commande **servie** |
+| **D-90** | ⭐ **Le cadre est celui du Style Ava validé** (`ava-design/_ops/maquettes/styles.html`, 24-25/09) — on ne le redessine pas : **en haut à droite, le nom et l'agence sous le nom** (le compte connecté, jamais un code) ; **le rail de droite** (`ui.rail.position = droite`, `ui.rail.outils` : alertes, notes, assistant, tâches, indicateurs, calendrier ; `ui.rail.ouvert`) avec son panneau ; **le menu de gauche groupé et repliable** (CRM ▸ Sociétés, Contacts ; Projets ▸ Projets, Prestations…) ; le réglage du thème **dans le rail**, pas dans le bandeau. Le contenu de chaque écran (§2) se peint **dans ce cadre** | porte Captures : chaque écran comparé au cadre du Style Ava (même bandeau, même menu, même rail) |
 
 ## 1 · Les trois contrats — la forme exacte des réponses
 
@@ -148,6 +149,21 @@ porte croisée des commandes juge les écritures.
 **Une seule** : `SetOwnDashboardWidgets` (L4 §IX, lot 5.7 — écart Design 17). Pour le reste, le lot 3 n'ajoute **que des lectures** et des formulaires générés : toutes ses autres actions sont des
 commandes du lot 2 déjà servies et déjà gardées. Ce qui demande une commande nouvelle (export, actions sur une
 sélection, envoi de mail…) est au lot 5.8.
+
+## 6 bis · Les 4 écarts du 03/10 et le cadre (04/10)
+
+Source : `ava-design/_ops/maquettes/lot3/ECARTS_POUR_BRAIN_2026-10-03.md`, et la comparaison faite par Hamada le
+04/10 : les maquettes du lot 3 ne reprenaient pas le Style Ava validé (l'agence à gauche du nom au lieu de dessous,
+pas de rail à droite, un menu à titres de section). ⛔ **La faute est au canon** : il renvoyait « le dessin » à la
+session Design sans fixer le cadre. Corrigé par **D-90**.
+
+| # | Écart | Tranché |
+|---|---|---|
+| — | Le cadre | **D-90** : le cadre du Style Ava, tel qu'il a été validé — Design reprend les 28 écrans dedans |
+| 1 | `ui.theme` sert une valeur « 27 » | ⛔ donnée fausse : `ui.theme` n'est pas au registre exécutable, **seul son défaut** (`avaliance`) est servi (règle 2). Le BRAIN CODE régénère et vérifie |
+| 2 | `SetOwnTheme` ne déclare pas `ui.theme` | ⛔ défaut du lot 2 (D-45) : `SetOwnTheme` déclare **chaque** clé `ui.*` qu'il accepte, typée par ses valeurs servies |
+| 3 | `CreatePrestation` déclare ses alias comme des champs (21 pour 13 données) | ⛔ défaut du lot 2 (D-37 : un objet = un nom, plus de synonymes) : un champ par donnée ; le formulaire en a 13 |
+| 4 | `ManageRefs` : la catégorie n'a pas de liste de valeurs | la déclaration donne, pour chaque `ref_*`, ses **catégories fermées** comme domaine du champ `categorie` |
 
 ## 6 · Réponses aux 18 écarts de la session Design (03/10)
 
