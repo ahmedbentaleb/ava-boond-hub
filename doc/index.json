@@ -200,7 +200,7 @@
   "titre": "Canon du lot 3 — les écrans (01/10/2026)",
   "categorie": "Cadrage et commande du client",
   "date": "04/10/2026",
-  "ko": 24
+  "ko": 25
  },
  {
   "chemin": "cartographie/AUDIT_ECRANS.md",
@@ -432,6 +432,13 @@
   "categorie": "Prompts et briefs",
   "date": "04/10/2026",
   "ko": 5
+ },
+ {
+  "chemin": "prompt-brain-code-15.txt",
+  "titre": "prompt-brain-code-15.txt",
+  "categorie": "Prompts et briefs",
+  "date": "04/10/2026",
+  "ko": 1
  },
  {
   "chemin": "prompt-brain-code-2.txt",

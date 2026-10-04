@@ -179,6 +179,13 @@ contredire, **la forme vient du Style Ava, le contenu de ce qui est servi**.
 | 3 | « Voir l'écran comme » ne propose pas l'Administrateur | c'est un outil de la maquette, pas du produit : ajoute ADM, pour les 7 écrans d'administration |
 | 4 | Le menu Reporting répète 4 écrans sans lecture servie | ⛔ retiré (D-77) : aucun reporting n'est servi au lot 3 |
 
+### Les questions du codeur du lot 3 (05/10)
+
+| Question | Tranché |
+|---|---|
+| Q1 — les valeurs `ui.*` servies sont celles du style terminal (sombre, JetBrains), D-90 veut le Style Ava (clair, Lato) | ⭐ **D-96 : l'apparence par défaut d'Avaliance est le Style Ava validé** (thème `ava_avaliance` : clair, Lato, intensité aucune, pastille carré plein, bouton plein, carte sans trait). Le registre §C est corrigé ; le BRAIN CODE aligne les défauts et `politique_valeur_servie` (migration) ; le style terminal reste une valeur de `ref_theme`, servie avec le registre exécutable du lot 3 |
+| Q2 — l'identité dans la page | **D-97** : **un seul** module de `web/src` lit le compte (`?compte=` en banc) et l'envoie au serveur ; sans compte, la page peint le refus du serveur. Aucun compte écrit en dur (`Tuyau.tsx` se corrige). C'est ce module, et lui seul, que le lot 2c (connexion Microsoft) remplacera ; hors banc, le serveur continue de tout refuser |
+
 ## 6 · Réponses aux 18 écarts de la session Design (03/10)
 
 Source : `ava-design/_ops/maquettes/lot3/ECARTS_POUR_BRAIN.md`. Tous tranchés par le BRAIN.

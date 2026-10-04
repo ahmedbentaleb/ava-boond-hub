@@ -1,0 +1,21 @@
+AVA MANAGER — SESSION BRAIN CODE — COMPLÉMENT : L'APPARENCE PAR DÉFAUT (D-96)
+============================================================================
+05/10/2026. Un point. Le mot d'Ahmed est donné.
+
+D-96 (CANON_LOT3_ECRANS §6 bis, REGISTRE_POLITIQUES_v1 §C) : l'apparence par
+défaut d'Avaliance est le Style Ava validé, pas le style terminal.
+
+MIGRATION (la suivante libre) :
+  - ref_theme reçoit `ava_avaliance` s'il n'y est pas ; ref_police reçoit `lato`
+  - nouveaux défauts : ui.theme = ava_avaliance · ui.mode = clair ·
+    ui.intensite = aucune · ui.police = lato · ui.angle = ava ·
+    ui.pastille = carre_plein · ui.bouton = plein · ui.carte = aucun
+    (et ui.theme.defaut aligné sur ces valeurs)
+  - politique_valeur_servie : ces défauts servis à la place des anciens
+    (règle 2 : une clé ui.* hors registre exécutable ne sert que son défaut)
+  - valeurs_possibles : les nouvelles valeurs (lato, carre_plein, ava,
+    aucune) admises comme le registre §C les liste
+Témoin : SetOwnTheme du thème par défaut → ok ; d'un thème « sombre » → refus
+GARDE (non servi) ; la porte des 203 défauts (SetPolicy de chaque défaut → ok)
+reste verte.
+Ne touche pas server/ web/. Rends « lot-2-brain est prêt : git merge lot-2-brain. »

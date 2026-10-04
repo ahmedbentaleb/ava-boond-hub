@@ -269,9 +269,9 @@ Clé · options (**défaut**) · source de la bifurcation · effet quand on chan
 |---|---|---|---|
 | `ui.theme.defaut` | les **seize** valeurs ci-dessous, en un jeu | Hamada 18/09 | ce que voit une personne qui n'a rien choisi. Une autre société installe le sien |
 | `ui.theme.choix_utilisateur` | **oui** · non | Hamada 18/09 (D2) | `non` : `compte.theme_json` est ignoré, tout le monde voit le défaut. Les réglages disparaissent |
-| `ui.theme` | **avaliance** · 27 autres de `ref_theme` | Hamada 19/09 | ⭐ **un thème regroupe tout** : les deux couleurs, la police, les angles, les pastilles, les boutons, les cartes, le marqueur, l'épaisseur et la densité. ⛔ Il ne porte **pas le fond** — chacun tient en sombre, intermédiaire et clair. Le poser écrit **neuf** réglages d'un coup ; chacun se retouche ensuite |
+| `ui.theme` | ⭐ **ava_avaliance** (D-96, 05/10 : le Style Ava validé) · avaliance (style terminal) · 27 autres de `ref_theme` | Hamada 19/09 | ⭐ **un thème regroupe tout** : les deux couleurs, la police, les angles, les pastilles, les boutons, les cartes, le marqueur, l'épaisseur et la densité. ⛔ Il ne porte **pas le fond** — chacun tient en sombre, intermédiaire et clair. Le poser écrit **neuf** réglages d'un coup ; chacun se retouche ensuite |
 | `ui.palette` | **avaliance** · terminal · ambre · glace · encre · phosphore | Hamada 18/09 | remplit les deux rôles colorés d'un coup |
-| `ui.mode` | **sombre** · intermediaire · clair | Hamada 18/09 | le fond et l'échelle de gris. Sur fond foncé : texte argenté, couleurs vives |
+| `ui.mode` | **clair** (D-96) · sombre · intermediaire | Hamada 18/09 | le fond et l'échelle de gris. Sur fond foncé : texte argenté, couleurs vives |
 | `ui.fond.page` | **du thème** · une couleur de `ref_couleur` | Hamada 19/09 | le fond **hors carte** |
 | `ui.fond.carte` | **du thème** · une couleur | Hamada 19/09 | le fond des cartes et des panneaux, et ses deux nuances internes |
 | `ui.fond.barre` | **du thème** · une couleur | Hamada 19/09 | le bandeau et la barre d'écran |
@@ -290,7 +290,7 @@ Clé · options (**défaut**) · source de la bifurcation · effet quand on chan
 | `ui.surface.transparence.carte` | **du thème** · opaque · legere · nette · forte | Hamada 19/09 | les cartes et les panneaux |
 | `ui.surface.transparence.colonne` | **du thème** · opaque · legere · nette · forte | Hamada 19/09 | ⭐ **le menu de gauche ET la colonne d'outils** — « il faut la régler toute seule ». ⛔ Les deux ensemble : c'est une seule surface vue de deux côtés |
 | `ui.surface.transparence.barre` | **du thème** · opaque · legere · nette · forte | Hamada 19/09 | le bandeau et la barre d'écran |
-| `ui.intensite` | **normal** · discret · fort | Hamada 18/09 | ⭐ la **vivacité** de la couleur, et rien d'autre : l'aplat est mélangé au fond à **20 % · 50 % · 100 %**, l'encre dedans se recalcule sur le mélange |
+| `ui.intensite` | **aucune** (D-96, Style Ava) · discret · normal · fort | Hamada 18/09 | ⭐ la **vivacité** de la couleur, et rien d'autre : l'aplat est mélangé au fond à **20 % · 50 % · 100 %**, l'encre dedans se recalcule sur le mélange |
 | `ui.epaisseur` | **medium** · fin · large | Hamada 18/09 | la **largeur des traits** — bordures, filets, bandes, contours. ⛔ Ne touche à aucune couleur : un filet invisible se corrige par sa **teinte**, pas par sa largeur |
 | `ui.densite` | **normal** · compact · confort | Hamada 18/09 | resserre ou aère toute la grille |
 | `ui.filet.couleur` | **du thème** · une couleur | Hamada 19/09 | ⭐ la couleur des **filets** — bordures de cartes, séparateurs, contours de champs. Sans choix, elle prend une pointe de la couleur de STRUCTURE du thème : **les bords suivent le thème** au lieu de rester gris sous les 28 |
@@ -304,11 +304,11 @@ Clé · options (**défaut**) · source de la bifurcation · effet quand on chan
 | `ui.rail.ouvert` | **alertes** · un code de `ref_outil` | Hamada 18/09 | l'outil ouvert au chargement |
 | `ui.couleur.action` | **(palette)** · 12 de `ref_couleur` | Hamada 18/09 | ⭐ rôle **ACTION** — boutons, entrée active, focus. ~5 % de l'écran |
 | `ui.couleur.structure` | **(palette)** · 12 de `ref_couleur` | Hamada 18/09 | ⭐ rôle **STRUCTURE** — titres, en-têtes, clés. Les **données** ne sont jamais colorées, le **sens** a son échelle |
-| `ui.police` | **jetbrains_mono** · 8 autres (`ref_police`) | Hamada 18/09 | la famille, du haut en bas |
-| `ui.angle` | **carre** · leger · arrondi | Hamada 18/09 | rayon 0 / 2 / 7 px sur tout ce qui a un bord |
-| `ui.pastille` | **contour** (2 px) · plein | Hamada 18/09 | les étiquettes d'état |
-| `ui.bouton` | **contour** · plein · fantome · souligne | Hamada 18/09 | les boutons d'action, **indépendants des pastilles** |
-| `ui.carte` | **cadre** · gauche · droite · haut · bas · plein · aucun | Hamada 18/09, élargi le 19/09 | où se pose le trait coloré d'une carte. ⛔ Pourquoi seulement à gauche ? |
+| `ui.police` | **lato** (D-96, Style Ava) · jetbrains_mono · 8 autres (`ref_police`) | Hamada 18/09 | la famille, du haut en bas |
+| `ui.angle` | **ava** (D-96, Style Ava) · carre · leger · arrondi | Hamada 18/09 | rayon 0 / 2 / 7 px sur tout ce qui a un bord |
+| `ui.pastille` | **carre_plein** (D-96, Style Ava) · contour (2 px) · plein | Hamada 18/09 | les étiquettes d'état |
+| `ui.bouton` | **plein** (D-96, Style Ava) · contour · fantome · souligne | Hamada 18/09 | les boutons d'action, **indépendants des pastilles** |
+| `ui.carte` | **aucun** (D-96, Style Ava) · cadre · gauche · droite · haut · bas · plein | Hamada 18/09, élargi le 19/09 | où se pose le trait coloré d'une carte. ⛔ Pourquoi seulement à gauche ? |
 | `ui.carte.libelle` | **couleur** · neutre | Hamada 19/09 | le libellé d'une tuile prend la couleur de sa bande, ou reste du texte. ⛔ ARDOISE FUN = `neutre` : « juste les barres à gauche, c'est tout » |
 | `ui.menu.entrees` | **les 13 entrées du template Avaliance** · toute liste ordonnée | Hamada 19/09 | ⭐ **chaque société compose son menu** — même patron que `ui.rail.outils`. ⛔ Un menu n'est pas une permission : masquer une entrée range, ça ne protège rien |
 | `ui.notes` | **infobulle** · sous_le_titre · aucune | Hamada 19/09 | ⭐ Une explication ne s'écrit pas sous un titre : un « ? » discret, et le texte **au survol**. `sous_le_titre` la remet en paragraphe — pour une formation ou une reprise |
