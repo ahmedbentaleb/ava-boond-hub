@@ -183,7 +183,7 @@ délègue ces lignes, sans une ligne de code.
 
 | Commande | IA | RH | RR | ÉVAL | STAF | DP | RES | ADM | SUP |
 |---|---|---|---|---|---|---|---|---|---|
-| `SetOwnDashboardWidgets` | S | S | S | S | S | S | S | S | S |
+| `SetOwnDashboardWidgets` · `SetOwnListColumns` *(D-103)* | S | S | S | S | S | S | S | S | S |
 
 ## Applications — mail, sélection, documents, Outlook, paie *(24/09)*
 

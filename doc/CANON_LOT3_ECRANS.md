@@ -146,7 +146,7 @@ porte croisée des commandes juge les écritures.
 
 ## 5 · Le lot 3 en commandes nouvelles
 
-**Une seule** : `SetOwnDashboardWidgets` (L4 §IX, lot 5.7 — écart Design 17). Pour le reste, le lot 3 n'ajoute **que des lectures** et des formulaires générés : toutes ses autres actions sont des
+**Deux** : `SetOwnDashboardWidgets` (L4 §IX, lot 5.7 — écart Design 17) et `SetOwnListColumns` (D-103 : le choix des colonnes d'une liste, par compte ; `SetOwnTheme` reste l'apparence seule). Pour le reste, le lot 3 n'ajoute **que des lectures** et des formulaires générés : toutes ses autres actions sont des
 commandes du lot 2 déjà servies et déjà gardées. Ce qui demande une commande nouvelle (export, actions sur une
 sélection, envoi de mail…) est au lot 5.8.
 

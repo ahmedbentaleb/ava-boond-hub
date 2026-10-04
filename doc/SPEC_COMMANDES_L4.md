@@ -239,6 +239,7 @@ catégorie existante, renomme un libellé, réordonne, désactive. ⭐ **C'est c
 | Commande | Entrée | Sortie | Refuse si | Événement | Politique | Mur |
 |---|---|---|---|---|---|---|
 | `SetOwnDashboardWidgets` | liste de widgets | le compte | `GARDE` widget inconnu | `DashboardWidgetsSet` | `ui.tableau_de_bord.widgets` | — |
+| `SetOwnListColumns` *(D-103, 05/10)* | liste (code du catalogue), colonnes (liste ordonnée) | le compte, `ui.liste.<liste>.colonnes` | `GARDE` liste inconnue · `GARDE` colonne hors du catalogue de cette liste | `ListColumnsSet` | `ui.liste.<liste>.colonnes` | — |
 
 ⭐ **Compte au 24/09 : 55 + 22 = 77 commandes.** ⛔ Les 22 nouvelles ne se codent qu'**après** le lot 2
 accepté : elles forment le lot « RH et facturation » (étape 5.8).
