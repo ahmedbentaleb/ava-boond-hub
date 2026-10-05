@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>À faire</title>
+<style>
+:root{--bg:#fafaf8;--t1:#1d1d1f;--t2:#5d5d5d;--t3:#9a9a9a;--carte:#fff;--bord:#d9d8d2;--accent:#7C3AED;--ok:#1E5B3A;--cours:#D9A21B;--vide:#b9b8b2;--toi:#C2185B}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121214;--t1:#f1f1f3;--t2:#a9a8b2;--t3:#6e6d76;--carte:#1b1b1f;--bord:#2e2e35;--accent:#A78BFA;--ok:#34D399;--cours:#E9B949;--vide:#4a4a52;--toi:#F472B6}}
+:root[data-theme="dark"]{--bg:#121214;--t1:#f1f1f3;--t2:#a9a8b2;--t3:#6e6d76;--carte:#1b1b1f;--bord:#2e2e35;--accent:#A78BFA;--ok:#34D399;--cours:#E9B949;--vide:#4a4a52;--toi:#F472B6}
+body{margin:0;background:var(--bg);color:var(--t1);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+main{max-width:760px;margin:0 auto;padding:20px 16px 56px}
+a{color:var(--accent)} .nav{font-size:14px}
+h1{font-size:26px;font-weight:600;margin:6px 0 2px} .sous{color:var(--t2);margin:0 0 18px}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:22px}
+.chiffre{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:10px 14px}
+.chiffre b{display:block;font-size:28px;font-weight:600;line-height:1.1}.chiffre span{font-size:13px;color:var(--t2)}
+h2{font-size:15px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t2);margin:26px 0 8px;display:flex;align-items:center;gap:8px}
+h2 i{width:10px;height:10px;border-radius:50%;display:inline-block}
+ol,ul{list-style:none;margin:0;padding:0}
+li{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:10px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:baseline;font-size:16px}
+li .n{font-family:ui-monospace,Consolas,monospace;color:var(--t3);min-width:22px;font-size:14px}
+li .qui{margin-left:auto;font-size:13px;color:var(--t2);white-space:nowrap;padding-left:10px}
+.cours li{border-left:4px solid var(--cours)} .ensuite li{border-left:4px solid var(--vide)}
+.toi li{border-left:4px solid var(--toi)} .fait li{border-left:4px solid var(--ok);color:var(--t2);font-size:15px;padding:7px 14px}
+.star{color:var(--cours)}
+@media (max-width:520px){li{flex-wrap:wrap}li .qui{margin-left:34px;padding-left:0}}
+</style></head><body><main>
+<p class="nav"><a href="index.html">← Hub</a> · <a href="controle.html">Le système de contrôle</a></p>
+<h1>À faire</h1>
+<p class="sous">Mis à jour le 05/10 à 20h45 · le BRAIN commande toutes les sessions</p>
+
+<div class="chiffres">
+<div class="chiffre"><b>8</b><span>en cours</span></div>
+<div class="chiffre"><b>6</b><span>ensuite</span></div>
+<div class="chiffre"><b>4</b><span>pour toi seul</span></div>
+</div>
+
+<h2><i style="background:var(--cours)"></i>En cours</h2>
+<ol class="cours">
+<li><span class="n">1</span>Finir son dernier lot (prompt 14)<span class="qui">Grok</span></li>
+<li><span class="n">2</span>Rôles « infra » et « doc » — débloque deux sessions<span class="qui">Juge</span></li>
+<li><span class="n">3</span>Sabotage et démo dans le cliquet<span class="qui">Juge</span></li>
+<li><span class="n">4</span>Route en double : la démo ne démarre plus<span class="qui">Code Lot 3</span></li>
+<li><span class="n">5</span>Lien Positionnements cassé, noms des champs<span class="qui">Code Lot 3</span></li>
+<li><span class="n">6</span>Démo complète, puis mesure de vitesse<span class="qui">Test</span></li>
+<li><span class="n">7</span>Installation, sauvegarde, restauration (sur ce PC)<span class="qui">Code Infra</span></li>
+<li><span class="n">8</span>Guides DP, RES, ADM (STAF fait)<span class="qui">Doc</span></li>
+</ol>
+
+<h2><i style="background:var(--vide)"></i>Ensuite</h2>
+<ol class="ensuite">
+<li><span class="n">9</span>Grok n'écrit plus → Code 2 reprend son poste<span class="qui">BRAIN → Code 2</span></li>
+<li><span class="n">10</span>Test « l'écran = le canon, ni plus ni moins »<span class="qui">Juge</span></li>
+<li><span class="n">11</span>Tests de l'infrastructure<span class="qui">Juge</span></li>
+<li><span class="n">12</span><span><span class="star">★</span> 12e audit (lots 2, 3, 2c) — dès que tout est vert</span><span class="qui">BRAIN → Audit</span></li>
+<li><span class="n">13</span>Verdict : accepté → lot 5.8 · refusé → on corrige<span class="qui">BRAIN</span></li>
+<li><span class="n">14</span>Lot 5.8 : RH, facturation, applications<span class="qui">codeurs</span></li>
+</ol>
+
+<h2><i style="background:var(--toi)"></i>Toi seul</h2>
+<ul class="toi">
+<li>Le vrai serveur, ses mots de passe, la bascule</li>
+<li>Microsoft Entra</li>
+<li>Question R11 à Avaliance : staffer entre agences ?</li>
+<li>L'essai en parallèle de Boond</li>
+</ul>
+
+<h2><i style="background:var(--ok)"></i>Fait</h2>
+<ul class="fait">
+<li>Cartographie de Boond</li>
+<li>Canon V1 : modèle, réglages, droits</li>
+<li>Lot 2 : 11 audits, 0 fuite entre agences</li>
+<li>Lot 3 : les 28 écrans, listes rapides</li>
+<li>Lot 2c : connexion Microsoft (sur un faux Microsoft local)</li>
+<li>Jeu de démonstration</li>
+<li>Doc : Premiers pas, glossaire, guide STAF</li>
+<li>Copie pour Kawtar</li>
+</ul>
+</main></body></html>
