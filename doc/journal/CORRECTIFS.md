@@ -439,3 +439,12 @@ Prêt pour le onzième audit.
 | V-190 | tous les contacts de l'unité ; contact exigé en régie | P-355 | `not ok` — S-PR1 C2 reste prospect ; S-PC5 acceptée | `ok` — P-355, 0 ligne fausse | `0eee204` |
 | V-193 | une seule horloge | P-366 | `not ok` — dates du jour lues par Node ou CURRENT_DATE | `ok` — P-366 | `0eee204` |
 | V-194 | B1 et D3 renvoient à la porte AST | déclaré | la grille pointait un grep | le BRAIN a tranché ✅ : la porte AST | décision D-57 du BRAIN |
+| V-166 | une prestation naît previsionnelle | P-367 | `not ok` — `CreatePrestation {"etat":"signee"}` naît `engage` | `ok` — P-367 ; P-362 reste à 0 écart | `4df9368` |
+| V-168 | l'état lu décide quand il diverge de l'écrit | P-501 | `ETAT` — requalifier vers le code client alors que la vue lit déjà prospect | `ok` — P-501, `ok: true` | `51271d5` |
+| V-169 | une entrée bien typée n'est ni 500 ni MUR | P-502 | `ETAT` — `code_inconnu` ; une date `2026-02-30` ou un tjm à 30 chiffres partait en erreur interne | `ok` — P-502, date, liste et décimal en `GARDE`, code inconnu en `GARDE` | `51271d5` |
+| V-170 | une session absente reste tracée ; l'anonyme hors banc ne l'est pas | P-506 | un refus sans objet compte n'écrivait rien, y compris le groupe inconnu | `ok` — P-506, `session absente` tracée ; P-066, hors banc non tracé ; P-267, le profil RES est reposé | `51271d5` |
+| V-171 | CreateUnit nomme son agence par référence | P-507 | `agence` et `agence_id` en rôle valeur : l'agence nommée n'était pas résolue | `ok` — P-507, CreateUnit `{agence_id}` accepté | `51271d5` |
+| V-172 | les deux clés transverses couvrent toutes les commandes | P-508 | le générateur ne listait que `UpdateNeed` | `ok` — P-508, `CreateCompany` et `UpdateNeed` présents | `51271d5` |
+| V-173 | la politique de la cascade est dans l'événement | P-503 | `ProjectCreated` sans `societe.passage_client.declencheur` dans `liens.politiques` | `ok` — P-503, la clé est une chaîne | `51271d5` |
+| V-174 | ArchiveContact `{id}` sans motif | P-504 | `GARDE` motif exigé ; `DROIT` sur le groupe IA | `ok` — P-504, contact archivé | `51271d5` |
+| V-175 | les trois rappels soi-même sortent des commandes | P-505 | `exigeSoiMeme` encore appelé dans RecordTimesheet, RecordAbsence, UploadDocument | `ok` — P-505, plus aucun appel ; `soiSurCettePersonne` reste dans la garde | `51271d5` |

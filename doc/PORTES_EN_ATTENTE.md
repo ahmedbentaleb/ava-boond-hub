@@ -195,7 +195,7 @@ tombe était ✅ ou ⏳, et la case redevient du tout-ou-rien.
 | P-364 | 04/10, `lot-2-brain` | 04/10 : **25 sites** — 5 `ORDER BY ordre` (cycle.ts ×2, projet.ts ×2, crm.ts), 4 codes comparés à un code choisi (projet.ts:29, :53, :304, :731), `ctx.commande ===` ×2 (agence.ts), `sauve.commande ===` (executer.ts), `SOI_MEME` (kernel.ts), 7 littéraux de code en SQL, 2 `?? "postes"`, l'aide de banc d'index.ts | le serveur lit `ordre`, des codes et des noms de commandes (CODE, V-180) | 0 site |
 | P-365 | 04/10, `lot-2-brain` | 04/10 : ordre inversé → 0 écart ; second code d'ordre 0 → **27 commandes** écrivent le code d'ordre 0 (`codeCategorie`), ValidateTimesheet et RejectTimesheet refusent ETAT | le défaut se lit par `ordre`, pas par `par_defaut` (CODE, D-89) | 0 écart sur les deux passes |
 | P-366 | 04/10, `lot-2-brain` | 04/10 : jour du banc 2031-03-17 → ArchiveContact, ArchiveObject (`now()`), RecordQualification, CancelPrestation (`CURRENT_DATE`) écrivent 2026-10-04 | deux horloges (CODE, V-167) | les 8 commandes écrivent le jour de la base |
-| P-367 | 04/10, `lot-2-brain` | 04/10 : `CreatePrestation {etat: signee}` (acteur qui a aussi SignPrestation) fait naître une prestation `engage` | une transition hors de sa commande (CODE, V-166) | 0 écriture hors du tableau §7 ter |
+| P-367 | 04/10, `lot-2-brain` | 04/10 : `CreatePrestation {etat: signee}` (acteur qui a aussi SignPrestation) fait naître une prestation `engage` · 04/10 (E14) : `etat` accepté au lieu de GARDE ; sur un projet né d'un besoin, la naissance `engage` reste | une transition hors de sa commande (CODE, V-166) | 0 écriture hors du tableau §7 ter |
 
 ## ✅ P-339 — la porte croisée (D-36, 25/09) — LEVÉE le 30/09
 
@@ -263,3 +263,9 @@ s'excluent.
 moyen de le voir, c'est de **lancer le contrôle soi-même** — pas de le relire.
 
 </source>
+
+## ⏳ P-370 — la porte différentielle du lot 5.8 (K2, 04/10)
+
+| Porte | Posée | Vue rouge | Pourquoi ⏳ | Passe ✅ quand |
+|---|---|---|---|---|
+| P-370 | 04/10, `lot-2-brain` | 04/10 (jouée à la main) : le registre 5.8 hors grammaire (S-CE1 : « lu v_celebrations[*].lignes » ; S-TS1/TS2 : objet T non défini), puis 37 commandes du lot non servies | le lot 5.8 n'a pas de commande servie ; make.sh ne la joue qu'à la première (`lot58_servi.ts`) | chaque ligne du registre 5.8 tenue |

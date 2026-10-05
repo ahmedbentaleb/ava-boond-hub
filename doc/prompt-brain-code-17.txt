@@ -1,0 +1,44 @@
+AVA MANAGER — SESSION BRAIN CODE (« Code lot 2 ») — PRÉPARER LE JUGE DU LOT 5.8
+================================================================================
+05/10/2026. Le mot d'Ahmed est donné. Tu restes le juge des lots 2 et 3 ; tu
+PRÉPARES celui du lot 5.8 (RH, facturation, applications), pour que ses portes
+existent avant sa première commande.
+
+À lire : _ops/REGISTRE_EXECUTABLE_LOT58.md (même grammaire que le lot 2 ; 22 clés ;
+D-98 → D-102) ; SPEC_COMMANDES_L4.md §VII, §VIII, §X, §XI.
+
+Ton poste : ava-brain, branche lot-2-brain (le lot 5.8 n'a pas encore de branche
+de code ; tout ce que tu poses ici attend, ⏳ lot 5.8).
+
+
+K1  LE LECTEUR LIT AUSSI LE REGISTRE 5.8
+    registre_executable.mjs --verifier sur REGISTRE_EXECUTABLE_LOT58.md :
+    grammaire, colonnes existantes (information_schema), pluriel ⇒ 2
+    éléments, condition ⇒ deux côtés. ⛔ Ses clés ne s'ajoutent PAS aux
+    valeurs servies tant que le lot 5.8 n'est pas servi (règle 2).
+    Témoin : le registre 5.8 passe ; une colonne inventée → KO.
+    ⚠️ Si une colonne nommée manque en base, NE l'invente pas : dis-moi
+    laquelle, je corrige le registre ou je décide la migration.
+
+K2  LA PORTE DIFFÉRENTIELLE DU LOT 5.8, GÉNÉRÉE, ⏳
+    Générée comme celle du lot 2, déclarée ⏳ lot 5.8 dans
+    PORTES_EN_ATTENTE (une ligne pour l'ensemble) ; elle ne bloque rien
+    aujourd'hui et devient bloquante quand la première commande du lot 5.8
+    est servie.
+
+K3  LE SCHÉMA DES DÉCISIONS D-99 → D-101 (migration suivante libre)
+    - ref_type_action : catégories presentation_client et suivi_mission,
+      avec leurs codes (D-101)
+    - les vues de lecture d'horloge (D-53) : v_documents_a_renouveler,
+      v_factures_a_relancer, v_celebrations — telles que le registre 5.8
+      les lit (colonnes nommées dans ses issues)
+    - ⛔ aucun GRANT d'écriture nouveau (D-34 : le GRANT vient avec la
+      commande) ; SendAlertReport et l'acteur `systeme` (D-99) attendent
+      le lot 5.8
+    Témoin : les trois vues répondent sur la base de démonstration
+    (AVA_DB=ava_demo n'est pas à toi : refais-la dans ava_brain avec
+    `make.sh demo` si tu en as besoin).
+
+Ce que tu ne fais jamais : server/ web/ ; fusionner sur main, pousser.
+Tu rends : une ligne dans _ops/JOURNAL_BUGS.md, puis « lot-2-brain est prêt :
+git merge lot-2-brain. » à « Ava Manger Brain ».

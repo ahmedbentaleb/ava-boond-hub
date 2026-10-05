@@ -1,4 +1,4 @@
-# TODO — Ava Manager (mis à jour le 05/10)
+# TODO — Ava Manager (mis à jour le 05/10, 17h)
 
 ## ✅ Fait
 
@@ -13,24 +13,28 @@
 
 ## ⏳ En cours
 
+- [ ] ⭐ Connexion Microsoft (lot 2c) : canon écrit (05/10), code — Code Lot 3, juge — Brain Code
+
 - [ ] Pastilles des états en base (D-82) — Code lot 2
 
 - [ ] Lot 2 : Grok corrige les 22 lignes rouges (prompt 12)
-- [ ] Lot 3 : les écrans, étape 1 (le cadre) — Code Lot 3
-- [ ] Jeu de démonstration : le script — Test
+- [x] Lot 3 : les 28 écrans livrés, forme Style Ava (D-114), listes rapides (PF-1, PF-2 : 1 605 → 109 ms) — Code Lot 3
+- [x] Jeu de démonstration : script + mesures DEMO-1 → DEMO-9 — Test
 - [ ] Apparence par défaut = Style Ava (D-96) — Code lot 2
-- [x] Registre exécutable du lot 5.8 — Brain (22 clés, D-98 → D-102)
+- [x] Registre exécutable du lot 5.8 — Brain (23 clés, D-98 → D-102)
 
 ## ⬜ Pas fait
 
 - [ ] Douzième audit du lot 2
-- [ ] Connexion Microsoft (lot 2c)
 - [ ] RH, facturation, applications (lot 5.8)
 - [ ] Essai de deux semaines, puis un mois en parallèle de Boond
 - [ ] Serveur, sauvegardes, documentation, bascule, livraison
 - [ ] Console éditeur (après la livraison)
 
 ## ⛔ Bloqué
+
+- [ ] ⭐ Lot 2 : Grok n'a pas reçu son bloc (E7 → E21) — à coller par Hamada dans Cursor ; bloque le 12e audit, la démo (E13) et la fusion du lot 3
+- [ ] Lot 2c en réel : l'application à déclarer chez Microsoft Entra — Hamada seul
 
 - [ ] Douzième audit : attend que le cliquet de Grok écrive « prêt »
 - [ ] Lot 5.8 en code : attend le lot 2 accepté

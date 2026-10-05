@@ -27,7 +27,7 @@
 
 <etat>
 
-## 1 · Les 22 clés lues par une commande du lot 5.8
+## 1 · Les 23 clés lues par une commande du lot 5.8
 
 ### RH — coût, contrats, documents, blacklist, données sensibles
 
@@ -118,7 +118,7 @@ données sensibles se saisissent par `UpdateSensitiveHrData`, sous la permission
 | `confidentialite.autorisee` | oui | SetConfidential | S-CF1 | ok · profil_candidat[K].confidentiel = true |
 | `confidentialite.autorisee` | non | SetConfidential | S-CF1 | refus GARDE |
 
-- **S-TS1** — `temps.validation = par_dp` ; 5 lignes `a_valider` de la ressource R pour la semaine ; `ValidateTimesheet` par le DP, **sans** document de signature.
+- **S-TS1** — `temps.validation = par_dp` ; 5 lignes `a_valider` de la ressource R pour la semaine, **T** étant la première ; `ValidateTimesheet` des 5 par le DP, **sans** document de signature.
 - **S-TS2** — idem, avec `signature_document_id` (la feuille signée, déposée par `UploadDocument`). ⭐ **D-100** : la signature d'une feuille de temps est un document joint à la validation ; pas de commande de plus.
 - **S-AM1** — `CreateAction` de type de catégorie **`presentation_client`**, avec **trois** porteurs (trois contacts) : une action par porteur, chacune à un seul porteur (M-9 tient).
 - **S-AM2** — même appel avec un type de catégorie `defaut` : la création multiple ne vaut que pour `presentation_client` et `suivi_mission`. ⭐ **D-101** : `ref_type_action` reçoit ces deux catégories et leurs codes.
@@ -147,8 +147,8 @@ données sensibles se saisissent par `UpdateSensitiveHrData`, sous la permission
 | `outlook.synchro` | non | RecordOutlookMail | S-OU2 | refus GARDE |
 | `paie.export.format` | xlsx | ExportPayroll | S-PA1 | ok · preparation_paie[N].etat = exportee · événement PayrollExported |
 | `paie.export.format` | csv | ExportPayroll | S-PA1 | ok · preparation_paie[N].etat = exportee · événement PayrollExported |
-| `celebrations.types` | ["anniversaire","anciennete","arrivee"] | (lecture) | S-CE1 | lu v_celebrations[*].lignes = 3 |
-| `celebrations.types` | ["anciennete","arrivee"] | (lecture) | S-CE1 | lu v_celebrations[*].lignes = 2 |
+| `celebrations.types` | ["anniversaire","anciennete","arrivee"] | (lecture) | S-CE1 | lu lignes v_celebrations = 3 |
+| `celebrations.types` | ["anciennete","arrivee"] | (lecture) | S-CE1 | lu lignes v_celebrations = 2 |
 
 - **S-EM1** — `SendEmail` à **deux** contacts de PAR, objet et corps donnés, par un compte de PAR. ⚠️ Au banc, le fournisseur est un **faux** (aucun mail ne part) ; le fournisseur réel est branché au lot 2c.
 - **S-EM2** — `SendEmail` à **201** contacts.

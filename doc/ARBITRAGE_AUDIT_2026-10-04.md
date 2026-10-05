@@ -85,6 +85,14 @@ seul** code, index unique partiel), administrable ; le code lit la **catégorie*
 | V-194 | les contrôles B1 et D3 de la grille renvoient à la porte AST, plus à un grep | BRAIN ✅ |
 | V-166 → V-175 (10e tour) | **chacun** fermé avec sa porte, ou déclaré avec décision (D-83) | CODE |
 
+## D-105 (05/10) — les migrations sont un fichier du juge
+
+Mesuré : le codeur a écrit 027, 028, 029 (`0eee204`) malgré D-40 ; Brain Code a dû renuméroter les siennes (030,
+031), alors que le lot 3 avait déjà fusionné les anciens numéros. ⭐ `db/migrations/` entre dans les fichiers du
+juge (case 22) : une migration n'arrive sur `lot-2` (et `lot-3`) que par une fusion de la branche du juge. Les trois
+migrations du codeur sont relues et adoptées par Brain Code (liste `JUGE_ADOPTES`). Le lot 3 a sa propre case 22,
+mesurée contre `lot-3-brain`.
+
 <source>
 
 Rapport : `audits-independants/ava-audit-11/rapport/` (SYNTHESE, CONSTATS, SUIVI_V, REGISTRE, MUTATIONS, SECURITE,

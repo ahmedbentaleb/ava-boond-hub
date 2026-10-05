@@ -39,6 +39,7 @@
 | `alerte CODE` · `sans alerte` | l'alerte est rendue · aucune alerte |
 | `événement Nom` | un événement `Nom` est écrit |
 | `lu V[O].c = v` · `cat(V[O].c) = k` | une **vue** (D-53) rend `v` |
+| `lu lignes V = n` | la vue `V` rend exactement `n` lignes pour le scénario (05/10, registre 5.8) |
 
 ⛔ **Rien d'autre.** Une phrase sous un tableau ne spécifie rien : toute règle est une ligne (V-183).
 ⛔ **Une issue au pluriel** (« les contacts de U1 ») a un scénario **à deux éléments au moins** ; **une règle
@@ -52,6 +53,7 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 | 1 | ⭐ **Une valeur est servie si et seulement si elle a au moins une ligne ici.** `politique_admise`, `COMPORTEMENTS`, `POLITIQUE_COMMANDES`, `valeurs_possibles` sont des **sorties** du générateur, jamais écrites à la main |
 | 2 | Une clé **absente** d'ici : seul son **défaut** est servi. `SetPolicy` → `refus GARDE` sur toute autre valeur |
 | 3 | **Différentiel** : chaque scénario d'une clé est joué sous **chaque** valeur servie ; deux valeurs à l'issue identique sur **tous** → rouge, sauf alias au §3 |
+| 3 bis | ⭐ **D-108 — une clé nombre se juge à son SEUIL, pas deux à deux** (Q-026). Deux valeurs du même côté d'un seuil ont la même issue par construction : ce n'est ni un défaut ni un alias. Chaque scénario d'une clé nombre écrit sa **comparaison** (ex. « prospect si fin + délai ≤ date du jour ») et porte une ligne aux **deux valeurs adjacentes** du seuil (le seuil, et le seuil moins un pas) : leurs issues diffèrent. Rouge : une paire adjacente à l'issue identique, ou une clé nombre dont aucun scénario ne change d'issue entre son min et son max |
 | 4 | ⭐ **D-85 — une politique liste ne sert que les listes écrites** (forme canonique) ; `[]`, un doublon, une autre combinaison → `refus GARDE`. Le domaine sert au lecteur à valider ce qui est écrit, il n'élargit rien |
 | 5 | ⭐ **D-86 — une politique nombre sert une plage** `[min, max]` écrite au §2, avec une ligne au **min**, au **max** et au **défaut** ; une écriture non canonique (`0100`) → `refus GARDE` |
 | 6 | **Les politiques se posent par `SetPolicy`** (chemin de l'administrateur, HTTP) — jamais en SQL, ni dans la porte ni dans les fixtures (V-181) |
@@ -106,6 +108,9 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 | `societe.retour_prospect.delai_mois` | 12 | (lecture) | S-RP3 | cat(v_societe_statut[A].statut_lu_code) = client |
 | `societe.retour_prospect.delai_mois` | 1 | (lecture) | S-RP6 | cat(v_societe_statut[A].statut_lu_code) = prospect |
 | `societe.retour_prospect.delai_mois` | 24 | (lecture) | S-RP3 | cat(v_societe_statut[A].statut_lu_code) = client |
+| `societe.retour_prospect.delai_mois` | 7 | (lecture) | S-RP3 | cat(v_societe_statut[A].statut_lu_code) = prospect |
+| `societe.retour_prospect.delai_mois` | 8 | (lecture) | S-RP3 | cat(v_societe_statut[A].statut_lu_code) = client |
+| `societe.retour_prospect.delai_mois` | 2 | (lecture) | S-RP6 | cat(v_societe_statut[A].statut_lu_code) = client |
 
 - **S-RP1** — société A (PAR) de catégorie `client` ; projet P1 ; prestation X1 `engage` (01/09 → 31/12/2026), **la seule** `engage` de A ; `ClosePrestation X1` au 15/10.
 - **S-RP5** — idem, avec une **seconde** prestation X2 `engage` sur A : X1 close, X2 reste → A reste cliente.
@@ -113,7 +118,7 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 - **S-RP3** — A `client`, sa dernière prestation `engage` a fini le 15/03/2026 (7 mois) ; `societe.retour_prospect = auto_apres_delai` sauf la ligne `manuel` ; on lit la vue.
 - **S-RP6** — A `client`, dernière fin le 15/09/2026 (1 mois) ; `delai_mois = 6` sauf mention.
 - **S-RP4** — A `client`, sans prestation ; `RequalifyCompany A` vers un code de catégorie `prospect`.
-- **Plage** de `societe.retour_prospect.delai_mois` : entier **1 → 24**, défaut 6.
+- **Plage** de `societe.retour_prospect.delai_mois` : entier **1 → 24**, pas 1, défaut 6. **Comparaison** (D-108) : lue `prospect` si date de fin de la dernière prestation + `delai_mois` ≤ date du jour. Seuils : S-RP3 (15/03 → 15/10) entre 7 et 8 ; S-RP6 (15/09 → 15/10) entre 1 et 2.
 
 | clé | valeur | commande | scénario | issue |
 |---|---|---|---|---|
@@ -324,6 +329,10 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 | `projet.contact` | obligatoire | CreateProjectFromNeed | S-PC4 | refus GARDE |
 | `projet.contact` | service_ou_societe | CreateProjectFromNeed | S-PC5 | refus GARDE |
 | `projet.contact` | service_ou_societe | SetPolicy | S-PC6 | ok |
+| `projet.contact` | service_ou_societe | CreateProjectFromNeed | S-PC7 | ok · projet[N].contact_id = C1 · projet[N].unite_organisation_id = NULL |
+| `projet.contact` | service_ou_societe | CreateProjectFromNeed | S-PC8 | ok · projet[N].contact_id = NULL · projet[N].unite_organisation_id = NULL |
+| `projet.contact` | service_ou_societe | CreateProjectFromNeed | S-PC9 | ok · projet[N].contact_id = C1 · projet[N].unite_organisation_id = U1 |
+| `projet.contact` | obligatoire | CreateProjectFromNeed | S-PC9 | ok · projet[N].contact_id = C1 · projet[N].unite_organisation_id = U1 |
 | `projet.origine_besoin` | facultative | CreateProject | S-PO1 | ok · projet[N].besoin_id = NULL |
 | `projet.origine_besoin` | obligatoire | CreateProject | S-PO1 | refus GARDE |
 | `besoin.projets_max` | illimite | CreateProjectFromNeed | S-PX1 | ok · lignes projet = 1 |
@@ -344,6 +353,9 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 - **S-PC4** — B1 avec `origine_code = appel_offres`, un positionnement retenu ; `CreateProjectFromNeed` sans contact, **avec** l'unité U1.
 - **S-PC5** — B1 `origine_code = regie` ; `CreateProjectFromNeed` sans contact, **avec** l'unité U1 : ⛔ en régie le contact est exigé même si une unité est donnée (R10, V-190).
 - **S-PC6** — `SetPolicy projet.contact = service_ou_societe` : ⛔ une valeur servie s'atteint par `SetPolicy` (V-181).
+- **S-PC7** — B1 `origine_code = regie`, un positionnement retenu ; `CreateProjectFromNeed` **avec** le contact C1, **sans** unité : en régie, le contact suffit.
+- **S-PC8** — B1 `origine_code = appel_offres` ; `CreateProjectFromNeed` **sans** contact **ni** unité : l'interlocuteur est la société entière (R10).
+- **S-PC9** — B1 `origine_code = regie` ; `CreateProjectFromNeed` avec le contact C1 **et** son unité U1 : ⭐ **D-106** — un contact et son unité ensemble sont un interlocuteur valide sous toutes les valeurs ; aucun des deux n'efface l'autre.
 - **S-PO1** — `CreateProject` N sur A avec un contact C1, sans besoin d'origine.
 - **S-PX1** — B1 a déjà un projet P0 ; un positionnement retenu ; `CreateProjectFromNeed` d'un second, contact C1.
 - **S-DG1** — B1 sans positionnement de catégorie `terminal_positif` ; `CreateProjectFromNeed`, contact C1.
@@ -386,6 +398,8 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 | `prestation.surcharge.seuil_pct` | 50 | CreatePrestation | S-SU2 | ok · alerte SURCHARGE |
 | `prestation.surcharge.seuil_pct` | 300 | CreatePrestation | S-SU2 | ok · sans alerte |
 | `prestation.surcharge.seuil_pct` | 200 | CreatePrestation | S-SU2 | ok · sans alerte |
+| `prestation.surcharge.seuil_pct` | 149 | CreatePrestation | S-SU2 | ok · alerte SURCHARGE |
+| `prestation.surcharge.seuil_pct` | 150 | CreatePrestation | S-SU2 | ok · sans alerte |
 | `prestation.surcharge.seuil_pct` | 0100 | SetPolicy | S-SU3 | refus GARDE |
 | `prestation.annulation.garde` | aucun_temps_saisi | CancelPrestation | S-PA1 | refus GARDE |
 | `prestation.annulation.garde` | libre | CancelPrestation | S-PA1 | ok · prestation[X1].etat_categorie = annule |
@@ -394,7 +408,7 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 - **S-SU1** — ressource R (PAR) déjà `engage` à 100 % du 01/11 au 30/11/2026 ; `CreatePrestation` à 50 % sur la même période ; seuil au défaut.
 - **S-SU2** — comme S-SU1, `prestation.surcharge.mode = alerte` ; occupation résultante 150 %.
 - **S-SU3** — `SetPolicy prestation.surcharge.seuil_pct = 0100` (forme non canonique).
-- **Plage** de `prestation.surcharge.seuil_pct` : entier **50 → 300**, défaut 100.
+- **Plage** de `prestation.surcharge.seuil_pct` : entier **50 → 300**, pas 1, défaut 100. **Comparaison** (D-108) : surcharge si occupation résultante **>** `seuil_pct`. Seuil de S-SU2 (150 %) entre 149 et 150.
 - **S-PA1** — X1 `engage` avec 3 lignes de temps ; `CancelPrestation X1` avec motif.
 
 ### Temps, clôture, marge
@@ -412,11 +426,12 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 | `temps.mois_ouvert.grace_jours` | 0 | RecordTimesheet | S-TP4 | refus GARDE |
 | `temps.mois_ouvert.grace_jours` | 15 | RecordTimesheet | S-TP4 | ok · lignes temps = 1 |
 | `temps.mois_ouvert.grace_jours` | 2 | RecordTimesheet | S-TP4 | refus GARDE |
+| `temps.mois_ouvert.grace_jours` | 3 | RecordTimesheet | S-TP4 | ok · lignes temps = 1 |
 
 - Prestation X `engage` du 01/09/2026 au 31/12/2026, ressource R de PAR, saisie de 1.0 j.
 - **S-TP1** — saisie au 14/10/2026. **S-TP2** — saisie au 15/01/2027. **S-TP3** — saisie au 10/09/2026.
 - **S-TP4** — date du jour **03/10/2026**, saisie au 30/09/2026 ; `temps.periode = dates_prestation_et_mois_ouvert` sous les lignes de `grace_jours`.
-- **Plage** de `temps.mois_ouvert.grace_jours` : entier **0 → 15**, défaut 5.
+- **Plage** de `temps.mois_ouvert.grace_jours` : entier **0 → 15**, pas 1, défaut 5. **Comparaison** (D-108) : saisie admise sur un mois clos si date du jour ≤ dernier jour de ce mois + `grace_jours`. Seuil de S-TP4 (30/09 → 03/10) entre 2 et 3.
 
 | clé | valeur | commande | scénario | issue |
 |---|---|---|---|---|
@@ -432,11 +447,13 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 | `capacite.jour_ouvre` | 1.5 | RecordTimesheet | S-PJ3 | ok · lignes temps = 1 |
 | `capacite.jour_ouvre` | 0.5 | RecordTimesheet | S-PJ3 | refus GARDE |
 | `capacite.jour_ouvre` | 2.0 | RecordTimesheet | S-PJ3 | ok · lignes temps = 1 |
+| `capacite.jour_ouvre` | 1.2 | RecordTimesheet | S-PJ3 | refus GARDE |
+| `capacite.jour_ouvre` | 1.3 | RecordTimesheet | S-PJ3 | ok · lignes temps = 1 |
 
 - **S-PJ1** — R a **une** ligne de 0.8 j le 14/10 ; on saisit **une seconde** ligne de 0.5 j le même jour (total 1.3), sans motif de dérogation.
 - **S-PJ2** — idem, avec `derogation_motif = astreinte`. ⛔ Sous une autre valeur, la clé n'a pas d'effet : refusée (V-152).
 - **S-PJ3** — `temps.plafond_jour = refus` ; même saisie (0.8 + 0.5 = 1.3).
-- **Plage** de `capacite.jour_ouvre` : décimal **0.5 → 2.0**, défaut 1.0.
+- **Plage** de `capacite.jour_ouvre` : décimal **0.5 → 2.0**, pas 0.1 (une décimale, forme canonique `1.3`), défaut 1.0. **Comparaison** (D-108) : refus si total du jour **>** `jour_ouvre`. Seuil de S-PJ3 (0.8 + 0.5 = 1.3) entre 1.2 et 1.3.
 
 | clé | valeur | commande | scénario | issue |
 |---|---|---|---|---|
@@ -502,7 +519,7 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 - **S-AB1** — absence de R du 10 au 12/11/2026 ; nouvelle du 12 au 14/11. **S-AB2** — absence de R (PAR) sans prestation `engage` sur la période.
 - **S-UT1** — le demandeur D ; `SetOwnTheme` du thème **par défaut** (`ui.theme.defaut`).
 - **S-UT2** — `SetOwnTheme {"ui.palette":"zz_non_servie"}` : ⛔ **D-66** — chaque clé `ui.*` du thème passe par la garde des valeurs servies, comme `SetPolicy` ; aujourd'hui seuls les défauts des clés `ui.*` sont servis (règle 2), leurs autres valeurs entrent avec le registre du lot 3.
-- **S-DR1** — le groupe du demandeur a `UpdateNeed` sur le périmètre PAR ; **une ligne `compte_surcharge`** (compte du demandeur, `UpdateNeed`, ce périmètre) — toute ligne retire, la table n'a pas de sens (F28) ; `UpdateNeed` d'un besoin de PAR. La ligne `*` : même surcharge sur la commande jouée.
+- **S-DR1** — le groupe du demandeur a `UpdateNeed` sur le périmètre PAR ; **une ligne `compte_surcharge`** (compte du demandeur, `UpdateNeed`, ce périmètre) — toute ligne retire, la table n'a pas de sens (F28) ; `UpdateNeed` d'un besoin de PAR. La ligne `*` : même surcharge sur la commande jouée, ⭐ **avec l'entrée de son scénario positif** (la première ligne `ok` de cette commande ici, sinon la fixture de la porte croisée) : seul le droit manque, donc seul `DROIT` peut répondre (Q-028). Un `GARDE` sur la ligne `*` est une fixture fausse, jamais une issue.
 - **S-HT1** — compte sans `UpdateNeed` ; `UpdateNeed` d'un besoin de PAR. La ligne `*` : compte sans la commande jouée.
 - **S-HT2** — candidat K `brouillon` sans localisation ni e-mail ; `CompleteCandidate K` (refus GARDE au défaut des champs requis).
 
@@ -545,6 +562,29 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 - **S-K2** — `temps.validation = par_dp` ; `SetPolicy ca_produit.base = temps_valides`.
 - **S-K3** — `ca_produit.base = temps_valides`, `temps.validation = par_dp` ; `SetPolicy temps.validation = aucune`.
 
+## 2 bis · Les 2 clés du lot 2c (connexion, 05/10) — ⏳ lot 2c
+
+| clé | valeur | commande | scénario | issue |
+|---|---|---|---|---|
+| `auth.session.duree_heures` | 1 | (lecture) | S-SE1 | refus AUTH |
+| `auth.session.duree_heures` | 10 | (lecture) | S-SE1 | refus AUTH |
+| `auth.session.duree_heures` | 11 | (lecture) | S-SE1 | ok |
+| `auth.session.duree_heures` | 24 | (lecture) | S-SE1 | ok |
+| `auth.session.inactivite_minutes` | 15 | (lecture) | S-SE2 | refus AUTH |
+| `auth.session.inactivite_minutes` | 60 | (lecture) | S-SE2 | refus AUTH |
+| `auth.session.inactivite_minutes` | 61 | (lecture) | S-SE2 | ok |
+| `auth.session.inactivite_minutes` | 240 | (lecture) | S-SE2 | ok |
+
+- **S-SE1** — une session créée à T0, dernier accès à T0 + 9 h 59 ; on lit `/vues/besoins` à **T0 + 10 h**.
+  `auth.session.inactivite_minutes` au défaut.
+- **S-SE2** — une session créée à T0, dernier accès à T0 + 30 min ; on lit `/vues/besoins` à **T0 + 1 h 30**
+  (60 min sans appel). `auth.session.duree_heures` au défaut.
+- **Plage** de `auth.session.duree_heures` : entier **1 → 24**, pas 1, défaut 10. **Comparaison** (D-108) : la session
+  est refusée si maintenant ≥ création + `duree_heures`. Seuil de S-SE1 entre 10 et 11.
+- **Plage** de `auth.session.inactivite_minutes` : entier **15 → 240**, pas 1, défaut 60. **Comparaison** (D-108) :
+  refusée si maintenant ≥ dernier accès + `inactivite_minutes`. Seuil de S-SE2 entre 60 et 61.
+- `refus AUTH` = réponse 401 « session requise », la session est supprimée, et le refus est tracé (D-92).
+
 ## 3 · Alias déclarés
 
 | clé | valeurs | sur quels scénarios | motif | jusqu'à |
@@ -559,6 +599,8 @@ conditionnelle** a un scénario **de chaque côté** (V-190). Le lecteur le vér
 | **D-85** | une politique liste ne sert **que les listes écrites** (question 1 du 11e audit) |
 | **D-86** | une politique nombre sert une **plage écrite**, jouée au min, au max et au défaut |
 | **D-87** | quand une politique désigne la commande qui écrit une transition (`premier_positionnement` → `PositionCandidate`), **la transition fait partie de cette commande** : son droit suffit, ce n'est pas une cascade vers `TakeNeedInCharge` (question 2 du 11e audit). `MACHINES_ETAT_V1` dit, pour chaque transition, les commandes qui l'écrivent et sous quelle valeur |
+| **D-108** | (04/10, Q-026) une clé nombre se juge à son **seuil** : comparaison écrite, ligne aux deux valeurs adjacentes (règle 3 bis) ; aucun alias pour des valeurs du même côté |
+| **D-115** | (05/10) `COMPORTEMENTS` (`server/src/comportements.ts`) est **généré** par le juge du registre et de `LIBELLES_POLITIQUES.md` ; fichier du juge (case 22) ; une porte régénère et compare (0 écart) |
 | **D-88** | ce qu'une cascade transmet à sa fille passe par le **contexte serveur**, jamais par une clé d'entrée (V-182) |
 
 </etat>

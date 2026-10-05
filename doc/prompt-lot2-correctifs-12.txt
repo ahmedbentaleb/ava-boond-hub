@@ -85,3 +85,94 @@ E5 LES 8 DU 10e TOUR, chacun avec sa porte :
 Base refaite, make test, cliquet complet : c'est SA dernière ligne qui dit
 « prêt pour le douzième audit » (D-83). git status vide. Rien d'autre.
 ⛔ Pas de fusion ni de report sur main : c'est le BRAIN.
+
+
+4. COMPLÉMENT DU BRAIN — 05/10 (migrations 030, 031, 032 de Brain Code — ex-027/028, renumérotées)
+───────────────────────────────────────────────────────────────────
+Après « git merge lot-2-brain » :
+E7  SetOwnTheme passe par politique_admise : {ui.mode: sombre} doit être
+    REFUSÉ (D-66, D-96) — il est accepté aujourd'hui.
+E8  COMPORTEMENTS se régénère avec les nouveaux défauts ui.* (D-96 :
+    ava_avaliance, clair, lato, aucune, ava, carre_plein, plein, aucun) :
+    P-352 doit repasser au vert.
+E9  ManageRefs écrit ref_pastille_categorie (D-82, migration 031) ; dis-le
+    dans journal/QUESTIONS.md pour que Brain Code ajoute son GRANT (D-34).
+E10 CreateNeed déclare `origine_code` (régie · appel d'offres, R10) : sans lui,
+    aucun besoin n'est « appel d'offres » et S-PC3 / S-PC4 ne s'écrivent pas
+    (question Q-D01 de la session Démo).
+E11 V-186 : le serveur n'écrit RIEN au démarrage (assurerBancRes crée une
+    personne hors commande, puis échoue sur `compte`) — à retirer (Q-D04).
+
+E12 ⛔ D-105 : tu as écrit les migrations 027, 028, 029 (commit 0eee204). D-40 :
+    le codeur n'écrit AUCUNE migration. Brain Code les relit et les adopte ;
+    db/migrations/ devient un fichier du juge (case 22) : la prochaine
+    migration de ta main fera rougir le cliquet. Un besoin de schéma →
+    journal/QUESTIONS.md.
+E13 D-106 (REGISTRE_EXECUTABLE S-PC7 → S-PC9) : projet.ts:170-171 exige une
+    unité sous service_ou_societe — faux : en régie le contact suffit (S-PC7),
+    en appel d'offres rien n'est exigé (S-PC8, la société entière), et un
+    contact AVEC son unité est valide sous toutes les valeurs (S-PC9). La ligne
+    `contactEcrit = uniteId ? null : contactId` efface le contact : à retirer.
+    Depuis le défaut D-104, ce seul refus fait tomber ~190 portes du banc.
+E14 V-166 (MACHINES §7 ter) : CreatePrestation ne naît JAMAIS engagée, avec
+    ou sans besoin. Une entrée `etat` (ex. signee) à la création n'est pas une
+    clé admise : refus GARDE « entrée ambiguë » (D-37), jamais une
+    rétrogradation silencieuse en previsionnelle (4df9368 le fait en silence ;
+    et sur un projet AVEC besoin, la naissance engagée passe encore). La
+    signature se fait par SignPrestation, toujours.
+E15 Numéros de portes : ton test/contrat/tour12.test.ts (abcbba1) prend
+    P-368 → P-375, déjà au juge (P-368 pastilles, P-369 libellés, P-370
+    registre 5.8). Renumérote les tiens P-501 → P-508, dans le fichier et dans
+    tes lignes de CORRECTIFS.md. ⭐ Plages réservées désormais : juge du lot 2
+    P-300 → P-399, juge du lot 3 P-401 → P-499, TES portes P-501 → P-599.
+E16 V-180 / D-57 (relevé par le lot 3, porte P-265) : commandes/projet.ts
+    lignes 29, 53, 313, 371 écrivent « prospect » / « client » en dur. Lecture
+    par CATÉGORIE de ref_statut_commercial, écriture par son code par_defaut
+    (D-89) ; 0 littéral. P-265 passe verte.
+E17 D-45 / D-70 / D-81 (relevé par le lot 3, Q14) : DECLARATION est la seule
+    source des formulaires, et elle est incomplète. Pour CHAQUE clé d'entrée
+    des commandes servies :
+    - obligatoire, min, max, defaut : déclarés (ce que la garde applique
+      déjà, écrit une fois, lu par la garde ET par le formulaire) ;
+    - un champ `code` porte sa table de référentiel, LUE de la clé étrangère
+      de la colonne écrite (information_schema), jamais écrite à la main
+      (ex. CreateNeed.priorite_code → sa table ref_*) ; 69 champs ;
+    - ⛔ un seul nom par entrée (D-37) : CreateNeed `type` ET `type_code`,
+      `agence` alias `agence_id`… → un nom retenu, l'autre refusé GARDE
+      « entrée ambiguë ».
+    Témoin : P-403 (juge du lot 3) verte sur les 57 commandes servies.
+E18 D-71 (bouton honnête, relevé par le lot 3, Q18) : la garde d'une commande
+    n'existe pas comme fonction — elle est mêlée à l'effet dans chaque handler
+    (TakeNeedInCharge n'appelle exigeTransition que sous
+    commande_prise_en_charge ; ConvertCandidateToResource appelle
+    exigeActeurConversion dans son corps ; « identifiant manquant » levé par
+    agence.ts:441). L'écran ne peut donc pas annoncer un bouton sans réécrire
+    les règles. Par construction, pour CHAQUE commande servie :
+    - `garde(ctx)` : droit (exigeAgence sur l'objet), politiques, état ;
+      `effet(ctx)` : lecture de l'entrée, écritures. executer.ts appelle
+      garde puis effet ; aucune règle dans effet ;
+    - executer.ts exporte `jugerCommande(pool, nom, compte, contexte)` = la
+      garde seule, dans une transaction annulée, sans l'entrée du formulaire,
+      qui rend ok ou le refus (code + motif) ;
+    - une porte AST : 0 appel à exige*/politique dans un effet.
+    Témoin : P-404 (juge du lot 3) — 22 écarts aujourd'hui, 0 après.
+E19 D-79 (relevé par le lot 3, VT-1) : ValidateTimesheet et RejectTimesheet
+    prennent encore UN id (declaration.ts:2003 et 2038 ; projet.ts:786 lit
+    opt(id, temps_ids) = une valeur). Le canon : `temps_ids`, une LISTE,
+    min 1, jugée ligne par ligne dans UNE transaction (tout passe ou rien,
+    le refus nomme la ligne). `id` seul sort de la déclaration (D-37 : un
+    seul nom). Témoin : valider 3 temps d'une même semaine en un appel ;
+    un des 3 hors périmètre → refus DROIT, 0 ligne validée.
+E20 D-115 (05/10) : server/src/comportements.ts (COMPORTEMENTS) devient une
+    SORTIE du générateur du juge, régénérée du registre ; il entre dans les
+    fichiers du juge (case 22). Tu ne le modifies PLUS : il arrive par la
+    fusion de lot-2-brain. Il portait deux clés sans source
+    (reprise.donnees_rh_sensibles, ui.theme.personnalise) et l'ancien thème
+    par défaut. Ton E8 (COMPORTEMENTS régénéré) est donc repris par le juge.
+E21 P-346 instable (mesuré par le juge, 20 passes avec un corps de 1,1 Mo :
+    19 × « 400 Connection: close », 1 × ECONNRESET). Fastify (bodyLimit
+    1 048 576, index.ts:115) répond depuis setErrorHandler (index.ts:157,
+    413 → 400) AVANT d'avoir lu le corps, puis ferme : le client écrit
+    encore, la socket est remise à zéro, la réponse se perd. Sur un corps
+    trop gros : lire et jeter le reste du corps avant de fermer (ou
+    répondre sans fermer). Témoin : 20 passes sur 20 vertes.

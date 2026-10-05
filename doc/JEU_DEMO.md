@@ -76,6 +76,8 @@ futur client sans jamais montrer une donnée réelle.
 | 1 | Ce fichier | BRAIN | ✅ 05/10 |
 | 2 | Le script `outils/demo/` (HTTP, comptes par groupe, graine fixe), `make.sh demo` et `make.sh demo --pleine` | session **« Démo »** (Hamada, 05/10 : Brain Code reste au lot 2) — [prompt](prompt-demo-1.txt) | ⬜ |
 | 3 | La porte « chaque catégorie de chaque cycle existe dans la démo » | session « Démo » | ⬜ |
+| 5 | ✅ 05/10 : `make.sh demo` en 67 s, `--pleine` en 154 s, porte 10/10, reproductible ; temps de réponse mesurés (`test/demo/MESURES.md`) : 95e centile ≤ 28,7 ms pour les commandes, ≤ 16,8 ms pour les lectures. ⚠️ En taille pleine, **60 alertes SURCHARGE** sont attendues : 229 ressources portent 300 prestations (Q-D06) | session « Démo » | ✅ |
+| 6 | ⭐ Q-D07 (05/10) — le jeu nourrit **toutes** les colonnes et toutes les profondeurs qu'on mesure : des **actions sur une partie des candidats** (entretien, relance), pour que « Dernière action » se lise remplie ; et **une fiche chargée de plus de 150 événements** (un besoin repris et mis à jour plusieurs fois), pour mesurer la dernière page d'un historique. Au prochain `make.sh demo`, après E13 du lot 2 | session « Démo » | ⬜ |
 | 4 | Les commandes que le jeu appelle et qui n'existent pas encore (lot 5.8 : contrats, factures) : **pas dans la démo** tant qu'elles ne sont pas servies | — | règle |
 
 </etat>

@@ -1,0 +1,51 @@
+AVA MANAGER — SESSION BRAIN CODE (« Code lot 2 ») — LE JUGE DU LOT 3
+====================================================================
+05/10/2026. Le mot d'Ahmed est donné. Tu restes le juge du lot 2 ; tu deviens
+AUSSI le juge du lot 3, que la session « Ava Manager Code Lot 3 » code en
+parallèle. Le codeur ne tient pas le test qui le juge (D-36, D-78).
+
+À lire : _ops/CANON_LOT3_ECRANS.md — §0 (D-68 → D-77, D-90 → D-97, D-103), §1 les
+trois contrats, §4 LES PORTES DU LOT 3, §6 et §6 bis.
+
+TON SECOND POSTE (ne touche pas ava-brain, qui reste au lot 2) :
+  cd "/c/Users/Hamada/Desktop/Ava Manager"
+  git fetch . lot-3 2>/dev/null ; git worktree add -b lot-3-brain "postes/ava-brain3" lot-3
+  cd "postes/ava-brain3" ; git config core.hooksPath .githooks
+Base AVA_DB=ava_brain3, AVA_PORT=3500. « Role: banc » pour test/, « Role: brain »
+pour outils/. Le codeur du lot 3 fusionnera lot-3-brain dans lot-3 quand Ahmed
+le lui dira — jamais l'inverse.
+
+
+J1  LES PORTES DU §4, GÉNÉRÉES DU SERVEUR, JAMAIS D'UNE LISTE
+    - lecture croisée : chaque route /vues/* déclarée par le serveur × chaque
+      groupe × chaque agence → les lignes rendues ⊂ périmètre ; fiche hors
+      périmètre → 404 (D-72)
+    - page muette : aucun mot métier ni règle dans web/src (liste fermée des
+      mots de structure permis, D-68)
+    - formulaire = déclaration : pour chaque commande servie, champs du
+      formulaire = clés de DECLARATION, obligatoire/min/max/défaut compris
+      (D-70, D-81)
+    - bouton honnête : chaque action rendue `permise = false`, appelée, rend
+      le refus annoncé ; `permise = true` ne rend jamais DROIT (D-71)
+    - couverture : chaque commande servie est déclenchable depuis un écran
+    - lot servi : chaque onglet, colonne, widget, entrée de menu rendu repose
+      sur une route ou une commande servie (D-77, D-91)
+    - libellé au référentiel : renommer un libellé change l'écran ; changer
+      `ordre` ne change rien (D-75)
+    Chaque porte : ⏳ lot 3 tant que les écrans manquent (PORTES_EN_ATTENTE),
+    ✅ dès qu'elle passe ; jamais une porte qui énumère une liste écrite à côté.
+    Témoin : sur lot-3 aujourd'hui, la porte « page muette » et « lecture
+    croisée » jouées sur l'écran Besoins.
+
+J2  LES CAPTURES (D-90, D-91)
+    Chaque écran livré, dans le groupe qui s'en sert (?compte= de STAF, DP,
+    RES, ADM — D-97), comparé au cadre du Style Ava
+    (ava-design/_ops/maquettes/ecrans-lot3.html) : même bandeau, nom et agence
+    dessous, même menu, même rail.
+
+Ce que tu ne fais jamais : server/ web/ (le codeur du lot 3) ; une migration
+sans qu'une QUESTION du codeur ou une décision du BRAIN la demande ; fusionner
+sur main, pousser.
+
+Tu rends : une ligne dans _ops/JOURNAL_BUGS.md, puis la phrase exacte :
+« lot-3-brain est prêt : git merge lot-3-brain. » — à « Ava Manger Brain ».

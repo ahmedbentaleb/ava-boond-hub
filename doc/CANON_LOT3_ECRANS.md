@@ -186,6 +186,53 @@ contredire, **la forme vient du Style Ava, le contenu de ce qui est servi**.
 | Q1 — les valeurs `ui.*` servies sont celles du style terminal (sombre, JetBrains), D-90 veut le Style Ava (clair, Lato) | ⭐ **D-96 : l'apparence par défaut d'Avaliance est le Style Ava validé** (thème `ava_avaliance` : clair, Lato, intensité aucune, pastille carré plein, bouton plein, carte sans trait). Le registre §C est corrigé ; le BRAIN CODE aligne les défauts et `politique_valeur_servie` (migration) ; le style terminal reste une valeur de `ref_theme`, servie avec le registre exécutable du lot 3 |
 | Q2 — l'identité dans la page | **D-97** : **un seul** module de `web/src` lit le compte (`?compte=` en banc) et l'envoie au serveur ; sans compte, la page peint le refus du serveur. Aucun compte écrit en dur (`Tuyau.tsx` se corrige). C'est ce module, et lui seul, que le lot 2c (connexion Microsoft) remplacera ; hors banc, le serveur continue de tout refuser |
 
+### Écarts de l'étape 3 du codeur (05/10)
+
+| Écart | Tranché |
+|---|---|
+| L'historique d'une fiche affiche le type brut de l'événement (`NeedCreated`) | ⭐ **D-107** : un référentiel `ref_type_evenement` (code → libellé), administrable, semé d'un libellé français pour **chaque** type d'événement écrit par une commande servie ; le serveur rend le libellé (D-75). Une porte : tout type écrit en base a son libellé. Migration : BRAIN CODE |
+| L'onglet Temps de la fiche projet | arrive avec l'écran Mes temps (même lecture) ; non affiché d'ici là (D-77) |
+
+### Relecture des captures du juge (04/10) — D-112, D-113
+
+| # | Vu sur la capture | Tranché |
+|---|---|---|
+| **D-112** | RES a « Projets » (0 ligne par D-109) et « Validation des temps » au menu | ⭐ Une entrée de menu n'est rendue que si l'écran **peut** montrer quelque chose à ce compte : sa `Lire*` tenue, **et** pour un écran de **travail** (Validation des temps), la commande qu'il sert (`ValidateTimesheet` ou `RejectTimesheet`) tenue — sa liste est « ce que **je** peux valider ». Sous `S`, « Projets » est absent (D-109). Une porte, **dans les deux sens** : aucune entrée dont l'écran rend 0 ligne par construction, **et** aucune entrée absente alors que l'écran montrerait quelque chose (RES et « Prestations » sous `S`, D-109) — l'entrée existe **si et seulement si** |
+| **D-113** | Sous le titre « Besoins », une ligne `DROIT Créer un besoin permission absente ou hors périmètre` | ⛔ Un style n'ajoute rien : le motif d'un bouton refusé s'affiche **au survol du bouton** (D-71), jamais en ligne sous le titre, jamais avec son code technique (`DROIT`). Le bouton reste visible, grisé, avec son cadenas |
+| — | Le nom d'un compte du banc rendu `S s-1791143957346-ti5rec` | fixture du juge : chaque compte du banc a une personne nommée (Q10), y compris ceux qu'une porte crée ; P-408 exige l'**égalité** avec `prénom nom` de la personne, pas seulement « ni e-mail ni code » |
+
+### Relecture de forme du lot 3 contre le Style Ava (05/10) — D-114
+
+Source : `journal/ecran/lot3-forme/ECARTS.md` (branche `lot-3`, 70b1dff), 21 écarts.
+
+| Écart | Tranché |
+|---|---|
+| L-1 · F-1 · T-2 · P-1 · P-2 · C-1 · C-4 | ⛔ au codeur, **à corriger** : rien d'ajouté (L-1, C-4), rien d'oublié (F-1, T-2, P-1, C-1), P-2 : une liste d'administration lit **ses** colonnes, jamais celles d'une autre liste |
+| G-3 (menu vide sous ADM) | un menu **vide** n'est pas rendu : la colonne se replie, la page prend la largeur. Aucune entrée ajoutée (Q13 tient) |
+| D-1 (cases de la matrice) | la **forme** de la maquette (pastille colorée), le **contenu** lu en base (D-110) : « toutes », le nom de l'agence, « soi », « — » si non tenu. Jamais le symbole ✓/D déduit |
+| F-2 (variante lien) | règle de **forme**, sans donnée serveur : seule l'action de création en tête d'une **liste** est un bouton plein ; toute action d'une fiche est en variante seconde |
+| L-3 (table coupée) | la table **défile** dans sa carte, jamais coupée ; les colonnes restent celles servies (`ui.liste.*.colonnes`) |
+| F-3 · T-1 (grilles) | le nombre de colonnes de la maquette, quelle que soit la largeur : synthèse de fiche **3**, tableau de bord **2** |
+| L-2 · T-3 (pastilles priorité, candidat) | **données** : les machines `priorite` et `candidat` entrent dans `ref_pastille_categorie` (D-82), par migration du juge (D-105) |
+| P-3 (libellé = clé) | **données** : le libellé d'une politique vient du registre (`REGISTRE_POLITIQUES_v1.md`), écrit par le générateur du juge, jamais la clé répétée |
+| G-1 · G-2 | déjà tranchés (D-91) |
+| PO-1 · PJ-1 · PJ-2 · PR-1 · PR-2 · FS-1 · RS-1 · MT-1 · VT-1 · AL-1 · RF-1 · RF-2 · AG-1 (13c0266) | au codeur, **à corriger**. PO-1 : le catalogue de colonnes prend **les noms de la politique** `ui.liste.*.colonnes`, un seul nom. AG-1 : hors périmètre, le message vide est neutre (« Aucune ligne »). VT-1 : ressource × semaine, cases et barre de sélection, `temps_ids` (D-79) |
+| CO-1 (compte sans personne) | la colonne **Nom** rend « — » ; l'e-mail n'est qu'une colonne de l'écran Comptes (administration), jamais un nom (D-97) |
+| CO-2 (« Actif » sans machine) | **données** : la machine `compte` (actif, inactif) entre dans `ref_pastille_categorie` — juge |
+| CO-3 (thème en code brut) | **données** : chaque **valeur** servie d'une politique porte un libellé tiré du registre, écrit par le générateur — juge, avec P-3 |
+
+### PF-1 — une page profonde ne coûte pas plus qu'une page 1 (05/10, mesuré par DEMO-3)
+
+Mesuré (`demo` fc8a97e, base pleine) : `/vues/candidats?page=415` 1 495 ms médiane, 1 605 ms au 95e centile ;
+page 1 : 129 ms. Cause probable : le tri par défaut « maj » est une sous-requête par ligne sur `evenement_metier`
+(`lecture/sql.ts`, `dernierEvenement`), et les colonnes calculées sont évaluées sur les lignes que l'OFFSET saute.
+
+| Tranché, pour **toutes** les listes | Qui |
+|---|---|
+| la page se choisit d'abord sur les clés (id, clé de tri, filtre de périmètre) ; les colonnes calculées ne s'évaluent qu'ensuite, sur les lignes de la page | codeur du lot 3 |
+| le tri « maj » lit une valeur indexable, jamais une sous-requête par ligne ; un index ou une colonne nécessaire = migration du **juge** | codeur du lot 3 · juge |
+| témoin : dernière page de chaque liste sous 150 ms sur `ava_demo_pleine`, re-mesurée par la session Test | Test |
+
 ## 6 · Réponses aux 18 écarts de la session Design (03/10)
 
 Source : `ava-design/_ops/maquettes/lot3/ECARTS_POUR_BRAIN.md`. Tous tranchés par le BRAIN.

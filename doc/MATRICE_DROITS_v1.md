@@ -209,12 +209,42 @@ lecture : avoir `SetOwnTheme` en global ne fait rien lire.
 | `LireSocietes` (sociétés, unités) | ✓ | — | — | — | ✓ | ✓ | — | D | ✓ |
 | `LireContacts` | ✓ | — | — | — | ✓ | ✓ | — | D | ✓ |
 | `LireCandidats` | ✓ | ✓ | ✓ | ✓ | ✓ | — | S | D | ✓ |
-| `LireRessources` | ✓ | ✓ | ✓ | — | ✓ | ✓ | S | D | ✓ |
+| `LireRessources` (ressources, leurs absences — D-110) | ✓ | ✓ | ✓ | — | ✓ | ✓ | S | D | ✓ |
 | `LireBesoins` (besoins, positionnements) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | D | ✓ |
 | `LireProjets` (projets, prestations, temps) | ✓ | — | — | — | ✓ | ✓ | S | D | ✓ |
 
 ⚠️ `SUP` lit sur son périmètre global et n'écrit rien. `RES` ne voit que **lui-même** (son profil, ses
 prestations, ses temps). Les champs sensibles restent sous `LireDonneesRHSensibles`.
+
+⭐ **D-109 (04/10, Q12 du lot 3) — ce que « soi » rend en lecture.** Sous `S`, les objets du compte sont
+**exactement** ceux-ci, lus par `compte.personne_id` :
+
+| Permission en `S` | Objets rendus (liste 200 et fiche 200) | Tout autre objet |
+|---|---|---|
+| `LireRessources` | **sa** ressource (la personne du compte) | fiche 404 · absent des listes |
+| `LireCandidats` | **son** profil candidat, s'il en a un | fiche 404 · absent des listes |
+| `LireProjets` | **ses** prestations et **ses** temps | fiche 404 · absent des listes |
+
+⛔ Un **projet** n'est pas un objet du compte : `/vues/projets` rend 0 ligne et la fiche projet 404 sous `S`.
+Le nom du projet et celui de la société cliente se lisent **comme champs de sa prestation** — jamais la fiche
+du projet, qui montre les prestations des autres. La garde de lecture et la porte du juge lisent **la même
+déclaration** (objet → colonne qui le relie à `personne_id`), jamais deux listes écrites à part.
+
+⭐ **D-110 (04/10, lot 3) — une lecture se garde par sa permission `Lire*`, jamais par une commande.**
+« Mes temps » se lit sous `LireProjets`, « Mes absences » sous `LireRessources` (une absence appartient à sa
+ressource). `RecordTimesheet` et `RecordAbsence` décident seulement si le **bouton** est permis (D-71) — avoir
+le droit d'écrire ne donne rien à lire (V-150). Le **périmètre** d'une permission se lit en base
+(`groupe_permission_perimetre`, ou `S` → `compte.personne_id`), jamais déduit du symbole : `✓` veut dire
+« donné au seed, avec le périmètre écrit au seed », pas « global » ; `D` veut dire « rien au seed ».
+**Exception unique, écrite** : les écrans d'**administration** (réglages, listes, groupes et comptes — canon
+du lot 3 §2.4) ne montrent aucune donnée métier, seulement la configuration ; ils se lisent sous `SetPolicy`,
+`ManageRefs`, `ManageGroups`, comme le canon le dit. Toute autre lecture passe par une `Lire*`.
+
+⭐ **D-111 (04/10) — l'agence d'un objet qui n'en a pas.** Prestation, temps, positionnement, absence n'ont pas
+d'agence propre : ils prennent celle du **dossier qui les porte**, lue par leurs clés — prestation et temps →
+leur **projet** ; positionnement → son **besoin** ; absence → sa **ressource** ; à défaut, la **société**. Le
+serveur et le juge appliquent cette chaîne, chacun de son côté, et une porte compare leurs deux résultats objet
+par objet : un écart est une fuite ou un refus à tort.
 
 ## Transverse et administration
 

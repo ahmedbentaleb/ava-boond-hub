@@ -150,7 +150,7 @@ Clé · options (**défaut**) · source de la bifurcation · effet quand on chan
 | `projet.creation_depuis_besoin` | **explicite** · automatique_au_retenu | DEC-06 vs SPEC US6 RG1 | `automatique` : `RecordClientDecision(retenu)` crée le projet avec les paramètres du besoin et un événement — jamais silencieux : l'événement le dit |
 | `projet.depuis_besoin.garde` | **retenu_requis** · libre | F1 | garde de `CreateProjectFromNeed` |
 | `projet.depuis_besoin.garde_profil` | **personne_avec_ressource** · positionnement_ressource_strict | G1 | ce que « retenu » doit porter |
-| `projet.contact` | **obligatoire** · facultatif · `obligatoire_avant_engagement` (relecture externe 19/09 : libre à la création, exigé avant la première signature) · ⭐ `service_ou_societe` (R10, 24/09 : l'interlocuteur peut être une unité ou la société entière, selon `besoin.origine_code`) | US5, F4, R10 | `CreateProject*` demande ou non un contact, ou accepte une unité ou la société |
+| `projet.contact` | ⭐ **service_ou_societe** (D-104, 05/10 : c'est la réponse R10 d'Avaliance — contact en régie, service ou société en appel d'offres) · obligatoire · facultatif · `obligatoire_avant_engagement` (relecture externe 19/09 : libre à la création, exigé avant la première signature) · ⭐ `service_ou_societe` (R10, 24/09 : l'interlocuteur peut être une unité ou la société entière, selon `besoin.origine_code`) | US5, F4, R10 | `CreateProject*` demande ou non un contact, ou accepte une unité ou la société |
 | `projet.cloture.garde` | **prestations_closes** · cascade_cloture_prestations | F7 | `cascade` clôture les prestations `engage` restantes avec snapshot, dans la même transaction |
 | `projet.devises_mixtes` | **autorise** · refus | D-9 → cahier des directeurs, question 61 | `refus` : `CreatePrestation` refuse une devise différente de la première prestation du projet ; `autorise` : le projet s'affiche en deux lignes, M-15 tient |
 | `conversion.repositionnement_ressource` | **non_requis** · requis | F2 | après `ConvertCandidateToResource`, faut-il un positionnement Ressource avant `CreatePrestation` |
@@ -247,6 +247,8 @@ Clé · options (**défaut**) · source de la bifurcation · effet quand on chan
 | Clé | Options | Source | Effet du changement |
 |---|---|---|---|
 | `auth.fournisseur` | **microsoft** · google · email_mot_de_passe | Hamada 18/09 : le produit est vendu à d'autres sociétés | comment on se connecte. Chaque installation a le sien |
+| `auth.session.duree_heures` | entier 1 → 24, **10** | lot 2c, 05/10 (C-6) | durée maximale d'une session ; au-delà, on se reconnecte |
+| `auth.session.inactivite_minutes` | entier 15 → 240, **60** | lot 2c, 05/10 (C-6) | une session sans appel pendant ce délai expire |
 | `rgpd.duree_conservation_candidat` | **24** mois après le dernier contact (entier) | RGPD · candidats France / Maroc / Dubaï | au-delà, `AnonymisePersonne` est proposée. La durée diffère d'un pays et d'une société à l'autre |
 
 ### Modèles, alertes et langue — ajouté le 19/09
