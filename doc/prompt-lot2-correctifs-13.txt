@@ -1,0 +1,43 @@
+AVA MANAGER — CODEUR DU LOT 2 (Grok) — PROMPT 13 : LES 6 DERNIÈRES PORTES ROUGES
+==============================================================================
+05/10/2026. Avant tout : git merge lot-2-brain (préfixe AVA_DB=ava AVA_PORT=3000).
+Mesuré par le juge sur lot-2-brain après ton E13 : 349 portes vertes sur 351, 6 rouges
+à toi. Détail : _ops/annexes/ROUGES_CODEUR_2026-10-05.md (sur lot-2-brain).
+Un commit par point, une ligne au journal par point (porte, rouge, vert, commit).
+Aucune migration (D-105). « Prêt » ne s'écrit que par le cliquet (D-83).
+
+F1  P-325 · ManageRefs n'admet QUE les tables qui ont la forme d'un référentiel,
+    forme lue de la base (information_schema : code, libelle, categorie, ordre,
+    actif), jamais une liste écrite. Aujourd'hui admin.ts:164 admet toute table
+    ref_* : les tables de pastilles (036) sont refusées par construction.
+
+F2  P-345 · ValidateTimesheet et RejectTimesheet LISENT chaque clé déclarée :
+    temps_ids, jour_debut, jour_fin, par le même chemin que les autres commandes
+    (ctx.valeurs). Déclaration et lecture ne divergent plus.
+
+F3  P-350 · une politique se lit LÀ OÙ ELLE DÉCIDE. Depuis E18 (garde / effet), la
+    lecture est dans la garde et la branche dans l'effet pour 13 couples :
+    projet.creation_depuis_besoin (gardeRecordClientDecision),
+    societe.passage_client.propagation (gardeRequalifyCompany,
+    lirePolitiquesSignature), prestation.avenant.mode (lirePolitiquesSignature),
+    frais.mode, marge.taux.si_ca_nul, ca_produit.base (gardeClosePrestation).
+    Chaque valeur servie a sa branche dans la fonction qui lit la politique.
+
+F4  P-361 · GET /formulaires/:nom est déclarée dans LECTURES avec sa permission
+    « parametre » (Q15), comme les autres routes. Aucune route hors LECTURES.
+
+F5  P-362 · les deux lignes de CASCADES dont la mère est CreatePrestation
+    (declaration.ts:2897, 2899) sont mortes : une prestation ne naît jamais
+    engagée (E14, V-152, D-87), la cascade vit à SignPrestation. Retire-les.
+
+F6  P-365 · deux sites :
+    a) CreateProjectFromNeed sous service_ou_societe + régie : le contact DU
+       BESOIN vaut contact (CADRAGE l.299, F4) ; n'exige un contact saisi que si
+       le besoin n'en a pas.
+    b) UpdateNeed sous « ordre inversé » rend DROIT : le droit lit un code choisi
+       par `ordre`. Lecture par CATÉGORIE, défaut par par_defaut (D-57, D-89).
+
+F7  (relevé par le lot 3) jugerCommande annonce INTROUVABLE pour TransferContact
+    alors que la commande passe : à blanc, sans l'entrée du formulaire, la garde
+    ne cherche pas la société que le formulaire fournira. La garde à blanc ne
+    juge que ce qu'elle a (droit sur l'objet, état), jamais une entrée absente.

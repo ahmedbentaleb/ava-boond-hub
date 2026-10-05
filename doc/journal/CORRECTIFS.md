@@ -448,3 +448,15 @@ Prêt pour le onzième audit.
 | V-173 | la politique de la cascade est dans l'événement | P-503 | `ProjectCreated` sans `societe.passage_client.declencheur` dans `liens.politiques` | `ok` — P-503, la clé est une chaîne | `51271d5` |
 | V-174 | ArchiveContact `{id}` sans motif | P-504 | `GARDE` motif exigé ; `DROIT` sur le groupe IA | `ok` — P-504, contact archivé | `51271d5` |
 | V-175 | les trois rappels soi-même sortent des commandes | P-505 | `exigeSoiMeme` encore appelé dans RecordTimesheet, RecordAbsence, UploadDocument | `ok` — P-505, plus aucun appel ; `soiSurCettePersonne` reste dans la garde | `51271d5` |
+
+## Prompt 13 — F1 → F7 (05/10)
+
+| Point | Quoi | Porte | ROUGE avant | VERTE après | Commit |
+|---|---|---|---|---|---|
+| F1 | ManageRefs n'admet qu'un référentiel dont la forme (code, libelle, categorie, ordre, actif) est lue en base | P-325 | `not ok` — `ref_pastille_categorie` et `ref_pastille_machine` sans actif, libelle, ordre | forme lue, pastilles écartées (`5f96ecd`). Reste rouge : `ava_app` peut INSÉRER et SUPPRIMER `auth_session` et `auth_tentative` (migration 041, Q-031). Aucune migration écrite. | `5f96ecd` |
+| F2 | ValidateTimesheet et RejectTimesheet lisent temps_ids, jour_debut, jour_fin | P-345 | clés déclarées absentes du corps que la porte suit | `ok` — P-345. Les trois clés sont lues dans le handler exporté. | `b3e8f3f` `9124d83` |
+| F3 | une politique se lit dans la fonction qui décide | P-350 | 13 couples sans branche dans le lecteur | `ok` — P-350 | `427e699` |
+| F4 | GET /formulaires/:nom est dans LECTURES, permission parametre | P-361 | route enregistrée hors LECTURES | `ok` — P-361 | `5a795af` |
+| F5 | les deux cascades mortes de CreatePrestation sont retirées | P-362 | mère CreatePrestation, GARDE « entrée ambiguë » | `ok` — 8 cascades, 32 jeux, 0 écart | `2990432` |
+| F6 | le contact du besoin compte ; UpdateNeed se lit par catégorie | P-365 | CreateProjectFromNeed GARDE « en régie le contact est exigé » ; UpdateNeed DROIT sous ordre inversé | `ok` — P-365. S-PC3, S-PC5, S-PC8, S-PC9 conformes. Une commande qui nomme la régie sans contact est refusée ; sans type nommé, le contact du besoin est écrit. | `a4e9e0b` `a513fa9` |
+| F7 | jugerCommande à blanc ne juge pas une entrée absente | TransferContact | INTROUVABLE alors que la commande passe | `ok` — `{}` et `{id}` rendent `{ok:true}` | `28e5d51` |

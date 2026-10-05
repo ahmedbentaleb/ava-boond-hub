@@ -23,7 +23,7 @@ Légende : ✅ fait · ⏳ en cours · ⬜ à faire · ↪ fusionné ailleurs. L
 
 <etat>
 
-Mis à jour le 24/09/2026. Les anciens numéros de lot sont entre parenthèses.
+Mis à jour le 05/10/2026. Les anciens numéros de lot sont entre parenthèses.
 
 ### 0 · Démarrage
 

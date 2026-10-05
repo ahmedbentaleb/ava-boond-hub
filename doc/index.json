@@ -70,6 +70,13 @@
   "ko": 5
  },
  {
+  "chemin": "annexes/ROUGES_CODEUR_2026-10-05.md",
+  "titre": "Portes rouges du codeur du lot 2 — après E13 (05/10/2026)",
+  "categorie": "Conception et contrat",
+  "date": "05/10/2026",
+  "ko": 4
+ },
+ {
   "chemin": "ARBITRAGE_AUDIT_2026-09-21.md",
   "titre": "Arbitrage de l'audit indépendant — 21/09/2026",
   "categorie": "Audits",
@@ -340,7 +347,7 @@
   "titre": "Journal des bugs — Ava Manager · **audit général**",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "05/10/2026",
-  "ko": 46
+  "ko": 47
  },
  {
   "chemin": "LIBELLES_POLITIQUES.md",
@@ -595,6 +602,13 @@
   "ko": 11
  },
  {
+  "chemin": "prompt-lot2-correctifs-13.txt",
+  "titre": "prompt-lot2-correctifs-13.txt",
+  "categorie": "Prompts et briefs",
+  "date": "05/10/2026",
+  "ko": 3
+ },
+ {
   "chemin": "prompt-lot2-correctifs-2.txt",
   "titre": "prompt-lot2-correctifs-2.txt",
   "categorie": "Prompts et briefs",
@@ -844,7 +858,7 @@
   "titre": "Correctifs lot 2 — audit V- · 21/09/2026",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "05/10/2026",
-  "ko": 38
+  "ko": 40
  },
  {
   "chemin": "journal/DECISIONS.md",
@@ -893,14 +907,14 @@
   "titre": "Portes — le cliquet. Une porte ✅ ne redevient jamais ⏳.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "05/10/2026",
-  "ko": 54
+  "ko": 56
  },
  {
   "chemin": "journal/QUESTIONS.md",
   "titre": "Questions pour Hamada. On choisit en attendant, on continue.",
   "categorie": "Journaux du code (portes, bugs, étapes)",
   "date": "05/10/2026",
-  "ko": 11
+  "ko": 12
  },
  {
   "chemin": "journal/REMARQUES.md",
