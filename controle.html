@@ -1,64 +1,144 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Le système de contrôle — Ava Manager</title>
+<title>Le système de contrôle</title>
 <style>
-:root{--bg:#0d0d0f;--t1:#f2f2f2;--t2:#b9b9c0;--b:#2a2a30;--card:#fafaf7}
-body{margin:0;background:var(--bg);color:var(--t1);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}
-main{max-width:760px;margin:0 auto;padding:24px 16px 64px}
-a{color:#AFA9EC} h1{font-size:22px;font-weight:500;margin:8px 0 4px} h2{font-size:18px;font-weight:500;margin:32px 0 8px}
-.sous{color:var(--t2);margin:0 0 20px} .carte{background:var(--card);border-radius:12px;padding:12px}
-.carte svg{display:block;width:100%;height:auto}
-table{width:100%;border-collapse:collapse;font-size:14px} th,td{text-align:left;vertical-align:top;padding:8px;border-bottom:1px solid var(--b)} th{color:var(--t2);font-weight:500}
+:root{--bg:#fafaf8;--t1:#1d1d1f;--t2:#5d5d5d;--t3:#9a9a9a;--carte:#fff;--bord:#d9d8d2;--noeud:#ffffff;--lien:#c9c8c2;
+--c1:#1D6FD0;--c2:#7C3AED;--c3:#0E8F5F;--c4:#C2600B;--ok:#1E5B3A;--moitie:#D9A21B;--humain:#5D5D5D;--vide:#c9c8c2}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121214;--t1:#f1f1f3;--t2:#a9a8b2;--t3:#6e6d76;--carte:#1b1b1f;--bord:#2e2e35;--noeud:#1f1f24;--lien:#3a3a42;
+--c1:#5AA9FF;--c2:#A78BFA;--c3:#34D399;--c4:#FB923C;--ok:#34D399;--moitie:#E9B949;--humain:#A9A8B2;--vide:#4a4a52}}
+:root[data-theme="dark"]{--bg:#121214;--t1:#f1f1f3;--t2:#a9a8b2;--t3:#6e6d76;--carte:#1b1b1f;--bord:#2e2e35;--noeud:#1f1f24;--lien:#3a3a42;
+--c1:#5AA9FF;--c2:#A78BFA;--c3:#34D399;--c4:#FB923C;--ok:#34D399;--moitie:#E9B949;--humain:#A9A8B2;--vide:#4a4a52}
+body{margin:0;background:var(--bg);color:var(--t1);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
+main{max-width:1100px;margin:0 auto;padding:20px 16px 56px}
+a{color:var(--c2)} h1{font-size:24px;font-weight:600;margin:6px 0 2px} h2{font-size:17px;font-weight:600;margin:30px 0 8px}
+.sous{color:var(--t2);margin:0} .source{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--t3);margin:4px 0 18px}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:16px}
+.chiffre{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:12px 14px}
+.chiffre b{display:block;font-size:30px;font-weight:600;line-height:1.1}.chiffre span{font-size:13px;color:var(--t2)}
+.pastilles{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}
+.pastilles button{font:inherit;font-size:14px;background:var(--carte);color:var(--t1);border:1px solid var(--bord);border-radius:999px;padding:6px 12px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.pastilles button i{width:11px;height:11px;border-radius:2px;display:inline-block}
+.pastilles button[aria-pressed="true"]{font-weight:600;border-width:2px}
+.phrase{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:10px 14px;margin-bottom:10px;min-height:52px}
+.phrase .l1{font-weight:600}.phrase .l2{font-family:ui-monospace,Consolas,monospace;font-size:13px;color:var(--t2)}
+.cadre{background:var(--carte);border:1px solid var(--bord);border-radius:12px;padding:10px;overflow-x:auto}
+svg{display:block;min-width:1060px;width:100%;height:auto}
+.col{font-family:ui-monospace,Consolas,monospace;font-size:12px;fill:var(--t3);letter-spacing:.12em}
+.n rect{fill:var(--noeud);stroke:var(--bord);stroke-width:1}
+.n text{fill:var(--t1);font-size:13px;dominant-baseline:middle}
+.lien{stroke:var(--lien);stroke-width:1;fill:none}
+.etat-ok{fill:var(--ok)}.etat-moitie{fill:var(--moitie)}.etat-vide{fill:none;stroke:var(--vide);stroke-width:1.5}.etat-humain{fill:none;stroke:var(--humain);stroke-width:1.5;stroke-dasharray:2 2}
+svg[data-chemin] .n rect{stroke:var(--bord)} svg[data-chemin] .n text{fill:var(--t3)}
+svg[data-chemin="c1"] .c1 rect{stroke:var(--c1);stroke-width:2} svg[data-chemin="c1"] .c1 text{fill:var(--t1);font-weight:600} svg[data-chemin="c1"] .lien.c1{stroke:var(--c1);stroke-width:2.6}
+svg[data-chemin="c2"] .c2 rect{stroke:var(--c2);stroke-width:2} svg[data-chemin="c2"] .c2 text{fill:var(--t1);font-weight:600} svg[data-chemin="c2"] .lien.c2{stroke:var(--c2);stroke-width:2.6}
+svg[data-chemin="c3"] .c3 rect{stroke:var(--c3);stroke-width:2} svg[data-chemin="c3"] .c3 text{fill:var(--t1);font-weight:600} svg[data-chemin="c3"] .lien.c3{stroke:var(--c3);stroke-width:2.6}
+svg[data-chemin="c4"] .c4 rect{stroke:var(--c4);stroke-width:2} svg[data-chemin="c4"] .c4 text{fill:var(--t1);font-weight:600} svg[data-chemin="c4"] .lien.c4{stroke:var(--c4);stroke-width:2.6}
+@media (prefers-reduced-motion:no-preference){.n rect,.n text,.lien{transition:stroke .18s ease,stroke-width .18s ease,fill .18s ease}}
+.legende{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--t2);padding:8px 6px 2px}
+.legende svg{min-width:0;width:12px;height:12px;display:inline-block;vertical-align:-1px;margin-right:5px}
+.consequence{border-left:3px solid var(--bord);padding:4px 0 4px 12px;margin:14px 0;min-height:24px}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;vertical-align:top;padding:7px 8px;border-bottom:1px solid var(--bord)}th{color:var(--t2);font-weight:600}
+.nav{font-size:14px}
 </style></head><body><main>
-<p><a href="index.html">← Hub</a> · <a href="dossier.html">Dossier</a> · <a href="doc/SYSTEME_CONTROLE.md">source</a></p>
+<p class="nav"><a href="index.html">← Hub</a> · <a href="dossier.html">Dossier</a> · <a href="doc/SYSTEME_CONTROLE.md">source</a></p>
 <h1>Le système de contrôle</h1>
 <p class="sous">Chaque niveau autorise le suivant. Celui qui code ne vérifie jamais son propre travail.</p>
-<div class="carte"><svg width="100%" viewBox="0 0 680 780" xmlns="http://www.w3.org/2000/svg" role="img" font-family="sans-serif">
-<title>Le système de contrôle d'Ava Manager</title>
-<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5"/></marker></defs>
-<g font-size="14" text-anchor="middle">
-<rect x="190" y="40" width="300" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/><text x="340" y="63" fill="#3C3489" font-weight="500">1 · Les règles</text><text x="340" y="83" fill="#534AB7" font-size="12">le BRAIN écrit le canon</text>
-<line x1="340" y1="96" x2="340" y2="132" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a)"/>
-<rect x="190" y="136" width="300" height="56" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/><text x="340" y="159" fill="#712B13" font-weight="500">2 · Le juge écrit les tests</text><text x="340" y="179" fill="#993C1D" font-size="12">Brain Code, avant le code</text>
-<path d="M220 192 L220 210 L140 210 L140 228" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a)"/>
-<line x1="340" y1="192" x2="340" y2="228" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a)"/>
-<path d="M460 192 L460 210 L540 210 L540 228" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a)"/>
-<rect x="50" y="232" width="180" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/><text x="140" y="255" fill="#085041" font-weight="500">3 · Codeur lot 1</text><text x="140" y="275" fill="#0F6E56" font-size="12">Grok · la base</text>
-<rect x="250" y="232" width="180" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/><text x="340" y="255" fill="#085041" font-weight="500">3 · Codeur lot 2</text><text x="340" y="275" fill="#0F6E56" font-size="12">Grok · le serveur</text>
-<rect x="450" y="232" width="180" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/><text x="540" y="255" fill="#085041" font-weight="500">3 · Codeur lots 3, 2c</text><text x="540" y="275" fill="#0F6E56" font-size="12">écrans, connexion</text>
-<line x1="140" y1="288" x2="140" y2="316" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a)"/>
-<line x1="340" y1="288" x2="340" y2="316" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a)"/>
-<line x1="540" y1="288" x2="540" y2="316" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a)"/>
-<rect x="40" y="320" width="600" height="112" rx="12" fill="none" stroke="#888780" stroke-width="0.5" stroke-dasharray="4 4"/>
-<text x="56" y="340" fill="#5F5E5A" font-size="12" text-anchor="start">4 · Contrôles automatiques : ils rendent compte au BRAIN</text>
-<rect x="70" y="356" width="170" height="56" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/><text x="155" y="379" fill="#712B13" font-weight="500">Le cliquet</text><text x="155" y="399" fill="#993C1D" font-size="12">tous les tests verts</text>
-<rect x="255" y="356" width="170" height="56" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/><text x="340" y="379" fill="#712B13" font-weight="500">Le sabotage</text><text x="340" y="399" fill="#993C1D" font-size="12">aucun test aveugle</text>
-<rect x="440" y="356" width="170" height="56" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/><text x="525" y="379" fill="#712B13" font-weight="500">La démo</text><text x="525" y="399" fill="#993C1D" font-size="12">taille réelle, rapide</text>
-<line x1="340" y1="432" x2="340" y2="468" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a)"/>
-<rect x="190" y="472" width="300" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/><text x="340" y="495" fill="#3C3489" font-weight="500">5 · Le BRAIN autorise l'audit</text><text x="340" y="515" fill="#534AB7" font-size="12">seulement si les trois sont verts</text>
-<line x1="340" y1="528" x2="340" y2="564" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a)"/>
-<rect x="190" y="568" width="300" height="56" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/><text x="340" y="591" fill="#712B13" font-weight="500">6 · L'audit indépendant</text><text x="340" y="611" fill="#993C1D" font-size="12">copie neuve, sans compromis</text>
-<path d="M260 624 L260 644 L160 644 L160 660" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a)"/>
-<path d="M420 624 L420 644 L520 644 L520 660" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a)"/>
-<rect x="60" y="664" width="200" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/><text x="160" y="687" fill="#085041" font-weight="500">Accepté</text><text x="160" y="707" fill="#0F6E56" font-size="12">les lots suivants partent</text>
-<rect x="420" y="664" width="200" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/><text x="520" y="687" fill="#3C3489" font-weight="500">Refusé</text><text x="520" y="707" fill="#534AB7" font-size="12">chaque trou devient règle</text>
-<path d="M620 692 L652 692 L652 68 L494 68" fill="none" stroke="#7F77DD" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a)"/>
-<text x="40" y="756" fill="#5F5E5A" font-size="12" text-anchor="start">Violet : décide · Corail : contrôle · Vert : avance · Pointillé : retour aux règles</text>
-</g>
-</svg></div>
-<h2>Qui autorise quoi</h2>
-<table><tr><th>Niveau</th><th>Qui</th><th>Il autorise</th></tr>
-<tr><td>1 · Les règles</td><td>le BRAIN</td><td>le juge à écrire les tests</td></tr>
-<tr><td>2 · Les tests</td><td>le juge (Brain Code), avant le code</td><td>les codeurs à coder ; un codeur ne touche jamais un test</td></tr>
-<tr><td>3 · Le code</td><td>Grok (lots 1, 2) · Code Lot 3 (lots 3, 2c)</td><td>rien : il livre</td></tr>
-<tr><td>4 · Les contrôles automatiques</td><td>le cliquet (un script, pas une IA) · le sabotage · la démo</td><td>ensemble, le mot « prêt » — rien d'autre ne l'écrit</td></tr>
-<tr><td>5 · L'autorisation d'audit</td><td>le BRAIN</td><td>l'audit, seulement sur « prêt »</td></tr>
-<tr><td>6 · L'audit indépendant</td><td>une autre session, copie neuve</td><td>accepté : les lots suivants · refusé : retour aux règles</td></tr></table>
-<h2>Les contrôles automatiques</h2>
-<table><tr><th>Contrôle</th><th>Sa question</th></tr>
-<tr><td>Le cliquet</td><td>Est-ce que tous les tests sont verts ?</td></tr>
-<tr><td>Le sabotage</td><td>Si on casse le code exprès, est-ce que le test devient rouge ? Un test resté vert est aveugle.</td></tr>
-<tr><td>La démo</td><td>Avec une fausse Avaliance de taille réelle, est-ce que ça marche, et en moins de 150 ms ?</td></tr>
-<tr><td>L'audit</td><td>Qu'est-ce que personne n'a vu ?</td></tr></table>
-<p class="sous" style="margin-top:24px">Décisions D-116 et D-117, 05/10/2026.</p>
+<p class="source">Source : _ops/SYSTEME_CONTROLE.md — décisions D-116, D-117 · état au 05/10/2026</p>
+
+<div class="chiffres">
+<div class="chiffre"><b>9</b><span>étapes qui tournent aujourd'hui</span></div>
+<div class="chiffre"><b>2</b><span>étapes à moitié : le sabotage et la démo, pas encore exigés partout</span></div>
+<div class="chiffre"><b>1</b><span>étape jamais atteinte : l'audit accepté</span></div>
+</div>
+
+<div class="pastilles" role="group" aria-label="Chemins">
+<button data-c="c1" aria-pressed="false"><i style="background:var(--c1)"></i>C1 Lot 1</button>
+<button data-c="c2" aria-pressed="false"><i style="background:var(--c2)"></i>C2 Lot 2</button>
+<button data-c="c3" aria-pressed="false"><i style="background:var(--c3)"></i>C3 Lots 3 et 2c</button>
+<button data-c="c4" aria-pressed="false"><i style="background:var(--c4)"></i>C4 La boucle</button>
+</div>
+<div class="phrase"><div class="l1" id="p1">Cliquez une pastille pour suivre un chemin.</div><div class="l2" id="p2">Règles -> Juge -> Codeurs -> Cliquet + Sabotage + Démo -> BRAIN autorise -> Audit -> Accepté ou Refusé</div></div>
+
+<div class="cadre">
+<svg id="g" viewBox="0 0 1100 370" role="img" aria-label="Le graphe du système de contrôle : règles, tests, code, contrôles, audit, issue">
+<text class="col" x="20" y="28">RÈGLES</text><text class="col" x="200" y="28">TESTS</text><text class="col" x="380" y="28">CODE</text>
+<text class="col" x="560" y="28">CONTRÔLES</text><text class="col" x="740" y="28">AUDIT</text><text class="col" x="920" y="28">ISSUE</text>
+<line class="lien c1 c2 c3 c4" x1="170" y1="190" x2="200" y2="190"/>
+<path class="lien c1" d="M350 190 L365 190 L365 110 L380 110"/>
+<line class="lien c2" x1="350" y1="190" x2="380" y2="190"/>
+<path class="lien c3" d="M350 190 L365 190 L365 270 L380 270"/>
+<line class="lien c1" x1="530" y1="110" x2="560" y2="110"/>
+<path class="lien c2" d="M530 186 L545 186 L545 114 L560 114"/>
+<line class="lien c2" x1="530" y1="190" x2="560" y2="190"/>
+<path class="lien c2" d="M530 194 L545 194 L545 266 L560 266"/>
+<path class="lien c3" d="M530 270 L550 270 L550 106 L560 106"/>
+<path class="lien c3" d="M530 274 L552 274 L552 194 L560 194"/>
+<line class="lien c3" x1="530" y1="278" x2="560" y2="278"/>
+<path class="lien c1 c2 c3" d="M710 110 L725 110 L725 130 L740 130"/>
+<path class="lien c2 c3" d="M710 190 L725 190 L725 134 L740 134"/>
+<path class="lien c2 c3" d="M710 270 L728 270 L728 138 L740 138"/>
+<line class="lien c1 c2 c3" x1="815" y1="150" x2="815" y2="230"/>
+<path class="lien c3" d="M890 250 L905 250 L905 130 L920 130"/>
+<line class="lien c1 c2 c4" x1="890" y1="250" x2="920" y2="250"/>
+<path class="lien c1 c2 c4" d="M995 270 L995 340 L95 340 L95 210"/>
+<g class="n c1 c2 c3 c4"><rect x="20" y="170" width="150" height="40" rx="7"/><text x="36" y="190">Les règles</text><circle class="etat-ok" cx="157" cy="190" r="4"/></g>
+<g class="n c1 c2 c3 c4"><rect x="200" y="170" width="150" height="40" rx="7"/><text x="216" y="190">Le juge : les tests</text><circle class="etat-ok" cx="337" cy="190" r="4"/></g>
+<g class="n c1"><rect x="380" y="90" width="150" height="40" rx="7"/><text x="396" y="110">Codeur lot 1</text><circle class="etat-ok" cx="517" cy="110" r="4"/></g>
+<g class="n c2"><rect x="380" y="170" width="150" height="40" rx="7"/><text x="396" y="190">Codeur lot 2</text><circle class="etat-ok" cx="517" cy="190" r="4"/></g>
+<g class="n c3"><rect x="380" y="250" width="150" height="40" rx="7"/><text x="396" y="270">Codeur lots 3, 2c</text><circle class="etat-ok" cx="517" cy="270" r="4"/></g>
+<g class="n c1 c2 c3"><rect x="560" y="90" width="150" height="40" rx="7"/><text x="576" y="110">Le cliquet</text><circle class="etat-ok" cx="697" cy="110" r="4"/></g>
+<g class="n c2 c3"><rect x="560" y="170" width="150" height="40" rx="7"/><text x="576" y="190">Le sabotage</text><circle class="etat-moitie" cx="697" cy="190" r="4"/></g>
+<g class="n c2 c3"><rect x="560" y="250" width="150" height="40" rx="7"/><text x="576" y="270">La démo</text><circle class="etat-moitie" cx="697" cy="270" r="4"/></g>
+<g class="n c1 c2 c3"><rect x="740" y="110" width="150" height="40" rx="7"/><text x="756" y="130">BRAIN autorise</text><circle class="etat-ok" cx="877" cy="130" r="4"/></g>
+<g class="n c1 c2 c3 c4"><rect x="740" y="230" width="150" height="40" rx="7"/><text x="756" y="250">L'audit</text><circle class="etat-ok" cx="877" cy="250" r="4"/></g>
+<g class="n c3"><rect x="920" y="110" width="150" height="40" rx="7"/><text x="936" y="130">Accepté</text><circle class="etat-vide" cx="1057" cy="130" r="4"/></g>
+<g class="n c1 c2 c4"><rect x="920" y="230" width="150" height="40" rx="7"/><text x="936" y="250">Refusé</text><circle class="etat-ok" cx="1057" cy="250" r="4"/></g>
+</svg>
+<div class="legende">
+<span><svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="4" class="etat-ok"/></svg>ça tourne aujourd'hui</span>
+<span><svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="4" class="etat-moitie"/></svg>à moitié</span>
+<span><svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="4" class="etat-vide"/></svg>pas encore atteint</span>
+</div>
+</div>
+
+<p class="consequence" id="cq">Un seul graphe : chaque lot le traverse, et chaque refus revient aux règles.</p>
+
+<h2>Le tableau des étapes</h2>
+<table>
+<tr><th>Étape</th><th>État</th><th>Ce qu'elle fait</th><th>Qui décide encore</th></tr>
+<tr><td>Les règles</td><td>tourne</td><td>le BRAIN écrit le canon : quoi, qui, comment</td><td>le BRAIN, sur le mandat d'Ahmed</td></tr>
+<tr><td>Le juge écrit les tests</td><td>tourne</td><td>Brain Code écrit les tests avant le code ; un codeur n'y touche jamais</td><td>le juge</td></tr>
+<tr><td>Codeur lot 1</td><td>tourne</td><td>Grok : la base et ses 15 murs</td><td>—</td></tr>
+<tr><td>Codeur lot 2</td><td>tourne</td><td>Grok : le serveur, 100 commandes</td><td>—</td></tr>
+<tr><td>Codeur lots 3, 2c</td><td>tourne</td><td>Code Lot 3 : les 28 écrans et la connexion</td><td>—</td></tr>
+<tr><td>Le cliquet</td><td>tourne</td><td>un script, pas une IA : tous les tests verts, ou rien</td><td>personne : il mesure</td></tr>
+<tr><td>Le sabotage</td><td>à moitié</td><td>casse le code exprès, test par test ; un test resté vert est aveugle (D-116)</td><td>personne : il mesure</td></tr>
+<tr><td>La démo</td><td>à moitié</td><td>une fausse Avaliance de taille réelle, en moins de 150 ms (D-116)</td><td>personne : elle mesure</td></tr>
+<tr><td>BRAIN autorise</td><td>tourne</td><td>autorise l'audit, seulement si les trois contrôles sont verts</td><td>le BRAIN</td></tr>
+<tr><td>L'audit</td><td>tourne</td><td>une autre session, sur une copie neuve, sans compromis</td><td>l'auditeur</td></tr>
+<tr><td>Accepté</td><td>pas encore</td><td>les lots suivants partent</td><td>le BRAIN, sur le rapport</td></tr>
+<tr><td>Refusé</td><td>tourne</td><td>chaque trou devient une règle, et le juge écrit le test qui la garde</td><td>le BRAIN</td></tr>
+</table>
+
+<h2>Les exceptions assumées</h2>
+<p>Les lots 3 et 2c ont démarré avant que l'audit du lot 2 soit accepté : décision d'Ahmed du 05/10, pour ne pas attendre.
+Ce n'est pas un raccourci : le 12<sup>e</sup> audit les juge avec le lot 2 (D-117), et aucun lot suivant ne part avant son acceptation.</p>
+<p>Le sabotage et la démo ne sont pas encore exigés à chaque « prêt » : le juge les branche au cliquet (D-116). Jusque-là, ils restent à moitié.</p>
+
+<script>
+const T={
+c1:["C1 — Lot 1 · La base et ses 15 murs","Règles -> Juge -> Codeur lot 1 -> Cliquet -> BRAIN autorise -> Audit -> Refusé -> Règles","Le lot 1 n'a connu que le cliquet : le sabotage et la démo sont arrivés après. Ses murs sont rejugés à chaque audit."],
+c2:["C2 — Lot 2 · Le serveur, onze audits refusés","Règles -> Juge -> Codeur lot 2 -> Cliquet + Sabotage + Démo -> BRAIN autorise -> Audit -> Refusé -> Règles","Onze refus, et chaque refus est devenu une règle. Il reste deux tests rouges au codeur (prompt 14) avant le 12e audit."],
+c3:["C3 — Lots 3 et 2c · Les écrans et la connexion","Règles -> Juge -> Codeur lots 3, 2c -> Cliquet + Sabotage + Démo -> BRAIN autorise -> Audit -> Accepté","Partis avant l'acceptation du lot 2 : le 12e audit les juge avec lui (D-117). Aucun lot suivant ne part avant."],
+c4:["C4 — La boucle · Un trou devient une règle","Audit -> Refusé -> Règles -> Juge -> un test de plus","On ne corrige jamais le cas seul : on écrit la règle qui ferme toute la famille, et le juge écrit le test qui la garde."]};
+const g=document.getElementById("g"),p1=document.getElementById("p1"),p2=document.getElementById("p2"),cq=document.getElementById("cq");
+const D=[p1.textContent,p2.textContent,cq.textContent];
+document.querySelectorAll(".pastilles button").forEach(b=>b.addEventListener("click",()=>{
+const c=b.dataset.c,on=g.getAttribute("data-chemin")===c;
+document.querySelectorAll(".pastilles button").forEach(x=>x.setAttribute("aria-pressed","false"));
+if(on){g.removeAttribute("data-chemin");[p1.textContent,p2.textContent,cq.textContent]=D;return;}
+g.setAttribute("data-chemin",c);b.setAttribute("aria-pressed","true");b.style.borderColor="var(--"+c+")";
+[p1.textContent,p2.textContent,cq.textContent]=T[c];
+document.querySelectorAll(".pastilles button[aria-pressed=false]").forEach(x=>x.style.borderColor="");}));
+</script>
 </main></body></html>
