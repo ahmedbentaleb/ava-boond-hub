@@ -76,6 +76,7 @@ Mis à jour le 24/09/2026. Les anciens numéros de lot sont entre parenthèses.
 | 4.2 | La grille d'audit : 36 contrôles | ✅ 19/09 | [grille d'audit](GRILLE_AUDIT.md) |
 | 4.3 | Le cliquet et les portes (les tests qui bloquent) | ✅ 20/09 | [portes du code](journal/PORTES.md) · [portes en attente](PORTES_EN_ATTENTE.md) |
 | 4.4 | Les journaux de bugs | ⏳ tenus en continu | [bugs du BRAIN](JOURNAL_BUGS.md) · [bugs du code](journal/BUGS.md) · [correctifs](journal/CORRECTIFS.md) |
+| 4.5 | ⭐ **Le système de contrôle par niveaux** : règles → juge → codeurs → cliquet, sabotage, démo → le BRAIN autorise l'audit → l'audit autorise les lots suivants | ✅ 05/10 écrit (D-116, D-117) · ⬜ sabotage et démo au cliquet (juge) | [système de contrôle](SYSTEME_CONTROLE.md) |
 
 ### 5 · Construction — le code
 
