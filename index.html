@@ -3174,6 +3174,7 @@ function showView(name){
      Une page est une vue du hub (v), une page à part (href), ou une famille de documents (docs). */
   const MENU = [
     { id: "projet", label: "Projet", items: [
+      { v: "page:todo.html", label: "À faire", star: 1 },
       { v: "ava-etat", label: "État du projet", star: 1 },
       { v: "ava-reunion", label: "❓ Questions Avaliance", star: 1 } ] },
     { id: "code", label: "Code", items: [
@@ -3182,7 +3183,6 @@ function showView(name){
       { v: "code-reglages", label: "Ce qu'une société règle elle-même", star: 1 },
       { v: "code-methode", label: "Comment on le vérifie", star: 1 },
       { v: "page:controle.html", label: "Audit", star: 1 },
-      { v: "page:todo.html", label: "À faire", star: 1 },
       { v: "code-cout", label: "Délais et coût", star: 1 } ] },
     { id: "metier", label: "Le métier", items: [
       { v: "ava-metier", label: "Vue d'ensemble", star: 1 },
@@ -6252,7 +6252,7 @@ function showView(name){
   }
 
   function showHubView(name) {
-    const aliases = { reglages: "code-reglages", parametres: "code-reglages", cout: "code-cout", delais: "code-cout", code: "code-archi", "code-archi": "code-archi", regles: "code-regles", methode: "code-methode", documents: "ava-documents", docs: "ava-documents", etat: "ava-etat", "etat-projet": "ava-etat", reunion: "ava-reunion", avaliance: "ava-reunion", questions: "ava-reunion", "ava-simulateur": "ava-sim-rules", "ava-parcours": "ava-quiz", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-quiz", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
+    const aliases = { reglages: "code-reglages", parametres: "code-reglages", cout: "code-cout", delais: "code-cout", code: "code-archi", "code-archi": "code-archi", regles: "code-regles", methode: "code-methode", documents: "ava-documents", docs: "ava-documents", etat: "ava-etat", todo: "page:todo.html", "a-faire": "page:todo.html", "etat-projet": "ava-etat", reunion: "ava-reunion", avaliance: "ava-reunion", questions: "ava-reunion", "ava-simulateur": "ava-sim-rules", "ava-parcours": "ava-quiz", ava: "ava-metier", boond: "metier", cadrage: "ava-cadrage", contrats: "ava-cadrage", parcours: "ava-quiz", guide: "ava-quiz", fil: "ava-quiz", "ava-guides": "ava-quiz", "ava-guide": "ava-quiz", quiz: "ava-quiz", rpg: "ava-quiz", "ava-rpg": "ava-quiz", role: "ava-quiz", jours: "ava-quiz", "ava-rules": "ava-cadrage", "ava-sim-global": "ava-sim-rules", "3d": "ava-quiz", trijs: "ava-quiz", three: "ava-quiz" };
     if (aliases[name]) name = aliases[name];
     let key = name;
     if (name.startsWith("lire:")) { LIRE = decodeURIComponent(name.slice(5)); key = "lire:" + LIRE; name = "lire"; }
@@ -6303,7 +6303,7 @@ function showView(name){
     if (/^doc\/.+\.(md|txt|sql)(#.*)?$/i.test(h)) { e.preventDefault(); showHubView("lire:" + decodeURI(h.slice(4).split("#")[0])); return; }
     if (/^[a-z0-9_-]+\.html(\?.*)?$/i.test(h) && !/^index\.html/.test(h)) { e.preventDefault(); showHubView("page:" + h.split("?")[0]); }
   });
-  const start = decodeURI((location.hash || "#ava-etat").slice(1));
+  const start = decodeURI((location.hash || "#page:todo.html").slice(1));
   showHubView(start);
 })();
 
