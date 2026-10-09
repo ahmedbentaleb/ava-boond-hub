@@ -20,12 +20,12 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 .e{width:22px;flex:none;text-align:center}.qui{margin-left:auto;color:var(--t3);font-size:13px;white-space:nowrap;padding-left:10px}
 .ok .e{color:var(--ok)}.cours .e{color:var(--cours)}.v2 li{color:var(--t2)}.v2 .e{color:var(--v2)}.toi li{color:var(--toi)}
 </style></head><body><main>
-<div class="nav"><a href="./">← le hub</a></div>
+<div class="nav"><a href="./" target="_top">← le hub</a> ·<b>À faire</b> · <a href="decisions.html">Décisions</a> · <a href="bugs.html">Défauts</a> · <a href="livraisons.html">Livraisons</a> · <a href="audits.html">Audits</a> · <a href="documents.html">Documents</a></div>
 <h1>À faire</h1>
-<p class="sous">Vendredi 09/10/2026, 19h · ✅ fait · ⏳ en cours · ⬜ à faire</p>
+<p class="sous">Mis à jour le vendredi 09/10/2026 à 21h10 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire</p>
 
 <div class="chiffres">
-<div class="chiffre"><b>14</b><span>livraisons en ligne depuis hier</span></div>
+<div class="chiffre"><b>19</b><span>mises en ligne réussies depuis le 08/10 (<a href="livraisons.html">le détail</a>)</span></div>
 <div class="chiffre"><b>7</b><span>fiches relevées dans Boond</span></div>
 <div class="chiffre"><b>16</b><span>widgets du tableau de bord</span></div>
 <div class="chiffre"><b>234</b><span>réglages, aucun en dur</span></div>
@@ -56,17 +56,21 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 
 <h2>En cours</h2>
 <ol class="cours">
-<li><span class="e">⏳</span>Défilement horizontal des listes (interrupteur), colonne CV réduite ; « Mes alertes »<span class="qui">Juge · Code Lot 3 · Code 2</span></li>
-<li><span class="e">⏳</span>Chantier performance : affichage en 3 temps, préchargement au survol, plus de clignotement, onglets synchronisés, chaque écran sous 0,5 s<span class="qui">Juge · Code 2 · Code Lot 3</span></li>
-<li><span class="e">⏳</span>Contrôle complet des lots 2, 3 et 2c, puis 13e audit<span class="qui">Juge · Audit</span></li>
+<li><span class="e">⏳</span>Performance, 1er temps : mesuré 10 à 20 fois plus rapide (tableau de bord de 22 s à 3 s, listes sous 1,5 s, cloche en 0,07 s) — part en ligne ce soir<span class="qui">Juge · Infra · Code Lot 3</span></li>
+<li><span class="e">⏳</span>Performance, 2e temps : chaque écran sous 1 s, sans aucune fuite de chiffres vers un compte qui n'a pas le droit<span class="qui">Code 2 · Code Lot 3</span></li>
+<li><span class="e">⏳</span>13e audit indépendant des lots 2, 3 et 2c (lancé le 09/10 à 16h15)<span class="qui">Audit</span></li>
+<li><span class="e">⏳</span>Widgets en vrais composants Tremor partout : 25 au tableau de bord, des cartes en tête de chaque liste et de chaque fiche ; jamais deux fois la même forme sur une page ; chacun place et redimensionne les siens<span class="qui">Design ✅ · Juge · Code 2 · Code Lot 3</span></li>
+<li><span class="e">⏳</span>« Mes widgets » comme Boond : ajouter une Métrique, une Liste ou un Widget ; la Conformité relève chaque élément de Boond un par un<span class="qui">Conformité · Design ✅</span></li>
+<li><span class="e">⏳</span>Défilement horizontal des listes (interrupteur), menu replié en icônes avec bulle, cartes des listes variées ; « Mes alertes »<span class="qui">Juge · Code Lot 3 · Code 2</span></li>
 </ol>
 
 <h2>Ensuite</h2>
 <ol>
-<li><span class="e">⬜</span>Widgets dans les écrans : cartes en haut des listes, résumé dans les fiches<span class="qui">Code 2</span></li>
-<li><span class="e">⬜</span>Livraison 6 : les droits par groupe de données, comme Boond, et la fusion des doublons<span class="qui">Juge · codeurs</span></li>
+<li><span class="e">⬜</span>Barre d'outils des listes comme Boond : Filtres et mots clés à gauche ; recherches, roue des réglages et vue liste ou Kanban à droite<span class="qui">Juge · Code Lot 3</span></li>
+<li><span class="e">⬜</span>Colonne CV : une petite icône qui ouvre le CV, plus le mot « CV »<span class="qui">Juge · Code Lot 3</span></li>
+<li><span class="e">⬜</span>Les droits par groupe de données, comme Boond, et la fusion des doublons<span class="qui">Juge · codeurs</span></li>
 <li><span class="e">⬜</span>Reporting : Synthèse, Projets, Ressources, Sociétés<span class="qui">codeurs</span></li>
-<li><span class="e">⬜</span>Livraison 7 : notifications, journal d'activité global, « Mon compte » (langue, fuseau, page d'accueil), listes de valeurs éditables, mobilités en arbre, format des références<span class="qui">codeurs</span></li>
+<li><span class="e">⬜</span>Listes de valeurs éditables, mobilités en arbre, format des références<span class="qui">codeurs</span></li>
 <li><span class="e">⬜</span>⭐ Import des données de Boond vers Ava Manager — bloquant avant les vraies données<span class="qui">codeurs</span></li>
 <li><span class="e">⬜</span>Lot 5.8 : contrats et documents RH, devis, facturation, achats, export, mail groupé<span class="qui">codeurs</span></li>
 <li><span class="e">⬜</span>Audit du lot 5.8, deux semaines d'essai complet<span class="qui">Audit · Hamada</span></li>
