@@ -39,8 +39,8 @@ Mis à jour le 05/10/2026. Les anciens numéros de lot sont entre parenthèses.
 |---|---|---|---|
 | 1.1 | Les captures d'écran de Boond — 89 | ✅ 15/09, complétées le 22/09 (administration, référentiels, plans de charge) | hub › Boond › Audit complet · [audit des écrans](cartographie/AUDIT_ECRANS.md) |
 | 1.2 | Comprendre comment Boond fonctionne | ✅ 15/09 | [fonctionnement](cartographie/FONCTIONNEMENT_BOOND.md) · [diagnostic métier](cartographie/DIAGNOSTIC_METIER.md) |
-| 1.3 | Le relevé de Boond : chemins, écrans, et **tous les réglages valeur par valeur** | ✅ 19 → 23/09 | relevé Boond et écrans du 22/09 : internes · [réglages du 23/09](cartographie/BOOND_REGLAGES_2026-09-23.md) · [grille de parité du 24/09](cartographie/BOOND_PARITE_2026-09-24.md) · [grille d'inventaire](GRILLE_INVENTAIRE_BOOND_2026-09-17.md) |
-| 1.4 | Les questions que seul Avaliance peut trancher | ✅ 24/09 — les 10 réponses de la direction, intégrées au canon | [les réponses et ce qu'elles changent](REPONSES_AVALIANCE_2026-09-24.md) · questions Boond : internes |
+| 1.3 | Le relevé de Boond : chemins, écrans, et **tous les réglages valeur par valeur** | ✅ 19 → 23/09 | relevé Boond et écrans du 22/09 : internes · réglages du 23/09 (retiré) · grille de parité du 24/09 (retiré) · [grille d'inventaire](GRILLE_INVENTAIRE_BOOND_2026-09-17.md) |
+| 1.4 | Les questions que seul Avaliance peut trancher | ✅ 24/09 — les 10 réponses de la direction, intégrées au canon | les réponses et ce qu'elles changent (retiré) · questions Boond : internes |
 
 ### 2 · Cadrage métier — ce que le logiciel doit faire
 
@@ -60,7 +60,7 @@ Mis à jour le 05/10/2026. Les anciens numéros de lot sont entre parenthèses.
 
 | # | Étape | État | Documents |
 |---|---|---|---|
-| 3.1 | Les décisions d'architecture (ADR) | ✅ 16 → 19/09 | [ADR-000](adr/ADR-000-mono-tenant.md) · [002](adr/ADR-002-personne-et-profils.md) · [003](adr/ADR-003-projet-prestation-ressource.md) · [004](adr/ADR-004-evenements-et-archivage.md) · [006](adr/ADR-006-avenant-version-datee.md) · [007](adr/ADR-007-filiales-pas-maintenant.md) |
+| 3.1 | Les décisions d'architecture (ADR) | ✅ 16 → 19/09 | [ADR-000](adr/ADR-000-mono-tenant.md) · [002](adr/ADR-002-personne-et-profils.md) · [003](adr/ADR-003-projet-prestation-ressource.md) · [004](adr/ADR-004-evenements-et-archivage.md) · [006](adr/ADR-006-avenant-version-datee.md) · 007 (retiré) |
 | 3.2 | Les 10 décisions techniques (pile, connexion, hébergement) | ✅ 18/09 — T4 sauvegardes reporté | [décisions techniques](DECISIONS_TECHNIQUES_v1.md) |
 | 3.3 | Le modèle de données | ✅ 17/09 | [modèle de données](MODELE_DONNEES_AVAMANAGER_V1.md) |
 | 3.4 | Le schéma de la base et ses murs | ✅ 19/09 | [lisez-moi](SPEC_SQL_LISEZ-MOI.md) · [schéma SQL](SPEC_SQL_AVAMANAGER_V1.sql) · [assertions des murs](SPEC_ASSERTIONS_L7.sql) |
@@ -108,7 +108,7 @@ Mis à jour le 05/10/2026. Les anciens numéros de lot sont entre parenthèses.
 | 5.5s | Corrections du onzième tour — **registre exécutable v2** (✅ BRAIN), joué par le chemin de l'utilisateur (D-84), « prêt » mesuré par le cliquet (D-83) | ⬜ prêt à partir | [registre v2](REGISTRE_EXECUTABLE.md) · [prompt brain code 13](prompt-brain-code-13.txt) · [prompt correctifs 12](prompt-lot2-correctifs-12.txt) |
 | 5.5t | Douzième audit | ⬜ quand le cliquet l'écrit | [prompt d'audit 9](prompt-audit-9.txt) |
 | 5.6 | Connexion par compte Microsoft (lot 2c) | ⏳ 05/10 **canon écrit** (C-1 → C-12) · code fait (C-1 → C-10, écrans, parcours 16/16, branche `lot-2c`) · portes du juge P-413 → P-430 en cours · ⛔ l'application Microsoft Entra à déclarer par Hamada | [canon du lot 2c](CANON_LOT2C_CONNEXION.md) · [décisions techniques T2](DECISIONS_TECHNIQUES_v1.md) · [arbitrage D-2](ARBITRAGE_AUDIT_2026-09-21.md) |
-| 5.8 | ⭐ **RH, facturation et applications** — contrats, documents à suivre, devis, factures ; mail groupé, push de CV, actions sur une sélection, documents depuis modèles, lecture de CV, Outlook, préparation de paie (décisions des 23-24/09 : tout en V1) | ⬜ après les écrans | [ce que la V1 doit porter en plus](COMPLEMENTS_V1_2026-09-23.md) · [réglages Boond](cartographie/BOOND_REGLAGES_2026-09-23.md) · [applications Boond](cartographie/BOOND_APPLICATIONS_2026-09-24.md) |
+| 5.8 | ⭐ **RH, facturation et applications** — contrats, documents à suivre, devis, factures ; mail groupé, push de CV, actions sur une sélection, documents depuis modèles, lecture de CV, Outlook, préparation de paie (décisions des 23-24/09 : tout en V1) | ⬜ après les écrans | [ce que la V1 doit porter en plus](COMPLEMENTS_V1_2026-09-23.md) · réglages Boond (retiré) · applications Boond (retiré) |
 | 5.7 | Les **28** écrans (lot 3) | ✅ 01/10 **canon écrit** (D-68 → D-77 : la page peint ce que le serveur envoie, formulaires générés de la déclaration, 0 commande nouvelle) · ✅ 05/10 **28 écrans livrés** (branche `lot-3`), forme Style Ava (D-114, 37 écarts), listes rapides (PF-1, PF-2 : 1 605 → 109 ms), lecture croisée verte sur 1 019 096 fiches · ⏳ fusion du lot 2 après E13 → E21 | [canon des écrans](CANON_LOT3_ECRANS.md) · [prompt Design](prompt-design-lot3.txt) · [prompt code lot 3](prompt-lot3-code-1.txt) · [maquette jouable](../terminal.html) |
 | — | CRM, staffing, production (anciens lots 4, 5, 6) | ↪ fusionnés dans 5.2 et 5.7 | — |
 
@@ -127,7 +127,7 @@ Mis à jour le 05/10/2026. Les anciens numéros de lot sont entre parenthèses.
 
 | # | Étape | État | Documents |
 |---|---|---|---|
-| 6.1 | ⭐ **Le jeu de démonstration** (D-94, Hamada 05/10 : « pas d'export Boond, on teste avec nos données ») : une Avaliance fictive aux volumes réels de Boond (2 580 sociétés, 229 ressources, 20 744 candidats, 161 projets), créée **par les commandes**, jamais en SQL | ✅ 05/10 contenu écrit · ✅ script et mesures DEMO-1 → DEMO-9 (session Test) · ⛔ `make.sh demo` attend E13 du lot 2 | [le jeu de démonstration](JEU_DEMO.md) · [plan du 05/10](PLAN_2026-10-05.md) |
+| 6.1 | ⭐ **Le jeu de démonstration** (D-94, Hamada 05/10 : « pas d'export Boond, on teste avec nos données ») : une Avaliance fictive aux volumes réels de Boond (2 580 sociétés, 229 ressources, 20 744 candidats, 161 projets), créée **par les commandes**, jamais en SQL | ✅ 05/10 contenu écrit · ✅ script et mesures DEMO-1 → DEMO-9 (session Test) · ⛔ `make.sh demo` attend E13 du lot 2 | le jeu de démonstration (retiré) · [plan du 05/10](PLAN_2026-10-05.md) |
 | 6.2 | Ressaisie des missions en cours par Avaliance, dans Ava Manager, à la bascule | ⬜ (R2) | hub › [Questions Avaliance](../#reunion) |
 | 6.3 | ~~Import des données Boond (lot 7)~~ — ⛔ **pas d'export Boond disponible** (Hamada, 05/10) : remplacé par le jeu de démonstration (6.1) et la ressaisie (6.2) | ✖ retiré | — |
 | 6.4 | Essai de deux semaines, trois utilisateurs réels | ⬜ | — |
