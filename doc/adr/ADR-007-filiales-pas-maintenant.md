@@ -159,8 +159,8 @@ l'avoir cherché, parce qu'`agence` et `societe` ont toujours été deux choses 
 <source>
 
 Mesuré le 19/09/2026 dans l'instance Avaliance de Boond, session ouverte par Hamada.
-Relevé complet : [BOOND_CHEMINS_2026-09-19.md](../cartographie/BOOND_CHEMINS_2026-09-19.md) §18.
-La question d'origine : [QUESTIONS_BOOND_2026-09-19.md](../QUESTIONS_BOOND_2026-09-19.md), B-5
+Relevé complet : BOOND_CHEMINS_2026-09-19.md §18 (document interne, hors du site public).
+La question d'origine : QUESTIONS_BOOND_2026-09-19.md, B-5 (document interne)
 — *anciennement A-1, descendue de rang à la mesure*.
 
 ⭐ **Ce que cet ADR enseigne au-delà de son sujet** : la question était classée **bloquante**, et

@@ -231,20 +231,6 @@
   "ko": 6
  },
  {
-  "chemin": "cartographie/BOOND_CHEMINS_2026-09-19.md",
-  "titre": "Boond — les écrans et les chemins. Ce qui mène à quoi.",
-  "categorie": "Étude de Boond",
-  "date": "20/09/2026",
-  "ko": 46
- },
- {
-  "chemin": "cartographie/BOOND_ECRANS_2026-09-22.md",
-  "titre": "Boond — les écrans manquants, relevés le 22/09/2026",
-  "categorie": "Étude de Boond",
-  "date": "22/09/2026",
-  "ko": 9
- },
- {
   "chemin": "cartographie/BOOND_PARITE_2026-09-24.md",
   "titre": "La grille de parité Boond → Ava Manager — 24/09/2026",
   "categorie": "Étude de Boond",
@@ -705,13 +691,6 @@
   "categorie": "Prompts et briefs",
   "date": "20/09/2026",
   "ko": 10
- },
- {
-  "chemin": "QUESTIONS_BOOND_2026-09-19.md",
-  "titre": "Les questions nées du relevé Boond — classées",
-  "categorie": "Étude de Boond",
-  "date": "20/09/2026",
-  "ko": 9
  },
  {
   "chemin": "REGISTRE_EXECUTABLE.md",
