@@ -82,9 +82,9 @@ Cible **CODE** · famille **I / K1** · **critique** (donnée servie sans droit)
 preuve : serveur démarré **sans `AVA_MODE`**, aucun en-tête —
 ```
 GET /vues/besoins → HTTP 200
-{"titre":"Besoins","compte":"1932","lignes":[{"cellules":[{"libelle":"Analyste Risques de marché"},{"libelle":"Société 280"},{"libelle":"ferme"}]},…
+{"titre":"Besoins","compte":"[volume réel retiré]","lignes":[{"cellules":[{"libelle":"Analyste Risques de marché"},{"libelle":"Société 280"},{"libelle":"ferme"}]},…
 ```
-**1932 besoins**, avec le titre du besoin, le **nom de la société cliente** et l'état, servis sans authentification ·
+**[volume réel retiré] besoins**, avec le titre du besoin, le **nom de la société cliente** et l'état, servis sans authentification ·
 reproduire :
 ```bash
 curl -s http://127.0.0.1:3302/vues/besoins | head -c 400

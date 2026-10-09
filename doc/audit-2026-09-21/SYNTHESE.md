@@ -6,7 +6,7 @@ Les portes sont vertes, mais elles ne prouvent presque rien : des murs, des droi
 | Mutation | ⭐ **sur 37 sabotages, 48 portes aveugles** (48 des 64 portes servies restées vertes sous un sabotage qui les visait) ; le cliquet reste 10/10 quand aucune porte n'a tourné |
 | Conformité | 55/55 commandes servies ; 34 conformes hors écarts communs ; périmètre jamais vérifié sur l'objet (les 55) |
 
-1. **V-001** M-15 percé : `ava_lecture_agregats` lit les TJM/CJM (34 170 lignes) et 21 000 personnes ; la copie `test/` de l'assertion, périmée, reste verte — la version `_ops/` lève.
+1. **V-001** M-15 percé : `ava_lecture_agregats` lit les TJM/CJM ([volume réel retiré] lignes) et [volume réel retiré] personnes ; la copie `test/` de l'assertion, périmée, reste verte — la version `_ops/` lève.
 2. **V-002 · V-003 · V-004** le serveur tourne en superutilisateur `postgres` (les murs GRANT ne s'appliquent pas), le groupe vient d'un en-tête sans authentification, et IA de Paris écrit dans une autre agence.
 3. **V-005 · V-006 · V-007** `RecordTimesheet` refuse toute saisie, `SetPolicy` ne réussit jamais (HTTP 500), et un `emit()` supprimé laisse 55/55 portes vertes — leurs portes ne testent qu'un refus.
 

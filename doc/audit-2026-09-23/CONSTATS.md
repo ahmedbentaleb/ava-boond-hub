@@ -14,7 +14,7 @@ Preuve       `server/src/index.ts:164` (`/vues/besoins`) et `:200` (la fiche) ne
              `x-ava-groupe`, ni le périmètre, et la requête n'a aucun filtre d'agence. Sonde de l'auditeur
              principal, serveur **sans `AVA_MODE`**, base `ava_audit3_a`, aucun en-tête :
              `GET /vues/besoins` → **HTTP 200**, `compte=81`, 81 lignes (titre du besoin, **nom de la société**, état)
-             — `preuves/controles_neufs3.txt` C3-N1. Sur la base chargée du jeu d'essai : **1932 besoins**
+             — `preuves/controles_neufs3.txt` C3-N1. Sur la base chargée du jeu d'essai : **[volume réel retiré] besoins**
              (`preuves/securite3/`). Témoin dans la même sonde : `POST /commandes/CreateCompany` → **401**
              « authentification non livrée (lot 2c) ».
 Reproduire   `curl -s http://127.0.0.1:<port>/vues/besoins | head -c 400` (serveur lancé sans `AVA_MODE`)

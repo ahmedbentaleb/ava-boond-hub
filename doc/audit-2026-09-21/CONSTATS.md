@@ -20,7 +20,7 @@ Cible        les deux (CODE : migration non alignée · BRAIN : canon corrigé s
 Famille      C · C4 ; G ; J
 Gravité      critique
 Preuve       `db/migrations/001_schema.sql:1572-1574` pose `GRANT SELECT ON ALL TABLES … TO ava_lecture_agregats` puis ne retire que 6 tables. Le canon `_ops/SPEC_SQL_AVAMANAGER_V1.sql:1571-1572` fait `REVOKE SELECT ON ALL TABLES` puis ne rend que `ref_devise, ref_pays, politique` — la correction n'a jamais été portée en migration.
-             Mesuré (`rapport/preuves/C4_M15_perce.txt`) : sous `SET ROLE ava_lecture_agregats`, `v_conditions_du_jour` rend **34 170 lignes de TJM/CJM** (jeu d'essai), `personne` **21 000 lignes**, plus `prestation_version`, `evenement_metier` (qui porte les lignes `avant/apres` des prestations), `compte`.
+             Mesuré (`rapport/preuves/C4_M15_perce.txt`) : sous `SET ROLE ava_lecture_agregats`, `v_conditions_du_jour` rend **[volume réel retiré] lignes de TJM/CJM** (jeu d'essai), `personne` **[volume réel retiré] lignes**, plus `prestation_version`, `evenement_metier` (qui porte les lignes `avant/apres` des prestations), `compte`.
              `test/SPEC_ASSERTIONS_L7.sql:363-367` (la copie jouée par `outils/make.sh` et le cliquet) énumère encore trois tables → **23 OK**. La version canon `_ops/SPEC_ASSERTIONS_L7.sql:375` lève : « `ava_lecture_agregats` n'atteint QUE les 4 vues par devise (M-15) — FAUX » (`rapport/preuves/J_assertions_canon_ops.txt`).
 Reproduire   `psql -h 127.0.0.1 -U postgres -d ava_audit -v ON_ERROR_STOP=1 -f _ops/SPEC_ASSERTIONS_L7.sql` (rc=3) puis la même avec `test/SPEC_ASSERTIONS_L7.sql` (rc=0)
 Prétend      P-001 « Les 15 murs tiennent dans la base : 22 assertions + 1 contre-test » ✅
@@ -262,7 +262,7 @@ Gravité      moyenne
 Preuve       `_ops/JEU_ESSAI.sql:77-86` `TRUNCATE … evenement_metier, … groupe_permission_perimetre, compte_groupe, perimetre, groupe, compte …` ; seul `compte` est réinséré (`:157`). Après chargement : `CreateCompany` par IA → `DROIT groupe inconnu ou sans compte de banc` (`rapport/preuves/J_jeu_essai_casse_droits.txt`).
 Reproduire   `bash rapport/preuves/scripts/base.sh jeu` puis une commande quelconque
 Prétend      « On vide le MÉTIER, jamais les référentiels ni les politiques »
-Mesure       le banc « aux volumes réels » ne peut exécuter aucune commande du lot 2.
+Mesure       le banc « à volume » ne peut exécuter aucune commande du lot 2.
 Correction   Le jeu d'essai recrée groupes, périmètres et droits de 005, ou ne les vide pas.
 
 ### V-025 — P-002 teste le port 3000 en dur

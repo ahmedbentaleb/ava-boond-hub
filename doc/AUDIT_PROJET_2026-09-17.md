@@ -79,7 +79,7 @@ Aucun plan, aucun brief ne le cite. Or il incarne un modèle **rôles × permiss
 
 ### 2.6 ⚠️ La V1 ne permet pas d'arrêter Boond — et personne ne l'a écrit
 
-Le motif d'origine (plan du 15/09) : Boond coûte > 2 500 €/mois et n'est utilisé qu'en partie. Or :
+Le motif d'origine (plan du 15/09) : Boond coûte l'abonnement et n'est utilisé qu'en partie. Or :
 
 | Ce que Boond fait aujourd'hui pour Avaliance | En V1 Ava ? |
 |---|---|
@@ -91,7 +91,7 @@ Le motif d'origine (plan du 15/09) : Boond coûte > 2 500 €/mois et n'est util
 
 Deux conséquences à écrire dans le cadrage : (1) pendant V1, Boond **reste** payé — dire combien de temps ; (2) le modèle de données doit prévoir dès v1 les colonnes de reprise (`boond_id`, table de correspondance des états Boond → états Ava), sinon la migration se fera à coups de scripts sur une base qui n'était pas faite pour.
 
-Le point 4 du plan du 15/09 (« trancher le hors-scope ») et l'**inventaire de ce qu'Avaliance utilise vraiment dans Boond** n'ont jamais été faits ni reportés dans les plans suivants. C'est la seule donnée qui dit si V1 vaut 2 500 €/mois.
+Le point 4 du plan du 15/09 (« trancher le hors-scope ») et l'**inventaire de ce qu'Avaliance utilise vraiment dans Boond** n'ont jamais été faits ni reportés dans les plans suivants. C'est la seule donnée qui dit si V1 vaut l'abonnement.
 
 ### 2.7 ⚠️ Points plus petits, mais qui touchent une table
 

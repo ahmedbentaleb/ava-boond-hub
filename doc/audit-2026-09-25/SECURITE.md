@@ -159,7 +159,7 @@ Sortie : `securite8/croise_55.md` (une ligne par cas, code, message, tables écr
 | V-131 | écrivables par `ava_app` = écrites par une commande, **par table** (23 + 74 `ref_*`) ; ⚠️ 7 privilèges en trop (GRILLE8 G-8) | `grille8/V131_ecrivables_ava_app.txt` |
 | V-132 / B5 | 9 CHECK de liste, tous justifiés au registre §D ; ⚠️ 2 CHECK sur un code seul hors requête (GRILLE8 G-7) | `grille8/B2_B5.txt` |
 | K1 hors banc | 173 appels → 173 × 401, 0 écriture, 0 trace (tentative_refusee comprise), `/sante` 200 | `grille8/K1_hors_banc.txt` |
-| V-135 | `_ops/JEU_ESSAI.sql` se charge sur une base neuve 001→016 : rc 0 (2 581 sociétés, 21 000 personnes, 1 926 besoins, 161 projets) | `grille8/V135_jeu_essai.log` |
+| V-135 | `_ops/JEU_ESSAI.sql` se charge sur une base neuve 001→016 : rc 0 ([volume réel retiré]) | `grille8/V135_jeu_essai.log` |
 | K2 / K3 | UUID comme session → DROIT ; compte inactif → DROIT (commande et vue) | `grille8/K2_K3_banc.txt` |
 | Superutilisateur | le serveur refuse de démarrer en `postgres` | `grille8/C2_superutilisateur_refuse.txt` |
 

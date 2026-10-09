@@ -18,7 +18,7 @@
 | C1 | Aucune colonne `tenant_id` | ✅ | `grep -rn tenant db/` : 3 lignes, toutes des commentaires |
 | C2 | Le rôle applicatif n'a aucun DELETE | 🔴 | la requête sur `ava_app` rend 0 ligne, **mais le rôle applicatif réel est `postgres`, superutilisateur** : il a DELETE partout (V-002) |
 | C3 | `evenement_metier` et `snapshot_marge` sans UPDATE | 🔴 | 0 ligne pour `ava_app` ; même cause (V-002) ; et un GRANT UPDATE rendu n'est vu par aucune porte (S12) |
-| C4 | Le rôle d'agrégats ne voit pas prestation, temps, snapshot | 🔴 | ces trois-là : refusés ; mais `v_conditions_du_jour` (TJM/CJM, 34 170 lignes), `prestation_version`, `evenement_metier`, `personne`, `compte` : lisibles (`preuves/C4_M15_perce.txt`, V-001) |
+| C4 | Le rôle d'agrégats ne voit pas prestation, temps, snapshot | 🔴 | ces trois-là : refusés ; mais `v_conditions_du_jour` (TJM/CJM, [volume réel retiré] lignes), `prestation_version`, `evenement_metier`, `personne`, `compte` : lisibles (`preuves/C4_M15_perce.txt`, V-001) |
 | C5 | Les 7 murs-triggers existent | ✅ | `tg_m4_m14`, `tg_m6`, `tg_m7`, `tg_m10`, `tg_m12` ×4, `tg_ajout_seul` présents (`preuves/grille_commandes.txt`) |
 | D1 | `_ops/` n'a pas bougé | ✅ | `git diff --stat origin/main -- _ops/` : vide (HEAD a 15 commits d'avance) |
 | D2 | Aucun ORM | ✅ | `grep -niE "prisma\|typeorm\|sequelize\|drizzle\|knex" */package.json` : vide |

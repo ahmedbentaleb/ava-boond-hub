@@ -672,7 +672,7 @@ l'historique, les états en référentiel à catégorie.
 | **`facture`** | `societe_id`, `projet_id`, `numero` (séquence, **unique, jamais réutilisé**), `etat_code` (→ `ref_etat_facture`), `emise_le`, `echeance_le`, `tva_code`, `condition_reglement_code`, `mode_reglement_code`, `mode_envoi_code`, `montant_ht` + `devise_code` | ⛔ une facture émise ne se modifie pas : on l'annule par un **avoir** (nouveau mur, M-16 à écrire au modèle métier) |
 | **`facture_ligne`** | `facture_id`, `prestation_id`, `quantite`, `prix_unitaire` + `devise_code`, `libelle` | libellé tiré du modèle `[BILL_PERIOD_MONTH]` |
 | **`facture_fournisseur`** | `societe_id` (fournisseur), `achat_id`, `etat_code` (→ `ref_etat_facture_fournisseur`), `montant_ht` + `devise_code` | |
-| **`achat`** + **`paiement`** | `projet_id`, `fournisseur_id`, `categorie_code` (→ `ref_categorie_achat`), `montant` + `devise_code`, `etat_code` · paiement : `achat_id`, `montant`, `etat_code` (planifié · confirmé · réglé) | 1 seul achat chez Boond aujourd'hui : le module existe pour la reprise |
+| **`achat`** + **`paiement`** | `projet_id`, `fournisseur_id`, `categorie_code` (→ `ref_categorie_achat`), `montant` + `devise_code`, `etat_code` · paiement : `achat_id`, `montant`, `etat_code` (planifié · confirmé · réglé) | [volume réel retiré] achat chez Boond aujourd'hui : le module existe pour la reprise |
 | **`relance_facture`** | `facture_id`, `rang`, `envoyee_le`, `mode_envoi_code` | rythme : `facturation.relance.jours` |
 
 ### 13.3 Les nouveaux murs à écrire au modèle métier
@@ -717,11 +717,11 @@ assertions, **avant** la migration.
 | **`contact_domaine`** · **`contact_outil`** | contact, code | |
 
 ⛔ **Écarté, avec motif** : le « taux de change de l'agence juridique » (T-2, M-15 : aucun montant
-converti n'est stocké) · les produits (0 utilisé) · « Demander à l'IA » (lot 8).
+converti n'est stocké) · les produits ([volume réel retiré] utilisé) · « Demander à l'IA » (lot 8).
 
 ### 13.6 Les applications Boond reprises en V1 (24/09)
 
-⭐ Source : `cartographie/BOOND_APPLICATIONS_2026-09-24.md` (les 9 applications installées chez Avaliance).
+⭐ Source : `cartographie/BOOND_APPLICATIONS_2026-09-24.md` (les applications installées chez Avaliance).
 
 | Table | Colonnes | Note |
 |---|---|---|

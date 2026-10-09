@@ -65,7 +65,7 @@ des **politiques**, parce qu'une société de conseil peut vouloir les ouvrir.
 | une **agence** demandée | droit dans cette agence (D-26) | `ConvertCandidateToResource.agence_id` |
 | ⭐ un **candidat ou une ressource d'une autre agence** sur un besoin ou une prestation | **politique `staffing.inter_agences`** : **non** · oui. `non` → refus ; `oui` → permis si le demandeur a le droit dans l'agence du besoin ou du projet ; le profil garde son agence | `PositionCandidate`, `PositionResource`, `CreatePrestation` |
 
-⚠️ `staffing.inter_agences` est une **question pour Avaliance** (le nearshore Casablanca → Paris est leur
+⚠️ `staffing.inter_agences` est une **question pour Avaliance** (une agence nearshore est leur
 métier) : ajoutée aux questions de réunion. Le défaut `non` est celui que l'audit exige ; la porte croisée
 joue le défaut, et une porte par valeur joue `oui`.
 

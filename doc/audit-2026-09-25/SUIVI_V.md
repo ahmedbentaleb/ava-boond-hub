@@ -23,7 +23,7 @@ Sorties longues : `rapport/preuves/suivi8/`. Le script de sondes a été joué *
 | Suite | Résultat |
 |---|---|
 | `comptes-avant-fixture` (avant la fixture) | **1/1** |
-| `_ops/JEU_ESSAI.sql` sur base migrée neuve | **rc=0** — 2 581 sociétés · 8 000 contacts · 21 000 personnes · 1 926 besoins · 161 projets · 170 prestations (`03_jeu_essai.txt`) |
+| `_ops/JEU_ESSAI.sql` sur base migrée neuve | **rc=0** — [volume réel retiré] (`03_jeu_essai.txt`) |
 | Assertions L7 | **41 OK**, plancher **41**, `cmp` canon/copie **identiques**, `rc=0` (`05_*`) |
 | `sante` · `inventaire` · `outils` · `grants` | 1/1 · 1/1 · 2/2 · **1/1** |
 | `commandes` · `chemin` · `politiques` · `matrice` | **56/56** · **56/56** · **50/50** · **52/52** |

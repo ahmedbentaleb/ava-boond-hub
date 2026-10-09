@@ -74,8 +74,8 @@ propose ──(DeclareCVShared)──▶ presente ──(RecordClientDecision: r
 ⭐ **R1, direction d'Avaliance, 24/09 : « valider n'est pas gagner ».** Chez Boond, `Validé` = le
 dossier technique est posé, on attend la validation financière. ⇒ un code comme `valide` se range
 dans la catégorie **`presente`** (active), **jamais** en `terminal_positif`. Seul un code de
-`terminal_positif` (`retenu`, le `Gagné` de Boond) ouvre le projet. Reprise : les 80 « Validé » restent
-ouverts, les 198 « Gagné » deviennent `retenu`.
+`terminal_positif` (`retenu`, le `Gagné` de Boond) ouvre le projet. Reprise : les [volume réel retiré] « Validé » restent
+ouverts, les [volume réel retiré] « Gagné » deviennent `retenu`.
 
 Terminaux : `retenu`, `refuse_client`, `retire`. **Aucune** transition sortant de `retenu` : la suite est `CreateProjectFromNeed` (garde G1) puis `CreatePrestation` (F2), qui **ne modifient pas** le positionnement. Entretiens et qualifications sont des **événements / objets**, pas des états (CdC IV.E). « Gagné » n'existe pas (DEC-13).
 

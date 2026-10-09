@@ -104,7 +104,7 @@ Le **code** est stable, le **libellé** se renomme, une valeur s'**ajoute** dans
 | `ref_etat_temps` | `a_valider` · `valide` · `rejete` | a_valider, valide, rejete | ⭐ 01/10 — **D-50** : la validation des temps en V1 |
 | `ref_etat_envoi_email` | `en_attente` · `envoye` · `echec` | en_attente, envoye, echec | ⭐ 24/09 nuit — **V-132** : l'état d'un destinataire de mail, figé en CHECK dans 013 |
 | `ref_etat_preparation_paie` | `brouillon` · `figee` · `exportee` | brouillon, figee, exportee | ⭐ 24/09 nuit — **V-132** |
-| `ref_type_avantage` | — | ⬜ à remplir par l'admin | ⭐ 24/09 — 0 avantage saisi chez Avaliance |
+| `ref_type_avantage` | — | ⬜ à remplir par l'admin | ⭐ 24/09 — [volume réel retiré] avantage saisi chez Avaliance |
 | `ref_famille_document` | — | dossier technique, contrat RH, contrat de sous-traitance, facture, avoir, devis, achat, commande, prestation, ordre de mission, besoin, données administratives | ⭐ 24/09, DocTemplates — la famille d'un modèle de document |
 | `ref_type_message` | — | 19 modèles relevés : saisie des temps, des frais, attente de validation, validée, rejet, refus, suppression, demande/relance/confirmation de signature | ⭐ 23/09 — le **texte** du message est un modèle (`modele`), le type est ici |
 

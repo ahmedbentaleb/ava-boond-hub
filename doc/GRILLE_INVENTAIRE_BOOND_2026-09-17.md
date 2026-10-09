@@ -1,6 +1,6 @@
 # Grille d'inventaire — ce qu'Avaliance utilise vraiment dans Boond
 
-Date : 17/09/2026 · À remplir par : **Ahmed, dans Boond, 1 h** · Pourquoi : c'est le point 4 du plan du 15/09, jamais fait — la seule donnée qui dit si la V1 vaut 2 500 € / mois, et **ce qu'il faudra reprendre** (table `reprise_boond`).
+Date : 17/09/2026 · À remplir par : **Ahmed, dans Boond, 1 h** · Pourquoi : c'est le point 4 du plan du 15/09, jamais fait — la seule donnée qui dit si la V1 vaut l'abonnement, et **ce qu'il faudra reprendre** (table `reprise_boond`).
 
 ⭐ Règle de remplissage : un chiffre, pas un avis. « On s'en sert » ne vaut rien ; « 12 lignes, dernière le 03/09 » vaut tout. Quand Boond ne donne pas le chiffre, écrire `?` — c'est une information.
 
@@ -81,7 +81,7 @@ Apps → pour chacune : installée, **ouverte au moins une fois ce trimestre**, 
 | Abonnement plateforme | | partiellement — voir A |
 | Greffons (apps) | | non pour facture, paie, emailing |
 | Utilisateurs | | ✅ |
-| **Total** | **2 500 € ?** | |
+| **Total** | **l'abonnement ?** | |
 
 ⭐ **La question que cette grille répond :** pendant la V1, **combien** continue-t-on de payer à Boond, et **pour quoi** ? Si la réponse est « presque tout, pour la facture », la V1 ne coupe rien tant que la facture n'est pas dedans — et c'est une décision de périmètre, pas de modélisation.
 

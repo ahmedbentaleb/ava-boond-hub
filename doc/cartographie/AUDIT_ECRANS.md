@@ -2,7 +2,7 @@
 
 Verdict **auditeur** : le diagnostic précédent était un **modèle**, pas un audit. Un audit d’écran exige une capture + les zones + ce que l’écran crée. Cette passe pose la méthode et **16 preuves visuelles**. Il en reste.
 
-Verdict **chef de projet** : on screenshotte le **chrome** (barre, filtres, colonnes, Créer), pas les gens. Les captures viennent d’un tenant réel ; le texte ci-dessous ne recopie pas les fiches personnes.
+Verdict **chef de projet** : on screenshotte le **chrome** (barre, filtres, colonnes, Créer), pas les gens. Le texte ci-dessous ne recopie pas les fiches personnes.
 
 Source : `ui.boondmanager.com` · 15/09/2026 · session connectée.
 

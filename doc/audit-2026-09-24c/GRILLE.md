@@ -165,7 +165,7 @@ Informationnel. **Cible** `_ops/GRILLE_AUDIT.md` `<procedure>`, `<etat>`.
 
 ### G-11 · 🟠 `_ops/JEU_ESSAI.sql` ne se charge plus
 `psql -v ON_ERROR_STOP=1 -f _ops/JEU_ESSAI.sql` → rc 3 à la ligne 208 : `societe.agence_responsable_id` est NOT NULL depuis 011, le jeu ne le remplit pas.
-Le « banc simulé aux volumes réels » (et son usage de test du script de reprise) est mort depuis 011. **Preuve** `grille7/jeu_essai.txt` · **Cible** `_ops/JEU_ESSAI.sql:200-208`.
+Le « banc simulé à volume » (et son usage de test du script de reprise) est mort depuis 011. **Preuve** `grille7/jeu_essai.txt` · **Cible** `_ops/JEU_ESSAI.sql:200-208`.
 
 ---
 

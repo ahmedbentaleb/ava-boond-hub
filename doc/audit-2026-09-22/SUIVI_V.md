@@ -36,7 +36,7 @@ par des sondes directes.
 | V-021 | elevee | **Partiel (accepté D-9)** | FK `fk_contact_statut`, `fk_coordonnee_type`, `fk_coordonnee_usage` en base ; CHECK `perimetre_type_code_check` maintenu par décision D-9 (arbitrage). `suivi/V-021_V-027.txt` |
 | V-022 | elevee | **Ouvert** | `pg_hba_file_rules` : `local/host 127.0.0.1/::1 … trust` (6 lignes) ; `ava_serveur` sans mot de passe. Requalifié « poste de dev » par l'arbitrage, inchangé sur la machine. `suivi/V-022.txt` |
 | V-023 | elevee | **Fermé** | `_ops/GRILLE_AUDIT.md:32` vise `ci.yml` ; B2/B4 renvoient au registre §E (l.47-48) ; A1 compte le plancher (l.30) ; F = 11 contrôles (l.126) ; B1 grep `server/src web/src` (l.45) ; C4 mesure toutes les relations (l.64, 81). |
-| V-024 | moyenne | **Fermé** | `JEU_ESSAI.sql` chargé (rc=0, 21 001 personnes) : groupes 9, droits 88, compte_groupe 9 ; `CreateCompany` par IA → `ok:true`. ⚠️ voir candidat N-6. `suivi/V-024.txt` |
+| V-024 | moyenne | **Fermé** | `JEU_ESSAI.sql` chargé (rc=0, [volume réel retiré] personnes) : groupes 9, droits 88, compte_groupe 9 ; `CreateCompany` par IA → `ok:true`. ⚠️ voir candidat N-6. `suivi/V-024.txt` |
 | V-025 | moyenne | **Fermé** | `test/contrat/sante.test.ts:4-5,23` lit `AVA_BASE_URL` ; P-002 verte contre 3201. |
 | V-026 | moyenne | **Fermé** | `UpdateCandidate note_globale` écrit (`identite.ts:72,88`). Sabotage base (`note_dans_echelle()` en dur à 5) : P-134 **tombe** (assertions L7 restent rc=0). `suivi/V-026.txt` |
 | V-027 | moyenne | **Fermé** | `has_table_privilege('ava_app','ava.tentative_refusee','INSERT')` = t (007 §3) ; `executer.ts:129-131` et `:196-198` journalisent l'échec (`console.error`). Sonde : un MUR écrit bien sa ligne `tentative_refusee`. |

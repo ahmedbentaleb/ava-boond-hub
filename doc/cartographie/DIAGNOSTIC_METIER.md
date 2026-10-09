@@ -33,7 +33,7 @@ Ordre de build (chaque lot a un Créer qui passe au lot suivant) :
 6. Action (journal)  
 7. Vues en dernier : dashboard, reporting, plan de charge — elles ne créent rien
 
-Hors v1 : Apps, facture client, paie, intranet, profils types, produits. C’est l’abonnement à 2 500 €, pas le métier quotidien.
+Hors v1 : Apps, facture client, paie, intranet, profils types, produits. C’est l’abonnement, pas le métier quotidien.
 
 Risque n°1 : livrer les listes avant les **Créer**. On obtient un clone visuel qui n’enchaîne pas.
 

@@ -49,6 +49,13 @@
   "ko": 4
  },
  {
+  "chemin": "adr/ADR-007-filiales-pas-maintenant.md",
+  "titre": "ADR-007 — Les filiales : par où on passera, le jour où",
+  "categorie": "Décisions d'architecture (ADR)",
+  "date": "20/09/2026",
+  "ko": 7
+ },
+ {
   "chemin": "annexes/AUDIT_THEMES_2026-09-19.md",
   "titre": "Audit des 28 thèmes — 19 septembre 2026",
   "categorie": "Audits",
@@ -217,6 +224,41 @@
   "ko": 5
  },
  {
+  "chemin": "cartographie/BOOND_APPLICATIONS_2026-09-24.md",
+  "titre": "Boond — les applications, installées et disponibles (24/09/2026)",
+  "categorie": "Étude de Boond",
+  "date": "24/09/2026",
+  "ko": 6
+ },
+ {
+  "chemin": "cartographie/BOOND_CHEMINS_2026-09-19.md",
+  "titre": "Boond — les écrans et les chemins. Ce qui mène à quoi.",
+  "categorie": "Étude de Boond",
+  "date": "20/09/2026",
+  "ko": 46
+ },
+ {
+  "chemin": "cartographie/BOOND_ECRANS_2026-09-22.md",
+  "titre": "Boond — les écrans manquants, relevés le 22/09/2026",
+  "categorie": "Étude de Boond",
+  "date": "22/09/2026",
+  "ko": 9
+ },
+ {
+  "chemin": "cartographie/BOOND_PARITE_2026-09-24.md",
+  "titre": "La grille de parité Boond → Ava Manager — 24/09/2026",
+  "categorie": "Étude de Boond",
+  "date": "24/09/2026",
+  "ko": 8
+ },
+ {
+  "chemin": "cartographie/BOOND_REGLAGES_2026-09-23.md",
+  "titre": "Boond — tous les réglages, valeur par valeur (23/09/2026)",
+  "categorie": "Étude de Boond",
+  "date": "23/09/2026",
+  "ko": 8
+ },
+ {
   "chemin": "cartographie/FONCTIONNEMENT_BOOND.md",
   "titre": "Fonctionnement Boond Manager",
   "categorie": "Étude de Boond",
@@ -285,6 +327,13 @@
   "categorie": "Cadrage et commande du client",
   "date": "05/10/2026",
   "ko": 29
+ },
+ {
+  "chemin": "JEU_DEMO.md",
+  "titre": "Le jeu de démonstration — une Avaliance fictive (D-94, 05/10/2026)",
+  "categorie": "Cadrage et commande du client",
+  "date": "05/10/2026",
+  "ko": 6
  },
  {
   "chemin": "MACHINES_ETAT_V1.md",
@@ -658,6 +707,13 @@
   "ko": 64
  },
  {
+  "chemin": "QUESTIONS_BOOND_2026-09-19.md",
+  "titre": "Les questions nées du relevé Boond — classées",
+  "categorie": "Étude de Boond",
+  "date": "20/09/2026",
+  "ko": 9
+ },
+ {
   "chemin": "RELECTURE_5_MODELE_DONNEES_2026-09-17.md",
   "titre": "Relecture contradictoire — Modèle de données v1 (livrable 5) — 17 septembre 2026",
   "categorie": "Audits",
@@ -705,6 +761,13 @@
   "categorie": "Conception et contrat",
   "date": "22/09/2026",
   "ko": 89
+ },
+ {
+  "chemin": "REPONSES_AVALIANCE_2026-09-24.md",
+  "titre": "Les réponses d'Avaliance — réunion du 24/09/2026",
+  "categorie": "Cadrage et commande du client",
+  "date": "25/09/2026",
+  "ko": 5
  },
  {
   "chemin": "SPEC_SQL_LISEZ-MOI.md",

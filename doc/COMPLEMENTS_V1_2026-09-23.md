@@ -37,7 +37,7 @@ ce que notre canon n'avait pas. **Tout est repris en V1.** Ce fichier dit quoi a
 | **`devis`**, **`facture`**, **`facture_fournisseur`**, **`echeance`** | client, projet, lignes, TVA, conditions et mode de règlement, mode d'envoi, état, relances | la facturation entre en V1 |
 | `personne` (+ colonnes) | situation familiale, langues et niveaux, formations, certifications, disponibilité candidat | relevés chez Boond, absents chez nous |
 | `societe` (+ colonne) | `secteur_code` | 30 secteurs administrables |
-| `agence` (+ colonnes) | `calendrier_code`, `jours_ouvres_annuel`, `coefficient_charge` | les 5 agences de Boond les portent déjà |
+| `agence` (+ colonnes) | `calendrier_code`, `jours_ouvres_annuel`, `coefficient_charge` | les agences de Boond les portent déjà |
 | `personne` (+ colonnes, R7 · R8) | `drapeau_blackliste` + motif, date, auteur, portée (agence · installation) · n° de sécurité sociale, nationalité, lieu de naissance, situation familiale — sous la permission `LireDonneesRHSensibles` | réponses de la direction du 24/09 : un drapeau réversible, et on importe tout |
 | `besoin` (+ colonne, R10) | `origine_code` → `ref_origine_besoin` | régie ou appel d'offres : c'est l'origine qui dit si le projet peut se passer d'une personne |
 | `projet` (+ colonnes, R10) | l'interlocuteur est **un contact, une unité (service) ou la société** — une seule des trois | plus de contact fictif en appel d'offres |
