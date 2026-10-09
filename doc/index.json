@@ -273,13 +273,6 @@
   "ko": 5
  },
  {
-  "chemin": "JEU_ESSAI.sql",
-  "titre": "JEU_ESSAI.sql",
-  "categorie": "Conception et contrat",
-  "date": "01/10/2026",
-  "ko": 31
- },
- {
   "chemin": "JOURNAL_BUGS.md",
   "titre": "Journal des bugs — Ava Manager · **audit général**",
   "categorie": "Journaux du code (portes, bugs, étapes)",
