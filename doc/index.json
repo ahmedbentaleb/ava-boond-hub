@@ -154,13 +154,6 @@
   "ko": 13
  },
  {
-  "chemin": "AVA_MANAGER-SPEC_1_extract.txt",
-  "titre": "AVA_MANAGER-SPEC_1_extract.txt",
-  "categorie": "Cadrage et commande du client",
-  "date": "16/09/2026",
-  "ko": 11
- },
- {
   "chemin": "BRIEF_BRAIN_2026-09-16.md",
   "titre": "Brief canonique Brain — Ava Manager",
   "categorie": "Prompts et briefs",
@@ -229,13 +222,6 @@
   "categorie": "Étude de Boond",
   "date": "15/09/2026",
   "ko": 7
- },
- {
-  "chemin": "COCKPIT2-Cahier_de_charge-v0.1_extract.txt",
-  "titre": "COCKPIT2-Cahier_de_charge-v0.1_extract.txt",
-  "categorie": "Cadrage et commande du client",
-  "date": "16/09/2026",
-  "ko": 38
  },
  {
   "chemin": "COMPLEMENTS_V1_2026-09-23.md",

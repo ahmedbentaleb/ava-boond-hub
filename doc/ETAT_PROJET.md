@@ -29,7 +29,7 @@ Mis à jour le 05/10/2026. Les anciens numéros de lot sont entre parenthèses.
 
 | # | Étape | État | Documents |
 |---|---|---|---|
-| 0.1 | Lire la commande d'Avaliance : les deux cahiers des charges | ✅ 15/09 | [SPEC 1](AVA_MANAGER-SPEC_1_extract.txt) · [Cockpit 2](COCKPIT2-Cahier_de_charge-v0.1_extract.txt) · [cahier des charges](../cdc.html) |
+| 0.1 | Lire la commande d'Avaliance : les deux cahiers des charges | ✅ 15/09 | SPEC 1 (retiré) · Cockpit 2 (retiré) · [cahier des charges](../cdc.html) |
 | 0.2 | Écarter la démo Jenspark (un prototype, pas une base) | ✅ 16/09 | [ADR-001](adr/ADR-001-zip-jenspark-ecarte.md) |
 | 0.3 | Dépôt GitHub privé, sauvegarde, règles de travail | ✅ 17/09 | [audit du projet 17/09](AUDIT_PROJET_2026-09-17.md) |
 
