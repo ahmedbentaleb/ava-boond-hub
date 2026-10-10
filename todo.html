@@ -22,10 +22,10 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 </style></head><body><main>
 <div class="nav"><a href="./" target="_top">← le hub</a> ·<b>À faire</b> · <a href="decisions.html">Décisions</a> · <a href="bugs.html">Défauts</a> · <a href="livraisons.html">Livraisons</a> · <a href="audits.html">Audits</a> · <a href="documents.html">Documents</a></div>
 <h1>À faire</h1>
-<p class="sous">Mis à jour le vendredi 09/10/2026 à 23h45 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire</p>
+<p class="sous">Mis à jour le samedi 10/10/2026 à 01h50 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire</p>
 
 <div class="chiffres">
-<div class="chiffre"><b>19</b><span>mises en ligne réussies depuis le 08/10 (<a href="livraisons.html">le détail</a>)</span></div>
+<div class="chiffre"><b>20</b><span>mises en ligne réussies depuis le 08/10 (<a href="livraisons.html">le détail</a>)</span></div>
 <div class="chiffre"><b>7</b><span>fiches relevées dans Boond</span></div>
 <div class="chiffre"><b>16</b><span>widgets du tableau de bord</span></div>
 <div class="chiffre"><b>234</b><span>réglages, aucun en dur</span></div>
@@ -52,13 +52,14 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 <li><span class="e">✅</span>Filtres dans une fenêtre comme Boond (onglets, Tout cocher, Appliquer, pastilles), Planning ▸ Plans de charge ; aperçu du lien dans WhatsApp et Teams ; compte démo « Tout voir »<span class="qui">livraison 7b</span></li>
 <li><span class="e">✅</span>Démo : 31 % des ressources positionnées, un logo sur chaque ligne de la page 1 des Sociétés<span class="qui">démo 2</span></li>
 <li><span class="e">✅</span>Relevé de tout Boond, champ par champ (Temps mis de côté)<span class="qui">Conformité</span></li>
+<li><span class="e">✅</span>Performance, 1er temps : tableau de bord complet en 0,5 s au lieu de 19 à 31 s, listes en 0,1 à 0,5 s, cloche en 0,08 s (mesuré en ligne)<span class="qui">PERF-A, 10/10</span></li>
 </ul>
 
 <h2>En cours</h2>
 <ol class="cours">
-<li><span class="e">⏳</span>Performance, 1er temps : mesuré 10 à 20 fois plus rapide (tableau de bord de 22 s à 3 s, listes sous 1,5 s, cloche en 0,07 s) — le juge rejoue ses derniers contrôles d'écran, puis mise en ligne<span class="qui">Juge · Infra · Code Lot 3</span></li>
-<li><span class="e">⏳</span>Performance, 2e temps : chaque écran sous 1 s (tableau de bord d'un recruteur de 3 s à 0,25 s au banc), sans aucune fuite de chiffres vers un compte qui n'a pas le droit<span class="qui">Code 2 · Code Lot 3</span></li>
-<li><span class="e">⏳</span>13e audit indépendant des lots 2, 3 et 2c (lancé le 09/10 à 16h15)<span class="qui">Audit</span></li>
+<li><span class="e">⏳</span>Prochaine livraison : plus aucun montant dans les réponses des actions pour un compte sans droit (constat critique du 13e audit), pagination du bas toujours affichée, compteurs lisibles (« 1 331 »), écrans encore plus rapides<span class="qui">Code 2 · Code Lot 3 · Juge</span></li>
+<li><span class="e">⏳</span>13e audit refusé (24 constats, dont 3 critiques ; aucune fuite à l'écran) : chaque constat corrigé par famille, avec son contrôle rouge puis vert<span class="qui">Juge · Code 2 · Code Lot 3</span></li>
+<li><span class="e">⏳</span>Plus aucune valeur de réglage écrite en dur dans le code : 181 endroits sur le lot 2, 224 sur le lot 3, à remplacer<span class="qui">Code 2 · Code Lot 3</span></li>
 <li><span class="e">⏳</span>Widgets en vrais composants Tremor partout : 25 au tableau de bord, des cartes en tête de chaque liste et de chaque fiche ; jamais deux fois la même forme sur une page ; chacun place et redimensionne les siens<span class="qui">Design ✅ · Juge · Code 2 · Code Lot 3</span></li>
 <li><span class="e">⏳</span>« Mes widgets » comme Boond : ajouter une Métrique, une Liste ou un Widget ; la Conformité relève chaque élément de Boond un par un<span class="qui">Conformité · Design ✅</span></li>
 <li><span class="e">⏳</span>Défilement horizontal des listes (interrupteur), menu replié en icônes avec bulle, cartes des listes variées ; « Mes alertes »<span class="qui">Juge · Code Lot 3 · Code 2</span></li>
