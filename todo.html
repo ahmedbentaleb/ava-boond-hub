@@ -21,22 +21,23 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 </style></head><body><main>
 <div class="nav"><a href="./" target="_top">← le hub</a> · <b>À faire</b> · <a href="decisions.html">Décisions</a> · <a href="bugs.html">Défauts</a> · <a href="livraisons.html">Livraisons</a> · <a href="audits.html">Audits</a> · <a href="documents.html">Documents</a></div>
 <h1>À faire</h1>
-<p class="sous">Mis à jour le samedi 10/10/2026 à 08h30 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire</p>
+<p class="sous">Mis à jour le samedi 10/10/2026 à 11h30 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire</p>
 
 <div class="chiffres">
-<div class="chiffre"><b>21</b><span>mises en ligne réussies depuis le 08/10 (<a href="livraisons.html">le détail</a>)</span></div>
+<div class="chiffre"><b>23</b><span>mises en ligne réussies depuis le 08/10 (<a href="livraisons.html">le détail</a>)</span></div>
 <div class="chiffre"><b>0,1 à 0,5 s</b><span>par écran en ligne (19 à 31 s avant)</span></div>
-<div class="chiffre"><b>3</b><span>livraisons prévues ce matin</span></div>
+<div class="chiffre"><b>2 sur 3</b><span>livraisons du matin en ligne</span></div>
 <div class="chiffre"><b>25</b><span>widgets Tremor prévus au tableau de bord</span></div>
 </div>
 
 <div class="bloc">V1 — ce qui remplace Boond<small>Les écrans de Boond à l'identique par défaut, réglables par société, dans le nouvel habillage</small></div>
 
-<h2>Ce matin — la livraison d'Hamada</h2>
+<h2>En cours — dans l'ordre de mise en ligne</h2>
 <ol class="cours">
-<li><span class="e">⏳</span>« Tremor 1 » : les cartes visuelles Tremor en tête des listes et des fiches. Répétition d'Infra ✅ ; le juge finit sa comparaison avec la version en ligne<span class="qui">Juge · Infra</span></li>
-<li><span class="e">⏳</span>« charte-3 » : la barre des filtres en vrais composants shadcn (Filtres · mots clés · ★ favoris · ☰ / ▦ · ⚙), pagination au milieu en haut et en bas, CV en icône, plus aucune valeur en dur (V-229), et la charte : violet en tons partout, sélections en fond uni, vert rare. ✅ Validée par Design ; preuve du juge en cours<span class="qui">Design ✅ · Juge · Infra</span></li>
-<li><span class="e">⏳</span>« Tremor 2 » : le tableau de bord, 25 widgets Tremor sans forme répétée, « Mes widgets » (chacun place les siens), et le thème Avaliance exact (violet #430A4B, violet clair, vert)<span class="qui">Code 2 · Design · Juge · Infra</span></li>
+<li><span class="e">⏳</span>« Tremor 2 » : le tableau de bord, 25 widgets Tremor sans forme répétée, « Mes widgets » (chacun place les siens), et le thème Avaliance exact (violet #430A4B, violet clair, vert). ⛔ Refusée par le juge à 10h32 (un widget montrait le pipeline commercial à un compte RH) ; et des widgets trop serrés à corriger avant toute mise en ligne<span class="qui">Code 2 · Design · Juge · Infra</span></li>
+<li><span class="e">⏳</span>Les cartes en tête des listes lisibles : chaque widget avec sa taille minimale, son nombre d'éléments et sa légende (règles de Design du 10/10)<span class="qui">Design ✅ · Code Lot 3 · Code 2</span></li>
+<li><span class="e">⏳</span>La barre des listes, 2e passe validée : recherche dans tous les champs comme Boond, ★ qui enregistre d'un clic, recherches enregistrées avec corbeille, pagination à droite, « lignes par page » (50 par défaut), colonnes figées depuis la gauche<span class="qui">Design ✅ · Juge · Code Lot 3</span></li>
+<li><span class="e">⏳</span>Colonnes « sur deux lignes » comme Boond (46 cellules relevées : l'objet en gras, le contexte en gris dessous)<span class="qui">Conformité ✅ · Juge · Design · Code Lot 3</span></li>
 </ol>
 
 <h2>Phase 2 — décidé ce matin, à faire ensuite</h2>
@@ -65,6 +66,8 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 
 <h2>En ligne</h2>
 <ul class="ok">
+<li><span class="e">✅</span>La charte Avaliance (violet en tons partout, sélections en fond uni, vert rare) ; la barre des filtres en vrais composants shadcn, CV en icône ; plus aucune valeur de réglage écrite en dur<span class="qui">charte-3, 10/10 10h26</span></li>
+<li><span class="e">✅</span>Les cartes visuelles Tremor en tête des listes et des fiches ; 8 constats du 13e audit corrigés ; « 0,00 € » au lieu d'un vide<span class="qui">Tremor 1, 10/10 10h20</span></li>
 <li><span class="e">✅</span>Plus aucun montant dans les réponses des actions pour un compte sans droit (critique du 13e audit) ; pagination du bas ; compteurs lisibles (« 1 331 ») ; tableau de bord en 0,1 s<span class="qui">perf-1e, 10/10 04h42</span></li>
 <li><span class="e">✅</span>Performance, 1er temps : tableau de bord en 0,5 s au lieu de 19 à 31 s, listes en 0,1 à 0,5 s, cloche en 0,08 s (mesuré en ligne)<span class="qui">PERF-A, 10/10</span></li>
 <li><span class="e">✅</span>Relevé de tout Boond, champ par champ (Temps mis de côté)<span class="qui">Conformité</span></li>
