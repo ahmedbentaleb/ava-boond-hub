@@ -2,12 +2,10 @@
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>À faire</title>
 <style>
-:root{--bg:#fafaf8;--t1:#1d1d1f;--t2:#5d5d5d;--t3:#9a9a9a;--carte:#fff;--bord:#d9d8d2;--accent:#5B1765;--vert:#5f7a12;--ok:#1E5B3A;--cours:#B07F10;--v2:#1d6fd0;--toi:#C2185B}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121214;--t1:#f1f1f3;--t2:#a9a8b2;--t3:#6e6d76;--carte:#1b1b1f;--bord:#2e2e35;--accent:#c79ad0;--vert:#C3D64F;--ok:#34D399;--cours:#E9B949;--v2:#5AA9FF;--toi:#F472B6}}
-:root[data-theme="dark"]{--bg:#121214;--t1:#f1f1f3;--t2:#a9a8b2;--t3:#6e6d76;--carte:#1b1b1f;--bord:#2e2e35;--accent:#c79ad0;--vert:#C3D64F;--ok:#34D399;--cours:#E9B949;--v2:#5AA9FF;--toi:#F472B6}
+:root{color-scheme:dark;--bg:#000;--t1:#f1f1f3;--t2:#a9a8b2;--t3:#6e6d76;--carte:#121214;--bord:#26262c;--accent:#c79ad0;--vert:#C3D64F;--ok:#34D399;--cours:#E9B949;--v2:#5AA9FF;--toi:#F472B6}
 body{margin:0;background:var(--bg);color:var(--t1);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
 main{max-width:760px;margin:0 auto;padding:20px 16px 56px}
-a{color:var(--accent)}.nav{font-size:14px}
+a{color:var(--accent)}.nav{font-size:14px;color:var(--t2)}
 h1{font-size:26px;font-weight:600;margin:6px 0 2px}.sous{color:var(--t2);margin:0 0 18px}
 .chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:22px}
 .chiffre{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:10px 14px}
@@ -19,57 +17,36 @@ ol,ul{margin:0;padding:0;list-style:none}
 li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--bord)}
 .e{width:22px;flex:none;text-align:center}.qui{margin-left:auto;color:var(--t3);font-size:13px;white-space:nowrap;padding-left:10px}
 .ok .e{color:var(--ok)}.cours .e{color:var(--cours)}.v2 li{color:var(--t2)}.v2 .e{color:var(--v2)}.toi li{color:var(--toi)}
+@media (max-width:560px){li{flex-wrap:wrap}.qui{margin-left:34px;padding-left:0;white-space:normal}}
 </style></head><body><main>
-<div class="nav"><a href="./" target="_top">← le hub</a> ·<b>À faire</b> · <a href="decisions.html">Décisions</a> · <a href="bugs.html">Défauts</a> · <a href="livraisons.html">Livraisons</a> · <a href="audits.html">Audits</a> · <a href="documents.html">Documents</a></div>
+<div class="nav"><a href="./" target="_top">← le hub</a> · <b>À faire</b> · <a href="decisions.html">Décisions</a> · <a href="bugs.html">Défauts</a> · <a href="livraisons.html">Livraisons</a> · <a href="audits.html">Audits</a> · <a href="documents.html">Documents</a></div>
 <h1>À faire</h1>
-<p class="sous">Mis à jour le samedi 10/10/2026 à 05h50 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire</p>
+<p class="sous">Mis à jour le samedi 10/10/2026 à 07h30 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire</p>
 
 <div class="chiffres">
 <div class="chiffre"><b>21</b><span>mises en ligne réussies depuis le 08/10 (<a href="livraisons.html">le détail</a>)</span></div>
-<div class="chiffre"><b>7</b><span>fiches relevées dans Boond</span></div>
-<div class="chiffre"><b>16</b><span>widgets du tableau de bord</span></div>
-<div class="chiffre"><b>234</b><span>réglages, aucun en dur</span></div>
+<div class="chiffre"><b>0,1 à 0,5 s</b><span>par écran en ligne (19 à 31 s avant)</span></div>
+<div class="chiffre"><b>2</b><span>livraisons prêtes, en preuve chez le juge</span></div>
+<div class="chiffre"><b>25</b><span>widgets Tremor prévus au tableau de bord</span></div>
 </div>
 
 <div class="bloc">V1 — ce qui remplace Boond<small>Les écrans de Boond à l'identique par défaut, réglables par société, dans le nouvel habillage</small></div>
 
-<h2>En ligne</h2>
-<ul class="ok">
-<li><span class="e">✅</span>Entrée par la Marketplace, sans mot de passe, choix d'un compte de démo en vignettes<span class="qui">livraison 3</span></li>
-<li><span class="e">✅</span>Bandeau fixe : logo Duo, logo Avaliance, la personne connectée à droite<span class="qui">livraison 1</span></li>
-<li><span class="e">✅</span>Un seul thème, clair et sombre, les deux couleurs d'Avaliance<span class="qui">livraison 2</span></li>
-<li><span class="e">✅</span>États en tags pleins, priorités en ronds P1 · P2 · P3<span class="qui">livraisons 1 et 3</span></li>
-<li><span class="e">✅</span>Menu ▾ avec l'Administration, refus affiché dans la page, logo Duo dans l'onglet<span class="qui">livraison 3</span></li>
-<li><span class="e">✅</span>Les listes comme Boond : colonnes, Kanban Sociétés et Besoins, coordonnées en icônes, menu avec la V2 grisée<span class="qui">livraison 4</span></li>
-<li><span class="e">✅</span>Les fiches comme Boond, barre de droite, 200 photos, 60 logos, noms réalistes, compte Direction<span class="qui">livraison 5</span></li>
-<li><span class="e">✅</span>L'écran ne saute plus ; valeurs de Boond ; démo complète (responsables, CV, dates, CA, marges)<span class="qui">livraison 5.1</span></li>
-<li><span class="e">✅</span>Filtres et pagination de Boond (haut et bas), Kanban avec cadre coloré, photo ou logo à chaque nom, un seul titre, icône à chaque type<span class="qui">livraison 5 bis</span></li>
-<li><span class="e">✅</span>Tableau de bord fidèle à la maquette (17 widgets validés par Design) et « Mes widgets » : choisir, glisser, taille fixe<span class="qui">livraison 5 ter</span></li>
-<li><span class="e">✅</span>Cartes visuelles en tête des fiches, fiche Positionnement comme Boond, barre d'outils de Boond sur une ligne, montants lisibles (« 67 080,00 EUR »), tri ▲▼, coordonnées qui ouvrent et copient<span class="qui">livraison 6</span></li>
-<li><span class="e">✅</span>Sélection multiple sur toutes les listes (somme par devise), recherche globale, recherches enregistrées, dernière recherche gardée, menu du compte comme Boond, cartes en haut des listes, montants en « € », doublons dès l'e-mail, plusieurs e-mails et téléphones<span class="qui">livraison 7a</span></li>
-<li><span class="e">✅</span>Tableau de bord en mosaïque fixe par type de compte (sans case vide ni décalage), rail et menu gardés au compte, cartes des listes variées, compte « Tout voir » avec tous les widgets<span class="qui">livraison 8</span></li>
-<li><span class="e">✅</span>Cloche des notifications, Mon compte (langue, fuseau, page d'accueil), journal d'activité sous les droits<span class="qui">livraison 7</span></li>
-<li><span class="e">✅</span>Filtres dans une fenêtre comme Boond (onglets, Tout cocher, Appliquer, pastilles), Planning ▸ Plans de charge ; aperçu du lien dans WhatsApp et Teams ; compte démo « Tout voir »<span class="qui">livraison 7b</span></li>
-<li><span class="e">✅</span>Démo : 31 % des ressources positionnées, un logo sur chaque ligne de la page 1 des Sociétés<span class="qui">démo 2</span></li>
-<li><span class="e">✅</span>Relevé de tout Boond, champ par champ (Temps mis de côté)<span class="qui">Conformité</span></li>
-<li><span class="e">✅</span>Performance, 1er temps : tableau de bord complet en 0,5 s au lieu de 19 à 31 s, listes en 0,1 à 0,5 s, cloche en 0,08 s (mesuré en ligne)<span class="qui">PERF-A, 10/10</span></li>
-<li><span class="e">✅</span>Plus aucun montant dans les réponses des actions pour un compte sans droit (constat critique du 13e audit) ; pagination du bas toujours là ; compteurs lisibles (« 1 331 ») ; tableau de bord en 0,1 s<span class="qui">perf-1e, 10/10 04h42</span></li>
-</ul>
-
-<h2>En cours</h2>
+<h2>En cours — dans l'ordre de mise en ligne</h2>
 <ol class="cours">
-<li><span class="e">⏳</span>Livraison suivante « Tremor 1 » : les cartes visuelles en tête des listes et des fiches, validées par Design côte à côte avec la maquette (clair et sombre)<span class="qui">Code Lot 3 · Design ✅ · Juge</span></li>
-<li><span class="e">⏳</span>13e audit refusé (24 constats, dont 3 critiques ; aucune fuite à l'écran) : chaque constat corrigé par famille, avec son contrôle rouge puis vert — 8 corrigés, dont le critique sur l'argent déjà en ligne<span class="qui">Juge · Code 2 · Code Lot 3</span></li>
-<li><span class="e">⏳</span>Plus aucune valeur de réglage écrite en dur dans le code : 181 endroits sur le lot 2, 224 sur le lot 3, à remplacer<span class="qui">Code 2 · Code Lot 3</span></li>
-<li><span class="e">⏳</span>Widgets en vrais composants Tremor partout : 25 au tableau de bord, des cartes en tête de chaque liste et de chaque fiche ; jamais deux fois la même forme sur une page ; chacun place et redimensionne les siens<span class="qui">Design ✅ · Juge · Code 2 · Code Lot 3</span></li>
-<li><span class="e">⏳</span>« Mes widgets » comme Boond : ajouter une Métrique, une Liste ou un Widget ; la Conformité relève chaque élément de Boond un par un<span class="qui">Conformité · Design ✅</span></li>
-<li><span class="e">⏳</span>Défilement horizontal des listes (interrupteur), menu replié en icônes avec bulle, cartes des listes variées ; « Mes alertes »<span class="qui">Juge · Code Lot 3 · Code 2</span></li>
+<li><span class="e">⏳</span>« Tremor 1 » : les cartes visuelles en tête des listes et des fiches (validées par Design), montants en « 0,00 € » à la devise de la société. Preuve du juge en cours sur tout ce que la livraison touche, puis répétition d'Infra, puis mise en ligne<span class="qui">Juge · Infra</span></li>
+<li><span class="e">⏳</span>Nouvelle barre des listes en vrais composants shadcn : Filtres · mots clés · ★ recherches favorites · vue ☰ / ▦ · ⚙ colonnes et défilement horizontal ; pagination au milieu, en haut et en bas ; colonne CV en icône. ✅ Validée par Design ; part juste après Tremor 1<span class="qui">Design ✅ · Juge · Infra</span></li>
+<li><span class="e">⏳</span>Tableau de bord « Tremor 2 » : 25 widgets en vrais composants Tremor, jamais deux fois la même forme, 0 case vide, « 500 € » ; « Mes widgets » : chacun ajoute une Métrique, une Liste ou un Widget et le place à sa guise. Contrôle automatique de Design prêt<span class="qui">Code 2 · Design · Juge</span></li>
+<li><span class="e">⏳</span>13e audit refusé (24 constats, dont 3 critiques ; aucune fuite à l'écran) : le critique sur l'argent est corrigé en ligne ; connexion, doublons, besoins, projets et groupes corrigés par Code 2, en attente de la preuve du juge<span class="qui">Juge · Code 2 · Code Lot 3</span></li>
+<li><span class="e">⏳</span>Plus aucune valeur de réglage écrite en dur dans le code (constat V-229) : le juge a tranché les 7 familles, les codeurs remplacent<span class="qui">Code Lot 3 · Code 2</span></li>
+<li><span class="e">⏳</span>shadcn partout, rien d'inventé : environ 125 contrôles faits main à remplacer, en 7 étapes — barre ✅, puis listes, cadre, fiches, formulaires, tableau de bord, compte et connexion ; chaque étape validée par Design<span class="qui">Design ✅ · Code Lot 3 · Code 2</span></li>
+<li><span class="e">⏳</span>« Ajouter un élément » comme Boond : la Conformité relève chaque élément du tableau de bord de Boond, un emplacement à la fois, et le remet comme il était<span class="qui">Conformité</span></li>
+<li><span class="e">⏳</span>Tous les hubs derrière un mot de passe, à hub.ahmedbentaleb.com<span class="qui">session Hub</span></li>
 </ol>
 
 <h2>Ensuite</h2>
 <ol>
-<li><span class="e">⬜</span>Barre d'outils des listes comme Boond : Filtres et mots clés à gauche ; recherches, roue des réglages et vue liste ou Kanban à droite<span class="qui">Juge · Code Lot 3</span></li>
-<li><span class="e">⬜</span>Colonne CV : une petite icône qui ouvre le CV, plus le mot « CV »<span class="qui">Juge · Code Lot 3</span></li>
+<li><span class="e">⬜</span>14e audit, quand tous les contrôles sont verts — il couvre aussi la version en ligne<span class="qui">Audit</span></li>
 <li><span class="e">⬜</span>6-droits (pas en ligne) : les droits par groupe de données, comme Boond, et la fusion des doublons<span class="qui">Juge · codeurs</span></li>
 <li><span class="e">⬜</span>Reporting : Synthèse, Projets, Ressources, Sociétés<span class="qui">codeurs</span></li>
 <li><span class="e">⬜</span>Listes de valeurs éditables, mobilités en arbre, format des références<span class="qui">codeurs</span></li>
@@ -78,6 +55,27 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 <li><span class="e">⬜</span>Audit du lot 5.8, deux semaines d'essai complet<span class="qui">Audit · Hamada</span></li>
 <li><span class="e">⬜</span>Vidage de la base, puis les vraies données ; un mois en parallèle de Boond<span class="qui">Avaliance</span></li>
 </ol>
+
+<h2>En ligne</h2>
+<ul class="ok">
+<li><span class="e">✅</span>Plus aucun montant dans les réponses des actions pour un compte sans droit (critique du 13e audit) ; pagination du bas ; compteurs lisibles (« 1 331 ») ; tableau de bord en 0,1 s<span class="qui">perf-1e, 10/10 04h42</span></li>
+<li><span class="e">✅</span>Performance, 1er temps : tableau de bord en 0,5 s au lieu de 19 à 31 s, listes en 0,1 à 0,5 s, cloche en 0,08 s (mesuré en ligne)<span class="qui">PERF-A, 10/10</span></li>
+<li><span class="e">✅</span>Relevé de tout Boond, champ par champ (Temps mis de côté)<span class="qui">Conformité</span></li>
+<li><span class="e">✅</span>Démo : 31 % des ressources positionnées, un logo sur chaque ligne de la page 1 des Sociétés<span class="qui">démo 2</span></li>
+<li><span class="e">✅</span>Filtres dans une fenêtre comme Boond (onglets, Tout cocher, Appliquer, pastilles), Planning ▸ Plans de charge ; aperçu du lien dans WhatsApp et Teams ; compte démo « Tout voir »<span class="qui">livraison 7b</span></li>
+<li><span class="e">✅</span>Cloche des notifications, Mon compte (langue, fuseau, page d'accueil), journal d'activité sous les droits<span class="qui">livraison 7</span></li>
+<li><span class="e">✅</span>Tableau de bord en mosaïque fixe par type de compte, rail et menu gardés au compte, cartes des listes variées<span class="qui">livraison 8</span></li>
+<li><span class="e">✅</span>Sélection multiple sur toutes les listes (somme par devise), recherche globale, recherches enregistrées, menu du compte comme Boond, montants en « € », doublons dès l'e-mail, plusieurs e-mails et téléphones<span class="qui">livraison 7a</span></li>
+<li><span class="e">✅</span>Cartes visuelles en tête des fiches, fiche Positionnement comme Boond, tri ▲▼, coordonnées qui ouvrent et copient<span class="qui">livraison 6</span></li>
+<li><span class="e">✅</span>Tableau de bord fidèle à la maquette (17 widgets) et « Mes widgets » : choisir, glisser, taille fixe<span class="qui">livraison 5 ter</span></li>
+<li><span class="e">✅</span>Filtres et pagination de Boond, Kanban avec cadre coloré, photo ou logo à chaque nom, icône à chaque type<span class="qui">livraison 5 bis</span></li>
+<li><span class="e">✅</span>L'écran ne saute plus ; valeurs de Boond ; démo complète (responsables, CV, dates, CA, marges)<span class="qui">livraison 5.1</span></li>
+<li><span class="e">✅</span>Les fiches comme Boond, barre de droite, 200 photos, 60 logos, noms réalistes, compte Direction<span class="qui">livraison 5</span></li>
+<li><span class="e">✅</span>Les listes comme Boond : colonnes, Kanban Sociétés et Besoins, coordonnées en icônes, menu avec la V2 grisée<span class="qui">livraison 4</span></li>
+<li><span class="e">✅</span>Entrée par la Marketplace sans mot de passe, comptes de démo en vignettes ; menu ▾ avec l'Administration ; refus affiché dans la page<span class="qui">livraison 3</span></li>
+<li><span class="e">✅</span>Un seul thème, clair et sombre, les deux couleurs d'Avaliance ; états en tags pleins, priorités P1 · P2 · P3<span class="qui">livraisons 1 à 3</span></li>
+<li><span class="e">✅</span>Bandeau fixe : logo Duo, logo Avaliance, la personne connectée à droite<span class="qui">livraison 1</span></li>
+</ul>
 
 <div class="bloc">V2 — reporté, pas abandonné<small>Au menu, grisé, suivi de « (soon) » ; relevé dans Boond dès maintenant</small></div>
 <ul class="v2">
@@ -94,10 +92,10 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 
 <h2>Pour Hamada seul</h2>
 <ul class="toi">
-<li><span class="e">⛔</span>Le dépôt public du hub garde dans son historique des données réelles retirées du site le 09/10 (captures de Boond, cahiers Word) : le passer en privé ou réécrire son historique</li>
-<li><span class="e">→</span>La session Code 2 attend une réponse de lui depuis la nuit : lui dire « le BRAIN décide, prends ta recommandation »</li>
-<li><span class="e">→</span>À savoir : sans droit aux données économiques, les comptes RH, recruteur, évaluateur et ressource ne voient plus la charge engagée ni le taux d'occupation (règle de l'argent, D-123)</li>
-<li><span class="e">→</span>Si être déconnecté après 1 h sans activité le gêne : c'est un réglage d'administration (aujourd'hui 1 h sans activité, 10 h au plus), pas du code</li>
+<li><span class="e">⛔</span>Le dépôt public du hub garde dans son historique des données réelles retirées du site le 09/10 (captures de Boond, cahiers Word) : le passer en privé</li>
+<li><span class="e">→</span>Session Hub : lui coller sa mission (le BRAIN ne peut pas la lui envoyer, mode d'autorisation différent) ; puis le DNS de hub.ahmedbentaleb.com et le mot de passe, tapé par lui seul</li>
+<li><span class="e">→</span>À trancher : les comptes RH gardent-ils la charge engagée et le taux d'occupation ? (masqués aujourd'hui, règle de l'argent)</li>
+<li><span class="e">→</span>Si être déconnecté après 1 h sans activité le gêne : c'est un réglage d'administration (1 h sans activité, 10 h au plus), pas du code</li>
 <li><span class="e">→</span>Tester en ligne, dans une fenêtre privée, un compte de démo Direction (SUP)</li>
 <li><span class="e">→</span>Avant les vraies données : une machine hors du serveur pour les sauvegardes</li>
 <li><span class="e">→</span>Microsoft Entra, plus tard</li>
