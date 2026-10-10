@@ -22,10 +22,10 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 </style></head><body><main>
 <div class="nav"><a href="./" target="_top">← le hub</a> ·<b>À faire</b> · <a href="decisions.html">Décisions</a> · <a href="bugs.html">Défauts</a> · <a href="livraisons.html">Livraisons</a> · <a href="audits.html">Audits</a> · <a href="documents.html">Documents</a></div>
 <h1>À faire</h1>
-<p class="sous">Mis à jour le samedi 10/10/2026 à 03h50 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire</p>
+<p class="sous">Mis à jour le samedi 10/10/2026 à 05h50 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire</p>
 
 <div class="chiffres">
-<div class="chiffre"><b>20</b><span>mises en ligne réussies depuis le 08/10 (<a href="livraisons.html">le détail</a>)</span></div>
+<div class="chiffre"><b>21</b><span>mises en ligne réussies depuis le 08/10 (<a href="livraisons.html">le détail</a>)</span></div>
 <div class="chiffre"><b>7</b><span>fiches relevées dans Boond</span></div>
 <div class="chiffre"><b>16</b><span>widgets du tableau de bord</span></div>
 <div class="chiffre"><b>234</b><span>réglages, aucun en dur</span></div>
@@ -53,13 +53,13 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 <li><span class="e">✅</span>Démo : 31 % des ressources positionnées, un logo sur chaque ligne de la page 1 des Sociétés<span class="qui">démo 2</span></li>
 <li><span class="e">✅</span>Relevé de tout Boond, champ par champ (Temps mis de côté)<span class="qui">Conformité</span></li>
 <li><span class="e">✅</span>Performance, 1er temps : tableau de bord complet en 0,5 s au lieu de 19 à 31 s, listes en 0,1 à 0,5 s, cloche en 0,08 s (mesuré en ligne)<span class="qui">PERF-A, 10/10</span></li>
+<li><span class="e">✅</span>Plus aucun montant dans les réponses des actions pour un compte sans droit (constat critique du 13e audit) ; pagination du bas toujours là ; compteurs lisibles (« 1 331 ») ; tableau de bord en 0,1 s<span class="qui">perf-1e, 10/10 04h42</span></li>
 </ul>
 
 <h2>En cours</h2>
 <ol class="cours">
-<li><span class="e">⏳</span>Prochaine livraison, prête et gelée : plus aucun montant dans les réponses des actions pour un compte sans droit (constat critique du 13e audit), pagination du bas toujours affichée, compteurs lisibles (« 1 331 »), écrans encore plus rapides — le juge la prouve<span class="qui">Code Lot 3 · Juge · Infra</span></li>
 <li><span class="e">⏳</span>Livraison suivante « Tremor 1 » : les cartes visuelles en tête des listes et des fiches, validées par Design côte à côte avec la maquette (clair et sombre)<span class="qui">Code Lot 3 · Design ✅ · Juge</span></li>
-<li><span class="e">⏳</span>13e audit refusé (24 constats, dont 3 critiques ; aucune fuite à l'écran) : chaque constat corrigé par famille, avec son contrôle rouge puis vert — 8 déjà corrigés, pas encore en ligne<span class="qui">Juge · Code 2 · Code Lot 3</span></li>
+<li><span class="e">⏳</span>13e audit refusé (24 constats, dont 3 critiques ; aucune fuite à l'écran) : chaque constat corrigé par famille, avec son contrôle rouge puis vert — 8 corrigés, dont le critique sur l'argent déjà en ligne<span class="qui">Juge · Code 2 · Code Lot 3</span></li>
 <li><span class="e">⏳</span>Plus aucune valeur de réglage écrite en dur dans le code : 181 endroits sur le lot 2, 224 sur le lot 3, à remplacer<span class="qui">Code 2 · Code Lot 3</span></li>
 <li><span class="e">⏳</span>Widgets en vrais composants Tremor partout : 25 au tableau de bord, des cartes en tête de chaque liste et de chaque fiche ; jamais deux fois la même forme sur une page ; chacun place et redimensionne les siens<span class="qui">Design ✅ · Juge · Code 2 · Code Lot 3</span></li>
 <li><span class="e">⏳</span>« Mes widgets » comme Boond : ajouter une Métrique, une Liste ou un Widget ; la Conformité relève chaque élément de Boond un par un<span class="qui">Conformité · Design ✅</span></li>
@@ -97,6 +97,7 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 <li><span class="e">⛔</span>Le dépôt public du hub garde dans son historique des données réelles retirées du site le 09/10 (captures de Boond, cahiers Word) : le passer en privé ou réécrire son historique</li>
 <li><span class="e">→</span>La session Code 2 attend une réponse de lui depuis la nuit : lui dire « le BRAIN décide, prends ta recommandation »</li>
 <li><span class="e">→</span>À savoir : sans droit aux données économiques, les comptes RH, recruteur, évaluateur et ressource ne voient plus la charge engagée ni le taux d'occupation (règle de l'argent, D-123)</li>
+<li><span class="e">→</span>Si être déconnecté après 1 h sans activité le gêne : c'est un réglage d'administration (aujourd'hui 1 h sans activité, 10 h au plus), pas du code</li>
 <li><span class="e">→</span>Tester en ligne, dans une fenêtre privée, un compte de démo Direction (SUP)</li>
 <li><span class="e">→</span>Avant les vraies données : une machine hors du serveur pour les sauvegardes</li>
 <li><span class="e">→</span>Microsoft Entra, plus tard</li>
