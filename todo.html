@@ -20,12 +20,14 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 @media (max-width:560px){li{flex-wrap:wrap}.qui{margin-left:34px;padding-left:0;white-space:normal}}
 .n{flex:none;width:40px;font-size:22px;font-weight:700;line-height:1;color:var(--accent);text-align:right}
 .compte{font-size:15px;font-weight:600;margin:0 0 18px}
+.n.m{font-size:14px;width:auto;min-width:40px;white-space:nowrap}
+.fin{display:block;font-size:12px;color:var(--t3)}
 </style></head><body><main>
 <div class="nav"><a href="./" target="_top">← le hub</a> · <b>À faire</b> · <a href="decisions.html">Décisions</a> · <a href="bugs.html">Défauts</a> · <a href="livraisons.html">Livraisons</a> · <a href="audits.html">Audits</a> · <a href="documents.html">Documents</a></div>
 <h1>À faire</h1>
-<p class="sous">Mis à jour le mercredi 14/10/2026 à 21h53 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire · ⏸ à la fin</p>
+<p class="sous">Mis à jour le mercredi 14/10/2026 à 22h03 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire · ⏸ à la fin</p>
 
-<p class="compte">44 tâches · n° 1 à 44 · 2 faites</p>
+<p class="compte">48 tâches · n° 1 à 48 · 6 faites · 1 caduque</p>
 <div class="chiffres">
 <div class="chiffre"><b>4fa1e79d</b><span>la version en ligne depuis le 11/10, gardée comme base (Hamada, 14/10)</span></div>
 <div class="chiffre"><b>4</b><span>contrôles seulement avant chaque mise en ligne : droits, fuites entre comptes, argent, base (mode vite)</span></div>
@@ -33,96 +35,119 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 <div class="chiffre"><b>6</b><span>sessions : BRAIN, Tests, Code, Design, Audit, Rapporteur</span></div>
 </div>
 
-<div class="bloc">Mode vite — depuis le 14/10<small>Hamada : « Je veux aller vite. Un minimum pour que ce soit sécurisé. À la fin, quand tout marchera, on mettra des tests permanents. »</small></div>
-
-<h2>En cours — dans l'ordre</h2>
+<div class="bloc">Phase A — Livrable 1<small>La version en ligne corrigée et remise en ligne. Les numéros sont stables : une tâche garde le sien pour toujours.</small></div>
 <ol class="cours">
 
-<li><span class="n">1</span><span class="e">✅</span><b>Fait à 21h25</b> — Ouvrir les sessions de l'équipe (Code, Tests, Design, Rapporteur, Audit)<span class="qui">Hamada</span></li>
+<li><span class="n">3</span><span class="e">⏳</span><span><b>A1</b> — Fuites entre comptes : les 198 cas trouvés, le défaut bloquant de l'Audit, et l'alerte de doublon qui montre une société d'une autre agence<span class="fin">fini quand : les contrôles des fuites passent</span></span><span class="qui">Code</span></li>
 
-<li><span class="n">2</span><span class="e">⏳</span><b>En cours</b> — Tests a regroupé ses contrôles sur la version en ligne (rien de perdu) et joue les 4 contrôles : droits, fuites entre comptes, argent, changements de la base ; il rejoue aussi les 20 contrôles en échec du 10/10<span class="qui">Tests</span></li>
+<li><span class="n">3</span><span class="e">⏳</span><span><b>A2</b> — « Modifier en masse » repasse par le contrôle de l'action unitaire<span class="fin">fini quand : son contrôle passe</span></span><span class="qui">Code</span></li>
 
-<li><span class="n">3</span><span class="e">⏳</span><b>En cours</b> — Code : 2 livraisons prêtes (saisie des compétences et du service · 3 messages « liste vide » fournis par le serveur) ; le rail « À faire » vide n'est pas encore reproduit ; un aperçu se prépare pour Hamada<span class="qui">Code</span></li>
+<li><span class="n">3</span><span class="e">⏳</span><span><b>A3</b> — Les frais dans la marge, mois par mois (D-195), et les frais sans devise<span class="fin">fini quand : les 8 cas du contrôle passent</span></span><span class="qui">Code</span></li>
 
-<li><span class="n">4</span><span class="e">⏳</span><b>En cours</b> — Design : maquettes prêtes pour Hamada (widgets de 208 px, couleurs par société) ; le tour des 10 écarts de la version en ligne attend que Hamada se connecte (n° 24)<span class="qui">Design</span></li>
+<li><span class="n">28</span><span class="e">⬜</span><span><b>A4</b> — Les autres défauts du 13e audit : « un seul projet par besoin », deux défauts de la connexion, quatre défauts moyens<span class="fin">fini quand : leurs contrôles passent ; un enregistrement par défaut</span></span><span class="qui">Code</span></li>
 
-<li><span class="n">5</span><span class="e">✅</span><b>Fait à 21h40</b> — Audit : passage de sécurité sur la version en ligne, sans rien bloquer — 3 défauts bloquants trouvés (voir <a href="bugs.html">Défauts</a>), à corriger avant le Reporting<span class="qui">Audit</span></li>
+<li><span class="n">26</span><span class="e">⏳</span><span><b>A5</b> — Le tableau de bord et l'écran : les défauts vus en ligne EN LIGNE-11 à 20, d'abord 12 et 20<span class="fin">fini quand : Hamada a vu l'aperçu</span></span><span class="qui">Code</span></li>
 
-<li><span class="n">6</span><span class="e">⬜</span><b>Dès que Tests a fini</b> — Le BRAIN classe ce que Tests a trouvé (défaut du code ou test faux) et donne les défauts à Code<span class="qui">BRAIN</span></li>
+<li><span class="n">37</span><span class="e">⬜</span><span><b>A6</b> — ⭐ Les widgets de 208 px en tête des listes et des fiches, 4 par rangée, 2 × 2 sur un écran de 768 px (D-202)<span class="fin">fini quand : Hamada a vu l'aperçu</span></span><span class="qui">Code</span></li>
 
-<li><span class="n">26</span><span class="e">⏳</span><b>En cours</b> — Les défauts vus en ligne EN LIGNE-11 à 20 (tableau de bord, widgets, écran blanc, lenteur, colonnes, menu) : les vérifier sur la version en ligne, puis les corriger<span class="qui">Code</span></li>
+<li><span class="n m">34 · 35</span><span class="e">⬜</span><span><b>A7</b> — La touche Échap ne ferme plus la barre de droite ; le seuil-plancher s'affiche comme une alerte<span class="fin">fini quand : aperçu</span></span><span class="qui">Code</span></li>
 
-<li><span class="n">27</span><span class="e">⏳</span><b>En cours</b> — Rejouer sur la version en ligne les 77 contrôles en échec du 10/10<span class="qui">Tests</span></li>
+<li><span class="n m">2 · 27 · 30 · 31</span><span class="e">⏳</span><span><b>A8</b> — Rejouer sur la version en ligne les 77 contrôles du 10/10, ceux des défauts critiques du 13e audit, le retrait du droit d'effacer (M-8) et les 3 volets de V-235<span class="fin">fini quand : liste brute, puis classée par le BRAIN</span></span><span class="qui">Tests</span></li>
+
+<li><span class="n">9</span><span class="e">⏳</span><span><b>A9</b> — Le changement de la base n° 163 (droits par groupe, colonnes modifiables sans raison) regelé<span class="fin">fini quand : son identifiant annoncé</span></span><span class="qui">Tests</span></li>
+
+<li><span class="n">25</span><span class="e">⬜</span><span><b>A10</b> — Couleurs de la société : une couleur trop peu lisible est refusée et une couleur conforme est proposée (D-202)<span class="fin">fini quand : le contrôle des couleurs passe</span></span><span class="qui">Code · Tests</span></li>
+
+<li><span class="n">46</span><span class="e">⏳</span><span><b>A11</b> — Réunir chaque livraison acceptée dans le Livrable 1 (les compétences : ✅)<span class="fin">fini quand : les 4 contrôles passent sur l'ensemble, aucun échec nouveau</span></span><span class="qui">Code</span></li>
+
+<li><span class="n m">47 · 33</span><span class="e">⬜</span><span><b>A12</b> — Aperçu du Livrable 1 → Hamada regarde → GO du BRAIN → mise en ligne par script depuis le PC (un réglage de sécurité de la base est lu au passage)<span class="fin">fini quand : la version en ligne répond et les 14 comptes de démo marchent</span></span><span class="qui">Code</span></li>
+
+<li><span class="n">48</span><span class="e">⬜</span><span><b>A13</b> — L'Audit relit les 3 défauts bloquants sur la version en ligne<span class="fin">fini quand : ACCEPTÉ</span></span><span class="qui">Audit</span></li>
 
 </ol>
 
-<h2>Livrable 1 — avant de passer à la suite (D-197)</h2>
+<div class="bloc">Phase B — après le Livrable 1, dans cet ordre</div>
 <ol>
 
-<li><span class="n">28</span><span class="e">⬜</span>Corriger les défauts d'audit encore ouverts, juste après les fuites : alerte de doublon qui montre une société d'une autre agence · frais sans devise dans la marge · « un seul projet par besoin » contourné · deux défauts de la connexion · quatre défauts moyens (code inconnu dans une liste, « Mon apparence » en texte libre, besoin fermé pris en charge, refus mal libellé) ; Tests pose un contrôle pour chacun<span class="qui">Code · Tests</span></li>
+<li><span class="n">9</span><span class="e">⏳</span><span>Droits par groupe de données (5 groupes, un manager et son équipe directe, fusion des doublons)</span><span class="qui">Code</span></li>
 
-<li><span class="n">29</span><span class="e">⬜</span>Les fiches dans l'ordre de Boond (9 onglets de la ressource, prestation sans conditions économiques, outils du candidat, 4 cartes par fiche sans carte vide) : changement de la base n° 163 et suivants, après celui des droits par groupe<span class="qui">Tests puis Code</span></li>
+<li><span class="n">45</span><span class="e">⬜</span><span>Les fonctions de Boond retenues pour la V1 (D-201) : responsable manager modifiable · pied de fiche · « voir le plan de charge » · « afficher les filiales » · exercice fiscal</span><span class="qui">Code</span></li>
 
-<li><span class="n">30</span><span class="e">⬜</span>Rejouer sur la version en ligne les contrôles des 3 défauts critiques du 13e audit (montants dans les réponses, prétentions salariales, périmètres écrits en dur)<span class="qui">Tests</span></li>
+<li><span class="n">29</span><span class="e">⬜</span><span>Les fiches dans l'ordre de Boond (changement de la base n° 164)</span><span class="qui">Tests puis Code</span></li>
 
-<li><span class="n">31</span><span class="e">⬜</span>Vérifier que le droit d'effacer les dispositions de widgets est bien retiré (M-8), avec le rejeu des 77<span class="qui">Tests</span></li>
+<li><span class="n">8</span><span class="e">⏳</span><span>« Ajouter un élément » au tableau de bord comme Boond</span><span class="qui">Code</span></li>
 
-<li><span class="n">32</span><span class="e">⬜</span>Répondre aux questions de Tests restées sans réponse (Tests les renvoie groupées)<span class="qui">BRAIN</span></li>
+<li><span class="n">10</span><span class="e">⏳</span><span>Listes de valeurs éditables, mobilités en arbre, format des références, actions « faite / prévue »</span><span class="qui">Code</span></li>
 
-<li><span class="n">33</span><span class="e">⬜</span>Vérifier un réglage de sécurité de la base sur le serveur, en lecture seule, et seulement pendant une mise en ligne autorisée<span class="qui">Code</span></li>
+<li><span class="n">11</span><span class="e">⬜</span><span>Reporting : Synthèse, Projets, Ressources, Sociétés</span><span class="qui">Code</span></li>
 
-<li><span class="n">34</span><span class="e">⬜</span>Barre de droite : la touche Échap ne la ferme plus, seul le chevron la ferme (tranché d'après Hamada, 10/10)<span class="qui">Code</span></li>
+<li><span class="n m">38 · 39</span><span class="e">⬜</span><span>Les mots fournis par le serveur portés au canon ; la vitesse côté navigateur</span><span class="qui">Code</span></li>
 
-<li><span class="n">35</span><span class="e">⬜</span>Seuil-plancher (marge, occupation) affiché comme une alerte, comme sur la maquette validée<span class="qui">Code</span></li>
+<li><span class="n m">36 · 12</span><span class="e">⬜</span><span>Les règles vérifiables du Lot 5.8, puis le Lot 5.8 (contrats et documents RH, devis, facturation, achats, export, mail groupé)</span><span class="qui">Tests puis Code</span></li>
+
+<li><span class="n m">13 · 43 · 44</span><span class="e">⬜</span><span>La démo (actions « à faire » réparties sur tous les comptes, EN LIGNE-23), puis son vidage ; la copie automatique des hubs ; le kit sous le portail</span><span class="qui">Code</span></li>
+
+<li><span class="n m">14 · 15</span><span class="e">⬜</span><span>Deux semaines d'essai complet, puis ⭐ l'import des données de Boond et un mois en parallèle de Boond</span><span class="qui">Hamada · Code</span></li>
 
 </ol>
 
-<h2>À la fin du mode vite</h2>
+<div class="bloc">Phase C — à la fin du mode vite</div>
 <ol>
 
-<li><span class="n">7</span><span class="e">⏸</span>Quand tout marche : les tests permanents et les tests de parcours écrits par Tests, puis l'Audit fait jouer les parcours par son agent. Avec eux, les contrôles promis et reportés par le mode vite, un par un : (a) les contrôles ponctuels promis au 10/10 (droits croisés complets, base propre, jeux d'essai, témoin des requêtes, un contrôle faux à refaire, deux autres de la même série) · (b) 17 fichiers de contrôle jamais joués en entier, à trier · (c) trois constats du 13e audit sur les contrôles eux-mêmes : la connexion sans contrôle, quatre décisions sans contrôle, et la documentation qui diffère de la base · (d) les 52 défauts « contestés », à reprendre un par un (avec l'Audit) · (e) la famille « les tests effacent les délégations des autres » · (f) deux libellés de réglage (« Par défaut », « Secteur ») · (g) les contrôles d'écran : bulles d'aide, aspect shadcn, contraste du plan de charge, mots des états vides, exceptions shadcn à réduire (le compte et la connexion sont déjà en shadcn) · (h) le contrôle d'« Ajouter un élément » (une recherche affichée lisible, ou rien)<span class="qui">Tests · Audit</span></li>
+<li><span class="n">7</span><span class="e">⏸</span><span>Les tests permanents et les tests de parcours, puis l'Audit les fait jouer. Avec eux, les contrôles promis et reportés par le mode vite, un par un : (a) les contrôles ponctuels promis au 10/10 (droits croisés complets, base propre, jeux d'essai, témoin des requêtes, un contrôle faux à refaire, deux autres de la même série) · (b) 17 fichiers de contrôle jamais joués en entier, à trier · (c) trois constats du 13e audit sur les contrôles eux-mêmes : la connexion sans contrôle, quatre décisions sans contrôle, et la documentation qui diffère de la base · (d) les 52 défauts « contestés », à reprendre un par un (avec l'Audit) · (e) la famille « les tests effacent les délégations des autres » · (f) deux libellés de réglage (« Par défaut », « Secteur ») · (g) les contrôles d'écran : bulles d'aide, aspect shadcn, contraste du plan de charge, mots des états vides, exceptions shadcn à réduire (le compte et la connexion sont déjà en shadcn) · (h) le contrôle d'« Ajouter un élément » (une recherche affichée lisible, ou rien)</span><span class="qui">Tests · Audit</span></li>
 
-<li><span class="n">41</span><span class="e">⏸</span>Re-mesurer la parité avec Boond sur la version en ligne (le dernier relevé date du 09/10)<span class="qui">Audit</span></li>
+<li><span class="n">41</span><span class="e">⏸</span><span>Re-mesurer la parité avec Boond sur la version en ligne</span><span class="qui">Audit</span></li>
 
-</ol>
-
-<h2>Après le Livrable 1 — dans cet ordre</h2>
-<p class="sous">Livrable 1 = la version en ligne prouvée par Tests et ses défauts corrigés. En mode vite, pas de dates : un ordre.</p>
-<ol>
-
-<li><span class="n">8</span><span class="e">⏳</span>« Ajouter un élément » au tableau de bord comme Boond (le relevé est fait)<span class="qui">commencé par Code</span></li>
-
-<li><span class="n">9</span><span class="e">⏳</span>6-droits : les droits par groupe de données, comme Boond, et la fusion des doublons<span class="qui">commencé par Tests · Code</span></li>
-
-<li><span class="n">10</span><span class="e">⏳</span>Listes de valeurs éditables, mobilités en arbre, format des références ; les actions « faite / prévue »<span class="qui">commencé par Code</span></li>
-
-<li><span class="n">11</span><span class="e">⬜</span>Reporting : Synthèse, Projets, Ressources, Sociétés<span class="qui">Code</span></li>
-
-<li><span class="n">12</span><span class="e">⬜</span>Lot 5.8 : contrats et documents RH, devis, facturation, achats, export, mail groupé<span class="qui">Code</span></li>
-
-<li><span class="n">13</span><span class="e">⬜</span>Vidage de la base de démo<span class="qui">Code</span></li>
-
-<li><span class="n">14</span><span class="e">⬜</span>Deux semaines d'essai complet (durée fixée par Hamada, elle ne se raccourcit pas)<span class="qui">Hamada</span></li>
-
-<li><span class="n">15</span><span class="e">⬜</span>⭐ <b>Import des données de Boond</b> vers Ava Manager, puis un mois en parallèle de Boond<span class="qui">Code · Avaliance</span></li>
-
-<li><span class="n">16</span><span class="e">⏳</span>Tous les hubs derrière un mot de passe. Déjà fait le 10/10 : le portail personnel existe, l'adresse est posée, 7 hubs sur 9 y sont copiés. Tranché (D-199) : les invitations se font par lien copié à la main, sans mail ; le kit passe lui aussi sous le portail. Reste, pour Hamada seul : ouvrir son lien d'invitation et y choisir son mot de passe ; puis la n° 17<span class="qui">Hamada · Rapporteur</span></li>
-
-<li><span class="n">36</span><span class="e">⬜</span>Avant que Code ouvre le Lot 5.8 (n° 12) : écrire d'abord ses règles vérifiables<span class="qui">Tests</span></li>
-
-<li><span class="n">37</span><span class="e">⬜</span>Dès le choix d'Hamada (n° 25) : coder les widgets de 208 px (listes et fiches, 4 par rangée) et les couleurs de la société, avec leurs contrôles<span class="qui">Code · Tests</span></li>
-
-<li><span class="n">38</span><span class="e">⬜</span>Porter au canon tous les mots désormais fournis par le serveur au tableau de bord ; unifier deux notions voisines des widgets<span class="qui">Code · Tests</span></li>
-
-<li><span class="n">39</span><span class="e">⬜</span>Vitesse côté navigateur : charger moins au démarrage, graphiques à la demande<span class="qui">Code</span></li>
-
-<li><span class="n">40</span><span class="e">⏸</span>Langue : quand une 2ᵉ langue sera proposée, lire la langue du compte au lieu du français écrit en dur<span class="qui">Code</span></li>
-
-<li><span class="n">43</span><span class="e">⬜</span>Copier automatiquement les 4 hubs locaux vers le portail après chaque régénération (aujourd'hui c'est manuel)<span class="qui">Code</span></li>
-
-<li><span class="n">44</span><span class="e">⬜</span>Faire passer le kit sous le portail des hubs, par le script de mise en ligne depuis le PC, sur le GO du BRAIN (avec la n° 43)<span class="qui">Code</span></li>
+<li><span class="n">40</span><span class="e">⏸</span><span>Langue : seulement quand une 2ᵉ langue sera proposée</span><span class="qui">Code</span></li>
 
 </ol>
+
+<h2>Pour Hamada seul — personne ne peut le faire à ta place</h2>
+<ul class="toi">
+
+<li><span class="n">24</span><span class="e">→</span><span>Te connecter dans le navigateur de Design (il fait ensuite le tour de la version en ligne)</span><span class="qui">Hamada</span></li>
+
+<li><span class="n">16</span><span class="e">→</span><span>Ouvrir ton lien d'invitation au portail des hubs et y choisir ton mot de passe</span><span class="qui">Hamada</span></li>
+
+<li><span class="n">17</span><span class="e">⛔</span><span>Passer en privé les 4 dépôts encore publics, dont celui de ce hub (son historique garde des données réelles retirées le 09/10)</span><span class="qui">Hamada</span></li>
+
+<li><span class="n">21</span><span class="e">→</span><span>Tester en ligne, dans une fenêtre privée, un compte de démo Direction</span><span class="qui">Hamada</span></li>
+
+<li><span class="n">22</span><span class="e">→</span><span>Avant les vraies données : une machine hors du serveur pour les sauvegardes</span><span class="qui">Hamada</span></li>
+
+</ul>
+
+<h2>En parallèle, et pour mémoire</h2>
+<ul>
+
+<li><span class="n">4</span><span class="e">⏳</span><span>Design : les maquettes sont faites et tranchées ; le tour des écarts de la version en ligne attend la n° 24</span><span class="qui">Design</span></li>
+
+<li><span class="n">6</span><span class="e">⏳</span><span>Le BRAIN classe ce que Tests trouve (défaut du code ou test faux) et donne les défauts à Code</span><span class="qui">BRAIN</span></li>
+
+<li><span class="n">20</span><span class="e">→</span><span>Pour mémoire : être déconnecté après 1 h sans activité est un réglage d'administration, pas du code</span><span class="qui">Hamada</span></li>
+
+<li><span class="n">23</span><span class="e">→</span><span>Microsoft Entra, plus tard</span><span class="qui">Hamada</span></li>
+
+</ul>
+
+<h2>Faites, tranchées ou caduques</h2>
+<ul class="ok">
+
+<li><span class="n">1</span><span class="e">✅</span><span>Ouvrir les sessions de l'équipe (21h25)</span><span class="qui">Hamada</span></li>
+
+<li><span class="n">5</span><span class="e">✅</span><span>Passage de sécurité de l'Audit sur la version en ligne : 3 défauts bloquants trouvés (21h40)</span><span class="qui">Audit</span></li>
+
+<li><span class="n">32</span><span class="e">✅</span><span>Les questions de Tests ont reçu leur réponse (D-198)</span><span class="qui">BRAIN</span></li>
+
+<li><span class="n">25</span><span class="e">✅</span><span>Maquettes de Design tranchées (D-202) : 2 × 2 sur un écran de 768 px ; couleur refusée + proposition — le code est la tâche A10</span><span class="qui">BRAIN</span></li>
+
+<li><span class="n">42</span><span class="e">✅</span><span>Les 11 fonctions de Boond tranchées (D-201) : 5 en V1 (n° 45), 6 en V2</span><span class="qui">BRAIN</span></li>
+
+<li><span class="n">19</span><span class="e">✅</span><span>Tranché (D-202) : les RH ne voient ni la charge engagée ni le taux d'occupation</span><span class="qui">BRAIN</span></li>
+
+<li><span class="n">18</span><span class="e">✖</span><span>Caduque (D-199) : remplacée par les n° 16 et 17</span><span class="qui">—</span></li>
+
+</ul>
 
 <h2>En ligne</h2>
 <ul class="ok">
@@ -153,7 +178,19 @@ li><span class="e">✅</span>Correctif : plus aucun nom de société montré à 
 
 <div class="bloc">V2 — reporté, pas abandonné<small>Au menu, grisé, suivi de « (soon) » ; relevé dans Boond dès maintenant</small></div>
 <ul class="v2">
-<li><span class="e">◌</span>Commentaires et @mentions sur les fiches</li>
+<<li><span class="e">◌</span>Durées de besoin (D-201)</li>
+
+<li><span class="e">◌</span>Mémoriser ma dernière recherche (D-201)</li>
+
+<li><span class="e">◌</span>Drapeaux (flags) (D-201)</li>
+
+<li><span class="e">◌</span>Business units (D-201)</li>
+
+<li><span class="e">◌</span>Types de prestation (D-201)</li>
+
+<li><span class="e">◌</span>Traductions (D-201)</li>
+
+li><span class="e">◌</span>Commentaires et @mentions sur les fiches</li>
 <li><span class="e">◌</span>Éditeur de processus de recrutement</li>
 <li><span class="e">◌</span>LinkedIn intégré · portail candidat</li>
 <li><span class="e">◌</span>Alertes intelligentes · assistant IA</li>
@@ -164,22 +201,5 @@ li><span class="e">✅</span>Correctif : plus aucun nom de société montré à 
 <li><span class="e">◌</span>Groupement de prestations d'un projet (Avaliance n'en a aucun dans Boond)</li>
 </ul>
 
-<h2>Pour Hamada seul</h2>
-<ul class="toi">
-<li><span class="n">17</span><span class="e">⛔</span>Passer en privé les 4 dépôts encore publics, dont celui de ce hub : son historique garde des données réelles retirées du site le 09/10 (captures de Boond, cahiers Word)<span class="qui">Hamada</span></li>
-<li><span class="n">18</span><span class="e">→</span>Session Hub : lui coller sa mission (le BRAIN ne peut pas la lui envoyer, mode d'autorisation différent) ; puis le DNS de hub.ahmedbentaleb.com et le mot de passe, tapé par lui seul</li>
-<li><span class="n">19</span><span class="e">→</span>À trancher : les comptes RH gardent-ils la charge engagée et le taux d'occupation ? (masqués aujourd'hui, règle de l'argent)</li>
-<li><span class="n">20</span><span class="e">→</span>Si être déconnecté après 1 h sans activité le gêne : c'est un réglage d'administration (1 h sans activité, 10 h au plus), pas du code</li>
-<li><span class="n">21</span><span class="e">→</span>Tester en ligne, dans une fenêtre privée, un compte de démo Direction (SUP)</li>
-<li><span class="n">22</span><span class="e">→</span>Avant les vraies données : une machine hors du serveur pour les sauvegardes</li>
-<li><span class="n">23</span><span class="e">→</span>Microsoft Entra, plus tard</li>
 
-<li><span class="n">24</span><span class="e">→</span>Te connecter dans le navigateur de Design, pour qu'il fasse le tour de la version en ligne (il n'a pas le droit de taper ton mot de passe)<span class="qui">Hamada</span></li>
-
-<li><span class="n">25</span><span class="e">→</span>Choisir sur les maquettes de Design : widgets de 208 px (fiches à 768 px : carrousel ou 2 × 2) et couleurs de la société<span class="qui">Hamada</span></li>
-
-<li><span class="n">42</span><span class="e">→</span>Choisir, parmi 11 fonctions de Boond pas encore livrées, celles qui vont en V1 : drapeaux, exercice fiscal, types de prestation, durées de besoin, business units, traductions, mémoriser la dernière recherche, afficher les filiales, voir le plan de charge d'une ressource, commande du responsable, pied de fiche<span class="qui">Hamada</span></li>
-
-
-</ul>
 </main></body></html>
