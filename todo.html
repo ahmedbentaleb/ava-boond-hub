@@ -23,9 +23,9 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 </style></head><body><main>
 <div class="nav"><a href="./" target="_top">← le hub</a> · <b>À faire</b> · <a href="decisions.html">Décisions</a> · <a href="bugs.html">Défauts</a> · <a href="livraisons.html">Livraisons</a> · <a href="audits.html">Audits</a> · <a href="documents.html">Documents</a></div>
 <h1>À faire</h1>
-<p class="sous">Mis à jour le mercredi 14/10/2026 à 21h40 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire · ⏸ à la fin</p>
+<p class="sous">Mis à jour le mercredi 14/10/2026 à 21h50 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire · ⏸ à la fin</p>
 
-<p class="compte">27 tâches · n° 1 à 27 · 2 faites</p>
+<p class="compte">42 tâches · n° 1 à 42 · 2 faites</p>
 <div class="chiffres">
 <div class="chiffre"><b>4fa1e79d</b><span>la version en ligne depuis le 11/10, gardée comme base (Hamada, 14/10)</span></div>
 <div class="chiffre"><b>4</b><span>contrôles seulement avant chaque mise en ligne : droits, fuites entre comptes, argent, base (mode vite)</span></div>
@@ -56,10 +56,33 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 
 </ol>
 
+<h2>Livrable 1 — avant de passer à la suite (D-197)</h2>
+<ol>
+
+<li><span class="n">28</span><span class="e">⬜</span>Corriger les défauts d'audit encore ouverts, juste après les fuites : alerte de doublon qui montre une société d'une autre agence · frais sans devise dans la marge · « un seul projet par besoin » contourné · deux défauts de la connexion · quatre défauts moyens (code inconnu dans une liste, « Mon apparence » en texte libre, besoin fermé pris en charge, refus mal libellé) ; Tests pose un contrôle pour chacun<span class="qui">Code · Tests</span></li>
+
+<li><span class="n">29</span><span class="e">⬜</span>Les fiches dans l'ordre de Boond (9 onglets de la ressource, prestation sans conditions économiques, outils du candidat, 4 cartes par fiche sans carte vide) : changement de la base n° 163 et suivants, après celui des droits par groupe<span class="qui">Tests puis Code</span></li>
+
+<li><span class="n">30</span><span class="e">⬜</span>Rejouer sur la version en ligne les contrôles des 3 défauts critiques du 13e audit (montants dans les réponses, prétentions salariales, périmètres écrits en dur)<span class="qui">Tests</span></li>
+
+<li><span class="n">31</span><span class="e">⬜</span>Vérifier que le droit d'effacer les dispositions de widgets est bien retiré (M-8), avec le rejeu des 77<span class="qui">Tests</span></li>
+
+<li><span class="n">32</span><span class="e">⬜</span>Répondre aux questions de Tests restées sans réponse (Tests les renvoie groupées)<span class="qui">BRAIN</span></li>
+
+<li><span class="n">33</span><span class="e">⬜</span>Vérifier un réglage de sécurité de la base sur le serveur, en lecture seule, et seulement pendant une mise en ligne autorisée<span class="qui">Code</span></li>
+
+<li><span class="n">34</span><span class="e">⬜</span>Barre de droite : la touche Échap ne la ferme plus, seul le chevron la ferme (tranché d'après Hamada, 10/10)<span class="qui">Code</span></li>
+
+<li><span class="n">35</span><span class="e">⬜</span>Seuil-plancher (marge, occupation) affiché comme une alerte, comme sur la maquette validée<span class="qui">Code</span></li>
+
+</ol>
+
 <h2>À la fin du mode vite</h2>
 <ol>
 
-<li><span class="n">7</span><span class="e">⏸</span>Quand tout marche : les tests permanents et les tests de parcours écrits par Tests, puis l'Audit fait jouer les parcours par son agent<span class="qui">Tests · Audit</span></li>
+<li><span class="n">7</span><span class="e">⏸</span>Quand tout marche : les tests permanents et les tests de parcours écrits par Tests, puis l'Audit fait jouer les parcours par son agent. Avec eux, les contrôles promis et reportés par le mode vite, un par un : (a) les contrôles ponctuels promis au 10/10 (droits croisés complets, base propre, jeux d'essai, témoin des requêtes, un contrôle faux à refaire, deux autres de la même série) · (b) 17 fichiers de contrôle jamais joués en entier, à trier · (c) trois constats du 13e audit sur les contrôles eux-mêmes : la connexion sans contrôle, quatre décisions sans contrôle, et la documentation qui diffère de la base · (d) les 52 défauts « contestés », à reprendre un par un (avec l'Audit) · (e) la famille « les tests effacent les délégations des autres » · (f) deux libellés de réglage (« Par défaut », « Secteur ») · (g) les contrôles d'écran : bulles d'aide, aspect shadcn, contraste du plan de charge, mots des états vides, exceptions shadcn à réduire (le compte et la connexion sont déjà en shadcn) · (h) le contrôle d'« Ajouter un élément » (une recherche affichée lisible, ou rien)<span class="qui">Tests · Audit</span></li>
+
+<li><span class="n">41</span><span class="e">⏸</span>Re-mesurer la parité avec Boond sur la version en ligne (le dernier relevé date du 09/10)<span class="qui">Audit</span></li>
 
 </ol>
 
@@ -84,6 +107,16 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 <li><span class="n">15</span><span class="e">⬜</span>⭐ <b>Import des données de Boond</b> vers Ava Manager, puis un mois en parallèle de Boond<span class="qui">Code · Avaliance</span></li>
 
 <li><span class="n">16</span><span class="e">⬜</span>Tous les hubs derrière un mot de passe<span class="qui">session Hub · Hamada</span></li>
+
+<li><span class="n">36</span><span class="e">⬜</span>Avant que Code ouvre le Lot 5.8 (n° 12) : écrire d'abord ses règles vérifiables<span class="qui">Tests</span></li>
+
+<li><span class="n">37</span><span class="e">⬜</span>Dès le choix d'Hamada (n° 25) : coder les widgets de 208 px (listes et fiches, 4 par rangée) et les couleurs de la société, avec leurs contrôles<span class="qui">Code · Tests</span></li>
+
+<li><span class="n">38</span><span class="e">⬜</span>Porter au canon tous les mots désormais fournis par le serveur au tableau de bord ; unifier deux notions voisines des widgets<span class="qui">Code · Tests</span></li>
+
+<li><span class="n">39</span><span class="e">⬜</span>Vitesse côté navigateur : charger moins au démarrage, graphiques à la demande<span class="qui">Code</span></li>
+
+<li><span class="n">40</span><span class="e">⏸</span>Langue : quand une 2ᵉ langue sera proposée, lire la langue du compte au lieu du français écrit en dur<span class="qui">Code</span></li>
 
 </ol>
 
@@ -140,6 +173,8 @@ li><span class="e">✅</span>Correctif : plus aucun nom de société montré à 
 <li><span class="n">24</span><span class="e">→</span>Te connecter dans le navigateur de Design, pour qu'il fasse le tour de la version en ligne (il n'a pas le droit de taper ton mot de passe)<span class="qui">Hamada</span></li>
 
 <li><span class="n">25</span><span class="e">→</span>Choisir sur les maquettes de Design : widgets de 208 px (fiches à 768 px : carrousel ou 2 × 2) et couleurs de la société<span class="qui">Hamada</span></li>
+
+<li><span class="n">42</span><span class="e">→</span>Choisir, parmi 11 fonctions de Boond pas encore livrées, celles qui vont en V1 : drapeaux, exercice fiscal, types de prestation, durées de besoin, business units, traductions, mémoriser la dernière recherche, afficher les filiales, voir le plan de charge d'une ressource, commande du responsable, pied de fiche<span class="qui">Hamada</span></li>
 
 
 </ul>
