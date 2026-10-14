@@ -21,48 +21,70 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 </style></head><body><main>
 <div class="nav"><a href="./" target="_top">← le hub</a> · <b>À faire</b> · <a href="decisions.html">Décisions</a> · <a href="bugs.html">Défauts</a> · <a href="livraisons.html">Livraisons</a> · <a href="audits.html">Audits</a> · <a href="documents.html">Documents</a></div>
 <h1>À faire</h1>
-<p class="sous">Mis à jour le samedi 10/10/2026 à 19h25 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire · les dates sont des estimations au rythme réel mesuré (sessions IA en continu), pas des délais humains</p>
+<p class="sous">Mis à jour le mercredi 14/10/2026 à 21h27 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire · ⏸ à la fin</p>
 
 <div class="chiffres">
-<div class="chiffre"><b>≈ 8</b><span>mises en ligne par jour (09/10 : 8 ; 25 depuis le 08/10, <a href="livraisons.html">le détail</a>)</span></div>
-<div class="chiffre"><b>1 h 30 à 2 h</b><span>du gel d'une livraison à sa mise en ligne (preuve du juge, aperçu, envoi)</span></div>
-<div class="chiffre"><b>+ 1 h</b><span>par défaut trouvé avant la mise en ligne (correction, preuve du seul diff)</span></div>
-<div class="chiffre"><b>0,1 à 0,5 s</b><span>par écran en ligne (19 à 31 s avant)</span></div>
+<div class="chiffre"><b>4fa1e79d</b><span>la version en ligne depuis le 11/10, gardée comme base (Hamada, 14/10)</span></div>
+<div class="chiffre"><b>4</b><span>contrôles seulement avant chaque mise en ligne : droits, fuites entre comptes, argent, base (mode vite)</span></div>
+<div class="chiffre"><b>30 / 30</b><span>chantiers du 10/10 vérifiés : tous déjà en ligne</span></div>
+<div class="chiffre"><b>6</b><span>sessions : BRAIN, Tests, Code, Design, Audit, Rapporteur</span></div>
 </div>
 
-<div class="bloc">V1 — ce qui remplace Boond<small>Les écrans de Boond à l'identique par défaut, réglables par société, dans le nouvel habillage</small></div>
+<div class="bloc">Mode vite — depuis le 14/10<small>Hamada : « Je veux aller vite. Un minimum pour que ce soit sécurisé. À la fin, quand tout marchera, on mettra des tests permanents. »</small></div>
 
-<h2>En cours — dans l'ordre de mise en ligne</h2>
+<h2>En cours — dans l'ordre</h2>
 <ol class="cours">
-<li><span class="e">⏳</span><b>Aujourd'hui vers 19h</b> — listes-2 : la barre retouchée (recherche dans tous les champs comme Boond, ★ en un clic, recherches enregistrées avec corbeille, pagination à droite), « lignes par page » (50) et colonnes figées dans ⚙, les cellules sur deux lignes comme Boond (46 relevées), plan de charge signé violet / prévisionnel violet clair / surcharge orange, compétences et service dans les colonnes, icônes Lucide des coordonnées<span class="qui">Code Lot 3 · Juge (migration 149) · Design</span></li>
-<li><span class="e">⬜</span><b>Cette nuit ou demain 11/10 matin</b> — listes-3, les widgets des listes : 2 à 8 au choix sur chaque liste (4 par défaut), défilement par flèches, molette et doigt, 21 nouveaux widgets en vrai Tremor, l'argent masqué aux comptes sans droit (<a href="https://claude.ai/artifact/GDPsNh3VqK28tVfWPdko98">la fiche validée</a>)<span class="qui">Juge (migration 150) · Code Lot 3 · Design</span></li>
+
+<li><span class="e">⏳</span><b>Maintenant</b> — Ouvrir les sessions de l'équipe (Code, Tests, Design, Rapporteur, Audit)<span class="qui">Hamada</span></li>
+
+<li><span class="e">⬜</span><b>Maintenant</b> — Tests repart de la version en ligne et y joue les 4 contrôles : droits, fuites entre comptes, argent, changements de la base<span class="qui">Tests</span></li>
+
+<li><span class="e">⏳</span><b>Maintenant</b> — Code : le tri du plan du 10/10 est fait (tout est en ligne) ; il code maintenant la saisie des compétences (candidat, ressource) et du service (contact), puis livre en petits morceaux, en continu<span class="qui">Code</span></li>
+
+<li><span class="e">⬜</span><b>Maintenant</b> — Design : les 10 écarts visibles de la version en ligne, et les maquettes des widgets de 208 px et des couleurs par société (Hamada choisit)<span class="qui">Design</span></li>
+
+<li><span class="e">⬜</span><b>Maintenant</b> — Audit : un passage de sécurité sur la version en ligne, compte par compte, sans rien bloquer<span class="qui">Audit</span></li>
+
+<li><span class="e">⬜</span><b>Dès que Tests a fini</b> — Le BRAIN classe ce que Tests a trouvé (défaut du code ou test faux) et donne les défauts à Code<span class="qui">BRAIN</span></li>
+
 </ol>
 
-<h2>Phase 2 — décidé, à faire ensuite</h2>
+<h2>À la fin du mode vite</h2>
 <ol>
-<li><span class="e">⏳</span><b>11/10</b> — 13e audit refusé (24 constats) : le critique sur l'argent est corrigé en ligne ; connexion, doublons, besoins, projets, groupes et devise des frais à finir et à prouver<span class="qui">Code 2 · Juge</span></li>
-<li><span class="e">⏳</span><b>11/10</b> — Identité de chaque société (V1) : logo, 3 couleurs, puis un thème sans couleur (10 préréglages en un clic, « Personnaliser » : police, titres, arrondi, menu) et « Enregistrer mon thème »<span class="qui">Code Lot 1 · Juge (migrations 151+) · Design ✅</span></li>
-<li><span class="e">⬜</span><b>11/10</b> — « Ajouter un élément » comme Boond : la Conformité relève chaque élément du tableau de bord de Boond, un emplacement à la fois<span class="qui">Conformité</span></li>
-<li><span class="e">⬜</span><b>11/10 → 12/10</b> — shadcn sur les fiches (candidat, ressource, société, contact, besoin, projet…), à l'identique de Boond<span class="qui">Code Lot 3 · Design · Juge</span></li>
-<li><span class="e">⬜</span><b>12/10</b> — shadcn sur les formulaires, les fenêtres, le compte et la connexion ; plus aucun élément fait main (le contrôle du juge ne fait que descendre : 190 → 77 aujourd'hui)<span class="qui">Code Lot 3 · Code Lot 1 · Juge</span></li>
-<li><span class="e">⬜</span>Tous les hubs derrière un mot de passe, à hub.ahmedbentaleb.com<span class="qui">session Hub · Hamada</span></li>
+
+<li><span class="e">⏸</span>Quand tout marche : les tests permanents et les tests de parcours écrits par Tests, puis l'Audit fait jouer les parcours par son agent<span class="qui">Tests · Audit</span></li>
+
 </ol>
 
-<h2>Ensuite</h2>
+<h2>Ensuite — le plan du 10/10, dates à recaler</h2>
+<p class="sous">⚠️ Ces dates datent du 10/10 ; rien n'a avancé entre le 11/10 midi et le 14/10 soir. Le BRAIN les recale.</p>
 <ol>
-<li><span class="e">⬜</span><b>12/10 → 13/10</b> — 14e audit, quand tous les contrôles sont verts — il couvre aussi la version en ligne<span class="qui">Audit</span></li>
-<li><span class="e">⬜</span><b>13/10</b> — 6-droits : les droits par groupe de données, comme Boond, et la fusion des doublons<span class="qui">Juge · codeurs</span></li>
-<li><span class="e">⬜</span><b>14/10</b> — Reporting : Synthèse, Projets, Ressources, Sociétés<span class="qui">codeurs</span></li>
-<li><span class="e">⬜</span><b>14/10</b> — Listes de valeurs éditables, mobilités en arbre, format des références ; les actions avec un état « faite / prévue » (pour les widgets « à faire » et « en retard »)<span class="qui">codeurs</span></li>
-<li><span class="e">⬜</span><b>15/10 → 17/10</b> — Lot 5.8 : contrats et documents RH, devis, facturation, achats, export, mail groupé<span class="qui">codeurs</span></li>
-<li><span class="e">⬜</span><b>18/10 → 01/11</b> — Audit du lot 5.8, puis deux semaines d'essai complet (durée fixée par Hamada, elle ne se raccourcit pas)<span class="qui">Audit · Hamada</span></li>
-<li><span class="e">⬜</span><b>02/11</b> — Vidage de la base de démo<span class="qui">Infra</span></li>
-<li><span class="e">⬜</span>⭐ <b>À partir du 03/11</b> — Phase finale : import des données de Boond vers Ava Manager, puis un mois en parallèle de Boond (jusqu'à début décembre)<span class="qui">codeurs · Avaliance</span></li>
+
+<li><span class="e">⬜</span>« Ajouter un élément » au tableau de bord comme Boond : le relevé est fait (10/10), reste à coder<span class="qui">Code</span></li>
+
+<li><span class="e">⬜</span>6-droits : les droits par groupe de données, comme Boond, et la fusion des doublons<span class="qui">Tests · Code</span></li>
+
+<li><span class="e">⬜</span>Reporting : Synthèse, Projets, Ressources, Sociétés<span class="qui">Code</span></li>
+
+<li><span class="e">⬜</span>Listes de valeurs éditables, mobilités en arbre, format des références ; les actions « faite / prévue »<span class="qui">Code</span></li>
+
+<li><span class="e">⬜</span>Lot 5.8 : contrats et documents RH, devis, facturation, achats, export, mail groupé<span class="qui">Code</span></li>
+
+<li><span class="e">⬜</span>Deux semaines d'essai complet (durée fixée par Hamada, elle ne se raccourcit pas)<span class="qui">Hamada</span></li>
+
+<li><span class="e">⬜</span>Vidage de la base de démo<span class="qui">Code</span></li>
+
+<li><span class="e">⬜</span>⭐ <b>Phase finale</b> — import des données de Boond vers Ava Manager, puis un mois en parallèle de Boond<span class="qui">Code · Avaliance</span></li>
+
+<li><span class="e">⬜</span>Tous les hubs derrière un mot de passe<span class="qui">session Hub · Hamada</span></li>
+
 </ol>
 
 <h2>En ligne</h2>
 <ul class="ok">
-<li><span class="e">✅</span>Correctif : plus aucun nom de société montré à un compte qui n'a pas le droit de lire les sociétés ; la barre de droite fermée par défaut à l'ouverture<span class="qui">lot1-cadre-i, 10/10 18h17</span></li>
+<<li><span class="e">✅</span>La version du 11/10 : listes et fiches en shadcn, fenêtres, formulaires, compte et connexion en shadcn, widgets des listes (2 à 8 par liste), identité de chaque société (logo, 3 couleurs, thème, icônes), corrections de droits et de vitesse<span class="qui">version 4fa1e79d, 11/10</span></li>
+
+li><span class="e">✅</span>Correctif : plus aucun nom de société montré à un compte qui n'a pas le droit de lire les sociétés ; la barre de droite fermée par défaut à l'ouverture<span class="qui">lot1-cadre-i, 10/10 18h17</span></li>
 <li><span class="e">✅</span>La livraison unique : le tableau de bord Tremor lisible (grille sans case vide, « 2,5 M€ », légendes, un widget en panne ne blanchit plus la page, aucun widget de module non codé), les listes en shadcn, le cadre (recherche au centre Ctrl K, cloche et assistant « (soon) » en haut du rail, icônes Lucide, infobulles shadcn, menu replié sur tablette), les 3 couleurs de la société. Mesuré en ligne : chaque écran entre 0,09 et 0,45 s, 14 comptes sur 14. Quatre défauts arrêtés avant, grâce à l'aperçu local : page blanche de la Direction, chiffre des actions à 0, widgets empilés, deux valeurs écrites en dur<span class="qui">lot1-cadre-h, 10/10 17h13</span></li>
 <li><span class="e">✅</span>La charte Avaliance (violet en tons partout, sélections en fond uni, vert rare) ; la barre des filtres en vrais composants shadcn, CV en icône ; plus aucune valeur de réglage écrite en dur<span class="qui">charte-3, 10/10 10h26</span></li>
 <li><span class="e">✅</span>Les cartes visuelles Tremor en tête des listes et des fiches ; 8 constats du 13e audit corrigés ; « 0,00 € » au lieu d'un vide<span class="qui">Tremor 1, 10/10 10h20</span></li>
