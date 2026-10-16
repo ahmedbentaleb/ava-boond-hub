@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Pourquoi TypeScript</title>
+<title>TypeScript et SQL</title>
 <style>
 :root{color-scheme:dark;--bg:#000;--t1:#f1f1f3;--t2:#a9a8b2;--t3:#6e6d76;--carte:#121214;--bord:#26262c;--accent:#c79ad0;--vert:#C3D64F;--ok:#34D399;--cours:#E9B949;--v2:#5AA9FF;--toi:#F472B6}
 body{margin:0;background:var(--bg);color:var(--t1);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
@@ -48,42 +48,81 @@ td{padding:9px 10px 9px 0;border-bottom:1px solid var(--bord);vertical-align:top
 <script>if(self!==top)document.documentElement.classList.add("dans-hub")</script>
 </head><body><main>
 <div class="nav"><a href="./" target="_top">← le hub</a></div>
-<h1>Pourquoi TypeScript</h1>
-<p class="sous">Mis à jour le vendredi 16/10/2026 à 07h16 (heure de Casablanca) · relevé dans le code de la version en ligne et dans le journal</p>
-<p class="grand"><b>Tout le code d'Ava Manager — serveur, écrans, tests — est écrit en TypeScript, en mode strict.</b> C'est JavaScript, avec un correcteur qui relit chaque ligne avant qu'elle ne parte en ligne et refuse celles qui ne tiennent pas ensemble.</p>
+<style>
+.etape{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:start;padding:10px 0;border-bottom:1px solid var(--bord)}
+.etape .nb{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--vert);color:var(--vert);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.etape p{margin:0}.etape small{display:block;color:var(--t2);margin-top:2px}
+.lg{font:600 11.5px ui-monospace,Consolas,monospace;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.lg.ts{color:#5AA9FF;border:1px solid #5AA9FF}.lg.sql{color:#FB923C;border:1px solid #FB923C}.lg.ec{color:#A78BFA;border:1px solid #A78BFA}
+.deux{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+.deux>div{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:12px 14px}
+.deux h3{margin:0 0 6px;font-size:16px}.deux ul{margin:6px 0 0;padding-left:18px;list-style:disc}.deux li{display:list-item;border:0;padding:2px 0}
+.deux .ts-h{color:#5AA9FF}.deux .sql-h{color:#FB923C}
+@media (max-width:640px){.deux{grid-template-columns:1fr}.etape{grid-template-columns:30px 1fr}.etape .lg{grid-column:2}}
+dl{margin:6px 0}dt{font-weight:700;margin-top:10px}dd{margin:2px 0 0;color:var(--t2)}
+</style><h1>TypeScript et SQL — comment tout ça fonctionne</h1>
+<p class="sous">Mis à jour le vendredi 16/10/2026 à 07h35 (heure de Casablanca) · relevé dans le code de la version en ligne ; chaque affirmation se vérifie dans le dépôt de travail</p>
 
-<div class="chiffres">
-<div class="chiffre"><b>1</b><span>seul langage du haut en bas : serveur, écrans, tests</span></div>
-<div class="chiffre"><b>94</b><span>actions déclarées chacune une fois (mesure du 11/10)</span></div>
-<div class="chiffre"><b>588</b><span>contrôles numérotés P-xxx dans les tests</span></div>
-<div class="chiffre"><b>~42 000</b><span>lignes de serveur et d'écrans, dont 53 contournements du correcteur</span></div>
+<p class="grand"><b>Ava Manager parle deux langues.</b> <span class="lg ts">TypeScript</span> pour ce que l'application <i>fait</i> (écrans et serveur), <span class="lg sql">SQL</span> pour ce qu'elle <i>garde</i> (les données, et les règles qui les protègent). Les deux se surveillent : si l'un se trompe, l'autre refuse.</p>
+
+<h2>L'image à retenir : un restaurant</h2>
+<div class="deux">
+<div><h3 class="ts-h">La salle et la cuisine = TypeScript</h3>
+<p>La salle, ce sont les <b>écrans</b> : ce que voit l'utilisateur. La cuisine, c'est le <b>serveur</b> : il reçoit la commande, vérifie qui la passe et ce qu'il a le droit de demander, puis prépare la réponse.</p>
+<ul><li>Même langue pour les écrans, le serveur et les tests</li><li>Les règles du métier y sont écrites, une fois chacune</li></ul></div>
+<div><h3 class="sql-h">Le garde-manger sous clé = SQL (PostgreSQL)</h3>
+<p>C'est la <b>base de données</b> : toutes les fiches, les prestations, les montants. Elle a son propre règlement, et elle l'applique même si la cuisine se trompe.</p>
+<ul><li>Le cuisinier n'a que les clés dont il a besoin</li><li>Il ne peut jamais tout vider : le droit d'effacer lui est retiré</li></ul></div>
 </div>
 
-<h2>Ce que le correcteur nous apporte, avec des exemples réels</h2>
-<table><tr><th>Ce qu'il fait</th><th>Exemple dans ce code</th></tr>
-<tr><td><b>Une action ne peut pas être mal déclarée</b></td><td>Chaque action est une seule entrée dans la déclaration : sa nature, ses champs, ses droits. Une faute de nature, de rôle ou de type de champ ne compile pas.</td></tr>
-<tr><td><b>Une règle est tenue par la machine, pas par une relecture</b></td><td>Le code d'une action ne peut pas lire une valeur brute envoyée par l'extérieur : cette entrée n'existe plus dans son type. Une relecture humaine peut l'oublier ; le compilateur, non.</td></tr>
-<tr><td><b>Il a trouvé une vraie erreur dans la version en ligne</b></td><td>Le 14/10, une vérification a signalé une erreur de type dans le calcul des projets, présente dans le code en ligne. Elle a été classée défaut du code (D-189) et corrigée dans le Livrable 1.</td></tr>
-<tr><td><b>Un langage pour tous</b></td><td>Les écrans, le serveur et les tests parlent la même langue. Un changement qui traverse les trois se fait sans traduire.</td></tr></table>
+<h2>Le trajet d'un clic : « Archiver un candidat »</h2>
+<p class="sous">Les 8 étapes, avec à chaque fois qui parle.</p>
+<div class="etape"><span class="nb">1</span><p><b>Le recruteur clique sur « Archiver ».</b><small>L'écran envoie la demande au serveur, avec l'identité du compte connecté.</small></p><span class="lg ec">écran · TypeScript</span></div>
+<div class="etape"><span class="nb">2</span><p><b>Le serveur vérifie la connexion.</b><small>Pas de connexion valide, pas de réponse.</small></p><span class="lg ts">serveur · TypeScript</span></div>
+<div class="etape"><span class="nb">3</span><p><b>Il retrouve l'action demandée dans sa liste.</b><small>Chaque action est déclarée une seule fois : son nom, ses champs, les droits qu'elle exige. Une action qui n'est pas déclarée n'existe pas.</small></p><span class="lg ts">serveur · TypeScript</span></div>
+<div class="etape"><span class="nb">4</span><p><b>Il contrôle les droits.</b><small>Ce compte a-t-il le droit d'archiver, et sur ce candidat-là (son agence, son périmètre) ? Sinon : refus clair, rien n'est écrit.</small></p><span class="lg ts">serveur · TypeScript</span></div>
+<div class="etape"><span class="nb">5</span><p><b>Il demande à la base d'écrire.</b><small>Il parle à la base avec un compte limité : il peut lire, ajouter et modifier colonne par colonne, jamais effacer.</small></p><span class="lg sql">base · SQL</span></div>
+<div class="etape"><span class="nb">6</span><p><b>La base vérifie à son tour.</b><small>Si le serveur s'était trompé et demandait quelque chose qu'il n'a pas le droit de faire, la base répond « droit refusé ». Deuxième barrière.</small></p><span class="lg sql">base · SQL</span></div>
+<div class="etape"><span class="nb">7</span><p><b>La base note l'événement.</b><small>Qui, quand, quoi : le journal ne se modifie pas.</small></p><span class="lg sql">base · SQL</span></div>
+<div class="etape"><span class="nb">8</span><p><b>Le serveur répond, l'écran se rafraîchit.</b><small>Avant de répondre, une seule porte de sortie retire ce que le compte n'a pas le droit de voir : un montant ou une donnée RH sensible n'est pas « caché », il n'est tout simplement pas envoyé.</small></p><span class="lg ts">serveur · TypeScript</span></div>
 
-<h2>Les outils choisis</h2>
-<table><tr><th>Brique</th><th>Choix</th><th>Pourquoi on peut le dire</th></tr>
-<tr><td>Langage</td><td>TypeScript 5.9, mode strict (serveur et écrans)</td><td>Réglage de chaque projet de code</td></tr>
-<tr><td>Serveur</td><td>Node 22, framework Fastify 5, lancé sans compilation de production</td><td>Décision D-003</td></tr>
-<tr><td>Écrans</td><td>React 19, Vite 7, composants shadcn/ui, graphiques Tremor</td><td>Décisions D-165 et D-167 : composants officiels seulement</td></tr>
-<tr><td>Base</td><td>PostgreSQL, changements numérotés en SQL</td><td>Le SQL n'est pas du TypeScript : c'est voulu, la base garde ses règles</td></tr>
-<tr><td>Tests</td><td>TypeScript, un contrôle par règle, numéroté P-xxx</td><td>Un test qui ne devient pas rouge quand on casse la règle est « aveugle »</td></tr></table>
-<p class="src">Source : la décision T1 des décisions techniques de cadrage : « TypeScript + PostgreSQL, un seul dépôt, un seul langage du haut en bas ».</p>
+<h2>Pourquoi TypeScript</h2>
+<table><tr><th>Ce qu'on voulait</th><th>Ce que TypeScript apporte ici</th></tr>
+<tr><td><b>Un seul langage du haut en bas</b></td><td>Les écrans, le serveur et les tests parlent la même langue. Un changement qui traverse les trois se fait sans traduire, et une seule personne peut tout relire. C'est le choix écrit dans les décisions techniques de départ.</td></tr>
+<tr><td><b>Des règles écrites une fois</b></td><td>Les 94 actions mesurées le 11/10 sont chacune déclarées une seule fois : droits, validation et réglages en découlent. On ne peut pas oublier une règle sur un seul chemin.</td></tr>
+<tr><td><b>Des fautes trouvées avant la mise en ligne</b></td><td>TypeScript vérifie que les pièces s'emboîtent avant que le code ne tourne. Exemple réel : le 14/10, il a signalé une erreur dans le calcul des projets, présente dans la version en ligne ; elle est corrigée depuis le Livrable 1.</td></tr>
+<tr><td><b>Une interdiction qui ne dépend pas d'une relecture</b></td><td>Le code d'une action ne peut pas lire une valeur brute envoyée de l'extérieur : cette possibilité n'existe plus dans son type. Un humain peut l'oublier, la machine non.</td></tr></table>
+<p class="src">Versions : TypeScript 5.9 en mode strict · Node 22 · Fastify 5 (serveur) · React 19 et Vite 7 (écrans) · shadcn/ui et Tremor (composants).</p>
 
-<h2>Ce qui n'est pas encore vrai</h2>
+<h2>Pourquoi SQL, et pourquoi la base garde ses propres règles</h2>
+<table><tr><th>Ce qu'on voulait</th><th>Ce que la base apporte ici</th></tr>
+<tr><td><b>Des données qu'on ne perd pas</b></td><td>PostgreSQL est une base éprouvée. L'application n'a pas le droit d'effacer : on archive, on ne supprime pas. Les journaux ne se réécrivent pas.</td></tr>
+<tr><td><b>Une deuxième barrière</b></td><td>Les droits sont posés colonne par colonne dans la base. Même un défaut du code ne peut pas écrire là où la base n'a pas ouvert la porte. Exemple réel : des colonnes modifiables sans raison ont été trouvées (défaut P-325) ; le correctif remet le code et la base d'accord (soit une action écrit ces colonnes, soit le droit est retiré).</td></tr>
+<tr><td><b>Des changements qu'on peut défaire</b></td><td>Chaque changement de la base est un fichier numéroté (166 en ligne le 16/10), qui ne se réécrit jamais. Avant chaque mise en ligne, un point de retour (code, base, fichiers) est fait et vérifié : au moindre échec, on revient en arrière.</td></tr>
+<tr><td><b>Le SQL reste du SQL</b></td><td>On n'écrit pas la base en TypeScript : les droits, les contraintes et les migrations restent dans le langage de la base. Le correcteur protège le code ; le SQL protège les données.</td></tr></table>
+
+<h2>Comment on s'assure que ça tient</h2>
+<table><tr><th>Quoi</th><th>Comment</th></tr>
+<tr><td>Chaque règle a son contrôle</td><td>Un test numéroté (P-xxx), 588 dans le code. Un test qui ne devient pas rouge quand on casse la règle est « aveugle » et refusé.</td></tr>
+<tr><td>Avant chaque mise en ligne</td><td>Quatre contrôles : les droits, les fuites entre comptes, l'argent, les changements de la base.</td></tr>
+<tr><td>Qui écrit quoi</td><td>La session Code écrit le serveur et les écrans ; seule la session Tests écrit les tests et les changements de la base. Celui qui écrit une règle n'est jamais celui qui la vérifie.</td></tr></table>
+
+<h2>Ce qui n'est pas encore parfait</h2>
 <p class="sous">On le dit pour que personne ne croie le contraire.</p>
 <table><tr><th>Constat</th><th>Ce que ça veut dire</th></tr>
-<tr><td><b>Pas de types partagés entre le serveur et les écrans</b></td><td>Les écrans redéclarent à la main les formes que le serveur envoie. Ce qui est commun, c'est le langage, pas les fichiers. Une évolution du serveur peut donc casser un écran sans que le correcteur le voie.</td></tr>
-<tr><td><b>Le correcteur n'est pas encore une porte automatique</b></td><td>On ne le lance pas dans la chaîne de contrôles : Tests le lance à la main. La construction des écrans, elle, ne vérifie pas les types. À brancher.</td></tr>
-<tr><td><b>Le « strict » n'est pas absolu</b></td><td>53 endroits contournent le correcteur sur environ 42 000 lignes.</td></tr>
-<tr><td><b>Le texte du choix est en retard</b></td><td>Le texte de décision parle de « pages rendues par le serveur » ; l'écran est devenu une application React. Il n'existe pas de texte d'architecture dédié au choix du langage.</td></tr></table>
+<tr><td><b>Écrans et serveur ne partagent pas leurs « formes »</b></td><td>Les écrans redéclarent à la main ce que le serveur envoie. Une évolution du serveur peut casser un écran sans alerte automatique.</td></tr>
+<tr><td><b>La vérification TypeScript n'est pas encore automatique</b></td><td>Tests la lance à la main ; elle n'est pas dans la chaîne des contrôles. À brancher.</td></tr>
+<tr><td><b>Il reste des valeurs du métier écrites dans le code</b></td><td>15 valeurs doivent venir de la base (tâche n° 49).</td></tr>
+<tr><td><b>Le texte de décision de départ est en retard</b></td><td>Il parle de « pages rendues par le serveur » ; les écrans sont devenus une application React.</td></tr></table>
 
-<h2>Ce qu'on ne fera pas, et pourquoi c'est une décision</h2>
-<p class="cons"><b>On n'écrit pas la base en TypeScript.</b> Les droits, les contraintes et les migrations restent en SQL : c'est la base qui refuse, même si le code se trompe. Le correcteur protège le code ; le SQL protège les données.</p>
-<p class="cons"><b>Le correcteur ne remplace pas les contrôles de Tests.</b> Il attrape les fautes de forme. Seuls les contrôles numérotés P-xxx prouvent qu'une règle du métier tient : c'est pourquoi les deux existent.</p>
+<h2>Les mots, en clair</h2>
+<dl>
+<dt>Serveur</dt><dd>Le programme qui tourne en permanence, reçoit les demandes des écrans et leur répond.</dd>
+<dt>Action (ou commande)</dt><dd>Une chose qu'on peut demander : « créer un candidat », « archiver ». Chacune est déclarée une fois.</dd>
+<dt>Droit</dt><dd>Ce qu'un compte a le droit de voir ou de faire. Il est contrôlé deux fois : par le serveur, puis par la base.</dd>
+<dt>Base de données</dt><dd>Le coffre où sont rangées toutes les informations.</dd>
+<dt>Changement de la base (migration)</dt><dd>Un fichier numéroté qui modifie la structure ou les droits de la base. Il ne se réécrit jamais.</dd>
+<dt>Point de retour</dt><dd>Une sauvegarde complète faite juste avant une mise en ligne, pour revenir en arrière si besoin.</dd>
+<dt>Contrôle (ou porte)</dt><dd>Un test automatique, numéroté P-xxx, qui vérifie une règle.</dd>
+</dl>
 </main></body></html>
