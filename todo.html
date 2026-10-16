@@ -1,219 +1,108 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>À faire</title>
 <style>
-:root{color-scheme:dark;--bg:#000;--t1:#f1f1f3;--t2:#a9a8b2;--t3:#6e6d76;--carte:#121214;--bord:#26262c;--accent:#c79ad0;--vert:#C3D64F;--ok:#34D399;--cours:#E9B949;--v2:#5AA9FF;--toi:#F472B6}
-body{margin:0;background:var(--bg);color:var(--t1);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
-main{max-width:760px;margin:0 auto;padding:20px 16px 56px}
-a{color:var(--accent)}.nav{font-size:14px;color:var(--t2)}
-h1{font-size:26px;font-weight:600;margin:6px 0 2px}.sous{color:var(--t2);margin:0 0 18px}
-.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:22px}
-.chiffre{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:10px 14px}
-.chiffre b{display:block;font-size:28px;font-weight:600;line-height:1.1}.chiffre span{font-size:13px;color:var(--t2)}
-.bloc{font-size:20px;font-weight:600;margin:34px 0 2px;padding-top:12px;border-top:2px solid var(--bord)}
-.bloc small{display:block;font-size:13px;font-weight:400;color:var(--t2)}
-h2{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t2);margin:22px 0 6px}
-ol,ul{margin:0;padding:0;list-style:none}
-li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--bord)}
-.e{width:22px;flex:none;text-align:center}.qui{margin-left:auto;color:var(--t3);font-size:13px;white-space:nowrap;padding-left:10px}
-.ok .e{color:var(--ok)}.cours .e{color:var(--cours)}.v2 li{color:var(--t2)}.v2 .e{color:var(--v2)}.toi li{color:var(--toi)}
-@media (max-width:560px){li{flex-wrap:wrap}.qui{margin-left:34px;padding-left:0;white-space:normal}}
-.n{flex:none;width:40px;font-size:22px;font-weight:700;line-height:1;color:var(--accent);text-align:right}
-.compte{font-size:15px;font-weight:600;margin:0 0 18px}
-.n.m{font-size:14px;width:auto;min-width:40px;white-space:nowrap}
-.fin{display:block;font-size:12px;color:var(--t3)}
-</style><style>.dans-hub .nav{display:none}</style><script>if(self!==top)document.documentElement.classList.add("dans-hub")</script></head><body><main>
-<div class="nav"><a href="./" target="_top">← le hub</a> · <b>À faire</b> · <a href="decisions.html">Décisions</a> · <a href="bugs.html">Défauts</a> · <a href="livraisons.html">Livraisons</a> · <a href="audits.html">Audits</a> · <a href="documents.html">Documents</a></div>
-<h1>À faire</h1>
-<p class="sous">Mis à jour le vendredi 16/10/2026 à 07h12 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire · ⏸ à la fin</p>
+:root{--bg:#ffffff;--fg:#1b1b1f;--mute:#6b6b76;--line:#e4e4ea;--card:#f7f7fa;--ok:#1f8a4c;--wait:#b26a00;--you:#6d3fd1}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#121216;--fg:#ececf1;--mute:#9a9aa6;--line:#2a2a33;--card:#1b1b22;--ok:#4fc98a;--wait:#f0a63a;--you:#a98bff}}
+:root[data-theme="dark"]{--bg:#121216;--fg:#ececf1;--mute:#9a9aa6;--line:#2a2a33;--card:#1b1b22;--ok:#4fc98a;--wait:#f0a63a;--you:#a98bff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;padding:16px}
+h1{font-size:20px;margin:0 0 4px}
+.sub{color:var(--mute);font-size:13px;margin-bottom:18px}
+h2{font-size:15px;margin:22px 0 8px;display:flex;gap:8px;align-items:center}
+.tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;border:1px solid currentColor}
+.t-you{color:var(--you)}.t-par{color:var(--ok)}.t-seq{color:var(--wait)}
+.lanes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.lane{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.lane h3{font-size:13px;margin:0 0 6px;color:var(--mute);font-weight:600}
+label{display:flex;gap:10px;align-items:flex-start;padding:6px 0;cursor:pointer}
+label+label{border-top:1px solid var(--line)}
+input{width:18px;height:18px;margin:1px 0 0;flex:none;accent-color:var(--ok)}
+input:checked+span{color:var(--mute);text-decoration:line-through}
+.who{font-size:12px;color:var(--mute)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:4px 12px}
+.arrow{color:var(--mute);font-size:13px;margin:8px 0 0 4px}
+</style>
+</head>
+<body>
+<h1>Todo Ava Manager</h1>
+<div class="sub">16/10/2026 · Livrable 2 en ligne depuis 06:54 · les cases se cochent (mémorisées dans ce navigateur)</div>
 
-<p class="compte">52 tâches · n° 1 à 52 · 20 faites · 1 caduque</p>
-<div class="chiffres">
-<div class="chiffre"><b>4d98c24e</b><span>le Livrable 2, en ligne depuis le 16/10 à 6 h 52 (le Livrable 1 : 28c5926e, le 15/10)</span></div>
-<div class="chiffre"><b>4</b><span>contrôles seulement avant chaque mise en ligne : droits, fuites entre comptes, argent, base (mode vite)</span></div>
-<div class="chiffre"><b>0</b><span>fuite entre comptes sur la version déployée (Tests, 15/10)</span></div>
-<div class="chiffre"><b>6</b><span>sessions : BRAIN, Tests, Code, Design, Audit, Rapporteur</span></div>
+<h2>✅ Fait</h2>
+<div class="box">
+<label><input type="checkbox" data-k="d1" checked><span>Livrable 1 en ligne, validé, audit accepté</span></label>
+<label><input type="checkbox" data-k="d2" checked><span>Livrable 2 en ligne (4d98c24e) : actions groupées réparées sur les 9 listes, « Ajouter un élément » au tableau de bord</span></label>
+<label><input type="checkbox" data-k="d3" checked><span>Hub refait par le Rapporteur</span></label>
 </div>
 
-<div class="bloc">Phase A — Livrable 1<small>La version en ligne corrigée et remise en ligne. Les numéros sont stables : une tâche garde le sien pour toujours.</small></div>
-<ol class="cours">
-
-<li><span class="n">3</span><span class="e">✅</span><span><b>A1</b> — Fuites entre comptes : les 198 cas trouvés, le défaut bloquant de l'Audit (l'alerte de doublon : ✅ déjà corrigée en ligne)<span class="fin">fini quand : les contrôles des fuites passent</span></span><span class="qui">Code</span></li>
-
-<li><span class="n">3</span><span class="e">✅</span><span><b>A2</b> — « Modifier en masse » repasse par le contrôle de l'action unitaire — correction prête, son contrôle passe (4 cas sur 4) ; les champs sans action unitaire sont retirés du menu pour l'instant (D-208)<span class="fin">fini quand : son contrôle passe</span></span><span class="qui">Code</span></li>
-
-<li><span class="n">3</span><span class="e">✅</span><span><b>A3</b> — Les frais dans la marge, mois par mois (D-195), arrondis une seule fois sur le total (D-203), + un refus clair pour un frais sans devise — correction prête, son contrôle passe (9 cas sur 9)<span class="fin">fini quand : les 8 cas du contrôle passent</span></span><span class="qui">Code</span></li>
-
-<li><span class="n">28</span><span class="e">✅</span><span><b>A4</b> — Les autres défauts du 13e audit : deux défauts de la connexion (l'un ✅ déjà corrigé en ligne, l'autre corrigé et en attente de mise en ligne), quatre défauts moyens (deux ✅ corrigés en ligne, un corrigé et en attente de mise en ligne, un encore en échec : V-230)<span class="fin">fini quand : leurs contrôles passent ; un enregistrement par défaut</span></span><span class="qui">Code</span></li>
-
-<li><span class="n">26</span><span class="e">✅</span><span><b>A5</b> — Le tableau de bord et l'écran : les défauts vus en ligne EN LIGNE-11 à 20, d'abord 12 et 20 — 20, 19 et 13 corrigés dans le Livrable 1 ; 14, 15, 17 réglés, à confirmer par toi à l'aperçu ; 12 passe en phase B ; la lenteur (18) est mesurée après la mise en ligne — reste : EN LIGNE-12 (phase B) et la mesure de la lenteur après la mise en ligne<span class="fin">fini quand : Hamada a vu l'aperçu</span></span><span class="qui">Code</span></li>
-
-<li><span class="n">37</span><span class="e">✅</span><span><b>A6</b> — ⭐ Les widgets de 208 px en tête des listes et des fiches, 4 par rangée, 2 × 2 sur un écran de 768 px (D-202) — en ligne depuis le 15/10, validé par Hamada<span class="fin">fini quand : Hamada a vu l'aperçu</span></span><span class="qui">Code</span></li>
-
-<li><span class="n m">34 · 35</span><span class="e">⬜</span><span><b>A7</b> — La touche Échap ne ferme plus la barre de droite ; le seuil-plancher s'affiche comme une alerte<span class="fin">fini quand : aperçu</span></span><span class="qui">Code</span></li>
-
-<li><span class="n m">2 · 27 · 31</span><span class="e">✅</span><span><b>A8</b> — Rejouer sur la version en ligne les 77 contrôles du 10/10, le retrait du droit d'effacer (M-8) et les 3 volets de V-235 (✅ prouvés corrigés) — jugement final de Tests : aucun échec nouveau ; restent 3 échecs déjà présents en ligne (droits des colonnes, un balayage de réglages, le chiffre « CA »), suivis aux Défauts<span class="fin">fini quand : liste brute, puis classée par le BRAIN</span></span><span class="qui">Tests</span></li>
-
-<li><span class="n">9</span><span class="e">✅</span><span><b>A9</b> — Le changement de la base n° 163 (droits par groupe, colonnes modifiables sans raison) est regelé (bcbe807c) ; le contrôle des droits passe : 595 cas justes, 0 en échec<span class="fin">fait à 22h</span></span><span class="qui">Tests</span></li>
-
-<li><span class="n">25</span><span class="e">⬜</span><span><b>A10</b> — Couleurs de la société : une couleur trop peu lisible est refusée et une couleur conforme est proposée (D-202)<span class="fin">fini quand : le contrôle des couleurs passe</span></span><span class="qui">Code · Tests</span></li>
-
-<li><span class="n">46</span><span class="e">✅</span><span><b>A11</b> — Réunir chaque livraison acceptée dans le Livrable 1 (les compétences, les frais, « Modifier en masse », la compilation, les changements de la base 163 à 165, la connexion, V-243 : réunis). Restent : la fuite des noms de clients (A), V-230, les widgets de 208 px (environ 80 %), Tremor<span class="fin">fini quand : les 4 contrôles passent sur l'ensemble, aucun échec nouveau</span></span><span class="qui">Code</span></li>
-
-<li><span class="n m">47 · 33</span><span class="e">✅</span><span><b>A12</b> — Aperçu du Livrable 1 → Hamada regarde → GO du BRAIN → mise en ligne par script depuis le PC (un réglage de sécurité de la base est lu au passage) — mise en ligne le 15/10 à 14 h 43, 14 comptes de démo, point de retour conservé<span class="fin">fini quand : la version en ligne répond et les 14 comptes de démo marchent</span></span><span class="qui">Code</span></li>
-
-<li><span class="n">48</span><span class="e">✅</span><span><b>A13</b> — L'Audit relit les 3 défauts bloquants sur la version en ligne — l&#x27;Audit relit en lecture seule (D-228) — ACCEPTÉ par l&#x27;Audit le 15/10 (D-235) : fuites, droits et argent verts sur la version en ligne<span class="fin">fini quand : ACCEPTÉ</span></span><span class="qui">Audit</span></li>
-
-<li><span class="n">51</span><span class="e">✅</span><span><b>A14</b> — L'interface à 80 % par défaut, réglable dans « Mon compte » (80, 90 ou 100 %) ; menu de gauche et barre de droite resserrés ; aucun texte sous 12 px réels (D-212) — en ligne dans le Livrable 1 (changement de la base n° 165), validé par Hamada<span class="fin">fini quand : Hamada a vu l'aperçu et dit OK</span></span><span class="qui">Code</span></li>
-
-</ol>
-
-<div class="bloc">Phase B — après le Livrable 1, dans cet ordre</div>
-<ol>
-
-<li><span class="n">50</span><span class="e">⏳</span><span>En tête : l'archivage en masse et la modification des actions repassent par leurs actions unitaires et leurs contrôles ; les champs retirés du menu reviennent avec leurs actions, en même temps que la n° 45 (D-208) — EN LIGNE en partie le 16/10 (livrable 2) : la modification en masse des actions passe par l&#x27;action unitaire ; l&#x27;archivage des positionnements et prestations vient au livrable 3 (droit par type d&#x27;objet, D-247)<span class="fin">fini quand : le contrôle de Tests passe</span></span><span class="qui">Code · Tests</span></li>
-
-<li><span class="n">52</span><span class="e">⏳</span><span>Juste après le n° 50 : les défauts de l&#x27;argent et des droits encore présents en ligne passent avant les écrans — le chiffre « CA » du tableau de bord à zéro, les colonnes modifiables sans raison (P-325) ; P-345 n&#x27;en fait plus partie : c&#x27;est une limite du contrôle, que Tests corrige (D-232) — EN LIGNE le 16/10 dans le livrable 2 (CA, P-325) ; Tests rejoue les contrôles sur la version en ligne<span class="fin">fini quand : leurs contrôles passent</span></span><span class="qui">Code</span></li>
-
-<li><span class="n">9</span><span class="e">⏳</span><span>Droits par groupe de données (5 groupes, un manager et son équipe directe, fusion des doublons)</span> — codé en partie pour le livrable 3 (fiche ressource sous la grille, point latent corrigé) ; attend la suite du livrable 2<span class="qui">Code</span></li>
-
-<li><span class="n">45</span><span class="e">⏳</span><span>Les fonctions de Boond retenues pour la V1 (D-201) : responsable manager modifiable · pied de fiche · « voir le plan de charge » · « afficher les filiales » · exercice fiscal</span> — codé pour le livrable 3 (exercice fiscal, responsable manager) ; attend la suite du livrable 2<span class="qui">Code</span></li>
-
-<li><span class="n">29</span><span class="e">✅</span><span>Les fiches dans l'ordre de Boond (changement de la base n° 164)</span> — en ligne dans le Livrable 1 (changements de la base n° 164, fiches)<span class="qui">Tests puis Code</span></li>
-
-<li><span class="n">8</span><span class="e">✅</span><span>« Ajouter un élément » au tableau de bord comme Boond</span> — EN LIGNE le 16/10 à 6 h 52 dans le livrable 2 ; les contrôles de Tests sur la version en ligne restent à rejouer<span class="qui">Code</span></li>
-
-<li><span class="n">10</span><span class="e">⏳</span><span>Listes de valeurs éditables, mobilités en arbre, format des références, actions « faite / prévue »</span> — web fait pour le livrable 3 (couleur par valeur, parent) ; attend la suite du livrable 2<span class="qui">Code</span></li>
-
-<li><span class="n">11</span><span class="e">⬜</span><span>Reporting : Synthèse, Projets, Ressources, Sociétés</span><span class="qui">Code</span></li>
-
-<li><span class="n m">38 · 39</span><span class="e">⬜</span><span>Les mots fournis par le serveur portés au canon ; la vitesse côté navigateur</span><span class="qui">Code</span></li>
-
-<li><span class="n">49</span><span class="e">⬜</span><span>Retirer les 15 valeurs métier écrites en dur dans le code (V-229) : elles doivent venir de la base ; son contrôle doit passer<span class="fin">fini quand : le contrôle des valeurs en dur passe</span></span><span class="qui">Code</span></li>
-
-<li><span class="n m">36 · 12</span><span class="e">⬜</span><span>Les règles vérifiables du Lot 5.8, puis le Lot 5.8 (contrats et documents RH, devis, facturation, achats, export, mail groupé)</span><span class="qui">Tests puis Code</span></li>
-
-<li><span class="n m">13 · 43 · 44</span><span class="e">⬜</span><span>La démo (actions « à faire » réparties sur tous les comptes, EN LIGNE-23), puis son vidage ; la copie automatique des hubs ; le kit sous le portail</span><span class="qui">Code</span></li>
-
-<li><span class="n m">14 · 15</span><span class="e">⬜</span><span>Deux semaines d'essai complet, puis ⭐ l'import des données de Boond et un mois en parallèle de Boond</span><span class="qui">Hamada · Code</span></li>
-
-</ol>
-
-<div class="bloc">Phase C — à la fin du mode vite</div>
-<ol>
-
-<li><span class="n">7</span><span class="e">⏸</span><span>Les tests permanents et les tests de parcours, puis l'Audit les fait jouer. Avec eux, les contrôles promis et reportés par le mode vite, un par un : (a) les contrôles ponctuels promis au 10/10 (droits croisés complets, base propre, jeux d'essai, témoin des requêtes, un contrôle faux à refaire, deux autres de la même série) · (b) 17 fichiers de contrôle jamais joués en entier, à trier · (c) trois constats du 13e audit sur les contrôles eux-mêmes : la connexion sans contrôle, quatre décisions sans contrôle, et la documentation qui diffère de la base · (d) les 52 défauts « contestés », à reprendre un par un (avec l'Audit) · (e) la famille « les tests effacent les délégations des autres » · (f) deux libellés de réglage (« Par défaut », « Secteur ») · (g) les contrôles d'écran : bulles d'aide, aspect shadcn, contraste du plan de charge, mots des états vides, exceptions shadcn à réduire (le compte et la connexion sont déjà en shadcn) · (h) le contrôle d'« Ajouter un élément » (une recherche affichée lisible, ou rien)</span><span class="qui">Tests · Audit</span></li>
-
-<li><span class="n">41</span><span class="e">⏸</span><span>Re-mesurer la parité avec Boond sur la version en ligne</span><span class="qui">Audit</span></li>
-
-<li><span class="n">40</span><span class="e">⏸</span><span>Langue : seulement quand une 2ᵉ langue sera proposée</span><span class="qui">Code</span></li>
-
-</ol>
-
-<h2>Pour Hamada seul — personne ne peut le faire à ta place</h2>
-<ul class="toi">
-
-<li><span class="n">24</span><span class="e">→</span><span>Te connecter dans le navigateur de Design (il fait ensuite le tour de la version en ligne)</span><span class="qui">Hamada</span></li>
-
-<li><span class="n">16</span><span class="e">→</span><span>Ouvrir ton lien d'invitation au portail des hubs et y choisir ton mot de passe</span><span class="qui">Hamada</span></li>
-
-<li><span class="n">17</span><span class="e">⛔</span><span>Passer en privé les 4 dépôts encore publics, dont celui de ce hub (son historique garde des données réelles retirées le 09/10)</span><span class="qui">Hamada</span></li>
-
-<li><span class="n">21</span><span class="e">→</span><span>Tester en ligne, dans une fenêtre privée, un compte de démo Direction</span><span class="qui">Hamada</span></li>
-
-<li><span class="n">22</span><span class="e">→</span><span>Avant les vraies données : une machine hors du serveur pour les sauvegardes</span><span class="qui">Hamada</span></li>
-
-</ul>
-
-<h2>En parallèle, et pour mémoire</h2>
-<ul>
-
-<li><span class="n">4</span><span class="e">⏳</span><span>Design : les maquettes sont faites et tranchées ; le tour des écarts de la version en ligne attend la n° 24</span><span class="qui">Design</span></li>
-
-<li><span class="n">6</span><span class="e">⏳</span><span>Le BRAIN classe ce que Tests trouve (défaut du code ou test faux) et donne les défauts à Code</span><span class="qui">BRAIN</span></li>
-
-<li><span class="n">20</span><span class="e">→</span><span>Pour mémoire : être déconnecté après 1 h sans activité est un réglage d'administration, pas du code</span><span class="qui">Hamada</span></li>
-
-<li><span class="n">23</span><span class="e">→</span><span>Microsoft Entra, plus tard</span><span class="qui">Hamada</span></li>
-
-</ul>
-
-<h2>Faites, tranchées ou caduques</h2>
-<ul class="ok">
-
-<li><span class="e">✅</span>Le Livrable 2 : « Ajouter un élément » au tableau de bord, modification en masse par l'action unitaire, défauts « CA » et colonnes modifiables, actions groupées sur les 9 listes<span class="qui">version 4d98c24e, 16/10 6h52</span></li>
-
-<li><span class="e">✅</span>Le Livrable 1 : fuites entre comptes fermées, « Modifier en masse » qui respecte les droits, frais de la marge, compétences, connexion, widgets de 208 px, tableau de bord, fiches, interface à 80 % (validé par Hamada)<span class="qui">version 28c5926e, 15/10 14h43</span></li>
-
-<li><span class="n">1</span><span class="e">✅</span><span>Ouvrir les sessions de l'équipe (21h25)</span><span class="qui">Hamada</span></li>
-
-<li><span class="n">5</span><span class="e">✅</span><span>Passage de sécurité de l'Audit sur la version en ligne : 3 défauts bloquants trouvés (21h40)</span><span class="qui">Audit</span></li>
-
-<li><span class="n">30</span><span class="e">✅</span><span>Les contrôles des 3 défauts critiques du 13e audit rejoués sur la version en ligne : 2 passent (argent dans les réponses, prétentions salariales) ; le 3ᵉ trouve 15 valeurs métier écrites en dur (V-229) : n° 49</span><span class="qui">Tests</span></li>
-
-<li><span class="n">32</span><span class="e">✅</span><span>Les questions de Tests ont reçu leur réponse (D-198)</span><span class="qui">BRAIN</span></li>
-
-<li><span class="n">25</span><span class="e">✅</span><span>Maquettes de Design tranchées (D-202) : 2 × 2 sur un écran de 768 px ; couleur refusée + proposition — le code est la tâche A10</span><span class="qui">BRAIN</span></li>
-
-<li><span class="n">42</span><span class="e">✅</span><span>Les 11 fonctions de Boond tranchées (D-201) : 5 en V1 (n° 45), 6 en V2</span><span class="qui">BRAIN</span></li>
-
-<li><span class="n">19</span><span class="e">✅</span><span>Tranché (D-202) : les RH ne voient ni la charge engagée ni le taux d'occupation</span><span class="qui">BRAIN</span></li>
-
-<li><span class="n">18</span><span class="e">✖</span><span>Caduque (D-199) : remplacée par les n° 16 et 17</span><span class="qui">—</span></li>
-
-</ul>
-
-<h2>En ligne</h2>
-<ul class="ok">
-<<li><span class="e">✅</span>La version du 11/10, qui livre les 30 chantiers du plan du 10/10 : listes et fiches en shadcn, fenêtres, formulaires, compte et connexion en shadcn, widgets des listes (2 à 8 par liste), identité de chaque société (logo, 3 couleurs, thème, icônes), corrections de droits et de vitesse<span class="qui">version 4fa1e79d, 11/10</span></li>
-
-li><span class="e">✅</span>Correctif : plus aucun nom de société montré à un compte qui n'a pas le droit de lire les sociétés ; la barre de droite fermée par défaut à l'ouverture<span class="qui">lot1-cadre-i, 10/10 18h17</span></li>
-<li><span class="e">✅</span>La livraison unique : le tableau de bord Tremor lisible (grille sans case vide, « 2,5 M€ », légendes, un widget en panne ne blanchit plus la page, aucun widget de module non codé), les listes en shadcn, le cadre (recherche au centre Ctrl K, cloche et assistant « (soon) » en haut du rail, icônes Lucide, infobulles shadcn, menu replié sur tablette), les 3 couleurs de la société. Mesuré en ligne : chaque écran entre 0,09 et 0,45 s, 14 comptes sur 14. Quatre défauts arrêtés avant, grâce à l'aperçu local : page blanche de la Direction, chiffre des actions à 0, widgets empilés, deux valeurs écrites en dur<span class="qui">lot1-cadre-h, 10/10 17h13</span></li>
-<li><span class="e">✅</span>La charte Avaliance (violet en tons partout, sélections en fond uni, vert rare) ; la barre des filtres en vrais composants shadcn, CV en icône ; plus aucune valeur de réglage écrite en dur<span class="qui">charte-3, 10/10 10h26</span></li>
-<li><span class="e">✅</span>Les cartes visuelles Tremor en tête des listes et des fiches ; 8 constats du 13e audit corrigés ; « 0,00 € » au lieu d'un vide<span class="qui">Tremor 1, 10/10 10h20</span></li>
-<li><span class="e">✅</span>Plus aucun montant dans les réponses des actions pour un compte sans droit (critique du 13e audit) ; pagination du bas ; compteurs lisibles (« 1 331 ») ; tableau de bord en 0,1 s<span class="qui">perf-1e, 10/10 04h42</span></li>
-<li><span class="e">✅</span>Performance, 1er temps : tableau de bord en 0,5 s au lieu de 19 à 31 s, listes en 0,1 à 0,5 s, cloche en 0,08 s (mesuré en ligne)<span class="qui">PERF-A, 10/10</span></li>
-<li><span class="e">✅</span>Relevé de tout Boond, champ par champ (Temps mis de côté)<span class="qui">Conformité</span></li>
-<li><span class="e">✅</span>Démo : 31 % des ressources positionnées, un logo sur chaque ligne de la page 1 des Sociétés<span class="qui">démo 2</span></li>
-<li><span class="e">✅</span>Filtres dans une fenêtre comme Boond (onglets, Tout cocher, Appliquer, pastilles), Planning ▸ Plans de charge ; aperçu du lien dans WhatsApp et Teams ; compte démo « Tout voir »<span class="qui">livraison 7b</span></li>
-<li><span class="e">✅</span>Cloche des notifications, Mon compte (langue, fuseau, page d'accueil), journal d'activité sous les droits<span class="qui">livraison 7</span></li>
-<li><span class="e">✅</span>Tableau de bord en mosaïque fixe par type de compte, rail et menu gardés au compte, cartes des listes variées<span class="qui">livraison 8</span></li>
-<li><span class="e">✅</span>Sélection multiple sur toutes les listes (somme par devise), recherche globale, recherches enregistrées, menu du compte comme Boond, montants en « € », doublons dès l'e-mail, plusieurs e-mails et téléphones<span class="qui">livraison 7a</span></li>
-<li><span class="e">✅</span>Cartes visuelles en tête des fiches, fiche Positionnement comme Boond, tri ▲▼, coordonnées qui ouvrent et copient<span class="qui">livraison 6</span></li>
-<li><span class="e">✅</span>Tableau de bord fidèle à la maquette (17 widgets) et « Mes widgets » : choisir, glisser, taille fixe<span class="qui">livraison 5 ter</span></li>
-<li><span class="e">✅</span>Filtres et pagination de Boond, Kanban avec cadre coloré, photo ou logo à chaque nom, icône à chaque type<span class="qui">livraison 5 bis</span></li>
-<li><span class="e">✅</span>L'écran ne saute plus ; valeurs de Boond ; démo complète (responsables, CV, dates, CA, marges)<span class="qui">livraison 5.1</span></li>
-<li><span class="e">✅</span>Les fiches comme Boond, barre de droite, 200 photos, 60 logos, noms réalistes, compte Direction<span class="qui">livraison 5</span></li>
-<li><span class="e">✅</span>Les listes comme Boond : colonnes, Kanban Sociétés et Besoins, coordonnées en icônes, menu avec la V2 grisée<span class="qui">livraison 4</span></li>
-<li><span class="e">✅</span>Entrée par la Marketplace sans mot de passe, comptes de démo en vignettes ; menu ▾ avec l'Administration ; refus affiché dans la page<span class="qui">livraison 3</span></li>
-<li><span class="e">✅</span>Un seul thème, clair et sombre, les deux couleurs d'Avaliance ; états en tags pleins, priorités P1 · P2 · P3<span class="qui">livraisons 1 à 3</span></li>
-<li><span class="e">✅</span>Bandeau fixe : logo Duo, logo Avaliance, la personne connectée à droite<span class="qui">livraison 1</span></li>
-</ul>
-
-<div class="bloc">V2 — reporté, pas abandonné<small>Au menu, grisé, suivi de « (soon) » ; relevé dans Boond dès maintenant</small></div>
-<ul class="v2">
-<<li><span class="e">◌</span>Durées de besoin (D-201)</li>
-
-<li><span class="e">◌</span>Mémoriser ma dernière recherche (D-201)</li>
-
-<li><span class="e">◌</span>Drapeaux (flags) (D-201)</li>
-
-<li><span class="e">◌</span>Business units (D-201)</li>
-
-<li><span class="e">◌</span>Types de prestation (D-201)</li>
-
-<li><span class="e">◌</span>Traductions (D-201)</li>
-
-li><span class="e">◌</span>Commentaires et @mentions sur les fiches</li>
-<li><span class="e">◌</span>Éditeur de processus de recrutement</li>
-<li><span class="e">◌</span>LinkedIn intégré · portail candidat</li>
-<li><span class="e">◌</span>Alertes intelligentes · assistant IA</li>
-<li><span class="e">◌</span>Restauration d'un élément archivé</li>
-<li><span class="e">◌</span>Temps interne sans prestation · paie</li>
-<li><span class="e">◌</span>Modèles de documents (ordre de mission)</li>
-<li><span class="e">◌</span>Produits · Profils types</li>
-<li><span class="e">◌</span>Groupement de prestations d'un projet (Avaliance n'en a aucun dans Boond)</li>
-</ul>
-
-
-</main></body></html>
+<h2>1 · Tes décisions <span class="tag t-you">toi, Hamada</span></h2>
+<div class="box">
+<label><input type="checkbox" data-k="h1"><span>Relancer Tests + audit sur le Livrable 2 ?</span></label>
+<label><input type="checkbox" data-k="h2"><span>Relancer le Livrable 3 maintenant, ou après le verdict de l'audit ?</span></label>
+<label><input type="checkbox" data-k="h3"><span>Données personnelles des captures Boond : public ou portail privé ?</span></label>
+<label><input type="checkbox" data-k="h4"><span>Autoriser Tests à écrire dans <code>_ops/</code> (6 corrections bloquées)</span></label>
+<label><input type="checkbox" data-k="h5"><span>« Afficher les filiales » : toute la descendance, ou les filiales directes seulement ?</span></label>
+</div>
+
+<h2>2 · Vérifier le Livrable 2 <span class="tag t-par">en parallèle du 3</span></h2>
+<div class="lanes">
+<div class="lane"><h3>Tests</h3>
+<label><input type="checkbox" data-k="v1"><span>Rejouer ses contrôles sur le site, sans y écrire</span></label>
+<label><input type="checkbox" data-k="v2"><span>« Modifier » en masse sur Actions (P-607)</span></label>
+</div>
+<div class="lane"><h3>Audit</h3>
+<label><input type="checkbox" data-k="v3"><span>Juger la version 4d98c24e → verdict</span></label>
+<label><input type="checkbox" data-k="v4"><span>Classer V-022 (accès à la base, relevé fait)</span></label>
+</div>
+</div>
+
+<h2>3 · Préparer le Livrable 3 <span class="tag t-par">4 voies en parallèle</span></h2>
+<div class="lanes">
+<div class="lane"><h3>Code 1 · exercice fiscal (n°45)</h3>
+<label><input type="checkbox" data-k="a1" checked><span>Codé <span class="who">(fea91c72)</span></span></label>
+<label><input type="checkbox" data-k="a2"><span>Remettre sur le Livrable 2</span></label>
+<label><input type="checkbox" data-k="a3"><span>Tests : mise à jour de base 167 + période du tableau de bord</span></label>
+</div>
+<div class="lane"><h3>Code 2 · fiche ressource (n°9)</h3>
+<label><input type="checkbox" data-k="b1" checked><span>Codé, fuite fermée <span class="who">(1f5a9ffc)</span></span></label>
+<label><input type="checkbox" data-k="b2"><span>Remettre sur le Livrable 2</span></label>
+<label><input type="checkbox" data-k="b3"><span>Tests : base 168 + contrôle des fuites</span></label>
+</div>
+<div class="lane"><h3>Code 3 · listes de valeurs (n°10)</h3>
+<label><input type="checkbox" data-k="c1" checked><span>Couleurs, parent, filtre Mobilité codés <span class="who">(a2088f3a)</span></span></label>
+<label><input type="checkbox" data-k="c2"><span>Masques de référence : attend le droit en base (Tests)</span></label>
+<label><input type="checkbox" data-k="c3"><span>Remettre sur le Livrable 2</span></label>
+</div>
+<div class="lane"><h3>Code DB · droits</h3>
+<label><input type="checkbox" data-k="e1"><span>Archiver : un droit par type d'objet (166b)</span></label>
+<label><input type="checkbox" data-k="e2"><span>Refuser un responsable inconnu sur 5 commandes « Modifier »</span></label>
+<label><input type="checkbox" data-k="e3"><span>Petit : pouvoir vider le commentaire d'un positionnement</span></label>
+</div>
+</div>
+
+<h2>4 · Livrer le Livrable 3 <span class="tag t-seq">l'un après l'autre</span></h2>
+<div class="box">
+<label><input type="checkbox" data-k="l1"><span>Tests : contrôle final sur la version assemblée</span></label>
+<label><input type="checkbox" data-k="l2"><span>Toi : tu regardes l'aperçu local</span></label>
+<label><input type="checkbox" data-k="l3"><span>Feu vert, puis mise en ligne par Code (point de retour d'abord)</span></label>
+<label><input type="checkbox" data-k="l4"><span>Tests sur le site, puis verdict de l'audit</span></label>
+</div>
+
+<h2>Plus tard</h2>
+<div class="box">
+<label><input type="checkbox" data-k="p1"><span>Phase C : contrôles P-345 et le reste de P-405</span></label>
+<label><input type="checkbox" data-k="p2"><span>Comportements ⚡ après le n°11 · actions faite/prévue en phase 2</span></label>
+</div>
+
+<script>
+document.querySelectorAll('input[data-k]').forEach(function(c){
+  var k='todo-1016-'+c.dataset.k;
+  try{var v=localStorage.getItem(k);if(v!==null)c.checked=v==='1'}catch(e){}
+  c.addEventListener('change',function(){try{localStorage.setItem(k,c.checked?'1':'0')}catch(e){}});
+});
+</script>
+</body>
+</html>

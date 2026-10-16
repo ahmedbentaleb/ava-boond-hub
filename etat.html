@@ -98,7 +98,7 @@ td{padding:9px 10px 9px 0;border-bottom:1px solid var(--bord);vertical-align:top
 (function(){
   var get=function(u){return fetch(u,{cache:"no-store"}).then(function(r){return r.text()})};
   var set=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v};
-  get("todo.html").then(function(t){var m=t.match(/(\d+) tâches · n° 1 à \d+ · (\d+) faites/);if(m){set("c-taches",m[2]);set("c-taches-t","sur "+m[1])}}).catch(function(){});
+  get("taches.html").then(function(t){var m=t.match(/(\d+) tâches · n° 1 à \d+ · (\d+) faites/);if(m){set("c-taches",m[2]);set("c-taches-t","sur "+m[1])}}).catch(function(){});
   get("bugs.html").then(function(t){var o=t.match(/<b>(\d+)<\/b><span>encore ouverts/),c=t.match(/<b>(\d+)<\/b><span>corrigés/);if(o)set("c-ouverts",o[1]);if(c)set("c-corriges","· "+c[1]+" corrigés")}).catch(function(){});
   get("decisions.html").then(function(t){var n=t.match(/<b>(\d+)<\/b><span>décisions/),d=t.match(/class="id">(D-\d+)</);if(n)set("c-dec",n[1]);if(d)set("c-dec-d",d[1])}).catch(function(){});
 })();
