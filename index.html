@@ -558,6 +558,24 @@
     .nav2 button.star[aria-pressed="true"] { background: #AEBF38; color: #430A4B; }
     .nav-legende { margin-left: auto; align-self: center; font-size: 11.5px; color: var(--muted); white-space: nowrap; padding: 0 4px; }
     .nav-legende i { display: inline-block; width: 7px; height: 7px; background: #AEBF38; border-radius: 50%; margin-right: 5px; }
+    /* ═══ 16/10 — tout passe par les boutons verts : deux étages + fil d'Ariane ═══ */
+    .tete h1 .tete-sous { font-weight: 400; color: var(--muted); }
+    .nav1 { border-bottom: 0; gap: 8px; flex-wrap: wrap; overflow: visible; padding: 2px 0 6px; }
+    .nav1 button { border: 1.5px solid #AEBF38; border-radius: 8px; padding: 8px 16px; color: #CDD749; background: transparent; font-weight: 600; font-size: 14px; }
+    .nav1 button:hover { background: rgba(174,191,56,.12); color: #CDD749; }
+    .nav1 button[aria-pressed="true"] { background: #AEBF38; color: #430A4B; border-color: #AEBF38; }
+    .nav1 button.star::before, .nav-legende { display: none; }
+    .nav2 { gap: 8px; padding: 6px 0 8px; }
+    .nav2 button, .nav2 button.star { border: 1px solid #AEBF38; border-radius: 7px; padding: 6px 13px; color: #CDD749; background: transparent; font-size: 13px; }
+    .nav2 button:hover { background: rgba(174,191,56,.12); }
+    .nav2 button[aria-pressed="true"], .nav2 button.star[aria-pressed="true"] { background: #AEBF38; color: #430A4B; border-color: #AEBF38; font-weight: 600; }
+    .fil { margin: 4px 0 0; font-size: 12.5px; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .fil b { color: var(--text); font-weight: 600; }
+    .fil .sep { color: #666; }
+    .fil .plein { margin-left: auto; border: 1px solid #AEBF38; background: transparent; color: #CDD749; border-radius: 7px; padding: 4px 11px; font: inherit; font-size: 12.5px; cursor: pointer; }
+    .fil .plein:hover { background: rgba(174,191,56,.12); }
+    .page-barre { display: none; }
+
     .lire-barre { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 4px 0 14px; }
     .lire-barre code { color: var(--muted); font-size: 12px; }
     .lire-barre a.pill:last-child { margin-left: auto; }
@@ -598,14 +616,13 @@
 <body>
 <main>
   <header class="tete">
-    <h1>Ava Manager</h1>
-    <p class="tete-etat"><strong>Où on en est (14/10)</strong> — <strong>mode vite</strong> depuis le 14/10 : aller vite, avec le minimum pour que ce soit sûr. Avant chaque mise en ligne, 4 contrôles : droits, fuites entre comptes, argent, changements de la base ; les tests complets et les parcours viennent à la fin.</p>
-    <p class="tete-etat">L'équipe : 6 sessions — BRAIN (commande), Tests, Code, Design, Audit, Rapporteur · en ligne : le Livrable 1 (28c5926e), depuis le 15/10 à 14 h 43, validé par Hamada, accepté par l&#x27;Audit · <a href="todo.html">À faire</a> : 52 tâches, 19 faites · <a href="bugs.html">Défauts</a> : 346 relevés — 57 ouverts, 234 corrigés, 52 contestés, 1 à vérifier, 0 en attente de mise en ligne, 0 à confirmer par Hamada · <a href="decisions.html">Décisions</a> : jusqu'à D-236 (293) · <a href="livraisons.html">Livraisons</a> · <a href="documents.html">Documents</a> · <a href="audits.html">Audits</a></p>
-    <p class="tete-etat">Mis à jour le jeudi 15/10/2026 à 15h29 (heure de Casablanca)</p>
+    <h1>Ava Manager <span class="tete-sous">— le hub</span></h1>
+    <p class="tete-etat">Mis à jour le vendredi 16/10/2026 à 07h18 (heure de Casablanca)</p>
   </header>
   <div class="hub-wrap" id="hub">
     <nav class="nav1" id="hub-sub" aria-label="Sections"></nav>
     <nav class="nav2" id="hub-nested" aria-label="Pages de la section"></nav>
+    <p class="fil" id="hub-fil" aria-label="Où je suis"></p>
   </div>
 
   <section class="view" id="view-ava-etat" hidden></section>
@@ -1875,44 +1892,48 @@ function showView(name){
      Une page est une vue du hub (v), une page à part (href), ou une famille de documents (docs). */
   const MENU = [
     { id: "projet", label: "Projet", items: [
+      { v: "page:etat.html", label: "Où en sommes-nous", star: 1 },
       { v: "page:todo.html", label: "À faire", star: 1 },
       { v: "page:livraisons.html", label: "Livraisons", star: 1 },
       { v: "page:bugs.html", label: "Défauts", star: 1 },
-      { v: "page:decisions.html", label: "Décisions D-xxx", star: 1 },
+      { v: "page:decisions.html", label: "Décisions", star: 1 },
       { v: "page:audits.html", label: "Les 13 audits", star: 1 },
-      { v: "page:documents.html", label: "Index des documents", star: 1 },
-      { v: "ava-etat", label: "État du projet", star: 1 },
       { v: "ava-reunion", label: "❓ Questions Avaliance", star: 1 } ] },
     { id: "code", label: "Code", items: [
-      { v: "code-archi", label: "Comment c'est construit", star: 1 },
-      { v: "code-regles", label: "Rien n'est figé", star: 1 },
-      { v: "code-reglages", label: "Ce qu'une société règle elle-même", star: 1 },
-      { v: "code-methode", label: "Comment on le vérifie", star: 1 },
-      { v: "page:controle.html", label: "Audit", star: 1 },
-      { v: "code-cout", label: "Délais et coût", star: 1 } ] },
+      { v: "page:code-blocs.html", label: "Les blocs du code", star: 1 },
+      { v: "page:code-typescript.html", label: "Pourquoi TypeScript", star: 1 },
+      { v: "page:code-sessions.html", label: "Comment on code : les sessions", star: 1 },
+      { v: "code-archi", label: "Comment c'est construit (23/09)" },
+      { v: "code-regles", label: "Rien n'est figé" },
+      { v: "code-reglages", label: "Ce qu'une société règle elle-même" },
+      { v: "code-methode", label: "Comment on le vérifie (23/09)" },
+      { v: "page:controle.html", label: "Audit" },
+      { v: "code-cout", label: "Délais et coût (23/09)" } ] },
     { id: "metier", label: "Le métier", items: [
-      { v: "ava-metier", label: "Vue d'ensemble", star: 1 },
+      { v: "ava-metier", label: "Vue d'ensemble" },
       { v: "ava-quiz", label: "Quiz" },
       { v: "ava-sim-rules", label: "Règles" },
       { v: "ava-commands", label: "Qui décide" } ] },
     { id: "conception", label: "Conception", items: [
-      { v: "page:terminal.html", label: "Les 26 écrans", star: 1 },
-      { v: "page:simulateur.html", label: "Banc d'essai", star: 1 },
-      { v: "ava-decisions", label: "Décisions", star: 1 },
+      { v: "page:terminal.html", label: "Les 26 écrans" },
+      { v: "page:simulateur.html", label: "Banc d'essai" },
+      { v: "ava-decisions", label: "Les 18 décisions de cadrage (16/09)" },
       { v: "ava-cadrage", label: "Contrats" } ] },
     { id: "controle", label: "Audits et journaux", items: [
       { docs: "Audits", label: "Audits et rapports" },
       { docs: "Journaux du code (portes, bugs, étapes)", label: "Journaux : portes, bugs, étapes" },
       { docs: "Décisions d'architecture (ADR)", label: "ADR" },
-      { docs: "État et plans", label: "Plans datés" } ] },
+      { v: "page:plans.html", label: "Plans datés" } ] },
     { id: "documents", label: "Documents", items: [
+      { v: "page:documents.html", label: "Index des documents" },
       { v: "ava-documents", label: "Tous les documents" },
       { v: "page:dossier.html", label: "Le dossier — les chiffres mesurés" },
       { docs: "Cadrage et commande du client", label: "Commande du client" },
       { v: "page:cdc.html", label: "Cahier des charges" },
       { docs: "Conception et contrat", label: "Conception et contrat" },
       { docs: "Étude de Boond", label: "Étude de Boond" },
-      { docs: "Prompts et briefs", label: "Prompts et briefs" } ] },
+      { docs: "Prompts et briefs", label: "Prompts et briefs" },
+      { v: "ava-etat", label: "État du projet au 05/10 (archive)" } ] },
     { id: "boond", label: "Boond — l'existant", items: [
       { v: "metier", label: "Métier" },
       { v: "simulateur", label: "Simulateur" },
@@ -4565,22 +4586,98 @@ function showView(name){
     return { intro, phases };
   }
   const etatCode = (e) => e.startsWith("✅") ? "fait" : e.startsWith("⏳") ? "cours" : e.startsWith("↪") ? "fusion" : "afaire";
-  /* ═══════════ D-190 (14/10) — une vue d'état périmée renvoie aux 6 pages, qui seules font foi ═══════════ */
-  function vuePerimee(el, titre, date) {
-    el.innerHTML = `<h2>${esc(titre)}</h2>
-      <p class="lead">Cette vue décrivait l'état du ${esc(date)}, elle n'est plus à jour. L'état du projet est tenu dans les 6 pages : À faire · Décisions · Défauts · Livraisons · Documents · Audits.</p>
-      <div class="rowbtns" style="margin-top:14px"><a class="pill" href="#page:todo.html">À faire</a><a class="pill" href="#page:decisions.html">Décisions</a><a class="pill" href="#page:bugs.html">Défauts</a><a class="pill" href="#page:livraisons.html">Livraisons</a><a class="pill" href="#page:documents.html">Documents</a><a class="pill" href="#page:audits.html">Audits</a></div>`;
-  }
   function renderEtat() {
-    /* D-190 (14/10) : cette vue présentait l'état du 05/10 comme actuel. Elle renvoie aux 6 pages. */
-    vuePerimee(document.getElementById("view-ava-etat"), "État du projet", "05/10");
+    const el = document.getElementById("view-ava-etat");
+    el.innerHTML = `<h2>État du projet — du premier jour à la livraison</h2>
+      <p class="lead">Chaque étape, son état et ses documents. L'état est tenu par le BRAIN dans <a href="#lire:ETAT_PROJET.md">ETAT_PROJET.md</a>. Vous pouvez cocher une case : elle reste dans ce navigateur, et <strong>Copier mes coches</strong> l'envoie au BRAIN.</p>
+      <div id="etat-corps"><p class="note">Chargement…</p></div>`;
+    fetch("doc/ETAT_PROJET.md", { cache: "no-store" }).then((r) => r.ok ? r.text() : Promise.reject(r.status))
+      .then((md) => {
+        const { intro, phases } = etatParse(md), co = etatCoches();
+        const tout = phases.flatMap((p) => p.etapes).filter((e) => etatCode(e.etat) !== "fusion");
+        const faits = tout.filter((e) => etatCode(e.etat) === "fait").length;
+        const pct = Math.round(100 * faits / Math.max(1, tout.length));
+        document.getElementById("etat-corps").innerHTML = `
+          <div class="etat-total"><b>${faits} / ${tout.length}</b> étapes faites · ${pct} % <span class="note">(compté en étapes, pas en effort : le code pèse plus lourd)</span>
+            <div class="etat-barre"><i style="width:${pct}%"></i></div></div>
+          <p class="note">${etatInline(intro.trim())}</p>
+          <div class="rowbtns" style="margin:0 0 14px">
+            <button type="button" class="create-btn primary" id="etat-copie">Copier mes coches</button>
+            <a class="pill" href="#documents">Tous les documents</a>
+            <a class="pill" href="#reunion">❓ Questions Avaliance</a>
+            <a class="pill" href="controle.html">🛡 Le système de contrôle</a>
+          </div>
+          <p class="note" id="etat-flash" hidden></p>
+          ${phases.map((ph) => {
+            const et = ph.etapes.filter((e) => etatCode(e.etat) !== "fusion");
+            const f = et.filter((e) => etatCode(e.etat) === "fait").length;
+            const cours = et.some((e) => etatCode(e.etat) === "cours");
+            return `<details class="etat-phase" ${f < et.length ? "open" : ""}>
+              <summary><span class="etat-ph">${esc(ph.titre)}</span>
+                <span class="tag ${f === et.length ? "ok" : cours ? "warn" : ""}">${f} / ${et.length}</span></summary>
+              <ul class="etat-liste">${ph.etapes.map((e) => {
+                const c = etatCode(e.etat), moi = co[e.n];
+                return `<li class="etat-${c}${moi ? " etat-moi" : ""}">
+                  <label><input type="checkbox" data-etat-n="${esc(e.n)}" ${c === "fait" || moi ? "checked" : ""} ${c === "fait" || c === "fusion" ? "disabled" : ""}>
+                  <span class="etat-n">${esc(e.n)}</span> <span class="etat-t">${etatInline(e.etape)}</span></label>
+                  <span class="etat-e">${etatInline(e.etat)}${moi ? ' · <em>coché par vous</em>' : ""}</span>
+                  ${e.docs && e.docs !== "—" ? `<span class="etat-d">📄 ${etatInline(e.docs)}</span>` : ""}
+                </li>`;
+              }).join("")}</ul>${(ph.sous || []).map((x) => `<div style="padding:0 14px 14px">
+                <h4 style="margin:6px 0 8px;font-size:14px">${esc(x.titre)}</h4>
+                <div style="overflow-x:auto"><table class="etat-t"><tr>${(x.lignes[0] || []).map((c) => `<th>${etatInline(c)}</th>`).join("")}</tr>${x.lignes.slice(1).map((r) => `<tr>${r.map((c) => `<td>${etatInline(c)}</td>`).join("")}</tr>`).join("")}</table></div>
+                ${x.note.trim() ? `<p class="note">${etatInline(x.note.trim())}</p>` : ""}</div>`).join("")}</details>`;
+          }).join("")}`;
+      })
+      .catch(() => { document.getElementById("etat-corps").innerHTML = '<p class="note">État indisponible hors ligne. Ouvrir <a href="doc/ETAT_PROJET.md">ETAT_PROJET.md</a>.</p>'; });
+    el.onchange = (e) => {
+      const b = e.target.closest("[data-etat-n]"); if (!b) return;
+      const co = etatCoches(); if (b.checked) co[b.dataset.etatN] = new Date().toLocaleDateString("fr-FR"); else delete co[b.dataset.etatN];
+      etatSave(co); renderEtat();
+    };
+    el.onclick = (e) => {
+      if (e.target.id !== "etat-copie") return;
+      const co = etatCoches(), k = Object.keys(co);
+      const t = k.length ? "Étapes cochées par Hamada :\n" + k.map((n) => "- " + n + " (le " + co[n] + ")").join("\n") : "Aucune case cochée.";
+      const f = document.getElementById("etat-flash"); f.hidden = false;
+      if (navigator.clipboard) navigator.clipboard.writeText(t).then(() => { f.textContent = "Copié. Collez-le dans la session BRAIN."; }, () => { f.textContent = t; });
+      else f.textContent = t;
+    };
   }
 
 
   /* ═══════════ CODE — comment le logiciel est construit, pour un dirigeant ═══════════ */
   function codeArchi() {
-    /* D-190 (14/10) : cette vue présentait l'état du 23/09 comme actuel. Elle renvoie aux 6 pages. */
-    vuePerimee(document.getElementById("view-code-archi"), "Comment le logiciel est construit", "23/09");
+    const el = document.getElementById("view-code-archi");
+    el.innerHTML = `<h2>Comment le logiciel est construit</h2>
+      <p class="lead">Trois étages, et une règle : <strong>les interdits vivent dans la base</strong>, pas dans les écrans. Un écran ne décide jamais.</p>
+      <div class="card-plein">
+      <svg viewBox="0 0 900 470" class="sch" role="img" aria-label="Les trois étages : écrans, serveur, base">
+        <defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#AEBF38"/></marker></defs>
+        <g class="sch-bloc"><rect x="40" y="20" width="820" height="110" rx="4"/><text x="60" y="50" class="sch-t">1 · LES ÉCRANS <tspan class="sch-s">— React, dans le navigateur</tspan></text>
+          <text x="60" y="76" class="sch-p">Ils affichent ce que le serveur envoie, et rien d'autre : pas de calcul d'argent, pas de règle métier,</text>
+          <text x="60" y="96" class="sch-p">pas de libellé d'état écrit en dur. Un bouton visible n'est jamais une autorisation.</text>
+          <text x="60" y="118" class="sch-n">26 écrans · les 4 thèmes · le mock fait foi</text></g>
+        <line x1="450" y1="130" x2="450" y2="175" class="sch-fl" marker-end="url(#fl)"/>
+        <text x="466" y="158" class="sch-n">une commande, jamais une requête SQL</text>
+        <g class="sch-bloc"><rect x="40" y="180" width="820" height="130" rx="4"/><text x="60" y="210" class="sch-t">2 · LE SERVEUR <tspan class="sch-s">— Node et TypeScript, 55 commandes</tspan></text>
+          <text x="60" y="236" class="sch-p">Chaque geste du métier est une commande nommée : créer un besoin, signer une mission, saisir un temps.</text>
+          <text x="60" y="256" class="sch-p">Elle vérifie le droit, puis le périmètre, puis les gardes, écrit, et laisse une trace — dans la même transaction.</text>
+          <text x="60" y="278" class="sch-n">un refus dit toujours pourquoi : DROIT · GARDE · ÉTAT · MUR</text>
+          <text x="60" y="298" class="sch-n">55 commandes · 264 tests qui les jouent</text></g>
+        <line x1="450" y1="310" x2="450" y2="355" class="sch-fl" marker-end="url(#fl)"/>
+        <text x="466" y="338" class="sch-n">lecture et écriture, sous un compte aux droits réduits</text>
+        <g class="sch-bloc sch-fort"><rect x="40" y="360" width="820" height="95" rx="4"/><text x="60" y="390" class="sch-t">3 · LA BASE <tspan class="sch-s">— PostgreSQL, la mémoire et les interdits</tspan></text>
+          <text x="60" y="416" class="sch-p">Les 15 interdits qui ne se négocient pas sont ici : la base refuse elle-même, même si le reste se trompe.</text>
+          <text x="60" y="438" class="sch-n">37 tables · 15 murs · 173 réglages · 40 listes de valeurs · l'historique, ajout seulement</text></g>
+      </svg></div>
+      <div class="row" style="margin-top:16px">
+        ${[["Pourquoi trois étages","Chaque étage ne fait qu'une chose. Quand un écran se trompe, la base refuse quand même : c'est ce qui empêche une erreur d'abîmer les données."],
+           ["Ce qui est déjà fait","La base et ses 15 interdits (lot 1, accepté). Le serveur et ses 55 commandes (lot 2, en audit). Les écrans viennent après."],
+           ["Ce qu'on ne fait pas","Pas de logiciel tout prêt qu'on habille : Boond a montré ses limites. Pas de règle cachée dans un écran."]]
+          .map(([t,p])=>`<div class="card" style="flex:1 1 260px"><h3>${t}</h3><p>${p}</p></div>`).join("")}
+      </div>
+      <div class="rowbtns" style="margin-top:14px"><a class="pill" href="#code-regles">Les règles du code</a><a class="pill" href="#code-methode">Comment on le fabrique</a><a class="pill" href="#page:terminal.html">Voir les 26 écrans</a></div>`;
   }
 
   function codeRegles() {
@@ -4622,15 +4719,67 @@ function showView(name){
   }
 
   function codeMethode() {
-    /* D-190 (14/10) : cette vue présentait l'état du 23/09 comme actuel. Elle renvoie aux 6 pages. */
-    vuePerimee(document.getElementById("view-code-methode"), "Comment on le fabrique — et comment on le vérifie", "23/09");
+    const el = document.getElementById("view-code-methode");
+    el.innerHTML = `<h2>Comment on le fabrique — et comment on le vérifie</h2>
+      <p class="lead">Trois intelligences artificielles, <strong>séparées exprès</strong> : celle qui décide, celle qui code, celle qui contrôle. Aucune ne juge son propre travail.</p>
+      <div class="card-plein">
+      <svg viewBox="0 0 900 330" class="sch" role="img" aria-label="La boucle : décider, coder, contrôler, arbitrer">
+        <defs><marker id="fl2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#AEBF38"/></marker></defs>
+        <g class="sch-bloc"><rect x="30" y="30" width="230" height="120" rx="4"/><text x="50" y="60" class="sch-t">1 · DÉCIDER</text>
+          <text x="50" y="86" class="sch-p">Les règles du métier sont</text><text x="50" y="106" class="sch-p">écrites avant le code, et</text><text x="50" y="126" class="sch-p">ne se rouvrent plus.</text>
+          <text x="50" y="144" class="sch-n">18 décisions · 15 interdits</text></g>
+        <line x1="260" y1="90" x2="330" y2="90" class="sch-fl" marker-end="url(#fl2)"/><text x="268" y="80" class="sch-n">un ordre écrit</text>
+        <g class="sch-bloc"><rect x="335" y="30" width="230" height="120" rx="4"/><text x="355" y="60" class="sch-t">2 · CODER</text>
+          <text x="355" y="86" class="sch-p">Le codeur suit l'ordre, et</text><text x="355" y="106" class="sch-p">écrit d'abord le test qui</text><text x="355" y="126" class="sch-p">échoue, puis le code.</text>
+          <text x="355" y="144" class="sch-n">264 tests · un test vu rouge</text></g>
+        <line x1="565" y1="90" x2="635" y2="90" class="sch-fl" marker-end="url(#fl2)"/><text x="575" y="80" class="sch-n">une livraison</text>
+        <g class="sch-bloc sch-fort"><rect x="640" y="30" width="230" height="120" rx="4"/><text x="660" y="60" class="sch-t">3 · CONTRÔLER</text>
+          <text x="660" y="86" class="sch-p">Un auditeur indépendant</text><text x="660" y="106" class="sch-p">casse le code exprès pour</text><text x="660" y="126" class="sch-p">voir si les tests le voient.</text>
+          <text x="660" y="144" class="sch-n">50 sabotages par tour</text></g>
+        <path d="M755 150 L755 215 L120 215 L120 150" class="sch-fl" marker-end="url(#fl2)" fill="none"/>
+        <text x="330" y="207" class="sch-n">refusé → on corrige, et on recommence</text>
+        <g class="sch-bloc"><rect x="230" y="235" width="440" height="75" rx="4"/><text x="250" y="263" class="sch-t">4 · ARBITRER</text>
+          <text x="250" y="289" class="sch-p">Chaque constat est retenu, requalifié ou rejeté — avec son motif, par écrit.</text></g>
+      </svg></div>
+      <div class="row" style="margin-top:16px">
+        ${[["Trois audits déjà faits","95 constats. Le premier tour : 48 tests aveugles sur 64. Le troisième : <strong>0 sur 50 sabotages</strong>. Le filet tient enfin."],
+           ["Ce qu'un test doit prouver","Qu'il devient rouge quand le code est faux. Un test toujours vert ne prouve rien — c'est ce que l'auditeur mesure en cassant le code."],
+           ["Ce que ça évite","Livrer un logiciel qui a l'air de marcher. Les trois audits ont trouvé deux portes d'entrée ouvertes que personne d'autre n'avait vues."]]
+          .map(([t,p])=>`<div class="card" style="flex:1 1 260px"><h3>${t}</h3><p>${p}</p></div>`).join("")}
+      </div>
+      <div class="rowbtns" style="margin-top:14px"><a class="pill" href="#lire:ARBITRAGE_AUDIT_2026-09-23.md">Le dernier arbitrage</a><a class="pill" href="#docs:Audits">Les rapports d'audit</a><a class="pill" href="#ava-etat">Où on en est</a></div>`;
   }
 
 
   /* ═══════════ CODE — délais et coût, mesurés ═══════════ */
   function codeCout() {
-    /* D-190 (14/10) : cette vue présentait l'état du 23/09 comme actuel. Elle renvoie aux 6 pages. */
-    vuePerimee(document.getElementById("view-code-cout"), "Délais et coût", "23/09");
+    const el = document.getElementById("view-code-cout");
+    const L = [
+      ["Fondations", "base, 15 interdits, données de départ", "fait", "1 h 09", "mesuré le 20/09"],
+      ["Serveur", "les 55 commandes du métier", "en cours", "≈ 30 h", "3 audits, 95 constats, 4e tour en cours"],
+      ["Connexion Microsoft", "chacun entre avec son compte de la maison", "à faire", "2 – 4 h", "estimation"],
+      ["Les 26 écrans", "ce que les équipes utiliseront", "à faire", "8 – 14 h", "estimation"],
+      ["Reprise et recette", "les données de Boond, puis l'essai réel", "à faire", "4 – 6 h", "après la réunion"],
+      ["Mise en production", "serveur dédié, sauvegardes, bascule", "à faire", "3 – 5 h", "estimation"],
+      ["Connecteur Claude", "poser une question à l'outil, en lecture", "plus tard", "≈ 1 h", "après la livraison"],
+    ];
+    const etat = (e) => e === "fait" ? '<span class="tag ok">fait</span>' : e === "en cours" ? '<span class="tag warn">en cours</span>' : `<span class="tag">${e}</span>`;
+    el.innerHTML = `<h2>Délais et coût — ce qui est mesuré, ce qui est estimé</h2>
+      <p class="lead">Le temps est du <strong>temps machine</strong> : ce que les IA passent à écrire et à vérifier. Le reste, c'est votre temps de décision — et c'est lui qui commande le calendrier.</p>
+      <div class="etat-total"><b>1 h 09</b> mesurées sur les fondations · <b>≈ 30 h</b> sur le serveur, audits compris
+        <div class="etat-barre"><i style="width:35%"></i></div></div>
+      <div style="overflow-x:auto"><table class="etat-t">
+        <tr><th>Étape</th><th>Ce que c'est</th><th>État</th><th>Temps machine</th><th>D'où vient le chiffre</th></tr>
+        ${L.map(([a,b,c,d,e]) => `<tr><td><strong>${a}</strong></td><td>${b}</td><td>${etat(c)}</td><td class="mono">${d}</td><td class="etat-e" style="padding-left:0">${e}</td></tr>`).join("")}
+      </table></div>
+      <div class="row" style="margin-top:16px">
+        ${[["Ce que ça coûte à faire tourner","<strong>5 à 35 € par mois</strong> : hébergement, sauvegarde chez un second fournisseur, nom de domaine. Aujourd'hui zéro, le serveur est déjà payé."],
+           ["Ce que ça remplace","L'abonnement Boond, payé chaque mois, pour un outil dont les temps sont fermés et [volume réel retiré] missions sur [volume réel retiré] saisies."],
+           ["Ce qui décide vraiment du calendrier","Les réponses de la direction, l'export des données et les deux semaines d'essai avec de vrais utilisateurs. Le code n'est pas le chemin critique."]]
+          .map(([t,p])=>`<div class="card" style="flex:1 1 260px"><h3>${t}</h3><p>${p}</p></div>`).join("")}
+      </div>
+      <p class="note" style="margin-top:14px">⚠️ Les estimations sont des fourchettes, pas des promesses : la première, faite avant les fondations, était <strong>six fois trop haute</strong>. Depuis, chaque lot fini écrit son temps réel, et l'estimation du suivant part de ce qui a été mesuré.</p>
+      <div class="rowbtns" style="margin-top:14px"><a class="pill" href="#ava-etat">La feuille de route</a><a class="pill" href="#code-methode">Comment on le vérifie</a></div>`;
   }
 
 
@@ -4731,20 +4880,8 @@ function showView(name){
   }
   function renderPage() {
     const el = document.getElementById("view-page");
-    el.innerHTML = `<div class="page-barre">
-        <button type="button" class="create-btn primary" id="page-plein">⛶ Plein écran</button>
-        <button type="button" class="pill" id="page-haut">Agrandir le cadre</button>
-        <span class="note">Échap pour revenir</span></div>
-      <iframe class="page-cadre" id="page-cadre" src="${esc(PAGE)}" title="${esc(PAGE)}" allowfullscreen></iframe>`;
+    el.innerHTML = `<iframe class="page-cadre" id="page-cadre" src="${esc(PAGE)}" title="${esc(PAGE)}" allowfullscreen></iframe>`;
     const f = document.getElementById("page-cadre");
-    document.getElementById("page-plein").onclick = () => {
-      const d = f.requestFullscreen || f.webkitRequestFullscreen;
-      if (d) d.call(f); else { f.classList.add("page-cadre-plein"); document.body.classList.add("sans-defil"); }
-    };
-    document.getElementById("page-haut").onclick = (e) => {
-      f.classList.toggle("page-cadre-haut");
-      e.target.textContent = f.classList.contains("page-cadre-haut") ? "Réduire le cadre" : "Agrandir le cadre";
-    };
     document.addEventListener("keydown", function esc2(ev) {
       if (ev.key !== "Escape") return;
       f.classList.remove("page-cadre-plein"); document.body.classList.remove("sans-defil");
@@ -4823,10 +4960,16 @@ function showView(name){
   function paintNav(key) {
     const sec = sectionOf(key);
     document.getElementById("hub-sub").innerHTML = MENU.map((m) =>
-      `<button type="button" data-sec="${m.id}" aria-pressed="${m.id === sec.id}"${m.items.some((i) => i.star) ? ' class="star"' : ""}>${m.label}</button>`).join("") +
-      '<span class="nav-legende"><i></i> à montrer au directeur</span>';
+      `<button type="button" data-sec="${m.id}" aria-pressed="${m.id === sec.id}">${m.label}</button>`).join("");
     document.getElementById("hub-nested").innerHTML = sec.items.map((it) =>
-      `<button type="button" data-item="${esc(itemKey(it))}" aria-pressed="${itemKey(it) === key}"${it.star ? ' class="star"' : ""}>${it.label}</button>`).join("");
+      `<button type="button" data-item="${esc(itemKey(it))}" aria-pressed="${itemKey(it) === key}">${it.label}</button>`).join("");
+    const cur = sec.items.find((it) => itemKey(it) === key);
+    const fil = document.getElementById("hub-fil");
+    fil.innerHTML = `<span>Ava Manager</span><span class="sep">›</span><span>${sec.label}</span>` +
+      (cur ? `<span class="sep">›</span><b>${cur.label}</b>` : "") +
+      (key.startsWith("page:") ? '<button type="button" class="plein" id="page-plein">⛶ Plein écran</button>' : "");
+    const pb = document.getElementById("page-plein");
+    if (pb) pb.onclick = () => { const f = document.getElementById("page-cadre"); if (!f) return; const d = f.requestFullscreen || f.webkitRequestFullscreen; if (d) d.call(f); else { f.classList.add("page-cadre-plein"); document.body.classList.add("sans-defil"); } };
   }
 
   function showHubView(name) {
@@ -4837,7 +4980,7 @@ function showView(name){
     else if (name.startsWith("page:")) { PAGE = decodeURIComponent(name.slice(5)); key = "page:" + PAGE; name = "page"; }
     else if (name.startsWith("docs:")) { DOC_CAT = decodeURIComponent(name.slice(5)); key = "docs:" + DOC_CAT; name = "ava-documents"; }
     else if (name === "ava-documents") DOC_CAT = "";
-    if (!ALL_VIEWS.includes(name) && name !== "lire" && name !== "page") { name = "ava-etat"; key = name; }
+    if (!ALL_VIEWS.includes(name) && name !== "lire" && name !== "page") { name = "page"; PAGE = "etat.html"; key = "page:etat.html"; }
     ALL_VIEWS.concat(["lire", "page"]).forEach((id) => {
       const node = document.getElementById("view-" + id);
       if (node) node.hidden = id !== name;
@@ -4870,7 +5013,7 @@ function showView(name){
 
   bindSim();
   window.addEventListener("hashchange", () => {
-    const h = decodeURI((location.hash || "#ava-etat").slice(1));
+    const h = decodeURI((location.hash || "#page:etat.html").slice(1));
     showHubView(h);
   });
   /* ⭐ Tout reste dans le hub : un lien vers doc/ s'ouvre dans le lecteur, une page du hub dans le cadre. */
@@ -4881,7 +5024,7 @@ function showView(name){
     if (/^doc\/.+\.(md|txt|sql)(#.*)?$/i.test(h)) { e.preventDefault(); showHubView("lire:" + decodeURI(h.slice(4).split("#")[0])); return; }
     if (/^[a-z0-9_-]+\.html(\?.*)?$/i.test(h) && !/^index\.html/.test(h)) { e.preventDefault(); showHubView("page:" + h.split("?")[0]); }
   });
-  const start = decodeURI((location.hash || "#page:todo.html").slice(1));
+  const start = decodeURI((location.hash || "#page:etat.html").slice(1));
   showHubView(start);
 })();
 

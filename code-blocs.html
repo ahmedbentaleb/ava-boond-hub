@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Les blocs du code</title>
+<style>
+:root{color-scheme:dark;--bg:#000;--t1:#f1f1f3;--t2:#a9a8b2;--t3:#6e6d76;--carte:#121214;--bord:#26262c;--accent:#c79ad0;--vert:#C3D64F;--ok:#34D399;--cours:#E9B949;--v2:#5AA9FF;--toi:#F472B6}
+body{margin:0;background:var(--bg);color:var(--t1);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+main{max-width:760px;margin:0 auto;padding:20px 16px 56px}
+a{color:var(--accent)}.nav{font-size:14px;color:var(--t2)}
+h1{font-size:26px;font-weight:600;margin:6px 0 2px}.sous{color:var(--t2);margin:0 0 18px}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:22px}
+.chiffre{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:10px 14px}
+.chiffre b{display:block;font-size:28px;font-weight:600;line-height:1.1}.chiffre span{font-size:13px;color:var(--t2)}
+.bloc{font-size:20px;font-weight:600;margin:34px 0 2px;padding-top:12px;border-top:2px solid var(--bord)}
+.bloc small{display:block;font-size:13px;font-weight:400;color:var(--t2)}
+h2{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t2);margin:22px 0 6px}
+ol,ul{margin:0;padding:0;list-style:none}
+li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--bord)}
+.e{width:22px;flex:none;text-align:center}.qui{margin-left:auto;color:var(--t3);font-size:13px;white-space:nowrap;padding-left:10px}
+.ok .e{color:var(--ok)}.cours .e{color:var(--cours)}.v2 li{color:var(--t2)}.v2 .e{color:var(--v2)}.toi li{color:var(--toi)}
+@media (max-width:560px){li{flex-wrap:wrap}.qui{margin-left:34px;padding-left:0;white-space:normal}}
+.n{flex:none;width:40px;font-size:22px;font-weight:700;line-height:1;color:var(--accent);text-align:right}
+.compte{font-size:15px;font-weight:600;margin:0 0 18px}
+.n.m{font-size:14px;width:auto;min-width:40px;white-space:nowrap}
+.fin{display:block;font-size:12px;color:var(--t3)}
+</style>
+<style>
+.ok b,.etat-ok{color:var(--ok)} .grand{font-size:18px;line-height:1.45;margin:6px 0 20px;padding:14px 16px;border:1px solid var(--bord);border-left:4px solid var(--vert);border-radius:8px;background:var(--carte)}
+table{width:100%;border-collapse:collapse;margin:6px 0 4px;font-size:14px} th{text-align:left;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);padding:6px 10px 6px 0;border-bottom:1px solid var(--bord)}
+td{padding:9px 10px 9px 0;border-bottom:1px solid var(--bord);vertical-align:top} td.e{width:34px;text-align:center}
+.src{font:12px ui-monospace,Consolas,monospace;color:var(--t3);margin:0 0 18px}
+.pv{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 6px}
+.pv button{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:1.5px solid var(--bord);background:transparent;color:var(--t2);cursor:pointer}
+.pv button[aria-pressed=true]{font-weight:700;color:var(--t1)}
+.phrase{margin:8px 0 2px;min-height:44px}.phrase b{display:block}.phrase code{font:12.5px ui-monospace,Consolas,monospace;color:var(--t2)}
+.cons{border-left:3px solid var(--bord);padding:2px 0 2px 12px;margin:10px 0 14px;color:var(--t1)}
+.gr{overflow-x:auto;border:1px solid var(--bord);border-radius:10px;background:var(--carte);padding:6px}
+.gr svg{display:block;min-width:1000px;width:100%;height:auto}
+.col{font:600 10.5px ui-monospace,Consolas,monospace;letter-spacing:.14em;fill:var(--t3)}
+.nd rect{fill:var(--bg);stroke:var(--bord);stroke-width:1} .nd text{fill:var(--t3);font:12px system-ui,sans-serif;dominant-baseline:middle}
+.lk{stroke:var(--bord);stroke-width:1;fill:none}
+@media (prefers-reduced-motion:no-preference){.nd rect,.nd text,.lk{transition:stroke .18s ease,stroke-width .18s ease,fill .18s ease}}
+.leg{display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--t2);padding:8px 10px 4px}
+.leg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.leg .f{background:var(--ok)}.leg .m{background:var(--cours)}.leg .c{border:1.5px solid var(--t3)}.leg .h{border:1.5px dashed var(--t3)}
+.dans-hub .nav{display:none}
+@media (max-width:640px){td.e{width:28px}}
+</style>
+<script>if(self!==top)document.documentElement.classList.add("dans-hub")</script>
+</head><body><main>
+<div class="nav"><a href="./" target="_top">← le hub</a></div>
+<h1>Les blocs du code</h1>
+<p class="sous">Mis à jour le vendredi 16/10/2026 à 07h16 (heure de Casablanca) · comment Ava Manager est construit, un graphe, quatre lectures</p>
+<style>
+:root{--c1:#5AA9FF;--c2:#A78BFA;--c3:#34D399;--c4:#FB923C}
+svg[data-chemin=c1] .nd.c1 rect{stroke:var(--c1);stroke-width:2} svg[data-chemin=c1] .nd.c1 text{fill:var(--t1);font-weight:700} svg[data-chemin=c1] .lk.c1{stroke:var(--c1);stroke-width:2.6}
+svg[data-chemin=c2] .nd.c2 rect{stroke:var(--c2);stroke-width:2} svg[data-chemin=c2] .nd.c2 text{fill:var(--t1);font-weight:700} svg[data-chemin=c2] .lk.c2{stroke:var(--c2);stroke-width:2.6}
+svg[data-chemin=c3] .nd.c3 rect{stroke:var(--c3);stroke-width:2} svg[data-chemin=c3] .nd.c3 text{fill:var(--t1);font-weight:700} svg[data-chemin=c3] .lk.c3{stroke:var(--c3);stroke-width:2.6}
+svg[data-chemin=c4] .nd.c4 rect{stroke:var(--c4);stroke-width:2} svg[data-chemin=c4] .nd.c4 text{fill:var(--t1);font-weight:700} svg[data-chemin=c4] .lk.c4{stroke:var(--c4);stroke-width:2.6}
+.nd.moitie circle.p{fill:var(--cours)} .nd.tourne circle.p{fill:var(--ok)} .nd.humain circle.p{fill:none;stroke:var(--t3);stroke-dasharray:2 2;stroke-width:1.5} .nd.afaire circle.p{fill:none;stroke:var(--t3);stroke-width:1.5}
+.sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px}
+</style><p class="src">Source : code de la version en ligne, relevé du 16/10 (serveur, écrans, base) ; décisions D-21, D-27, D-45, D-136, D-165</p>
+<div class="chiffres"><div class="chiffre"><b>10</b><span>blocs qui tournent aujourd'hui</span></div><div class="chiffre"><b>2</b><span>blocs à moitié : les mots encore écrits en dur (n° 38) et les valeurs métier en dur (n° 49)</span></div><div class="chiffre"><b>12</b><span>blocs en tout, tous dans le graphe</span></div></div>
+<div class="pv"><button type="button" data-c="c1" aria-pressed="false"><span class="sw" style="background:var(--c1)"></span>C1 Lire</button><button type="button" data-c="c2" aria-pressed="false"><span class="sw" style="background:var(--c2)"></span>C2 Écrire</button><button type="button" data-c="c3" aria-pressed="false"><span class="sw" style="background:var(--c3)"></span>C3 Se connecter</button><button type="button" data-c="c4" aria-pressed="false"><span class="sw" style="background:var(--c4)"></span>C4 Livrer</button></div>
+<div class="phrase" id="phrase"></div>
+<div class="gr"><svg id="graphe" data-chemin="" viewBox="0 0 1100 190" role="img" aria-label="Graphe">
+<text class="col" x="10" y="11">ÉCRAN</text>
+<text class="col" x="226" y="11">SERVEUR</text>
+<text class="col" x="442" y="11">RÈGLES</text>
+<text class="col" x="658" y="11">BASE</text>
+<text class="col" x="874" y="11">MISE EN LIGNE</text>
+<line class="lk c1" x1="210" y1="100" x2="226" y2="40"/>
+<line class="lk c1 c3" x1="326" y1="60" x2="326" y2="80"/>
+<line class="lk c1" x1="426" y1="100" x2="442" y2="40"/>
+<line class="lk c1" x1="542" y1="60" x2="542" y2="80"/>
+<line class="lk c1" x1="642" y1="100" x2="658" y2="100"/>
+<line class="lk c2" x1="210" y1="100" x2="226" y2="160"/>
+<line class="lk c2" x1="326" y1="140" x2="326" y2="120"/>
+<line class="lk c2" x1="426" y1="100" x2="442" y2="160"/>
+<line class="lk c2" x1="642" y1="160" x2="658" y2="100"/>
+<line class="lk c3" x1="210" y1="40" x2="226" y2="100"/>
+<line class="lk c4" x1="974" y1="120" x2="974" y2="140"/>
+<line class="lk c4" x1="874" y1="160" x2="858" y2="160"/>
+<line class="lk c4" x1="758" y1="140" x2="758" y2="120"/>
+<g class="nd c1 c2 tourne"><rect x="10" y="80" width="200" height="40" rx="7"/><text x="24" y="100">Écrans (React)</text><circle class="p" cx="197" cy="100" r="4"/></g>
+<g class="nd c3 tourne"><rect x="10" y="20" width="200" height="40" rx="7"/><text x="24" y="40">Connexion (OIDC)</text><circle class="p" cx="197" cy="40" r="4"/></g>
+<g class="nd c1 c3 tourne"><rect x="226" y="20" width="200" height="40" rx="7"/><text x="240" y="40">Lectures (vues)</text><circle class="p" cx="413" cy="40" r="4"/></g>
+<g class="nd c1 c2 c3 tourne"><rect x="226" y="80" width="200" height="40" rx="7"/><text x="240" y="100">Droits (matrice)</text><circle class="p" cx="413" cy="100" r="4"/></g>
+<g class="nd c2 tourne"><rect x="226" y="140" width="200" height="40" rx="7"/><text x="240" y="160">Commandes</text><circle class="p" cx="413" cy="160" r="4"/></g>
+<g class="nd c1 tourne"><rect x="442" y="20" width="200" height="40" rx="7"/><text x="456" y="40">Projection</text><circle class="p" cx="629" cy="40" r="4"/></g>
+<g class="nd c1 moitie"><rect x="442" y="80" width="200" height="40" rx="7"/><text x="456" y="100">Libellés servis</text><circle class="p" cx="629" cy="100" r="4"/></g>
+<g class="nd c2 moitie"><rect x="442" y="140" width="200" height="40" rx="7"/><text x="456" y="160">Politiques réglables</text><circle class="p" cx="629" cy="160" r="4"/></g>
+<g class="nd c1 c2 c4 tourne"><rect x="658" y="80" width="200" height="40" rx="7"/><text x="672" y="100">PostgreSQL</text><circle class="p" cx="845" cy="100" r="4"/></g>
+<g class="nd c4 tourne"><rect x="658" y="140" width="200" height="40" rx="7"/><text x="672" y="160">Migrations</text><circle class="p" cx="845" cy="160" r="4"/></g>
+<g class="nd c4 tourne"><rect x="874" y="80" width="200" height="40" rx="7"/><text x="888" y="100">Image Docker</text><circle class="p" cx="1061" cy="100" r="4"/></g>
+<g class="nd c4 tourne"><rect x="874" y="140" width="200" height="40" rx="7"/><text x="888" y="160">Script (PC)</text><circle class="p" cx="1061" cy="160" r="4"/></g>
+</svg>
+<div class="leg"><span><i class="f"></i>ça tourne aujourd'hui</span><span><i class="m"></i>à moitié</span><span><i class="c"></i>à construire</span><span><i class="h"></i>humain, et ça reste humain</span></div></div>
+<div class="cons" id="cons"></div>
+<h2>Une ligne par étape</h2>
+<table><tr><th>Bloc</th><th>État</th><th>Ce que c'est</th><th>Qui décide encore</th></tr><tr><td>Écrans (React)</td><td>✅ tourne</td><td>Les pages que voit l'utilisateur : React 19, Vite 7, composants shadcn/ui et graphiques Tremor. Aucune couleur écrite en dur.</td><td>Hamada voit l'aperçu et dit OK</td></tr><tr><td>Connexion (OIDC)</td><td>✅ tourne</td><td>Entrée par un fournisseur d'identité standard, ou par la Marketplace Avaliance. Les secrets restent dans l'environnement du serveur, jamais dans le code.</td><td>Hamada (comptes réels, plus tard)</td></tr><tr><td>Lectures (vues)</td><td>✅ tourne</td><td>Listes, fiches, cartes, widgets, recherche : 33 fichiers côté serveur.</td><td>Code, jugé par Tests</td></tr><tr><td>Droits (matrice)</td><td>✅ tourne</td><td>Qui peut lire et écrire quoi, colonne par colonne. Le serveur refuse de démarrer s'il reste une colonne d'argent non classée.</td><td>Tests (matrice), BRAIN (règle)</td></tr><tr><td>Commandes déclarées</td><td>✅ tourne</td><td>94 actions mesurées le 11/10, chacune déclarée une fois : nature, champs, droits. Le code d'une action ne reçoit jamais l'entrée brute.</td><td>Code</td></tr><tr><td>Projection des données</td><td>✅ tourne</td><td>Une seule porte de sortie pour toutes les données : l'argent et les données RH sensibles ne sortent pas sans permission.</td><td>Tests (fuites), Audit</td></tr><tr><td>Libellés servis</td><td>◐ à moitié</td><td>Tout mot affiché vient d'un libellé de la base. Reste à porter au canon les mots du tableau de bord et le message du plafond (n° 38).</td><td>BRAIN (canon), Code</td></tr><tr><td>Politiques réglables</td><td>◐ à moitié</td><td>Les règles qui varient d'une société sont des réglages lus en base. Reste 15 valeurs métier encore écrites dans le code (n° 49).</td><td>BRAIN (valeurs), Code</td></tr><tr><td>PostgreSQL</td><td>✅ tourne</td><td>La base. L'application n'a que les droits de lire, ajouter et modifier colonne par colonne ; jamais effacer.</td><td>Tests (droits)</td></tr><tr><td>Migrations</td><td>✅ tourne</td><td>Changements de la base numérotés, 166 en ligne le 16/10 (la 167 est prête). Seule la session Tests les écrit.</td><td>Tests, GO du BRAIN</td></tr><tr><td>Image Docker</td><td>✅ tourne</td><td>Le code d'un seul commit, étiqueté de ce commit. On peut toujours dire quelle version tourne.</td><td>Code</td></tr><tr><td>Script depuis le PC</td><td>✅ tourne</td><td>Construire, sauvegarder, migrer, relancer, vérifier, revenir en arrière en une commande. Aucune vérification par GitHub.</td><td>GO du BRAIN, ordre d'Hamada</td></tr></table>
+<h2>Ce qu'on ne fera pas, et pourquoi c'est une décision</h2>
+<p class="cons"><b>Pas de génération de code ni de moteur « magique ».</b> Chaque règle est écrite, déclarée une fois et vérifiée par un contrôle. Ce n'est pas un manque : c'est le choix qui permet à Tests de prouver qu'une règle tient, et à l'Audit de la relire de l'extérieur.</p>
+<p class="cons"><b>Les droits par groupe de données (n° 9) ne sont pas dans le graphe.</b> Ils s'ajoutent à la matrice sans la remplacer ; tant qu'ils ne sont pas en ligne, la matrice actuelle fait foi.</p><script>
+(function(){
+  var svg=document.getElementById("graphe"),ph=document.getElementById("phrase"),cs=document.getElementById("cons"),pv=document.querySelectorAll(".pv button");
+  var T={"c1": ["C1 — Lire une liste · l'écran demande, le serveur filtre avant de répondre", "Écrans -> Lectures -> Droits -> Projection -> Libellés -> PostgreSQL", "<b>Un chiffre d'argent n'est jamais rendu puis caché : il n'est pas rendu du tout.</b> La projection retire la colonne avant la réponse, et les mots affichés viennent de la base."], "c2": ["C2 — Écrire · une commande, une seule entrée dans la déclaration", "Écrans -> Commandes -> Droits -> Politiques -> PostgreSQL", "<b>Chaque action est déclarée une fois.</b> Ses droits, sa validation et ses réglages en découlent : on ne peut pas oublier une règle sur un seul chemin."], "c3": ["C3 — Se connecter · l'identité décide de ce qu'on lit", "Connexion -> Droits -> Lectures", "<b>Le compte connecté porte ses droits dans chaque réponse.</b> Sans connexion valide, le serveur ne répond pas."], "c4": ["C4 — Livrer · une image, un script, des migrations jouées une seule fois", "Image Docker -> Script -> Migrations -> PostgreSQL", "<b>Une migration en ligne ne se réécrit jamais.</b> Chaque mise en ligne est précédée d'un point de retour vérifié, et revient en arrière au moindre échec."]};
+  function set(c){svg.setAttribute("data-chemin",c||"");pv.forEach(function(b){b.setAttribute("aria-pressed",b.dataset.c===c?"true":"false")});
+    if(!c){ph.innerHTML="<b>Le graphe complet</b><code>Clique une pastille pour allumer un chemin.</code>";cs.innerHTML="Les pastilles d'état à droite de chaque boîte ne bougent jamais : elles disent où on en est, pas qui passe par là.";return}
+    ph.innerHTML="<b>"+T[c][0]+"</b><code>"+T[c][1]+"</code>";cs.innerHTML=T[c][2]}
+  pv.forEach(function(b){b.addEventListener("click",function(){set(svg.getAttribute("data-chemin")===b.dataset.c?"":b.dataset.c)})});
+  set("");
+})();
+</script>
+</main></body></html>
