@@ -1,0 +1,388 @@
+AVA-MANAGER
+
+Cahier de charges
+
+10/10/2022
+
+		 TOC \o "1-3" \h \z \u I.	CONTEXTE	 PAGEREF _Toc122016730 \h 4
+		II.	DEFINITIONS ET CONCEPTS	 PAGEREF _Toc122016731 \h 5
+		A.	Candidat	 PAGEREF _Toc122016732 \h 5
+		B.	Ressource	 PAGEREF _Toc122016733 \h 5
+		C.	Société	 PAGEREF _Toc122016734 \h 5
+		D.	Service	 PAGEREF _Toc122016735 \h 6
+		E.	Contact	 PAGEREF _Toc122016736 \h 6
+		F.	Statut Client	 PAGEREF _Toc122016737 \h 6
+		G.	Rapport	 PAGEREF _Toc122016738 \h 7
+		H.	Besoin	 PAGEREF _Toc122016739 \h 7
+		I.	Projet	 PAGEREF _Toc122016740 \h 8
+		J.	Processus de Recrutement	 PAGEREF _Toc122016741 \h 8
+		K.	Qualification	 PAGEREF _Toc122016742 \h 8
+		III.	RÔLES	 PAGEREF _Toc122016743 \h 10
+		A.	Responsable Recrutement	 PAGEREF _Toc122016744 \h 10
+		B.	Ressource Humaine	 PAGEREF _Toc122016745 \h 10
+		C.	Ingénieur d’affaires	 PAGEREF _Toc122016746 \h 10
+		D.	Evaluateur	 PAGEREF _Toc122016747 \h 10
+		E.	Administrateur	 PAGEREF _Toc122016748 \h 10
+		F.	Candidat	 PAGEREF _Toc122016749 \h 10
+		G.	Support	 PAGEREF _Toc122016750 \h 11
+		IV.	FONCTIONNALITES	 PAGEREF _Toc122016751 \h 12
+		A.	Fonctionnalités Transverses	 PAGEREF _Toc122016752 \h 12
+		1.	Traçabilité	 PAGEREF _Toc122016753 \h 12
+		2.	Notifications	 PAGEREF _Toc122016754 \h 12
+		3.	Fil de discussion	 PAGEREF _Toc122016755 \h 12
+		4.	Moteur de Recherche	 PAGEREF _Toc122016756 \h 12
+		5.	Alertes intelligentes	 PAGEREF _Toc122016757 \h 13
+		6.	Affichage des grilles	 PAGEREF _Toc122016758 \h 13
+		7.	Gestion de Droits	 PAGEREF _Toc122016759 \h 13
+		8.	Internationalisation & Localisation	 PAGEREF _Toc122016760 \h 14
+		B.	Fiche Candidat	 PAGEREF _Toc122016761 \h 14
+		1.	Créer	 PAGEREF _Toc122016762 \h 14
+		2.	Editer	 PAGEREF _Toc122016763 \h 14
+		3.	Mettre à jour le statut	 PAGEREF _Toc122016764 \h 14
+		4.	Positionner	 PAGEREF _Toc122016765 \h 15
+		5.	Qualifier	 PAGEREF _Toc122016766 \h 15
+		C.	Fiche Société	 PAGEREF _Toc122016767 \h 16
+		1.	Créer une société	 PAGEREF _Toc122016768 \h 16
+		2.	Ajouter un service	 PAGEREF _Toc122016769 \h 16
+		3.	Editer un service	 PAGEREF _Toc122016770 \h 16
+		4.	Supprimer un service	 PAGEREF _Toc122016771 \h 16
+		5.	Ajouter un contact	 PAGEREF _Toc122016772 \h 16
+		6.	Editer un contact	 PAGEREF _Toc122016773 \h 17
+		7.	Transférer un contact	 PAGEREF _Toc122016774 \h 17
+		D.	Fiche Besoin	 PAGEREF _Toc122016775 \h 17
+		1.	Créer Besoin	 PAGEREF _Toc122016776 \h 17
+		2.	Editer un besoin	 PAGEREF _Toc122016777 \h 17
+		3.	Positionner Candidats / Ressources	 PAGEREF _Toc122016778 \h 17
+		E.	Positionnement	 PAGEREF _Toc122016779 \h 18
+		1.	Positionner Candidats/Ressources	 PAGEREF _Toc122016780 \h 18
+		2.	Ajouter un évènement	 PAGEREF _Toc122016781 \h 18
+		3.	Partager un CV	 PAGEREF _Toc122016782 \h 18
+		F.	Processus de Recrutement	 PAGEREF _Toc122016783 \h 19
+		1.	Créer	 PAGEREF _Toc122016784 \h 19
+		2.	Editer	 PAGEREF _Toc122016785 \h 19
+		3.	Publier	 PAGEREF _Toc122016786 \h 19
+		G.	Administration	 PAGEREF _Toc122016787 \h 20
+		1.	Gérer les groupes	 PAGEREF _Toc122016788 \h 20
+		2.	Gérer un utilisateur	 PAGEREF _Toc122016789 \h 20
+		3.	Configurer les différentes listes	 PAGEREF _Toc122016790 \h 20
+		4.	Configurer les évènements de positionnement	 PAGEREF _Toc122016791 \h 20
+		H.	Reporting	 PAGEREF _Toc122016792 \h 21
+CONTEXTE
+Le système à implémenter à savoir « AvaManager » est un portail a plusieurs fonctions :
+Applicant Tracking System : nous parlons d'outil de gestion du recrutement car il ne se limite pas qu'au suivi des candidats. Il gère le processus de recrutement dans son ensemble, du sourcing au recrutement.
+Client Relationship Management :  gérer et optimiser la relation client ainsi que la relation commerciale d'une entreprise via la centralisation, l'automatisation et l'optimisation de ses interactions avec clients et prospects.
+Gestion de projets : gérer l’aspect organisationnel et financier des projets d’Avaliance.
+Le système à implémenter devrait :
+Pouvoir suppléer aux deux systèmes actuellement utilisés chez Avaliance pour obtenir un seul et unique portail pour les recrutements, la gestion de la relation cliente (CRM) et la gestion de projet.
+Eliminer le coût actuel de l’abonnement à Boond Manager.
+Être une plateforme d’apprentissage par la pratique aux différentes ressources du pôle de développement. Le développement du système doit ainsi se baser sur les technologies et les techniques permettant de capitaliser sur la montée en compétences des ressources impliquées dans la réalisation des travaux pour les clients d’Avaliance.
+DEFINITIONS ET CONCEPTS
+Candidat
+Un candidat est une personne physique qui suit un processus de recrutement au sein d’Avaliance. Il est représenté dans le système à développer, à savoir AVA-MANAGER par une fiche à plusieurs onglets. On peut y retrouver toutes les informations le concernant :
+Résumé : reprend les informations principales de l’identité, le statut de la candidature, une représentation succincte de l’évaluation, ses positionnements et un lien vers le CV.
+L’identité
+Le CV (sous le format original ou bien celui de l’agence)
+Ses compétences
+Ses évaluations
+Ses positionnements
+Ses propositions de contrats
+Ressource
+Une ressource représente une personne physique sous contrat avec l’agence.
+Cette ressource est affectée à un ou plusieurs projets, ou bien positionnée sur un ou plusieurs besoins.
+Dans sa fiche nous retrouvons :
+L’identité
+Le CV
+Le poste
+Le contrat
+Le positionnement ou projet 
+Société
+Une société est une entreprise avec laquelle l’agence possède une relation commerciale.
+L’utilisateur peut définir la structure de la société en créant une structure hiérarchique comprenant pôles, business units et services. Le statut client-prospect fait l’office d’une règle expliquée ici.
+La fiche d’une société présente 4 onglets :
+Un onglet d’accueil reprenant les informations principales identifiant la société, ainsi que les coordonnées.
+Un onglet dédié aux contacts. Il listera dans une grille les contacts (affichage par défaut). L’utilisateur possède la possibilité d’afficher l’organigramme de ces contacts (affichage alternatif, nécessitant que les liens entre ces contacts soient créés au préalable). On peut naviguer vers les fiches individuelles des contacts à partir de cet onglet.
+Un onglet dédié aux besoins et listera sous forme de grille filtrable et navigable les besoins en cours (l’ordre d’affichage de ces besoins pourra être paramétré et modifié si besoin par l’utilisateur).
+Un onglet dédié à la gestion financière de cette société, à savoir les projets et les facturations.
+Service
+Un service est le nœud le plus bas de la structure d’une entreprise.
+Il peut être attaché à un autre nœud de type business unit ou bien pôle ou bien directement au client. Dans la fiche du service, on peut trouver :
+Le parent s’il existe
+Le nom du service
+Un descriptif
+Un service possède un ou plusieurs contacts.
+A travers le service, l’utilisateur pourra gérer les contacts, les besoins et les projets.
+Contact
+Un Contact représente une personne physique au sein d’une société.
+La fiche contact contient l’identification du contact, de son poste et du nœud de l’organisation auquel il appartient si l’information est disponible. Cette dernière pourra être utilisée pour afficher l’organigramme de son entreprise.
+Les coordonnées sont aussi importantes pour contacter la personne (par mail ou téléphone par exemple).
+La liste du périmètre technique et fonctionnel de ce contact, permettra par la suite de mieux qualifier les besoins.
+On pourrait aussi y retrouver un onglet listant dans une grille les différents besoins et projets pour lesquels il représente le contact client.
+Statut Client
+Quand l’agence possède un contrat avec une société celle-ci peut être considérée comme un client. Ce statut est transmis de bas en haut dans l’organisation dans le sens que dès que l’agence possède un contrat de prestation ou projet avec un service, celui-ci, ainsi que le business unit auquel il appartient, le pôle et la société sont considérés un client. Tous les contacts de ce dit service sont aussi considérés comme client. Ci-dessous un exemple illustré de cette règle. On voit notamment que le « Contact 42 » a le statut client, bien qu’il n’y aucun projet avec lui.
+
+Ceci permet de gérer le départ des contacts, ainsi que la réinitialisation de leur statut dépendamment de la structure de la société dans laquelle ils se trouvent.
+04445Doit-on remettre le statut à « prospect » s’il n’y a plus de projets en cours ou bien depuis une certaine durée (6 mois à titre d’exemple) ?
+
+Il faut un comportement par défaut (laisser client le statut d’un contact par exemple)
+Il faut laisser la main à l’utilisateur (la traçabilité permet de savoir ce qui s’est passé)
+
+Si contact rattaché à un service client – est-il client ?
+Est-ce que le statut client peut aussi être transféré de père en fils ?
+
+Rapport
+Le rapport est un tableau de bord regroupant différents diagrammes et informations permettant d’avoir des KPIs. Ces derniers seront utilisés pour l’aide à la décision.
+Ce tableau de bord doit filtrer les informations auxquelles une personne possède accès par rapport à son rôle. Les différents formats de restitution de données peuvent être configurés par des widgets.
+Besoin
+Un besoin est matérialisé par une fiche de besoin. Elle résume le besoin et son contexte (dont les informations tarifaires). Le besoin doit être lié à un contact client (ce qui l’attache au nœud auquel appartient ce contact). Une liste de compétences doit être liée à ce besoin en termes de compétences techniques, fonctionnelles ou personnelles. Cette liste doit contenir les niveaux d’expertise à avoir par rapport à chaque compétence. Certaines compétences peuvent être identifiées comme obligatoires.
+Un onglet représentera les positionnements des candidats ou des ressources pour ce besoin avec l’état de ce positionnement ainsi que l’éventuel retour du client.
+Un onglet permet d’avoir une éventuelle fiche de préparation de ce besoin. Cette dernière reprend les informations clés de la fiche client, ainsi que des éléments liés à la matrice de compétences déjà créée dans l’onglet principal.
+On doit avoir le moyen à travers la fiche du besoin de sélectionner des éventuels candidats pour les positionner. On appréciera d’avoir certains insights quand certains éléments de la fiche du candidat ne seront pas adaptés au besoin précédemment décrit. A titre d’exemple, si le TJM du candidat est très élevé ou bien sa note sur une compétence obligatoire en dessous du besoin décrit.
+Projet
+Un projet est une mission de prestation au forfait ou en régie chez un client. Il est représenté par une fiche de projet. Celle-ci peut être créée directement ou générée par une fiche de besoin créée au préalable et pour laquelle à titre d’exemple le candidat a été retenu par le client. Un projet reprend toutes les informations présentes dans la fiche du besoin.
+De plus il contient un onglet finance permettant de gérer ce projet. A titre d’exemple nous pourrons avoir la grille tarifaire du besoin, le TJM actuelle de la ressource, l’historique du TJM…
+Processus de Recrutement
+Un processus de recrutement est le process métier que va effectuer le candidat depuis la création de sa fiche jusqu’à l’éventuelle signature du contrat en passant par l’évaluation et le positionnement. Vu la nature très dynamique du processus, il faut que ce dernier soit souple afin de permettre l’ajout, suppression ou modification de toutes les étapes exceptées celle de la transformation en ressource du candidat.
+Chaque étape doit être associée à un ou plusieurs onglets dans les différentes fiches. De plus, le processus permettra de gérer les droits des différents acteurs pour chaque étape. Enfin, un processus de recrutement possède un périmètre d’application : une agence, un poste, une séniorité, un secteur, un client. Une condition complexe d’application du processus – par exemple un type de profil pour un client donné – doit être possible. Ce modèle est supposé donner de la souplesse au responsable de recrutement.
+Le processus à appliquer pour une candidature donnée est celui avec le périmètre le plus spécifique correspondant aux informations renseignées dans la fiche du candidat.
+
+Qualification
+L’onglet « qualification » de la fiche « candidat » contient les qualifications effectuées pour un candidat donné. La qualification est liée à un besoin. La qualification peut être de plusieurs types (téléphonique, humaines, techniques, …) ; la liste des types pouvant être gérés par l’administrateur.
+En cas de recrutement sur profil, le besoin sera associé à l’agence même et non à un client.
+RÔLES
+Responsable Recrutement
+Le responsable de recrutement est un utilisateur du système. Il met en place et gère le(s) processus de recrutement pour un périmètre donnée. Il peut :
+Rajouter ou supprimer des étapes dans le processus.
+Gérer les droits des différents utilisateurs. (Voir gestion des droits)
+Ressource Humaine
+Une ressource humaine est un utilisateur du système. Dans un premier temps, elle peut créer et gérer une fiche candidat dont elle a accès à tous les onglets : elle est chargée de recrutement.
+Ingénieur d’affaires
+Un ingénieur d’affaires est un utilisateur du système. Celui-ci peut être amené à créer les prospects/clients et leurs besoins. Il a accès aux fiches des candidats afin de les positionner sur un besoin.
+Evaluateur
+Un évaluateur est un utilisateur du système. Son interaction principale avec celui-ci survient lorsqu’il remplit une fiche d’évaluation d’un candidat. 
+Le type d’évaluation étant variable (compétences personnelles, technique, fonctionnelles) et la fiche devrait suivre un modèle établi à l’avance par le responsable de recrutement avec une zone de commentaire permettant de palier à des manquement dans celle-ci.
+Administrateur
+L’administrateur est un utilisateur du système. Comme son nom l’indique, celui-ci possède les droits d’administration sur le système. Trois grandes familles de gestions subsistent :
+Gestion des utilisateurs et de leurs rôles/droits
+Gestion de la liste des valeurs
+Gestion de l’apparence du système
+Candidat
+Un candidat est matérialisé par sa fiche. A ce stade nous n’avons pas de besoin clair en ce qui concerne son interaction éventuelle avec le système. Dans l’avenir, il pourrait :
+Avoir accès à l’éventuelle application d’évaluation du système.
+Soumettre une candidature spontanée à travers une redirection du site de la société.
+Participer à un parcours de signature de documents tel que le contrat ou bien l’ordre de mission
+Support
+Le support est un utilisateur du système. Il possède un accès à toutes les applications en lecture seule.
+Il doit avoir la possibilité d’effectuer éventuellement toutes les actions qu’un utilisateur du système peut effectuer.
+FONCTIONNALITES
+Fonctionnalités Transverses
+Traçabilité
+Toutes les pages ou fiche du système possèdent un onglet « Historique » traçant toutes les actions et modifications amenées à cette fiche, tel que :
+Les transitions de statuts
+Les modifications des informations de la fiche
+Les interactions avec le candidat, prospect ou client
+Notifications
+Chaque fois qu’une fiche est modifiée, les intervenants de cette fiche – le responsable du besoin par exemple, lors du positionnement de candidat – seront notifiés. Cette notification se fera par la présence d’une pastille rouge numérotée dans l’entrée dans l’entrée « Flux » du menu principal.
+0508000Doit-on implémenter la fonctionnalité de « watcher » pour une fiche donnée ?
+Peur que ça soit très lourd pour la personne.
+Watcher avec sa checklist aussi
+
+Fil de discussion
+Toutes les fiches possèdent une rubrique de discussion réduite à droite de l’écran, permettant de commenter ou bien discuter avec ses collègues concernant la fiche en question. Ce fil peut être épinglé par l’utilisateur s’il le souhaite.
+Si un utilisateur mentionne un autre utilisateur grâce à l’annotation « @ », ce dernier sera alors notifié par la présence d’une pastille rouge numérotée dans l’entrée « Flux » du menu principal. 
+Moteur de Recherche
+Le moteur de recherche doit permettre selon la page – candidat par exemple – d’effectuer une recherche des éléments présents sur cette page.
+Les résultats affichés doivent être filtrés par rapport aux éléments visibles à cet utilisateur. Tous les champs peuvent être rajoutés à la condition de recherche. L’affichage du choix de la valeur est déterminé selon le type du champ (la liste des valeurs possibles pour un choix multiple, un choix de date pour les champs date, …).
+Pour chaque page, il existera un filtre simple sur les champs principaux et un filtre avancé sur tous les champs possibles.
+Les différentes conditions rajoutées à un filtre prennent la forme d’une condition logique dans laquelle les opérateurs logiques et les associations sont permises.
+Etant donné qu’un élément est associé à un ou plusieurs autres éléments d’autres type – à titre d’exemple, un besoin peut avoir plusieurs candidature – la recherche doit permettre d’avoir des fonctions de relations :
+« À un moins une association » – pour filtrer sur les éléments ayant cette relation
+« Ne possède aucune association » – pour filtrer sur les éléments n’ayant pas cette relation
+« Est associé à » - pour filtrer sur les éléments lier à une condition particulière sur l’autre type.
+Les recherches peuvent être sauvegardées et partagées avec d’autre utilisateur avec un système de gestion de droit simplifié (agence/profil ou bien un utilisateur spécifique)
+Alertes intelligentes
+Chaque utilisateur aura la possibilité d’enregistrer 3 alertes intelligentes dans l’application des tâches. L’alerte aura un nom, une recherche sauvegardée associée et se présentera sous forme d’entrée numérotée dans le menu. Ceci permettra à l’utilisateur d’avoir une alerte visuelle de l’arrivée de nouveaux éléments correspondant à la recherche enregistrée.
+01905Cette fonctionnalité bien que très utile pour augmenter la réactivité des utilisateurs à la suite de certains évènements risque de dégrader les performances. Elle pourra être étudié dans un second temps
+
+Affichage des grilles
+Chaque application possède un affichage d’une grille d’éléments filtrable via le moteur de recherche.
+Les champs affichés par défaut sont configurables pour chaque page par l’administrateur.
+L’utilisateur a la possibilité d’ajouter ou de supprimer des champs. Cet affichage sera automatiquement sauvegardé pour cet utilisateur. La limite du nombre maximal de colonnes par grille devra être définie dans la solution.
+On appréciera la possibilité d’avoir un affichage à double panneaux liées dans lequel l’affichage du panneau de droite dépend de l’élément sélectionné dans la grille du panneau de gauche qui gardera sa disposition d’affichage.
+Dans le panneau de droite, l’utilisateur pourra afficher la grille d’éléments associés, ou bien l’aperçu de la fiche détaillée de l’élément sélectionné. D’autres affichages peuvent être proposés par la suite.
+Gestion de Droits
+La gestion des droits est centrale dans le système. Un utilisateur doit accéder uniquement aux applications, ainsi qu’aux onglets qui lui sont autorisés. Les rôles définis dans ce document représentent des groupes d’utilisateurs du système.
+La gestion générale des droits par l’administrateur du système se fait par application et à une granularité fine (onglet). Il peut rajouter un utilisateur à un groupe ou bien le retirer d’un groupe selon le besoin. Il peut aussi le rajouter ou bien le retirer d’une application – cette dimension de configuration est surtout dans le but pouvoir gérer la facturation par application.
+Un groupe possède des droits de lecture, contribution ou possession d’un onglet dans une application. (Candidat et proposition de contrat).
+Les utilisateurs ayant le droit de possession sur une fonctionnalité, tel que l’administration des processus de recrutement, peuvent gérer les droits d’autres utilisateurs sur cette fonctionnalité.
+Internationalisation & Localisation
+Le système doit prendre en compte le besoin d’une localisation en français et en anglais à minima. Si le cas se présente, il faudra aussi mener des travaux d’internationalisation du système afin de s’adapter à plusieurs marchés.
+Fiche Candidat
+Créer
+Pour créer la fiche d’un candidat l’utilisateur doit être autorisé à le faire (voir gestion des droits).
+L’utilisateur doit saisir un formulaire contenant l’identité du candidat (nom, prénom, civilité, localisation, contact mail et/ou téléphone). La fiche sera par la suite sous le statut « Draft ». A ce stade un candidat ne fait pas encore partie d’aucun processus de recrutement. Par la suite l’utilisateur sera directement dirigé vers la fiche du candidat pour édition.
+La fiche du candidat est par la suite accessible à la fois pour :
+Mettre à jour les informations liés à sa formation, son expérience, ses compétences, ses références, ses prétentions salariales … (voir Editer)
+Déclencher un processus de recrutement (voir Mettre à jour le statut)
+Editer
+La fiche candidat telle que décrite auparavant contient plusieurs onglets. L’accès en lecture/écriture à chaque onglet est régie par les règles générales de gestion des droits.
+Un utilisateur ayant accès en écriture à un onglet peut éditer toutes les informations liées à cet onglet quel que soit l’étape à laquelle le candidat se trouve dans le processus de recrutement.
+Cependant pour des raisons d’intégrité du système, les informations marquées obligatoires à une certaine étape par le responsable de recrutement ne peuvent pas être supprimées dans les étapes ultérieures.
+Mettre à jour le statut
+Le statut d’une fiche de candidat est fortement lié au processus de recrutement. Il contient deux statuts obligatoires :
+« Draft »,
+« Complété ». Celui-ci doit être pondéré par un sous-état permettant d’avoir la raison que la candidature soit complétée. A titre d’exemple « transformé en ressource », « black-listé » …
+Les statuts intermédiaires représentent quant à eux des étapes dans le processus de recrutement établi par le responsable du processus. La transition entre les différents statuts se fait à travers des boutons visibles à l’écran de manière conditionnelle qui respecte le processus établi. Pour qu’une transition soit possible, tous les champs définis obligatoires doivent être renseignés. Une représentation graphique du workflow est accessible pour aider l’utilisateur à identifier les différentes étapes applicables à ce recrutement.
+Positionner
+Pour positionner un candidat à partir de sa fiche, le chargé de recrutement (CR) doit aller dans l’onglet « positionnement ». Cet onglet liste tous les positionnements du candidat avec leur état actuel. Le CR pourra alors naviguer vers les positionnements en cours ou bien effectuer un positionnement en cliquant sur le bouton « positionner ».
+Ceci déclenchera une recherche plus complète initiée par les compétences techniques et fonctionnelles listées dans la fiche du candidat. Toutefois, les critères de recherche peuvent par la suite être modifiés par l’utilisateur.
+Il pourra sélectionner un ou plusieurs besoins sur lequel il souhaite positionner le candidat.
+La gestion du positionnement est détaillée dans Positionnement.
+0000Doit-on proposer un parcours plus simple pour positionner sur un besoin à travers la sélection de ce besoin pour une qualification.
+Qualifier 
+Pour qualifier un candidat, l’évaluateur doit se trouver sur la fiche d’un candidat, naviguer vers l’onglet « qualification », déclencher l’ajout d’une qualification, sélectionner le besoin associé, et sélectionner le type de qualification. La liste des sujets de qualification sera préremplie par la liste des compétences du besoin liées au type de qualification. Les compétences obligatoires seront mises en valeur afin de les distinguer des autres compétences.
+Chaque élément présentera un système de notation étoilé, permettant d’attribuer une note au candidat par rapport au sujet en question. Pour chaque élément l’utilisateur pourra aussi contribuer avec un commentaire. Il sera tout de même possible à l’évaluateur d’indiquer qu’une compétence n’a pas pu être mesurée.
+Toutefois, l’évaluateur a la liberté d’ajouter des éléments absents de la liste initiale pour les mesurer. Une fois que l’évaluation est soumise, la note globale du candidat pour tous les besoins ayant cette compétence est mise à jour pour inclure la nouvelle qualification (dans le cas d’une même compétence mesurée, celle-ci sera écrasée).
+La note globale se présente sous forme de plusieurs graphiques radar, permettant de comparer avec les compétences requises par le besoin. Il faudra trouver un moyen exploitable d’inclure les compétences non techniques.
+063500Faut-il différencier la qualification téléphonique du reste ?
+Fiche Société
+Créer une société
+Pour créer la fiche d’une société l’utilisateur doit être autorisé à le faire (voir gestion des droits).
+L’utilisateur doit saisir un formulaire contenant l’identification de la société. La fiche sera par la suite sous le statut « Prospect ». A ce stade, il est encore impossible de créer un besoin pour cette société : il faudra avant tout créer un service et lui affecter un contact. Par la suite l’utilisateur sera directement dirigé vers la fiche de la société pour édition.
+La fiche de la société est par la suite accessible à la fois pour :
+Ajouter un service (voir Ajout de service)
+Ajouter un contact (voir Ajout de contact)
+Créer un besoin (voir Créer un besoin)
+
+Ajouter un service
+Pour rappel, un service est un nœud dans la hiérarchie cliente avec lequel l’agence est amenée à avoir une relation commerciale. Il est considéré « client » dès lors qu’un contrat est signé avec ce service (voir Statut Client).
+Dans la fiche de la société, un onglet « organisation » permet de créer un service. 
+Une fois que les informations (voir Service) sont renseignées la fiche du service est accessible pour édition.
+Editer un service
+L’utilisateur peut éditer les informations liées à un service (voir Service). 
+À tout moment l’utilisateur peut rajouter un contact ou bien un besoin qui s’ajoutera à la liste des contacts, des besoins ou bien des projets de ce service.
+Supprimer un service
+Afin de supprimer un service, celui-ci ne doit pas avoir de besoins, ou de projets en cours. Dans ce cas, la suppression ne pourra pas se faire.
+La suppression d’un service archivera le service qui ne sera plus visible dans l’organisation de la société. Cependant, tous les contacts, besoins et projets seraient accessible directement via la fiche de la société.
+Ajouter un contact
+Un utilisateur habilité peut créer un contact :
+A partir du bouton de création dans le menu,
+A partir de la fiche d’une société
+A partir de la fiche d’un nœud (service ou autre)
+Il suffit de remplir les informations nécessaires (voir Contact).
+A ce stade il n’est pas obligatoire de rattacher le contact à un nœud de la structure. Cela dit, il le sera par la suite afin de créer un besoin pour lequel il sera le contact client.
+Editer un contact
+Un utilisateur doit avoir la possibilité d’éditer la fiche du contact pour :
+Modifier les informations
+Identité
+Coordonnées
+Périmètres fonctionnels et techniques.
+Transférer le contact (voir Transférer un contact)
+Transférer un contact
+Deux types de transfert d’un contact sont possibles :
+Modifier le nœud auquel le contact appartient
+Changer la société du contact
+Dans les deux cas, le système affichera la liste des besoins et projets en cours afin que l’utilisateur sélectionne un service / contact vers lequel chaque besoin ou projet doit être transféré.
+Fiche Besoin
+Créer Besoin
+Un utilisateur habilité peut créer un besoin :
+A partir du bouton de création dans le menu,
+A partir de la fiche d’une société
+A partir de la fiche d’un nœud (service ou autre)
+A partir d’un contact, dans quel cas, le contact doit être rattaché à un nœud de la structure de la société.
+L’utilisateur renseigne les informations du besoin (voir Besoin) et sauvegarde le besoin.
+Noter, qu’un besoin ne pourra pas être sauvegardé s’il n’est pas attaché à un contact, lui-même rattaché à un nœud de la structure de l’entreprise.
+À la suite de la création, la fiche du besoin est disponible pour l’édition et le positionnement.
+Editer un besoin
+Toutes les informations d’un besoin peuvent être éditées par la suite. Cela permettra de mieux le qualifier et trouver les ressources adéquates à être positionnées.
+Positionner Candidats / Ressources
+L’utilisateur peut positionner une ou plusieurs ressources à partir de la fiche du besoin.
+Dans l’onglet « positionnement » de la fiche du besoin, il pourra ajouter explicitement un candidat ou une ressource avec une recherche rapide par nom. La barre de recherche permettra de préciser s’il s’agit d’une ressource ou bien d’un candidat et donnera l’intitulé du poste dans la liste des résultats de la recherche.
+Il pourra aussi effectuer une recherche plus complète initiée par les compétences techniques et fonctionnelles listées dans le besoin. Toutefois, les critères de recherche peuvent par la suite être modifiés par l’utilisateur. L’utilisateur doit avoir la possibilité de positionner plusieurs candidats en parallèle.
+Par la suite, chaque candidat doit être qualifié pour ce besoin. Un flag existe afin de déterminer si le CV a été partagé avec le client.
+Mode d’affichage KANBAN
+TODO
+Positionnement
+Positionner Candidats/Ressources
+Un utilisateur habilité peut positionner des ressources :
+A partir de la fiche d’un besoin
+A partir de la fiche d’un candidat
+Vu la nature très hétérogène du process de positionnement au sein même d’une même équipe, celui-ci ne pourra être aussi formalisé que celui de recrutement.
+Lorsque le positionnement est créé les évènements suivants sont créés par défaut :
+Partage CV (case à cocher)
+Entretien client (de type réunion)
+Qualification (qualification dans la fiche du Candidat)
+À tout moment, l’utilisateur peut rajouter ou supprimer un évènement hormis celle de partage du CV.
+En ce qui concerne le statut d’un positionnement, celui-ci peut être éditer à n’importe quel moment.
+Au niveau de la grille de positionnement du besoin, un voyant coloré représentera le statut ou l’accomplissement de chaque évènement.
+La liste d’évènement et les différents statuts de positionnement peuvent être édités par l’administrateur.
+Ajouter un évènement
+Un utilisateur peut rajouter un évènement à partir de la liste gérée par l’administrateur. Selon le type de l’évènement une fenêtre s’affichera dans le positionnement afin de permettre à l’utilisateur de renseigner les détails de l’évènement. Le contenu de l’évènement déterminera la couleur du voyant pour la vue grille (voir Configurer les évènements de positionnement)
+Partager un CV
+L’utilisateur peut partager le CV du candidat, soit :
+En cochant la case « CV Partagé ».
+En passant par l’application de mail.
+Si le CV est déjà partagé l’utilisateur sera alerté afin qu’il puisse annuler ou bien procéder au partage.
+Si le CV n’est pas partagé l’utilisateur sera alerté afin qu’il puisse forcer le statut ou bien ouvrir l’application de mail afin de rédiger le mail de partage (un template pourra être utilisé).
+Processus de Recrutement
+Pour toutes les fonctionnalités décrites ci-dessous, le responsable de recrutement doit naviguer vers la page de gestion des processus de recrutement accessible via le menu d’administration.
+Créer
+Le système possède un processus de recrutement (PdR par la suite) par défaut. Le responsable de recrutement peut créer un PdR à partir de celui fourni par le système.
+Pour créer un nouveau PdR, l’utilisateur peut cliquer sur le bouton de création ou bien sur le menu contextuel d’un PdR existant.
+Un processus de recrutement est créé à l’état « Draft » et doit être publier pour être appliquer
+Le responsable de recrutement doit choisir le périmètre d’application selon les paramètres définis (voir Processus de Recrutement)
+Un processus contient des statuts et des transitions. Pour chaque transition, le responsable de recrutement doit :
+Gérer les profils qui ont le droit d’utiliser cette transition.
+Définir les champs de la fiche du candidat à être renseigné obligatoirement par l’utilisateur qui veut utiliser cette transition.
+Un statut est considéré final s’il n’existe aucune transition ayant comme source ce statut.
+Editer
+Pour éditer un PdR, depuis la page d’administration, le responsable de recrutement doit sélectionner un PdR afin d’ouvrir la page d’édition de ce processus. Dès lors qu’une modification est détectée sur le PdR, un « Draft » est créé afin d’enregistrer les mises à jour en attendant la publication du PdR. 
+L’utilisateur peut éditer : les statuts, les transitions et le périmètre d’application. Si l’utilisateur possède les habilitations nécessaires, il peut aussi gérer les droits de lecture/modification du PdR.
+Publier
+Le responsable de recrutement peut publier un « Draft » d’un PdR afin qu’il soit disponible pour les futurs recrutements sur le même périmètre. Pour cela, il suffit de cliquer sur le bouton publier lorsqu’il se trouve sur la page d’édition d’un PdR.
+063500Doit-on mettre à jour le PdR utilisé par les fiche de candidat en cours ?
+Je propose qu’on signale au niveau de la fiche du candidat qu’il ne s’agit pas de la dernière version. L’utilisateur peut mettre à jour s’il le souhaite. Cela aura pour effet de remettre la fiche au statut initial (sans modifier le contenu de la fiche). L’utilisateur doit à ce stade avancer chaque étape du nouveau PdR. La gestion des champs obligatoires s’assurera à tout moment que la fiche est bien remplie par rapport à la dernière version du PdR
+Administration
+Gérer les groupes
+Pour gérer les groupes, l’administrateur peut visiter le menu d’administration et naviguer vers « gestion des groupes ». Il peut créer ou modifier un groupe existant.
+Tous les onglets de toutes les applications du système sont listés. L’utilisateur doit choisir d’activer s’il le souhaite l’un des droits (lecteur/contributeur/propriétaire) pour chaque onglet. Chaque groupe possède aussi un périmètre d’application par rapport à l’agence et sa structure.
+Gérer un utilisateur
+Pour gérer un utilisateur, l’administrateur peut visiter le menu d’administration et naviguer vers « gestion des utilisateurs ». Une fois qu’il a ajouté l’utilisateur, il peut gérer ses droits en l’affectant à des groupes et en lui activant des applications (Par défaut toutes les applications sont actives). Comme pour toutes les ressources de l’entreprise, l’administrateur doit aussi lui attribuer un manager.
+Les droits de l’utilisateur sont déterminés par l’union de tous les droits de tous les groupes.
+Le résultat de cette union est affiché à l’écran. L’administrateur peut ainsi surcharger les droits pour un onglet en particulier s’il le souhaite.
+Configurer les différentes listes
+Dans le menu d’administration, plusieurs listes existent : disponibilité, séniorité, poste, type de contrat, compétences techniques, compétences fonctionnelles, sources, localisation, niveau d’étude, …
+Ces listes sont utiles comme liste déroulante dans les différentes fiches. Le contenu de chaque liste peut être géré par l’administrateur.
+Pour l’intégrité du système on acceptera que certaines valeurs ne puissent pas être supprimées, mais qu’elle puisse être renommées.
+Configurer les évènements de positionnement
+L’administrateur peut visiter le menu d’administration et naviguer vers « évènements de positionnement ». L’administrateur peut alors créer plusieurs types d’évènements concernant un positionnement.
+Les types des évènements à gérer sont :
+Case à cocher avec les deux couleurs à définir pour coché ou pas
+Boutons radios avec les couleurs des différentes valeurs à définir
+La réunion avec les couleurs pour planifiée, faite
+Dans la page de positionnement celle-ci contiendra, les participants, la date et le compte rendu dans une zone de texte.
+La qualification avec le score de celle-ci et les dimensions déjà qualifiées
+Les évènements disponibles par défaut et qu’on ne peut pas supprimer sont :
+CV partagé de type case à coché
+Entretien client de type réunion
+Qualification de type qualification.
+
+Reporting
+Les pages de reporting doivent permettre de mesurer au niveau personnel ou bien au niveau d’un nœud de la société :
+La performance
+La dépendance
+La profitabilité
+Pour cela, un manager doit avoir le moyen de définir des objectifs à chaque membre de son équipe. Ces objectifs doivent être affectés à une période.
+Chaque utilisateur peut vérifier un reporting personnel listant ses indicateurs en les comparant aux objectifs établis. Lors de la visualisation d’un reporting, l’utilisateur peut modifier la période couverte.
+La liste non exhaustive des indicateurs ou KPIs :
+TJM : Taux Journalier Moyen
+CJM : Coût Journalier Moyen
+Turnover
+TACE : Taux d’Activité Congés Exclus
+Marge
+Taux de transformation : taux de conversion des besoins en projets
+Time to hire : le temps moyen pour transformer un besoin en projet
+Ces indicateurs peuvent être appliqués à un périmètre donné.
+0317500 Le choix de la forme de restitution de chaque KPI doit être discuté dans un atelier
+								Gestion des objectifs : parcours de validation
+								Former les utilisateurs à créer leur propre Dashboard		
+Fichiers Excel chez chaque personne : chiffre qu’on présente chaque année

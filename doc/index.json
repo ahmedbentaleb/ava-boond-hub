@@ -161,6 +161,13 @@
   "ko": 13
  },
  {
+  "chemin": "AVA_MANAGER-SPEC_1_extract.txt",
+  "titre": "AVA_MANAGER-SPEC_1_extract.txt",
+  "categorie": "Cadrage et commande du client",
+  "date": "16/09/2026",
+  "ko": 11
+ },
+ {
   "chemin": "BRIEF_BRAIN_2026-09-16.md",
   "titre": "Brief canonique Brain — Ava Manager",
   "categorie": "Prompts et briefs",
@@ -217,6 +224,41 @@
   "ko": 13
  },
  {
+  "chemin": "cartographie/BOOND_APPLICATIONS_2026-09-24.md",
+  "titre": "Boond — les applications, installées et disponibles (24/09/2026)",
+  "categorie": "Étude de Boond",
+  "date": "24/09/2026",
+  "ko": 6
+ },
+ {
+  "chemin": "cartographie/BOOND_CHEMINS_2026-09-19.md",
+  "titre": "Boond — les écrans et les chemins. Ce qui mène à quoi.",
+  "categorie": "Étude de Boond",
+  "date": "20/09/2026",
+  "ko": 46
+ },
+ {
+  "chemin": "cartographie/BOOND_ECRANS_2026-09-22.md",
+  "titre": "Boond — les écrans manquants, relevés le 22/09/2026",
+  "categorie": "Étude de Boond",
+  "date": "22/09/2026",
+  "ko": 9
+ },
+ {
+  "chemin": "cartographie/BOOND_PARITE_2026-09-24.md",
+  "titre": "La grille de parité Boond → Ava Manager — 24/09/2026",
+  "categorie": "Étude de Boond",
+  "date": "24/09/2026",
+  "ko": 8
+ },
+ {
+  "chemin": "cartographie/BOOND_REGLAGES_2026-09-23.md",
+  "titre": "Boond — tous les réglages, valeur par valeur (23/09/2026)",
+  "categorie": "Étude de Boond",
+  "date": "23/09/2026",
+  "ko": 8
+ },
+ {
   "chemin": "cartographie/DIAGNOSTIC_METIER.md",
   "titre": "Diagnostic Boond Manager",
   "categorie": "Étude de Boond",
@@ -266,6 +308,13 @@
   "ko": 7
  },
  {
+  "chemin": "COCKPIT2-Cahier_de_charge-v0.1_extract.txt",
+  "titre": "COCKPIT2-Cahier_de_charge-v0.1_extract.txt",
+  "categorie": "Cadrage et commande du client",
+  "date": "16/09/2026",
+  "ko": 38
+ },
+ {
   "chemin": "COMPLEMENTS_V1_2026-09-23.md",
   "titre": "Ce que la V1 doit porter en plus — décidé le 23/09/2026",
   "categorie": "Cadrage et commande du client",
@@ -313,6 +362,20 @@
   "categorie": "Étude de Boond",
   "date": "17/09/2026",
   "ko": 5
+ },
+ {
+  "chemin": "JEU_DEMO.md",
+  "titre": "Le jeu de démonstration — une Avaliance fictive (D-94, 05/10/2026)",
+  "categorie": "Cadrage et commande du client",
+  "date": "05/10/2026",
+  "ko": 6
+ },
+ {
+  "chemin": "JEU_ESSAI.sql",
+  "titre": "JEU_ESSAI.sql",
+  "categorie": "Conception et contrat",
+  "date": "01/10/2026",
+  "ko": 31
  },
  {
   "chemin": "JOURNAL_BUGS.md",
@@ -686,6 +749,13 @@
   "ko": 10
  },
  {
+  "chemin": "QUESTIONS_BOOND_2026-09-19.md",
+  "titre": "Les questions nées du relevé Boond — classées",
+  "categorie": "Étude de Boond",
+  "date": "20/09/2026",
+  "ko": 9
+ },
+ {
   "chemin": "REGISTRE_EXECUTABLE.md",
   "titre": "Registre exécutable — le lot 2 · version 2 (D-56, réécrit le 04/10/2026 après le 11e audit)",
   "categorie": "Conception et contrat",
@@ -740,6 +810,13 @@
   "categorie": "Audits",
   "date": "19/09/2026",
   "ko": 7
+ },
+ {
+  "chemin": "REPONSES_AVALIANCE_2026-09-24.md",
+  "titre": "Les réponses d'Avaliance — réunion du 24/09/2026",
+  "categorie": "Cadrage et commande du client",
+  "date": "25/09/2026",
+  "ko": 5
  },
  {
   "chemin": "SPEC_ASSERTIONS_L7.sql",
