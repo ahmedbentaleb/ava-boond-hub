@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rapport de conformité Boond / Ava</title>
+<style>
+:root{--bg:#ffffff;--fg:#1b1b1f;--mute:#6b6b76;--line:#e4e4ea;--card:#f7f7fa;--ok:#1f8a4c;--wait:#b26a00;--you:#6d3fd1}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#121216;--fg:#ececf1;--mute:#9a9aa6;--line:#2a2a33;--card:#1b1b22;--ok:#4fc98a;--wait:#f0a63a;--you:#a98bff}}
+:root[data-theme="dark"]{--bg:#121216;--fg:#ececf1;--mute:#9a9aa6;--line:#2a2a33;--card:#1b1b22;--ok:#4fc98a;--wait:#f0a63a;--you:#a98bff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;padding:16px}
+h1{font-size:20px;margin:0 0 4px}
+.sub{color:var(--mute);font-size:13px;margin-bottom:18px}
+h2{font-size:15px;margin:22px 0 8px;display:flex;gap:8px;align-items:center}
+.tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;border:1px solid currentColor}
+.t-you{color:var(--you)}.t-par{color:var(--ok)}.t-seq{color:var(--wait)}
+.lanes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.lane{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.lane h3{font-size:13px;margin:0 0 6px;color:var(--mute);font-weight:600}
+label{display:flex;gap:10px;align-items:flex-start;padding:6px 0;cursor:pointer}
+label+label{border-top:1px solid var(--line)}
+input{width:18px;height:18px;margin:1px 0 0;flex:none;accent-color:var(--ok)}
+input:checked+span{color:var(--mute);text-decoration:line-through}
+.who{font-size:12px;color:var(--mute)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:4px 12px}
+.arrow{color:var(--mute);font-size:13px;margin:8px 0 0 4px}
+</style>
+<style>
+.ok b,.etat-ok{color:var(--ok)} .grand{font-size:18px;line-height:1.45;margin:6px 0 20px;padding:14px 16px;border:1px solid var(--bord);border-left:4px solid var(--vert);border-radius:8px;background:var(--carte)}
+table{width:100%;border-collapse:collapse;margin:6px 0 4px;font-size:14px} th{text-align:left;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);padding:6px 10px 6px 0;border-bottom:1px solid var(--bord)}
+td{padding:9px 10px 9px 0;border-bottom:1px solid var(--bord);vertical-align:top} td.e{width:34px;text-align:center}
+.src{font:12px ui-monospace,Consolas,monospace;color:var(--t3);margin:0 0 18px}
+.pv{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 6px}
+.pv button{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:1.5px solid var(--bord);background:transparent;color:var(--t2);cursor:pointer}
+.pv button[aria-pressed=true]{font-weight:700;color:var(--t1)}
+.phrase{margin:8px 0 2px;min-height:44px}.phrase b{display:block}.phrase code{font:12.5px ui-monospace,Consolas,monospace;color:var(--t2)}
+.cons{border-left:3px solid var(--bord);padding:2px 0 2px 12px;margin:10px 0 14px;color:var(--t1)}
+.gr{overflow-x:auto;border:1px solid var(--bord);border-radius:10px;background:var(--carte);padding:6px}
+.gr svg{display:block;min-width:1000px;width:100%;height:auto}
+.col{font:600 10.5px ui-monospace,Consolas,monospace;letter-spacing:.14em;fill:var(--t3)}
+.nd rect{fill:var(--bg);stroke:var(--bord);stroke-width:1} .nd text{fill:var(--t3);font:12px system-ui,sans-serif;dominant-baseline:middle}
+.lk{stroke:var(--bord);stroke-width:1;fill:none}
+@media (prefers-reduced-motion:no-preference){.nd rect,.nd text,.lk{transition:stroke .18s ease,stroke-width .18s ease,fill .18s ease}}
+.leg{display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--t2);padding:8px 10px 4px}
+.leg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.leg .f{background:var(--ok)}.leg .m{background:var(--cours)}.leg .c{border:1.5px solid var(--t3)}.leg .h{border:1.5px dashed var(--t3)}
+.dans-hub .nav{display:none}
+@media (max-width:640px){td.e{width:28px}}
+</style>
+<script>if(self!==top)document.documentElement.classList.add("dans-hub")</script>
+</head><body><main>
+<div class="nav"><a href="./" target="_top">← le hub</a></div>
+<style>
+.etape{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:start;padding:10px 0;border-bottom:1px solid var(--bord)}
+.etape .nb{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--vert);color:var(--vert);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.etape p{margin:0}.etape small{display:block;color:var(--t2);margin-top:2px}
+.lg{font:600 11.5px ui-monospace,Consolas,monospace;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.lg.ts{color:#5AA9FF;border:1px solid #5AA9FF}.lg.sql{color:#FB923C;border:1px solid #FB923C}.lg.ec{color:#A78BFA;border:1px solid #A78BFA}
+.deux{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+.deux>div{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:12px 14px}
+.deux h3{margin:0 0 6px;font-size:16px}.deux ul{margin:6px 0 0;padding-left:18px;list-style:disc}.deux li{display:list-item;border:0;padding:2px 0}
+.deux .ts-h{color:#5AA9FF}.deux .sql-h{color:#FB923C}
+@media (max-width:640px){.deux{grid-template-columns:1fr}.etape{grid-template-columns:30px 1fr}.etape .lg{grid-column:2}}
+dl{margin:6px 0}dt{font-weight:700;margin-top:10px}dd{margin:2px 0 0;color:var(--t2)}
+</style><style>ol.o{padding-left:22px;list-style:decimal}ol.o li{display:list-item;border:0;padding:5px 0}ul.p{padding-left:20px;list-style:disc}ul.p li{display:list-item;border:0;padding:3px 0}</style><h1>Rapport de conformité Boond / Ava</h1>
+<p class="sous">Mis à jour le dimanche 18/10/2026 à 18h12 (heure de Casablanca) · synthèse du rapport final du 18/10 · le rapport complet, écart par écart, reste dans le dépôt de travail</p>
+<p class="src">Source : audits-independants/conformite/RAPPORT_FINAL_HAMADA_2026-10-18.md et ECARTS_SAISIE_FICHES_2026-10-18.md</p>
+<p class="grand"><b>816 écarts numérotés entre Boond et Ava</b> (612 distincts, une fois retirés les doublons déjà repérés). <b>Rien n'est encore codé :</b> le code ne commence qu'après ta validation. Le seul écart permis reste les widgets du tableau de bord (D-252) ; les écarts adoptés avant tombent (D-253).</p>
+<div class="chiffres"><div class="chiffre"><b>816</b><span>écarts numérotés</span></div><div class="chiffre"><b>612</b><span>écarts distincts</span></div><div class="chiffre"><b>451</b><span>écrans de saisie et fiches, partie 1</span></div><div class="chiffre"><b>291</b><span>fiches, partie 2</span></div></div>
+<h2>Où sont les écarts</h2>
+<table><tr><th>Famille</th><th>Écarts</th></tr><tr><td>Écrans de saisie et fiches — partie 1</td><td><b>451</b></td></tr><tr><td>Fiches — partie 2</td><td><b>291</b></td></tr><tr><td>Actions</td><td><b>28</b></td></tr><tr><td>Mails</td><td><b>23</b></td></tr><tr><td>Cliquable</td><td><b>23</b></td></tr><tr><td><b>Total</b></td><td><b>816</b></td></tr></table>
+<h2>Par objet — les écrans de saisie (partie 1)</h2>
+<table><tr><th>Objet</th><th>Écarts</th></tr><tr><td>Candidat</td><td>71</td></tr><tr><td>Ressource</td><td>58</td></tr><tr><td>Projet</td><td>46</td></tr><tr><td>Prestation</td><td>38</td></tr><tr><td>Société</td><td>36</td></tr><tr><td>Besoin</td><td>36</td></tr><tr><td>Achat</td><td>31</td></tr><tr><td>Contact</td><td>30</td></tr><tr><td>Contrat RH</td><td>25</td></tr><tr><td>Produit</td><td>19</td></tr><tr><td>Transverse</td><td>16</td></tr><tr><td>Groupement</td><td>16</td></tr><tr><td>Positionnement</td><td>15</td></tr><tr><td>Profil type</td><td>7</td></tr><tr><td>Facture fournisseur</td><td>7</td></tr><tr><td><b>Total</b></td><td><b>451</b></td></tr></table>
+<h2>Les écrans qui n'existent pas encore chez Ava</h2>
+<ul class="p"><li>Contrat RH, avenant, profil type</li><li>Achat, produit, groupement</li><li>Tout l'emailing</li><li>Les modèles d'action</li></ul>
+<h2>Les écarts qui reviennent partout</h2>
+<ul class="p"><li>La création se fait dans une fenêtre, alors que Boond ouvre une page qui devient la fiche</li><li>Pas de pied de fiche « Référence : … Créé le … par … »</li><li>Des compteurs sur les onglets, alors que Boond n'en a aucun</li><li>L'édition passe par une fenêtre, au lieu de l'édition directe</li><li>Les messages quand une liste est vide ne sont pas les mêmes</li><li>Le nom, dans une liste, n'est pas cliquable</li></ul>
+<h2>Ce qui a été tranché en regardant l'écran de Boond</h2>
+<ul class="p"><li>Deux contrats qui se chevauchent : Boond les enregistre avec une alerte, Ava les refuse</li><li>Créer un projet crée aussi un besoin, un positionnement et une prestation</li><li>Le contact exige un nom et un prénom ; le candidat, un nom et un prénom ; la ressource, un nom, un prénom et un e-mail</li></ul>
+<h2>Un défaut de Boond, non reproduit</h2>
+<p>Un décalage de 2 heures entre l'heure de la carte et celle du formulaire d'action. Ava doit afficher l'heure de Casablanca partout (la date par défaut de la démo suit encore Paris : écart AC-011).</p>
+<h2>Ce qui n'a pas été relevé</h2>
+<ul class="p"><li>La fiche d'une facture fournisseur (il faut déposer un fichier, c'est à Hamada de le faire)</li><li>La loupe de doublon (risque de données réelles)</li><li>Les fiches remplies de projet, achat, produit, contrat RH et profil type (en attente de confirmation d'Hamada)</li><li>Ce qu'un envoi de mail crée ensuite</li><li>Environ 36 points « à vérifier » côté Boond</li></ul>
+<h2>L'ordre de correction recommandé</h2>
+<ol class="o"><li><b>Le transversal d'abord</b>, parce qu'il touche presque toutes les fiches : le pied de fiche, la création en page qui devient la fiche, l'édition directe, les messages vides, le retrait des compteurs sur les onglets.</li><li><b>Les objets existants, un par un</b>, du plus utilisé au moins utilisé : candidat, ressource, besoin, société, contact, positionnement, projet, prestation.</li><li><b>Les écrans absents</b> : contrat RH, achat, produit, profil type, groupement.</li><li><b>Le « cliquable »</b> (23 écarts, rapide à corriger), puis les actions.</li><li><b>Le simulateur de mails</b> (rien n'est transmis), puis l'envoi réel plus tard.</li></ol>
+<h2>Ce que Hamada doit faire</h2>
+<p class="cons"><b>Lire ce rapport et le valider.</b> Alors seulement, Code commence. Dans Boond, les objets de test créés pendant le relevé sont à supprimer par Hamada ; aucun mail n'a été envoyé, aucun objet réel n'a été modifié.</p>
+</main></body></html>
