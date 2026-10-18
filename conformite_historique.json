@@ -1,10 +1,28 @@
 [
  {
   "date": "18/10/2026",
+  "label": "départ",
+  "heure": "",
   "note": 55.5,
   "version": "4d98c24e",
   "elements": 2271,
   "avant": 57.0,
   "mention": "mesure révisée après 5 fiches de plus"
+ },
+ {
+  "date": "18/10/2026",
+  "label": "campagne n° 1",
+  "heure": "",
+  "note": 57.8,
+  "version": "Livrable 3",
+  "elements": 2271
+ },
+ {
+  "date": "18/10/2026",
+  "label": "campagne n° 2",
+  "heure": "22h17",
+  "note": 59.4,
+  "version": "e19afde5 + 9fce943b",
+  "elements": 2271
  }
 ]
