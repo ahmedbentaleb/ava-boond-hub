@@ -1,8 +1,10 @@
 [
  {
   "date": "18/10/2026",
-  "note": 57.0,
+  "note": 55.5,
   "version": "4d98c24e",
-  "elements": 2211
+  "elements": 2271,
+  "avant": 57.0,
+  "mention": "mesure révisée après 5 fiches de plus"
  }
 ]

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Construit la page « Conformité à Boond » du hub depuis TABLEAU_CONFORMITE.md.
 
-Usage (depuis le dossier du hub) :  python -I outils/conformite_tableau.py [HHhMM]
+Usage (depuis le dossier du hub) :  python -I outils/conformite_tableau.py [HHhMM] [--revise="mention"]
+--revise : même date et même version, mesure corrigée : la ligne de l'historique est remplacée (avec la mention) au lieu d'en ajouter une.
 Lit   : ../../audits-independants/conformite/TABLEAU_CONFORMITE.md
 Écrit : conformite-boond.html et conformite_historique.json (une ligne par mesure : date + version).
 À chaque livraison : relire le fichier, relancer ce script, pousser. Rien d'exploitable n'y figure.
@@ -10,7 +11,9 @@ import re, sys, json, subprocess, os
 HUB = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(HUB, "..", "..", "audits-independants", "conformite", "TABLEAU_CONFORMITE.md")
 md = open(SRC, encoding="utf-8").read()
-H = sys.argv[1] if len(sys.argv) > 1 else subprocess.run(["date", "+%Hh%M"], capture_output=True, text=True).stdout.strip()
+args = [a for a in sys.argv[1:] if not a.startswith("--revise=")]
+REVISE = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--revise=")), None)
+H = args[0] if args else subprocess.run(["date", "+%Hh%M"], capture_output=True, text=True).stdout.strip()
 STAMP = f"Mis à jour le dimanche 18/10/2026 à {H} (heure de Casablanca)"
 
 fr = lambda x: x.replace(".", ",")
@@ -18,7 +21,7 @@ def pct(t):
     m = re.search(r"([\d.]+)\s*%", t)
     return float(m.group(1)) if m else None
 
-head = re.search(r"\*\*Note globale : ([\d.]+) %\*\* \((\d+) éléments conformes sur (\d+) relevés\) · \*\*date : (\d\d/\d\d/\d{4})\*\* · \*\*version d'Ava : (\w+)\*\* · Boond relevé à l'écran du (.+?) · mission", md)
+head = re.search(r"\*\*Note globale : ([\d.]+) %\*\* \((\d+) éléments conformes sur (\d+) relevés[^)]*\) · \*\*date : (\d\d/\d\d/\d{4})\*\* · \*\*version d'Ava : (\w+)\*\* · Boond relevé à l'écran du (.+?) · mission", md)
 note, conf, tot, date, ver, periode = float(head[1]), int(head[2]), int(head[3]), head[4], head[5], head[6]
 
 def rows(block):
@@ -53,8 +56,11 @@ for titre, cle in GROUPES:
 # historique
 hp = os.path.join(HUB, "conformite_historique.json")
 hist = json.load(open(hp, encoding="utf-8")) if os.path.exists(hp) else []
-if not any(h["date"] == date and h["version"] == ver for h in hist):
+idx = next((i for i, h in enumerate(hist) if h["date"] == date and h["version"] == ver), None)
+if idx is None:
     hist.append({"date": date, "note": note, "version": ver, "elements": tot})
+elif REVISE:
+    hist[idx] = {"date": date, "note": note, "version": ver, "elements": tot, "avant": hist[idx].get("avant", hist[idx]["note"]), "mention": REVISE}
 json.dump(hist, open(hp, "w", encoding="utf-8", newline=""), ensure_ascii=False, indent=1)
 
 def bar(p, absent=False):
@@ -87,13 +93,17 @@ td.n,th.n{text-align:right;white-space:nowrap} td.bc{width:30%;min-width:100px}
 @media (max-width:640px){.deux2{grid-template-columns:1fr}.note-g .gros{font-size:48px}}
 </style>"""
 def pc(x): return fr("%.1f" % x) + " %"
-def hrow(h): return '<tr><td>%s</td><td>%s</td><td class="n">%s</td><td class="n"><b>%s</b></td><td class="bc">%s</td></tr>' % (h["date"], h["version"], h["elements"], pc(h["note"]), bar(h["note"]))
+def hrow(h):
+    m = (' <small>(%s : %s → %s)</small>' % (h["mention"], pc(h["avant"]), pc(h["note"]))) if h.get("mention") else ""
+    return '<tr><td>%s%s</td><td>%s</td><td class="n">%s</td><td class="n"><b>%s</b></td><td class="bc">%s</td></tr>' % (h["date"], m, h["version"], h["elements"], pc(h["note"]), bar(h["note"]))
 def brow(p, n): return '<tr><td>%s</td><td class="n">%s</td><td class="bc">%s</td></tr>' % (n, pc(p), bar(p))
 HIST_ROWS = "".join(hrow(h) for h in reversed(hist))
 bas = sorted([(p, n) for g in sect.values() for (n, a, e, c, p, ab, s) in g if not ab and not s and p is not None and a > 0])[:5]
+cur = next(h for h in hist if h["date"] == date and h["version"] == ver)
+MENTION = ('<p class="sous" style="margin:0 0 12px">%s : %s → %s</p>' % (cur["mention"].capitalize(), pc(cur["avant"]), pc(cur["note"]))) if cur.get("mention") else ""
 html = HEAD + EXTRA + f'''<h1>Conformité à Boond</h1>
 <p class="sous">{STAMP} · à chaque livraison, ce tableau est recalculé et la date de mesure change</p>
-<span class="date">Mesurée le {date} sur la version {ver} · Boond relevé à l'écran du {periode}</span>
+<span class="date">Mesurée le {date} sur la version {ver} · Boond relevé à l'écran du {periode}</span>{MENTION}
 
 <div class="note-g"><div class="gros">{fr("%.1f" % note)}<small> %</small></div>
 <div class="col"><span class="bar grand"><i style="width:{note:.1f}%"></i></span><p class="sous" style="margin:6px 0 0">{conf} éléments conformes sur {tot} relevés dans Boond</p></div></div>
