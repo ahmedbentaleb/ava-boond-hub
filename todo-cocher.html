@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Todo à cocher</title>
+<style>
+:root{--bg:#ffffff;--fg:#1b1b1f;--mute:#6b6b76;--line:#e4e4ea;--card:#f7f7fa;--ok:#1f8a4c;--wait:#b26a00;--you:#6d3fd1}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#121216;--fg:#ececf1;--mute:#9a9aa6;--line:#2a2a33;--card:#1b1b22;--ok:#4fc98a;--wait:#f0a63a;--you:#a98bff}}
+:root[data-theme="dark"]{--bg:#121216;--fg:#ececf1;--mute:#9a9aa6;--line:#2a2a33;--card:#1b1b22;--ok:#4fc98a;--wait:#f0a63a;--you:#a98bff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;padding:16px}
+h1{font-size:20px;margin:0 0 4px}
+.sub{color:var(--mute);font-size:13px;margin-bottom:18px}
+h2{font-size:15px;margin:22px 0 8px;display:flex;gap:8px;align-items:center}
+.tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;border:1px solid currentColor}
+.t-you{color:var(--you)}.t-par{color:var(--ok)}.t-seq{color:var(--wait)}
+.lanes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.lane{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.lane h3{font-size:13px;margin:0 0 6px;color:var(--mute);font-weight:600}
+label{display:flex;gap:10px;align-items:flex-start;padding:6px 0;cursor:pointer}
+label+label{border-top:1px solid var(--line)}
+input{width:18px;height:18px;margin:1px 0 0;flex:none;accent-color:var(--ok)}
+input:checked+span{color:var(--mute);text-decoration:line-through}
+.who{font-size:12px;color:var(--mute)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:4px 12px}
+.arrow{color:var(--mute);font-size:13px;margin:8px 0 0 4px}
+</style>
+</head>
+<body>
+<h1>Todo Ava Manager</h1>
+<div class="sub">mise à jour 18/10/2026 · Livrable 2 en ligne · tout est en pause sur ton ordre · les cases se cochent (mémorisées dans ce navigateur)</div>
+
+<h2>✅ Fait</h2>
+<div class="box">
+<label><input type="checkbox" data-k="d1" checked><span>Livrable 1 en ligne, validé, audit accepté</span></label>
+<label><input type="checkbox" data-k="d2" checked><span>Livrable 2 en ligne (4d98c24e) : actions groupées réparées sur les 9 listes, « Ajouter un élément » au tableau de bord</span></label>
+<label><input type="checkbox" data-k="d3" checked><span>Hub refait par le Rapporteur</span></label>
+</div>
+
+<h2>1 · Tes décisions <span class="tag t-you">toi, Hamada</span></h2>
+<div class="box">
+<label><input type="checkbox" data-k="h6" checked><span>⭐ Règle « Ava = Boond à l'identique, seul écart permis : les widgets du tableau de bord » — les écarts adoptés avant (édition par bouton Modifier, filtres sans fenêtre, historique en onglet…) sont-ils annulés ?</span></label>
+<label><input type="checkbox" data-k="h7" checked><span>Ouvrir la session Conformité (elle lit Boond dans ton navigateur, sans rien écrire)</span></label>
+<label><input type="checkbox" data-k="h1"><span>Relancer Tests + audit sur le Livrable 2 ?</span></label>
+<label><input type="checkbox" data-k="h2"><span>Relancer le Livrable 3 maintenant, ou après le verdict de l'audit ?</span></label>
+<label><input type="checkbox" data-k="h3"><span>Données personnelles des captures Boond : public ou portail privé ?</span></label>
+<label><input type="checkbox" data-k="h4"><span>Autoriser Tests à écrire dans <code>_ops/</code> (6 corrections bloquées)</span></label>
+<label><input type="checkbox" data-k="h5"><span>« Afficher les filiales » : toute la descendance, ou les filiales directes seulement ?</span></label>
+</div>
+
+<h2>2 · Conformité saisie + fiches <span class="tag t-par">3 voies en parallèle</span></h2>
+<div class="lanes">
+<div class="lane"><h3>Voie A · commercial</h3>
+<label><input type="checkbox" data-k="ca1" checked><span>Société, contact : écran de saisie champ par champ</span></label>
+<label><input type="checkbox" data-k="ca2" checked><span>Besoin, positionnement : écran de saisie</span></label>
+<label><input type="checkbox" data-k="ca3" checked><span>Leurs fiches : synthèse + chaque onglet</span></label>
+</div>
+<div class="lane"><h3>Voie B · recrutement / RH</h3>
+<label><input type="checkbox" data-k="cb1" checked><span>Candidat, ressource : écran de saisie</span></label>
+<label><input type="checkbox" data-k="cb2" checked><span>Contrat RH, profil type : écran de saisie</span></label>
+<label><input type="checkbox" data-k="cb3" checked><span>Leurs fiches : synthèse + chaque onglet</span></label>
+</div>
+<div class="lane"><h3>Voie C · activité</h3>
+<label><input type="checkbox" data-k="cc1" checked><span>Projet, prestation : écran de saisie</span></label>
+<label><input type="checkbox" data-k="cc2" checked><span>Achat, produit, facture fournisseur : écran de saisie</span></label>
+<label><input type="checkbox" data-k="cc3" checked><span>Leurs fiches : synthèse + chaque onglet</span></label>
+</div>
+</div>
+<div class="arrow">puis, l'un après l'autre ↓</div>
+<div class="box">
+<label><input type="checkbox" data-k="cr1" checked><span>Rapport d'écarts précis (816 écarts, RAPPORT_FINAL_HAMADA_2026-10-18.md) : pour chaque écran, Boond / Ava côte à côte, chaque différence (libellé, ordre, champ, obligatoire, valeur par défaut, liste de valeurs, ce qui s'affiche après l'enregistrement)</span></label>
+<label><input type="checkbox" data-k="cr2"><span>Toi : tu lis le rapport et tu valides</span></label>
+<label><input type="checkbox" data-k="cr3"><span>Seulement ensuite : on code les corrections</span></label>
+</div>
+
+<h2>3 · Vérifier le Livrable 2 <span class="tag t-par">en parallèle du 3</span></h2>
+<div class="lanes">
+<div class="lane"><h3>Tests</h3>
+<label><input type="checkbox" data-k="v1"><span>Rejouer ses contrôles sur le site, sans y écrire</span></label>
+<label><input type="checkbox" data-k="v2"><span>« Modifier » en masse sur Actions (P-607)</span></label>
+</div>
+<div class="lane"><h3>Audit</h3>
+<label><input type="checkbox" data-k="v3"><span>Juger la version 4d98c24e → verdict</span></label>
+<label><input type="checkbox" data-k="v4"><span>Classer V-022 (accès à la base, relevé fait)</span></label>
+</div>
+</div>
+
+<h2>4 · Préparer le Livrable 3 <span class="tag t-seq">en pause</span></h2>
+<div class="lanes">
+<div class="lane"><h3>Code 1 · exercice fiscal (n°45)</h3>
+<label><input type="checkbox" data-k="a1" checked><span>Codé <span class="who">(fea91c72)</span></span></label>
+<label><input type="checkbox" data-k="a2"><span>Remettre sur le Livrable 2</span></label>
+<label><input type="checkbox" data-k="a3"><span>Tests : mise à jour de base 167 + période du tableau de bord</span></label>
+</div>
+<div class="lane"><h3>Code 2 · fiche ressource (n°9)</h3>
+<label><input type="checkbox" data-k="b1" checked><span>Codé, fuite fermée <span class="who">(1f5a9ffc)</span></span></label>
+<label><input type="checkbox" data-k="b2"><span>Remettre sur le Livrable 2</span></label>
+<label><input type="checkbox" data-k="b3"><span>Tests : base 168 + contrôle des fuites</span></label>
+</div>
+<div class="lane"><h3>Code 3 · listes de valeurs (n°10)</h3>
+<label><input type="checkbox" data-k="c1" checked><span>Couleurs, parent, filtre Mobilité codés <span class="who">(a2088f3a)</span></span></label>
+<label><input type="checkbox" data-k="c2"><span>Masques de référence : attend le droit en base (Tests)</span></label>
+<label><input type="checkbox" data-k="c3"><span>Remettre sur le Livrable 2</span></label>
+</div>
+<div class="lane"><h3>Code DB · droits</h3>
+<label><input type="checkbox" data-k="e1"><span>Archiver : un droit par type d'objet (166b)</span></label>
+<label><input type="checkbox" data-k="e2"><span>Refuser un responsable inconnu sur 5 commandes « Modifier »</span></label>
+<label><input type="checkbox" data-k="e3"><span>Petit : pouvoir vider le commentaire d'un positionnement</span></label>
+</div>
+</div>
+
+<h2>5 · Livrer le Livrable 3 <span class="tag t-seq">l'un après l'autre</span></h2>
+<div class="box">
+<label><input type="checkbox" data-k="l1"><span>Tests : contrôle final sur la version assemblée</span></label>
+<label><input type="checkbox" data-k="l2"><span>Toi : tu regardes l'aperçu local</span></label>
+<label><input type="checkbox" data-k="l3"><span>Feu vert, puis mise en ligne par Code (point de retour d'abord)</span></label>
+<label><input type="checkbox" data-k="l4"><span>Tests sur le site, puis verdict de l'audit</span></label>
+</div>
+
+<h2>Plus tard</h2>
+<div class="box">
+<label><input type="checkbox" data-k="p1"><span>Phase C : contrôles P-345 et le reste de P-405</span></label>
+<label><input type="checkbox" data-k="p2"><span>Comportements ⚡ après le n°11 · actions faite/prévue en phase 2</span></label>
+</div>
+
+<script>
+document.querySelectorAll('input[data-k]').forEach(function(c){
+  var k='todo-1016-'+c.dataset.k;
+  try{var v=localStorage.getItem(k);if(v!==null)c.checked=v==='1'}catch(e){}
+  c.addEventListener('change',function(){try{localStorage.setItem(k,c.checked?'1':'0')}catch(e){}});
+});
+</script>
+</body>
+</html>

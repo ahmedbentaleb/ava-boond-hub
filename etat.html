@@ -49,7 +49,7 @@ td{padding:9px 10px 9px 0;border-bottom:1px solid var(--bord);vertical-align:top
 </head><body><main>
 <div class="nav"><a href="./" target="_top">← le hub</a></div>
 <h1>Où en sommes-nous</h1>
-<p class="sous">Mis à jour le dimanche 18/10/2026 à 18h12 (heure de Casablanca) · les chiffres se lisent dans les autres pages à l'ouverture : ils ne sont jamais recopiés à la main</p>
+<p class="sous">Mis à jour le dimanche 18/10/2026 à 18h16 (heure de Casablanca) · les chiffres se lisent dans les autres pages à l'ouverture : ils ne sont jamais recopiés à la main</p>
 
 <p class="grand"><b>Le rapport de conformité est terminé : 816 écarts numérotés entre Boond et Ava</b> (612 distincts). Rien n'est codé : <b>le code ne commence qu'après ta validation.</b> Le Livrable 2 est en ligne depuis le 16/10 ; sa vérification et le Livrable 3 sont en pause sur ton ordre.</p>
 
@@ -101,7 +101,7 @@ td{padding:9px 10px 9px 0;border-bottom:1px solid var(--bord);vertical-align:top
 (function(){
   var get=function(u){return fetch(u,{cache:"no-store"}).then(function(r){return r.text()})};
   var set=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v};
-  get("taches.html").then(function(t){var m=t.match(/(\d+) tâches · n° 1 à \d+ · (\d+) faites/);if(m){set("c-taches",m[2]);set("c-taches-t","sur "+m[1])}}).catch(function(){});
+  get("todo.html").then(function(t){var m=t.match(/(\d+) tâches · n° 1 à \d+ · (\d+) faites/);if(m){set("c-taches",m[2]);set("c-taches-t","sur "+m[1])}}).catch(function(){});
   get("bugs.html").then(function(t){var o=t.match(/<b>(\d+)<\/b><span>encore ouverts/),c=t.match(/<b>(\d+)<\/b><span>corrigés/);if(o)set("c-ouverts",o[1]);if(c)set("c-corriges","· "+c[1]+" corrigés")}).catch(function(){});
   get("decisions.html").then(function(t){var n=t.match(/<b>(\d+)<\/b><span>décisions/),d=t.match(/class="id">(D-\d+)</);if(n)set("c-dec",n[1]);if(d)set("c-dec-d",d[1])}).catch(function(){});
 })();
