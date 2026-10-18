@@ -49,7 +49,7 @@ td{padding:9px 10px 9px 0;border-bottom:1px solid var(--bord);vertical-align:top
 </head><body><main>
 <div class="nav"><a href="./" target="_top">← le hub</a></div>
 <h1>Où en sommes-nous</h1>
-<p class="sous">Mis à jour le dimanche 18/10/2026 à 18h16 (heure de Casablanca) · les chiffres se lisent dans les autres pages à l'ouverture : ils ne sont jamais recopiés à la main</p>
+<p class="sous">Mis à jour le dimanche 18/10/2026 à 18h28 (heure de Casablanca) · les chiffres se lisent dans les autres pages à l'ouverture : ils ne sont jamais recopiés à la main</p>
 
 <p class="grand"><b>Le rapport de conformité est terminé : 816 écarts numérotés entre Boond et Ava</b> (612 distincts). Rien n'est codé : <b>le code ne commence qu'après ta validation.</b> Le Livrable 2 est en ligne depuis le 16/10 ; sa vérification et le Livrable 3 sont en pause sur ton ordre.</p>
 
@@ -60,6 +60,14 @@ td{padding:9px 10px 9px 0;border-bottom:1px solid var(--bord);vertical-align:top
 <tr><td class="e">✅</td><td><b>2 · Le rapport d'écarts</b> : 816 écarts, avec l'ordre de correction recommandé. <i>La synthèse est dans Boond › Rapport d'écarts Boond / Ava.</i></td><td>Fait le 18/10</td></tr>
 <tr><td class="e">⬜</td><td><b>3 · Hamada lit le rapport et valide</b></td><td>C'est le prochain pas, et le tien</td></tr>
 <tr><td class="e">⬜</td><td><b>4 · Seulement ensuite, on code les corrections</b>, le transversal d'abord</td><td>Après ta validation</td></tr></table>
+
+<div class="chiffres" id="chiffres">
+<div class="chiffre"><b id="c-conf">…</b><span>de conformité à Boond (borne haute) <span id="c-conf-d"></span></span></div>
+<div class="chiffre"><b id="c-taches">…</b><span>tâches faites <span id="c-taches-t"></span></span></div>
+<div class="chiffre"><b id="c-ouverts">…</b><span>défauts encore ouverts <span id="c-corriges"></span></span></div>
+<div class="chiffre"><b id="c-dec">…</b><span>décisions prises, la dernière : <span id="c-dec-d"></span></span></div>
+<div class="chiffre"><b>0</b><span>fuite entre comptes sur la version mise en ligne le 15/10 (Tests, Audit)</span></div>
+</div>
 
 <h2>Ce qui est en ligne</h2>
 <table><tr><th></th><th>Livraison</th><th>Ce qu'elle apporte</th></tr>
@@ -103,6 +111,7 @@ td{padding:9px 10px 9px 0;border-bottom:1px solid var(--bord);vertical-align:top
   var set=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v};
   get("todo.html").then(function(t){var m=t.match(/(\d+) tâches · n° 1 à \d+ · (\d+) faites/);if(m){set("c-taches",m[2]);set("c-taches-t","sur "+m[1])}}).catch(function(){});
   get("bugs.html").then(function(t){var o=t.match(/<b>(\d+)<\/b><span>encore ouverts/),c=t.match(/<b>(\d+)<\/b><span>corrigés/);if(o)set("c-ouverts",o[1]);if(c)set("c-corriges","· "+c[1]+" corrigés")}).catch(function(){});
+  get("conformite-boond.html").then(function(t){var n=t.match(/class="gros">([0-9,]+)/),d=t.match(/Mesurée le ([0-9]{2}\/[0-9]{2}\/[0-9]{4})/);if(n)set("c-conf",n[1]+" %");if(d)set("c-conf-d","· mesure du "+d[1])}).catch(function(){});
   get("decisions.html").then(function(t){var n=t.match(/<b>(\d+)<\/b><span>décisions/),d=t.match(/class="id">(D-\d+)</);if(n)set("c-dec",n[1]);if(d)set("c-dec-d",d[1])}).catch(function(){});
 })();
 </script>
