@@ -23,55 +23,58 @@ li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px s
 </style><style>.dans-hub .nav{display:none}</style><script>if(self!==top)document.documentElement.classList.add("dans-hub")</script></head><body>
 <div class="nav"><a href="./" target="_top">← le hub</a> · <b>À faire</b> · <a href="decisions.html">Décisions</a> · <a href="bugs.html">Défauts</a> · <a href="livraisons.html">Livraisons</a> · <a href="audits.html">Audits</a> · <a href="documents.html">Documents</a></div>
 <h1>À faire</h1>
-<p class="sous">Mis à jour le dimanche 18/10/2026 à 18h15 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire · ⏸ à la fin</p>
+<p class="sous">Mis à jour le dimanche 18/10/2026 à 19h08 (heure de Casablanca) · ✅ fait · ⏳ en cours · ⬜ à faire · ⏸ à la fin</p>
 
-<p class="compte">31 tâches · n° 1 à 31 · 2 faites</p>
+<p class="compte">32 tâches · n° 1 à 32 · 4 faites · 7 sessions Code travaillent en parallèle</p>
 <div class="chiffres">
-<div class="chiffre"><b>4d98c24e</b><span>la version en ligne (Livrable 2, 16/10), base des corrections</span></div>
-<div class="chiffre"><b>826</b><span>écarts entre Ava et Boond à corriger (622 distincts)</span></div>
-<div class="chiffre"><b>287 / 742</b><span>écarts déjà attrapés par les scénarios du Juge</span></div>
-<div class="chiffre"><b>à venir</b><span>note de conformité à Boond en %, par section (page du hub)</span></div>
+<div class="chiffre"><b>55,5 %</b><span>conformité à Boond aujourd’hui · objectif 95 %</span></div>
+<div class="chiffre"><b>826</b><span>écarts Ava / Boond à corriger (622 distincts)</span></div>
+<div class="chiffre"><b>4d98c24e</b><span>la version en ligne (Livrable 2) · le Livrable 3 est en construction</span></div>
+<div class="chiffre"><b>7</b><span>sessions Code en parallèle : 1, 2, 3, DB, 4, 5, 6</span></div>
 </div>
 
-<div class="bloc">La règle — 18/10<small>Hamada : « Je veux rétro-ingénierer le même Boond Manager, la même chose. » Le seul écart permis : les widgets du tableau de bord. Ce qui est interdit à un rôle est grisé, jamais refusé après un clic.</small></div>
+<div class="bloc">La règle — 18/10<small>Hamada : « Je veux rétro-ingénierer le même Boond Manager, la même chose. » Le seul écart permis : les widgets du tableau de bord. Ce qui est interdit à un rôle est grisé, jamais refusé après un clic. Méthode vite : on teste à la campagne, pas à chaque lot.</small></div>
 
-<h2>Corrections de conformité — dans l'ordre</h2>
+<h2>En cours — dans l'ordre</h2>
 <ol class="cours">
-<li><span class="n">1</span><span class="e">✅</span><b>Fait</b> — Livrable 1 (15/10) puis Livrable 2 (16/10 à 06h54) en ligne : actions groupées réparées sur les 9 listes, « Ajouter un élément » au tableau de bord<span class="qui">Code</span></li>
-<li><span class="n">2</span><span class="e">✅</span><b>Fait</b> — Rapport de conformité Boond / Ava : 826 écarts numérotés (saisie 455 · fiches 297 · actions 28 · mails 23 · cliquable 23)<span class="qui">Conformité</span></li>
-<li><span class="n">3</span><span class="e">⏳</span><b>En cours</b> — Relever les 5 fiches remplies restantes (projet, achat, produit, contrat RH, profil type) : attend ton « oui » écrit dans la session Conformité<span class="qui">Conformité · Hamada</span></li>
-<li><span class="n">4</span><span class="e">⏳</span><b>En cours</b> — Tableau de conformité à Boond : note globale en % et % par section, remis à jour à chaque livraison<span class="qui">Conformité → Rapporteur</span></li>
-<li><span class="n">5</span><span class="e">⏳</span><b>En cours</b> — Scénarios de tests réels par rôle (interdit = grisé) : 287 écarts sur 742 déjà attrapés ; suite : relire les rouges, 455 restants, brancher actions, mails, cliquable<span class="qui">Juge</span></li>
-<li><span class="n">6</span><span class="e">⏳</span><b>L1 — Transversal des fiches</b> : pied « Référence · Créé le … par … », retrait des compteurs d’onglet, messages vides, en-tête, barre d’outils, menu « + »<span class="qui">Code 1</span></li>
-<li><span class="n">7</span><span class="e">⬜</span><b>L2 — Création en page</b> qui devient la fiche (au lieu d’une fenêtre) ; champs obligatoires comme Boond ; <b>édition directe</b> dans la fiche<span class="qui">Code 1</span></li>
-<li><span class="n">8</span><span class="e">⬜</span><b>L3 — Interdit = grisé ou non cliquable</b> (jamais un refus après clic) et <b>cliquable</b> comme Boond (23 écarts : noms, liens, pastilles)<span class="qui">Code 3</span></li>
-<li><span class="n">9</span><span class="e">⬜</span><b>M1 — Simulateur d’envoi de mails</b> (en parallèle) : boîte d’envoi simulée visible, 3 modèles, de / Cc / Cci, variables, pièces jointes<span class="qui">Code 2</span></li>
-<li><span class="n">10</span><span class="e">⬜</span><b>M2 — Réglages et modèle de données</b> demandés par les écarts (listes de valeurs, masques, types d’action, droits par type) ; migrations par Tests<span class="qui">Code DB · Tests</span></li>
+<li><span class="n">1</span><span class="e">✅</span><b>Fait</b> — Livrable 1 (15/10) et Livrable 2 (16/10 à 06h54) en ligne<span class="qui">Code</span></li>
+<li><span class="n">2</span><span class="e">✅</span><b>Fait</b> — Rapport de conformité Boond / Ava : 826 écarts numérotés (saisie 455 · fiches 297 · actions 28 · mails 23 · cliquable 23), 5 fiches remplies relevées<span class="qui">Conformité</span></li>
+<li><span class="n">3</span><span class="e">✅</span><b>Fait</b> — Tableau de conformité : <b>55,5 %</b> au départ (18/10), 73,1 % sur les écrans présents, 0 % sur les écrans absents ; page « Conformité à Boond » dans le hub<span class="qui">Conformité · Rapporteur</span></li>
+<li><span class="n">4</span><span class="e">⏳</span><b>En cours — campagne n° 1 de mesure</b> sur le Livrable 3 : le Juge joue toutes ses scénarios (par rôle, grisé, cliquable) et recalcule la note ; la campagne n° 2 inclura les migrations<span class="qui">Juge</span></li>
+<li><span class="n">5</span><span class="e">⏳</span><b>En cours — migrations</b> de toutes les specs déposées (exercice fiscal, fusion de personnes, archivage par type, mobilités, masques, couleurs, types d’action…), puis les 4 contrôles<span class="qui">Tests</span></li>
+<li><span class="n">6</span><span class="e">✅</span><b>L1 — Fiches</b> : pied « Référence · Créé le … par … », compteurs d’onglet retirés, garde « Changement en cours » à 3 boutons — fusionné dans le Livrable 3<span class="qui">Code 1</span></li>
+<li><span class="n">7</span><span class="e">⏳</span><b>L2 — Création en page</b> qui devient la fiche, champs obligatoires comme Boond, <b>édition directe</b> dans la fiche<span class="qui">Code 1</span></li>
+<li><span class="n">8</span><span class="e">⏳</span><b>L3 — Listes : cliquable et grisé</b> (K-001, 002, 003, 004, 021 faits ; restent K-005, 022, masse par ligne), puis le cliquable et le grisé dans les fiches<span class="qui">Code 3</span></li>
+<li><span class="n">9</span><span class="e">⏳</span><b>M1 — Simulateur d’envoi de mails</b> : boîte d’envoi simulée visible, 3 modèles, de / Cc / Cci, variables, pièces jointes<span class="qui">Code 2</span></li>
+<li><span class="n">10</span><span class="e">⏳</span><b>M2 — Calculs et réglages</b> : TVA, marge, rentabilité, coût journalier du contrat (faits, inertes) ; écrans absents à brancher<span class="qui">Code DB</span></li>
+<li><span class="n">11</span><span class="e">⏳</span><b>L4 — Candidat et ressource</b> (saisie candidat 22 %, ressource 38 %)<span class="qui">Code 4</span></li>
+<li><span class="n">12</span><span class="e">⏳</span><b>L4 — Société, contact, besoin, positionnement</b> (saisie commune 27 %)<span class="qui">Code 5</span></li>
+<li><span class="n">13</span><span class="e">⏳</span><b>L4 — Projet et prestation</b> (16 écarts du projet fermés ; reste le type par défaut, la fenêtre prestation, « Créer un projet » qui crée besoin, positionnement et prestation)<span class="qui">Code 6</span></li>
 </ol>
 
 <h2>Après — dans cet ordre</h2>
 <ol class="ensuite">
-<li><span class="n">11</span><span class="e">⬜</span><b>L4 — Les objets existants, un par un</b> : candidat, ressource, besoin, société, contact, positionnement, projet, prestation<span class="qui">Code</span></li>
-<li><span class="n">12</span><span class="e">⬜</span><b>L5 — Les écrans absents</b> : contrat RH et avenant, profil type, achat, produit, groupement<span class="qui">Code</span></li>
-<li><span class="n">13</span><span class="e">⬜</span><b>L6 — Les actions</b> (28 écarts) : types par objet, agenda, éditeur, pièces jointes, drapeau, numéro ACT, heure de Casablanca<span class="qui">Code</span></li>
-<li><span class="n">14</span><span class="e">⬜</span><b>Livrable 3 de l’ancien plan</b> : exercice fiscal (n° 45), fiche ressource sans fuite (n° 9), listes de valeurs avec couleurs (n° 10) ; déjà remis sur la version en ligne, à intégrer aux lots<span class="qui">Code 1 · 2 · 3</span></li>
-<li><span class="n">15</span><span class="e">⬜</span><b>Méthode vite — on teste à la fin, pas à chaque lot</b> : on avance, on ne teste pas chaque fonction seule ; quand on veut livrer, campagne complète (4 contrôles + scénarios du Juge) → on corrige → on retest, jusqu’à ce que ce soit bon → aperçu à Hamada → son mot → mise en ligne par Code (point de retour d’abord)<span class="qui">BRAIN</span></li>
-<li><span class="n">16</span><span class="e">⬜</span>Reporting : Synthèse, Projets, Ressources, Sociétés<span class="qui">Code</span></li>
-<li><span class="n">17</span><span class="e">⬜</span>Lot 5.8 : documents RH, devis, facturation, achats, export<span class="qui">Code</span></li>
-<li><span class="n">18</span><span class="e">⬜</span>Vidage de la base de démo<span class="qui">Code</span></li>
-<li><span class="n">19</span><span class="e">⬜</span>Deux semaines d’essai complet (durée fixée par Hamada, elle ne se raccourcit pas)<span class="qui">Hamada</span></li>
-<li><span class="n">20</span><span class="e">⬜</span>⭐ Import des données de Boond vers Ava Manager, puis un mois en parallèle de Boond<span class="qui">Code · Avaliance</span></li>
-<li><span class="n">21</span><span class="e">⬜</span>Tous les hubs derrière un mot de passe de session<span class="qui">Hub · Hamada</span></li>
+<li><span class="n">14</span><span class="e">⬜</span><b>L5 — Les écrans absents</b> : contrat RH et avenant, profil type, achat, produit, groupement, facture fournisseur (488 éléments à 0 %)<span class="qui">Code DB</span></li>
+<li><span class="n">15</span><span class="e">⬜</span><b>L6 — Les actions</b> (28 écarts) : types par objet, agenda, éditeur, pièces jointes, drapeau, numéro ACT, heure de Casablanca<span class="qui">Code 2</span></li>
+<li><span class="n">16</span><span class="e">⬜</span><b>Campagnes de mesure suivantes</b> : on corrige, on rejoue, on boucle ; objectif <b>95 %</b> au tableau de conformité<span class="qui">Juge · Tests</span></li>
+<li><span class="n">17</span><span class="e">⬜</span><b>Livrable 3</b> : aperçu à Hamada → son mot → mise en ligne par Code (point de retour d’abord) → Tests et Audit sur le site<span class="qui">BRAIN · Code</span></li>
+<li><span class="n">18</span><span class="e">⬜</span>Reporting : Synthèse, Projets, Ressources, Sociétés<span class="qui">Code</span></li>
+<li><span class="n">19</span><span class="e">⬜</span>Lot 5.8 : documents RH, devis, facturation, achats, export<span class="qui">Code</span></li>
+<li><span class="n">20</span><span class="e">⬜</span>Vidage de la base de démo<span class="qui">Code</span></li>
+<li><span class="n">21</span><span class="e">⬜</span>Deux semaines d’essai complet (durée fixée par Hamada, elle ne se raccourcit pas)<span class="qui">Hamada</span></li>
+<li><span class="n">22</span><span class="e">⬜</span>⭐ Import des données de Boond vers Ava Manager, puis un mois en parallèle de Boond<span class="qui">Code · Avaliance</span></li>
+<li><span class="n">23</span><span class="e">⬜</span>Tous les hubs derrière un mot de passe de session<span class="qui">Hub · Hamada</span></li>
 </ol>
 
 <h2>À la fin</h2>
 <ol class="ensuite">
-<li><span class="n">22</span><span class="e">⏸</span>Quand tout marche : les tests permanents et les parcours joués par le Juge, puis un verdict de l’Audit sur la version finale<span class="qui">Juge · Audit</span></li>
-<li><span class="n">23</span><span class="e">⏸</span>Vérification du Livrable 2 par Tests et Audit (en pause depuis le 16/10) et classement de V-022<span class="qui">Tests · Audit</span></li>
+<li><span class="n">24</span><span class="e">⏸</span>Quand tout marche : les tests permanents et les parcours joués par le Juge, puis un verdict de l’Audit sur la version finale<span class="qui">Juge · Audit</span></li>
+<li><span class="n">25</span><span class="e">⏸</span>Vérification du Livrable 2 par Tests et Audit (en pause depuis le 16/10) et classement de V-022<span class="qui">Tests · Audit</span></li>
 </ol>
 
 <h2>En ligne</h2>
 <ul class="ok">
+
 <li><span class="e">✅</span>Livrable 2 : actions groupées sur les 9 listes, « Ajouter un élément » au tableau de bord, archivage des positionnements et prestations, modification d'une action depuis sa fiche<span class="qui">4d98c24e, 16/10 06h54</span></li>
 <li><span class="e">✅</span>Livrable 1 : les 4 contrôles sans fuite, validé par Hamada, audit accepté<span class="qui">28c5926e, 15/10</span></li>
 
@@ -102,13 +105,12 @@ li><span class="e">✅</span>Correctif : plus aucun nom de société montré à 
 
 <h2>Pour Hamada seul</h2>
 <ul class="toi">
-<li><span class="n">24</span><span class="e">→</span>Écrire « oui » à Conformité, dans sa session, pour qu’elle relève les 5 fiches remplies</li>
-<li><span class="n">25</span><span class="e">→</span><b>À faire à la main, à la fin</b> — Déposer un PDF de facture fournisseur dans Boond (maquette en attendant)</li>
-<li><span class="n">26</span><span class="e">→</span><b>À faire à la main, à la fin</b> — Supprimer dans Boond les objets TEST créés pour le relevé (liste dans A_SUPPRIMER_DANS_BOOND.md), ou le dire à Conformité dans sa session</li>
-<li><span class="n">27</span><span class="e">→</span><b>À faire à la main, à la fin</b> — Brancher l’envoi réel de mails : le fournisseur d’envoi et ses accès (simulateur en attendant)</li>
-<li><span class="n">28</span><span class="e">→</span>Autoriser Tests à écrire dans <code>_ops/</code> : 6 corrections de canon sont bloquées (MergePersons, échelle du compte, REGISTRE_EXECUTABLE_LOT58, UpdateAction, MODELE_DONNEES l.343, P-376)</li>
-<li><span class="n">29</span><span class="e">→</span>À trancher : « Afficher les filiales » montre toute la descendance (choix du BRAIN, réversible) ou seulement les filiales directes ?</li>
-<li><span class="n">30</span><span class="e">→</span>Confirmer que les captures et documents de Boond restent sur le hub public (D-251) : ils montrent des noms et des photos de vraies personnes</li>
-<li><span class="n">31</span><span class="e">→</span>Avant les vraies données : une machine hors du serveur pour les sauvegardes · Microsoft Entra, plus tard</li>
+<li><span class="n">26</span><span class="e">→</span><b>Livrable 2bis</b> — le correctif « Créer › Action » est prêt (4 contrôles verts, aperçu local) : dire « vas-y » pour le mettre en ligne</li>
+<li><span class="n">27</span><span class="e">→</span><b>À faire à la main, à la fin</b> — Déposer un PDF de facture fournisseur dans Boond (maquette en attendant)</li>
+<li><span class="n">28</span><span class="e">→</span><b>À faire à la main, à la fin</b> — Supprimer dans Boond les objets TEST créés pour le relevé (liste dans A_SUPPRIMER_DANS_BOOND.md), ou le dire à Conformité dans sa session</li>
+<li><span class="n">29</span><span class="e">→</span><b>À faire à la main, à la fin</b> — Brancher l’envoi réel de mails : le fournisseur d’envoi et ses accès (simulateur en attendant)</li>
+<li><span class="n">30</span><span class="e">→</span>Autoriser Tests à écrire dans <code>_ops/</code> : 6 corrections de canon sont bloquées</li>
+<li><span class="n">31</span><span class="e">→</span>Confirmer que les captures et documents de Boond restent sur le hub public (D-251) : ils montrent des noms et des photos de vraies personnes</li>
+<li><span class="n">32</span><span class="e">→</span>Avant les vraies données : une machine hors du serveur pour les sauvegardes · Microsoft Entra, plus tard</li>
 </ul>
 </main></body></html>
