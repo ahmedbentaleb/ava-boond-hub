@@ -23,8 +23,11 @@ nouveau = ", ".join(["base %s %%" % fr(b0["note"])] + ["%s : %s %%" % (p["label"
 tx = json.loads(rd("etat_texte.json"))
 
 GRAND = f'''<p class="grand"><b>Aujourd’hui Ava ressemble à Boond à {bas} % ; la cible est 100 % des éléments mesurables.</b> Il reste {last_n["ecarts"]} différences à fermer.</p>
+<p class="sous">Chiffre prudent, jusqu’à {haut} % ; objectif 100 %.</p>'''
+DETAIL = f'''<details class="detail"><summary>Détails</summary>
 <p class="sous"><b>{ment}</b></p>
-<p class="sous">Les éléments qu’on ne peut pas vérifier chez Boond (module facturation absent du compte, envois réels de mails, PDF à déposer) sont listés à part avec la raison. Ce {bas} % est le chiffre prudent ({nj["prudent_conformes"]} éléments sur {nj.get("prudent_releves", last_n["releves"])}, sans les cas ambigus ; il était de {nj["prudent_precedent"]} à la campagne précédente) : il peut monter jusqu’à {haut} % ({nj.get("haut_precis", fr(last_n["note"]))} % d’éléments sans différence ouverte, règle du Juge, à la campagne {last_n["label"]}). Seuls {nj["verts"]} éléments sur {nj.get("prudent_releves", last_n["releves"])} ({fr(nj["verts_pct"])} %) sont déjà confirmés par un test réussi, les autres sont conformes par comparaison. L’<b>ancienne façon de compter</b> (les écrans neufs comptaient 0) donne {fr(last_h["note"])} % ; elle est gardée pour l’historique. {tx["livrable3"]} <b>Hamada a autorisé le BRAIN à le remplacer entièrement</b> (D-330), sauf pour la base de démo, les gestes à la main, le serveur réel, les secrets, les noms de domaine et les comptes.</p>'''
+<p class="sous">Les éléments qu’on ne peut pas vérifier chez Boond (module facturation absent du compte, envois réels de mails, PDF à déposer) sont listés à part avec la raison. Ce {bas} % est le chiffre prudent ({nj["prudent_conformes"]} éléments sur {nj.get("prudent_releves", last_n["releves"])}, sans les cas ambigus ; il était de {nj["prudent_precedent"]} à la campagne précédente) : il peut monter jusqu’à {haut} % ({nj.get("haut_precis", fr(last_n["note"]))} % d’éléments sans différence ouverte, règle du Juge, à la campagne {last_n["label"]}). Seuls {nj["verts"]} éléments sur {nj.get("prudent_releves", last_n["releves"])} ({fr(nj["verts_pct"])} %) sont déjà confirmés par un test réussi, les autres sont conformes par comparaison. L’<b>ancienne façon de compter</b> (les écrans neufs comptaient 0) donne {fr(last_h["note"])} % ; elle est gardée pour l’historique. {tx["livrable3"]} <b>Hamada a autorisé le BRAIN à le remplacer entièrement</b> (D-330), sauf pour la base de démo, les gestes à la main, le serveur réel, les secrets, les noms de domaine et les comptes.</p>
+</details>'''
 CARTE = f'''<div class="chiffre"><b>{bas} %</b><span>d’Ava ressemble à Boond (chiffre prudent, campagne {bascamp}) ; peut monter jusqu’à {haut} % quand les tests seront resserrés ; objectif 100 % des éléments mesurables. {ment}</span></div>'''
 LIGNE = f'''<b>Campagnes de mesure sur le Livrable 3</b> : le Juge joue ses scénarios (par rôle, grisé, cliquable) et recalcule la note. <b>Ancien tableau</b> (écrans absents forcés à 0 %) : {ancien}. <b>Nouveau tableau</b> (écrans neufs comptés élément par élément) : {nouveau} ({fr(last_n["note"])} % d’éléments sans différence ouverte, {last_n["conformes"]} sur {last_n["releves"]} ; {last_n["ecarts"]} différences à fermer). Chiffre prudent : {fr(nj["bas"])} %. Le nouveau tableau est la référence ; l’ancien est gardé pour la continuité.'''
 STATUT = tx["statut_campagne"].replace("{num}", num)
@@ -35,7 +38,7 @@ def bloc(s, nom, contenu):
     raise SystemExit("repère manquant : " + nom)
 
 e = rd("etat.html")
-e = bloc(e, "grand", GRAND); e = bloc(e, "carte", CARTE); e = bloc(e, "ligne", LIGNE); e = bloc(e, "statut", STATUT)
+e = bloc(e, "grand", GRAND); e = bloc(e, "detail", DETAIL); e = bloc(e, "carte", CARTE); e = bloc(e, "ligne", LIGNE); e = bloc(e, "statut", STATUT)
 J = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"]; n = datetime.datetime.now()
 ST = "Mis à jour le %s %s à %s (heure de Casablanca)" % (J[n.weekday()], n.strftime("%d/%m/%Y"), n.strftime("%Hh%M"))
 e = re.sub(r"Mis à jour le [^(]*\(heure de Casablanca\)", ST, e, count=1)
