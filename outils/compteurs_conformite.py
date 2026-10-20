@@ -116,7 +116,7 @@ def calcul():
         hh = h.get("heure", "").replace("h", ":") or "00:00"
         iso = "%s-%s-%s" % (y, mo, d)
         tok_ = h["version"].split()[0]
-        cand = [r for r in rj if tok_ in r["dossier"]]
+        cand = [r for r in rj if r["dossier"] == h["dossier"]] if h.get("dossier") else [r for r in rj if tok_ in r["dossier"]]
         R = (ids_resolus(cand[-1]["dossier"]) if cand else None) or set()
         if cand: dernier = cand[-1]  # la dernière campagne PUBLIÉE (pas un rejeu partiel plus récent)
         R &= U

@@ -120,5 +120,21 @@
   "resolus": 569,
   "rouges": 435,
   "bloques": 150
+ },
+ {
+  "date": "20/10/2026",
+  "label": "campagne n° 10",
+  "heure": "17h13",
+  "note": 67.4,
+  "version": "tête du 20/10, 17h",
+  "elements": 2271,
+  "pas_rouges": 612,
+  "pas_verts": 1436,
+  "pas_bloques": 177,
+  "pas": 2225,
+  "resolus": 575,
+  "rouges": 469,
+  "bloques": 177,
+  "dossier": "20261020_1713_n10-ancien-final"
  }
 ]

@@ -19,13 +19,20 @@
    "conformes": 1885,
    "releves": 2242,
    "ecarts": 357
+  },
+  {
+   "label": "n° 10",
+   "note": 87.1,
+   "conformes": 1936,
+   "releves": 2224,
+   "ecarts": 288
   }
  ],
- "sections": " Par partie à la n° 9 : saisie 79,3 % (338 sur 426) · fiche 76,7 % (672 sur 876) · cliquable 94,3 % (675 sur 716) · actions 97,5 % (116 sur 119) · mails 80,0 % (84 sur 105).",
- "bas": 77.4,
- "verts": 354,
- "verts_pct": 15.8,
- "ambigus": 149,
+ "sections": "",
+ "bas": 80.0,
+ "verts": 419,
+ "verts_pct": 18.8,
+ "ambigus": null,
  "tableau": [
   [
    "Saisie transverse (4 objets CRM)",
@@ -65,16 +72,16 @@
   [
    "Saisie candidat",
    41,
-   21,
-   20,
-   48.8
+   19,
+   22,
+   53.7
   ],
   [
    "Saisie ressource",
    39,
-   4,
-   35,
-   89.7
+   3,
+   36,
+   92.3
   ],
   [
    "Saisie contrat RH",
@@ -85,10 +92,10 @@
   ],
   [
    "Saisie profil type",
-   25,
-   1,
    24,
-   96.0
+   1,
+   23,
+   95.8
   ],
   [
    "Saisie projet",
@@ -100,9 +107,9 @@
   [
    "Saisie prestation",
    20,
-   8,
-   12,
-   60.0
+   4,
+   16,
+   80.0
   ],
   [
    "Saisie achat",
@@ -127,17 +134,17 @@
   ],
   [
    "Saisie facture fournisseur",
-   28,
+   27,
    2,
-   26,
-   92.9
+   25,
+   92.6
   ],
   [
    "Fiche transverse (toutes fiches)",
    25,
-   9,
-   16,
-   64.0
+   8,
+   17,
+   68.0
   ],
   [
    "Fiche société",
@@ -156,72 +163,72 @@
   [
    "Fiche besoin",
    77,
-   17,
-   60,
-   77.9
+   14,
+   63,
+   81.8
   ],
   [
    "Fiche positionnement",
    35,
-   9,
-   26,
-   74.3
+   8,
+   27,
+   77.1
   ],
   [
    "Fiche candidat",
    116,
-   28,
-   88,
-   75.9
+   27,
+   89,
+   76.7
   ],
   [
    "Fiche ressource",
    157,
-   28,
-   129,
-   82.2
+   26,
+   131,
+   83.4
   ],
   [
    "Fiche contrat RH",
-   26,
+   21,
    9,
-   17,
-   65.4
+   12,
+   57.1
   ],
   [
    "Fiche profil type",
-   9,
-   2,
-   7,
-   77.8
+   6,
+   0,
+   6,
+   100.0
   ],
   [
    "Fiche projet",
    71,
-   5,
-   66,
-   93.0
+   4,
+   67,
+   94.4
   ],
   [
    "Fiche prestation",
    43,
-   31,
-   12,
-   27.9
+   8,
+   35,
+   81.4
   ],
   [
    "Fiche achat",
-   35,
-   12,
-   23,
-   65.7
+   30,
+   9,
+   21,
+   70.0
   ],
   [
    "Fiche produit",
-   13,
+   11,
    6,
-   7,
-   53.8
+   5,
+   45.5
   ],
   [
    "Fiche facture fournisseur",
@@ -233,16 +240,16 @@
   [
    "Fiche avenant",
    16,
-   4,
-   12,
-   75.0
+   3,
+   13,
+   81.3
   ],
   [
    "Fiche groupement",
-   16,
-   7,
-   9,
-   56.3
+   15,
+   1,
+   14,
+   93.3
   ],
   [
    "Cliquable coque (menu, cloche, fil d'Ariane)",
@@ -268,9 +275,9 @@
   [
    "Cliquable écrans absents (listes, fiches, menu, onglets)",
    147,
-   35,
-   112,
-   76.2
+   29,
+   118,
+   80.3
   ],
   [
    "Actions menus Créer et étape société",
@@ -282,16 +289,16 @@
   [
    "Actions fenêtre d'action",
    43,
-   1,
-   42,
-   97.7
+   0,
+   43,
+   100.0
   ],
   [
    "Actions carte et onglet des fiches",
    18,
-   1,
-   17,
-   94.4
+   0,
+   18,
+   100.0
   ],
   [
    "Actions liste /actions",
@@ -310,23 +317,23 @@
   [
    "Mails page Envoi d'un email",
    21,
-   3,
-   18,
-   85.7
+   0,
+   21,
+   100.0
   ],
   [
    "Mails CV, ordre de mission, partage, fils, DT",
    36,
-   13,
-   23,
-   63.9
+   7,
+   29,
+   80.6
   ],
   [
    "Mails configuration Emailing",
    9,
-   5,
    4,
-   44.4
+   5,
+   55.6
   ],
   [
    "Mails cloche et notifications",
@@ -339,39 +346,41 @@
  "parties": [
   [
    "saisie",
-   426,
-   88,
-   338,
-   79.3
+   424,
+   81,
+   343,
+   80.9
   ],
   [
    "fiche",
-   876,
-   204,
-   672,
-   76.7
+   860,
+   160,
+   700,
+   81.4
   ],
   [
    "cliquable",
    716,
-   41,
-   675,
-   94.3
+   35,
+   681,
+   95.1
   ],
   [
    "actions",
    119,
-   3,
-   116,
-   97.5
+   1,
+   118,
+   99.2
   ],
   [
    "mails",
    105,
-   21,
-   84,
-   80.0
+   11,
+   94,
+   89.5
   ]
  ],
- "tableau_label": "n° 9"
+ "tableau_label": "n° 10",
+ "bas_txt": "environ 80",
+ "bas_approx": true
 }

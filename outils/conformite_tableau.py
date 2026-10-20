@@ -34,7 +34,7 @@ if REJEU:
     txt = open(REJEU, encoding="utf-8").read()
     m = re.search(r"APRÈS marquage RÉSOLU \| \*\*([\d.]+) % \((\d+) conformes sur (\d+) relevés", txt)
     note, conf, tot = float(m[1]), int(m[2]), int(m[3])
-    dm = re.search(r"(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})_([0-9a-f+]+)", REJEU.replace("\\", "/").split("/")[-2])
+    dm = re.search(r"(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})_([0-9a-zA-Z+-]+)", REJEU.replace("\\", "/").split("/")[-2])
     date = "%s/%s/%s" % (dm[3], dm[2], dm[1]) if dm else "18/10/2026"
     HEURE = HEURE or ((dm[4] + "h" + dm[5]) if dm else "")
     ver, periode = VERSION or (dm[6] if dm else "version de travail"), "08 au 18/10/2026"
@@ -104,6 +104,7 @@ if LABEL:
     ent = {"date": date, "label": LABEL, "heure": HEURE or "", "note": note, "version": ver, "elements": tot}
     ent.update(st_ if REJEU else {})
     if NOTE: ent["texte"] = NOTE
+    if REJEU: ent["dossier"] = os.path.basename(os.path.dirname(REJEU.replace("\\", "/")))
     idx = next((i for i, h in enumerate(hist) if h["date"] == date and h.get("label") == LABEL), None)
     if idx is None: hist.append(ent)
     else: hist[idx] = ent
@@ -190,7 +191,7 @@ try:
         o.append("</svg>")
         return "".join(o)
     bas_n = nj.get("bas")
-    FOURCH = (" (fourchette %s–%s)" % (pc(bas_n), pc(last["note"]))) if bas_n else ""
+    FOURCH = ((" (fourchette %s–%s)" % (("%s %%" % nj["bas_txt"]) if nj.get("bas_approx") else pc(bas_n), pc(last["note"]))) if bas_n else "")
     CONF9 = ('<li style="display:list-item;border:0;padding:2px 0"><b>Confirmés par un scénario vert : %s sur %s (%s).</b> Les autres éléments conformes sont des « conformes par comparaison » : lus dans Boond et dans Ava, pas encore confirmés par un test.</li>'
              % (nj["verts"], last["releves"], pc(nj["verts_pct"]))) if nj.get("verts") else ""
     AMBI = ('<li style="display:list-item;border:0;padding:2px 0">%s écarts résolus ont une preuve discutable : sans eux, la note tombe à %s. Le Juge les résorbe à la campagne n° 10.</li>' % (nj["ambigus"], pc(bas_n))) if bas_n and nj.get("ambigus") else ""
@@ -224,12 +225,14 @@ try:
     SEUL_P = _nj.get("bas") or _nj["points"][-1]["note"]; HAUT = fr("%.0f" % _nj["points"][-1]["note"])
 except Exception:
     SEUL_P, HAUT = note, fr("%.0f" % note)
-SEUL = fr("%.0f" % SEUL_P)
+    _nj = {}
+SEUL = _nj.get("bas_txt") or fr("%.0f" % SEUL_P)
+RESTE = (_nj.get("points") or [{}])[-1].get("ecarts", "")
 html = HEAD + EXTRA + f'''<h1>Conformité à Boond</h1>
 <p class="sous">{STAMP} · à chaque livraison, ce tableau est recalculé et la date de mesure change</p>
 <span class="date">Mesurée le {date}{QUAND} sur {SURQUOI} · Boond relevé à l'écran du {periode}</span>{MENTION}{ENLIGNE}{STATS}
 
-<p class="grandphrase"><b>Aujourd’hui Ava ressemble à Boond à {SEUL} % ; la cible est 100 % des éléments mesurables.</b></p>
+<p class="grandphrase"><b>Aujourd’hui Ava ressemble à Boond à {SEUL} % ; la cible est 100 % des éléments mesurables.</b> Il reste {RESTE} différences à fermer.</p>
 <p class="sous" style="margin:0 0 8px">Les éléments qu’on ne peut pas vérifier chez Boond (module facturation absent du compte, envois réels de mails, PDF à déposer) sont listés à part avec la raison.</p>
 <div class="note-g"><div class="gros">{SEUL}<small> %</small></div>
 <div class="col"><span class="bar grand"><i style="width:{SEUL_P}%"></i></span><p class="sous" style="margin:6px 0 0">Peut monter jusqu’à {HAUT} % quand les tests seront resserrés ; objectif 100 %. Chiffre prudent du nouveau tableau (écrans neufs compris), les éléments à preuve discutable étant retirés.</p></div></div>
