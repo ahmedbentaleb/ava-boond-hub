@@ -22,16 +22,16 @@
   },
   {
    "label": "n° 10",
-   "note": 87.1,
-   "conformes": 1936,
-   "releves": 2224,
-   "ecarts": 288
+   "note": 86.8,
+   "conformes": 1934,
+   "releves": 2227,
+   "ecarts": 293
   }
  ],
- "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, puis 81,0 % à la n° 10 (1802 sur 2224 : 327 confirmés par un test réussi et 1475 conformes par comparaison). Avec les résolus seuls : 84,7 %.",
+ "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, puis 81,0 % (1804 sur 2227) avant la n° 12. Le tableau a été corrigé (dénominateur 2227) : la borne haute, 87,1 % auparavant, est désormais de 86,8 % (règle du Juge). 63 éléments non relevables sont exclus.",
  "bas": 81.0,
- "verts": 327,
- "verts_pct": 14.7,
+ "verts": 329,
+ "verts_pct": 14.8,
  "ambigus": 134,
  "tableau": [
   [
@@ -383,6 +383,6 @@
  "tableau_label": "n° 10",
  "bas_txt": "81",
  "bas_approx": false,
- "prudent_conformes": 1802,
+ "prudent_conformes": 1804,
  "prudent_precedent": "77,4 %"
 }
