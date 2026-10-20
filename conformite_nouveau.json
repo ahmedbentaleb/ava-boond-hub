@@ -40,6 +40,13 @@
    "conformes": 1973,
    "releves": 2227,
    "ecarts": 254
+  },
+  {
+   "label": "n° 13",
+   "note": 89.6,
+   "conformes": 1996,
+   "releves": 2227,
+   "ecarts": 231
   }
  ],
  "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 % à la n° 10, 83,7 % à la n° 11, puis 86,5 % à la n° 12 (1927 sur 2227 : 459 confirmés par un test réussi). Borne haute (règle du Juge) : 88,6 % (1973 sur 2227). 63 éléments non relevables sont exclus.",
@@ -65,44 +72,44 @@
   [
    "Saisie contact",
    31,
-   5,
-   26,
-   83.9
+   6,
+   25,
+   80.6
   ],
   [
    "Saisie besoin",
    42,
-   10,
-   32,
-   76.2
+   9,
+   33,
+   78.6
   ],
   [
    "Saisie positionnement",
    18,
-   5,
-   13,
-   72.2
+   4,
+   14,
+   77.8
   ],
   [
    "Saisie candidat",
    41,
-   13,
-   28,
-   68.3
+   15,
+   26,
+   63.4
   ],
   [
    "Saisie ressource",
    39,
-   1,
-   38,
-   97.4
+   0,
+   39,
+   100.0
   ],
   [
    "Saisie contrat RH",
    52,
-   9,
-   43,
-   82.7
+   6,
+   46,
+   88.5
   ],
   [
    "Saisie profil type",
@@ -121,9 +128,9 @@
   [
    "Saisie prestation",
    20,
-   4,
-   16,
-   80.0
+   3,
+   17,
+   85.0
   ],
   [
    "Saisie achat",
@@ -135,16 +142,16 @@
   [
    "Saisie produit",
    22,
-   11,
-   11,
-   50.0
+   3,
+   19,
+   86.4
   ],
   [
    "Saisie groupement",
    13,
-   3,
-   10,
-   76.9
+   2,
+   11,
+   84.6
   ],
   [
    "Saisie facture fournisseur",
@@ -177,9 +184,9 @@
   [
    "Fiche besoin",
    77,
-   16,
-   61,
-   79.2
+   14,
+   63,
+   81.8
   ],
   [
    "Fiche positionnement",
@@ -205,9 +212,9 @@
   [
    "Fiche contrat RH",
    25,
-   12,
-   13,
-   52.0
+   7,
+   18,
+   72.0
   ],
   [
    "Fiche profil type",
@@ -226,9 +233,9 @@
   [
    "Fiche prestation",
    43,
-   6,
-   37,
-   86.0
+   5,
+   38,
+   88.4
   ],
   [
    "Fiche achat",
@@ -261,9 +268,9 @@
   [
    "Fiche groupement",
    16,
-   1,
-   15,
-   93.8
+   0,
+   16,
+   100.0
   ],
   [
    "Cliquable coque (menu, cloche, fil d'Ariane)",
@@ -282,16 +289,16 @@
   [
    "Cliquable fiches présentes (8)",
    361,
-   4,
-   357,
-   98.9
+   5,
+   356,
+   98.6
   ],
   [
    "Cliquable écrans absents (listes, fiches, menu, onglets)",
    145,
-   7,
-   138,
-   95.2
+   6,
+   139,
+   95.9
   ],
   [
    "Actions menus Créer et étape société",
@@ -303,9 +310,9 @@
   [
    "Actions fenêtre d'action",
    43,
-   1,
-   42,
-   97.7
+   0,
+   43,
+   100.0
   ],
   [
    "Actions carte et onglet des fiches",
@@ -361,16 +368,16 @@
   [
    "saisie",
    424,
-   89,
-   335,
-   79.0
+   76,
+   348,
+   82.1
   ],
   [
    "fiche",
    865,
-   143,
-   722,
-   83.5
+   134,
+   731,
+   84.5
   ],
   [
    "cliquable",
@@ -382,9 +389,9 @@
   [
    "actions",
    119,
-   1,
-   118,
-   99.2
+   0,
+   119,
+   100.0
   ],
   [
    "mails",
@@ -394,14 +401,14 @@
    90.5
   ]
  ],
- "tableau_label": "n° 12 (règle du Juge)",
+ "tableau_label": "n° 13 (règle du Juge)",
  "bas_txt": "86,5",
  "bas_approx": false,
  "prudent_conformes": 1927,
  "prudent_precedent": "83,7 %",
- "haut_txt": "88,6",
- "haut_precis": "88,6",
+ "haut_txt": "89,6",
+ "haut_precis": "89,6",
  "bas_campagne": "n° 12",
  "prudent_releves": 2227,
- "mention": "La n° 13 est en préparation : elle mesurera les corrections de code des dernières heures."
+ "mention": "N° 13 : borne haute 89,6 % ; chiffre prudent en cours de calcul ; les 4 contrôles de sécurité sont verts."
 }
