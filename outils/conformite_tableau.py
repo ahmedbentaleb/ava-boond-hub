@@ -176,17 +176,28 @@ SURQUOI = ("la version de travail du Livrable 3 (%s), %s" % (ver, cur["label"]))
 COMPTEURS = _cc.bloc_html()
 NOUVEAU = ""
 try:
-    tm = open(SRC, encoding="utf-8").read()
-    mt = re.search(r"\*\*Note globale : ([\d.]+) %", tm)
-    rw = re.search(r"\| \*\*Note globale\*\* \| \*\*(\d+)\*\* \| \*\*(\d+)\*\* \| \*\*(\d+)\*\*", tm)
-    if mt and rw and float(mt[1]) != note:
-        NOUVEAU = ('<div class="borne" style="border-left-color:var(--v2)"><b>Un nouveau tableau est prêt, mais ce n’est pas encore une mesure de campagne.</b> '
-          'Sa <b>note de base est de %s</b> (%s éléments conformes sur %s). C’est une borne haute : des recoupements entre éléments subsistent. La note officielle sera celle d’une campagne du Juge appliquée à ce tableau. '
-          'La courbe officielle ci-dessous reste celle des campagnes sur l’ancien tableau : on ne mélange pas les deux.'
-          '<ul style="margin:8px 0 0;padding-left:20px;list-style:disc">'
-          '<li style="display:list-item;border:0;padding:2px 0">17 sections étaient étiquetées « écran absent » et valaient 0 %% d’office. Elles existent pourtant : la Conformité les a comparées à Boond champ par champ, élément par élément.</li>'
-          '<li style="display:list-item;border:0;padding:2px 0">Pour ces sections, un écart compte pour un seul élément relevé ; un élément cité par plusieurs ensembles n’est compté qu’une fois.</li>'
-          '<li style="display:list-item;border:0;padding:2px 0">Les éléments qu’on ne peut pas relever sont exclus du calcul ; ils sont listés avec leur raison dans le tableau de travail.</li></ul></div>') % (pc(float(mt[1])), rw[3], rw[1])
+    nj = json.load(open(os.path.join(HUB, "conformite_nouveau.json"), encoding="utf-8"))
+    b0 = nj["base"]; pts_n = [b0] + nj["points"]; last = pts_n[-1]
+    def _courbe_n():
+        W, Hh, x0, x1 = 620, 120, 120, 500
+        Y = lambda v: 100 - (v - 50) * 1.6
+        X = lambda i: x0 + (x1 - x0) * (i / max(1, len(pts_n) - 1))
+        o = ['<svg viewBox="0 0 %d %d" role="img" aria-label="Courbe du nouveau tableau" style="width:100%%;max-width:680px;display:block">' % (W, Hh)]
+        o.append('<line x1="%d" y1="%.0f" x2="%d" y2="%.0f" stroke="var(--bord)"/><text x="6" y="%.0f" fill="var(--t3)" font-size="11">50 %%</text>' % (x0 - 60, Y(50), x1 + 60, Y(50), Y(50) + 4))
+        o.append('<polyline points="%s" fill="none" stroke="var(--v2)" stroke-width="2.5"/>' % " ".join("%.0f,%.0f" % (X(i), Y(q["note"])) for i, q in enumerate(pts_n)))
+        for i, q in enumerate(pts_n):
+            o.append('<circle cx="%.0f" cy="%.0f" r="5" fill="var(--v2)"/><text x="%.0f" y="%.0f" text-anchor="middle" fill="var(--t1)" font-size="12" font-weight="600">%s</text><text x="%.0f" y="116" text-anchor="middle" fill="var(--t3)" font-size="10">%s</text>' % (X(i), Y(q["note"]), X(i), Y(q["note"]) - 10, pc(q["note"]), X(i), q["label"]))
+        o.append("</svg>")
+        return "".join(o)
+    NOUVEAU = ('<div class="borne" style="border-left-color:var(--v2)"><b>Deux tableaux, deux courbes séparées.</b> '
+      'Le <b>nouveau tableau</b> compare les écrans neufs élément par élément (l’ancien les forçait à 0 %%). '
+      'Sa base était de <b>%s</b> (%s sur %s) ; à la campagne n° 8 il atteint <b>%s</b> (%s éléments conformes sur %s relevés, %s écarts). '
+      '<b>C’est une borne haute</b> : ce sont des conformes par comparaison du 20/10, et les 484 écarts des écrans neufs ne sont pas encore joués par le Juge. '
+      'Le nouveau tableau devient la <b>référence à partir de la campagne n° 9</b> ; l’ancien est gardé pour la continuité.'
+      '<p class="sous" style="margin:8px 0 4px">Nouveau tableau (écrans neufs comparés élément par élément) : base %s, puis %s à la n° 8. Par partie : %s.</p>%s'
+      '<p class="sous" style="margin:8px 0 0">La courbe « ancien tableau » (écrans absents forcés à 0 %%) est celle de « L’historique des mesures » plus bas ; on ne mélange pas les deux, et aucun des deux chiffres ne se lit sans l’autre.</p></div>') % (
+      pc(b0["note"]), b0["conformes"], b0["releves"], pc(last["note"]), last["conformes"], last["releves"], last["ecarts"],
+      pc(b0["note"]), pc(last["note"]), nj["sections"], _courbe_n())
 except Exception as _e:
     NOUVEAU = ""
     print("encart non construit :", _e)
@@ -199,6 +210,7 @@ html = HEAD + EXTRA + f'''<h1>Conformité à Boond</h1>
 <p class="sous">{STAMP} · à chaque livraison, ce tableau est recalculé et la date de mesure change</p>
 <span class="date">Mesurée le {date}{QUAND} sur {SURQUOI} · Boond relevé à l'écran du {periode}</span>{MENTION}{ENLIGNE}{STATS}
 
+<p class="sous" style="margin:0 0 6px"><b>Ancien tableau</b> (écrans absents forcés à 0 %) — référence de continuité ; le nouveau tableau est présenté juste en dessous, les deux se lisent ensemble.</p>
 <div class="note-g"><div class="gros">{fr("%.1f" % note)}<small> %</small></div>
 <div class="col"><span class="bar grand"><i style="width:{note:.1f}%"></i></span><p class="sous" style="margin:6px 0 0">{conf} éléments conformes sur {tot} relevés dans Boond</p></div></div>
 <p class="borne"><b>C'est une borne haute.</b> Un écart compte pour un seul élément, alors qu'une ligne d'écart en couvre souvent plusieurs (« dix champs absents », « treize écrans »). La vraie conformité est donc probablement un peu plus basse.</p>
@@ -217,7 +229,7 @@ for titre, cle in GROUPES:
     html += f'<h2>{titre}</h2>\n<table>{TH}{"".join(ligne(n, a, e, c, p, ab, s) for n, a, e, c, p, ab, s in sect[cle])}</table>\n'
 html += f'''<h2>Les sections les moins conformes, parmi les écrans qui existent chez Ava</h2>
 <table><tr><th>Section</th><th class="nm">Conforme</th><th></th></tr>{"".join(brow(p, n) for p, n in bas)}</table>
-<h2>L'historique des mesures</h2>
+<h2>L'historique des mesures — ancien tableau (écrans absents forcés à 0 %)</h2>
 {COURBE}
 <table><tr><th>Date de mesure</th><th>Version d'Ava</th><th class="nm">Éléments relevés</th><th class="nm">Conformité</th><th></th></tr>{HIST_ROWS}</table>
 <p class="sous">Une nouvelle ligne s'ajoute à chaque campagne de mesure et à chaque livraison.</p>
