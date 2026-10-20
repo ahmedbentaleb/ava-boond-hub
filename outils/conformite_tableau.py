@@ -9,6 +9,8 @@ Lit   : ../../audits-independants/conformite/TABLEAU_CONFORMITE.md
 À chaque livraison : relire le fichier, relancer ce script, pousser. Rien d'exploitable n'y figure.
 """
 import re, sys, json, subprocess, os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import compteurs_conformite as _cc
 HUB = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(HUB, "..", "..", "audits-independants", "conformite", "TABLEAU_CONFORMITE.md")
 md = open(SRC, encoding="utf-8").read()
@@ -171,6 +173,7 @@ cur = hist[idx] if idx is not None else hist[-1]
 MENTION = ('<p class="sous" style="margin:0 0 12px">%s : %s → %s</p>' % (cur["mention"].capitalize(), pc(cur["avant"]), pc(cur["note"]))) if cur.get("mention") else ""
 QUAND = (" vers " + cur["heure"].replace("h", " h ")) if cur.get("heure") else ""
 SURQUOI = ("la version de travail du Livrable 3 (%s), %s" % (ver, cur["label"])) if cur.get("label") else ("la version " + ver)
+COMPTEURS = _cc.bloc_html()
 NOUVEAU = ""
 try:
     tm = open(SRC, encoding="utf-8").read()
@@ -201,6 +204,7 @@ html = HEAD + EXTRA + f'''<h1>Conformité à Boond</h1>
 <p class="borne"><b>C'est une borne haute.</b> Un écart compte pour un seul élément, alors qu'une ligne d'écart en couvre souvent plusieurs (« dix champs absents », « treize écrans »). La vraie conformité est donc probablement un peu plus basse.</p>
 
 {NOUVEAU}
+{COMPTEURS}
 <div class="deux2">
 <div><b class="v">{pc(presents[3])}</b>des écrans <b>présents chez Ava</b> sont conformes ({presents[2]} éléments sur {presents[0]})</div>
 <div><b class="v">{pc(absents[3])}</b>des écrans <b>absents chez Ava</b> : ils n'existent pas encore ({absents[0]} éléments en écart)</div>

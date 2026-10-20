@@ -1,0 +1,60 @@
+{
+ "total": 1076,
+ "anciens": 847,
+ "nouveaux": 229,
+ "code": 372,
+ "juge": 364,
+ "juge_campagne": "n° 7",
+ "series": [
+  {
+   "label": "n° 1",
+   "heure": "21:22",
+   "date": "18/10/2026",
+   "code": 114,
+   "juge": 67
+  },
+  {
+   "label": "n° 2",
+   "heure": "22:17",
+   "date": "18/10/2026",
+   "code": 167,
+   "juge": 130
+  },
+  {
+   "label": "n° 3",
+   "heure": "22:31",
+   "date": "18/10/2026",
+   "code": 195,
+   "juge": 135
+  },
+  {
+   "label": "n° 4",
+   "heure": "10:21",
+   "date": "20/10/2026",
+   "code": 205,
+   "juge": 160
+  },
+  {
+   "label": "n° 5",
+   "heure": "10:53",
+   "date": "20/10/2026",
+   "code": 218,
+   "juge": 178
+  },
+  {
+   "label": "n° 6",
+   "heure": "11:25",
+   "date": "20/10/2026",
+   "code": 218,
+   "juge": 265
+  },
+  {
+   "label": "n° 7",
+   "heure": "12:24",
+   "date": "20/10/2026",
+   "code": 218,
+   "juge": 364
+  }
+ ],
+ "mesure": "20/10/2026 14h20"
+}
