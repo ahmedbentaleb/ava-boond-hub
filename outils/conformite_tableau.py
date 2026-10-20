@@ -157,7 +157,7 @@ def courbe():
     X = lambda i: x0 + (x1 - x0) * (i / (n - 1) if n > 1 else 0.5)
     pts = " ".join("%.0f,%.0f" % (X(i), Y(h["note"])) for i, h in enumerate(hist))
     o = ['<svg viewBox="0 0 %d %d" role="img" aria-label="Courbe de la conformité" style="width:100%%;max-width:680px;display:block">' % (W, Hh)]
-    o.append('<line x1="%d" y1="%.0f" x2="%d" y2="%.0f" stroke="var(--cours)" stroke-dasharray="5 4"/><text x="%d" y="%.0f" fill="var(--cours)" font-size="11">objectif 95 %%</text>' % (x0, Y(95), x1, Y(95), x0, Y(95) - 5))
+    o.append('<line x1="%d" y1="%.0f" x2="%d" y2="%.0f" stroke="var(--cours)" stroke-dasharray="5 4"/><text x="%d" y="%.0f" fill="var(--cours)" font-size="11">objectif 100 %%</text>' % (x0, Y(100), x1, Y(100), x0, Y(100) - 5))
     for v in (0, 50):
         o.append('<line x1="%d" y1="%.0f" x2="%d" y2="%.0f" stroke="var(--bord)"/><text x="6" y="%.0f" fill="var(--t3)" font-size="11">%d %%</text>' % (x0, Y(v), x1, Y(v), Y(v) + 4, v))
     if n > 1: o.append('<polyline points="%s" fill="none" stroke="var(--vert)" stroke-width="2.5"/>' % pts)
@@ -229,9 +229,10 @@ html = HEAD + EXTRA + f'''<h1>Conformité à Boond</h1>
 <p class="sous">{STAMP} · à chaque livraison, ce tableau est recalculé et la date de mesure change</p>
 <span class="date">Mesurée le {date}{QUAND} sur {SURQUOI} · Boond relevé à l'écran du {periode}</span>{MENTION}{ENLIGNE}{STATS}
 
-<p class="grandphrase"><b>Aujourd’hui Ava ressemble à Boond à {SEUL} % ; la cible est 95 %.</b></p>
+<p class="grandphrase"><b>Aujourd’hui Ava ressemble à Boond à {SEUL} % ; la cible est 100 % des éléments mesurables.</b></p>
+<p class="sous" style="margin:0 0 8px">Les éléments qu’on ne peut pas vérifier chez Boond (module facturation absent du compte, envois réels de mails, PDF à déposer) sont listés à part avec la raison.</p>
 <div class="note-g"><div class="gros">{SEUL}<small> %</small></div>
-<div class="col"><span class="bar grand"><i style="width:{SEUL_P}%"></i></span><p class="sous" style="margin:6px 0 0">Peut monter jusqu’à {HAUT} % quand les tests seront resserrés ; objectif 95 %. Chiffre prudent du nouveau tableau (écrans neufs compris), les éléments à preuve discutable étant retirés.</p></div></div>
+<div class="col"><span class="bar grand"><i style="width:{SEUL_P}%"></i></span><p class="sous" style="margin:6px 0 0">Peut monter jusqu’à {HAUT} % quand les tests seront resserrés ; objectif 100 %. Chiffre prudent du nouveau tableau (écrans neufs compris), les éléments à preuve discutable étant retirés.</p></div></div>
 <p class="sous" style="margin:10px 0 4px"><b>Ancienne façon de compter</b> (les écrans neufs comptaient 0), gardée pour l’historique : <b>{fr("%.1f" % note)} %</b> ({conf} éléments conformes sur {tot} relevés dans Boond).</p>
 <p class="borne" style="margin-top:4px"><b>Pour cette ancienne façon, c'est une borne haute.</b> Un écart compte pour un seul élément, alors qu'une ligne d'écart en couvre souvent plusieurs (« dix champs absents », « treize écrans »). La vraie conformité est donc probablement un peu plus basse.</p>
 
