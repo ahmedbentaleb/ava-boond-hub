@@ -191,13 +191,13 @@ try:
         return "".join(o)
     NOUVEAU = ('<div class="borne" style="border-left-color:var(--v2)"><b>Deux tableaux, deux courbes séparées.</b> '
       'Le <b>nouveau tableau</b> compare les écrans neufs élément par élément (l’ancien les forçait à 0 %%). '
-      'Sa base était de <b>%s</b> (%s sur %s) ; à la campagne n° 8 il atteint <b>%s</b> (%s éléments conformes sur %s relevés, %s écarts). '
+      'Sa base était de <b>%s</b> (%s sur %s) ; à la campagne %s il atteint <b>%s</b> (%s éléments conformes sur %s relevés, %s écarts). '
       '<b>C’est une borne haute</b> : ce sont des conformes par comparaison du 20/10, et les 484 écarts des écrans neufs ne sont pas encore joués par le Juge. '
       'Le nouveau tableau devient la <b>référence à partir de la campagne n° 9</b> ; l’ancien est gardé pour la continuité.'
-      '<p class="sous" style="margin:8px 0 4px">Nouveau tableau (écrans neufs comparés élément par élément) : base %s, puis %s à la n° 8. Par partie : %s.</p>%s'
+      '<p class="sous" style="margin:8px 0 4px">Nouveau tableau (écrans neufs comparés élément par élément) : base %s, puis %s.%s</p>%s'
       '<p class="sous" style="margin:8px 0 0">La courbe « ancien tableau » (écrans absents forcés à 0 %%) est celle de « L’historique des mesures » plus bas ; on ne mélange pas les deux, et aucun des deux chiffres ne se lit sans l’autre.</p></div>') % (
-      pc(b0["note"]), b0["conformes"], b0["releves"], pc(last["note"]), last["conformes"], last["releves"], last["ecarts"],
-      pc(b0["note"]), pc(last["note"]), nj["sections"], _courbe_n())
+      pc(b0["note"]), b0["conformes"], b0["releves"], last["label"], pc(last["note"]), last["conformes"], last["releves"], last["ecarts"],
+      pc(b0["note"]), " puis ".join("%s à la %s" % (pc(q["note"]), q["label"]) for q in nj["points"]), nj["sections"], _courbe_n())
 except Exception as _e:
     NOUVEAU = ""
     print("encart non construit :", _e)
