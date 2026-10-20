@@ -3,9 +3,9 @@
  "total": 712,
  "anciens": 464,
  "nouveaux": 248,
- "code": 606,
- "juge": 480,
- "juge_campagne": "n° 14",
+ "code": 609,
+ "juge": 496,
+ "juge_campagne": "n° 15",
  "series": [
   {
    "label": "n° 1",
@@ -104,7 +104,14 @@
    "date": "20/10/2026",
    "code": 606,
    "juge": 480
+  },
+  {
+   "label": "n° 15",
+   "heure": "22:44",
+   "date": "20/10/2026",
+   "code": 609,
+   "juge": 496
   }
  ],
- "mesure": "20/10/2026 22h18"
+ "mesure": "20/10/2026 22h45"
 }

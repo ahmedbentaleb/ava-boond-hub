@@ -54,12 +54,19 @@
    "conformes": 2004,
    "releves": 2227,
    "ecarts": 223
+  },
+  {
+   "label": "n° 15",
+   "note": 90.7,
+   "conformes": 2021,
+   "releves": 2227,
+   "ecarts": 206
   }
  ],
- "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 % à la n° 10, 83,7 % à la n° 11, 86,5 % à la n° 12, 88,0 % à la n° 13, puis 88,3 % à la n° 14 (1967 sur 2227 : 490 confirmés par un test réussi). Borne haute (règle du Juge) : 90,0 % (2004 sur 2227). 63 éléments non relevables sont exclus.",
- "bas": 88.3,
- "verts": 490,
- "verts_pct": 22.0,
+ "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 % à la n° 10, 83,7 % à la n° 11, 86,5 % à la n° 12, 88,0 % à la n° 13, 88,3 % à la n° 14, puis 89,3 % à la n° 15 (1988 sur 2227 : 507 confirmés par un test réussi). Borne haute (règle du Juge) : 90,7 % (2021 sur 2227). 63 éléments non relevables sont exclus.",
+ "bas": 89.3,
+ "verts": 507,
+ "verts_pct": 22.8,
  "ambigus": null,
  "tableau": [
   [
@@ -79,9 +86,9 @@
   [
    "Saisie contact",
    31,
-   5,
-   26,
-   83.9
+   6,
+   25,
+   80.6
   ],
   [
    "Saisie besoin",
@@ -100,9 +107,9 @@
   [
    "Saisie candidat",
    41,
-   13,
-   28,
-   68.3
+   12,
+   29,
+   70.7
   ],
   [
    "Saisie ressource",
@@ -121,9 +128,9 @@
   [
    "Saisie profil type",
    24,
-   2,
-   22,
-   91.7
+   1,
+   23,
+   95.8
   ],
   [
    "Saisie projet",
@@ -156,16 +163,16 @@
   [
    "Saisie groupement",
    13,
-   3,
-   10,
-   76.9
+   2,
+   11,
+   84.6
   ],
   [
    "Saisie facture fournisseur",
    27,
-   3,
-   24,
-   88.9
+   1,
+   26,
+   96.3
   ],
   [
    "Fiche transverse (toutes fiches)",
@@ -191,23 +198,23 @@
   [
    "Fiche besoin",
    77,
-   14,
-   63,
-   81.8
+   13,
+   64,
+   83.1
   ],
   [
    "Fiche positionnement",
    35,
-   12,
-   23,
-   65.7
+   9,
+   26,
+   74.3
   ],
   [
    "Fiche candidat",
    116,
-   20,
-   96,
-   82.8
+   16,
+   100,
+   86.2
   ],
   [
    "Fiche ressource",
@@ -352,16 +359,16 @@
   [
    "Mails CV, ordre de mission, partage, fils, DT",
    36,
-   6,
-   30,
-   83.3
+   5,
+   31,
+   86.1
   ],
   [
    "Mails configuration Emailing",
    9,
-   4,
-   5,
-   55.6
+   0,
+   9,
+   100.0
   ],
   [
    "Mails cloche et notifications",
@@ -375,16 +382,16 @@
   [
    "saisie",
    424,
-   75,
-   349,
-   82.3
+   71,
+   353,
+   83.3
   ],
   [
    "fiche",
    865,
-   129,
-   736,
-   85.1
+   121,
+   744,
+   86.0
   ],
   [
    "cliquable",
@@ -403,19 +410,19 @@
   [
    "mails",
    105,
-   10,
-   95,
-   90.5
+   5,
+   100,
+   95.2
   ]
  ],
- "tableau_label": "n° 14 (règle du Juge)",
- "bas_txt": "88,3",
+ "tableau_label": "n° 15 (règle du Juge)",
+ "bas_txt": "89,3",
  "bas_approx": false,
- "prudent_conformes": 1967,
- "prudent_precedent": "88,0 %",
- "haut_txt": "90,0",
- "haut_precis": "90,0",
- "bas_campagne": "n° 14",
+ "prudent_conformes": 1988,
+ "prudent_precedent": "88,3 %",
+ "haut_txt": "90,7",
+ "haut_precis": "90,7",
+ "bas_campagne": "n° 15",
  "prudent_releves": 2227,
- "mention": "La n° 15 (suite complète) est à venir ; la saisie achat et environ 18 pas bloqués étaient dus à des scénarios périmés, désormais corrigés. Les 4 contrôles de sécurité sont verts."
+ "mention": "Prochaine étape : campagne complète sur la dernière version, avec le contrôle de non-fuite entre requêtes. Les 4 contrôles de sécurité sont verts."
 }

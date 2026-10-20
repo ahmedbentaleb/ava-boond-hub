@@ -200,5 +200,21 @@
   "rouges": 352,
   "bloques": 103,
   "dossier": "20261020_2217_c8440b5d7-ancien"
+ },
+ {
+  "date": "20/10/2026",
+  "label": "campagne n° 15",
+  "heure": "22h44",
+  "note": 69.5,
+  "version": "1689034c",
+  "elements": 2271,
+  "pas_rouges": 441,
+  "pas_verts": 1645,
+  "pas_bloques": 80,
+  "pas": 2166,
+  "resolus": 720,
+  "rouges": 337,
+  "bloques": 80,
+  "dossier": "20261020_2244_c1689034c-ancien"
  }
 ]
