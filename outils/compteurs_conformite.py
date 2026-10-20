@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Deux compteurs de conformité pour le hub : CODÉ et JUGÉ.
 
-CODÉ  = nombre d'écarts déclarés FERMÉS par une session Code au journal (lignes « CODE … → … FERMÉ(S) »), comptés une seule fois.
+CODÉ  = écarts déclarés FERMÉS par une session Code au journal (lignes « CODE … → … FERMÉ(S) ») ∪ écarts passés au vert par une campagne : comptés une seule fois ; la courbe est monotone et CODÉ ≥ JUGÉ.
 JUGÉ  = nombre d'écarts passés au VERT par une campagne du Juge (ligne « RÉSOLUS » de chaque RAPPORT_REJEU.md).
 Le compteur CODÉ n'est JAMAIS présenté comme une note : la note officielle est celle du Juge.
 
@@ -105,24 +105,37 @@ def juge():
     return res
 
 
+def ids_resolus(dossier):
+    """Identifiants passés au vert par une campagne : recompte/resolus.json de son dossier de rejeu."""
+    p = os.path.join(REJ, dossier, "recompte", "resolus.json")
+    if not os.path.exists(p): return None
+    return set(json.load(open(p, encoding="utf-8")).get("resolus", []))
+
+
 def calcul():
     U, anciens, nouveaux = univers()
     ferme = depuis_journal(U)
     rj = juge()
     hist = json.load(open(HIST, encoding="utf-8"))
-    series = []
+    series, cumul = [], set()
     for h in hist:
         lab = h.get("label", "")
         if not lab.startswith("campagne"): continue
         d, mo, y = h["date"].split("/")
         hh = h.get("heure", "").replace("h", ":") or "00:00"
         iso = "%s-%s-%s" % (y, mo, d)
-        codes = sum(1 for (di, he) in ferme.values() if (di, he) <= (iso, hh))
         tok_ = h["version"].split()[0]
         cand = [r for r in rj if tok_ in r["dossier"]]
-        jug = cand[-1]["resolus"] if cand else h.get("resolus")
-        series.append({"label": lab.replace("campagne n° ", "n° "), "heure": hh, "date": h["date"], "code": codes, "juge": jug})
-    out = {"total": len(U), "anciens": anciens, "nouveaux": nouveaux, "code": len(ferme), "juge": rj[-1]["resolus"] if rj else None,
+        R = (ids_resolus(cand[-1]["dossier"]) if cand else None) or set()
+        R &= U
+        cumul |= R
+        par_code = {i for i, (di, he) in ferme.items() if (di, he) <= (iso, hh)}
+        series.append({"label": lab.replace("campagne n° ", "n° "), "heure": hh, "date": h["date"],
+                       "code": len(par_code | cumul), "juge": len(R)})
+    dernier = rj[-1] if rj else None
+    R_now = (ids_resolus(dernier["dossier"]) & U) if dernier and ids_resolus(dernier["dossier"]) else set()
+    code_now = set(ferme) | cumul
+    out = {"total": len(U), "anciens": anciens, "nouveaux": nouveaux, "code": len(code_now), "juge": len(R_now),
            "juge_campagne": series[-1]["label"] if series else "", "series": series,
            "mesure": datetime.datetime.now().strftime("%d/%m/%Y %Hh%M")}
     json.dump(out, open(OUT, "w", encoding="utf-8", newline=""), ensure_ascii=False, indent=1)
@@ -154,7 +167,7 @@ def bloc_html(o=None):
     labs = " · ".join(x["label"] for x in s)
     return f'''<style>.cpt{{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 4px}}.cpt>div{{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:12px 14px}}.cpt b.v{{display:block;font-size:34px;line-height:1.1}}.cpt .t{{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);font-weight:600}}.cpt .def{{font-size:13px;color:var(--t2);margin:4px 0 8px}}.cpt .lim{{font-size:12px;color:var(--t3);margin:0}}@media (max-width:640px){{.cpt{{grid-template-columns:1fr}}}}</style>
 <div class="cpt" id="compteurs">
-<div><span class="t">Codé</span><b class="v">{o["code"]}<small style="font-size:16px;font-weight:400"> / {o["total"]}</small></b><p class="def">Écarts que les sessions Code ont déclarés fermés au journal, comptés une seule fois. Rien n’est encore prouvé : ce n’est pas une note.</p>{cod}</div>
+<div><span class="t">Codé</span><b class="v">{o["code"]}<small style="font-size:16px;font-weight:400"> / {o["total"]}</small></b><p class="def">Écarts déclarés fermés par une session Code au journal, plus ceux qu’une campagne du Juge a déjà passés au vert : comptés une seule fois, et ce chiffre ne baisse jamais. Rien n’est prouvé par lui : ce n’est pas une note.</p>{cod}</div>
 <div><span class="t">Jugé</span><b class="v">{o["juge"]}<small style="font-size:16px;font-weight:400"> / {o["total"]}</small></b><p class="def">Écarts passés au vert par une campagne du Juge ({o["juge_campagne"]}). C’est ce qui compte pour la note officielle.</p>{jug}</div>
 </div>
 <p class="sous" style="margin:6px 0 2px"><b>{ecart}</b> écarts sont codés mais pas encore prouvés. Le grand chiffre est celui d’aujourd’hui ; chaque courbe donne la valeur au moment de chaque campagne ({labs}). Total : {o["anciens"]} écarts anciens + {o["nouveaux"]} des écrans neufs. Mesuré le {o["mesure"]}.</p>
