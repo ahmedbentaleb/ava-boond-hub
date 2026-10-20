@@ -47,20 +47,27 @@
    "conformes": 1996,
    "releves": 2227,
    "ecarts": 231
+  },
+  {
+   "label": "n° 14",
+   "note": 90.0,
+   "conformes": 2004,
+   "releves": 2227,
+   "ecarts": 223
   }
  ],
- "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 % à la n° 10, 83,7 % à la n° 11, 86,5 % à la n° 12, puis 88,0 % à la n° 13 (1959 sur 2227 : 482 confirmés par un test réussi). Borne haute (règle du Juge) : 89,6 % (1996 sur 2227). 63 éléments non relevables sont exclus.",
- "bas": 88.0,
- "verts": 482,
- "verts_pct": 21.6,
+ "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 % à la n° 10, 83,7 % à la n° 11, 86,5 % à la n° 12, 88,0 % à la n° 13, puis 88,3 % à la n° 14 (1967 sur 2227 : 490 confirmés par un test réussi). Borne haute (règle du Juge) : 90,0 % (2004 sur 2227). 63 éléments non relevables sont exclus.",
+ "bas": 88.3,
+ "verts": 490,
+ "verts_pct": 22.0,
  "ambigus": null,
  "tableau": [
   [
    "Saisie transverse (4 objets CRM)",
    11,
-   0,
-   11,
-   100.0
+   1,
+   10,
+   90.9
   ],
   [
    "Saisie société",
@@ -72,9 +79,9 @@
   [
    "Saisie contact",
    31,
-   6,
-   25,
-   80.6
+   5,
+   26,
+   83.9
   ],
   [
    "Saisie besoin",
@@ -93,9 +100,9 @@
   [
    "Saisie candidat",
    41,
-   15,
-   26,
-   63.4
+   13,
+   28,
+   68.3
   ],
   [
    "Saisie ressource",
@@ -149,9 +156,9 @@
   [
    "Saisie groupement",
    13,
-   2,
-   11,
-   84.6
+   3,
+   10,
+   76.9
   ],
   [
    "Saisie facture fournisseur",
@@ -170,9 +177,9 @@
   [
    "Fiche société",
    131,
-   18,
-   113,
-   86.3
+   17,
+   114,
+   87.0
   ],
   [
    "Fiche contact",
@@ -226,16 +233,16 @@
   [
    "Fiche projet",
    71,
-   3,
-   68,
-   95.8
+   2,
+   69,
+   97.2
   ],
   [
    "Fiche prestation",
    43,
-   5,
-   38,
-   88.4
+   4,
+   39,
+   90.7
   ],
   [
    "Fiche achat",
@@ -247,9 +254,9 @@
   [
    "Fiche produit",
    11,
-   5,
-   6,
-   54.5
+   3,
+   8,
+   72.7
   ],
   [
    "Fiche facture fournisseur",
@@ -289,16 +296,16 @@
   [
    "Cliquable fiches présentes (8)",
    361,
-   5,
-   356,
-   98.6
+   4,
+   357,
+   98.9
   ],
   [
    "Cliquable écrans absents (listes, fiches, menu, onglets)",
    145,
-   6,
-   139,
-   95.9
+   5,
+   140,
+   96.6
   ],
   [
    "Actions menus Créer et étape société",
@@ -368,23 +375,23 @@
   [
    "saisie",
    424,
-   76,
-   348,
-   82.1
+   75,
+   349,
+   82.3
   ],
   [
    "fiche",
    865,
-   134,
-   731,
-   84.5
+   129,
+   736,
+   85.1
   ],
   [
    "cliquable",
    714,
-   11,
-   703,
-   98.5
+   9,
+   705,
+   98.7
   ],
   [
    "actions",
@@ -401,14 +408,14 @@
    90.5
   ]
  ],
- "tableau_label": "n° 13 (règle du Juge)",
- "bas_txt": "88,0",
+ "tableau_label": "n° 14 (règle du Juge)",
+ "bas_txt": "88,3",
  "bas_approx": false,
- "prudent_conformes": 1959,
- "prudent_precedent": "86,5 %",
- "haut_txt": "89,6",
- "haut_precis": "89,6",
- "bas_campagne": "n° 13",
+ "prudent_conformes": 1967,
+ "prudent_precedent": "88,0 %",
+ "haut_txt": "90,0",
+ "haut_precis": "90,0",
+ "bas_campagne": "n° 14",
  "prudent_releves": 2227,
- "mention": "Les 4 contrôles de sécurité sont verts ; la campagne n° 14 suit."
+ "mention": "La n° 15 (suite complète) est à venir ; la saisie achat et environ 18 pas bloqués étaient dus à des scénarios périmés, désormais corrigés. Les 4 contrôles de sécurité sont verts."
 }
