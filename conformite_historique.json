@@ -105,5 +105,21 @@
   "resolus": 390,
   "rouges": 367,
   "bloques": 77
+ },
+ {
+  "date": "20/10/2026",
+  "label": "campagne n° 9",
+  "heure": "16h00",
+  "note": 65.6,
+  "version": "49ac3f51",
+  "elements": 2271,
+  "pas_rouges": 539,
+  "pas_verts": 1480,
+  "pas_bloques": 150,
+  "pas": 2169,
+  "resolus": 569,
+  "rouges": 435,
+  "bloques": 150,
+  "texte": "L'ancien tableau est quasi stable parce qu'il ne compte pas les écrans neufs : les progrès de cette campagne se lisent sur le nouveau tableau."
  }
 ]

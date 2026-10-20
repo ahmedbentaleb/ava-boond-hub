@@ -1,3 +1,25 @@
-{"base": {"label": "base", "note": 68.3, "conformes": 1531, "releves": 2241},
- "points": [{"label": "n° 8", "note": 78.6, "conformes": 1763, "releves": 2242, "ecarts": 479}],
- "sections": "saisie 69,5 % · fiche 74,4 % · cliquable 88,5 % · actions 98,3 % · mails 61,0 %"}
+{
+ "base": {
+  "label": "base",
+  "note": 68.3,
+  "conformes": 1531,
+  "releves": 2241
+ },
+ "points": [
+  {
+   "label": "n° 8",
+   "note": 78.6,
+   "conformes": 1763,
+   "releves": 2242,
+   "ecarts": 479
+  },
+  {
+   "label": "n° 9",
+   "note": 84.1,
+   "conformes": 1885,
+   "releves": 2242,
+   "ecarts": 357
+  }
+ ],
+ "sections": "saisie 69,5 % · fiche 74,4 % · cliquable 88,5 % · actions 98,3 % · mails 61,0 %"
+}
