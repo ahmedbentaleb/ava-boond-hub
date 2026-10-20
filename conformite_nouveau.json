@@ -382,5 +382,7 @@
  ],
  "tableau_label": "n° 10",
  "bas_txt": "81",
- "bas_approx": false
+ "bas_approx": false,
+ "prudent_conformes": 1802,
+ "prudent_precedent": "77,4 %"
 }
