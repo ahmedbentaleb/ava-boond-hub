@@ -35,11 +35,11 @@
    "ecarts": 310
   }
  ],
- "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, puis 81,0 % (1804 sur 2227) avant la n° 12. Le tableau a été corrigé (dénominateur 2227) : la borne haute, 87,1 % auparavant, est désormais de 86,8 % (règle du Juge). 63 éléments non relevables sont exclus.",
- "bas": 81.0,
- "verts": 329,
- "verts_pct": 14.8,
- "ambigus": 134,
+ "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 % à la n° 10, puis 83,7 % à la n° 11 (1865 sur 2227 : 395 confirmés par un test réussi). Borne haute selon le dernier recompte de la Conformité : 85,7 % (le rapport de Tests donne 86,1 % sur 2224 éléments). 63 éléments non relevables sont exclus.",
+ "bas": 83.7,
+ "verts": 395,
+ "verts_pct": 17.7,
+ "ambigus": 44,
  "tableau": [
   [
    "Saisie transverse (4 objets CRM)",
@@ -388,13 +388,13 @@
   ]
  ],
  "tableau_label": "n° 11 (règle du Juge, 2224 éléments)",
- "bas_txt": "81",
+ "bas_txt": "83,7",
  "bas_approx": false,
- "prudent_conformes": 1804,
- "prudent_precedent": "77,4 %",
- "haut_txt": "87",
- "haut_precis": "86,8",
- "bas_campagne": "n° 10",
+ "prudent_conformes": 1865,
+ "prudent_precedent": "81,0 %",
+ "haut_txt": "85,7",
+ "haut_precis": "85,7",
+ "bas_campagne": "n° 11",
  "prudent_releves": 2227,
- "mention": "N° 11 : borne haute 86,1 % ; chiffre prudent en cours de calcul ; la n° 12 (ciblée) mesure les corrections faites depuis."
+ "mention": "La campagne n° 12 est en cours (fin vers 21 h)."
 }
