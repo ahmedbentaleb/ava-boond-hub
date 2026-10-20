@@ -16,7 +16,10 @@ OPT = {a.split("=", 1)[0]: a.split("=", 1)[1] for a in sys.argv[1:] if a.startsw
 args = [a for a in sys.argv[1:] if not a.startswith("--")]
 REVISE = OPT.get("--revise"); REJEU = OPT.get("--rejeu"); LABEL = OPT.get("--label"); HEURE = OPT.get("--heure"); VERSION = OPT.get("--version")
 H = args[0] if args else subprocess.run(["date", "+%Hh%M"], capture_output=True, text=True).stdout.strip()
-STAMP = f"Mis à jour le dimanche 18/10/2026 à {H} (heure de Casablanca)"
+import datetime
+_J = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"]
+_n = datetime.datetime.now()
+STAMP = "Mis à jour le %s %s à %s (heure de Casablanca)" % (_J[_n.weekday()], _n.strftime("%d/%m/%Y"), H)
 
 fr = lambda x: x.replace(".", ",")
 def pct(t):
@@ -29,7 +32,10 @@ if REJEU:
     txt = open(REJEU, encoding="utf-8").read()
     m = re.search(r"APRÈS marquage RÉSOLU \| \*\*([\d.]+) % \((\d+) conformes sur (\d+) relevés", txt)
     note, conf, tot = float(m[1]), int(m[2]), int(m[3])
-    date, ver, periode = "18/10/2026", VERSION or "version de travail", "08 au 18/10/2026"
+    dm = re.search(r"(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})_([0-9a-f+]+)", REJEU.replace("\\", "/").split("/")[-2])
+    date = "%s/%s/%s" % (dm[3], dm[2], dm[1]) if dm else "18/10/2026"
+    HEURE = HEURE or ((dm[4] + "h" + dm[5]) if dm else "")
+    ver, periode = VERSION or (dm[6] if dm else "version de travail"), "08 au 18/10/2026"
     mm = re.search(r"Éléments non relevables listés à part : (\d+)", txt); NR = int(mm[1]) if mm else NR
     blk = txt[txt.index("Section | Relevés"):]; blk = blk[:blk.index("```")]
     par_type, presents, absents, sect = [], None, None, {k: [] for _, k in GROUPES}
