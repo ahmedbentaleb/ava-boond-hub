@@ -171,6 +171,22 @@ cur = hist[idx] if idx is not None else hist[-1]
 MENTION = ('<p class="sous" style="margin:0 0 12px">%s : %s → %s</p>' % (cur["mention"].capitalize(), pc(cur["avant"]), pc(cur["note"]))) if cur.get("mention") else ""
 QUAND = (" vers " + cur["heure"].replace("h", " h ")) if cur.get("heure") else ""
 SURQUOI = ("la version de travail du Livrable 3 (%s), %s" % (ver, cur["label"])) if cur.get("label") else ("la version " + ver)
+NOUVEAU = ""
+try:
+    tm = open(SRC, encoding="utf-8").read()
+    mt = re.search(r"\*\*Note globale : ([\d.]+) %\*\* \((\d+) éléments conformes sur (\d+) relevés ; ([\d.]+) %", tm)
+    if mt and float(mt[1]) != note:
+        NOUVEAU = ('<div class="borne" style="border-left-color:var(--v2)"><b>Un nouveau tableau est prêt, mais ce n’est pas encore une mesure.</b> '
+          'Sa <b>note de base est de %s</b> (%s éléments conformes sur %s). Elle sera mesurée par la campagne n° 9. '
+          'La courbe officielle ci-dessous reste celle des campagnes de mesure : on ne mélange pas les deux.'
+          '<ul style="margin:8px 0 0;padding-left:20px;list-style:disc">'
+          '<li style="display:list-item;border:0;padding:2px 0">17 sections étaient étiquetées « écran absent » et valaient 0 %% d’office. Elles existent pourtant : la Conformité les a comparées à Boond champ par champ (484 nouveaux écarts numérotés, 563 éléments, 235 conformes par comparaison).</li>'
+          '<li style="display:list-item;border:0;padding:2px 0">Pour ces sections, un écart compte pour un seul élément relevé.</li>'
+          '<li style="display:list-item;border:0;padding:2px 0">101 éléments qu’on ne peut pas relever sont exclus du calcul ; ils sont listés avec leur raison dans le tableau de travail.</li>'
+          '<li style="display:list-item;border:0;padding:2px 0">Sur le même dénominateur, l’ancien tableau donnait %s et le nouveau %s : le nouveau est plus sévère, il ne dit pas que c’est moins bon.</li></ul></div>') % (pc(float(mt[1])), mt[2], mt[3], pc(float(mt[4])), pc(float(mt[1])))
+except Exception as _e:
+    NOUVEAU = ""
+    print("encart non construit :", _e)
 STATS = ""
 if cur.get("pas") is not None:
     STATS = '<p class="sous" style="margin:0 0 12px">Cette campagne : <b>%d écarts résolus</b> · %d pas joués : %d verts, %d en échec, %d bloqués (il manque encore du code).</p>' % (cur.get("resolus", 0), cur["pas"], cur["pas_verts"], cur["pas_rouges"], cur["pas_bloques"])
@@ -184,6 +200,7 @@ html = HEAD + EXTRA + f'''<h1>Conformité à Boond</h1>
 <div class="col"><span class="bar grand"><i style="width:{note:.1f}%"></i></span><p class="sous" style="margin:6px 0 0">{conf} éléments conformes sur {tot} relevés dans Boond</p></div></div>
 <p class="borne"><b>C'est une borne haute.</b> Un écart compte pour un seul élément, alors qu'une ligne d'écart en couvre souvent plusieurs (« dix champs absents », « treize écrans »). La vraie conformité est donc probablement un peu plus basse.</p>
 
+{NOUVEAU}
 <div class="deux2">
 <div><b class="v">{pc(presents[3])}</b>des écrans <b>présents chez Ava</b> sont conformes ({presents[2]} éléments sur {presents[0]})</div>
 <div><b class="v">{pc(absents[3])}</b>des écrans <b>absents chez Ava</b> : ils n'existent pas encore ({absents[0]} éléments en écart)</div>
