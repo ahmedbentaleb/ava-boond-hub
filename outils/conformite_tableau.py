@@ -14,7 +14,7 @@ SRC = os.path.join(HUB, "..", "..", "audits-independants", "conformite", "TABLEA
 md = open(SRC, encoding="utf-8").read()
 OPT = {a.split("=", 1)[0]: a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--")}
 args = [a for a in sys.argv[1:] if not a.startswith("--")]
-REVISE = OPT.get("--revise"); REJEU = OPT.get("--rejeu"); LABEL = OPT.get("--label"); HEURE = OPT.get("--heure"); VERSION = OPT.get("--version")
+REVISE = OPT.get("--revise"); REJEU = OPT.get("--rejeu"); LABEL = OPT.get("--label"); HEURE = OPT.get("--heure"); VERSION = OPT.get("--version"); NOTE = OPT.get("--note")
 H = args[0] if args else subprocess.run(["date", "+%Hh%M"], capture_output=True, text=True).stdout.strip()
 import datetime
 _J = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"]
@@ -38,6 +38,8 @@ if REJEU:
     ver, periode = VERSION or (dm[6] if dm else "version de travail"), "08 au 18/10/2026"
     st_ = {}
     r1 = re.search(r"écarts RÉSOLUS[^:]*: (\d+)", txt); r2 = re.search(r"Rouges par lot[^|]*\| .*?total (\d+)", txt); r3 = re.search(r"BLOQUE (\d+)", txt)
+    r4 = re.search(r"pas ROUGE (\d+) · VERT (\d+) · BLOQUE (\d+)", txt)
+    if r4: st_["pas_rouges"], st_["pas_verts"], st_["pas_bloques"] = int(r4[1]), int(r4[2]), int(r4[3]); st_["pas"] = sum(int(x) for x in r4.groups())
     if r1: st_["resolus"] = int(r1[1])
     if r2: st_["rouges"] = int(r2[1])
     if r3: st_["bloques"] = int(r3[1])
@@ -99,6 +101,7 @@ hist = json.load(open(hp, encoding="utf-8")) if os.path.exists(hp) else []
 if LABEL:
     ent = {"date": date, "label": LABEL, "heure": HEURE or "", "note": note, "version": ver, "elements": tot}
     ent.update(st_ if REJEU else {})
+    if NOTE: ent["texte"] = NOTE
     idx = next((i for i, h in enumerate(hist) if h["date"] == date and h.get("label") == LABEL), None)
     if idx is None: hist.append(ent)
     else: hist[idx] = ent
@@ -168,7 +171,10 @@ cur = hist[idx] if idx is not None else hist[-1]
 MENTION = ('<p class="sous" style="margin:0 0 12px">%s : %s → %s</p>' % (cur["mention"].capitalize(), pc(cur["avant"]), pc(cur["note"]))) if cur.get("mention") else ""
 QUAND = (" vers " + cur["heure"].replace("h", " h ")) if cur.get("heure") else ""
 SURQUOI = ("la version de travail du Livrable 3 (%s), %s" % (ver, cur["label"])) if cur.get("label") else ("la version " + ver)
-STATS = ('<p class="sous" style="margin:0 0 12px">Cette campagne : <b>%d écarts résolus</b> · %d scénarios en échec · %d bloqués (il manque encore du code).</p>' % (cur["resolus"], cur.get("rouges", 0), cur.get("bloques", 0))) if cur.get("resolus") is not None else ""
+STATS = ""
+if cur.get("pas") is not None:
+    STATS = '<p class="sous" style="margin:0 0 12px">Cette campagne : <b>%d écarts résolus</b> · %d pas joués : %d verts, %d en échec, %d bloqués (il manque encore du code).</p>' % (cur.get("resolus", 0), cur["pas"], cur["pas_verts"], cur["pas_rouges"], cur["pas_bloques"])
+if cur.get("texte"): STATS += '<p class="sous" style="margin:0 0 12px">%s</p>' % cur["texte"]
 ENLIGNE = '<p class="sous" style="margin:0 0 12px">Les campagnes de mesure portent sur le Livrable 3, en construction ; la version en ligne est le Livrable 2bis (5a94a54e).</p>' if cur.get("label") else ""
 html = HEAD + EXTRA + f'''<h1>Conformité à Boond</h1>
 <p class="sous">{STAMP} · à chaque livraison, ce tableau est recalculé et la date de mesure change</p>

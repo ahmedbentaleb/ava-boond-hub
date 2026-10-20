@@ -43,5 +43,36 @@
   "resolus": 160,
   "rouges": 240,
   "bloques": 166
+ },
+ {
+  "date": "20/10/2026",
+  "label": "campagne n° 5",
+  "heure": "10h53",
+  "note": 61.3,
+  "version": "982237ea",
+  "elements": 2271,
+  "pas_rouges": 263,
+  "pas_verts": 396,
+  "pas_bloques": 242,
+  "pas": 901,
+  "resolus": 178,
+  "rouges": 254,
+  "bloques": 242
+ },
+ {
+  "date": "20/10/2026",
+  "label": "campagne n° 6",
+  "heure": "11h25",
+  "note": 62.5,
+  "version": "2145d2f1",
+  "elements": 2271,
+  "pas_rouges": 486,
+  "pas_verts": 751,
+  "pas_bloques": 200,
+  "pas": 1437,
+  "resolus": 265,
+  "rouges": 412,
+  "bloques": 200,
+  "texte": "La hausse du nombre de pas joués vient des scénarios S16 à S21 et des assertions N-001 à N-021, jouées pour la première fois."
  }
 ]
