@@ -424,5 +424,5 @@
  "haut_precis": "90,7",
  "bas_campagne": "n° 15",
  "prudent_releves": 2227,
- "mention": "Prochaine étape : campagne complète sur la dernière version, avec le contrôle de non-fuite entre requêtes. Les 4 contrôles de sécurité sont verts."
+ "mention": "Une version avec une optimisation de vitesse a été écartée de la mise en ligne après un plantage en test (corrigé, retiré de la version candidate). La campagne complète sur la version candidate est en cours (fin vers 0 h 15). Les 4 contrôles de sécurité sont verts."
 }

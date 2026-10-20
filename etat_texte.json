@@ -1,4 +1,4 @@
 {
- "livrable3": "Prochaine étape : une campagne complète sur la dernière version, avec le contrôle de non-fuite entre requêtes. Le Livrable 3 est assemblé mais n’est pas encore en ligne ; le Livrable 2bis l’est depuis le 18/10 à 19 h 35.",
- "statut_campagne": "Campagne {num} faite (suite complète) ; la prochaine étape est une campagne complète avec le contrôle de non-fuite"
+ "livrable3": "Une version avec une optimisation de vitesse a été écartée de la mise en ligne après un plantage en test (corrigé, retiré de la version candidate). La campagne complète sur la version candidate est en cours (fin vers 0 h 15). Le Livrable 3 est assemblé mais n’est pas encore en ligne ; le Livrable 2bis l’est depuis le 18/10 à 19 h 35.",
+ "statut_campagne": "Campagne {num} faite ; la campagne complète sur la version candidate est en cours (fin vers 0 h 15)"
 }
