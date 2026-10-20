@@ -1,75 +1,75 @@
 {
- "hors_juge": 5,
- "total": 711,
- "anciens": 464,
- "nouveaux": 247,
- "code": 518,
- "juge": 354,
+ "hors_juge": 0,
+ "total": 357,
+ "anciens": 236,
+ "nouveaux": 121,
+ "code": 164,
+ "juge": 12,
  "juge_campagne": "n° 9",
  "series": [
   {
    "label": "n° 1",
    "heure": "21:22",
    "date": "18/10/2026",
-   "code": 67,
-   "juge": 52
+   "code": 15,
+   "juge": 10
   },
   {
    "label": "n° 2",
    "heure": "22:17",
    "date": "18/10/2026",
-   "code": 139,
-   "juge": 87
+   "code": 51,
+   "juge": 18
   },
   {
    "label": "n° 3",
    "heure": "22:31",
    "date": "18/10/2026",
-   "code": 168,
-   "juge": 91
+   "code": 69,
+   "juge": 19
   },
   {
    "label": "n° 4",
    "heure": "10:21",
    "date": "20/10/2026",
-   "code": 198,
-   "juge": 122
+   "code": 80,
+   "juge": 31
   },
   {
    "label": "n° 5",
    "heure": "10:53",
    "date": "20/10/2026",
-   "code": 228,
-   "juge": 132
+   "code": 89,
+   "juge": 38
   },
   {
    "label": "n° 6",
    "heure": "11:25",
    "date": "20/10/2026",
-   "code": 259,
-   "juge": 159
+   "code": 94,
+   "juge": 42
   },
   {
    "label": "n° 7",
    "heure": "12:24",
    "date": "20/10/2026",
-   "code": 301,
-   "juge": 223
+   "code": 103,
+   "juge": 41
   },
   {
    "label": "n° 8",
    "heure": "14:50",
    "date": "20/10/2026",
-   "code": 426,
-   "juge": 232
+   "code": 143,
+   "juge": 16
   },
   {
    "label": "n° 9",
    "heure": "16:00",
    "date": "20/10/2026",
-   "code": 497,
-   "juge": 354
+   "code": 143,
+   "juge": 0
   }
  ],
- "mesure": "20/10/2026 16h09"
+ "mesure": "20/10/2026 16h16"
 }
