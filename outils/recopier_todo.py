@@ -19,6 +19,14 @@ s = re.sub(r'<div class="chiffre"><b>[^<]*</b><span>[^<]*écarts (?:CODÉS|JUGÉ
 import datetime
 _J = ["lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche"]; _n = datetime.datetime.now()
 s = re.sub(r"Mis à jour le [^(]*\(heure de Casablanca\)", "Mis à jour le %s %s à %s (heure de Casablanca)" % (_J[_n.weekday()], _n.strftime("%d/%m/%Y"), _n.strftime("%Hh%M")), s, count=1)
+# D-424 : un seul gros chiffre, le prudent du nouveau tableau ; l'ancien passe en petit
+import json as _json
+_nj = _json.load(open(os.path.join(HUB, "conformite_nouveau.json"), encoding="utf-8"))
+_bas = ("%.0f" % _nj["bas"]); _haut = ("%.0f" % _nj["points"][-1]["note"])
+_old = _json.load(open(os.path.join(HUB, "conformite_historique.json"), encoding="utf-8"))[-1]["note"]
+s = re.sub(r'<div class="chiffre"><b>[0-9,]+ %</b><span>conformité à Boond mesurée[^<]*</span></div>',
+    '<div class="chiffre"><b>%s %%</b><span>d’Ava ressemble à Boond (chiffre prudent) ; peut monter jusqu’à %s %% quand les tests seront resserrés ; objectif 95 %%. Ancienne façon de compter (les écrans neufs comptaient 0), gardée pour l’historique : %s %%</span></div>' % (_bas, _haut, ("%.1f" % _old).replace(".", ",")), s, count=1)
+s = s.replace('<p class="compte">', '<p class="compte" style="font-weight:600">Aujourd’hui Ava ressemble à Boond à %s %% ; la cible est 95 %%.</p>' % _bas + chr(10) + '<p class="compte">', 1)
 bloc = cc.bloc_html()
 i = s.find('<div class="chiffres">')
 j = s.find('<div class="bloc">', i) if i >= 0 else -1

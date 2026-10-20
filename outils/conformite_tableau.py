@@ -135,7 +135,7 @@ HEAD = ('<!doctype html>\n<html lang="fr"><head><meta charset="utf-8"><meta http
 EXTRA = """<style>
 .note-g{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin:6px 0 4px}
 .note-g .gros{font-size:64px;font-weight:700;line-height:1;color:var(--t1)} .note-g .gros small{font-size:28px;font-weight:600}
-.note-g .col{flex:1;min-width:220px} .bar{display:block;height:12px;border-radius:6px;background:var(--bord);overflow:hidden;min-width:90px} .bar i{display:block;height:100%;background:var(--vert);border-radius:6px} .bar.ab i{background:var(--t3)}
+.grandphrase{font-size:18px;margin:6px 0 10px}.note-g .col{flex:1;min-width:220px} .bar{display:block;height:12px;border-radius:6px;background:var(--bord);overflow:hidden;min-width:90px} .bar i{display:block;height:100%;background:var(--vert);border-radius:6px} .bar.ab i{background:var(--t3)}
 .bar.grand{height:20px;border-radius:10px} .bar.grand i{border-radius:10px}
 .date{display:inline-block;margin:4px 0 14px;padding:5px 12px;border:1px solid var(--vert);border-radius:8px;color:var(--vert);font-weight:600;font-size:14px}
 td.nm,th.nm{text-align:right;white-space:nowrap;font-size:inherit;font-weight:inherit;color:inherit;width:auto} td.bc{width:30%;min-width:100px}
@@ -219,14 +219,21 @@ if cur.get("pas") is not None:
     STATS = '<p class="sous" style="margin:0 0 12px">Cette campagne : <b>%d écarts résolus</b> · %d pas joués : %d verts, %d en échec, %d bloqués (il manque encore du code).</p>' % (cur.get("resolus", 0), cur["pas"], cur["pas_verts"], cur["pas_rouges"], cur["pas_bloques"])
 if cur.get("texte"): STATS += '<p class="sous" style="margin:0 0 12px">%s</p>' % cur["texte"]
 ENLIGNE = '<p class="sous" style="margin:0 0 12px">Les campagnes de mesure portent sur le Livrable 3, en construction ; la version en ligne est le Livrable 2bis (5a94a54e).</p>' if cur.get("label") else ""
+try:
+    _nj = json.load(open(os.path.join(HUB, "conformite_nouveau.json"), encoding="utf-8"))
+    SEUL_P = _nj.get("bas") or _nj["points"][-1]["note"]; HAUT = fr("%.0f" % _nj["points"][-1]["note"])
+except Exception:
+    SEUL_P, HAUT = note, fr("%.0f" % note)
+SEUL = fr("%.0f" % SEUL_P)
 html = HEAD + EXTRA + f'''<h1>Conformité à Boond</h1>
 <p class="sous">{STAMP} · à chaque livraison, ce tableau est recalculé et la date de mesure change</p>
 <span class="date">Mesurée le {date}{QUAND} sur {SURQUOI} · Boond relevé à l'écran du {periode}</span>{MENTION}{ENLIGNE}{STATS}
 
-<p class="sous" style="margin:0 0 6px"><b>Ancien tableau</b> (écrans absents forcés à 0 %) — référence de continuité ; le nouveau tableau est présenté juste en dessous, les deux se lisent ensemble.</p>
-<div class="note-g"><div class="gros">{fr("%.1f" % note)}<small> %</small></div>
-<div class="col"><span class="bar grand"><i style="width:{note:.1f}%"></i></span><p class="sous" style="margin:6px 0 0">{conf} éléments conformes sur {tot} relevés dans Boond</p></div></div>
-<p class="borne"><b>C'est une borne haute.</b> Un écart compte pour un seul élément, alors qu'une ligne d'écart en couvre souvent plusieurs (« dix champs absents », « treize écrans »). La vraie conformité est donc probablement un peu plus basse.</p>
+<p class="grandphrase"><b>Aujourd’hui Ava ressemble à Boond à {SEUL} % ; la cible est 95 %.</b></p>
+<div class="note-g"><div class="gros">{SEUL}<small> %</small></div>
+<div class="col"><span class="bar grand"><i style="width:{SEUL_P}%"></i></span><p class="sous" style="margin:6px 0 0">Peut monter jusqu’à {HAUT} % quand les tests seront resserrés ; objectif 95 %. Chiffre prudent du nouveau tableau (écrans neufs compris), les éléments à preuve discutable étant retirés.</p></div></div>
+<p class="sous" style="margin:10px 0 4px"><b>Ancienne façon de compter</b> (les écrans neufs comptaient 0), gardée pour l’historique : <b>{fr("%.1f" % note)} %</b> ({conf} éléments conformes sur {tot} relevés dans Boond).</p>
+<p class="borne" style="margin-top:4px"><b>Pour cette ancienne façon, c'est une borne haute.</b> Un écart compte pour un seul élément, alors qu'une ligne d'écart en couvre souvent plusieurs (« dix champs absents », « treize écrans »). La vraie conformité est donc probablement un peu plus basse.</p>
 
 {NOUVEAU}
 {COMPTEURS}
