@@ -25,5 +25,353 @@
  "bas": 77.4,
  "verts": 354,
  "verts_pct": 15.8,
- "ambigus": 149
+ "ambigus": 149,
+ "tableau": [
+  [
+   "Saisie transverse (4 objets CRM)",
+   11,
+   5,
+   6,
+   54.5
+  ],
+  [
+   "Saisie société",
+   32,
+   4,
+   28,
+   87.5
+  ],
+  [
+   "Saisie contact",
+   31,
+   7,
+   24,
+   77.4
+  ],
+  [
+   "Saisie besoin",
+   42,
+   7,
+   35,
+   83.3
+  ],
+  [
+   "Saisie positionnement",
+   18,
+   5,
+   13,
+   72.2
+  ],
+  [
+   "Saisie candidat",
+   41,
+   21,
+   20,
+   48.8
+  ],
+  [
+   "Saisie ressource",
+   39,
+   4,
+   35,
+   89.7
+  ],
+  [
+   "Saisie contrat RH",
+   52,
+   9,
+   43,
+   82.7
+  ],
+  [
+   "Saisie profil type",
+   25,
+   1,
+   24,
+   96.0
+  ],
+  [
+   "Saisie projet",
+   18,
+   1,
+   17,
+   94.4
+  ],
+  [
+   "Saisie prestation",
+   20,
+   8,
+   12,
+   60.0
+  ],
+  [
+   "Saisie achat",
+   34,
+   6,
+   28,
+   82.4
+  ],
+  [
+   "Saisie produit",
+   22,
+   5,
+   17,
+   77.3
+  ],
+  [
+   "Saisie groupement",
+   13,
+   3,
+   10,
+   76.9
+  ],
+  [
+   "Saisie facture fournisseur",
+   28,
+   2,
+   26,
+   92.9
+  ],
+  [
+   "Fiche transverse (toutes fiches)",
+   25,
+   9,
+   16,
+   64.0
+  ],
+  [
+   "Fiche société",
+   131,
+   23,
+   108,
+   82.4
+  ],
+  [
+   "Fiche contact",
+   106,
+   14,
+   92,
+   86.8
+  ],
+  [
+   "Fiche besoin",
+   77,
+   17,
+   60,
+   77.9
+  ],
+  [
+   "Fiche positionnement",
+   35,
+   9,
+   26,
+   74.3
+  ],
+  [
+   "Fiche candidat",
+   116,
+   28,
+   88,
+   75.9
+  ],
+  [
+   "Fiche ressource",
+   157,
+   28,
+   129,
+   82.2
+  ],
+  [
+   "Fiche contrat RH",
+   26,
+   9,
+   17,
+   65.4
+  ],
+  [
+   "Fiche profil type",
+   9,
+   2,
+   7,
+   77.8
+  ],
+  [
+   "Fiche projet",
+   71,
+   5,
+   66,
+   93.0
+  ],
+  [
+   "Fiche prestation",
+   43,
+   31,
+   12,
+   27.9
+  ],
+  [
+   "Fiche achat",
+   35,
+   12,
+   23,
+   65.7
+  ],
+  [
+   "Fiche produit",
+   13,
+   6,
+   7,
+   53.8
+  ],
+  [
+   "Fiche facture fournisseur",
+   0,
+   0,
+   0,
+   null
+  ],
+  [
+   "Fiche avenant",
+   16,
+   4,
+   12,
+   75.0
+  ],
+  [
+   "Fiche groupement",
+   16,
+   7,
+   9,
+   56.3
+  ],
+  [
+   "Cliquable coque (menu, cloche, fil d'Ariane)",
+   36,
+   0,
+   36,
+   100.0
+  ],
+  [
+   "Cliquable listes présentes (9)",
+   172,
+   0,
+   172,
+   100.0
+  ],
+  [
+   "Cliquable fiches présentes (8)",
+   361,
+   6,
+   355,
+   98.3
+  ],
+  [
+   "Cliquable écrans absents (listes, fiches, menu, onglets)",
+   147,
+   35,
+   112,
+   76.2
+  ],
+  [
+   "Actions menus Créer et étape société",
+   35,
+   1,
+   34,
+   97.1
+  ],
+  [
+   "Actions fenêtre d'action",
+   43,
+   1,
+   42,
+   97.7
+  ],
+  [
+   "Actions carte et onglet des fiches",
+   18,
+   1,
+   17,
+   94.4
+  ],
+  [
+   "Actions liste /actions",
+   23,
+   0,
+   23,
+   100.0
+  ],
+  [
+   "Mails accès à l'envoi (boutons fiches, masse)",
+   16,
+   0,
+   16,
+   100.0
+  ],
+  [
+   "Mails page Envoi d'un email",
+   21,
+   3,
+   18,
+   85.7
+  ],
+  [
+   "Mails CV, ordre de mission, partage, fils, DT",
+   36,
+   13,
+   23,
+   63.9
+  ],
+  [
+   "Mails configuration Emailing",
+   9,
+   5,
+   4,
+   44.4
+  ],
+  [
+   "Mails cloche et notifications",
+   23,
+   0,
+   23,
+   100.0
+  ]
+ ],
+ "parties": [
+  [
+   "saisie",
+   426,
+   88,
+   338,
+   79.3
+  ],
+  [
+   "fiche",
+   876,
+   204,
+   672,
+   76.7
+  ],
+  [
+   "cliquable",
+   716,
+   41,
+   675,
+   94.3
+  ],
+  [
+   "actions",
+   119,
+   3,
+   116,
+   97.5
+  ],
+  [
+   "mails",
+   105,
+   21,
+   84,
+   80.0
+  ]
+ ],
+ "tableau_label": "n° 9"
 }

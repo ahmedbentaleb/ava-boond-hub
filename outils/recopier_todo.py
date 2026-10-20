@@ -16,6 +16,9 @@ if "dans-hub" not in s:
     s = s.replace("</head>", '<style>.dans-hub .nav{display:none}</style><script>if(self!==top)document.documentElement.classList.add("dans-hub")</script></head>', 1)
 # la todo du BRAIN porte déjà deux cartes provisoires (≈ codés, jugés) : on les retire, les deux compteurs du hub les remplacent
 s = re.sub(r'<div class="chiffre"><b>[^<]*</b><span>[^<]*écarts (?:CODÉS|JUGÉS)[^<]*</span></div>\s*', '', s)
+import datetime
+_J = ["lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche"]; _n = datetime.datetime.now()
+s = re.sub(r"Mis à jour le [^(]*\(heure de Casablanca\)", "Mis à jour le %s %s à %s (heure de Casablanca)" % (_J[_n.weekday()], _n.strftime("%d/%m/%Y"), _n.strftime("%Hh%M")), s, count=1)
 bloc = cc.bloc_html()
 i = s.find('<div class="chiffres">')
 j = s.find('<div class="bloc">', i) if i >= 0 else -1

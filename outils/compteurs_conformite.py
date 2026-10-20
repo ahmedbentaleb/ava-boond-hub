@@ -108,7 +108,7 @@ def calcul():
     ferme = depuis_journal(U)
     rj = juge()
     hist = json.load(open(HIST, encoding="utf-8"))
-    series, cumul = [], set()
+    series, cumul, dernier = [], set(), None
     for h in hist:
         lab = h.get("label", "")
         if not lab.startswith("campagne"): continue
@@ -118,12 +118,12 @@ def calcul():
         tok_ = h["version"].split()[0]
         cand = [r for r in rj if tok_ in r["dossier"]]
         R = (ids_resolus(cand[-1]["dossier"]) if cand else None) or set()
+        if cand: dernier = cand[-1]  # la dernière campagne PUBLIÉE (pas un rejeu partiel plus récent)
         R &= U
         cumul |= R
         par_code = {i for i, (di, he) in ferme.items() if (di, he) <= (iso, hh)}
         series.append({"label": lab.replace("campagne n° ", "n° "), "heure": hh, "date": h["date"],
                        "code": len(par_code | cumul), "juge": len(R)})
-    dernier = rj[-1] if rj else None
     R_now = (ids_resolus(dernier["dossier"]) & U) if dernier and ids_resolus(dernier["dossier"]) else set()
     code_now = set(ferme) | cumul
     _rs = ids_resolus(dernier["dossier"]) if dernier else set()

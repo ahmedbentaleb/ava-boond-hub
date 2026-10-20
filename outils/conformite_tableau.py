@@ -194,6 +194,12 @@ try:
     CONF9 = ('<li style="display:list-item;border:0;padding:2px 0"><b>Confirmés par un scénario vert : %s sur %s (%s).</b> Les autres éléments conformes sont des « conformes par comparaison » : lus dans Boond et dans Ava, pas encore confirmés par un test.</li>'
              % (nj["verts"], last["releves"], pc(nj["verts_pct"]))) if nj.get("verts") else ""
     AMBI = ('<li style="display:list-item;border:0;padding:2px 0">%s écarts résolus ont une preuve discutable : sans eux, la note tombe à %s. Le Juge les résorbe à la campagne n° 10.</li>' % (nj["ambigus"], pc(bas_n))) if bas_n and nj.get("ambigus") else ""
+    def _tab(rows, tete):
+        return "<table><tr><th>%s</th><th class=\"nm\">Relevés</th><th class=\"nm\">Écarts</th><th class=\"nm\">Conformité</th><th></th></tr>%s</table>" % (tete, "".join(
+            "<tr><td>%s</td><td class=\"nm\">%s</td><td class=\"nm\">%s</td><td class=\"nm\">%s</td><td class=\"bc\">%s</td></tr>" % (r[0], r[1], r[2], pc(r[4]) if r[4] is not None else "–", bar(r[4]) if r[4] is not None else "") for r in rows))
+    DETAIL = ""
+    if nj.get("parties"):
+        DETAIL = "<p class=\"sous\" style=\"margin:12px 0 4px\"><b>Par partie, à la campagne %s</b> (éléments sans écart ouvert, borne haute)</p>" % nj["tableau_label"] + _tab(nj["parties"], "Partie") +           "<details style=\"margin-top:8px\"><summary style=\"cursor:pointer;color:var(--t2)\">Voir toutes les sections du nouveau tableau</summary>" + _tab(nj["tableau"], "Section") + "</details>"
     NOUVEAU = ('<div class="borne" style="border-left-color:var(--v2)"><b>Deux tableaux, deux courbes séparées.</b> '
       'Le <b>nouveau tableau</b> compare les écrans neufs élément par élément (l’ancien les forçait à 0 %%). '
       'Sa base était de <b>%s</b> (%s sur %s). À la campagne %s, <b>%s des éléments sont sans écart ouvert (règle du Juge)%s</b> : %s sur %s relevés, %s écarts restants. '
@@ -201,10 +207,10 @@ try:
       'Le nouveau tableau devient la <b>référence à partir de la campagne n° 9</b> ; l’ancien tableau (%s) est gardé à côté pour la continuité.'
       '<ul style="margin:8px 0 0;padding-left:20px;list-style:disc">%s%s</ul>'
       '<p class="sous" style="margin:8px 0 4px">Nouveau tableau (écrans neufs comparés élément par élément) : base %s, puis %s.%s</p>%s'
-      '<p class="sous" style="margin:8px 0 0">La courbe « ancien tableau » (écrans absents forcés à 0 %%) est celle de « L’historique des mesures » plus bas_n ; on ne mélange pas les deux, et aucun des deux chiffres ne se lit sans l’autre.</p></div>') % (
+      '%s<p class="sous" style="margin:8px 0 0">La courbe « ancien tableau » (écrans absents forcés à 0 %%) est celle de « L’historique des mesures » plus bas_n ; on ne mélange pas les deux, et aucun des deux chiffres ne se lit sans l’autre.</p></div>') % (
       pc(b0["note"]), b0["conformes"], b0["releves"], last["label"], pc(last["note"]), FOURCH, last["conformes"], last["releves"], last["ecarts"],
       pc(last["note"]), pc(note), CONF9, AMBI,
-      pc(b0["note"]), " puis ".join("%s à la %s" % (pc(q["note"]), q["label"]) for q in nj["points"]), nj["sections"], _courbe_n())
+      pc(b0["note"]), " puis ".join("%s à la %s" % (pc(q["note"]), q["label"]) for q in nj["points"]), nj["sections"], _courbe_n(), DETAIL)
 except Exception as _e:
     NOUVEAU = ""
     print("encart non construit :", _e)

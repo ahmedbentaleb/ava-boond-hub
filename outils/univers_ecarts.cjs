@@ -180,4 +180,4 @@ if (ECRIRE) {
 }
 
 // Ajout du Rapporteur (hub) : écrit sur la sortie la liste des identifiants dont le statut est « valide » (= écart ouvert), pour les compteurs. Ne modifie aucun fichier.
-process.stdout.write("@@VALIDES@@" + JSON.stringify(tous.filter(i => statut(i) === "valide")) + "@@FIN@@");
+process.stdout.write("@@VALIDES@@" + JSON.stringify(tous.filter(i => (statut(i) === "valide" || statut(i) === "résolu"))) + "@@FIN@@");
