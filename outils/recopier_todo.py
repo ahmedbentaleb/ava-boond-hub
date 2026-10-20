@@ -23,13 +23,13 @@ s = s.replace('objectif <b>95 %</b>', 'objectif <b>100 %</b>').replace('jusqu’
 # D-424 : un seul gros chiffre, le prudent du nouveau tableau ; l'ancien passe en petit
 import json as _json
 _nj = _json.load(open(os.path.join(HUB, "conformite_nouveau.json"), encoding="utf-8"))
-_bas = _nj.get("bas_txt") or ("%.0f" % _nj["bas"]); _reste = _nj["points"][-1].get("ecarts", ""); _haut = ("%.0f" % _nj["points"][-1]["note"])
+_bas = _nj.get("bas_txt") or ("%.0f" % _nj["bas"]); _reste = _nj["points"][-1].get("ecarts", ""); _haut = _nj.get("haut_txt") or ("%.0f" % _nj["points"][-1]["note"]); _ment = _nj.get("mention", "")
 _old = _json.load(open(os.path.join(HUB, "conformite_historique.json"), encoding="utf-8"))[-1]["note"]
 _h = _json.load(open(os.path.join(HUB, "conformite_historique.json"), encoding="utf-8"))[-1]
 _mesure = "%s, %s" % (_h.get("label", "").replace("campagne ", "campagne "), _h.get("heure", ""))
 # la carte de tête est RECALCULÉE à chaque recopie (plus de valeur écrite à la main dans la to-do du BRAIN, quel que soit son texte)
 s = re.sub(r'<div class="chiffre"><b>[^<]*</b><span>[^<]*conformité à Boond[^<]*</span></div>',
-    '<div class="chiffre"><b>%s %%</b><span>d’Ava ressemble à Boond (chiffre prudent) ; peut monter jusqu’à %s %% quand les tests seront resserrés ; objectif 100 %%. Mesure : %s. Ancienne façon de compter (les écrans neufs comptaient 0), gardée pour l’historique : %s %%</span></div>' % (_bas, _haut, _mesure, ("%.1f" % _old).replace(".", ",")), s, count=1)
+    '<div class="chiffre"><b>%s %%</b><span>d’Ava ressemble à Boond (chiffre prudent) ; peut monter jusqu’à %s %% quand les tests seront resserrés ; objectif 100 %%. %s Mesure : %s. Ancienne façon de compter (les écrans neufs comptaient 0), gardée pour l’historique : %s %%</span></div>' % (_bas, _haut, _ment, _mesure, ("%.1f" % _old).replace(".", ",")), s, count=1)
 s = s.replace('<p class="compte">', '<p class="compte" style="font-weight:600">Aujourd’hui Ava ressemble à Boond à %s %% ; la cible est 100 %% des éléments mesurables. Il reste %s différences à fermer.</p><p class="compte" style="font-weight:400;font-size:13px;color:var(--t2)">Les éléments qu’on ne peut pas vérifier chez Boond (module facturation absent du compte, envois réels de mails, PDF à déposer) sont listés à part avec la raison.</p>' % (_bas, _reste) + chr(10) + '<p class="compte">', 1)
 bloc = cc.bloc_html()
 i = s.find('<div class="chiffres">')

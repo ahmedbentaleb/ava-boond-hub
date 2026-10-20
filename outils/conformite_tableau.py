@@ -192,8 +192,8 @@ try:
         return "".join(o)
     bas_n = nj.get("bas")
     FOURCH = ((" (fourchette %s–%s)" % (("%s %%" % nj["bas_txt"]) if nj.get("bas_approx") else pc(bas_n), pc(last["note"]))) if bas_n else "")
-    CONF9 = ('<li style="display:list-item;border:0;padding:2px 0"><b>Confirmés par un scénario vert : %s sur %s (%s).</b> Les autres éléments conformes sont des « conformes par comparaison » : lus dans Boond et dans Ava, pas encore confirmés par un test.</li>'
-             % (nj["verts"], last["releves"], pc(nj["verts_pct"]))) if nj.get("verts") else ""
+    CONF9 = ('<li style="display:list-item;border:0;padding:2px 0"><b>Confirmés par un scénario vert (dernier recompte prudent) : %s sur %s (%s).</b> Les autres éléments conformes sont des « conformes par comparaison » : lus dans Boond et dans Ava, pas encore confirmés par un test.</li>'
+             % (nj["verts"], nj.get("prudent_releves", last["releves"]), pc(nj["verts_pct"]))) if nj.get("verts") else ""
     AMBI = ('<li style="display:list-item;border:0;padding:2px 0">%s écarts résolus ont une preuve discutable : sans eux, la note tombe à %s. Le Juge les résorbe aux campagnes suivantes.</li>' % (nj["ambigus"], pc(bas_n))) if bas_n and nj.get("ambigus") else ""
     def _tab(rows, tete):
         return "<table><tr><th>%s</th><th class=\"nm\">Relevés</th><th class=\"nm\">Écarts</th><th class=\"nm\">Conformité</th><th></th></tr>%s</table>" % (tete, "".join(
@@ -222,10 +222,10 @@ if cur.get("texte"): STATS += '<p class="sous" style="margin:0 0 12px">%s</p>' %
 ENLIGNE = '<p class="sous" style="margin:0 0 12px">Les campagnes de mesure portent sur le Livrable 3, en construction ; la version en ligne est le Livrable 2bis (5a94a54e).</p>' if cur.get("label") else ""
 try:
     _nj = json.load(open(os.path.join(HUB, "conformite_nouveau.json"), encoding="utf-8"))
-    SEUL_P = _nj.get("bas") or _nj["points"][-1]["note"]; HAUT = fr("%.0f" % _nj["points"][-1]["note"])
+    SEUL_P = _nj.get("bas") or _nj["points"][-1]["note"]; HAUT = _nj.get("haut_txt") or fr("%.0f" % _nj["points"][-1]["note"]); MENTION_N = _nj.get("mention", "")
 except Exception:
     SEUL_P, HAUT = note, fr("%.0f" % note)
-    _nj = {}
+    _nj = {}; MENTION_N = ""
 SEUL = _nj.get("bas_txt") or fr("%.0f" % SEUL_P)
 RESTE = (_nj.get("points") or [{}])[-1].get("ecarts", "")
 html = HEAD + EXTRA + f'''<h1>Conformité à Boond</h1>
@@ -235,7 +235,7 @@ html = HEAD + EXTRA + f'''<h1>Conformité à Boond</h1>
 <p class="grandphrase"><b>Aujourd’hui Ava ressemble à Boond à {SEUL} % ; la cible est 100 % des éléments mesurables.</b> Il reste {RESTE} différences à fermer.</p>
 <p class="sous" style="margin:0 0 8px">Les éléments qu’on ne peut pas vérifier chez Boond (module facturation absent du compte, envois réels de mails, PDF à déposer) sont listés à part avec la raison.</p>
 <div class="note-g"><div class="gros">{SEUL}<small> %</small></div>
-<div class="col"><span class="bar grand"><i style="width:{SEUL_P}%"></i></span><p class="sous" style="margin:6px 0 0">Peut monter jusqu’à {HAUT} % quand les tests seront resserrés ; objectif 100 %. Chiffre prudent du nouveau tableau (écrans neufs compris), les éléments à preuve discutable étant retirés.</p></div></div>
+<div class="col"><span class="bar grand"><i style="width:{SEUL_P}%"></i></span><p class="sous" style="margin:6px 0 0">Peut monter jusqu’à {HAUT} % quand les tests seront resserrés ; objectif 100 %. <b>{MENTION_N}</b> Chiffre prudent du nouveau tableau (écrans neufs compris), les éléments à preuve discutable étant retirés.</p></div></div>
 <p class="sous" style="margin:10px 0 4px"><b>Ancienne façon de compter</b> (les écrans neufs comptaient 0), gardée pour l’historique : <b>{fr("%.1f" % note)} %</b> ({conf} éléments conformes sur {tot} relevés dans Boond).</p>
 <p class="borne" style="margin-top:4px"><b>Pour cette ancienne façon, c'est une borne haute.</b> Un écart compte pour un seul élément, alors qu'une ligne d'écart en couvre souvent plusieurs (« dix champs absents », « treize écrans »). La vraie conformité est donc probablement un peu plus basse.</p>
 

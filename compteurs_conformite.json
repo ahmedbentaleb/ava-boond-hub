@@ -1,11 +1,11 @@
 {
- "hors_juge": 9,
+ "hors_juge": 10,
  "total": 711,
  "anciens": 464,
  "nouveaux": 247,
- "code": 539,
- "juge": 368,
- "juge_campagne": "n° 10",
+ "code": 551,
+ "juge": 392,
+ "juge_campagne": "n° 11",
  "series": [
   {
    "label": "n° 1",
@@ -76,7 +76,14 @@
    "date": "20/10/2026",
    "code": 539,
    "juge": 368
+  },
+  {
+   "label": "n° 11",
+   "heure": "20:15",
+   "date": "20/10/2026",
+   "code": 551,
+   "juge": 392
   }
  ],
- "mesure": "20/10/2026 19h38"
+ "mesure": "20/10/2026 20h17"
 }
