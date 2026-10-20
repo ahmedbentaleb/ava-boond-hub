@@ -32,5 +32,16 @@
   "note": 59.5,
   "version": "490f33f2",
   "elements": 2271
+ },
+ {
+  "date": "20/10/2026",
+  "label": "campagne n° 4",
+  "heure": "10h21",
+  "note": 60.9,
+  "version": "84a6c1c2",
+  "elements": 2271,
+  "resolus": 160,
+  "rouges": 240,
+  "bloques": 166
  }
 ]

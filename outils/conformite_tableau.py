@@ -36,6 +36,11 @@ if REJEU:
     date = "%s/%s/%s" % (dm[3], dm[2], dm[1]) if dm else "18/10/2026"
     HEURE = HEURE or ((dm[4] + "h" + dm[5]) if dm else "")
     ver, periode = VERSION or (dm[6] if dm else "version de travail"), "08 au 18/10/2026"
+    st_ = {}
+    r1 = re.search(r"écarts RÉSOLUS[^:]*: (\d+)", txt); r2 = re.search(r"Rouges par lot[^|]*\| .*?total (\d+)", txt); r3 = re.search(r"BLOQUE (\d+)", txt)
+    if r1: st_["resolus"] = int(r1[1])
+    if r2: st_["rouges"] = int(r2[1])
+    if r3: st_["bloques"] = int(r3[1])
     mm = re.search(r"Éléments non relevables listés à part : (\d+)", txt); NR = int(mm[1]) if mm else NR
     blk = txt[txt.index("Section | Relevés"):]; blk = blk[:blk.index("```")]
     par_type, presents, absents, sect = [], None, None, {k: [] for _, k in GROUPES}
@@ -93,6 +98,7 @@ hp = os.path.join(HUB, "conformite_historique.json")
 hist = json.load(open(hp, encoding="utf-8")) if os.path.exists(hp) else []
 if LABEL:
     ent = {"date": date, "label": LABEL, "heure": HEURE or "", "note": note, "version": ver, "elements": tot}
+    ent.update(st_ if REJEU else {})
     idx = next((i for i, h in enumerate(hist) if h["date"] == date and h.get("label") == LABEL), None)
     if idx is None: hist.append(ent)
     else: hist[idx] = ent
@@ -162,10 +168,11 @@ cur = hist[idx] if idx is not None else hist[-1]
 MENTION = ('<p class="sous" style="margin:0 0 12px">%s : %s → %s</p>' % (cur["mention"].capitalize(), pc(cur["avant"]), pc(cur["note"]))) if cur.get("mention") else ""
 QUAND = (" vers " + cur["heure"].replace("h", " h ")) if cur.get("heure") else ""
 SURQUOI = ("la version de travail du Livrable 3 (%s), %s" % (ver, cur["label"])) if cur.get("label") else ("la version " + ver)
+STATS = ('<p class="sous" style="margin:0 0 12px">Cette campagne : <b>%d écarts résolus</b> · %d scénarios en échec · %d bloqués (il manque encore du code).</p>' % (cur["resolus"], cur.get("rouges", 0), cur.get("bloques", 0))) if cur.get("resolus") is not None else ""
 ENLIGNE = '<p class="sous" style="margin:0 0 12px">Les campagnes de mesure portent sur le Livrable 3, en construction ; la version en ligne est le Livrable 2bis (5a94a54e).</p>' if cur.get("label") else ""
 html = HEAD + EXTRA + f'''<h1>Conformité à Boond</h1>
 <p class="sous">{STAMP} · à chaque livraison, ce tableau est recalculé et la date de mesure change</p>
-<span class="date">Mesurée le {date}{QUAND} sur {SURQUOI} · Boond relevé à l'écran du {periode}</span>{MENTION}{ENLIGNE}
+<span class="date">Mesurée le {date}{QUAND} sur {SURQUOI} · Boond relevé à l'écran du {periode}</span>{MENTION}{ENLIGNE}{STATS}
 
 <div class="note-g"><div class="gros">{fr("%.1f" % note)}<small> %</small></div>
 <div class="col"><span class="bar grand"><i style="width:{note:.1f}%"></i></span><p class="sous" style="margin:6px 0 0">{conf} éléments conformes sur {tot} relevés dans Boond</p></div></div>
