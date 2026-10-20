@@ -177,16 +177,16 @@ COMPTEURS = _cc.bloc_html()
 NOUVEAU = ""
 try:
     tm = open(SRC, encoding="utf-8").read()
-    mt = re.search(r"\*\*Note globale : ([\d.]+) %\*\* \((\d+) éléments conformes sur (\d+) relevés ; ([\d.]+) %", tm)
-    if mt and float(mt[1]) != note:
-        NOUVEAU = ('<div class="borne" style="border-left-color:var(--v2)"><b>Un nouveau tableau est prêt, mais ce n’est pas encore une mesure.</b> '
-          'Sa <b>note de base est de %s</b> (%s éléments conformes sur %s). Elle sera mesurée par la campagne n° 9. '
-          'La courbe officielle ci-dessous reste celle des campagnes de mesure : on ne mélange pas les deux.'
+    mt = re.search(r"\*\*Note globale : ([\d.]+) %", tm)
+    rw = re.search(r"\| \*\*Note globale\*\* \| \*\*(\d+)\*\* \| \*\*(\d+)\*\* \| \*\*(\d+)\*\*", tm)
+    if mt and rw and float(mt[1]) != note:
+        NOUVEAU = ('<div class="borne" style="border-left-color:var(--v2)"><b>Un nouveau tableau est prêt, mais ce n’est pas encore une mesure de campagne.</b> '
+          'Sa <b>note de base est de %s</b> (%s éléments conformes sur %s). C’est une borne haute : des recoupements entre éléments subsistent. La note officielle sera celle d’une campagne du Juge appliquée à ce tableau. '
+          'La courbe officielle ci-dessous reste celle des campagnes sur l’ancien tableau : on ne mélange pas les deux.'
           '<ul style="margin:8px 0 0;padding-left:20px;list-style:disc">'
-          '<li style="display:list-item;border:0;padding:2px 0">17 sections étaient étiquetées « écran absent » et valaient 0 %% d’office. Elles existent pourtant : la Conformité les a comparées à Boond champ par champ (484 nouveaux écarts numérotés, 563 éléments, 235 conformes par comparaison).</li>'
-          '<li style="display:list-item;border:0;padding:2px 0">Pour ces sections, un écart compte pour un seul élément relevé.</li>'
-          '<li style="display:list-item;border:0;padding:2px 0">101 éléments qu’on ne peut pas relever sont exclus du calcul ; ils sont listés avec leur raison dans le tableau de travail.</li>'
-          '<li style="display:list-item;border:0;padding:2px 0">Sur le même dénominateur, l’ancien tableau donnait %s et le nouveau %s : le nouveau est plus sévère, il ne dit pas que c’est moins bon.</li></ul></div>') % (pc(float(mt[1])), mt[2], mt[3], pc(float(mt[4])), pc(float(mt[1])))
+          '<li style="display:list-item;border:0;padding:2px 0">17 sections étaient étiquetées « écran absent » et valaient 0 %% d’office. Elles existent pourtant : la Conformité les a comparées à Boond champ par champ, élément par élément.</li>'
+          '<li style="display:list-item;border:0;padding:2px 0">Pour ces sections, un écart compte pour un seul élément relevé ; un élément cité par plusieurs ensembles n’est compté qu’une fois.</li>'
+          '<li style="display:list-item;border:0;padding:2px 0">Les éléments qu’on ne peut pas relever sont exclus du calcul ; ils sont listés avec leur raison dans le tableau de travail.</li></ul></div>') % (pc(float(mt[1])), rw[3], rw[1])
 except Exception as _e:
     NOUVEAU = ""
     print("encart non construit :", _e)

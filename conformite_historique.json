@@ -90,5 +90,21 @@
   "rouges": 401,
   "bloques": 97,
   "texte": "Les écrans absents restent à 0 % le temps de vérifier leur couverture : les 7 sessions Code les construisent en parallèle."
+ },
+ {
+  "date": "20/10/2026",
+  "label": "campagne n° 8",
+  "heure": "14h50",
+  "note": 65.7,
+  "version": "c3e5ad03",
+  "elements": 2271,
+  "pas_rouges": 443,
+  "pas_verts": 1039,
+  "pas_bloques": 77,
+  "pas": 1559,
+  "resolus": 390,
+  "rouges": 367,
+  "bloques": 77,
+  "texte": "Le chiffre du nouveau tableau n'est pas publié ici tant qu'il n'est pas expliqué : il ne colle pas avec la note de base."
  }
 ]
