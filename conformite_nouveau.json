@@ -33,6 +33,13 @@
    "conformes": 1914,
    "releves": 2224,
    "ecarts": 310
+  },
+  {
+   "label": "n° 12",
+   "note": 88.6,
+   "conformes": 1973,
+   "releves": 2227,
+   "ecarts": 254
   }
  ],
  "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 % à la n° 10, puis 83,7 % à la n° 11 (1865 sur 2227 : 395 confirmés par un test réussi). Borne haute selon le dernier recompte de la Conformité : 85,7 % (le rapport de Tests donne 86,1 % sur 2224 éléments). 63 éléments non relevables sont exclus.",
@@ -44,23 +51,23 @@
   [
    "Saisie transverse (4 objets CRM)",
    11,
-   2,
-   9,
-   81.8
+   0,
+   11,
+   100.0
   ],
   [
    "Saisie société",
    32,
-   4,
-   28,
-   87.5
+   1,
+   31,
+   96.9
   ],
   [
    "Saisie contact",
    31,
-   6,
-   25,
-   80.6
+   5,
+   26,
+   83.9
   ],
   [
    "Saisie besoin",
@@ -79,16 +86,16 @@
   [
    "Saisie candidat",
    41,
-   15,
-   26,
-   63.4
+   13,
+   28,
+   68.3
   ],
   [
    "Saisie ressource",
    39,
-   6,
-   33,
-   84.6
+   1,
+   38,
+   97.4
   ],
   [
    "Saisie contrat RH",
@@ -107,9 +114,9 @@
   [
    "Saisie projet",
    18,
-   2,
-   16,
-   88.9
+   3,
+   15,
+   83.3
   ],
   [
    "Saisie prestation",
@@ -121,9 +128,9 @@
   [
    "Saisie achat",
    34,
-   18,
-   16,
-   47.1
+   19,
+   15,
+   44.1
   ],
   [
    "Saisie produit",
@@ -135,9 +142,9 @@
   [
    "Saisie groupement",
    13,
-   2,
-   11,
-   84.6
+   3,
+   10,
+   76.9
   ],
   [
    "Saisie facture fournisseur",
@@ -149,23 +156,23 @@
   [
    "Fiche transverse (toutes fiches)",
    25,
-   8,
-   17,
-   68.0
+   6,
+   19,
+   76.0
   ],
   [
    "Fiche société",
    131,
-   31,
-   100,
-   76.3
+   18,
+   113,
+   86.3
   ],
   [
    "Fiche contact",
    106,
-   14,
-   92,
-   86.8
+   12,
+   94,
+   88.7
   ],
   [
    "Fiche besoin",
@@ -184,9 +191,9 @@
   [
    "Fiche candidat",
    116,
-   22,
-   94,
-   81.0
+   20,
+   96,
+   82.8
   ],
   [
    "Fiche ressource",
@@ -197,10 +204,10 @@
   ],
   [
    "Fiche contrat RH",
-   21,
-   8,
+   25,
+   12,
    13,
-   61.9
+   52.0
   ],
   [
    "Fiche profil type",
@@ -212,30 +219,30 @@
   [
    "Fiche projet",
    71,
-   4,
-   67,
-   94.4
+   3,
+   68,
+   95.8
   ],
   [
    "Fiche prestation",
    43,
-   8,
-   35,
-   81.4
+   6,
+   37,
+   86.0
   ],
   [
    "Fiche achat",
    30,
-   6,
-   24,
-   80.0
+   5,
+   25,
+   83.3
   ],
   [
    "Fiche produit",
    11,
-   6,
    5,
-   45.5
+   6,
+   54.5
   ],
   [
    "Fiche facture fournisseur",
@@ -247,16 +254,16 @@
   [
    "Fiche avenant",
    16,
-   11,
-   5,
-   31.3
+   3,
+   13,
+   81.3
   ],
   [
    "Fiche groupement",
+   16,
+   1,
    15,
-   0,
-   15,
-   100.0
+   93.8
   ],
   [
    "Cliquable coque (menu, cloche, fil d'Ariane)",
@@ -281,24 +288,24 @@
   ],
   [
    "Cliquable écrans absents (listes, fiches, menu, onglets)",
-   147,
-   24,
-   123,
-   83.7
+   145,
+   7,
+   138,
+   95.2
   ],
   [
    "Actions menus Créer et étape société",
    35,
-   1,
-   34,
-   97.1
+   0,
+   35,
+   100.0
   ],
   [
    "Actions fenêtre d'action",
    43,
-   0,
-   43,
-   100.0
+   1,
+   42,
+   97.7
   ],
   [
    "Actions carte et onglet des fiches",
@@ -331,9 +338,9 @@
   [
    "Mails CV, ordre de mission, partage, fils, DT",
    36,
-   8,
-   28,
-   77.8
+   6,
+   30,
+   83.3
   ],
   [
    "Mails configuration Emailing",
@@ -354,23 +361,23 @@
   [
    "saisie",
    424,
-   99,
-   325,
-   76.7
+   89,
+   335,
+   79.0
   ],
   [
    "fiche",
-   860,
-   170,
-   690,
-   80.2
+   865,
+   143,
+   722,
+   83.5
   ],
   [
    "cliquable",
-   716,
-   28,
-   688,
-   96.1
+   714,
+   11,
+   703,
+   98.5
   ],
   [
    "actions",
@@ -382,19 +389,19 @@
   [
    "mails",
    105,
-   12,
-   93,
-   88.6
+   10,
+   95,
+   90.5
   ]
  ],
- "tableau_label": "n° 11 (règle du Juge, 2224 éléments)",
+ "tableau_label": "n° 12 (règle du Juge)",
  "bas_txt": "83,7",
  "bas_approx": false,
  "prudent_conformes": 1865,
  "prudent_precedent": "81,0 %",
- "haut_txt": "85,7",
- "haut_precis": "85,7",
+ "haut_txt": "88,6",
+ "haut_precis": "88,6",
  "bas_campagne": "n° 11",
  "prudent_releves": 2227,
- "mention": "La campagne n° 12 est en cours (fin vers 21 h)."
+ "mention": "N° 12 : borne haute 88,6 % ; chiffre prudent en cours de calcul (le gros chiffre reste celui de la n° 11)."
 }
