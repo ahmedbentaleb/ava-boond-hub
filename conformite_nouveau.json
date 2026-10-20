@@ -49,10 +49,10 @@
    "ecarts": 231
   }
  ],
- "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 % à la n° 10, 83,7 % à la n° 11, puis 86,5 % à la n° 12 (1927 sur 2227 : 459 confirmés par un test réussi). Borne haute (règle du Juge) : 88,6 % (1973 sur 2227). 63 éléments non relevables sont exclus.",
- "bas": 86.5,
- "verts": 459,
- "verts_pct": 20.6,
+ "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 % à la n° 10, 83,7 % à la n° 11, 86,5 % à la n° 12, puis 88,0 % à la n° 13 (1959 sur 2227 : 482 confirmés par un test réussi). Borne haute (règle du Juge) : 89,6 % (1996 sur 2227). 63 éléments non relevables sont exclus.",
+ "bas": 88.0,
+ "verts": 482,
+ "verts_pct": 21.6,
  "ambigus": null,
  "tableau": [
   [
@@ -402,13 +402,13 @@
   ]
  ],
  "tableau_label": "n° 13 (règle du Juge)",
- "bas_txt": "86,5",
+ "bas_txt": "88,0",
  "bas_approx": false,
- "prudent_conformes": 1927,
- "prudent_precedent": "83,7 %",
+ "prudent_conformes": 1959,
+ "prudent_precedent": "86,5 %",
  "haut_txt": "89,6",
  "haut_precis": "89,6",
- "bas_campagne": "n° 12",
+ "bas_campagne": "n° 13",
  "prudent_releves": 2227,
- "mention": "N° 13 : borne haute 89,6 % ; chiffre prudent en cours de calcul ; les 4 contrôles de sécurité sont verts."
+ "mention": "Les 4 contrôles de sécurité sont verts ; la campagne n° 14 suit."
 }
