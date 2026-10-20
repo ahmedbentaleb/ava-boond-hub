@@ -74,5 +74,21 @@
   "rouges": 412,
   "bloques": 200,
   "texte": "La hausse du nombre de pas joués vient des scénarios S16 à S21 et des assertions N-001 à N-021, jouées pour la première fois."
+ },
+ {
+  "date": "20/10/2026",
+  "label": "campagne n° 7",
+  "heure": "12h24",
+  "note": 65.3,
+  "version": "6c3742ab",
+  "elements": 2271,
+  "pas_rouges": 480,
+  "pas_verts": 886,
+  "pas_bloques": 97,
+  "pas": 1463,
+  "resolus": 364,
+  "rouges": 401,
+  "bloques": 97,
+  "texte": "Les écrans absents restent à 0 % le temps de vérifier leur couverture : les 7 sessions Code les construisent en parallèle."
  }
 ]
