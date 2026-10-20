@@ -25,24 +25,15 @@ ALLPRE = ["C2", "AC", "ML"] + PRE_NEW + ["A", "B", "F", "K", "N"]
 
 
 def univers():
-    ids = set()
-    ID = re.compile(r"^[*\s]*(" + PRE_OLD + r"-\d{3})")
-    for l in open(os.path.join(CONF, "ECARTS_SAISIE_FICHES_2026-10-18.md"), encoding="utf-8"):
-        if not l.startswith("|"): continue
-        c = [x.strip() for x in re.split(r" \| ", l.strip().strip("|"))]
-        if len(c) >= 5:
-            m = ID.match(c[3])
-            if m: ids.add(m[1])
-    anciens = len(ids) + 21
-    ids |= {"N-%03d" % i for i in range(1, 22)}
-    new = set()
-    NEW = re.compile(r"^(" + "|".join(PRE_NEW) + r")-(\d{3})(?!\d)(?!-OK)")
-    for l in open(os.path.join(CONF, "ECARTS_ECRANS_NEUFS_2026-10-20.md"), encoding="utf-8"):
-        if not l.startswith("|"): continue
-        c = [x.strip() for x in l.strip().strip("|").split("|")]
-        m = NEW.match(c[0]) if c else None
-        if m: new.add("%s-%s" % (m[1], m[2]))
-    return ids | new, anciens, len(new)
+    """Écarts OUVERTS d'aujourd'hui = identifiants au statut « valide » du recompte de Conformité, lu sur les fichiers COURANTS
+    (D-419). Ni les conformes, ni les non relevables, ni les remplacés, tombés ou doublons. Le total bouge quand Conformité ajoute des fiches."""
+    import subprocess, json as _j
+    out = subprocess.run(["node", os.path.join(os.path.dirname(os.path.abspath(__file__)), "univers_ecarts.cjs"),
+        os.path.join(CONF, "TABLEAU_CONFORMITE.md"), os.path.join(CONF, "ECARTS_SAISIE_FICHES_2026-10-18.md"),
+        os.path.join(CONF, "ECARTS_ECRANS_NEUFS_2026-10-20.md")], capture_output=True, text=True, encoding="utf-8").stdout
+    ids = set(_j.loads(out.split("@@VALIDES@@")[1].split("@@FIN@@")[0]))
+    new = {i for i in ids if i.startswith("N")}
+    return ids, len(ids) - len(new), len(new)
 
 
 def depuis_journal(U):
@@ -135,7 +126,9 @@ def calcul():
     dernier = rj[-1] if rj else None
     R_now = (ids_resolus(dernier["dossier"]) & U) if dernier and ids_resolus(dernier["dossier"]) else set()
     code_now = set(ferme) | cumul
-    out = {"total": len(U), "anciens": anciens, "nouveaux": nouveaux, "code": len(code_now), "juge": len(R_now),
+    _rs = ids_resolus(dernier["dossier"]) if dernier else set()
+    hors_juge = len([i for i in _rs if re.match(r"^N-\d{3}$", i)])
+    out = {"hors_juge": hors_juge, "total": len(U), "anciens": anciens, "nouveaux": nouveaux, "code": len(code_now), "juge": len(R_now),
            "juge_campagne": series[-1]["label"] if series else "", "series": series,
            "mesure": datetime.datetime.now().strftime("%d/%m/%Y %Hh%M")}
     json.dump(out, open(OUT, "w", encoding="utf-8", newline=""), ensure_ascii=False, indent=1)
@@ -171,7 +164,7 @@ def bloc_html(o=None):
 <div><span class="t">Jugé</span><b class="v">{o["juge"]}<small style="font-size:16px;font-weight:400"> / {o["total"]}</small></b><p class="def">Écarts passés au vert par une campagne du Juge ({o["juge_campagne"]}). C’est ce qui compte pour la note officielle.</p>{jug}</div>
 </div>
 <p class="sous" style="margin:6px 0 2px"><b>{ecart}</b> écarts sont codés mais pas encore prouvés. Le grand chiffre est celui d’aujourd’hui ; chaque courbe donne la valeur au moment de chaque campagne ({labs}). Total : {o["anciens"]} écarts anciens + {o["nouveaux"]} des écrans neufs. Mesuré le {o["mesure"]}.</p>
-<p class="sous" style="margin:0 0 14px">Le compteur « codé » est lu dans le journal des sessions : c’est un minimum, la lecture sera affinée.</p>'''
+<p class="sous" style="margin:0 0 14px">Le compteur « codé » est lu dans le journal des sessions : c’est un minimum, la lecture sera affinée. Le total est recalculé à chaque mesure d’après les fichiers courants de la Conformité (seuls les écarts ouverts comptent). Le rapport de campagne compte aussi {o["hors_juge"]} identifiants propres au Juge (N-…), qui n’appartiennent pas à ce total.</p>'''
 
 
 if __name__ == "__main__":
