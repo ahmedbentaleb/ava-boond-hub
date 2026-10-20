@@ -28,11 +28,11 @@
    "ecarts": 288
   }
  ],
- "sections": "",
- "bas": 80.0,
- "verts": 419,
- "verts_pct": 18.8,
- "ambigus": null,
+ "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, puis 81,0 % à la n° 10 (1802 sur 2224 : 327 confirmés par un test réussi et 1475 conformes par comparaison). Avec les résolus seuls : 84,7 %.",
+ "bas": 81.0,
+ "verts": 327,
+ "verts_pct": 14.7,
+ "ambigus": 134,
  "tableau": [
   [
    "Saisie transverse (4 objets CRM)",
@@ -381,6 +381,6 @@
   ]
  ],
  "tableau_label": "n° 10",
- "bas_txt": "environ 80",
- "bas_approx": true
+ "bas_txt": "81",
+ "bas_approx": false
 }

@@ -194,7 +194,7 @@ try:
     FOURCH = ((" (fourchette %s–%s)" % (("%s %%" % nj["bas_txt"]) if nj.get("bas_approx") else pc(bas_n), pc(last["note"]))) if bas_n else "")
     CONF9 = ('<li style="display:list-item;border:0;padding:2px 0"><b>Confirmés par un scénario vert : %s sur %s (%s).</b> Les autres éléments conformes sont des « conformes par comparaison » : lus dans Boond et dans Ava, pas encore confirmés par un test.</li>'
              % (nj["verts"], last["releves"], pc(nj["verts_pct"]))) if nj.get("verts") else ""
-    AMBI = ('<li style="display:list-item;border:0;padding:2px 0">%s écarts résolus ont une preuve discutable : sans eux, la note tombe à %s. Le Juge les résorbe à la campagne n° 10.</li>' % (nj["ambigus"], pc(bas_n))) if bas_n and nj.get("ambigus") else ""
+    AMBI = ('<li style="display:list-item;border:0;padding:2px 0">%s écarts résolus ont une preuve discutable : sans eux, la note tombe à %s. Le Juge les résorbe aux campagnes suivantes.</li>' % (nj["ambigus"], pc(bas_n))) if bas_n and nj.get("ambigus") else ""
     def _tab(rows, tete):
         return "<table><tr><th>%s</th><th class=\"nm\">Relevés</th><th class=\"nm\">Écarts</th><th class=\"nm\">Conformité</th><th></th></tr>%s</table>" % (tete, "".join(
             "<tr><td>%s</td><td class=\"nm\">%s</td><td class=\"nm\">%s</td><td class=\"nm\">%s</td><td class=\"bc\">%s</td></tr>" % (r[0], r[1], r[2], pc(r[4]) if r[4] is not None else "–", bar(r[4]) if r[4] is not None else "") for r in rows))
