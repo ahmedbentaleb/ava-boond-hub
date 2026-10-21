@@ -39,7 +39,7 @@ def bloc(s, nom, contenu):
     raise SystemExit("repère manquant : " + nom)
 
 e = rd("etat.html")
-e = bloc(e, "grand", GRAND); e = bloc(e, "detail", DETAIL); e = bloc(e, "carte", CARTE); e = bloc(e, "ligne", LIGNE); e = bloc(e, "statut", STATUT)
+e = bloc(e, "grand", GRAND); e = bloc(e, "mel", tx.get("mise_en_ligne", "")); e = bloc(e, "detail", DETAIL); e = bloc(e, "carte", CARTE); e = bloc(e, "ligne", LIGNE); e = bloc(e, "statut", STATUT)
 J = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"]; n = datetime.datetime.now()
 ST = "Mis à jour le %s %s à %s (heure de Casablanca)" % (J[n.weekday()], n.strftime("%d/%m/%Y"), n.strftime("%Hh%M"))
 e = re.sub(r"Mis à jour le [^(]*\(heure de Casablanca\)", ST, e, count=1)
