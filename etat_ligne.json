@@ -12,17 +12,14 @@
    "bloques": 29
   },
   "apres": {
-   "campagne": "n° 34",
-   "resolus": 946,
+   "campagne": "n° 36",
+   "resolus": 958,
    "rouges": null,
    "bloques": null,
    "gagnes": 15
   }
  },
- "campagne_en_cours": {
-  "n": "n° 35",
-  "fin": "≈ 19h43"
- },
+ "campagne_en_cours": null,
  "mises_en_ligne": [
   {
    "date": "21/10/2026",
@@ -58,7 +55,7 @@
  "attend_hamada": [
   {
    "n": "—",
-   "geste": "Mot de déploiement pour la version d'après (après la n° 35)",
+   "geste": "Mot de déploiement pour la version d'après (n° 36, figée 755073d0)",
    "etat": "⬜"
   },
   {
@@ -79,6 +76,6 @@
  ],
  "mot_hamada": {
   "valeur": "NON",
-  "precision": "après la n° 35"
+  "precision": "dossier en préparation"
  }
 }
