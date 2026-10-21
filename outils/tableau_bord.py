@@ -100,6 +100,14 @@ if isinstance(_dp, dict):
     D8[2] = '<div class="dc"><b>%s</b><span>%s</span>%s</div>' % (_dp["valeur"], _dp["libelle"], ('<span style="font-size:12px;color:var(--t3)">%s</span>' % _dp["petit"]) if _dp.get("petit") else "")
 if not ce_ and L.get("lenteur"):
     D8[6] = '<div class="dc"><b>%s</b><span>%s</span></div>' % (L["lenteur"], L.get("lenteur_libelle", "Lenteur"))
+# fusion : pas de test rouges / bloqués sur une seule carte, pour faire place à la carte « version d'après »
+_ac = L.get("apres_carte")
+if _ac:
+    D8[4] = '<div class="dc"><b>%s / %s</b><span>Pas de test rouges / bloqués</span></div>' % (cz(cc["rouges"]), cz(cc["bloques"]))
+    D8[5] = None
+    D8.insert(2, None)
+    D8[2], D8[3] = D8[3], '<div class="dc"><b>%s</b><span>%s</span>%s</div>' % (_ac["valeur"], _ac["libelle"], ('<span style="font-size:12px;color:var(--t3)">%s</span>' % _ac["petit"]) if _ac.get("petit") else "")
+    D8 = [x for x in D8 if x]
 assert len(D8) <= 8
 DCSS = ('<style>main{max-width:900px}.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:6px 0 22px}'
         '.dc{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:22px 20px;text-align:center}'
