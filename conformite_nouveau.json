@@ -445,7 +445,7 @@
  "haut_precis": "93,9",
  "bas_campagne": "n° 27",
  "prudent_releves": 2227,
- "mention": "Ce chiffre est celui de la version à mettre en ligne (suite a1ec461f, campagne n° 27) : 93,2 % en prudent, 93,9 % selon la règle du Juge. Une version d'après (campagne n° 28) est à 94,3 % selon la règle du Juge. Deux versions sont prêtes ; la recommandation est la suite. Le mot de Hamada est attendu.",
+ "mention": "Ce chiffre est celui de la version à mettre en ligne (suite a1ec461f, campagne n° 27) : 93,2 % en prudent, 93,9 % selon la règle du Juge. La version d'après (campagne n° 29) est à 94,6 % selon la règle du Juge, 93,7 % en prudent à la n° 28 ; la n° 30 est en cours. Le mot de Hamada est attendu pour la suite.",
  "prochaine": {
   "label": "suite",
   "bas": 93.2,
@@ -457,12 +457,12 @@
   "ambigus_avant": 36,
   "ambigus_apres": 15,
   "phrase": "Cette version suit la mise en ligne de la version actuelle ; elle passe tous les contrôles de sécurité.",
-  "carte": "<b>Version à mettre en ligne (suite a1ec461f) : PRÊTE</b> ; répétition locale verte ; le mot de Hamada est attendu. Chiffre prudent <b>93,2 %</b> (2076 sur 2227, campagne n° 27), borne haute <b>93,9 %</b> (2091 sur 2227). La version candidate précédente (b2c8aa5e) est à <b>90,6 %</b>. <br><b>Version d'après (prête à rejouer)</b> : campagne n° 28 (version 67eedc2a), borne haute <b>94,3 %</b> (2101 sur 2227, règle du Juge), 896 écarts résolus, aucune perte par rapport à la n° 27 et à b2c8aa5e, 25 écarts résolus de plus ; son chiffre prudent sera recompté par la Conformité. <br><b>D-596 : deux versions prêtes, recommandation : la suite</b> (a1ec461f)."
+  "carte": "<b>Version à mettre en ligne (suite a1ec461f) : PRÊTE</b> ; répétition locale verte ; le mot de Hamada est attendu. Chiffre prudent <b>93,2 %</b> (2076 sur 2227, campagne n° 27), borne haute <b>93,9 %</b> (2091 sur 2227). La version candidate précédente (b2c8aa5e) est à <b>90,6 %</b>. <br><b>Version d'après (prête à rejouer)</b> : campagne n° 29 (tête 844eb01b plus la migration 273), borne haute <b>94,6 %</b> (2107 sur 2227, règle du Juge), 905 écarts résolus, 14 gagnés, 5 pertes en cours d'explication (B-051, B-055, F-157, F-161, NK-062) ; chiffre prudent de la n° 28 : <b>93,7 %</b>. La campagne n° 30 (tête 790e41be) est en cours. <br><b>Deux versions prêtes, recommandation : la suite</b> (a1ec461f)."
  },
  "apres": {
   "label": "version d'après",
-  "haut": 94.3,
-  "conformes_haut": 2101,
+  "haut": 94.6,
+  "conformes_haut": 2107,
   "releves": 2227
  }
 }
