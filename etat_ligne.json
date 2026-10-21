@@ -1,5 +1,5 @@
 {
- "etat": "en_ligne",
+ "etat": "en_cours",
  "date": "21/10/2026",
  "heure": "18h50",
  "version": "a1ec461f",
@@ -14,8 +14,8 @@
   "apres": {
    "campagne": "n° 36",
    "resolus": 958,
-   "rouges": null,
-   "bloques": null,
+   "rouges": 219,
+   "bloques": 20,
    "gagnes": 15
   }
  },
@@ -55,8 +55,8 @@
  "attend_hamada": [
   {
    "n": "—",
-   "geste": "Mot de déploiement pour la version d'après (n° 36, figée 755073d0)",
-   "etat": "⬜"
+   "geste": "Mot de déploiement (version 755073d0) : reçu à 20h50",
+   "etat": "✅"
   },
   {
    "n": "20",
@@ -75,7 +75,11 @@
   }
  ],
  "mot_hamada": {
-  "valeur": "OUI",
-  "precision": "version 755073d0 · 96,1 % règle du Juge"
+  "valeur": "NON",
+  "precision": "mot reçu à 20h50"
+ },
+ "mel": {
+  "version": "755073d0",
+  "depuis": "20h58"
  }
 }

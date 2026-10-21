@@ -18,11 +18,14 @@ J = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"]; n
 STAMP = "Mis à jour le %s %s à %s (heure de Casablanca)" % (J[n.weekday()], n.strftime("%d/%m/%Y"), n.strftime("%Hh%M"))
 
 ok = L["etat"] == "en_ligne"
-if ok:
+wip = L["etat"] == "en_cours"
+if wip:
+    BANDE_TXT = "MISE EN LIGNE EN COURS — version %s depuis %s — actuellement en ligne : %s" % (L["mel"]["version"], L["mel"]["depuis"], L["version"])
+elif ok:
     BANDE_TXT = "EN LIGNE depuis %s — %s — version %s — conformité %s" % (L["heure"], L["date"], L["version"], L["conformite"])
 else:
     BANDE_TXT = "PAS EN LIGNE (retour arrière) — %s à %s — version %s — conformité %s" % (L["date"], L["heure"], L["version"], L["conformite"])
-BANDE = '<div class="bande %s" role="status">%s</div>' % ("bande-ok" if ok else "bande-ko", BANDE_TXT)
+BANDE = '<div class="bande %s" role="status">%s</div>' % ("bande-wip" if wip else ("bande-ok" if ok else "bande-ko"), BANDE_TXT)
 
 pr = nj.get("prochaine") or {}
 le = [p for p in nj["points"] if p["label"] == "en ligne"]
@@ -65,7 +68,7 @@ head = det[:det.index("</style>") + len("</style>")]
 head = re.sub(r"<title>.*?</title>", "<title>Tableau de bord</title>", head, flags=re.S)
 js = det[det.rindex("<script>"):det.rindex("</main>")]
 CSS = ('<style>.bande{margin:0 0 18px;padding:14px 16px;border-radius:10px;font-size:18px;font-weight:700;text-align:center;color:#fff}'
-       '.bande-ok{background:#1b7f3b;border:2px solid #34D399}.bande-ko{background:#b3261e;border:2px solid #ff6b60}'
+       '.bande-ok{background:#1b7f3b;border:2px solid #34D399}.bande-ko{background:#b3261e;border:2px solid #ff6b60}.bande-wip{background:#c26a00;border:2px solid #ffb347}'
        'table{width:100%;border-collapse:collapse;margin:4px 0 16px}th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--bord);font-size:15px}'
        'th{color:var(--t2);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.05em}h2{margin-top:22px}.dans-hub .bande{display:none}</style>')
 html = (head + CSS + '<script>if(self!==top)document.documentElement.classList.add("dans-hub")</script></head><body><main>\n'
@@ -80,19 +83,19 @@ cz = lambda v: "—" if v is None else v
 mh = L.get("mot_hamada", {"valeur": "NON", "precision": ""})
 ce_ = L.get("campagne_en_cours")
 D8 = [
-  ('<div class="dc %s dc-bande"><b>%s</b><span>depuis %s — %s</span></div>' % ("dc-ok" if ok else "dc-ko", "EN LIGNE" if ok else "PAS EN LIGNE", L["heure"], L["date"][:5])),
+  ('<div class="dc dc-wip dc-bande"><b>MISE EN LIGNE EN COURS</b><span>%s depuis %s</span></div>' % (L["mel"]["version"], L["mel"]["depuis"])) if wip else ('<div class="dc %s dc-bande"><b>%s</b><span>depuis %s — %s</span></div>' % ("dc-ok" if ok else "dc-ko", "EN LIGNE" if ok else "PAS EN LIGNE", L["heure"], L["date"][:5])),
   '<div class="dc"><b>%s</b><span>Conformité en ligne · prudent</span></div>' % L["conformite"],
   '<div class="dc"><b style="font-size:36px;white-space:nowrap">%s / %s</b><span>Version d’après · prudent / règle du Juge</span></div>' % (("%s %%" % fr(pr["bas"])) if pr else "—", ("%s %%" % fr(pr["haut"])) if pr else "—"),
-  '<div class="dc"><b>%s</b><span>Résolus</span></div>' % cz(c1["resolus"]),
-  '<div class="dc"><b>%s</b><span>Rouges</span></div>' % cz(c1["rouges"]),
-  '<div class="dc"><b>%s</b><span>Bloqués</span></div>' % cz(c1["bloques"]),
+  '<div class="dc"><b>%s</b><span>Résolus · n° 36</span></div>' % cz(c2["resolus"]),
+  '<div class="dc"><b>%s</b><span>Rouges · n° 36</span></div>' % cz(c2["rouges"]),
+  '<div class="dc"><b>%s</b><span>Bloqués · n° 36</span></div>' % cz(c2["bloques"]),
   '<div class="dc"><b>%s</b><span>Campagne en cours · fin %s</span></div>' % ((ce_["n"], ce_["fin"]) if ce_ else ("—", "—")),
   '<div class="dc"><b>%s</b><span>Mot de Hamada attendu · %s</span></div>' % (mh["valeur"], mh.get("precision", "")),
 ]
 DCSS = ('<style>main{max-width:900px}.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:6px 0 22px}'
         '.dc{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:22px 20px;text-align:center}'
         '.dc b{display:block;font-size:48px;font-weight:700;line-height:1.1;color:var(--t1)}.dc span{display:block;margin-top:8px;font-size:15px;color:var(--t2)}'
-        '.dc-bande b{font-size:40px}.dc-ok{background:#1b7f3b;border-color:#34D399}.dc-ok b,.dc-ok span{color:#fff}.dc-ko{background:#b3261e;border-color:#ff6b60}.dc-ko b,.dc-ko span{color:#fff}'
+        '.dc-bande b{font-size:40px}.dc-ok{background:#1b7f3b;border-color:#34D399}.dc-ok b,.dc-ok span{color:#fff}.dc-wip{background:#c26a00;border-color:#ffb347}.dc-wip b,.dc-wip span{color:#fff}.dc-ko{background:#b3261e;border-color:#ff6b60}.dc-ko b,.dc-ko span{color:#fff}'
         '@media (max-width:560px){.dc b{font-size:40px}}</style>')
 dash = (head.replace("<title>Tableau de bord</title>", "<title>Dashboard</title>") + DCSS +
         '<script>if(self!==top)document.documentElement.classList.add("dans-hub")</script></head><body><main>'
@@ -102,7 +105,7 @@ open(os.path.join(HUB, "dashboard.html"), "w", encoding="utf-8", newline="").wri
 ix = rd("index.html")
 ix = re.sub(r"Mis à jour le [^(]*\(heure de Casablanca\)", STAMP, ix, count=1)
 bande_css = ('<style id="bande-css">.bande{margin:8px 0 10px;padding:12px 14px;border-radius:10px;font-size:16px;font-weight:700;text-align:center;color:#fff}'
-             '.bande-ok{background:#1b7f3b;border:2px solid #34D399}.bande-ko{background:#b3261e;border:2px solid #ff6b60}</style>')
+             '.bande-ok{background:#1b7f3b;border:2px solid #34D399}.bande-ko{background:#b3261e;border:2px solid #ff6b60}.bande-wip{background:#c26a00;border:2px solid #ffb347}</style>')
 if "<!--BANDE-->" not in ix:
     ix = ix.replace('<p class="tete-etat">', '<!--BANDE--><!--/BANDE-->\n    <p class="tete-etat">', 1)
 ix = re.sub(r"<!--BANDE-->.*?<!--/BANDE-->", lambda m: "<!--BANDE-->" + BANDE + "<!--/BANDE-->", ix, count=1, flags=re.S)
