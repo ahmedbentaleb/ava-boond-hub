@@ -457,14 +457,15 @@
   "label": "version d'après",
   "bas": 94.9,
   "conformes": 2113,
-  "haut": 95.6,
-  "conformes_haut": 2128,
+  "haut": 95.8,
+  "conformes_haut": 2133,
   "releves": 2227,
   "verts": null,
   "ambigus_avant": null,
   "ambigus_apres": null,
   "phrase": "",
-  "carte": "<b>Version en ligne : la suite a1ec461f, EN LIGNE depuis 18h50.</b> Chiffre prudent <b>93,2 %</b> (2076 sur 2227), borne haute <b>93,9 %</b> (2091 sur 2227). <br><b>Version d'après (en préparation)</b> : campagne n° 33, <b>95,6 %</b> selon la règle du Juge, 934 écarts résolus ; chiffre prudent de la n° 32 : <b>94,9 %</b> (2113 sur 2227). Elle sera mise en ligne après sa propre validation, avec l'accord de Hamada."
+  "carte": "<b>Version en ligne : la suite a1ec461f, EN LIGNE depuis 18h50.</b> Chiffre prudent <b>93,2 %</b> (2076 sur 2227), borne haute <b>93,9 %</b> (2091 sur 2227). <br><b>Version d'après (en préparation)</b> : campagne n° 33, <b>95,6 %</b> selon la règle du Juge, 934 écarts résolus ; chiffre prudent de la n° 32 : <b>94,9 %</b> (2113 sur 2227). Elle sera mise en ligne après sa propre validation, avec l'accord de Hamada.",
+  "bas_label": "n° 32 · n° 34 à venir"
  },
  "en_ligne": "EN LIGNE depuis 18h50 (21/10)"
 }
