@@ -108,6 +108,14 @@ if _ac:
     D8.insert(2, None)
     D8[2], D8[3] = D8[3], '<div class="dc"><b>%s</b><span>%s</span>%s</div>' % (_ac["valeur"], _ac["libelle"], ('<span style="font-size:12px;color:var(--t3)">%s</span>' % _ac["petit"]) if _ac.get("petit") else "")
     D8 = [x for x in D8 if x]
+# lenteur : DEUX cartes distinctes (en ligne / après performance 1, orange tant que pas en ligne) ; résolus et pas de test sur une seule carte
+if L.get("lenteur_en_ligne") and L.get("lenteur_apres") and len(D8) == 8:
+    _l1, _l2 = L["lenteur_en_ligne"], L["lenteur_apres"]
+    _res = '<div class="dc"><b style="font-size:36px;white-space:nowrap">%s · %s · %s</b><span>Écarts résolus · pas de test rouges · pas de test bloqués</span></div>' % (cz(cc["resolus"]), cz(cc["rouges"]), cz(cc["bloques"]))
+    D8 = [D8[0], D8[1], D8[2], D8[3], _res,
+          '<div class="dc"><b>%s</b><span>%s</span></div>' % (_l1["valeur"], _l1["libelle"]),
+          '<div class="dc dc-wip"><b>%s</b><span>%s</span></div>' % (_l2["valeur"], _l2["libelle"]),
+          D8[7]]
 assert len(D8) <= 8
 DCSS = ('<style>main{max-width:900px}.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:6px 0 22px}'
         '.dc{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:22px 20px;text-align:center}'

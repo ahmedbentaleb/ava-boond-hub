@@ -91,5 +91,13 @@
   "libelle": "Version d’après · rubriques · règle du Juge (2136/2228) · 953 résolus",
   "petit": "disposition 51,5 % · n° 41"
  },
- "conformite_petit": "prudent · règle du Juge 96,1 %"
+ "conformite_petit": "prudent · règle du Juge 96,1 %",
+ "lenteur_en_ligne": {
+  "valeur": "≈ 1,5 s / page",
+  "libelle": "LENTEUR EN LIGNE · mesuré sur le serveur réel · version 755073d0"
+ },
+ "lenteur_apres": {
+  "valeur": "≈ 0,02 s / page",
+  "libelle": "APRÈS PERFORMANCE 1 · mesuré au banc · PAS ENCORE EN LIGNE : mot de Hamada attendu"
+ }
 }
