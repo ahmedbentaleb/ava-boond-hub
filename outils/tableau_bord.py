@@ -99,7 +99,7 @@ _dp = L.get("disposition")
 if isinstance(_dp, dict):
     D8[2] = '<div class="dc"><b>%s</b><span>%s</span></div>' % (_dp["valeur"], _dp["libelle"])
 if not ce_ and L.get("lenteur"):
-    D8[6] = '<div class="dc"><b>%s</b><span>Lenteur</span></div>' % L["lenteur"]
+    D8[6] = '<div class="dc"><b>%s</b><span>%s</span></div>' % (L["lenteur"], L.get("lenteur_libelle", "Lenteur"))
 assert len(D8) <= 8
 DCSS = ('<style>main{max-width:900px}.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:6px 0 22px}'
         '.dc{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:22px 20px;text-align:center}'
