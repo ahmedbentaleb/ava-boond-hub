@@ -84,11 +84,18 @@
    "ecarts": 168
   },
   {
-   "label": "en ligne",
+   "label": "a1ec461f",
    "note": 93.9,
    "conformes": 2091,
    "releves": 2227,
    "ecarts": 136
+  },
+  {
+   "label": "en ligne",
+   "note": 96.1,
+   "conformes": 2142,
+   "releves": 2228,
+   "ecarts": 86
   }
  ],
  "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, puis 81,0 %, 83,7 %, 86,5 %, 88,0 %, 88,3 %, 89,3 %, 90,2 %, 90,4 %, 90,6 % pour la version candidate (b2c8aa5e), 93,0 % à la n° 26 et 93,2 % à la n° 27 (suite a1ec461f, 2076 sur 2227). Borne haute (règle du Juge) : 93,9 % (2091 sur 2227, 136 restantes). 63 éléments non relevables sont exclus.",
@@ -453,19 +460,5 @@
  "bas_campagne": "n° 27",
  "prudent_releves": 2227,
  "mention": "La suite a1ec461f est EN LIGNE depuis 18h50 (21/10) : 93,2 % en prudent, 93,9 % selon la règle du Juge. Le point de retour et l'image précédente (5a94a54e81bd) sont gardés. La version d'après (n° 33) est à 95,6 % selon la règle du Juge ; la n° 32 est à 94,9 % en prudent.",
- "prochaine": {
-  "label": "version d'après",
-  "bas": 95.5,
-  "conformes": 2127,
-  "haut": 96.1,
-  "conformes_haut": 2142,
-  "releves": 2228,
-  "verts": null,
-  "ambigus_avant": null,
-  "ambigus_apres": null,
-  "phrase": "",
-  "carte": "<b>Version en ligne : la suite a1ec461f, EN LIGNE depuis 18h50.</b> Chiffre prudent <b>93,2 %</b> (2076 sur 2227), borne haute <b>93,9 %</b> (2091 sur 2227). <br><b>Version d'après (en préparation)</b> : campagne n° 33, <b>95,6 %</b> selon la règle du Juge, 934 écarts résolus ; chiffre prudent de la n° 32 : <b>94,9 %</b> (2113 sur 2227). Elle sera mise en ligne après sa propre validation, avec l'accord de Hamada.",
-  "bas_label": "n° 36"
- },
- "en_ligne": "EN LIGNE depuis 18h50 (21/10)"
+ "en_ligne": "EN LIGNE depuis 21h02 (21/10)"
 }

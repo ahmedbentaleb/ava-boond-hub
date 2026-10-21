@@ -1,26 +1,31 @@
 {
- "etat": "en_cours",
+ "etat": "en_ligne",
  "date": "21/10/2026",
- "heure": "18h50",
- "version": "a1ec461f",
- "conformite": "93,2 %",
+ "heure": "21h02",
+ "version": "755073d0",
+ "conformite": "95,5 %",
  "compteurs": {
   "en_ligne": {
-   "campagne": "n° 27",
-   "resolus": 871,
-   "rouges": 208,
-   "bloques": 29
-  },
-  "apres": {
    "campagne": "n° 36",
    "resolus": 958,
    "rouges": 219,
-   "bloques": 20,
-   "gagnes": 15
+   "bloques": 20
+  },
+  "apres": {
+   "campagne": "—",
+   "resolus": null,
+   "rouges": null,
+   "bloques": null
   }
  },
  "campagne_en_cours": null,
  "mises_en_ligne": [
+  {
+   "date": "21/10/2026",
+   "heure": "21h02",
+   "version": "755073d0",
+   "resultat": "✅ en ligne (sans retour arrière, 0 erreur)"
+  },
   {
    "date": "21/10/2026",
    "heure": "18h50",
@@ -54,11 +59,6 @@
  ],
  "attend_hamada": [
   {
-   "n": "—",
-   "geste": "Mot de déploiement (version 755073d0) : reçu à 20h50",
-   "etat": "✅"
-  },
-  {
    "n": "20",
    "geste": "Vidage de la base de démo (mot écrit de Hamada seulement)",
    "etat": "⬜"
@@ -76,10 +76,6 @@
  ],
  "mot_hamada": {
   "valeur": "NON",
-  "precision": "mot reçu à 20h50"
- },
- "mel": {
-  "version": "755073d0",
-  "depuis": "20h58"
+  "precision": "755073d0 en ligne"
  }
 }

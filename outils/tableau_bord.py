@@ -80,15 +80,16 @@ for _f in ("detail.html", "etat.html"):
 
 # DASHBOARD : 8 cartes maximum, des chiffres en gros, aucune phrase, aucune courbe, aucun tableau
 cz = lambda v: "—" if v is None else v
+cc = c2 if c2.get("resolus") is not None else c1
 mh = L.get("mot_hamada", {"valeur": "NON", "precision": ""})
 ce_ = L.get("campagne_en_cours")
 D8 = [
   ('<div class="dc dc-wip dc-bande"><b>MISE EN LIGNE EN COURS</b><span>%s depuis %s</span></div>' % (L["mel"]["version"], L["mel"]["depuis"])) if wip else ('<div class="dc %s dc-bande"><b>%s</b><span>depuis %s — %s</span></div>' % ("dc-ok" if ok else "dc-ko", "EN LIGNE" if ok else "PAS EN LIGNE", L["heure"], L["date"][:5])),
   '<div class="dc"><b>%s</b><span>Conformité en ligne · prudent</span></div>' % L["conformite"],
   '<div class="dc"><b style="font-size:36px;white-space:nowrap">%s / %s</b><span>Version d’après · prudent / règle du Juge</span></div>' % (("%s %%" % fr(pr["bas"])) if pr else "—", ("%s %%" % fr(pr["haut"])) if pr else "—"),
-  '<div class="dc"><b>%s</b><span>Résolus · n° 36</span></div>' % cz(c2["resolus"]),
-  '<div class="dc"><b>%s</b><span>Rouges · n° 36</span></div>' % cz(c2["rouges"]),
-  '<div class="dc"><b>%s</b><span>Bloqués · n° 36</span></div>' % cz(c2["bloques"]),
+  '<div class="dc"><b>%s</b><span>Résolus</span></div>' % cz(cc["resolus"]),
+  '<div class="dc"><b>%s</b><span>Rouges</span></div>' % cz(cc["rouges"]),
+  '<div class="dc"><b>%s</b><span>Bloqués</span></div>' % cz(cc["bloques"]),
   '<div class="dc"><b>%s</b><span>Campagne en cours · fin %s</span></div>' % ((ce_["n"], ce_["fin"]) if ce_ else ("—", "—")),
   '<div class="dc"><b>%s</b><span>Mot de Hamada attendu · %s</span></div>' % (mh["valeur"], mh.get("precision", "")),
 ]
