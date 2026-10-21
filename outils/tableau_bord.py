@@ -82,7 +82,7 @@ ce_ = L.get("campagne_en_cours")
 D8 = [
   ('<div class="dc %s dc-bande"><b>%s</b><span>depuis %s — %s</span></div>' % ("dc-ok" if ok else "dc-ko", "EN LIGNE" if ok else "PAS EN LIGNE", L["heure"], L["date"][:5])),
   '<div class="dc"><b>%s</b><span>Conformité en ligne · prudent</span></div>' % L["conformite"],
-  '<div class="dc"><b>%s / %s</b><span>Version d’après · prudent / règle du Juge</span></div>' % (("%s %%" % fr(pr["bas"])) if pr else "—", ("%s %%" % fr(pr["haut"])) if pr else "—"),
+  '<div class="dc"><b style="font-size:36px;white-space:nowrap">%s / %s</b><span>Version d’après · prudent / règle du Juge</span></div>' % (("%s %%" % fr(pr["bas"])) if pr else "—", ("%s %%" % fr(pr["haut"])) if pr else "—"),
   '<div class="dc"><b>%s</b><span>Résolus</span></div>' % cz(c1["resolus"]),
   '<div class="dc"><b>%s</b><span>Rouges</span></div>' % cz(c1["rouges"]),
   '<div class="dc"><b>%s</b><span>Bloqués</span></div>' % cz(c1["bloques"]),
