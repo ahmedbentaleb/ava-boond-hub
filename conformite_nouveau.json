@@ -61,20 +61,27 @@
    "conformes": 2021,
    "releves": 2227,
    "ecarts": 206
+  },
+  {
+   "label": "n° 16",
+   "note": 92.0,
+   "conformes": 2048,
+   "releves": 2227,
+   "ecarts": 179
   }
  ],
- "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 % à la n° 10, 83,7 % à la n° 11, 86,5 % à la n° 12, 88,0 % à la n° 13, 88,3 % à la n° 14, puis 89,3 % à la n° 15 (1988 sur 2227 : 507 confirmés par un test réussi). Borne haute (règle du Juge) : 90,7 % (2021 sur 2227). 63 éléments non relevables sont exclus.",
- "bas": 89.3,
- "verts": 507,
+ "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 %, 83,7 %, 86,5 %, 88,0 %, 88,3 %, 89,3 %, puis 90,2 % à cette campagne. Borne haute (règle du Juge) : 92,0 % (2048 sur 2227). 63 éléments non relevables sont exclus.",
+ "bas": 90.2,
+ "verts": null,
  "verts_pct": 22.8,
  "ambigus": null,
  "tableau": [
   [
    "Saisie transverse (4 objets CRM)",
    11,
-   1,
-   10,
-   90.9
+   0,
+   11,
+   100.0
   ],
   [
    "Saisie société",
@@ -86,9 +93,9 @@
   [
    "Saisie contact",
    31,
-   6,
-   25,
-   80.6
+   5,
+   26,
+   83.9
   ],
   [
    "Saisie besoin",
@@ -149,16 +156,16 @@
   [
    "Saisie achat",
    34,
-   19,
-   15,
-   44.1
+   2,
+   32,
+   94.1
   ],
   [
    "Saisie produit",
    22,
-   3,
-   19,
-   86.4
+   2,
+   20,
+   90.9
   ],
   [
    "Saisie groupement",
@@ -205,9 +212,9 @@
   [
    "Fiche positionnement",
    35,
-   9,
-   26,
-   74.3
+   8,
+   27,
+   77.1
   ],
   [
    "Fiche candidat",
@@ -240,9 +247,9 @@
   [
    "Fiche projet",
    71,
-   2,
-   69,
-   97.2
+   3,
+   68,
+   95.8
   ],
   [
    "Fiche prestation",
@@ -254,16 +261,16 @@
   [
    "Fiche achat",
    30,
-   5,
-   25,
-   83.3
+   2,
+   28,
+   93.3
   ],
   [
    "Fiche produit",
    11,
-   3,
-   8,
-   72.7
+   1,
+   10,
+   90.9
   ],
   [
    "Fiche facture fournisseur",
@@ -310,9 +317,9 @@
   [
    "Cliquable écrans absents (listes, fiches, menu, onglets)",
    145,
-   5,
-   140,
-   96.6
+   4,
+   141,
+   97.2
   ],
   [
    "Actions menus Créer et étape société",
@@ -359,9 +366,9 @@
   [
    "Mails CV, ordre de mission, partage, fils, DT",
    36,
-   5,
-   31,
-   86.1
+   4,
+   32,
+   88.9
   ],
   [
    "Mails configuration Emailing",
@@ -382,23 +389,23 @@
   [
    "saisie",
    424,
-   71,
-   353,
-   83.3
+   51,
+   373,
+   88.0
   ],
   [
    "fiche",
    865,
-   121,
-   744,
-   86.0
+   116,
+   749,
+   86.6
   ],
   [
    "cliquable",
    714,
-   9,
-   705,
-   98.7
+   8,
+   706,
+   98.9
   ],
   [
    "actions",
@@ -410,19 +417,19 @@
   [
    "mails",
    105,
-   5,
-   100,
-   95.2
+   4,
+   101,
+   96.2
   ]
  ],
- "tableau_label": "n° 15 (règle du Juge)",
- "bas_txt": "89,3",
+ "tableau_label": "n° 16 (règle du Juge)",
+ "bas_txt": "90,2",
  "bas_approx": false,
- "prudent_conformes": 1988,
- "prudent_precedent": "88,3 %",
- "haut_txt": "90,7",
- "haut_precis": "90,7",
- "bas_campagne": "n° 15",
+ "prudent_conformes": 2009,
+ "prudent_precedent": "89,3 %",
+ "haut_txt": "92,0",
+ "haut_precis": "92,0",
+ "bas_campagne": "n° 16",
  "prudent_releves": 2227,
- "mention": "Une version avec une optimisation de vitesse a été écartée de la mise en ligne après un plantage en test (corrigé, retiré de la version candidate). La campagne complète sur la version candidate est en cours (fin vers 0 h 15). Les 4 contrôles de sécurité sont verts."
+ "mention": "Première campagne sur la version candidate à la mise en ligne : les 4 contrôles de sécurité sont verts, le test de fuseau horaire passe ; la mise en ligne reste à décider (point de retour, accord de Hamada)."
 }

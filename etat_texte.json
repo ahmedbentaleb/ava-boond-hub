@@ -1,4 +1,4 @@
 {
- "livrable3": "Une version avec une optimisation de vitesse a été écartée de la mise en ligne après un plantage en test (corrigé, retiré de la version candidate). La campagne complète sur la version candidate est en cours (fin vers 0 h 15). Le Livrable 3 est assemblé mais n’est pas encore en ligne ; le Livrable 2bis l’est depuis le 18/10 à 19 h 35.",
- "statut_campagne": "Campagne {num} faite ; la campagne complète sur la version candidate est en cours (fin vers 0 h 15)"
+ "livrable3": "Première campagne sur la version candidate à la mise en ligne : les 4 contrôles de sécurité sont verts et le test de fuseau horaire passe ; la mise en ligne reste à décider (point de retour, accord de Hamada). Le Livrable 3 est assemblé mais n’est pas encore en ligne ; le Livrable 2bis l’est depuis le 18/10 à 19 h 35.",
+ "statut_campagne": "Campagne {num} faite (première sur la version candidate) ; la mise en ligne reste à décider"
 }
