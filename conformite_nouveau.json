@@ -84,8 +84,8 @@
    "ecarts": 168
   }
  ],
- "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 %, 83,7 %, 86,5 %, 88,0 %, 88,3 %, 89,3 %, 90,2 %, 90,4 %, puis 90,6 % à la campagne finale. Borne haute (règle du Juge) : 92,5 % (2059 sur 2227). 63 éléments non relevables sont exclus.",
- "bas": 90.6,
+ "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, puis 81,0 %, 83,7 %, 86,5 %, 88,0 %, 88,3 %, 89,3 %, 90,2 %, 90,4 %, 90,6 % pour la version candidate à la mise en ligne (b2c8aa5e), et 93,0 % pour la prochaine version prête (suite 5053b178, 2070 sur 2227). Borne haute (règle du Juge) : 93,7 % (2086 sur 2227). 63 éléments non relevables sont exclus.",
+ "bas": 93.0,
  "verts": null,
  "verts_pct": 22.8,
  "ambigus": null,
@@ -437,19 +437,19 @@
   ]
  ],
  "tableau_label": "campagne finale (règle du Juge)",
- "bas_txt": "90,6",
+ "bas_txt": "93,0",
  "bas_approx": false,
- "prudent_conformes": 2018,
- "prudent_precedent": "90,4 %",
- "haut_txt": "92,5",
- "haut_precis": "92,5",
- "bas_campagne": "finale",
+ "prudent_conformes": 2070,
+ "prudent_precedent": "92,1 %",
+ "haut_txt": "93,7",
+ "haut_precis": "93,7",
+ "bas_campagne": "n° 26",
  "prudent_releves": 2227,
- "mention": "Version prête à la mise en ligne : tous les contrôles de sécurité sont verts. La mise en ligne attend l'accord de Hamada.",
+ "mention": "Ce chiffre est celui de la prochaine version prête (suite 5053b178, campagne n° 26) ; la version candidate à la mise en ligne aujourd'hui (b2c8aa5e) est à 90,6 %. Le dossier de mise en ligne de la suite est en préparation.",
  "prochaine": {
   "label": "en préparation",
-  "bas": 92.1,
-  "conformes": 2050,
+  "bas": 93.0,
+  "conformes": 2070,
   "haut": 93.7,
   "conformes_haut": 2086,
   "releves": 2227,
@@ -457,6 +457,6 @@
   "ambigus_avant": 36,
   "ambigus_apres": 15,
   "phrase": "Cette version suit la mise en ligne de la version actuelle ; elle passe tous les contrôles de sécurité.",
-  "carte": "<b>Prochaine version (en préparation) : la suite 5053b178 est PRÊTE</b> ; son dossier de mise en ligne est en préparation. Campagne n° 26 : borne haute <b>93,7 %</b> (2086 sur 2227, règle du Juge), 817 écarts résolus, 248 pas rouges, 42 bloqués, aucune perte par rapport à la version candidate actuelle. Chiffre prudent : en cours de recomptage par la Conformité (dernier connu : 92,1 %). La version candidate actuelle (b2c8aa5e, 90,6 %) attend le mot de Hamada."
+  "carte": "<b>Prochaine version (suite 5053b178) : PRÊTE</b> ; son dossier de mise en ligne est en préparation. Campagne n° 26 : chiffre prudent <b>93,0 %</b> (2070 sur 2227), borne haute <b>93,7 %</b> (2086 sur 2227, règle du Juge), 817 écarts résolus, 248 pas rouges, 42 bloqués, aucune perte par rapport à la version candidate. La version candidate à la mise en ligne aujourd’hui (b2c8aa5e) est à <b>90,6 %</b> et attend le mot de Hamada."
  }
 }

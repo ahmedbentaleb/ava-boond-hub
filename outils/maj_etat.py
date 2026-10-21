@@ -23,7 +23,8 @@ nouveau = ", ".join(["base %s %%" % fr(b0["note"])] + ["%s : %s %%" % (p["label"
 tx = json.loads(rd("etat_texte.json"))
 
 VERTS_TXT = (f'''Seuls {nj["verts"]} éléments sur {nj.get("prudent_releves", last_n["releves"])} ({fr(nj["verts_pct"])} %) sont déjà confirmés par un test réussi, les autres sont conformes par comparaison. ''' if nj.get("verts") else "")
-GRAND = f'''<p class="grand"><b>Aujourd’hui Ava ressemble à Boond à {bas} % ; la cible est 100 % des éléments mesurables.</b> Il reste {last_n["ecarts"]} différences à fermer.</p>
+_pr0 = nj.get("prochaine")
+GRAND = f'''<p class="grand"><b>Aujourd’hui Ava ressemble à Boond à {bas} % ; la cible est 100 % des éléments mesurables.</b> Il reste {(_pr0["releves"] - _pr0["conformes_haut"]) if _pr0 else last_n["ecarts"]} différences à fermer.</p>
 <p class="sous">Chiffre prudent, jusqu’à {haut} % ; objectif 100 %.</p>'''
 DETAIL = f'''<details class="detail"><summary>Détails</summary>
 <p class="sous"><b>{ment}</b></p>

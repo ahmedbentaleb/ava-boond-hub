@@ -237,7 +237,7 @@ except Exception:
     SEUL_P, HAUT = note, fr("%.0f" % note)
     _nj = {}; MENTION_N = ""
 SEUL = _nj.get("bas_txt") or fr("%.0f" % SEUL_P)
-RESTE = (_nj.get("points") or [{}])[-1].get("ecarts", "")
+_p0 = _nj.get("prochaine"); RESTE = (_p0["releves"] - _p0["conformes_haut"]) if _p0 else (_nj.get("points") or [{}])[-1].get("ecarts", "")
 html = HEAD + EXTRA + f'''<h1>Conformité à Boond</h1>
 <p class="sous">{STAMP} · à chaque livraison, ce tableau est recalculé et la date de mesure change</p>
 <span class="date">Mesurée le {date}{QUAND} sur {SURQUOI} · Boond relevé à l'écran du {periode}</span>{MENTION}{ENLIGNE}{STATS}

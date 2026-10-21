@@ -23,7 +23,7 @@ s = s.replace('objectif <b>95 %</b>', 'objectif <b>100 %</b>').replace('jusqu’
 # D-424 : un seul gros chiffre, le prudent du nouveau tableau ; l'ancien passe en petit
 import json as _json
 _nj = _json.load(open(os.path.join(HUB, "conformite_nouveau.json"), encoding="utf-8"))
-_bas = _nj.get("bas_txt") or ("%.0f" % _nj["bas"]); _reste = _nj["points"][-1].get("ecarts", ""); _haut = _nj.get("haut_txt") or ("%.0f" % _nj["points"][-1]["note"]); _ment = _nj.get("mention", "")
+_bas = _nj.get("bas_txt") or ("%.0f" % _nj["bas"]); _p0 = _nj.get("prochaine"); _reste = (_p0["releves"] - _p0["conformes_haut"]) if _p0 else _nj["points"][-1].get("ecarts", ""); _haut = _nj.get("haut_txt") or ("%.0f" % _nj["points"][-1]["note"]); _ment = _nj.get("mention", "")
 _old = _json.load(open(os.path.join(HUB, "conformite_historique.json"), encoding="utf-8"))[-1]["note"]
 _h = _json.load(open(os.path.join(HUB, "conformite_historique.json"), encoding="utf-8"))[-1]
 _mesure = "%s, %s" % (_h.get("label", "").replace("campagne ", "campagne "), _h.get("heure", ""))
