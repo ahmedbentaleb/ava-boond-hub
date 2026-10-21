@@ -1,4 +1,4 @@
 {
- "livrable3": "Première campagne sur la version candidate à la mise en ligne : les 4 contrôles de sécurité sont verts et le test de fuseau horaire passe ; la mise en ligne reste à décider (point de retour, accord de Hamada). Le Livrable 3 est assemblé mais n’est pas encore en ligne ; le Livrable 2bis l’est depuis le 18/10 à 19 h 35.",
- "statut_campagne": "Campagne {num} faite (première sur la version candidate) ; la mise en ligne reste à décider"
+ "livrable3": "La campagne finale, sur la version exacte à mettre en ligne, est en cours de lancement. Le Livrable 3 est assemblé mais n’est pas encore en ligne ; le Livrable 2bis l’est depuis le 18/10 à 19 h 35.",
+ "statut_campagne": "Campagne {num} faite ; la campagne finale sur la version à mettre en ligne est en cours de lancement"
 }

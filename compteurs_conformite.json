@@ -3,9 +3,9 @@
  "total": 712,
  "anciens": 464,
  "nouveaux": 248,
- "code": 618,
- "juge": 519,
- "juge_campagne": "n° 16",
+ "code": 620,
+ "juge": 524,
+ "juge_campagne": "n° 18",
  "series": [
   {
    "label": "n° 1",
@@ -118,7 +118,14 @@
    "date": "21/10/2026",
    "code": 618,
    "juge": 519
+  },
+  {
+   "label": "n° 18",
+   "heure": "00:47",
+   "date": "21/10/2026",
+   "code": 620,
+   "juge": 524
   }
  ],
- "mesure": "21/10/2026 00h15"
+ "mesure": "21/10/2026 00h49"
 }

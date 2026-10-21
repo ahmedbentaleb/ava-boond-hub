@@ -68,10 +68,17 @@
    "conformes": 2048,
    "releves": 2227,
    "ecarts": 179
+  },
+  {
+   "label": "n° 18",
+   "note": 92.2,
+   "conformes": 2053,
+   "releves": 2227,
+   "ecarts": 174
   }
  ],
- "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 %, 83,7 %, 86,5 %, 88,0 %, 88,3 %, 89,3 %, puis 90,2 % à cette campagne. Borne haute (règle du Juge) : 92,0 % (2048 sur 2227). 63 éléments non relevables sont exclus.",
- "bas": 90.2,
+ "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 %, 83,7 %, 86,5 %, 88,0 %, 88,3 %, 89,3 %, 90,2 %, puis 90,4 % à la n° 18 (2014 sur 2227). Borne haute (règle du Juge) : 92,2 % (2053 sur 2227). 63 éléments non relevables sont exclus.",
+ "bas": 90.4,
  "verts": null,
  "verts_pct": 22.8,
  "ambigus": null,
@@ -114,9 +121,9 @@
   [
    "Saisie candidat",
    41,
-   12,
-   29,
-   70.7
+   10,
+   31,
+   75.6
   ],
   [
    "Saisie ressource",
@@ -142,16 +149,16 @@
   [
    "Saisie projet",
    18,
-   3,
-   15,
-   83.3
+   4,
+   14,
+   77.8
   ],
   [
    "Saisie prestation",
    20,
-   3,
-   17,
-   85.0
+   2,
+   18,
+   90.0
   ],
   [
    "Saisie achat",
@@ -170,9 +177,9 @@
   [
    "Saisie groupement",
    13,
-   2,
-   11,
-   84.6
+   1,
+   12,
+   92.3
   ],
   [
    "Saisie facture fournisseur",
@@ -205,9 +212,9 @@
   [
    "Fiche besoin",
    77,
-   13,
-   64,
-   83.1
+   11,
+   66,
+   85.7
   ],
   [
    "Fiche positionnement",
@@ -247,9 +254,9 @@
   [
    "Fiche projet",
    71,
-   3,
-   68,
-   95.8
+   2,
+   69,
+   97.2
   ],
   [
    "Fiche prestation",
@@ -317,9 +324,9 @@
   [
    "Cliquable écrans absents (listes, fiches, menu, onglets)",
    145,
-   4,
-   141,
-   97.2
+   3,
+   142,
+   97.9
   ],
   [
    "Actions menus Créer et étape société",
@@ -331,9 +338,9 @@
   [
    "Actions fenêtre d'action",
    43,
-   0,
-   43,
-   100.0
+   2,
+   41,
+   95.3
   ],
   [
    "Actions carte et onglet des fiches",
@@ -389,30 +396,30 @@
   [
    "saisie",
    424,
-   51,
-   373,
-   88.0
+   48,
+   376,
+   88.7
   ],
   [
    "fiche",
    865,
-   116,
-   749,
-   86.6
+   113,
+   752,
+   86.9
   ],
   [
    "cliquable",
    714,
-   8,
-   706,
-   98.9
+   7,
+   707,
+   99.0
   ],
   [
    "actions",
    119,
-   0,
-   119,
-   100.0
+   2,
+   117,
+   98.3
   ],
   [
    "mails",
@@ -422,14 +429,14 @@
    96.2
   ]
  ],
- "tableau_label": "n° 16 (règle du Juge)",
- "bas_txt": "90,2",
+ "tableau_label": "n° 18 (règle du Juge)",
+ "bas_txt": "90,4",
  "bas_approx": false,
- "prudent_conformes": 2009,
- "prudent_precedent": "89,3 %",
- "haut_txt": "92,0",
- "haut_precis": "92,0",
- "bas_campagne": "n° 16",
+ "prudent_conformes": 2014,
+ "prudent_precedent": "90,2 %",
+ "haut_txt": "92,2",
+ "haut_precis": "92,2",
+ "bas_campagne": "n° 18",
  "prudent_releves": 2227,
- "mention": "Première campagne sur la version candidate à la mise en ligne : les 4 contrôles de sécurité sont verts, le test de fuseau horaire passe ; la mise en ligne reste à décider (point de retour, accord de Hamada)."
+ "mention": "Campagne finale sur la version exacte à mettre en ligne : en cours de lancement. Les contrôles de fuites, d'argent, de migrations et de non-fuite sont verts ; celui des droits a trouvé un oubli de permission (corrigé, à rejouer à la campagne finale)."
 }
