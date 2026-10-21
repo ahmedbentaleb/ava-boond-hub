@@ -85,7 +85,7 @@ mh = L.get("mot_hamada", {"valeur": "NON", "precision": ""})
 ce_ = L.get("campagne_en_cours")
 D8 = [
   ('<div class="dc dc-wip dc-bande"><b>MISE EN LIGNE EN COURS</b><span>%s depuis %s</span></div>' % (L["mel"]["version"], L["mel"]["depuis"])) if wip else ('<div class="dc %s dc-bande"><b>%s</b><span>depuis %s — %s</span></div>' % ("dc-ok" if ok else "dc-ko", "EN LIGNE" if ok else "PAS EN LIGNE", L["heure"], L["date"][:5])),
-  '<div class="dc"><b>%s</b><span>Conformité des RUBRIQUES (éléments) · en ligne</span></div>' % L.get("conformite_courte", L["conformite"]),
+  '<div class="dc"><b>%s</b><span>Conformité des RUBRIQUES (éléments) · en ligne</span>%s</div>' % (L.get("conformite_courte", L["conformite"]), ('<span style="font-size:12px;color:var(--t3)">%s</span>' % L["conformite_petit"]) if L.get("conformite_petit") else ""),
   '<div class="dc"><b style="font-size:36px;white-space:nowrap">%s / %s</b><span>Version d’après · prudent / règle du Juge</span></div>' % (("%s %%" % fr(pr["bas"])) if pr else "—", ("%s %%" % fr(pr["haut"])) if pr else "—"),
   '<div class="dc"><b>%s</b><span>Écarts résolus</span></div>' % cz(cc["resolus"]),
   '<div class="dc"><b>%s</b><span>Pas de test rouges</span></div>' % cz(cc["rouges"]),
