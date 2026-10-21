@@ -445,7 +445,7 @@
  "haut_precis": "93,9",
  "bas_campagne": "n° 27",
  "prudent_releves": 2227,
- "mention": "Ce chiffre est celui de la version à mettre en ligne (suite a1ec461f, campagne n° 27) : 93,2 % en prudent, 93,9 % selon la règle du Juge. La version d'après (n° 30) est à 94,1 % en prudent et 94,7 % selon la règle du Juge ; la n° 32 est en cours (fin vers 18h25). Le mot de Hamada est attendu pour la suite.",
+ "mention": "Ce chiffre est celui de la version à mettre en ligne (suite a1ec461f, campagne n° 27) : 93,2 % en prudent, 93,9 % selon la règle du Juge. La version d'après (n° 32) est à 94,9 % en prudent et 95,6 % selon la règle du Juge (seuil de 95 % atteint à la règle du Juge) ; la n° 33 est en cours. Le mot de Hamada est attendu pour la suite.",
  "prochaine": {
   "label": "suite",
   "bas": 93.2,
@@ -457,14 +457,14 @@
   "ambigus_avant": 36,
   "ambigus_apres": 15,
   "phrase": "Cette version suit la mise en ligne de la version actuelle ; elle passe tous les contrôles de sécurité.",
-  "carte": "<b>Version à mettre en ligne (suite a1ec461f) : PRÊTE</b>, avec son contrôle de droits d'écriture et d'unicité du porteur ; répétition locale verte ; le mot de Hamada est attendu. Chiffre prudent <b>93,2 %</b> (2076 sur 2227, campagne n° 27), borne haute <b>93,9 %</b> (2091 sur 2227). La version candidate précédente (b2c8aa5e) est à <b>90,6 %</b>. <br><b>Version d'après (prête à rejouer)</b> : campagne n° 30, chiffre prudent <b>94,1 %</b> (2095 sur 2227), borne haute <b>94,7 %</b> (2110 sur 2227, 117 écarts, règle du Juge) ; 911 écarts résolus, 7 gagnés solides, 1 perdu (déjà corrigé). La campagne n° 31 est lue avec réserve (un scénario n'a pas été joué, erreur de manipulation de Tests, corrigée) ; la <b>campagne n° 32</b> est en cours (tête bb79ce4b plus la migration 273, scénarios du Juge 5bfbd3fa, fin vers 18h25) ; la migration 274 (libellés du type d'action du candidat) est à venir. <br><b>Deux versions prêtes, recommandation : la suite</b> (a1ec461f)."
+  "carte": "<b>Version à mettre en ligne (suite a1ec461f) : PRÊTE</b>, avec son contrôle de droits d'écriture et d'unicité du porteur ; répétition locale verte ; le mot de Hamada est attendu. Chiffre prudent <b>93,2 %</b> (2076 sur 2227, campagne n° 27), borne haute <b>93,9 %</b> (2091 sur 2227). La version candidate précédente (b2c8aa5e) est à <b>90,6 %</b>. <br><b>Version d'après (prête à rejouer)</b> : campagne n° 32, chiffre prudent <b>94,9 %</b> (2113 sur 2227), borne haute <b>95,6 %</b> (2128 sur 2227, 99 écarts, règle du Juge) : le seuil de 95 % est atteint selon la règle du Juge. 28 écarts gagnés, 6 perdus en cours de correction. La campagne n° 33 est en cours (fin vers 18h45). <br><b>Deux versions prêtes, recommandation : la suite</b> (a1ec461f)."
  },
  "apres": {
   "label": "version d'après",
-  "haut": 94.7,
-  "conformes_haut": 2110,
+  "haut": 95.6,
+  "conformes_haut": 2128,
   "releves": 2227,
-  "bas": 94.1,
-  "conformes": 2095
+  "bas": 94.9,
+  "conformes": 2113
  }
 }
