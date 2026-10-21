@@ -75,8 +75,8 @@
   }
  ],
  "mot_hamada": {
-  "valeur": "OUI",
-  "precision": "performance 1 (59436b3e) · page 577 → 16 ms · 96,1 % identique"
+  "valeur": "NON",
+  "precision": "autorisation d'office · performance 1 en préparation (étape 0 faite)"
  },
  "lenteur": "≈ 1,5 s → ≈ 0,02 s",
  "disposition": {
