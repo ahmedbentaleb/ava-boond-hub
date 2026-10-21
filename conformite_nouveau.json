@@ -450,12 +450,13 @@
   "label": "en préparation",
   "bas": 92.1,
   "conformes": 2050,
-  "haut": 92.7,
-  "conformes_haut": 2065,
+  "haut": 93.7,
+  "conformes_haut": 2086,
   "releves": 2227,
   "verts": 551,
   "ambigus_avant": 36,
   "ambigus_apres": 15,
-  "phrase": "Cette version suit la mise en ligne de la version actuelle ; elle passe tous les contrôles de sécurité."
+  "phrase": "Cette version suit la mise en ligne de la version actuelle ; elle passe tous les contrôles de sécurité.",
+  "carte": "<b>Prochaine version (en préparation) : la suite 5053b178 est PRÊTE</b> ; son dossier de mise en ligne est en préparation. Campagne n° 26 : borne haute <b>93,7 %</b> (2086 sur 2227, règle du Juge), 817 écarts résolus, 248 pas rouges, 42 bloqués, aucune perte par rapport à la version candidate actuelle. Chiffre prudent : en cours de recomptage par la Conformité (dernier connu : 92,1 %). La version candidate actuelle (b2c8aa5e, 90,6 %) attend le mot de Hamada."
  }
 }

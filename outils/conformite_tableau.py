@@ -209,7 +209,7 @@ try:
     PROCH = ""
     if nj.get("prochaine"):
         _p = nj["prochaine"]
-        PROCH = ('<div class="borne" style="border-left-color:var(--v2);border-style:dashed"><b>Prochaine version (en préparation)</b> : chiffre prudent <b>%s</b> (%s sur %s), borne haute <b>%s</b> (%s sur %s) ; %s éléments confirmés par un test réussi ; cas ambigus : %s → %s. %s</div>'
+        PROCH = ('<div class="borne" style="border-left-color:var(--v2);border-style:dashed">%s</div>' % _p["carte"]) if _p.get("carte") else ('<div class="borne" style="border-left-color:var(--v2);border-style:dashed"><b>Prochaine version (en préparation)</b> : chiffre prudent <b>%s</b> (%s sur %s), borne haute <b>%s</b> (%s sur %s) ; %s éléments confirmés par un test réussi ; cas ambigus : %s → %s. %s</div>'
                  % (pc(_p["bas"]), _p["conformes"], _p["releves"], pc(_p["haut"]), _p["conformes_haut"], _p["releves"], _p["verts"], _p["ambigus_avant"], _p["ambigus_apres"], _p["phrase"]))
     NOUVEAU = PROCH + ('<div class="borne" style="border-left-color:var(--v2)"><b>Deux tableaux, deux courbes séparées.</b> '
       'Le <b>nouveau tableau</b> compare les écrans neufs élément par élément (l’ancien les forçait à 0 %%). '
