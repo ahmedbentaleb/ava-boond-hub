@@ -3,7 +3,7 @@
  "date": "21/10/2026",
  "heure": "21h02",
  "version": "755073d0",
- "conformite": "95,5 %",
+ "conformite": "95,5 % prudent / 96,1 % règle du Juge",
  "compteurs": {
   "en_ligne": {
    "campagne": "n° 36",
@@ -77,5 +77,8 @@
  "mot_hamada": {
   "valeur": "NON",
   "precision": "755073d0 en ligne"
- }
+ },
+ "lenteur": "≈ 1,5 s / page",
+ "disposition": "chantier ouvert",
+ "conformite_courte": "95,5 %"
 }
