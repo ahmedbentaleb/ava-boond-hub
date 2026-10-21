@@ -41,6 +41,7 @@ cartes = [
   carte(c1["bloques"], "Bloqués · en ligne"),
   carte(c2["resolus"] if c2["resolus"] is not None else "—", "Résolus · version d’après", True),
   carte(c2["gagnes"], "Gagnés · version d’après", True) if c2.get("gagnes") else "",
+  '<div class="chiffre" style="border-style:dashed"><b>⏳</b><span>Prochaine mise en ligne · version d’après · en attente de la n° 35, puis du mot de Hamada · %s</span></div>' % H,
   '<div class="chiffre"><b>7</b><span>Sessions Code en parallèle · %s</span></div>' % H,
   '<div class="chiffre"><b id="c-taches">…</b><span>Tâches faites <span id="c-taches-t"></span></span></div>',
   '<div class="chiffre"><b id="c-ouverts">…</b><span>Défauts ouverts <span id="c-corriges"></span></span></div>',
