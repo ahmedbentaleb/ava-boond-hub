@@ -84,8 +84,8 @@
    "ecarts": 168
   }
  ],
- "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, puis 81,0 %, 83,7 %, 86,5 %, 88,0 %, 88,3 %, 89,3 %, 90,2 %, 90,4 %, 90,6 % pour la version candidate à la mise en ligne (b2c8aa5e), et 93,0 % pour la prochaine version prête (suite 5053b178, 2070 sur 2227). Borne haute (règle du Juge) : 93,7 % (2086 sur 2227). 63 éléments non relevables sont exclus.",
- "bas": 93.0,
+ "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, puis 81,0 %, 83,7 %, 86,5 %, 88,0 %, 88,3 %, 89,3 %, 90,2 %, 90,4 %, 90,6 % pour la version candidate (b2c8aa5e), 93,0 % à la n° 26 et 93,2 % à la n° 27 (suite c30de17a, 2076 sur 2227). Borne haute (règle du Juge) : 93,9 % (2091 sur 2227, 136 restantes). 63 éléments non relevables sont exclus.",
+ "bas": 93.2,
  "verts": null,
  "verts_pct": 22.8,
  "ambigus": null,
@@ -437,19 +437,19 @@
   ]
  ],
  "tableau_label": "campagne finale (règle du Juge)",
- "bas_txt": "93,0",
+ "bas_txt": "93,2",
  "bas_approx": false,
- "prudent_conformes": 2070,
- "prudent_precedent": "92,1 %",
+ "prudent_conformes": 2076,
+ "prudent_precedent": "93,0 %",
  "haut_txt": "93,9",
  "haut_precis": "93,9",
- "bas_campagne": "n° 26",
+ "bas_campagne": "n° 27",
  "prudent_releves": 2227,
- "mention": "Ce chiffre est celui de la prochaine version prête (suite 5053b178) à la campagne n° 26 ; la n° 27 monte à 93,9 % selon la règle du Juge et son chiffre prudent est en cours de recomptage. La version candidate b2c8aa5e est à 90,6 %. Le dossier de mise en ligne de la suite est en préparation.",
+ "mention": "Ce chiffre est celui de la version à mettre en ligne (suite c30de17a, campagne n° 27) : 93,2 % en prudent, 93,9 % selon la règle du Juge, 5 écarts résolus de plus et aucune marque perdue. La version candidate b2c8aa5e est à 90,6 %. Son dossier de mise en ligne est figé, puis viendra la répétition locale.",
  "prochaine": {
   "label": "en préparation",
-  "bas": 93.0,
-  "conformes": 2070,
+  "bas": 93.2,
+  "conformes": 2076,
   "haut": 93.9,
   "conformes_haut": 2091,
   "releves": 2227,
@@ -457,6 +457,6 @@
   "ambigus_avant": 36,
   "ambigus_apres": 15,
   "phrase": "Cette version suit la mise en ligne de la version actuelle ; elle passe tous les contrôles de sécurité.",
-  "carte": "<b>Prochaine version (suite 5053b178) = la version à mettre en ligne</b> ; son dossier de mise en ligne est en préparation par la session de coordination, puis viendra la répétition locale. Campagne n° 27 : borne haute <b>93,9 %</b> (2091 sur 2227, règle du Juge), 871 écarts résolus, 208 pas rouges, 29 bloqués, aucune perte par rapport à la version candidate (b2c8aa5e, 90,6 %) ni à la campagne n° 26. Chiffre prudent : <b>93,0 %</b> à la n° 26 ; recomptage de la n° 27 en cours."
+  "carte": "<b>Version à mettre en ligne (suite c30de17a)</b> : son dossier de mise en ligne est figé, la répétition locale suit. Campagne n° 27 : chiffre prudent <b>93,2 %</b> (2076 sur 2227, 151 écarts), borne haute <b>93,9 %</b> (2091 sur 2227, règle du Juge, 136 écarts) ; 871 écarts résolus (+5), aucune marque perdue, aucune perte par rapport à la version candidate ni à la campagne n° 26. La version candidate b2c8aa5e est à <b>90,6 %</b>."
  }
 }
