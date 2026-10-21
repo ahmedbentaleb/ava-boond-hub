@@ -1,5 +1,5 @@
 {
- "etat": "en_ligne",
+ "etat": "en_cours",
  "date": "21/10/2026",
  "heure": "21h02",
  "version": "755073d0",
@@ -76,7 +76,7 @@
  ],
  "mot_hamada": {
   "valeur": "NON",
-  "precision": "autorisation d'office · performance 1 en préparation (étape 0 faite)"
+  "precision": "autorisation d'office · étape 4 lancée à 23h44"
  },
  "lenteur": "≈ 1,5 s → ≈ 0,02 s",
  "disposition": {
@@ -99,5 +99,9 @@
  "lenteur_apres": {
   "valeur": "≈ 0,02 s / page",
   "libelle": "APRÈS PERFORMANCE 1 · mesuré au banc · PAS ENCORE EN LIGNE : mot de Hamada attendu"
+ },
+ "mel": {
+  "version": "performance 1 (59436b3e)",
+  "depuis": "23h44"
  }
 }
