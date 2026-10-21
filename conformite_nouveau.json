@@ -84,7 +84,7 @@
    "ecarts": 168
   }
  ],
- "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, puis 81,0 %, 83,7 %, 86,5 %, 88,0 %, 88,3 %, 89,3 %, 90,2 %, 90,4 %, 90,6 % pour la version candidate (b2c8aa5e), 93,0 % à la n° 26 et 93,2 % à la n° 27 (suite c30de17a, 2076 sur 2227). Borne haute (règle du Juge) : 93,9 % (2091 sur 2227, 136 restantes). 63 éléments non relevables sont exclus.",
+ "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, puis 81,0 %, 83,7 %, 86,5 %, 88,0 %, 88,3 %, 89,3 %, 90,2 %, 90,4 %, 90,6 % pour la version candidate (b2c8aa5e), 93,0 % à la n° 26 et 93,2 % à la n° 27 (suite a1ec461f, 2076 sur 2227). Borne haute (règle du Juge) : 93,9 % (2091 sur 2227, 136 restantes). 63 éléments non relevables sont exclus.",
  "bas": 93.2,
  "verts": null,
  "verts_pct": 22.8,
@@ -445,9 +445,9 @@
  "haut_precis": "93,9",
  "bas_campagne": "n° 27",
  "prudent_releves": 2227,
- "mention": "Ce chiffre est celui de la version à mettre en ligne (suite c30de17a, campagne n° 27) : 93,2 % en prudent, 93,9 % selon la règle du Juge, 5 écarts résolus de plus et aucune marque perdue. La version candidate b2c8aa5e est à 90,6 %. Son dossier de mise en ligne est figé, puis viendra la répétition locale.",
+ "mention": "Ce chiffre est celui de la version à mettre en ligne (suite a1ec461f, campagne n° 27) : 93,2 % en prudent, 93,9 % selon la règle du Juge. Une version d'après (campagne n° 28) est à 94,3 % selon la règle du Juge. Deux versions sont prêtes ; la recommandation est la suite. Le mot de Hamada est attendu.",
  "prochaine": {
-  "label": "en préparation",
+  "label": "suite",
   "bas": 93.2,
   "conformes": 2076,
   "haut": 93.9,
@@ -457,6 +457,12 @@
   "ambigus_avant": 36,
   "ambigus_apres": 15,
   "phrase": "Cette version suit la mise en ligne de la version actuelle ; elle passe tous les contrôles de sécurité.",
-  "carte": "<b>Version à mettre en ligne (suite c30de17a)</b> : son dossier de mise en ligne est figé, la répétition locale suit. Campagne n° 27 : chiffre prudent <b>93,2 %</b> (2076 sur 2227, 151 écarts), borne haute <b>93,9 %</b> (2091 sur 2227, règle du Juge, 136 écarts) ; 871 écarts résolus (+5), aucune marque perdue, aucune perte par rapport à la version candidate ni à la campagne n° 26. La version candidate b2c8aa5e est à <b>90,6 %</b>."
+  "carte": "<b>Version à mettre en ligne (suite a1ec461f) : PRÊTE</b> ; répétition locale verte ; le mot de Hamada est attendu. Chiffre prudent <b>93,2 %</b> (2076 sur 2227, campagne n° 27), borne haute <b>93,9 %</b> (2091 sur 2227). La version candidate précédente (b2c8aa5e) est à <b>90,6 %</b>. <br><b>Version d'après (prête à rejouer)</b> : campagne n° 28 (version 67eedc2a), borne haute <b>94,3 %</b> (2101 sur 2227, règle du Juge), 896 écarts résolus, aucune perte par rapport à la n° 27 et à b2c8aa5e, 25 écarts résolus de plus ; son chiffre prudent sera recompté par la Conformité. <br><b>D-596 : deux versions prêtes, recommandation : la suite</b> (a1ec461f)."
+ },
+ "apres": {
+  "label": "version d'après",
+  "haut": 94.3,
+  "conformes_haut": 2101,
+  "releves": 2227
  }
 }
