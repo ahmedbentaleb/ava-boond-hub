@@ -85,19 +85,21 @@ mh = L.get("mot_hamada", {"valeur": "NON", "precision": ""})
 ce_ = L.get("campagne_en_cours")
 D8 = [
   ('<div class="dc dc-wip dc-bande"><b>MISE EN LIGNE EN COURS</b><span>%s depuis %s</span></div>' % (L["mel"]["version"], L["mel"]["depuis"])) if wip else ('<div class="dc %s dc-bande"><b>%s</b><span>depuis %s — %s</span></div>' % ("dc-ok" if ok else "dc-ko", "EN LIGNE" if ok else "PAS EN LIGNE", L["heure"], L["date"][:5])),
-  '<div class="dc"><b>%s</b><span>Conformité en ligne · prudent</span></div>' % L.get("conformite_courte", L["conformite"]),
+  '<div class="dc"><b>%s</b><span>Conformité des RUBRIQUES (éléments) · en ligne</span></div>' % L.get("conformite_courte", L["conformite"]),
   '<div class="dc"><b style="font-size:36px;white-space:nowrap">%s / %s</b><span>Version d’après · prudent / règle du Juge</span></div>' % (("%s %%" % fr(pr["bas"])) if pr else "—", ("%s %%" % fr(pr["haut"])) if pr else "—"),
-  '<div class="dc"><b>%s</b><span>Résolus</span></div>' % cz(cc["resolus"]),
-  '<div class="dc"><b>%s</b><span>Rouges</span></div>' % cz(cc["rouges"]),
-  '<div class="dc"><b>%s</b><span>Bloqués</span></div>' % cz(cc["bloques"]),
+  '<div class="dc"><b>%s</b><span>Écarts résolus</span></div>' % cz(cc["resolus"]),
+  '<div class="dc"><b>%s</b><span>Pas de test rouges</span></div>' % cz(cc["rouges"]),
+  '<div class="dc"><b>%s</b><span>Pas de test bloqués</span></div>' % cz(cc["bloques"]),
   '<div class="dc"><b>%s</b><span>Campagne en cours · fin %s</span></div>' % ((ce_["n"], ce_["fin"]) if ce_ else ("—", "—")),
   '<div class="dc"><b>%s</b><span>Mot de Hamada attendu · %s</span></div>' % (mh["valeur"], mh.get("precision", "")),
 ]
 # 8 cartes au maximum : une carte vide (pas de version d'après, pas de campagne en cours) cède sa place à la lenteur ou à la disposition
-if not pr and L.get("lenteur"):
-    D8[2] = '<div class="dc"><b>%s</b><span>Lenteur</span></div>' % L["lenteur"]
-if not ce_ and L.get("disposition"):
-    D8[6] = '<div class="dc"><b style="font-size:36px">%s</b><span>Disposition</span></div>' % L["disposition"]
+# 8 cartes au maximum : la DISPOSITION se place à côté de la conformité des rubriques ; Lenteur prend la place de la campagne en cours si elle est vide
+_dp = L.get("disposition")
+if isinstance(_dp, dict):
+    D8[2] = '<div class="dc"><b>%s</b><span>%s</span></div>' % (_dp["valeur"], _dp["libelle"])
+if not ce_ and L.get("lenteur"):
+    D8[6] = '<div class="dc"><b>%s</b><span>Lenteur</span></div>' % L["lenteur"]
 assert len(D8) <= 8
 DCSS = ('<style>main{max-width:900px}.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:6px 0 22px}'
         '.dc{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:22px 20px;text-align:center}'

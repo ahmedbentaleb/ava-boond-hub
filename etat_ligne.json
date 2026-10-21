@@ -79,6 +79,9 @@
   "precision": "755073d0 en ligne"
  },
  "lenteur": "≈ 1,5 s / page",
- "disposition": "chantier ouvert",
+ "disposition": {
+  "valeur": "— %",
+  "libelle": "Conformité de la disposition · à mesurer"
+ },
  "conformite_courte": "95,5 %"
 }
