@@ -441,22 +441,22 @@
  "bas_approx": false,
  "prudent_conformes": 2070,
  "prudent_precedent": "92,1 %",
- "haut_txt": "93,7",
- "haut_precis": "93,7",
+ "haut_txt": "93,9",
+ "haut_precis": "93,9",
  "bas_campagne": "n° 26",
  "prudent_releves": 2227,
- "mention": "Ce chiffre est celui de la prochaine version prête (suite 5053b178, campagne n° 26) ; la version candidate à la mise en ligne aujourd'hui (b2c8aa5e) est à 90,6 %. Le dossier de mise en ligne de la suite est en préparation.",
+ "mention": "Ce chiffre est celui de la prochaine version prête (suite 5053b178) à la campagne n° 26 ; la n° 27 monte à 93,9 % selon la règle du Juge et son chiffre prudent est en cours de recomptage. La version candidate b2c8aa5e est à 90,6 %. Le dossier de mise en ligne de la suite est en préparation.",
  "prochaine": {
   "label": "en préparation",
   "bas": 93.0,
   "conformes": 2070,
-  "haut": 93.7,
-  "conformes_haut": 2086,
+  "haut": 93.9,
+  "conformes_haut": 2091,
   "releves": 2227,
   "verts": 551,
   "ambigus_avant": 36,
   "ambigus_apres": 15,
   "phrase": "Cette version suit la mise en ligne de la version actuelle ; elle passe tous les contrôles de sécurité.",
-  "carte": "<b>Prochaine version (suite 5053b178) : PRÊTE</b> ; son dossier de mise en ligne est en préparation. Campagne n° 26 : chiffre prudent <b>93,0 %</b> (2070 sur 2227), borne haute <b>93,7 %</b> (2086 sur 2227, règle du Juge), 817 écarts résolus, 248 pas rouges, 42 bloqués, aucune perte par rapport à la version candidate. La version candidate à la mise en ligne aujourd’hui (b2c8aa5e) est à <b>90,6 %</b> et attend le mot de Hamada."
+  "carte": "<b>Prochaine version (suite 5053b178) = la version à mettre en ligne</b> ; son dossier de mise en ligne est en préparation par la session de coordination, puis viendra la répétition locale. Campagne n° 27 : borne haute <b>93,9 %</b> (2091 sur 2227, règle du Juge), 871 écarts résolus, 208 pas rouges, 29 bloqués, aucune perte par rapport à la version candidate (b2c8aa5e, 90,6 %) ni à la campagne n° 26. Chiffre prudent : <b>93,0 %</b> à la n° 26 ; recomptage de la n° 27 en cours."
  }
 }
