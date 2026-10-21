@@ -31,6 +31,8 @@ DETAIL = f'''<details class="detail"><summary>Détails</summary>
 </details>'''
 CARTE = f'''<div class="chiffre"><b>{bas} %</b><span>d’Ava ressemble à Boond (chiffre prudent, campagne {bascamp}) ; peut monter jusqu’à {haut} % quand les tests seront resserrés ; objectif 100 % des éléments mesurables. {ment}</span></div>'''
 LIGNE = f'''<b>Campagnes de mesure sur le Livrable 3</b> : le Juge joue ses scénarios (par rôle, grisé, cliquable) et recalcule la note. <b>Ancien tableau</b> (écrans absents forcés à 0 %) : {ancien}. <b>Nouveau tableau</b> (écrans neufs comptés élément par élément) : {nouveau} ({fr(last_n["note"])} % d’éléments sans différence ouverte, {last_n["conformes"]} sur {last_n["releves"]} ; {last_n["ecarts"]} différences à fermer). Chiffre prudent : {fr(nj["bas"])} %. Le nouveau tableau est la référence ; l’ancien est gardé pour la continuité.'''
+_pr = nj.get("prochaine")
+PROCH = (f'''<div class="chiffre" style="border-style:dashed"><b>{fr(_pr["bas"])} %</b><span><b>Prochaine version (en préparation)</b> : chiffre prudent {fr(_pr["bas"])} % ({_pr["conformes"]} sur {_pr["releves"]}), borne haute {fr(_pr["haut"])} % ({_pr["conformes_haut"]} sur {_pr["releves"]}) ; {_pr["verts"]} éléments confirmés par un test réussi ; cas ambigus : {_pr["ambigus_avant"]} → {_pr["ambigus_apres"]}. {_pr["phrase"]}</span></div>''' if _pr else "")
 STATUT = tx["statut_campagne"].replace("{num}", num)
 
 def bloc(s, nom, contenu):
@@ -39,7 +41,7 @@ def bloc(s, nom, contenu):
     raise SystemExit("repère manquant : " + nom)
 
 e = rd("etat.html")
-e = bloc(e, "grand", GRAND); e = bloc(e, "mel", tx.get("mise_en_ligne", "")); e = bloc(e, "detail", DETAIL); e = bloc(e, "carte", CARTE); e = bloc(e, "ligne", LIGNE); e = bloc(e, "statut", STATUT)
+e = bloc(e, "grand", GRAND); e = bloc(e, "proch", PROCH); e = bloc(e, "mel", tx.get("mise_en_ligne", "")); e = bloc(e, "detail", DETAIL); e = bloc(e, "carte", CARTE); e = bloc(e, "ligne", LIGNE); e = bloc(e, "statut", STATUT)
 J = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"]; n = datetime.datetime.now()
 ST = "Mis à jour le %s %s à %s (heure de Casablanca)" % (J[n.weekday()], n.strftime("%d/%m/%Y"), n.strftime("%Hh%M"))
 e = re.sub(r"Mis à jour le [^(]*\(heure de Casablanca\)", ST, e, count=1)

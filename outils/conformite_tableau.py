@@ -182,12 +182,17 @@ try:
     def _courbe_n():
         W, Hh, x0, x1 = 620, 120, 120, 500
         Y = lambda v: 100 - (v - 50) * 1.6
-        X = lambda i: x0 + (x1 - x0) * (i / max(1, len(pts_n) - 1))
+        _pr = nj.get("prochaine"); _N = len(pts_n) + (1 if _pr else 0)
+        X = lambda i: x0 + (x1 - x0) * (i / max(1, _N - 1))
         o = ['<svg viewBox="0 0 %d %d" role="img" aria-label="Courbe du nouveau tableau" style="width:100%%;max-width:680px;display:block">' % (W, Hh)]
         o.append('<line x1="%d" y1="%.0f" x2="%d" y2="%.0f" stroke="var(--bord)"/><text x="6" y="%.0f" fill="var(--t3)" font-size="11">50 %%</text>' % (x0 - 60, Y(50), x1 + 60, Y(50), Y(50) + 4))
         o.append('<polyline points="%s" fill="none" stroke="var(--v2)" stroke-width="2.5"/>' % " ".join("%.0f,%.0f" % (X(i), Y(q["note"])) for i, q in enumerate(pts_n)))
         for i, q in enumerate(pts_n):
             o.append('<circle cx="%.0f" cy="%.0f" r="5" fill="var(--v2)"/><text x="%.0f" y="%.0f" text-anchor="middle" fill="var(--t1)" font-size="12" font-weight="600">%s</text><text x="%.0f" y="116" text-anchor="middle" fill="var(--t3)" font-size="10">%s</text>' % (X(i), Y(q["note"]), X(i), Y(q["note"]) - 10, pc(q["note"]), X(i), q["label"]))
+        if _pr:
+            i0, i1 = len(pts_n) - 1, len(pts_n)
+            o.append('<line x1="%.0f" y1="%.0f" x2="%.0f" y2="%.0f" stroke="var(--v2)" stroke-width="2.5" stroke-dasharray="5 4"/>' % (X(i0), Y(pts_n[-1]["note"]), X(i1), Y(_pr["haut"])))
+            o.append('<circle cx="%.0f" cy="%.0f" r="5" fill="none" stroke="var(--v2)" stroke-width="2" stroke-dasharray="3 2"/><text x="%.0f" y="%.0f" text-anchor="middle" fill="var(--t1)" font-size="12" font-weight="600">%s</text><text x="%.0f" y="116" text-anchor="middle" fill="var(--t3)" font-size="10">%s</text>' % (X(i1), Y(_pr["haut"]), X(i1), Y(_pr["haut"]) - 10, pc(_pr["haut"]), X(i1), _pr["label"]))
         o.append("</svg>")
         return "".join(o)
     bas_n = nj.get("bas")
@@ -201,7 +206,12 @@ try:
     DETAIL = ""
     if nj.get("parties"):
         DETAIL = "<p class=\"sous\" style=\"margin:12px 0 4px\"><b>Par partie, à la campagne %s</b> (éléments sans écart ouvert, borne haute)</p>" % nj["tableau_label"] + _tab(nj["parties"], "Partie") +           "<details style=\"margin-top:8px\"><summary style=\"cursor:pointer;color:var(--t2)\">Voir toutes les sections du nouveau tableau</summary>" + _tab(nj["tableau"], "Section") + "</details>"
-    NOUVEAU = ('<div class="borne" style="border-left-color:var(--v2)"><b>Deux tableaux, deux courbes séparées.</b> '
+    PROCH = ""
+    if nj.get("prochaine"):
+        _p = nj["prochaine"]
+        PROCH = ('<div class="borne" style="border-left-color:var(--v2);border-style:dashed"><b>Prochaine version (en préparation)</b> : chiffre prudent <b>%s</b> (%s sur %s), borne haute <b>%s</b> (%s sur %s) ; %s éléments confirmés par un test réussi ; cas ambigus : %s → %s. %s</div>'
+                 % (pc(_p["bas"]), _p["conformes"], _p["releves"], pc(_p["haut"]), _p["conformes_haut"], _p["releves"], _p["verts"], _p["ambigus_avant"], _p["ambigus_apres"], _p["phrase"]))
+    NOUVEAU = PROCH + ('<div class="borne" style="border-left-color:var(--v2)"><b>Deux tableaux, deux courbes séparées.</b> '
       'Le <b>nouveau tableau</b> compare les écrans neufs élément par élément (l’ancien les forçait à 0 %%). '
       'Sa base était de <b>%s</b> (%s sur %s). À la campagne %s, <b>%s des éléments sont sans écart ouvert (règle du Juge)%s</b> : %s sur %s relevés, %s écarts restants. '
       'Ce n’est <b>pas</b> « %s mesurés en campagne » : c’est une <b>borne haute</b>, car la plupart des éléments conformes ne sont pas encore confirmés par un test. '

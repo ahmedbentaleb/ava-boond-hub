@@ -445,5 +445,17 @@
  "haut_precis": "92,5",
  "bas_campagne": "finale",
  "prudent_releves": 2227,
- "mention": "Version prête à la mise en ligne : tous les contrôles de sécurité sont verts. La mise en ligne attend l'accord de Hamada."
+ "mention": "Version prête à la mise en ligne : tous les contrôles de sécurité sont verts. La mise en ligne attend l'accord de Hamada.",
+ "prochaine": {
+  "label": "en préparation",
+  "bas": 92.1,
+  "conformes": 2050,
+  "haut": 92.7,
+  "conformes_haut": 2065,
+  "releves": 2227,
+  "verts": 551,
+  "ambigus_avant": 36,
+  "ambigus_apres": 15,
+  "phrase": "Cette version suit la mise en ligne de la version actuelle ; elle passe tous les contrôles de sécurité."
+ }
 }
