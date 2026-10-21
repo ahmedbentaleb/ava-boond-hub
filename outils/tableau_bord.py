@@ -54,7 +54,7 @@ head = re.sub(r"<title>.*?</title>", "<title>Tableau de bord</title>", head, fla
 CSS = ('<style>.bande{margin:0 0 18px;padding:14px 16px;border-radius:10px;font-size:18px;font-weight:700;text-align:center;color:#fff}'
        '.bande-ok{background:#1b7f3b;border:2px solid #34D399}.bande-ko{background:#b3261e;border:2px solid #ff6b60}'
        'table{width:100%;border-collapse:collapse;margin:4px 0 16px}th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--bord);font-size:15px}'
-       'th{color:var(--t2);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.05em}h2{margin-top:22px}</style>')
+       'th{color:var(--t2);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.05em}h2{margin-top:22px}.dans-hub .bande{display:none}</style>')
 html = (head + CSS + '<script>if(self!==top)document.documentElement.classList.add("dans-hub")</script></head><body><main>\n'
         '<div class="nav"><a href="./" target="_top">← le hub</a></div>\n' + BANDE + '\n<p class="sous">' + STAMP + '</p>\n'
         '<h2>Conformité à Boond</h2>\n' + tab_conf + '\n<h2>Résolus · rouges · bloqués</h2>\n' + tab_cpt +
