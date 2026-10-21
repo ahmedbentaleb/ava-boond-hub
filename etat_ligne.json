@@ -80,10 +80,10 @@
  },
  "lenteur": "≈ 1,5 s → ≈ 0,02 s",
  "disposition": {
-  "valeur": "54 %",
-  "libelle": "Conformité de la disposition · lots 1-2, meilleure tête (Code 4) 90/166",
-  "petit": "tête intégrée : à rejouer"
+  "valeur": "51 %",
+  "libelle": "Conformité de la disposition · lots 1-3 sur 7, même tête 26191781 (116/227)",
+  "petit": "lot 1 : 65/87 · lot 2 : 29/79 · lot 3 : 22/61"
  },
- "conformite_courte": "95,5 %",
+ "conformite_courte": "95,2 %",
  "lenteur_libelle": "Lenteur par page · après performance 1 (mesuré au banc)"
 }
