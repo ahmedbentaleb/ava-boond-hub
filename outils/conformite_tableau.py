@@ -238,13 +238,14 @@ try:
 except Exception:
     SEUL_P, HAUT = note, fr("%.0f" % note)
     _nj = {}; MENTION_N = ""
+EL = (_nj.get("en_ligne", "") + " — ") if _nj.get("en_ligne") else ""
 SEUL = _nj.get("bas_txt") or fr("%.0f" % SEUL_P)
 _p0 = _nj.get("prochaine"); RESTE = (_p0["releves"] - _p0["conformes_haut"]) if _p0 else (_nj.get("points") or [{}])[-1].get("ecarts", "")
 html = HEAD + EXTRA + f'''<h1>Conformité à Boond</h1>
 <p class="sous">{STAMP} · à chaque livraison, ce tableau est recalculé et la date de mesure change</p>
 <span class="date">Mesurée le {date}{QUAND} sur {SURQUOI} · Boond relevé à l'écran du {periode}</span>{MENTION}{ENLIGNE}{STATS}
 
-<p class="grandphrase"><b>Aujourd’hui Ava ressemble à Boond à {SEUL} % ; la cible est 100 % des éléments mesurables.</b> Il reste {RESTE} différences à fermer.</p>
+<p class="grandphrase"><b>{EL}Aujourd’hui Ava ressemble à Boond à {SEUL} % ; la cible est 100 % des éléments mesurables.</b> Il reste {RESTE} différences à fermer.</p>
 <p class="sous" style="margin:0 0 8px">Les éléments qu’on ne peut pas vérifier chez Boond (module facturation absent du compte, envois réels de mails, PDF à déposer) sont listés à part avec la raison.</p>
 <div class="note-g"><div class="gros">{SEUL}<small> %</small></div>
 <div class="col"><span class="bar grand"><i style="width:{SEUL_P}%"></i></span><p class="sous" style="margin:6px 0 0">Peut monter jusqu’à {HAUT} % quand les tests seront resserrés ; objectif 100 %. <b>{MENTION_N}</b> Chiffre prudent du nouveau tableau (écrans neufs compris), les éléments à preuve discutable étant retirés.</p></div></div>

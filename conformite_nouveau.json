@@ -82,6 +82,13 @@
    "conformes": 2059,
    "releves": 2227,
    "ecarts": 168
+  },
+  {
+   "label": "en ligne",
+   "note": 93.9,
+   "conformes": 2091,
+   "releves": 2227,
+   "ecarts": 136
   }
  ],
  "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, puis 81,0 %, 83,7 %, 86,5 %, 88,0 %, 88,3 %, 89,3 %, 90,2 %, 90,4 %, 90,6 % pour la version candidate (b2c8aa5e), 93,0 % à la n° 26 et 93,2 % à la n° 27 (suite a1ec461f, 2076 sur 2227). Borne haute (règle du Juge) : 93,9 % (2091 sur 2227, 136 restantes). 63 éléments non relevables sont exclus.",
@@ -445,26 +452,19 @@
  "haut_precis": "93,9",
  "bas_campagne": "n° 27",
  "prudent_releves": 2227,
- "mention": "Ce chiffre est celui de la version à mettre en ligne (suite a1ec461f, campagne n° 27) : 93,2 % en prudent, 93,9 % selon la règle du Juge. La version d'après (n° 32) est à 94,9 % en prudent et 95,6 % selon la règle du Juge (seuil de 95 % atteint à la règle du Juge) ; la n° 33 est en cours. Le mot de Hamada est attendu pour la suite.",
+ "mention": "La suite a1ec461f est EN LIGNE depuis 18h50 (21/10) : 93,2 % en prudent, 93,9 % selon la règle du Juge. Le point de retour et l'image précédente (5a94a54e81bd) sont gardés. La version d'après (n° 33) est à 95,6 % selon la règle du Juge ; la n° 32 est à 94,9 % en prudent.",
  "prochaine": {
-  "label": "suite",
-  "bas": 93.2,
-  "conformes": 2076,
-  "haut": 93.9,
-  "conformes_haut": 2091,
-  "releves": 2227,
-  "verts": 551,
-  "ambigus_avant": 36,
-  "ambigus_apres": 15,
-  "phrase": "Cette version suit la mise en ligne de la version actuelle ; elle passe tous les contrôles de sécurité.",
-  "carte": "<b>Version à mettre en ligne (suite a1ec461f) : PRÊTE</b>, avec son contrôle de droits d'écriture et d'unicité du porteur ; répétition locale verte ; le mot de Hamada est attendu. Chiffre prudent <b>93,2 %</b> (2076 sur 2227, campagne n° 27), borne haute <b>93,9 %</b> (2091 sur 2227). La version candidate précédente (b2c8aa5e) est à <b>90,6 %</b>. <br><b>Version d'après (prête à rejouer)</b> : campagne n° 32, chiffre prudent <b>94,9 %</b> (2113 sur 2227), borne haute <b>95,6 %</b> (2128 sur 2227, 99 écarts, règle du Juge) : le seuil de 95 % est atteint selon la règle du Juge. 28 écarts gagnés, 6 perdus en cours de correction. La campagne n° 33 est en cours (fin vers 18h45). <br><b>Deux versions prêtes, recommandation : la suite</b> (a1ec461f)."
- },
- "apres": {
   "label": "version d'après",
+  "bas": 94.9,
+  "conformes": 2113,
   "haut": 95.6,
   "conformes_haut": 2128,
   "releves": 2227,
-  "bas": 94.9,
-  "conformes": 2113
- }
+  "verts": null,
+  "ambigus_avant": null,
+  "ambigus_apres": null,
+  "phrase": "",
+  "carte": "<b>Version en ligne : la suite a1ec461f, EN LIGNE depuis 18h50.</b> Chiffre prudent <b>93,2 %</b> (2076 sur 2227), borne haute <b>93,9 %</b> (2091 sur 2227). <br><b>Version d'après (en préparation)</b> : campagne n° 33, <b>95,6 %</b> selon la règle du Juge, 934 écarts résolus ; chiffre prudent de la n° 32 : <b>94,9 %</b> (2113 sur 2227). Elle sera mise en ligne après sa propre validation, avec l'accord de Hamada."
+ },
+ "en_ligne": "EN LIGNE depuis 18h50 (21/10)"
 }
