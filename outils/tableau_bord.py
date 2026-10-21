@@ -72,7 +72,32 @@ html = (head + CSS + '<script>if(self!==top)document.documentElement.classList.a
         '<div class="nav"><a href="./" target="_top">← le hub</a></div>\n' + BANDE + '\n<h1>Où en sommes-nous</h1>\n<p class="sous">' + STAMP + '</p>\n'
         + CARTES + '\n' + COURBE + '\n<h2>Mises en ligne</h2>\n' + tab_hist + '\n' + tab_ce + '\n<h2>Attend le mot de Hamada</h2>\n' + tab_att +
         '\n<p class="sous"><a href="etat-details.html">Détails (ancienne vue)</a></p>\n' + js + '</main></body></html>\n')
-open(os.path.join(HUB, "etat.html"), "w", encoding="utf-8", newline="").write(html)
+for _f in ("detail.html", "etat.html"):
+    open(os.path.join(HUB, _f), "w", encoding="utf-8", newline="").write(html.replace("<title>Tableau de bord</title>", "<title>Détail</title>").replace("<h1>Où en sommes-nous</h1>", "<h1>Détail</h1>"))
+
+# DASHBOARD : 8 cartes maximum, des chiffres en gros, aucune phrase, aucune courbe, aucun tableau
+cz = lambda v: "—" if v is None else v
+mh = L.get("mot_hamada", {"valeur": "NON", "precision": ""})
+ce_ = L.get("campagne_en_cours")
+D8 = [
+  ('<div class="dc %s dc-bande"><b>%s</b><span>depuis %s — %s</span></div>' % ("dc-ok" if ok else "dc-ko", "EN LIGNE" if ok else "PAS EN LIGNE", L["heure"], L["date"][:5])),
+  '<div class="dc"><b>%s</b><span>Conformité en ligne · prudent</span></div>' % L["conformite"],
+  '<div class="dc"><b>%s / %s</b><span>Version d’après · prudent / règle du Juge</span></div>' % (("%s %%" % fr(pr["bas"])) if pr else "—", ("%s %%" % fr(pr["haut"])) if pr else "—"),
+  '<div class="dc"><b>%s</b><span>Résolus</span></div>' % cz(c1["resolus"]),
+  '<div class="dc"><b>%s</b><span>Rouges</span></div>' % cz(c1["rouges"]),
+  '<div class="dc"><b>%s</b><span>Bloqués</span></div>' % cz(c1["bloques"]),
+  '<div class="dc"><b>%s</b><span>Campagne en cours · fin %s</span></div>' % ((ce_["n"], ce_["fin"]) if ce_ else ("—", "—")),
+  '<div class="dc"><b>%s</b><span>Mot de Hamada attendu · %s</span></div>' % (mh["valeur"], mh.get("precision", "")),
+]
+DCSS = ('<style>main{max-width:900px}.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:6px 0 22px}'
+        '.dc{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:22px 20px;text-align:center}'
+        '.dc b{display:block;font-size:48px;font-weight:700;line-height:1.1;color:var(--t1)}.dc span{display:block;margin-top:8px;font-size:15px;color:var(--t2)}'
+        '.dc-bande b{font-size:40px}.dc-ok{background:#1b7f3b;border-color:#34D399}.dc-ok b,.dc-ok span{color:#fff}.dc-ko{background:#b3261e;border-color:#ff6b60}.dc-ko b,.dc-ko span{color:#fff}'
+        '@media (max-width:560px){.dc b{font-size:40px}}</style>')
+dash = (head.replace("<title>Tableau de bord</title>", "<title>Dashboard</title>") + DCSS +
+        '<script>if(self!==top)document.documentElement.classList.add("dans-hub")</script></head><body><main>'
+        '<div class="dgrid">' + "".join(D8) + '</div><p class="sous" style="text-align:center"><a href="detail.html">Détail</a></p></main></body></html>')
+open(os.path.join(HUB, "dashboard.html"), "w", encoding="utf-8", newline="").write(dash)
 
 ix = rd("index.html")
 ix = re.sub(r"Mis à jour le [^(]*\(heure de Casablanca\)", STAMP, ix, count=1)

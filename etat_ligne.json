@@ -76,5 +76,9 @@
    "geste": "Machine hors du serveur pour les sauvegardes",
    "etat": "⬜"
   }
- ]
+ ],
+ "mot_hamada": {
+  "valeur": "NON",
+  "precision": "après la n° 35"
+ }
 }

@@ -618,7 +618,7 @@
   <header class="tete">
     <h1>Ava Manager <span class="tete-sous">— le hub</span></h1>
     <!--BANDE--><div class="bande bande-ok" role="status">EN LIGNE depuis 18h50 — 21/10/2026 — version a1ec461f — conformité 93,2 %</div><!--/BANDE-->
-    <p class="tete-etat">Mis à jour le mercredi 21/10/2026 à 19h44 (heure de Casablanca)</p>
+    <p class="tete-etat">Mis à jour le mercredi 21/10/2026 à 19h49 (heure de Casablanca)</p>
   </header>
   <div class="hub-wrap" id="hub">
     <nav class="nav1" id="hub-sub" aria-label="Sections"></nav>
@@ -3194,7 +3194,8 @@ function showView(name){
      Une page est une vue du hub (v), une page à part (href), ou une famille de documents (docs). */
   const MENU = [
     { id: "projet", label: "Projet", items: [
-      { v: "page:etat.html", label: "Où en sommes-nous", star: 1 },
+      { v: "page:dashboard.html", label: "Dashboard", star: 1 },
+      { v: "page:detail.html", label: "Détail", star: 1 },
       { v: "page:etat-details.html", label: "Détails (ancienne vue)" },
       { v: "page:todo.html", label: "À faire", star: 1 },
       { v: "page:taches.html", label: "Toutes les tâches numérotées", star: 1 },
@@ -6287,7 +6288,7 @@ function showView(name){
     else if (name.startsWith("page:")) { PAGE = decodeURIComponent(name.slice(5)); key = "page:" + PAGE; name = "page"; }
     else if (name.startsWith("docs:")) { DOC_CAT = decodeURIComponent(name.slice(5)); key = "docs:" + DOC_CAT; name = "ava-documents"; }
     else if (name === "ava-documents") DOC_CAT = "";
-    if (!ALL_VIEWS.includes(name) && name !== "lire" && name !== "page") { name = "page"; PAGE = "etat.html"; key = "page:etat.html"; }
+    if (!ALL_VIEWS.includes(name) && name !== "lire" && name !== "page") { name = "page"; PAGE = "dashboard.html"; key = "page:dashboard.html"; }
     ALL_VIEWS.concat(["lire", "page"]).forEach((id) => {
       const node = document.getElementById("view-" + id);
       if (node) node.hidden = id !== name;
@@ -6320,7 +6321,7 @@ function showView(name){
 
   bindSim();
   window.addEventListener("hashchange", () => {
-    const h = decodeURI((location.hash || "#page:etat.html").slice(1));
+    const h = decodeURI((location.hash || "#page:dashboard.html").slice(1));
     showHubView(h);
   });
   /* ⭐ Tout reste dans le hub : un lien vers doc/ s'ouvre dans le lecteur, une page du hub dans le cadre. */
@@ -6331,7 +6332,7 @@ function showView(name){
     if (/^doc\/.+\.(md|txt|sql)(#.*)?$/i.test(h)) { e.preventDefault(); showHubView("lire:" + decodeURI(h.slice(4).split("#")[0])); return; }
     if (/^[a-z0-9_-]+\.html(\?.*)?$/i.test(h) && !/^index\.html/.test(h)) { e.preventDefault(); showHubView("page:" + h.split("?")[0]); }
   });
-  const start = decodeURI((location.hash || "#page:etat.html").slice(1));
+  const start = decodeURI((location.hash || "#page:dashboard.html").slice(1));
   showHubView(start);
 })();
 
