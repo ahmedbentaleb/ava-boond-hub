@@ -42,10 +42,10 @@ def bloc(s, nom, contenu):
     if a in s: return re.sub(re.escape(a) + ".*?" + re.escape(b), lambda m: a + contenu + b, s, count=1, flags=re.S)
     raise SystemExit("repère manquant : " + nom)
 
-e = rd("etat.html")
+e = rd("etat-details.html")
 e = bloc(e, "grand", GRAND); e = bloc(e, "proch", PROCH); e = bloc(e, "mel", tx.get("mise_en_ligne", "")); e = bloc(e, "detail", DETAIL); e = bloc(e, "carte", CARTE); e = bloc(e, "ligne", LIGNE); e = bloc(e, "statut", STATUT)
 J = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"]; n = datetime.datetime.now()
 ST = "Mis à jour le %s %s à %s (heure de Casablanca)" % (J[n.weekday()], n.strftime("%d/%m/%Y"), n.strftime("%Hh%M"))
 e = re.sub(r"Mis à jour le [^(]*\(heure de Casablanca\)", ST, e, count=1)
-open(os.path.join(HUB, "etat.html"), "w", encoding="utf-8", newline="").write(e)
+open(os.path.join(HUB, "etat-details.html"), "w", encoding="utf-8", newline="").write(e)
 print("etat.html régénérée :", bas, "% (jusqu'à", haut, "%)", ST)

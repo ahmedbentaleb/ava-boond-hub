@@ -612,12 +612,13 @@
 }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
-</head>
+<style id="bande-css">.bande{margin:8px 0 10px;padding:12px 14px;border-radius:10px;font-size:16px;font-weight:700;text-align:center;color:#fff}.bande-ok{background:#1b7f3b;border:2px solid #34D399}.bande-ko{background:#b3261e;border:2px solid #ff6b60}</style></head>
 <body>
 <main>
   <header class="tete">
     <h1>Ava Manager <span class="tete-sous">— le hub</span></h1>
-    <p class="tete-etat">Mis à jour le mercredi 21/10/2026 à 18h51 (heure de Casablanca)</p>
+    <!--BANDE--><div class="bande bande-ok" role="status">EN LIGNE depuis 18h50 — 21/10/2026 — version a1ec461f — conformité 93,2 %</div><!--/BANDE-->
+    <p class="tete-etat">Mis à jour le mercredi 21/10/2026 à 19h23 (heure de Casablanca)</p>
   </header>
   <div class="hub-wrap" id="hub">
     <nav class="nav1" id="hub-sub" aria-label="Sections"></nav>
@@ -3194,6 +3195,7 @@ function showView(name){
   const MENU = [
     { id: "projet", label: "Projet", items: [
       { v: "page:etat.html", label: "Où en sommes-nous", star: 1 },
+      { v: "page:etat-details.html", label: "Détails (ancienne vue)" },
       { v: "page:todo.html", label: "À faire", star: 1 },
       { v: "page:taches.html", label: "Toutes les tâches numérotées", star: 1 },
       { v: "page:todo-cocher.html", label: "Todo à cocher (ancienne)" },

@@ -1,0 +1,25 @@
+{
+ "etat": "en_ligne",
+ "date": "21/10/2026",
+ "heure": "18h50",
+ "version": "a1ec461f",
+ "conformite": "93,2 %",
+ "compteurs": {
+  "en_ligne": {"campagne": "n° 27", "resolus": 871, "rouges": 208, "bloques": 29},
+  "apres": {"campagne": "n° 33", "resolus": 934, "rouges": null, "bloques": null}
+ },
+ "campagne_en_cours": null,
+ "mises_en_ligne": [
+  {"date": "21/10/2026", "heure": "18h50", "version": "a1ec461f", "resultat": "✅ en ligne (4e tentative)"},
+  {"date": "20-21/10/2026", "heure": "—", "version": "3 tentatives", "resultat": "↩️ retour automatique, rien cassé ni perdu"},
+  {"date": "18/10/2026", "heure": "19h35", "version": "5a94a54e", "resultat": "✅ en ligne"},
+  {"date": "16/10/2026", "heure": "6h52", "version": "4d98c24e", "resultat": "✅ en ligne"},
+  {"date": "15/10/2026", "heure": "14h43", "version": "28c5926e", "resultat": "✅ en ligne"}
+ ],
+ "attend_hamada": [
+  {"n": "—", "geste": "Mot de déploiement pour la version d'après (n° 33)", "etat": "⬜"},
+  {"n": "20", "geste": "Vidage de la base de démo (mot écrit de Hamada seulement)", "etat": "⬜"},
+  {"n": "27 · 28 · 29", "geste": "PDF de facture fournisseur dans Boond ; suppression des objets de test dans Boond ; envoi réel de mails", "etat": "⬜"},
+  {"n": "30", "geste": "Machine hors du serveur pour les sauvegardes", "etat": "⬜"}
+ ]
+}

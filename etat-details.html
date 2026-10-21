@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Où en sommes-nous</title>
+<style>
+:root{color-scheme:dark;--bg:#000;--t1:#f1f1f3;--t2:#a9a8b2;--t3:#6e6d76;--carte:#121214;--bord:#26262c;--accent:#c79ad0;--vert:#C3D64F;--ok:#34D399;--cours:#E9B949;--v2:#5AA9FF;--toi:#F472B6}
+body{margin:0;background:var(--bg);color:var(--t1);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+main{max-width:760px;margin:0 auto;padding:20px 16px 56px}
+a{color:var(--accent)}.nav{font-size:14px;color:var(--t2)}
+h1{font-size:26px;font-weight:600;margin:6px 0 2px}.sous{color:var(--t2);margin:0 0 18px}
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:22px}
+.chiffre{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:10px 14px}
+.chiffre b{display:block;font-size:28px;font-weight:600;line-height:1.1}.chiffre span{font-size:13px;color:var(--t2)}
+.bloc{font-size:20px;font-weight:600;margin:34px 0 2px;padding-top:12px;border-top:2px solid var(--bord)}
+.bloc small{display:block;font-size:13px;font-weight:400;color:var(--t2)}
+h2{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t2);margin:22px 0 6px}
+ol,ul{margin:0;padding:0;list-style:none}
+li{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--bord)}
+.e{width:22px;flex:none;text-align:center}.qui{margin-left:auto;color:var(--t3);font-size:13px;white-space:nowrap;padding-left:10px}
+.ok .e{color:var(--ok)}.cours .e{color:var(--cours)}.v2 li{color:var(--t2)}.v2 .e{color:var(--v2)}.toi li{color:var(--toi)}
+@media (max-width:560px){li{flex-wrap:wrap}.qui{margin-left:34px;padding-left:0;white-space:normal}}
+.n{flex:none;width:40px;font-size:22px;font-weight:700;line-height:1;color:var(--accent);text-align:right}
+.compte{font-size:15px;font-weight:600;margin:0 0 18px}
+.n.m{font-size:14px;width:auto;min-width:40px;white-space:nowrap}
+.fin{display:block;font-size:12px;color:var(--t3)}
+</style><style>details.detail{margin:14px 0 6px;border:1px solid var(--bord);border-radius:10px;background:var(--carte);padding:0 14px}details.detail>summary{cursor:pointer;list-style:none;padding:10px 0;font-weight:700;color:var(--v2)}details.detail>summary::-webkit-details-marker{display:none}details.detail>summary::before{content:"▸ "}details.detail[open]>summary::before{content:"▾ "}details.detail p{margin:0 0 12px}</style>
+<style>
+.ok b,.etat-ok{color:var(--ok)} .grand{font-size:18px;line-height:1.45;margin:6px 0 20px;padding:14px 16px;border:1px solid var(--bord);border-left:4px solid var(--vert);border-radius:8px;background:var(--carte)}
+table{width:100%;border-collapse:collapse;margin:6px 0 4px;font-size:14px} th{text-align:left;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);padding:6px 10px 6px 0;border-bottom:1px solid var(--bord)}
+td{padding:9px 10px 9px 0;border-bottom:1px solid var(--bord);vertical-align:top} td.e{width:34px;text-align:center}
+.src{font:12px ui-monospace,Consolas,monospace;color:var(--t3);margin:0 0 18px}
+.pv{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 6px}
+.pv button{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:1.5px solid var(--bord);background:transparent;color:var(--t2);cursor:pointer}
+.pv button[aria-pressed=true]{font-weight:700;color:var(--t1)}
+.phrase{margin:8px 0 2px;min-height:44px}.phrase b{display:block}.phrase code{font:12.5px ui-monospace,Consolas,monospace;color:var(--t2)}
+.cons{border-left:3px solid var(--bord);padding:2px 0 2px 12px;margin:10px 0 14px;color:var(--t1)}
+.gr{overflow-x:auto;border:1px solid var(--bord);border-radius:10px;background:var(--carte);padding:6px}
+.gr svg{display:block;min-width:1000px;width:100%;height:auto}
+.col{font:600 10.5px ui-monospace,Consolas,monospace;letter-spacing:.14em;fill:var(--t3)}
+.nd rect{fill:var(--bg);stroke:var(--bord);stroke-width:1} .nd text{fill:var(--t3);font:12px system-ui,sans-serif;dominant-baseline:middle}
+.lk{stroke:var(--bord);stroke-width:1;fill:none}
+@media (prefers-reduced-motion:no-preference){.nd rect,.nd text,.lk{transition:stroke .18s ease,stroke-width .18s ease,fill .18s ease}}
+.leg{display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--t2);padding:8px 10px 4px}
+.leg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.leg .f{background:var(--ok)}.leg .m{background:var(--cours)}.leg .c{border:1.5px solid var(--t3)}.leg .h{border:1.5px dashed var(--t3)}
+.dans-hub .nav{display:none}
+@media (max-width:640px){td.e{width:28px}}
+</style>
+<script>if(self!==top)document.documentElement.classList.add("dans-hub")</script>
+</head><body><main>
+<div class="nav"><a href="./" target="_top">← le hub</a></div>
+<h1>Détails : où en sommes-nous (ancienne vue)</h1>
+<p class="sous">Mis à jour le mercredi 21/10/2026 à 19h23 (heure de Casablanca) · les chiffres se lisent dans les autres pages à l'ouverture : ils ne sont jamais recopiés à la main</p>
+
+<!--AUTO:grand--><p class="grand"><b>EN LIGNE depuis 18h50 (21/10) — Aujourd’hui Ava ressemble à Boond à 93,2 % ; la cible est 100 % des éléments mesurables.</b> Il reste 99 différences à fermer.</p>
+<p class="sous">Chiffre prudent, jusqu’à 93,9 % ; objectif 100 %.</p><!--/AUTO:grand-->
+<div class="chiffres" style="margin:10px 0"><!--AUTO:proch--><div class="chiffre" style="border-style:dashed"><b>95,6 %</b><span><b>Version en ligne : la suite a1ec461f, EN LIGNE depuis 18h50.</b> Chiffre prudent <b>93,2 %</b> (2076 sur 2227), borne haute <b>93,9 %</b> (2091 sur 2227). <br><b>Version d'après (en préparation)</b> : campagne n° 33, <b>95,6 %</b> selon la règle du Juge, 934 écarts résolus ; chiffre prudent de la n° 32 : <b>94,9 %</b> (2113 sur 2227). Elle sera mise en ligne après sa propre validation, avec l'accord de Hamada.</span></div><!--/AUTO:proch--></div>
+
+
+<div class="chiffres" id="chiffres">
+<!--AUTO:carte--><div class="chiffre"><b>93,2 %</b><span><b>EN LIGNE depuis 18h50 (21/10) — </b>d’Ava ressemble à Boond (chiffre prudent, campagne n° 27) ; peut monter jusqu’à 93,9 % quand les tests seront resserrés ; objectif 100 % des éléments mesurables. La suite a1ec461f est EN LIGNE depuis 18h50 (21/10) : 93,2 % en prudent, 93,9 % selon la règle du Juge. Le point de retour et l'image précédente (5a94a54e81bd) sont gardés. La version d'après (n° 33) est à 95,6 % selon la règle du Juge ; la n° 32 est à 94,9 % en prudent.</span></div><!--/AUTO:carte-->
+<div class="chiffre"><b>7</b><span>sessions Code en parallèle : 1, 2, 3, DB, 4, 5, 6 (cliquable : 1 et 3 ; graphiques de la Synthèse : 2 ; colonnes ressource et candidat : 4 ; produit : 5 ; achat : 6 ; contrat RH et avenant : DB)</span></div>
+<div class="chiffre"><b id="c-taches">…</b><span>tâches faites <span id="c-taches-t"></span></span></div>
+<div class="chiffre"><b id="c-ouverts">…</b><span>défauts encore ouverts <span id="c-corriges"></span></span></div>
+<div class="chiffre"><b id="c-dec">…</b><span>décisions prises, la dernière : <span id="c-dec-d"></span></span></div>
+</div>
+
+<!--CPT--><style>.cpt{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 4px}.cpt>div{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:12px 14px}.cpt b.v{display:block;font-size:34px;line-height:1.1}.cpt .t{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);font-weight:600}.cpt .def{font-size:13px;color:var(--t2);margin:4px 0 8px}.cpt .lim{font-size:12px;color:var(--t3);margin:0}@media (max-width:640px){.cpt{grid-template-columns:1fr}}</style>
+<div class="cpt" id="compteurs">
+<div><span class="t">Codé</span><b class="v">540<small style="font-size:16px;font-weight:400"> / 708</small></b><p class="def">Écarts déclarés fermés par une session Code au journal, plus ceux qu’une campagne du Juge a déjà passés au vert : comptés une seule fois, et ce chiffre ne baisse jamais. Rien n’est prouvé par lui : ce n’est pas une note.</p><svg viewBox="0 0 240 64" style="width:100%;max-width:260px;display:block" role="img" aria-label="courbe"><polyline points="12,46 36,41 60,39 84,38 108,36 132,34 156,31 180,23 204,19 228,16" fill="none" stroke="var(--v2)" stroke-width="2"/><circle cx="12" cy="46" r="3.5" fill="var(--v2)"/><circle cx="36" cy="41" r="3.5" fill="var(--v2)"/><circle cx="60" cy="39" r="3.5" fill="var(--v2)"/><circle cx="84" cy="38" r="3.5" fill="var(--v2)"/><circle cx="108" cy="36" r="3.5" fill="var(--v2)"/><circle cx="132" cy="34" r="3.5" fill="var(--v2)"/><circle cx="156" cy="31" r="3.5" fill="var(--v2)"/><circle cx="180" cy="23" r="3.5" fill="var(--v2)"/><circle cx="204" cy="19" r="3.5" fill="var(--v2)"/><circle cx="228" cy="16" r="3.5" fill="var(--v2)"/><text x="230" y="11" fill="var(--t1)" font-size="11" font-weight="700" text-anchor="end">540</text></svg></div>
+<div><span class="t">Jugé</span><b class="v">370<small style="font-size:16px;font-weight:400"> / 708</small></b><p class="def">Écarts passés au vert par une campagne du Juge (n° 10). C’est ce qui compte pour la note officielle.</p><svg viewBox="0 0 240 64" style="width:100%;max-width:260px;display:block" role="img" aria-label="courbe"><polyline points="12,45 36,42 60,42 84,39 108,38 132,35 156,30 180,29 204,18 228,16" fill="none" stroke="var(--vert)" stroke-width="2"/><circle cx="12" cy="45" r="3.5" fill="var(--vert)"/><circle cx="36" cy="42" r="3.5" fill="var(--vert)"/><circle cx="60" cy="42" r="3.5" fill="var(--vert)"/><circle cx="84" cy="39" r="3.5" fill="var(--vert)"/><circle cx="108" cy="38" r="3.5" fill="var(--vert)"/><circle cx="132" cy="35" r="3.5" fill="var(--vert)"/><circle cx="156" cy="30" r="3.5" fill="var(--vert)"/><circle cx="180" cy="29" r="3.5" fill="var(--vert)"/><circle cx="204" cy="18" r="3.5" fill="var(--vert)"/><circle cx="228" cy="16" r="3.5" fill="var(--vert)"/><text x="230" y="11" fill="var(--t1)" font-size="11" font-weight="700" text-anchor="end">370</text></svg></div>
+</div>
+<p class="sous" style="margin:6px 0 2px"><b>170</b> écarts sont codés mais pas encore prouvés. Le grand chiffre est celui d’aujourd’hui ; chaque courbe donne la valeur au moment de chaque campagne (n° 1 · n° 2 · n° 3 · n° 4 · n° 5 · n° 6 · n° 7 · n° 8 · n° 9 · n° 10). Total : 464 écarts anciens + 244 des écrans neufs. Mesuré le 20/10/2026 17h16.</p>
+<p class="sous" style="margin:0 0 14px">Le compteur « codé » est lu dans le journal des sessions : c’est un minimum, la lecture sera affinée. Le total est recalculé à chaque mesure d’après les fichiers courants de la Conformité (seuls les écarts ouverts comptent). Le rapport de campagne compte aussi 9 identifiants propres au Juge (N-…), qui n’appartiennent pas à ce total.</p><!--/CPT-->
+
+<!--AUTO:mel--><h2 id="mise-en-ligne">Mise en ligne : où ça en est</h2>
+<p class="grand"><b>La nouvelle version (le Livrable 3, version a1ec461f) est EN LIGNE depuis 18h50, mercredi 21/10.</b> Elle remplace le Livrable 2bis du 18/10, dont le point de retour et l’image sont gardés.</p>
+<p class="sous">À la 4e tentative, avec l’accord de Hamada, la mise en ligne est allée au bout, sans retour arrière : le site répond, les 268 changements de la base sont appliqués, les trois vérificateurs en ligne sont verts, aucune erreur au journal du service, et l’heure du service est celle de la machine. Les trois tentatives précédentes (20-21/10) avaient été annulées automatiquement sans rien casser ni perdre.</p>
+<table><tr><th>Tentative</th><th>Résultat</th><th>Cause</th><th>État</th></tr>
+<tr><td>1re</td><td>Arrêtée à la validation sur copie, avant toute mise en service</td><td>Des mobilités de candidats et de ressources saisies en texte libre ne passaient pas la conversion</td><td>✅ Corrigé : conversion avec correspondances explicites</td></tr>
+<tr><td>2e</td><td>Arrêtée à la validation sur copie</td><td>Des documents rattachés à une société et à une action bloquaient une contrainte</td><td>✅ Corrigé : script de reprise ; balayage de toutes les contraintes sur la copie</td></tr>
+<tr><td>3e</td><td>Mise en service, puis annulée automatiquement par le contrôle</td><td>« Créer › Action » : une action créée depuis une fiche n’avait parfois aucun porteur ou deux</td><td>✅ Corrigé : correctif du formulaire, nouveau scénario de test, trois vérificateurs verts en local</td></tr>
+<tr><td>4e</td><td>✅ <b>En ligne à 18h50</b>, sans retour arrière</td><td>—</td><td>✅ Livrée : /sante répond 200, vérificateurs en ligne verts</td></tr></table>
+<p class="sous"><b>Prochaine étape :</b> la version d’après (campagne n° 33) est en préparation ; elle passera par la même chaîne de validation avant une éventuelle mise en ligne, avec l’accord de Hamada.</p>
+<p class="sous"><b>Découvert :</b> l’outil de calcul du serveur connaissait encore Casablanca à UTC+1 alors que le Maroc est à UTC+0 depuis le 20/09/2026. Les heures du hub viennent de l’horloge de la machine, et un test de fuseau horaire a rejoint les contrôles.</p><!--/AUTO:mel-->
+
+<!--AUTO:detail--><details class="detail"><summary>Détails</summary>
+<p class="sous"><b>La suite a1ec461f est EN LIGNE depuis 18h50 (21/10) : 93,2 % en prudent, 93,9 % selon la règle du Juge. Le point de retour et l'image précédente (5a94a54e81bd) sont gardés. La version d'après (n° 33) est à 95,6 % selon la règle du Juge ; la n° 32 est à 94,9 % en prudent.</b></p>
+<p class="sous">Les éléments qu’on ne peut pas vérifier chez Boond (module facturation absent du compte, envois réels de mails, PDF à déposer) sont listés à part avec la raison. Ce 93,2 % est le chiffre prudent (2076 éléments sur 2227, sans les cas ambigus ; il était de 93,0 % à la campagne précédente) : il peut monter jusqu’à 93,9 % (93,9 % d’éléments sans différence ouverte, règle du Juge, à la campagne en ligne). L’<b>ancienne façon de compter</b> (les écrans neufs comptaient 0) donne 69,9 % ; elle est gardée pour l’historique. La suite a1ec461f est EN LIGNE depuis 18h50 (21/10) : elle remplace le Livrable 2bis du 18/10, dont le point de retour est gardé. La version d’après (campagne n° 33, 95,6 % selon la règle du Juge) est en préparation. <b>Hamada a autorisé le BRAIN à le remplacer entièrement</b> (D-330), sauf pour la base de démo, les gestes à la main, le serveur réel, les secrets, les noms de domaine et les comptes.</p>
+</details><!--/AUTO:detail-->
+
+<h2>La route vers 100 %</h2>
+<p class="sous">Hamada : « je veux rétro-ingénierer le même Boond Manager, la même chose » ; le seul écart permis, ce sont les widgets du tableau de bord. Méthode vite : on teste à la campagne, pas à chaque lot.</p>
+<table><tr><th></th><th>Étape</th><th>Où elle en est</th></tr>
+<tr><td class="e">✅</td><td><b>Le rapport d'écarts</b> : 826 écarts (622 distincts) ; <b>le tableau de conformité</b> : 55,5 % au départ.</td><td>Fait le 18/10</td></tr>
+<tr><td class="e">✅</td><td><b>Les lots de correction, en parallèle</b> : chacune des 7 sessions a terminé sa zone ou listé ce qui reste, avec ce qui le débloque. Les restes sont distribués aux sessions libres.</td><td>Fait, restes en cours</td></tr>
+<tr><td class="e">⏳</td><td><!--AUTO:ligne--><b>Campagnes de mesure sur le Livrable 3</b> : le Juge joue ses scénarios (par rôle, grisé, cliquable) et recalcule la note. <b>Ancien tableau</b> (écrans absents forcés à 0 %) : n° 1 : 57,8 % ; n° 2 : 59,4 % ; n° 3 : 59,5 % ; n° 4 : 60,9 % ; n° 5 : 61,3 % ; n° 6 : 62,5 % ; n° 7 : 65,3 % ; n° 8 : 65,7 % ; n° 9 : 65,6 % ; n° 10 : 67,4 % ; n° 11 : 67,2 % ; n° 12 : 68,7 % ; n° 13 : 68,9 % ; n° 14 : 69,1 % ; n° 15 : 69,5 % ; n° 16 : 69,6 % ; n° 18 : 69,7 % ; finale : 69,9 %. <b>Nouveau tableau</b> (écrans neufs comptés élément par élément) : base 68,3 %, n° 8 : 78,6 %, n° 9 : 84,1 %, n° 10 : 86,8 %, n° 11 : 86,1 %, n° 12 : 88,6 %, n° 13 : 89,6 %, n° 14 : 90,0 %, n° 15 : 90,7 %, n° 16 : 92,0 %, n° 18 : 92,2 %, finale : 92,5 %, en ligne : 93,9 % (93,9 % d’éléments sans différence ouverte, 2091 sur 2227 ; 136 différences à fermer). Chiffre prudent : 93,2 %. Le nouveau tableau est la référence ; l’ancien est gardé pour la continuité.<!--/AUTO:ligne--></td><td><!--AUTO:statut-->Campagne finale faite ; la suite a1ec461f est EN LIGNE depuis 18h50 ; la version d'après est en préparation<!--/AUTO:statut--></td></tr>
+<tr><td class="e">⬜</td><td><b>Les écrans qui n'existent pas encore</b> (contrat RH, avenant, profil type, achat, produit, groupement, facture fournisseur : 488 éléments à 0 %), puis les actions (28 écarts).</td><td>Ensuite</td></tr>
+<tr><td class="e">⬜</td><td><b>Campagnes suivantes</b> : on corrige, on rejoue, on boucle, jusqu'à 100 % des éléments mesurables au tableau.</td><td>Puis le Livrable 3 en ligne, quand la campagne du Juge est verte sans régression, que les 4 contrôles de Tests passent et que le point de retour est vérifié (D-286)</td></tr></table>
+
+<h2>Ce qui est en ligne</h2>
+<table><tr><th></th><th>Livraison</th><th>Ce qu'elle apporte</th></tr>
+<tr><td class="e">✅</td><td><b>Livrable 2bis</b><br>18/10 · 19 h 35</td><td>Le correctif « Créer › Action » : une action créée depuis une fiche n'enregistrait rien. 14 comptes de démo sans erreur, création d'une action depuis les 6 fiches sans erreur, point de retour vérifié avant.</td></tr>
+<tr><td class="e">✅</td><td><b>Livrable 2</b><br>16/10 · 6 h 52</td><td>« Ajouter un élément » au tableau de bord ; modification en masse qui passe par l'action unitaire ; correctifs du chiffre « CA » et des colonnes modifiables ; actions groupées sur les 9 listes.</td></tr>
+<tr><td class="e">✅</td><td><b>Livrable 1</b><br>15/10 · 14 h 43</td><td>Fuites entre comptes fermées ; frais de la marge calculés mois par mois ; compétences ; connexion renforcée ; widgets de 208 px ; interface à 80 % par défaut ; fiches dans l'ordre de Boond.</td></tr>
+<tr><td class="e">✅</td><td><b>La version du 11/10</b></td><td>La base de départ : listes, fiches, widgets, identité de chaque société, 14 comptes de démo.</td></tr></table>
+
+<h2>Ce qui attend Hamada</h2>
+<p class="sous">Le BRAIN le remplace pour tout ce qui se décide (D-330). Il ne reste que ce que personne ne peut faire à sa place.</p>
+<table><tr><th>N°</th><th>Geste</th></tr>
+<tr><td>M11 · M12</td><td>Réautoriser la navigation vers le site de Boond dans la session de la Conformité (les relevés sont suspendus) ; répondre à la demande en attente dans la session de test (elle bloque la publication de la n° 11 et la n° 12).</td></tr>
+<tr><td>20</td><td><b>Le vidage de la base de démo ne part qu'avec ton mot écrit</b> (D-329) : tu veux d'abord essayer sur la base de démo, qui reste intacte et fictive.</td></tr>
+<tr><td>27 · 28 · 29</td><td>À la fin, à la main : déposer un PDF de facture fournisseur dans Boond ; supprimer dans Boond les objets de test créés pour le relevé ; brancher l'envoi réel de mails (le simulateur suffit en attendant).</td></tr>
+<tr><td>30</td><td>Avant les vraies données : une machine hors du serveur pour les sauvegardes. Microsoft Entra, plus tard.</td></tr></table>
+
+<h2>L'équipe</h2>
+<table><tr><th>Session</th><th>Ce qu'elle fait</th><th>Ce qu'elle ne fait jamais</th></tr>
+<tr><td><b>Brain</b></td><td>Commande, tranche, tient le plan du jour, donne les feux verts</td><td>Écrire du code</td></tr>
+<tr><td><b>Code</b></td><td>Écrit le serveur et les écrans ; <b>7 sessions en parallèle</b> (1, 2, 3, DB, 4, 5, 6), chacune sur un lot de fichiers distinct ; met en ligne par script depuis le PC</td><td>Toucher aux tests, aux changements de la base, aux registres</td></tr>
+<tr><td><b>Tests</b></td><td>Écrit les tests et les changements de la base ; joue les 4 contrôles avant chaque mise en ligne</td><td>Classer ses propres échecs</td></tr>
+<tr><td><b>Design</b></td><td>Maquettes, aperçu et contrôle visuel</td><td>Toucher au code du produit</td></tr>
+<tr><td><b>Audit</b></td><td>Relit de l'extérieur : fuites, droits, argent ; rend un verdict</td><td>Corriger quoi que ce soit</td></tr>
+<tr><td><b>Juge</b></td><td>Écrit et joue les scénarios d'usage (par rôle, grisé, cliquable) et recalcule la note de conformité</td><td>Corriger le code</td></tr>
+<tr><td><b>Conformité</b></td><td>Relève Boond à l'écran, sans rien écrire dedans</td><td>Écrire dans Boond ou envoyer un mail</td></tr>
+<tr><td><b>Rapporteur</b></td><td>Tient ce hub : décisions, défauts, livraisons, à faire</td><td>Décider, écrire du code</td></tr></table>
+
+<h2>Les règles du moment</h2>
+<table><tr><td class="e">1</td><td><b>Mode vite</b> — quatre contrôles seulement avant chaque mise en ligne : les droits, les fuites entre comptes, l'argent, les changements de la base. Les tests complets et les parcours viennent à la fin, « quand tout marchera ».</td></tr>
+<tr><td class="e">2</td><td><b>Pas de vérification par GitHub.</b> Tout se joue sur le PC d'Hamada : tests, construction, mise en ligne.</td></tr>
+<tr><td class="e">3</td><td><b>Toute mise en ligne a son point de retour</b>, vérifié avant, et revient en arrière au moindre échec.</td></tr>
+<tr><td class="e">4</td><td><b>Aucune donnée réelle dans ce hub</b> : il est public.</td></tr></table>
+
+<script>
+(function(){
+  var get=function(u){return fetch(u,{cache:"no-store"}).then(function(r){return r.text()})};
+  var set=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v};
+  get("todo.html").then(function(t){var m=t.match(/(\d+) tâches · n° 1 à \d+ · (\d+) faites/);if(m){set("c-taches",m[2]);set("c-taches-t","sur "+m[1])}}).catch(function(){});
+  get("bugs.html").then(function(t){var o=t.match(/<b>(\d+)<\/b><span>encore ouverts/),c=t.match(/<b>(\d+)<\/b><span>corrigés/);if(o)set("c-ouverts",o[1]);if(c)set("c-corriges","· "+c[1]+" corrigés")}).catch(function(){});
+  get("conformite-boond.html").then(function(t){var n=t.match(/class="gros">([0-9,]+)/),d=t.match(/Mesurée le ([0-9]{2}\/[0-9]{2}\/[0-9]{4})/);if(n)set("c-conf",n[1]+" %");if(d)set("c-conf-d","· mesure du "+d[1])}).catch(function(){});
+  get("decisions.html").then(function(t){var n=t.match(/<b>(\d+)<\/b><span>décisions/),d=t.match(/class="id">(D-\d+)</);if(n)set("c-dec",n[1]);if(d)set("c-dec-d",d[1])}).catch(function(){});
+})();
+</script>
+</main></body></html>
