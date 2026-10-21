@@ -80,8 +80,9 @@
  },
  "lenteur": "≈ 1,5 s → ≈ 0,02 s",
  "disposition": {
-  "valeur": "27,7 %",
-  "libelle": "Conformité de la disposition · lots 1-2 sur 5 (46/166)"
+  "valeur": "54 %",
+  "libelle": "Conformité de la disposition · lots 1-2, meilleure tête (Code 4) 90/166",
+  "petit": "tête intégrée : à rejouer"
  },
  "conformite_courte": "95,5 %",
  "lenteur_libelle": "Lenteur par page · après performance 1 (mesuré au banc)"

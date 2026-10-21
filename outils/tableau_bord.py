@@ -97,7 +97,7 @@ D8 = [
 # 8 cartes au maximum : la DISPOSITION se place à côté de la conformité des rubriques ; Lenteur prend la place de la campagne en cours si elle est vide
 _dp = L.get("disposition")
 if isinstance(_dp, dict):
-    D8[2] = '<div class="dc"><b>%s</b><span>%s</span></div>' % (_dp["valeur"], _dp["libelle"])
+    D8[2] = '<div class="dc"><b>%s</b><span>%s</span>%s</div>' % (_dp["valeur"], _dp["libelle"], ('<span style="font-size:12px;color:var(--t3)">%s</span>' % _dp["petit"]) if _dp.get("petit") else "")
 if not ce_ and L.get("lenteur"):
     D8[6] = '<div class="dc"><b>%s</b><span>%s</span></div>' % (L["lenteur"], L.get("lenteur_libelle", "Lenteur"))
 assert len(D8) <= 8
