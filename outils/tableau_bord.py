@@ -22,7 +22,7 @@ wip = L["etat"] == "en_cours"
 if wip:
     BANDE_TXT = "MISE EN LIGNE EN COURS — version %s depuis %s — actuellement en ligne : %s" % (L["mel"]["version"], L["mel"]["depuis"], L["version"])
 elif ok:
-    BANDE_TXT = "EN LIGNE depuis %s — %s — version %s — conformité %s" % (L["heure"], L["date"], L["version"], L["conformite"])
+    BANDE_TXT = "EN LIGNE depuis %s — %s — version %s — conformité %s%s" % (L["heure"], L["date"], L["version"], L["conformite"], (" — page %s mesurée en ligne" % L["page_ms"]) if L.get("page_ms") else "")
 else:
     BANDE_TXT = "PAS EN LIGNE (retour arrière) — %s à %s — version %s — conformité %s" % (L["date"], L["heure"], L["version"], L["conformite"])
 BANDE = '<div class="bande %s" role="status">%s</div>' % ("bande-wip" if wip else ("bande-ok" if ok else "bande-ko"), BANDE_TXT)
@@ -116,6 +116,10 @@ if L.get("lenteur_en_ligne") and L.get("lenteur_apres") and len(D8) == 8:
           '<div class="dc"><b>%s</b><span>%s</span></div>' % (_l1["valeur"], _l1["libelle"]),
           '<div class="dc dc-wip"><b>%s</b><span>%s</span></div>' % (_l2["valeur"], _l2["libelle"]),
           D8[7]]
+# « Mot de Hamada attendu » retirée une fois l'autorisation d'office donnée et la mise en ligne faite (mot_hamada_retire) : la carte devient « campagne »
+if L.get("mot_hamada_retire"):
+    _cm = L.get("campagne_carte") or {"valeur": "—", "libelle": "Campagne"}
+    D8[-1] = '<div class="dc"><b>%s</b><span>%s</span></div>' % (_cm["valeur"], _cm["libelle"])
 assert len(D8) <= 8
 DCSS = ('<style>main{max-width:900px}.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:6px 0 22px}'
         '.dc{background:var(--carte);border:1px solid var(--bord);border-radius:14px;padding:22px 20px;text-align:center}'

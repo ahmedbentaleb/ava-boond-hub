@@ -1,8 +1,8 @@
 {
- "etat": "en_cours",
+ "etat": "en_ligne",
  "date": "21/10/2026",
- "heure": "21h02",
- "version": "755073d0",
+ "heure": "23h47",
+ "version": "59436b3e",
  "conformite": "95,5 % prudent / 96,1 % règle du Juge",
  "compteurs": {
   "en_ligne": {
@@ -20,6 +20,12 @@
  },
  "campagne_en_cours": null,
  "mises_en_ligne": [
+  {
+   "date": "21/10/2026",
+   "heure": "23h47",
+   "version": "59436b3e (performance 1)",
+   "resultat": "✅ en ligne (autorisation d'office, sans retour arrière, page ≈ 42 ms)"
+  },
   {
    "date": "21/10/2026",
    "heure": "21h02",
@@ -78,30 +84,24 @@
   "valeur": "NON",
   "precision": "autorisation d'office · étape 4 lancée à 23h44"
  },
- "lenteur": "≈ 1,5 s → ≈ 0,02 s",
+ "lenteur": "≈ 42 ms / page",
  "disposition": {
   "valeur": "51,5 %",
   "libelle": "Conformité de la disposition · 220/427 (S40+S41, NR et bloqués exclus)",
   "petit": "campagne n° 41 · tête 136974f7"
  },
  "conformite_courte": "95,5 %",
- "lenteur_libelle": "Lenteur par page · après performance 1 (mesuré au banc)",
+ "lenteur_libelle": "LENTEUR EN LIGNE · mesuré en ligne · version 59436b3e (avant : ≈ 1,5 s)",
  "apres_carte": {
   "valeur": "95,9 %",
   "libelle": "Version d’après · rubriques · règle du Juge (2136/2228) · 953 résolus",
   "petit": "disposition 51,5 % · n° 41"
  },
  "conformite_petit": "prudent · règle du Juge 96,1 %",
- "lenteur_en_ligne": {
-  "valeur": "≈ 1,5 s / page",
-  "libelle": "LENTEUR EN LIGNE · mesuré sur le serveur réel · version 755073d0"
- },
- "lenteur_apres": {
-  "valeur": "≈ 0,02 s / page",
-  "libelle": "APRÈS PERFORMANCE 1 · mesuré au banc · PAS ENCORE EN LIGNE : mot de Hamada attendu"
- },
- "mel": {
-  "version": "performance 1 (59436b3e)",
-  "depuis": "23h44"
+ "page_ms": "≈ 42 ms",
+ "mot_hamada_retire": true,
+ "campagne_carte": {
+  "valeur": "n° 42",
+  "libelle": "Campagne · rubriques et disposition séparées · chiffres à venir"
  }
 }
