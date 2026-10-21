@@ -29,7 +29,7 @@ _h = _json.load(open(os.path.join(HUB, "conformite_historique.json"), encoding="
 _mesure = "%s, %s" % (_h.get("label", "").replace("campagne ", "campagne "), _h.get("heure", ""))
 # la carte de tête est RECALCULÉE à chaque recopie (plus de valeur écrite à la main dans la to-do du BRAIN, quel que soit son texte)
 s = re.sub(r'<div class="chiffre"><b>[^<]*</b><span>[^<]*conformité à Boond[^<]*</span></div>',
-    '<div class="chiffre"><b>%s %%</b><span>%s' + 'd’Ava ressemble à Boond (chiffre prudent) ; peut monter jusqu’à %s %% quand les tests seront resserrés ; objectif 100 %%. %s Mesure : %s. Ancienne façon de compter (les écrans neufs comptaient 0), gardée pour l’historique : %s %%</span></div>' % (_bas, _el, _haut, _ment, _mesure, ("%.1f" % _old).replace(".", ",")), s, count=1)
+    ('<div class="chiffre"><b>%s %%</b><span>%s' 'd’Ava ressemble à Boond (chiffre prudent) ; peut monter jusqu’à %s %% quand les tests seront resserrés ; objectif 100 %%. %s Mesure : %s. Ancienne façon de compter (les écrans neufs comptaient 0), gardée pour l’historique : %s %%</span></div>') % (_bas, _el, _haut, _ment, _mesure, ("%.1f" % _old).replace(".", ",")), s, count=1)
 s = s.replace('<p class="compte">', '<p class="compte" style="font-weight:600">Aujourd’hui Ava ressemble à Boond à %s %% ; la cible est 100 %% des éléments mesurables. Il reste %s différences à fermer.</p><p class="compte" style="font-weight:400;font-size:13px;color:var(--t2)">Les éléments qu’on ne peut pas vérifier chez Boond (module facturation absent du compte, envois réels de mails, PDF à déposer) sont listés à part avec la raison.</p>' % (_bas, _reste) + chr(10) + '<p class="compte">', 1)
 bloc = cc.bloc_html()
 i = s.find('<div class="chiffres">')
