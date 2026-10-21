@@ -75,10 +75,17 @@
    "conformes": 2053,
    "releves": 2227,
    "ecarts": 174
+  },
+  {
+   "label": "finale",
+   "note": 92.5,
+   "conformes": 2059,
+   "releves": 2227,
+   "ecarts": 168
   }
  ],
- "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 %, 83,7 %, 86,5 %, 88,0 %, 88,3 %, 89,3 %, 90,2 %, puis 90,4 % à la n° 18 (2014 sur 2227). Borne haute (règle du Juge) : 92,2 % (2053 sur 2227). 63 éléments non relevables sont exclus.",
- "bas": 90.4,
+ "sections": " Courbe prudente (sans les cas ambigus) : 77,4 % à la n° 9, 81,0 %, 83,7 %, 86,5 %, 88,0 %, 88,3 %, 89,3 %, 90,2 %, 90,4 %, puis 90,6 % à la campagne finale. Borne haute (règle du Juge) : 92,5 % (2059 sur 2227). 63 éléments non relevables sont exclus.",
+ "bas": 90.6,
  "verts": null,
  "verts_pct": 22.8,
  "ambigus": null,
@@ -107,9 +114,9 @@
   [
    "Saisie besoin",
    42,
-   9,
-   33,
-   78.6
+   7,
+   35,
+   83.3
   ],
   [
    "Saisie positionnement",
@@ -121,9 +128,9 @@
   [
    "Saisie candidat",
    41,
-   10,
-   31,
-   75.6
+   12,
+   29,
+   70.7
   ],
   [
    "Saisie ressource",
@@ -142,16 +149,16 @@
   [
    "Saisie profil type",
    24,
-   1,
-   23,
-   95.8
+   0,
+   24,
+   100.0
   ],
   [
    "Saisie projet",
    18,
-   4,
-   14,
-   77.8
+   3,
+   15,
+   83.3
   ],
   [
    "Saisie prestation",
@@ -170,9 +177,9 @@
   [
    "Saisie produit",
    22,
-   2,
-   20,
-   90.9
+   1,
+   21,
+   95.5
   ],
   [
    "Saisie groupement",
@@ -191,9 +198,9 @@
   [
    "Fiche transverse (toutes fiches)",
    25,
-   6,
-   19,
-   76.0
+   5,
+   20,
+   80.0
   ],
   [
    "Fiche société",
@@ -338,9 +345,9 @@
   [
    "Actions fenêtre d'action",
    43,
-   2,
-   41,
-   95.3
+   0,
+   43,
+   100.0
   ],
   [
    "Actions carte et onglet des fiches",
@@ -396,16 +403,16 @@
   [
    "saisie",
    424,
-   48,
-   376,
-   88.7
+   45,
+   379,
+   89.4
   ],
   [
    "fiche",
    865,
-   113,
-   752,
-   86.9
+   112,
+   753,
+   87.1
   ],
   [
    "cliquable",
@@ -417,9 +424,9 @@
   [
    "actions",
    119,
-   2,
-   117,
-   98.3
+   0,
+   119,
+   100.0
   ],
   [
    "mails",
@@ -429,14 +436,14 @@
    96.2
   ]
  ],
- "tableau_label": "n° 18 (règle du Juge)",
- "bas_txt": "90,4",
+ "tableau_label": "campagne finale (règle du Juge)",
+ "bas_txt": "90,6",
  "bas_approx": false,
- "prudent_conformes": 2014,
- "prudent_precedent": "90,2 %",
- "haut_txt": "92,2",
- "haut_precis": "92,2",
- "bas_campagne": "n° 18",
+ "prudent_conformes": 2018,
+ "prudent_precedent": "90,4 %",
+ "haut_txt": "92,5",
+ "haut_precis": "92,5",
+ "bas_campagne": "finale",
  "prudent_releves": 2227,
- "mention": "Campagne finale sur la version exacte à mettre en ligne : en cours de lancement. Les contrôles de fuites, d'argent, de migrations et de non-fuite sont verts ; celui des droits a trouvé un oubli de permission (corrigé, à rejouer à la campagne finale)."
+ "mention": "Version prête à la mise en ligne : tous les contrôles de sécurité sont verts. La mise en ligne attend l'accord de Hamada."
 }
