@@ -617,7 +617,7 @@
 <main>
   <header class="tete">
     <h1>Ava Manager <span class="tete-sous">— le hub</span></h1>
-    <p class="tete-etat">Mis à jour le mercredi 28/10/2026 à 19h16 (heure de Casablanca)</p>
+    <p class="tete-etat">Mis à jour le mercredi 28/10/2026 à 19h18 (heure de Casablanca)</p>
   </header>
   <div class="hub-wrap" id="hub">
     <nav class="nav1" id="hub-sub" aria-label="Sections"></nav>
@@ -6187,6 +6187,10 @@ function showView(name){
   }
   function renderPage() {
     const el = document.getElementById("view-page");
+    if (location.protocol === 'data:' || location.protocol === 'file:') {
+      el.innerHTML = '<p class="grand" style="color:#fff;background:#b3261e;padding:14px;border-radius:10px;text-align:center">Ouvre le hub par http://127.0.0.1:8790/index.html : en fichier local, les pages ne se chargent pas.</p>';
+      return;
+    }
     el.innerHTML = `<iframe class="page-cadre" id="page-cadre" src="${esc(PAGE)}${PAGE.indexOf('?')<0 ? '?t=' + Math.floor(Date.now()/60000) : ''}" title="${esc(PAGE)}" allowfullscreen></iframe>`;
     const f = document.getElementById("page-cadre");
     document.addEventListener("keydown", function esc2(ev) {
