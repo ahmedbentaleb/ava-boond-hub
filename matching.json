@@ -1,0 +1,23 @@
+{
+ "bande": {"titre": "EN LIGNE", "texte": "V1.17c · depuis 22h56 — 29/10/2026"},
+ "cartes": [
+  {"v": "77,6 %", "l": "Matching Boond · fiche candidat Synthèse · éléments", "p": "38 sur 49"},
+  {"v": "88,7 %", "l": "Matching Boond · fiche candidat Synthèse · critères", "p": "125 sur 141"},
+  {"v": "≈ 27 %", "l": "Matching Boond · toutes les fiches · critères", "p": "246 sur 914"},
+  {"v": "18 %", "l": "Matching Boond · Documents techniques · critères", "p": ""},
+  {"v": "93,1 %", "l": "Matching Boond · 7 listes", "p": "216 sur 232"},
+  {"v": "61,5 %", "l": "Relevés de Boond couverts", "p": "461 cases sur 750"},
+  {"v": "4 / 4", "l": "Sécurité · portes vertes", "p": "P-1050 · P-1051 · P-1052 · P-322"}
+ ],
+ "en_ligne": [
+  ["V1.16", "29/10/2026", "21h25", "coupure 9 s"],
+  ["V1.17c", "29/10/2026", "22h56", "coupure 92 s"]
+ ],
+ "reste": [
+  ["Création", "pages de création à reproduire comme dans Boond"],
+  ["Icônes", "jeu d’icônes de Boond"],
+  ["Documents techniques", "18 % des critères seulement"],
+  ["Compétences", "champ Compétences du CV"],
+  ["Ressource et société", "fiches à rapprocher de Boond"]
+ ]
+}
